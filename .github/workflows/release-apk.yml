@@ -1,0 +1,54 @@
+name: Build Signed Release APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: signed-release-main
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # Never expose signing secrets to PRs, arbitrary refs, or forks.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.repository == 'bauti3311-sys/Spotlight-Next'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+      - name: Install Android packages
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Tests, lint, and unsigned Release
+        run: |
+          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleRelease --no-daemon --max-workers=2 --console=plain
+          python3 -m unittest discover -s backend -p 'test_*.py'
+          python3 -m unittest discover -s scripts -p 'test_*.py'
+      - name: Sign with historical key and verify update conditions
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: bash scripts/sign-release.sh
+      - name: Upload verified Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotlight-next-1.2.0-release-${{ github.run_number }}
+          path: |
+            app/build/outputs/verified-release/spotlight-next-release.apk
+            app/build/outputs/verified-release/update-verification.txt
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

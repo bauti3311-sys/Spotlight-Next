@@ -1,7 +1,7 @@
 package dev.bautista.spotlight.search
 
-/** Presentation policy shared by touch and keyboard navigation. Provider scores
- * are only compared inside a section; a file provider cannot bury an app. */
+/** Presentation policy shared by touch and keyboard navigation. Nonempty searches order sections by their best relevance;
+ * large provider batches cannot accumulate votes against a precise match. */
 object ResultSections {
     val order = listOf("Sugerencias", "Mensajes", "Historial", "Fijados", "Recientes", "Aplicaciones", "Sistema", "Acciones y comandos", "Contactos y comunicación", "Ajustes del dispositivo", "Herramientas y conversiones", "Notas", "Fragmentos de texto", "Portapapeles", "Archivos y carpetas", "Búsqueda web", "IA", "Clima", "Deportes en vivo", "Información")
     fun category(item: Result): String = when {
@@ -22,7 +22,11 @@ object ResultSections {
         else -> item.category
     }
     fun grouped(items: List<Result>, limit: Int = 3, expanded: Boolean = false, query:String=""): List<Result> =
-        items.groupBy(::category).entries.sortedBy { (ResultRanker.priority(query)+order).distinct().indexOf(it.key).let { n -> if(n < 0) order.size else n } }.flatMap { (name, group) ->
+        items.groupBy(::category).entries.sortedWith(
+            compareByDescending<Map.Entry<String,List<Result>>> { entry ->
+                if(query.isBlank()) 0 else entry.value.maxOfOrNull { it.score } ?: 0
+            }.thenBy { entry -> (ResultRanker.priority(query)+order).distinct().indexOf(entry.key).let { n -> if(n<0) order.size else n } }
+        ).flatMap { (name, group) ->
             val sorted = group.sortedByDescending { it.score }
             if(expanded || sorted.size <= limit) sorted else sorted.take(limit) + Result(
                 "section:$name", "Ver más · ${sorted.size - limit}", name, name, 0,

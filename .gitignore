@@ -8,3 +8,6 @@ local.properties
 docs/*.bundle
 
 signing/credentials.properties
+
+*.keystore
+*.jks

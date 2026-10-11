@@ -4,7 +4,7 @@ android {
  namespace = "dev.bautista.spotlight"
  compileSdk = 35
  buildToolsVersion = "35.0.0"
- defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = 23; versionName = "1.1.0" }
+ defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = 24; versionName = "1.2.0" }
  testOptions { unitTests.isIncludeAndroidResources = true }
  buildFeatures { compose = true; aidl = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -22,7 +22,7 @@ android {
    keyPassword = privateSigning.getProperty("keyPassword")
   }
  }
- buildTypes { getByName("debug") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate") }; release { isMinifyEnabled = true; isShrinkResources = true; if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate"); ndk { abiFilters += "arm64-v8a" }; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") } }
+ buildTypes { getByName("debug") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += "arm64-v8a" }; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") } }
 }
 dependencies {
  implementation("dev.rikka.shizuku:api:13.1.5")
