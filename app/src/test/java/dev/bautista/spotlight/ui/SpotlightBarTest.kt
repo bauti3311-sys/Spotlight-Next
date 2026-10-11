@@ -29,7 +29,7 @@ class SpotlightBarTest {
         }
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
         ui.runOnIdle { assertTrue(opened) }
-        ui.onRoot().assertHeightIsAtMost(160.dp)
+        ui.onNodeWithTag("spotlight-bar").assertHeightIsAtMost(160.dp)
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
         ui.runOnIdle { assertFalse(opened) }
     }

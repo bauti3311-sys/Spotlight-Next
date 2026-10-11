@@ -110,7 +110,7 @@ fun SpotlightBar(
     // A service overlay cannot safely host an Activity-style popup window.
     // Keep options in the same window/token as the editor.
     var options by remember { mutableStateOf(false) }
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
         Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
             IconButton(onClick={options=!options;onOptionsChange(options)},modifier=Modifier.size(48.dp)) {
