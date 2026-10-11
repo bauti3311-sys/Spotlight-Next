@@ -20,6 +20,31 @@ import org.robolectric.annotation.LooperMode
 @LooperMode(LooperMode.Mode.PAUSED)
 class OverlayStartupTest {
     @Test
+    fun transientFocusLossDoesNotStopOverlayService() {
+        val controller = Robolectric.buildService(OverlayService::class.java).create()
+        val service = controller.get()
+        try {
+            val host = service.createHost(ComposeView(service))
+            host.onWindowFocusChanged(true)
+            host.onWindowFocusChanged(false)
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            assertFalse(org.robolectric.Shadows.shadowOf(service).isStoppedBySelf)
+        } finally { controller.destroy() }
+    }
+
+    @Test
+    fun outsideTouchStillStopsOverlayService() {
+        val controller = Robolectric.buildService(OverlayService::class.java).create()
+        val service = controller.get()
+        try {
+            val host = service.createHost(ComposeView(service))
+            val event = android.view.MotionEvent.obtain(0,0,android.view.MotionEvent.ACTION_OUTSIDE,0f,0f,0)
+            try { assertTrue(host.dispatchTouchEvent(event)) } finally { event.recycle() }
+            assertTrue(org.robolectric.Shadows.shadowOf(service).isStoppedBySelf)
+        } finally { controller.destroy() }
+    }
+
+    @Test
     fun windowRootAndComposeChildHaveServiceOwners() {
         val controller = Robolectric.buildService(OverlayService::class.java).create()
         val service = controller.get()

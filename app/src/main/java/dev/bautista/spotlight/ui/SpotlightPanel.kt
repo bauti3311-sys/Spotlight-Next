@@ -81,10 +81,8 @@ fun SpotlightPanel(
         var menu by remember { mutableStateOf(false) }
         var advancedActions by remember { mutableStateOf(false) }
         val motionEnabled=LocalMotion.current
-        val contextOpacity=remember{Animatable(1f)}
-        LaunchedEffect(category,preview?.id,menu,systemPage?.page,config.preset,config.theme,motionEnabled){if(motionEnabled){contextOpacity.snapTo(.94f);contextOpacity.animateTo(1f,tween(180))}else contextOpacity.snapTo(1f)}
         val actionFocus=remember {FocusRequester()}
-        LaunchedEffect(menu,preview?.id) { if(menu) {delay(50);actionFocus.requestFocus()} }
+        LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
         var loading by remember { mutableStateOf(false) }
         var error by remember { mutableStateOf("") }
         var card by remember { mutableStateOf<InfoCard?>(null) }
@@ -556,7 +554,6 @@ fun SpotlightPanel(
                     .shadow(12.dp,RoundedCornerShape(config.corner.dp))
                     .clip(RoundedCornerShape(config.corner.dp))
                     .background(colors.surface.copy(alpha=if(config.preset=="hybrid")1f else maxOf(config.opacity,.97f)))
-                    .animateContentSize(tween(if(motionEnabled)180 else 0))
                     .border(1.dp,colors.outlineVariant,RoundedCornerShape(config.corner.dp))
                     .onPreviewKeyEvent { event ->
                     if (event.type != KeyEventType.KeyDown) false
@@ -827,8 +824,7 @@ fun SpotlightPanel(
                 if (expanded && panelLimit >= 100.dp) {
                     Column(
                         Modifier.fillMaxWidth()
-                            .testTag("spotlight-results").graphicsLayer {alpha=contextOpacity.value}
-                            .revealMotion(category,config.animations)
+                            .testTag("spotlight-results")
                             .heightIn(max = panelLimit)
                             .verticalScroll(rememberScrollState())
                     ) {

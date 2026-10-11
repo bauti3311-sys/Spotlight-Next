@@ -17,6 +17,24 @@ class SpotlightBarTest {
     @get:Rule val ui = createComposeRule()
 
     @Test
+    fun optionsStayInComposeWindowAndToggleWithoutClearingQuery() {
+        var text by mutableStateOf("Cerati")
+        ui.setContent {
+            SpotlightTheme("light") {
+                SpotlightBar(text,{text=it},"Todo",{}, {}, {},
+                    remember { FocusRequester() },.96f,false)
+            }
+        }
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Búsqueda universal").assertExists()
+        ui.onAllNodes(isPopup()).assertCountEquals(0)
+        ui.onNode(hasSetTextAction()).assertTextEquals("Cerati")
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Búsqueda universal").assertDoesNotExist()
+        ui.runOnIdle { assertEquals("Cerati",text) }
+    }
+
+    @Test
     fun optionalMenuSelectsExistingScopesAndReturnsToUniversal() {
         var category by mutableStateOf("Todo")
         ui.setContent {

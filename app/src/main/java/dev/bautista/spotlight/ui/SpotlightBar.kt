@@ -105,14 +105,19 @@ fun SpotlightBar(
                 }
         }
     }
-    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-        searchField(Modifier.weight(1f))
-        var options by remember { mutableStateOf(false) }
-        Box {
-            IconButton(onClick={options=true},modifier=Modifier.size(48.dp)) {
+    // A service overlay cannot safely host an Activity-style popup window.
+    // Keep options in the same window/token as the editor.
+    var options by remember { mutableStateOf(false) }
+    Column(Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
+            searchField(Modifier.weight(1f))
+            IconButton(onClick={options=!options},modifier=Modifier.size(48.dp)) {
                 Icon(CommandIcons.Sliders,"Opciones de búsqueda",Modifier.size(20.dp))
             }
-            DropdownMenu(expanded=options,onDismissRequest={options=false}) {
+        }
+        if(options) {
+            HorizontalDivider()
+            Column(Modifier.fillMaxWidth().heightIn(max=320.dp).verticalScroll(rememberScrollState())) {
                 listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
                     val label=when(item){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->item}
                     DropdownMenuItem(text={Text(label)},modifier=Modifier.semantics {

@@ -2,6 +2,12 @@ name: Build Signed Release APK
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "scripts/**"
+      - ".github/workflows/release-apk.yml"
 
 permissions:
   contents: read
@@ -13,7 +19,7 @@ concurrency:
 jobs:
   release:
     # Never expose signing secrets to PRs, arbitrary refs, or forks.
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.repository == 'bauti3311-sys/Spotlight-Next'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && github.ref == 'refs/heads/main' && github.repository == 'bauti3311-sys/Spotlight-Next'
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
@@ -32,7 +38,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Tests, lint, and unsigned Release
         run: |
-          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleRelease --no-daemon --max-workers=2 --console=plain
+          bash gradlew :app:testDebugUnitTest :app:lintRelease :app:assembleDebug :app:assembleRelease --no-daemon --max-workers=2 --console=plain
           python3 -m unittest discover -s backend -p 'test_*.py'
           python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Sign with historical key and verify update conditions
@@ -45,7 +51,7 @@ jobs:
       - name: Upload verified Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: spotlight-next-1.3.0-release-${{ github.run_number }}
+          name: spotlight-next-1.3.1-release-${{ github.run_number }}
           path: |
             app/build/outputs/verified-release/spotlight-next-release.apk
             app/build/outputs/verified-release/update-verification.txt

@@ -182,10 +182,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             wm.addView(host, params())
             view = host
             composition = panel
-            if(motionAllowed()) {
-                host.alpha=0f;host.scaleX=.985f;host.scaleY=.985f;host.translationY=-4f*resources.displayMetrics.density
-                host.animate().alpha(1f).scaleX(1f).scaleY(1f).translationY(0f).setDuration(160).setInterpolator(android.view.animation.DecelerateInterpolator()).start()
-            }
+            // Visible on the first frame: no competing window/Compose entrance animations.
             if (config.clipboard) clipboard.addPrimaryClipChangedListener(clipListener)
             host.postDelayed(
                 {
@@ -223,7 +220,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     if (gained) {
                         focusSeen = true
                         panel.post { captureClipboard() }
-                    } else if (focusSeen) lifecycleScope.launch { close() }
+                    }
+                    // IME, selection toolbars and child windows can take focus.
+                    // Outside touch and explicit dismiss remain the close signals.
                 },
             )
             .apply {
@@ -246,7 +245,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         view?.let { runCatching { wm.updateViewLayout(it, params()) } }
     }
 
-    private fun motionAllowed()=config.animations && Settings.Global.getFloat(contentResolver,Settings.Global.ANIMATOR_DURATION_SCALE,1f)>0
+    private fun motionAllowed()=config.animations && runCatching { Settings.Global.getFloat(contentResolver,Settings.Global.ANIMATOR_DURATION_SCALE,1f)>0 }.getOrDefault(false)
     private fun close() {
         if(closing) return
         closing=true
@@ -255,7 +254,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         val host=view
         if(host!=null && host.isAttachedToWindow && motionAllowed()) {
             host.animate().cancel()
-            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(160).withEndAction {if(view===host)finishClose()}.start()
+            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(90).withEndAction {if(view===host)finishClose()}.start()
         } else finishClose()
     }
     private fun finishClose() {
