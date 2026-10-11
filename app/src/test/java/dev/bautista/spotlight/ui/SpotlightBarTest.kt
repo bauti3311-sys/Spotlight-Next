@@ -24,12 +24,12 @@ class SpotlightBarTest {
             SpotlightTheme("light") {
                 SpotlightBar("",{},"Todo",{}, {}, {},
                     remember { FocusRequester() },.96f,true,
-                    onOptionsChange={opened=it},optionsMaxHeight=100.dp)
+                    onOptionsChange={opened=it},optionsMaxHeight=99.dp)
             }
         }
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
         ui.runOnIdle { assertTrue(opened) }
-        ui.onNodeWithTag("spotlight-bar").assertHeightIsAtMost(160.dp)
+        ui.onRoot().assertHeightIsAtMost(160.dp)
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
         ui.runOnIdle { assertFalse(opened) }
     }

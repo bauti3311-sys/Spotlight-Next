@@ -710,7 +710,7 @@ fun SpotlightPanel(
                     motionEnabled,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
-                    optionsMaxHeight=minOf(320.dp,(viewport-60.dp).coerceAtLeast(0.dp)),
+                    optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
                     onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
                 )
                 val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || config.suggestions
