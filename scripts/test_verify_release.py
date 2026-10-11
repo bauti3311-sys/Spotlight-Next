@@ -3,32 +3,32 @@ from verify_release import verify, verify_certificate, HISTORICAL_CERTIFICATE_SH
 
 
 class UpdateManifestTest(unittest.TestCase):
-    def badging(self, package="dev.bautista.spotlight.next", code=24, sdk=26):
-        return f"package: name='{package}' versionCode='{code}' versionName='1.2.0'\nsdkVersion:'{sdk}'\n"
+    def badging(self, package="dev.bautista.spotlight.next", code=25, sdk=26):
+        return f"package: name='{package}' versionCode='{code}' versionName='1.3.0'\nsdkVersion:'{sdk}'\n"
 
     def test_update(self):
-        self.assertIn("24 > installed 23", verify(self.badging(), 23))
+        self.assertIn("25 > installed 24", verify(self.badging(), 24))
 
     def test_wrong_identity(self):
         with self.assertRaises(ValueError):
-            verify(self.badging(package="dev.bautista.spotlight"), 23)
+            verify(self.badging(package="dev.bautista.spotlight"), 24)
 
     def test_equal_and_lower_versions(self):
-        for code in (22, 23):
+        for code in (22, 24):
             with self.assertRaises(ValueError):
-                verify(self.badging(code=code), 23)
+                verify(self.badging(code=code), 24)
 
     def test_raised_minimum(self):
         with self.assertRaises(ValueError):
-            verify(self.badging(sdk=35), 23)
+            verify(self.badging(sdk=35), 24)
 
     def test_debuggable_rejected(self):
         with self.assertRaises(ValueError):
-            verify(self.badging() + "application-debuggable\n", 23)
+            verify(self.badging() + "application-debuggable\n", 24)
 
     def test_missing_metadata(self):
         with self.assertRaises(ValueError):
-            verify("", 23)
+            verify("", 24)
 
 
 class HistoricalCertificateTest(unittest.TestCase):
