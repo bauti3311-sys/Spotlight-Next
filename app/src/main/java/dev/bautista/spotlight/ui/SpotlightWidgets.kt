@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,7 +33,7 @@ fun ResultIcon(
     } else
         Icon(
             when {
-                result.action is Action.SystemPanel -> when(result.action.page){"app"->CommandIcons.Apps;"device"->CommandIcons.Display;"shizuku"->CommandIcons.Shield;"focus"->CommandIcons.Timer;"agent"->CommandIcons.AutoAwesome;"extensions"->CommandIcons.Layers;"preferences:appearance"->CommandIcons.Display;"preferences:ai"->CommandIcons.AutoAwesome;"preferences:shortcuts"->CommandIcons.Keyboard;"preferences:suggestions"->CommandIcons.Star;"preferences:permissions"->CommandIcons.Shield;else->CommandIcons.Sliders}
+                result.action is Action.SystemPanel -> when(result.action.page){"interpret"->CommandIcons.ListChecks;"display-review"->CommandIcons.Sun;"app"->CommandIcons.Apps;"device"->CommandIcons.Display;"shizuku"->CommandIcons.Shield;"focus"->CommandIcons.Timer;"agent"->CommandIcons.AutoAwesome;"extensions"->CommandIcons.Layers;"preferences:appearance"->CommandIcons.Display;"preferences:ai"->CommandIcons.AutoAwesome;"preferences:shortcuts"->CommandIcons.Keyboard;"preferences:suggestions"->CommandIcons.Star;"preferences:permissions"->CommandIcons.Shield;else->CommandIcons.Sliders}
                 result.action is Action.ReadNotification -> CommandIcons.Forum
                 result.action is Action.SelectMode -> when(result.action.mode){"Apps"->CommandIcons.Apps;"Archivos"->CommandIcons.Folder;"IA"->CommandIcons.AutoAwesome;"Portapapeles"->CommandIcons.ContentCopy;else->CommandIcons.Bolt}
                 result.action is Action.NewNote -> CommandIcons.EditNote
@@ -61,6 +62,7 @@ fun ResultIcon(
 }
 
 @Composable
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 fun ResultRow(
     result: Result,
     selected: Boolean,
@@ -75,13 +77,13 @@ fun ResultRow(
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
     val pad=when(LocalAppearance.current.density){"compact"->5;"spacious"->13;"auto"->if(LocalConfiguration.current.screenWidthDp<600)6 else 9;else->9}
-    val ink by animateColorAsState(colors.onSurface,tween(if(motion)120 else 0),label="result-ink")
-    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)120 else 0),label="result-fill")
+    val ink by animateColorAsState(colors.onSurface,tween(if(motion)180 else 0),label="result-ink")
+    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)180 else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().heightIn(min=48.dp)
+        Modifier.fillMaxWidth().heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
             .clip(RoundedCornerShape(9.dp))
             .background(fill)
-            .hoverable(interaction).clickable(interactionSource=interaction,indication=LocalIndication.current,onClick = onOpen)
+            .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
             .padding(start = 10.dp, end = 4.dp, top = pad.dp, bottom = pad.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -98,8 +100,8 @@ fun ResultRow(
             )
             Text(
                 result.subtitle,
-                color = ink.copy(alpha = .65f),
-                fontSize = (11*LocalAppearance.current.textScale).sp,
+                color = colors.onSurfaceVariant,
+                fontSize = (12*LocalAppearance.current.textScale).sp,
                 maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -109,9 +111,9 @@ fun ResultRow(
             modifier=Modifier.padding(horizontal=6.dp).clip(RoundedCornerShape(6.dp)).background(colors.primary.copy(alpha=.08f)).padding(horizontal=6.dp,vertical=3.dp)
         )
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
-        IconButton(onClick = onDetails, modifier = Modifier.size(48.dp)) {
+        if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(48.dp)) {
             Icon(
-                CommandIcons.MoreHoriz,
+                CommandIcons.Sliders,
                 "Operaciones del resultado",
                 Modifier.size(20.dp),
                 tint = ink.copy(alpha = .7f),

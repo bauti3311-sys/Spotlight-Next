@@ -17,7 +17,7 @@ class SpotlightBarTest {
     @get:Rule val ui = createComposeRule()
 
     @Test
-    fun allFourSideButtonsSelectTheirRealCategory() {
+    fun optionalMenuSelectsExistingScopesAndReturnsToUniversal() {
         var category by mutableStateOf("Todo")
         ui.setContent {
             SpotlightTheme("light") {
@@ -41,10 +41,11 @@ class SpotlightBarTest {
                 "IA · Ctrl/⌘+4" to "IA",
             )
             .forEach { (description, value) ->
+                ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
                 ui.onNodeWithContentDescription(description).assertExists().performClick()
                 ui.runOnIdle { assertEquals(value, category) }
             }
-        ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick()
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick()
         ui.runOnIdle { assertEquals("Todo", category) }
     }
 

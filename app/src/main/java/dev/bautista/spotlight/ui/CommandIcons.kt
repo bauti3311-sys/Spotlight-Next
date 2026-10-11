@@ -6,6 +6,9 @@ import androidx.compose.ui.unit.dp
 
 /** Lucide ISC vectors, uniform rounded strokes; see licenses/Lucide-LICENSE. */
 object CommandIcons {
+    val Sun by lazy {icon("Sun","M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0","M12 2v2M12 20v2M2 12h2M20 12h2","m4.93 4.93 1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42m-11.3 11.3-1.42 1.42")}
+    val ListChecks by lazy {icon("ListChecks","m3 6 2 2 4-4","M13 6h8","m3 16 2 2 4-4","M13 16h8")}
+
     val Timer by lazy {icon("Timer","M10 2h4","M12 14v-4","M12 6a8 8 0 1 0 0 16a8 8 0 1 0 0-16","m18 5 2-2")}
     val Shield by lazy {icon("Shield","M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11","m9 12 2 2 4-4")}
     val Keyboard by lazy {icon("Keyboard","M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2","M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 13h.01M10 13h.01M14 13h.01M18 13h.01M8 16h8")}

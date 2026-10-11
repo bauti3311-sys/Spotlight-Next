@@ -82,7 +82,7 @@ fun SpotlightPanel(
         var advancedActions by remember { mutableStateOf(false) }
         val motionEnabled=LocalMotion.current
         val contextOpacity=remember{Animatable(1f)}
-        LaunchedEffect(category,preview?.id,menu,systemPage?.page,config.preset,config.theme,motionEnabled){if(motionEnabled){contextOpacity.snapTo(.94f);contextOpacity.animateTo(1f,tween(110))}else contextOpacity.snapTo(1f)}
+        LaunchedEffect(category,preview?.id,menu,systemPage?.page,config.preset,config.theme,motionEnabled){if(motionEnabled){contextOpacity.snapTo(.94f);contextOpacity.animateTo(1f,tween(180))}else contextOpacity.snapTo(1f)}
         val actionFocus=remember {FocusRequester()}
         LaunchedEffect(menu,preview?.id) { if(menu) {delay(50);actionFocus.requestFocus()} }
         var loading by remember { mutableStateOf(false) }
@@ -450,12 +450,13 @@ fun SpotlightPanel(
                 Text("Enviar texto a ${config.aiProvider}",style=MaterialTheme.typography.titleMedium)
                 Text("Se enviarán ${ask.prompt.length} caracteres al proveedor elegido.",style=MaterialTheme.typography.bodySmall)
                 SelectionContainer{Text(ask.prompt,Modifier.heightIn(max=220.dp).verticalScroll(rememberScrollState()),style=MaterialTheme.typography.bodySmall)}
-                Row{TextButton(onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,ask.copy(sensitive=false)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
+                if(!ai.configured(config))AiSettings(config){next->scope.launch{app.preferences.update(next)}}
+                Row{TextButton(enabled=ai.configured(config),onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,ask.copy(sensitive=false)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
             }}
         }
         LaunchedEffect(query){ if(showAi){aiJob?.cancel();showAi=false} }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
-        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, searchScope, replyTargets, replyConnected,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions) {
+        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, searchScope, replyTargets, replyConnected,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
             snapshotFlow { query }
                 .debounce(120)
                 .distinctUntilChanged()
@@ -519,7 +520,7 @@ fun SpotlightPanel(
             if (displayed.isNotEmpty() && navigating) {
                 val target = selected.coerceIn(0, displayed.lastIndex)
                 if (category == "Apps") {
-                    if (config.animations)
+                    if (motionEnabled)
                         gridState.animateScrollToItem(
                             target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
                         )
@@ -528,7 +529,7 @@ fun SpotlightPanel(
                             target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
                         )
                 } else {
-                    if (config.animations) listState.animateScrollToItem(target)
+                    if (motionEnabled) listState.animateScrollToItem(target)
                     else listState.scrollToItem(target)
                 }
             }
@@ -551,7 +552,13 @@ fun SpotlightPanel(
             val resultLimit = (panelLimit - 90.dp).coerceAtLeast(0.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
-                Modifier.fillMaxWidth().onPreviewKeyEvent { event ->
+                Modifier.fillMaxWidth()
+                    .shadow(12.dp,RoundedCornerShape(config.corner.dp))
+                    .clip(RoundedCornerShape(config.corner.dp))
+                    .background(colors.surface.copy(alpha=if(config.preset=="hybrid")1f else maxOf(config.opacity,.97f)))
+                    .animateContentSize(tween(if(motionEnabled)180 else 0))
+                    .border(1.dp,colors.outlineVariant,RoundedCornerShape(config.corner.dp))
+                    .onPreviewKeyEvent { event ->
                     if (event.type != KeyEventType.KeyDown) false
                     else if (
                         noteEditor &&
@@ -703,6 +710,7 @@ fun SpotlightPanel(
                     suggestion,
                     { acceptSuggestion() },
                     motionEnabled,
+                    onDismiss=onClose,
                     onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
                 )
                 val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || config.suggestions
@@ -720,7 +728,7 @@ fun SpotlightPanel(
                             ) {
                                 itemsIndexed(displayed, key = { _, item -> item.id }) { i, item ->
                                     val section=ResultSections.category(item)
-                                    if(i==0 || ResultSections.category(displayed[i-1])!=section) SectionHeading(section)
+                                    if(query.isBlank() && displayed.map{ResultSections.category(it)}.distinct().size>1 && displayed.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
                                     ResultRow(
                                         item,
                                         i == selected,
@@ -821,28 +829,20 @@ fun SpotlightPanel(
                         Modifier.fillMaxWidth()
                             .testTag("spotlight-results").graphicsLayer {alpha=contextOpacity.value}
                             .revealMotion(category,config.animations)
-                            .padding(top = 12.dp)
                             .heightIn(max = panelLimit)
-                            .shadow(12.dp, RoundedCornerShape(config.corner.dp))
-                            .clip(RoundedCornerShape(config.corner.dp))
-                            .background(Brush.verticalGradient(listOf(colors.surface.copy(alpha=maxOf(config.opacity,.97f)),(if(config.blur) colors.surfaceVariant else colors.surface).copy(alpha=maxOf(config.opacity,.97f)))))
-                            .border(
-                                1.dp,
-                                colors.onSurface.copy(alpha = .09f),
-                                RoundedCornerShape(config.corner.dp),
-                            )
                             .verticalScroll(rememberScrollState())
                     ) {
                         Box(Modifier.fillMaxWidth().height(2.dp)) {
                             if (loading || cardLoading)
                                 LinearProgressIndicator(Modifier.fillMaxWidth())
                         }
-                        Row(
+                        HorizontalDivider(color=colors.outlineVariant)
+                        if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || category!="Todo" || noteEditor || history.isNotEmpty()) Row(
                             Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null) searchScope?.label?.uppercase() ?: systemPage?.let{panelLabel(it.page)} ?: "ACCIONES" else ActionCatalog.topic(query)?.let{it.uppercase()+" · ACCIONES"} ?: if (category == "Todo" && query.isBlank()) "SUGERENCIAS" else if (category == "Todo") "MEJORES RESULTADOS"
+                                if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null) searchScope?.label?.uppercase() ?: systemPage?.let{if(it.page=="interpret")"INTERPRETACIÓN" else panelLabel(it.page)} ?: "ACCIONES" else ActionCatalog.topic(query)?.let{it.uppercase()+" · ACCIONES"} ?: if (category == "Todo" && query.isBlank()) "" else if (category == "Todo") ""
                                 else category.uppercase(),
                                 Modifier.weight(1f),
                                 fontSize = 10.sp,
@@ -854,7 +854,7 @@ fun SpotlightPanel(
                                 TextButton(onClick = { selectMode("Todo") }) {
                                     Text("Todo", fontSize = 11.sp)
                                 }
-                            IconButton(onClick = onClose, modifier = Modifier.size(36.dp)) {
+                            IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
                                 Icon(CommandIcons.Close, "Cerrar Spotlight", Modifier.size(18.dp))
                             }
                         }
@@ -875,7 +875,7 @@ fun SpotlightPanel(
                         else if(snippetText!=null)snippetEditor()
                         else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);TextButton(onClick={execute(Result("ai:tools","","","IA",0,Action.SystemPanel("agent")))}){Text("Preparar acciones con IA")};Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->scope.launch{app.preferences.update(next)}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
                         else if(notificationKey!=null)NotificationPreview(notificationKey!!,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{back()})
-                        else if(systemPage!=null) {if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->scope.launch{app.preferences.update(next)}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
+                        else if(systemPage!=null) {if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->scope.launch{app.preferences.update(next)}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
                         else if(messageForm!=null)MessageEditor(messageForm!!,{launch(it)},{pending->launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access","contacts").putExtra("query",pending))},{back()})
                         else if(searchForm!=null)SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
                         else if(audioPanel)AudioControl {back()}
@@ -1033,6 +1033,9 @@ fun SpotlightPanel(
                             Box(Modifier.weight(.52f)){resultList()}
                             VerticalDivider(Modifier.height(minOf(resultLimit,320.dp)))
                             Column(Modifier.weight(.48f)){details()}
+                        } else if(menu && preview!=null && !widePreview) {
+                            // On narrow windows, give contextual actions the full result area.
+                            // Closing Quick Look restores the list and its selection.
                         } else resultList()
                         if (displayed.isEmpty() && activeCard == null && !loading && !noteEditor && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null && snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null && category!="IA" && searchScope?.section!="files")
                             Text(

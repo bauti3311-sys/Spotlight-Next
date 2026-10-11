@@ -255,7 +255,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         val host=view
         if(host!=null && host.isAttachedToWindow && motionAllowed()) {
             host.animate().cancel()
-            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(100).withEndAction {if(view===host)finishClose()}.start()
+            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(160).withEndAction {if(view===host)finishClose()}.start()
         } else finishClose()
     }
     private fun finishClose() {

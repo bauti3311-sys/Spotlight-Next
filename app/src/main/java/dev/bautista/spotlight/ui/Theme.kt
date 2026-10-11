@@ -60,6 +60,7 @@ fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme),
     val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFADB5C4 else 0xFF566172; "purple" -> if(dark)0xFFB8A0FF else 0xFF7250CC; "rose" -> if(dark)0xFFFF8FAF else 0xFFBF3A62; "green" -> if(dark)0xFF66D6AE else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF7CB7FF else 0xFF0869D1 })
     val base=if(dark) Dark else Light
     val palette = when(config.preset){
+        "hybrid"->base.copy(background=if(dark)Color(0xFF151618) else Color(0xFFEDEEF0),surface=if(dark)Color(0xFF202124) else Color(0xFFFAFAF8),surfaceVariant=if(dark)Color(0xFF292B2F) else Color(0xFFF0F1EF),onSurface=if(dark)Color(0xFFF2F3F5) else Color(0xFF202226),onSurfaceVariant=if(dark)Color(0xFFBEC1C8) else Color(0xFF59616B))
         "raycast"->base.copy(background=if(dark)Color(0xFF171719) else Color(0xFFF0EFF3),surface=if(dark)Color(0xFF242426) else Color(0xFFFCFBFD),surfaceVariant=if(dark)Color(0xFF2C2C30) else Color(0xFFE9E7EE),onSurfaceVariant=if(dark)Color(0xFFB0ADB8) else Color(0xFF64606D))
         "graphite"->base.copy(background=if(dark)Color(0xFF1D2023) else Color(0xFFF2F3F4),surface=if(dark)Color(0xFF262A2D) else Color.White,surfaceVariant=if(dark)Color(0xFF303438) else Color(0xFFE9ECEF))
         "ios"->base.copy(background=if(dark)Color(0xFF15171C) else Color(0xFFF2F2F7),surface=if(dark)Color(0xFF23252B) else Color.White,surfaceVariant=if(dark)Color(0xFF2D3037) else Color(0xFFF2F2F7))

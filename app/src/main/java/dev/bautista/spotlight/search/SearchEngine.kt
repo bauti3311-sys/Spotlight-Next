@@ -57,7 +57,7 @@ class SearchEngine(
     fun search(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
         if(scope==null) SearchModifiers.parse(input)?.let { modified -> search(modified.query,c,modified.scope).collect{send(it)};return@channelFlow }
         val query=ActionCatalog.canonical(dev.bautista.spotlight.personal.PersonalCommands.expand(input,c.aliases))
-        if(scope==null && query.isBlank()){send(HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty()));return@channelFlow}
+        if(scope==null && query.isBlank()){send(withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty())});return@channelFlow}
         if(scope?.section == "results") {
             search(input,c).collect { send(it.filter { item -> ResultSections.category(item) == scope.topic }) };return@channelFlow
         }
@@ -78,6 +78,16 @@ class SearchEngine(
                 else->emptyList()
             }
             send(scoped);return@channelFlow
+        }
+        val interpreted=LocalPlan.parse(input)!=null || normalize(input) in setOf("quiero estudiar sin distracciones","explicame este pdf","explica este pdf","traduci este texto","traducir este texto","traduce este texto")
+        if(interpreted) {
+            send(listOf(Result("smart:plan","Revisar interpretación",if(LocalPlan.parse(input)!=null)"Plan local · comprobar permisos y confirmar cada paso" else "Elegir contexto y revisar acciones disponibles","Comandos",3000,Action.SystemPanel("interpret",input))))
+            return@channelFlow
+        }
+        if(normalize(input) in setOf("escuchar musica","quiero escuchar musica","reproducir musica")) {
+            val music=withContext(Dispatchers.IO){appList().filter { it.category==android.content.pm.ApplicationInfo.CATEGORY_AUDIO || it.id.substringBefore('/') in setOf("com.spotify.music","com.google.android.apps.youtube.music","com.sec.android.app.music","com.apple.android.music","deezer.android.app") }.map { a ->Result(a.id,a.label,"Abrir app de música instalada · la reproducción depende de la app","Aplicaciones",2400,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull()) }}
+            val controls=Result("smart:media","Controles multimedia","Volumen y controles de la sesión activa; no inicia música automáticamente","Acciones",1800,Action.AudioPanel())
+            send(ResultRanker.rank(input,music+controls,c));return@channelFlow
         }
         ActionCatalog.settings(input)?.let {send(listOf(Result("settings:natural",input.trim(),"Abrir panel de Android","Comandos",2400,Action.Launch(it))));return@channelFlow}
         // Intent suggestions stay in the same result list; no remote work while typing.
