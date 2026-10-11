@@ -2,6 +2,7 @@ package dev.bautista.spotlight.ui
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Assert.*
@@ -15,6 +16,23 @@ import org.robolectric.annotation.Config
 @Config(sdk = [28], qualifiers = "w1280dp-h800dp", application = android.app.Application::class)
 class SpotlightBarTest {
     @get:Rule val ui = createComposeRule()
+
+    @Test
+    fun optionsRespectKeyboardBudgetAndReportVisibility() {
+        var opened=false
+        ui.setContent {
+            SpotlightTheme("light") {
+                SpotlightBar("",{},"Todo",{}, {}, {},
+                    remember { FocusRequester() },.96f,true,
+                    onOptionsChange={opened=it},optionsMaxHeight=100.dp)
+            }
+        }
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.runOnIdle { assertTrue(opened) }
+        ui.onRoot().assertHeightIsAtMost(160.dp)
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.runOnIdle { assertFalse(opened) }
+    }
 
     @Test
     fun optionsStayInComposeWindowAndToggleWithoutClearingQuery() {

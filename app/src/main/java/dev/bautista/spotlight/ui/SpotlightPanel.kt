@@ -71,6 +71,7 @@ fun SpotlightPanel(
         val replyConnected by Replies.connected.collectAsState()
         fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
         var category by remember { mutableStateOf("Todo") }
+        var searchOptions by remember { mutableStateOf(false) }
         var results by remember { mutableStateOf(emptyList<Result>()) }
         var selected by remember { mutableIntStateOf(0) }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int)
@@ -708,6 +709,8 @@ fun SpotlightPanel(
                     { acceptSuggestion() },
                     motionEnabled,
                     onDismiss=onClose,
+                    onOptionsChange={searchOptions=it},
+                    optionsMaxHeight=minOf(320.dp,(viewport-60.dp).coerceAtLeast(0.dp)),
                     onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
                 )
                 val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || config.suggestions
@@ -821,7 +824,7 @@ fun SpotlightPanel(
                             }
                         }
                 }
-                if (expanded && panelLimit >= 100.dp) {
+                if (!searchOptions && expanded && panelLimit >= 100.dp) {
                     Column(
                         Modifier.fillMaxWidth()
                             .testTag("spotlight-results")

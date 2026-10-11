@@ -39,6 +39,8 @@ fun SpotlightBar(
     animations: Boolean = true,
     onDictate:(()->Unit)?=null,
     onDismiss:(()->Unit)?=null,
+    onOptionsChange:(Boolean)->Unit={},
+    optionsMaxHeight:Dp=320.dp,
 ) {
     val colors = MaterialTheme.colorScheme
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
@@ -111,23 +113,23 @@ fun SpotlightBar(
     Column(Modifier.fillMaxWidth()) {
         Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
-            IconButton(onClick={options=!options},modifier=Modifier.size(48.dp)) {
+            IconButton(onClick={options=!options;onOptionsChange(options)},modifier=Modifier.size(48.dp)) {
                 Icon(CommandIcons.Sliders,"Opciones de búsqueda",Modifier.size(20.dp))
             }
         }
         if(options) {
             HorizontalDivider()
-            Column(Modifier.fillMaxWidth().heightIn(max=320.dp).verticalScroll(rememberScrollState())) {
+            Column(Modifier.fillMaxWidth().heightIn(max=optionsMaxHeight.coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
                 listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
                     val label=when(item){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->item}
                     DropdownMenuItem(text={Text(label)},modifier=Modifier.semantics {
                         contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl/⌘+$i"
                         selected=category==item
-                    },onClick={options=false;onCategoryChange(if(category==item)"Todo" else item)})
+                    },onClick={options=false;onOptionsChange(false);onCategoryChange(if(category==item)"Todo" else item)})
                 }
                 onDismiss?.let { dismiss ->
                     HorizontalDivider()
-                    DropdownMenuItem(text={Text("Cerrar Spotlight")},modifier=Modifier.semantics{contentDescription="Cerrar Spotlight"},onClick={options=false;dismiss()})
+                    DropdownMenuItem(text={Text("Cerrar Spotlight")},modifier=Modifier.semantics{contentDescription="Cerrar Spotlight"},onClick={options=false;onOptionsChange(false);dismiss()})
                 }
             }
         }
