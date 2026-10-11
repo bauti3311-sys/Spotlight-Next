@@ -1,0 +1,250 @@
+package dev.bautista.spotlight.data
+
+import android.content.Context
+import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.*
+
+private val Context.store by preferencesDataStore("spotlight")
+
+data class Config(
+    val theme: String = "auto",
+    val opacity: Float = .96f,
+    val width: Int = 640,
+    val position: Float = .16f,
+    val contacts: Boolean = false,
+    val files: Boolean = true,
+    val animations: Boolean = true,
+    val engine: String = "google",
+    val endpoint: String = "",
+    val favorites: Set<String> = emptySet(),
+    val recent: List<String> = emptyList(),
+    val trees: Set<String> = emptySet(),
+    val clipboard: Boolean = false,
+    val blur: Boolean = true,
+    val shortcut: String = "ctrl_alt",
+    val quickLinks: Set<String> = emptySet(),
+    val contentIndex: Boolean = false,
+    val visualIndex: Boolean = false,
+    val videoIndex: Boolean = false,
+    val online: Boolean = false,
+    val liveEndpoint: String = "",
+    val workflows: Set<String> = emptySet(),
+    val aliases: Set<String> = emptySet(),
+    val snippets: Set<String> = emptySet(),
+    val pins: Set<String> = emptySet(),
+    val accent: String = "blue",
+    val appearance: String = "spotlight",
+    val density: String = "auto",
+    val messageApp: String = "whatsapp",
+    val actionRecent: List<String> = emptyList(),
+    val aiProvider:String="openai", val aiModel:String="gpt-4.1-mini",
+    val learning:Boolean=true, val usageData:String="{}",
+    val corner:Int=22, val textScale:Float=1f, val iconSize:Int=30, val maxHeight:Int=480, val adaptive:Boolean=true,
+    val routines:String="[]", val onboarded:Boolean=false, val clipLimit:Int=20, val clipRetention:Int=15,
+    val suggestions:Boolean=true, val hiddenSuggestions:Set<String> = emptySet(), val pinnedSuggestions:Set<String> = emptySet(),
+    val preset:String="macos", val clipboardShortcut:String="ctrl_shift_v",
+)
+
+class Preferences(private val context: Context) {
+    private val theme = stringPreferencesKey("theme")
+    private val opacity = floatPreferencesKey("opacity")
+    private val width = intPreferencesKey("width")
+    private val position = floatPreferencesKey("position")
+    private val contacts = booleanPreferencesKey("contacts")
+    private val files = booleanPreferencesKey("files")
+    private val animations = booleanPreferencesKey("animations")
+    private val engine = stringPreferencesKey("engine")
+    private val endpoint = stringPreferencesKey("endpoint")
+    private val favorites = stringSetPreferencesKey("favorites")
+    private val recent = stringPreferencesKey("recent")
+    private val trees = stringSetPreferencesKey("trees")
+    private val clipboard = booleanPreferencesKey("clipboard")
+    private val blur = booleanPreferencesKey("blur")
+    private val shortcut = stringPreferencesKey("shortcut")
+    private val quickLinks = stringSetPreferencesKey("quickLinks")
+    private val contentIndex = booleanPreferencesKey("contentIndex")
+    private val visualIndex = booleanPreferencesKey("visualIndex")
+    private val videoIndex = booleanPreferencesKey("videoIndex")
+    private val online = booleanPreferencesKey("online")
+    private val liveEndpoint = stringPreferencesKey("liveEndpoint")
+    private val workflows = stringSetPreferencesKey("workflows")
+    private val aliases = stringSetPreferencesKey("aliases")
+    private val snippets = stringSetPreferencesKey("snippets")
+    private val pins = stringSetPreferencesKey("pins")
+    private val accent = stringPreferencesKey("accent")
+    private val appearance = stringPreferencesKey("appearance")
+    private val density = stringPreferencesKey("density")
+    private val messageApp = stringPreferencesKey("messageApp")
+    private val actionRecent = stringPreferencesKey("actionRecent")
+    private val aiProvider = stringPreferencesKey("aiProvider")
+    private val aiModel = stringPreferencesKey("aiModel")
+    private val learning = booleanPreferencesKey("learning")
+    private val usageData = stringPreferencesKey("usageData")
+    private val corner = intPreferencesKey("corner")
+    private val textScale = floatPreferencesKey("textScale")
+    private val iconSize = intPreferencesKey("iconSize")
+    private val maxHeight = intPreferencesKey("maxHeight")
+    private val adaptive = booleanPreferencesKey("adaptive")
+    private val routines = stringPreferencesKey("routines")
+    private val onboarded = booleanPreferencesKey("onboarded")
+    private val clipLimit = intPreferencesKey("clipLimit")
+    private val clipRetention = intPreferencesKey("clipRetention")
+    private val preset = stringPreferencesKey("preset")
+    private val clipboardShortcut=stringPreferencesKey("clipboard_shortcut")
+    private val suggestions = booleanPreferencesKey("suggestions")
+    private val hiddenSuggestions = stringSetPreferencesKey("hiddenSuggestions")
+    private val pinnedSuggestions = stringSetPreferencesKey("pinnedSuggestions")
+    private val notes = stringPreferencesKey("notes")
+    val noteData: Flow<String> = context.store.data.map { it[notes] ?: "[]" }
+
+    suspend fun editNotes(transform: (String) -> String) {
+        context.store.edit { it[notes] = transform(it[notes] ?: "[]") }
+    }
+
+    val config: Flow<Config> =
+        context.store.data
+            .catch { emit(emptyPreferences()) }
+            .map { p ->
+                Config(
+                    p[theme] ?: "auto",
+                    p[opacity] ?: .96f,
+                    p[width] ?: 640,
+                    p[position] ?: .16f,
+                    p[contacts] ?: false,
+                    p[files] ?: true,
+                    p[animations] ?: true,
+                    p[engine] ?: "google",
+                    p[endpoint] ?: "",
+                    p[favorites] ?: emptySet(),
+                    p[recent]?.split("|")?.filter { it.isNotEmpty() } ?: emptyList(),
+                    p[trees] ?: emptySet(),
+                    p[clipboard] ?: false,
+                    p[blur] ?: true,
+                    p[shortcut] ?: "ctrl_alt",
+                    p[quickLinks] ?: emptySet(),
+                    p[contentIndex] ?: false,
+                    p[visualIndex] ?: false,
+                    p[videoIndex] ?: false,
+                    p[online] ?: false,
+                    p[liveEndpoint] ?: "",
+                    p[workflows] ?: emptySet(),
+                    p[aliases] ?: emptySet(),
+                    p[snippets] ?: emptySet(),
+                    p[pins] ?: emptySet(),
+                    p[accent] ?: "blue",
+                    p[appearance] ?: "spotlight",
+                    p[density] ?: "auto",
+                    p[messageApp] ?: "whatsapp",
+                    p[actionRecent]?.split("|")?.filter { it.isNotBlank() } ?: emptyList(),
+                    p[aiProvider] ?: if(p[endpoint].isNullOrBlank()) "openai" else "backend",
+                    p[aiModel] ?: "gpt-4.1-mini", p[learning] ?: true, p[usageData] ?: "{}",
+                    p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
+                    p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
+                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
+                )
+            }
+
+    suspend fun update(c: Config) {
+        context.store.edit { p ->
+            p[theme] = c.theme
+            p[opacity] = c.opacity
+            p[width] = c.width
+            p[position] = c.position
+            p[contacts] = c.contacts
+            p[files] = c.files
+            p[animations] = c.animations
+            p[engine] = c.engine
+            p[endpoint] = c.endpoint
+            p[favorites] = c.favorites
+            p[recent] = c.recent.joinToString("|")
+            p[trees] = c.trees
+            p[clipboard] = c.clipboard
+            p[blur] = c.blur
+            p[shortcut] = c.shortcut
+            p[quickLinks] = c.quickLinks
+            p[contentIndex] = c.contentIndex
+            p[visualIndex] = c.visualIndex
+            p[videoIndex] = c.videoIndex
+            p[online] = c.online
+            p[liveEndpoint] = c.liveEndpoint
+            p[workflows] = c.workflows
+            p[aliases] = c.aliases
+            p[snippets] = c.snippets
+            p[pins] = c.pins
+            p[accent] = c.accent
+            p[appearance] = c.appearance
+            p[density] = c.density
+            p[messageApp] = c.messageApp
+            p[actionRecent] = c.actionRecent.joinToString("|")
+            p[aiProvider] = c.aiProvider
+            p[aiModel] = c.aiModel
+            p[learning] = c.learning
+            p[corner] = c.corner
+            p[textScale] = c.textScale
+            p[iconSize] = c.iconSize
+            p[maxHeight] = c.maxHeight
+            p[adaptive] = c.adaptive
+            p[routines] = c.routines
+            p[onboarded] = c.onboarded
+            p[clipLimit] = c.clipLimit
+            p[clipRetention] = c.clipRetention
+            p[preset]=c.preset
+            p[clipboardShortcut]=c.clipboardShortcut
+            p[suggestions]=c.suggestions
+            p[hiddenSuggestions]=c.hiddenSuggestions
+            p[pinnedSuggestions]=c.pinnedSuggestions
+
+        }
+    }
+
+    suspend fun togglePin(query: String) {
+        val value=query.trim().take(4000)
+        if(value.isBlank()) return
+        context.store.edit { p ->
+            val current=p[pins] ?: emptySet()
+            p[pins]=if(value in current) current-value else (current+value).take(50).toSet()
+        }
+    }
+
+    suspend fun favorite(id: String) {
+        context.store.edit { p ->
+            val s = p[favorites] ?: emptySet()
+            p[favorites] = if (id in s) s - id else s + id
+        }
+    }
+
+    suspend fun record(id: String) {
+        context.store.edit { p ->
+            p[recent] =
+                (listOf(id) + (p[recent]?.split("|") ?: emptyList()).filter { it != id })
+                    .take(20)
+                    .joinToString("|")
+        }
+    }
+
+    suspend fun addTree(uri: String) {
+        context.store.edit { it[trees] = (it[trees] ?: emptySet()) + uri }
+    }
+
+    suspend fun recordSelection(id:String) {
+        context.store.edit { p ->
+            if(p[learning] != false) {
+                val data=runCatching { org.json.JSONObject(p[usageData] ?: "{}") }.getOrDefault(org.json.JSONObject())
+                val previous=data.optJSONObject(id)
+                data.put(id,org.json.JSONObject().put("count",((previous?.optInt("count") ?: 0)+1).coerceAtMost(10000)).put("time",System.currentTimeMillis()))
+                while(data.length()>300) { val oldest=data.keys().asSequence().minByOrNull { data.optJSONObject(it)?.optLong("time") ?: 0 } ?: break;data.remove(oldest) }
+                p[usageData]=data.toString()
+            }
+        }
+    }
+
+    suspend fun recordAction(query: String) {
+        if(query.isBlank()) return
+        context.store.edit { p -> p[actionRecent] = (listOf(query.take(4000)) + (p[actionRecent]?.split("|") ?: emptyList()).filter { it != query }).take(10).joinToString("|") }
+    }
+
+    suspend fun clearHistory() {
+        context.store.edit { it.remove(recent); it.remove(actionRecent); it.remove(usageData) }
+    }
+}

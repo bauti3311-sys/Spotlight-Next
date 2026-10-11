@@ -1,0 +1,74 @@
+package dev.bautista.spotlight.ui
+
+import androidx.compose.runtime.*
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createComposeRule
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [28], qualifiers = "w1280dp-h800dp", application = android.app.Application::class)
+class SpotlightBarTest {
+    @get:Rule val ui = createComposeRule()
+
+    @Test
+    fun allFourSideButtonsSelectTheirRealCategory() {
+        var category by mutableStateOf("Todo")
+        ui.setContent {
+            SpotlightTheme("light") {
+                SpotlightBar(
+                    "",
+                    {},
+                    category,
+                    { category = it },
+                    {},
+                    {},
+                    remember { FocusRequester() },
+                    .96f,
+                    false,
+                )
+            }
+        }
+        listOf(
+                "Aplicaciones · Ctrl/⌘+1" to "Apps",
+                "Archivos · Ctrl/⌘+2" to "Archivos",
+                "Comandos · Ctrl/⌘+3" to "Acciones",
+                "IA · Ctrl/⌘+4" to "IA",
+            )
+            .forEach { (description, value) ->
+                ui.onNodeWithContentDescription(description).assertExists().performClick()
+                ui.runOnIdle { assertEquals(value, category) }
+            }
+        ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick()
+        ui.runOnIdle { assertEquals("Todo", category) }
+    }
+
+    @Test
+    fun capsuleAcceptsTextAndClearButtonRunsAction() {
+        var text by mutableStateOf("")
+        ui.setContent {
+            SpotlightTheme("light") {
+                SpotlightBar(
+                    text,
+                    { text = it },
+                    "Todo",
+                    {},
+                    { text = "" },
+                    {},
+                    remember { FocusRequester() },
+                    .96f,
+                    false,
+                )
+            }
+        }
+        ui.onNode(hasSetTextAction()).performTextInput("kind:pdf factura")
+        ui.runOnIdle { assertEquals("kind:pdf factura", text) }
+        ui.onNodeWithContentDescription("Limpiar búsqueda").performClick()
+        ui.runOnIdle { assertEquals("", text) }
+    }
+}

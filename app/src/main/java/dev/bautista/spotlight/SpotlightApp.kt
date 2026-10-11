@@ -1,0 +1,51 @@
+package dev.bautista.spotlight
+
+import android.app.Application
+import dev.bautista.spotlight.data.Preferences
+import dev.bautista.spotlight.search.SearchEngine
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
+
+class SpotlightApp : Application() {
+    val scope =
+        kotlinx.coroutines.CoroutineScope(
+            kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO
+        )
+
+    override fun onCreate() {
+        super.onCreate()
+        shizuku.start()
+        scope.launch {shizuku.state.collectLatest {state->if(state.available)runCatching{advancedBackend.canWrite()} }}
+        val filter =
+            android.content.IntentFilter().apply {
+                addAction(android.content.Intent.ACTION_PACKAGE_ADDED)
+                addAction(android.content.Intent.ACTION_PACKAGE_REMOVED)
+                addAction(android.content.Intent.ACTION_PACKAGE_REPLACED)
+                addDataScheme("package")
+            }
+        androidx.core.content.ContextCompat.registerReceiver(
+            this,
+            object : android.content.BroadcastReceiver() {
+                override fun onReceive(
+                    context: android.content.Context?,
+                    intent: android.content.Intent?,
+                ) {
+                    search.invalidateApps()
+                }
+            },
+            filter,
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+    }
+
+    val shizuku by lazy { dev.bautista.spotlight.advanced.ShizukuManager(this) }
+    val advancedBackend by lazy {dev.bautista.spotlight.advanced.ShizukuBackend(this,shizuku)}
+    val settingsJournal by lazy {dev.bautista.spotlight.advanced.SettingsJournal(this)}
+    val reversibleSettings by lazy {dev.bautista.spotlight.advanced.ReversibleSettings(advancedBackend,settingsJournal)}
+    val toolAudit by lazy {dev.bautista.spotlight.ai.ToolAudit(this)}
+    val preferences by lazy { Preferences(this) }
+    val local by lazy { dev.bautista.spotlight.data.LocalStore(preferences, scope) }
+    val index by lazy { dev.bautista.spotlight.index.FileIndex(this) }
+    val online by lazy { dev.bautista.spotlight.search.OnlineTools() }
+    val search by lazy { SearchEngine(this, preferences, local, index) }
+}
