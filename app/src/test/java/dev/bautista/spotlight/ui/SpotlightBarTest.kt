@@ -29,7 +29,9 @@ class SpotlightBarTest {
         }
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
         ui.runOnIdle { assertTrue(opened) }
-        ui.onNodeWithTag("spotlight-bar").assertHeightIsAtMost(160.dp)
+        val height=ui.onNodeWithTag("spotlight-bar").fetchSemanticsNode().boundsInRoot.height
+        val density=org.robolectric.RuntimeEnvironment.getApplication().resources.displayMetrics.density
+        assertTrue("Options must fit above the keyboard",height<=160*density+1f)
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
         ui.runOnIdle { assertFalse(opened) }
     }
