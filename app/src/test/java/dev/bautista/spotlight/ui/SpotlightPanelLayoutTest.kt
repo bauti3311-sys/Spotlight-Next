@@ -76,6 +76,8 @@ class SpotlightPanelLayoutTest {
         ui.waitForIdle()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        // Search runs asynchronously; popup/resize animations used to hide this race.
+        ui.waitUntil(15000) { ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty() }
         ui.onNodeWithText("Crear una nota").assertExists();ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
