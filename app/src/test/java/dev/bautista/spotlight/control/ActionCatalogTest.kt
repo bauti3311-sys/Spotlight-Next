@@ -57,7 +57,8 @@ class ActionCatalogTest {
             assertTrue(rows.none{it.action is Action.ComposeMessage});assertFalse(scanned)
             assertTrue(rows.none{it.category=="Archivos"})
             val volume=engine.search("volumen 150",dev.bautista.spotlight.data.Config()).first()
-            assertEquals("volume:100",(volume.single().action as Action.Device).command)
+            assertTrue(volume.single().action is Action.RestoreQuery)
+            assertTrue(volume.single().title.contains("entre 0 y 100"))
         } finally {taskScope.cancel()}
     }
     @Test fun naturalSettingsAndGoogleArePreparedWithoutManualLinks() {

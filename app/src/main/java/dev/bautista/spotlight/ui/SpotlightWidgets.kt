@@ -100,10 +100,14 @@ fun ResultRow(
                 result.subtitle,
                 color = ink.copy(alpha = .65f),
                 fontSize = (11*LocalAppearance.current.textScale).sp,
-                maxLines = 1,
+                maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
+        if(result.id.startsWith("smart:") || result.id=="intent:local") Text(
+            "Intención", color=colors.primary, style=MaterialTheme.typography.labelSmall,
+            modifier=Modifier.padding(horizontal=6.dp).clip(RoundedCornerShape(6.dp)).background(colors.primary.copy(alpha=.08f)).padding(horizontal=6.dp,vertical=3.dp)
+        )
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         IconButton(onClick = onDetails, modifier = Modifier.size(48.dp)) {
             Icon(

@@ -79,10 +79,46 @@ class SearchEngine(
             }
             send(scoped);return@channelFlow
         }
+        ActionCatalog.settings(input)?.let {send(listOf(Result("settings:natural",input.trim(),"Abrir panel de Android","Comandos",2400,Action.Launch(it))));return@channelFlow}
+        // Intent suggestions stay in the same result list; no remote work while typing.
+        UniversalIntent.recognize(query)?.let { intent ->
+            when (intent) {
+                is UniversalIntent.OpenApp -> search(intent.name,c,SearchScope("","apps")).collect { apps ->
+                    val rows = apps.map { it.copy(subtitle="Acción local · abrir aplicación instalada", score=it.score+2000) }
+                    val fallback = instant(intent.name,c).filter { it.id=="web" }.map { if(rows.isEmpty()) it.copy(subtitle="Aplicación no encontrada · buscar en la web") else it }
+                    send(ResultRanker.rank(intent.name,rows+fallback,c))
+                }
+                is UniversalIntent.Photos -> {
+                    if (!c.files || (!index.broadAllowed() && c.trees.isEmpty())) {
+                        send(listOf(Result("smart:photos:access","Activar búsqueda de fotos","Requiere acceso a archivos o una carpeta autorizada","Archivos",2500,Action.Access("files",input))))
+                    } else {
+                        try {
+                            index.ensure(c)
+                            val rows=index.search(intent.query,c)
+                            send(ResultRanker.rank(intent.query,rows,c).ifEmpty { listOf(Result("smart:photos:empty","No hay fotos coincidentes en el índice","Se buscan nombres y contenido indexado; el análisis visual es opcional","Archivos",100,Action.RestoreQuery(input))) })
+                        } catch(e:CancellationException) { throw e } catch(e:Exception) {
+                            send(listOf(Result("smart:photos:error","No se pudo leer el índice de fotos","Revisá el acceso a archivos y reintentá", "Archivos",100,Action.Access("files",input))))
+                        }
+                    }
+                }
+                is UniversalIntent.Information -> search(intent.query,c).collect { rows ->
+                    val web=instant(intent.query,c).filter { it.id=="web" }.map { it.copy(id="smart:web",score=2000,subtitle="Buscar en la web · requiere conexión") }
+                    val ai=Result("smart:ai","Consultar con IA", "Solo al seleccionar · configuración y consentimiento existentes", "IA",1500,Action.Ask(intent.query,true))
+                    send(ResultRanker.ordered(ResultRanker.rank(intent.query,web+ai,c)+rows.filterNot { it.id=="web" }))
+                }
+                is UniversalIntent.Volume -> send(listOf(Result("smart:volume:${intent.percent}","Volumen al ${intent.percent}%","Acción local · volumen multimedia", "Acciones",2600,Action.Device("volume:${intent.percent}"))))
+                is UniversalIntent.InvalidLevel -> send(listOf(Result("smart:invalid","Usá un porcentaje entre 0 y 100","El ${intent.device} no se modifica con este valor", "Información",2600,Action.RestoreQuery(input))))
+            }
+            return@channelFlow
+        }
         dev.bautista.spotlight.next.IntentRouter.route(input,c.messageApp)?.let { action ->
             if(action is Action.Navigate && action.scope.section=="files") {
                 search(action.scope.topic,c,action.scope.copy(topic="")).collect{send(it)}
-            } else send(listOf(Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,action),"Acción local · abrir para revisar","Comandos",2600,action)))
+            } else send(listOf(Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,action),when(action) {
+                is Action.ComposeMessage -> "Revisar destinatario · requiere app compatible y número; contactos opcionales"
+                is Action.SystemPanel -> if(action.page=="display-review") "Requiere Shizuku conectado y autorizado · confirmar cambio" else "Acción local · abrir para revisar"
+                else -> "Acción local · abrir para revisar"
+            },"Comandos",2600,action)))
             return@channelFlow
         }
         Regex("^(?:ver|consultar|mostrar) (?:detalles|permisos|componentes)(?: disponibles)?(?: de)? (.+)$").matchEntire(normalize(query))?.let { match ->
@@ -104,7 +140,6 @@ class SearchEngine(
         NaturalIntents.callName(query)?.let{send(NaturalIntents.calls(context,it));return@channelFlow}
         NaturalIntents.event(query)?.let{send(listOf(Result("event:natural","Crear evento","Revisar en Calendario","Acciones",2400,Action.Launch(it))));return@channelFlow}
         ActionCatalog.message(query,c.messageApp)?.let { it ->send(listOf(Result("message:compose","Enviar mensaje a ${it.target}","Completar y elegir destinatario","Acciones",2400,it)));return@channelFlow}
-        ActionCatalog.settings(input)?.let {send(listOf(Result("settings:natural",input.trim(),"Abrir panel de Android","Comandos",2400,Action.Launch(it))));return@channelFlow}
         Regex("^(youtube|spotify|sofascore|google|mapas|chrome) (.+)$",RegexOption.IGNORE_CASE).matchEntire(query)?.let { match ->
             val topic=normalize(match.groupValues[1]);val term=match.groupValues[2]
             val pkg=ActionCatalog.packages[topic].orEmpty()
@@ -114,15 +149,6 @@ class SearchEngine(
             return@channelFlow
         }
         val known=ActionCatalog.topic(query)
-        if(known!=null){send(integrations.menu(known,ActionCatalog.packages[known]?.let{context.packageManager.getLaunchIntentForPackage(it)},ActionCatalog.packages[known]));return@channelFlow}
-        Regex("^(?:abrir|iniciar) (.+)$",RegexOption.IGNORE_CASE).matchEntire(query)?.let { match ->
-            val name=normalize(match.groupValues[1])
-            val matches=appList().filter { normalize(it.label)==name || normalize(it.label).startsWith(name) }
-            send(matches.map { Result(it.id,it.label,"Abrir aplicación instalada","Aplicaciones",2400,Action.Launch(it.intent),runCatching { context.packageManager.getActivityIcon(it.intent) }.getOrNull()) }.ifEmpty { listOf(Result("app:missing","Aplicación no instalada","Buscar «${match.groupValues[1]}» en la web","Web",100,Action.Launch(Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com/search?q="+Uri.encode(match.groupValues[1])))))) })
-            return@channelFlow
-        }
-        if(query.isNotBlank())appList().firstOrNull{normalize(it.label)==normalize(query)}?.let{send(integrations.menu(it.label,it.intent,it.intent.component?.packageName));return@channelFlow}
-        Regex("^(?:poner )?volumen(?: al)? (\\d{1,3})%?$",RegexOption.IGNORE_CASE).matchEntire(query)?.let{val level=it.groupValues[1].toInt().coerceIn(0,100);send(listOf(Result("volume:$level","Volumen al $level%","Multimedia","Acciones",2400,Action.Device("volume:$level"))));return@channelFlow}
         val groups = mutableMapOf<String, List<Result>>()
         val lock = kotlinx.coroutines.sync.Mutex()
         suspend fun publish(key: String, items: List<Result>) {
@@ -134,7 +160,14 @@ class SearchEngine(
                 lock.unlock()
             }
         }
-        launch(Dispatchers.Default) { publish("instant", instant(query, c) + dev.bautista.spotlight.next.NativeCatalog.results(query,context) + dev.bautista.spotlight.personal.PersonalCommands.results(query,c) + dev.bautista.spotlight.automation.Workflows.results(query,c.routines,c.favorites)) }
+        if(known!=null) launch(Dispatchers.IO) { publish("integration",integrations.menu(known,ActionCatalog.packages[known]?.let{context.packageManager.getLaunchIntentForPackage(it)},ActionCatalog.packages[known])) }
+        launch(Dispatchers.Default) {
+            // A known integration already supplies its command menu. Avoid repeating
+            // those actions from the generic command providers.
+            val instantRows=if(known!=null) instant(query,c).filter { it.id=="web" } else
+                instant(query,c) + dev.bautista.spotlight.next.NativeCatalog.results(query,context) + dev.bautista.spotlight.personal.PersonalCommands.results(query,c) + dev.bautista.spotlight.automation.Workflows.results(query,c.routines,c.favorites)
+            publish("instant",instantRows)
+        }
         launch(Dispatchers.Default) {
             val needle = normalize(query.trim().removePrefix("notas "))
             val parsed = SearchQuery.parse(query)
@@ -181,6 +214,9 @@ class SearchEngine(
                 )
         }
         launch(Dispatchers.IO) {
+            appList().firstOrNull { normalize(it.label)==normalize(query) }?.let {
+                publish("app-actions", integrations.menu(it.label,it.intent,it.intent.component?.packageName))
+            }
             publish(
                 "apps",
                 appList()
@@ -217,7 +253,7 @@ class SearchEngine(
         }
         if (c.contacts && query.length >= 2)
             launch(Dispatchers.IO) { publish("contacts", contacts(query)) }
-        if (c.files)
+        if (c.files && known==null)
             launch(Dispatchers.IO) {
                 try {
                     index.ensure(c)

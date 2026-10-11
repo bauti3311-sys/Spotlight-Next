@@ -29,7 +29,9 @@ class RenewalInteractionTest {
         ui.setContent { SpotlightPanel(app,AppConfig(files=false,animations=false,theme="dark",appearance="raycast",accent="purple"),{},initialQuery="sonido",availableHeightDp=640f) }
         ui.waitUntil(15000) { ui.onAllNodesWithText("Ver más",substring=true).fetchSemanticsNodes().isNotEmpty() }
         ui.onNodeWithText("Ver más",substring=true).performClick()
-        ui.waitUntil(15000) { ui.onAllNodesWithText("Silenciar").fetchSemanticsNodes().isNotEmpty() }
+        ui.waitUntil(15000) { ui.onAllNodesWithText("Activar sonido").fetchSemanticsNodes().isNotEmpty() }
+        ui.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Silenciar"))
+        ui.onNodeWithText("Silenciar").assertExists()
         ui.onNodeWithText("Volver").performClick()
         ui.onNodeWithText("sonido").assertExists()
         ui.waitUntil(15000) { ui.onAllNodesWithText("Ver más",substring=true).fetchSemanticsNodes().isNotEmpty() }
