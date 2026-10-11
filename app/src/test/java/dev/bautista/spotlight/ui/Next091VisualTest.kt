@@ -41,15 +41,15 @@ class Next091VisualTest {
     }
     @Test fun filesCommandsAndAiModesKeepCleanQueriesAndHaveFreshCaptures(){
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},availableHeightDp=700f)}
-        ui.onNodeWithContentDescription("Archivos · Ctrl/⌘+2").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Documentos PDF").fetchSemanticsNodes().isNotEmpty()};capture("files-tablet")
-        ui.onNodeWithContentDescription("Comandos · Ctrl/⌘+3").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Crear nota").fetchSemanticsNodes().isNotEmpty()};capture("commands-tablet")
-        ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Preguntá o pegá un texto en la barra").fetchSemanticsNodes().isNotEmpty()};capture("ai-setup-tablet")
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Archivos · Ctrl/⌘+2").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Documentos PDF").fetchSemanticsNodes().isNotEmpty()};capture("files-tablet")
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Comandos · Ctrl/⌘+3").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Crear nota").fetchSemanticsNodes().isNotEmpty()};capture("commands-tablet")
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Preguntá o pegá un texto en la barra").fetchSemanticsNodes().isNotEmpty()};capture("ai-setup-tablet")
     }
     @Test fun applicationsGridContainsInstalledFixtureApps(){
         val launcher=Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
         repeat(9){i->val info=ActivityInfo().apply{packageName="fixture.next$i";name="fixture.next$i.Main";nonLocalizedLabel="Aplicación ${'A'+i}";applicationInfo=ApplicationInfo().apply{packageName="fixture.next$i"}};Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})}
         app.search.invalidateApps();ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},availableHeightDp=700f)}
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Aplicación A").fetchSemanticsNodes().isNotEmpty()};capture("apps-tablet")
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Aplicación A").fetchSemanticsNodes().isNotEmpty()};capture("apps-tablet")
     }
     @OptIn(ExperimentalTestApi::class)
     @Test fun contextualActionsAndWebQuickLookHaveFreshCaptures(){
@@ -68,7 +68,7 @@ class Next091VisualTest {
             ui.onNodeWithText("Responder").performClick();ui.onNodeWithText("¿A qué hora nos encontramos?").assertExists();ui.onNodeWithText("Mensaje").performTextInput("A las 18.");capture("whatsapp-reply-tablet")
         }finally{Replies.clear()}
     }
-    @Test @Config(qualifiers="w360dp-h800dp") fun phoneHomeHasTouchSizedModes(){ui.setContent{SpotlightPanel(app,AppearancePresets.apply("iOS Light",AppConfig(files=false,animations=false)),{},availableHeightDp=700f)};ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").assertIsDisplayed();capture("home-phone")}
+    @Test @Config(qualifiers="w360dp-h800dp") fun phoneHomeHasTouchSizedModes(){ui.setContent{SpotlightPanel(app,AppearancePresets.apply("iOS Light",AppConfig(files=false,animations=false)),{},availableHeightDp=700f)};ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").assertIsDisplayed();capture("home-phone")}
     @Test @Config(qualifiers="w915dp-h412dp") fun landscapeFitsAvailableHeight(){ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},"25 * 8",360f)};ui.waitUntil(15000){ui.onAllNodesWithText("200",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()};assertTrue(ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot.height<=360*app.resources.displayMetrics.density);capture("landscape-phone")}
     @OptIn(ExperimentalTestApi::class)
     @Test fun actionFilterSupportsArrowSelectionAndEnter(){var result="";val focus=FocusRequester();ui.setContent{SpotlightTheme{Column(Modifier.width(420.dp)){ActionPanelView(listOf(ContextAction("Abrir","Principal",CommandIcons.Apps,{result="open"}),ContextAction("Copiar","Texto",CommandIcons.ContentCopy,{result="copy"})),focus)}}};ui.onNode(hasSetTextAction()).performClick();ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.DirectionDown)};ui.waitForIdle();ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)};ui.runOnIdle{assertEquals("copy",result)}}

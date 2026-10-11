@@ -38,32 +38,13 @@ fun SpotlightBar(
     onAcceptSuggestion: () -> Unit = {},
     animations: Boolean = true,
     onDictate:(()->Unit)?=null,
+    onDismiss:(()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
-    val style = LocalAppearance.current.appearance
-    val barShape = androidx.compose.foundation.shape.RoundedCornerShape(LocalAppearance.current.corner.dp)
-    val modeShape=if(LocalAppearance.current.preset in setOf("raycast","graphite","ios")) androidx.compose.foundation.shape.RoundedCornerShape(15.dp) else CircleShape
-    val motion=animations && LocalMotion.current
-    val circle = 48.dp
-    val gap = if (compact) 6.dp else 10.dp
-    val phone=compact && LocalAppearance.current.adaptive
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
         Row(
             fieldModifier
                 .height(60.dp)
-                .shadow(if(LocalAppearance.current.preset=="graphite")1.dp else if(LocalAppearance.current.preset=="macos")8.dp else 4.dp, barShape)
-                .clip(barShape)
-                .background(
-                    Brush.horizontalGradient(
-                        listOf(
-                            colors.surface.copy(alpha = opacity),
-                            if(!LocalAppearance.current.blur) colors.surface.copy(alpha=opacity) else if (colors.background.luminance() > .5f)
-                                Color(0xFFF1F7FA).copy(alpha = opacity)
-                            else Color(0xFF252A35).copy(alpha = opacity),
-                        )
-                    )
-                )
-                .border(1.dp, Color.White.copy(alpha = if(colors.background.luminance()>.5f) .80f else .17f), barShape)
                 .padding(horizontal = 18.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -124,42 +105,26 @@ fun SpotlightBar(
                 }
         }
     }
-    val categoryButtons:@Composable ()->Unit = {
-        listOf("Apps", "Archivos", "Acciones", "IA").forEachIndexed { i, item ->
-            val interaction=remember(item){MutableInteractionSource()}
-            val hovered by interaction.collectIsHoveredAsState()
-            val focused by interaction.collectIsFocusedAsState()
-            val selectedCategory = category == item
-            val label=when(i){0->"Apps";1->"Archivos";2->"Comandos";else->"IA"}
-            val categoryBackground by animateColorAsState(if(selectedCategory) colors.primary.copy(alpha=.15f) else if(hovered || focused)colors.primary.copy(alpha=.09f) else colors.surface.copy(alpha=opacity),tween(if(motion)140 else 0),label="category-color")
-            val categoryScale by animateFloatAsState(if(selectedCategory)1.025f else 1f,tween(if(motion)140 else 0),label="category-scale")
-            val tint =
-                if (selectedCategory) colors.primary
-                else if (colors.background.luminance() > .5f) Color(0xFF667083)
-                else Color(0xFFBCC8E0)
-            Box(
-                Modifier.size(circle).graphicsLayer {scaleX=categoryScale;scaleY=categoryScale}
-                    .shadow(if(LocalAppearance.current.preset=="graphite")0.dp else 3.dp, modeShape)
-                    .clip(modeShape)
-                    .background(categoryBackground)
-                    .border(1.dp, Color.White.copy(alpha = if(colors.background.luminance()>.5f) .80f else .17f), modeShape)
-                    .semantics {selected=selectedCategory;stateDescription=if(selectedCategory)"Modo activo" else "Abrir modo"}
-                    .hoverable(interaction)
-                    .clickable(interactionSource=interaction,indication=LocalIndication.current) { onCategoryChange(if (selectedCategory) "Todo" else item) },
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    when(i) {0->CommandIcons.Apps;1->CommandIcons.Folder;2->CommandIcons.Bolt;else->CommandIcons.AutoAwesome},
-                    (when(i){0->"Aplicaciones";2->"Comandos";else->item})+" · Ctrl/⌘+${i+1}", Modifier.size(if(hovered || focused)21.dp else 23.dp).then(if(hovered || focused)Modifier.offset(y=(-5).dp) else Modifier), tint=tint,
-                )
-                if(hovered || focused)Text(label,Modifier.align(Alignment.BottomCenter).padding(bottom=5.dp),fontSize=8.sp,color=tint,maxLines=1)
+    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+        searchField(Modifier.weight(1f))
+        var options by remember { mutableStateOf(false) }
+        Box {
+            IconButton(onClick={options=true},modifier=Modifier.size(48.dp)) {
+                Icon(CommandIcons.Sliders,"Opciones de búsqueda",Modifier.size(20.dp))
+            }
+            DropdownMenu(expanded=options,onDismissRequest={options=false}) {
+                listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
+                    val label=when(item){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->item}
+                    DropdownMenuItem(text={Text(label)},modifier=Modifier.semantics {
+                        contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl/⌘+$i"
+                        selected=category==item
+                    },onClick={options=false;onCategoryChange(if(category==item)"Todo" else item)})
+                }
+                onDismiss?.let { dismiss ->
+                    HorizontalDivider()
+                    DropdownMenuItem(text={Text("Cerrar Spotlight")},modifier=Modifier.semantics{contentDescription="Cerrar Spotlight"},onClick={options=false;dismiss()})
+                }
             }
         }
-    }
-    if(phone) Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-        searchField(Modifier.fillMaxWidth())
-        Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp,Alignment.End),verticalAlignment=Alignment.CenterVertically){categoryButtons()}
-    } else Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(gap)){
-        searchField(Modifier.weight(1f));categoryButtons()
     }
 }

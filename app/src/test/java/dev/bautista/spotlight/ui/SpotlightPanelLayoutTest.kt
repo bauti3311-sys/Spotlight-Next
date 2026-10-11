@@ -42,7 +42,7 @@ class SpotlightPanelLayoutTest {
         ui.setContent {
             SpotlightPanel(app, AppConfig(files = false), {}, availableHeightDp = viewport)
         }
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
         ui.waitUntil(15000) {
             ui.onAllNodesWithText("Fixture 2").fetchSemanticsNodes().isNotEmpty()
         }
@@ -75,9 +75,9 @@ class SpotlightPanelLayoutTest {
         ui.runOnIdle { viewport = 280f }
         ui.waitForIdle()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
-        ui.onNodeWithText("SUGERENCIAS").assertExists()
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        ui.onNodeWithText("Crear una nota").assertExists();ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
     }
 

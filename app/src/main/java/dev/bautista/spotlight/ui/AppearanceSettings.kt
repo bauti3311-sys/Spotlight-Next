@@ -17,6 +17,9 @@ import kotlinx.coroutines.*
     Text("Diseños preparados",style=MaterialTheme.typography.labelLarge)
     Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){AppearancePresets.names.forEach{name->AssistChip(onClick={update(AppearancePresets.apply(name,config))},label={Text(name)})}}
     Surface(shape=androidx.compose.foundation.shape.RoundedCornerShape(config.corner.dp),color=MaterialTheme.colorScheme.surfaceVariant){Column(Modifier.fillMaxWidth().padding(16.dp)){Text("Buscar en Spotlight",style=MaterialTheme.typography.titleMedium);HorizontalDivider(Modifier.padding(vertical=10.dp));Text("Aplicaciones y acciones",color=MaterialTheme.colorScheme.primary);Text("Vista previa del diseño",style=MaterialTheme.typography.bodySmall)}}
+    var advanced by remember {mutableStateOf(false)}
+    TextButton(onClick={advanced=!advanced}){Text(if(advanced)"Ocultar opciones avanzadas" else "Opciones avanzadas")}
+    if(advanced) Column(verticalArrangement=Arrangement.spacedBy(8.dp)) {
     Text("Estilo", style=MaterialTheme.typography.labelLarge)
     Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
         listOf("spotlight" to "Spotlight", "raycast" to "Raycast").forEach { (id, label) ->
@@ -41,7 +44,8 @@ import kotlinx.coroutines.*
     Text("Altura máxima · ${config.maxHeight} dp");Slider(config.maxHeight.toFloat(),{update(config.copy(maxHeight=it.toInt()))},valueRange=320f..640f)
     Row{Text("Adaptar a teléfono y tablet",Modifier.weight(1f));Switch(config.adaptive,{update(config.copy(adaptive=it))})}
     Row { Text("Material translúcido",Modifier.weight(1f));Switch(config.blur,{update(config.copy(blur=it))}) }
-    Text("La superposición usa un material translúcido. El desenfoque de pantalla se reemplaza por un degradado suave para evitar un rectángulo detrás de la barra.",style=MaterialTheme.typography.bodySmall)
+    Text("Hybrid usa una superficie opaca para mantener el contraste. Los diseños anteriores conservan el control de material; la superficie mantiene al menos 97 % de opacidad. No se usa desenfoque de pantalla.",style=MaterialTheme.typography.bodySmall)
+    }
 }
 
 @Composable fun IntegrationSettings(config: Config, update: (Config) -> Unit) {

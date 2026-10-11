@@ -1,7 +1,8 @@
-# Spotlight Next 1.0
+# Spotlight Next 1.3.0 · Hybrid Intelligence
 
 Centro de comandos nativo Kotlin/Jetpack Compose para Android 8 o superior. Conserva las funcionalidades previas y los datos compatibles. Diseño Spotlight/macOS/iOS, organización de acciones inspirada en Raycast y release optimizado ARM64 para Samsung Galaxy Tab A9+ y teléfonos compatibles.
 
+- [Novedades 1.3.0, consultas reconocidas y APK actualizable](docs/hybrid-intelligence-1.3.md)
 - [Funciones, límites y recuperación](docs/v1.0/ENTREGA.md)
 - [Verificación final](docs/VALIDACION.md)
 - [Límites reales](docs/PENDIENTES.md)

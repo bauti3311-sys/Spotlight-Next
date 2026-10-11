@@ -21,8 +21,15 @@ object ResultSections {
         item.category in setOf("Acciones", "Comandos") -> "Acciones y comandos"
         else -> item.category
     }
-    fun grouped(items: List<Result>, limit: Int = 3, expanded: Boolean = false, query:String=""): List<Result> =
-        items.groupBy(::category).entries.sortedWith(
+    fun grouped(items: List<Result>, limit: Int = 3, expanded: Boolean = false, query:String=""): List<Result> {
+        if(query.isNotBlank()) {
+            val ranked=ResultRanker.ordered(items)
+            if(expanded)return ranked
+            val counts=mutableMapOf<String,Int>()
+            val visible=ranked.filter { item ->val name=category(item);val count=(counts[name] ?: 0)+1;counts[name]=count;count<=limit }
+            return visible+counts.filterValues{it>limit}.map { (name,count)->Result("section:$name","Ver más · ${count-limit}",name,name,0,Action.Navigate(dev.bautista.spotlight.control.SearchScope(name,"results"))) }
+        }
+        return items.groupBy(::category).entries.sortedWith(
             compareByDescending<Map.Entry<String,List<Result>>> { entry ->
                 if(query.isBlank()) 0 else entry.value.maxOfOrNull { it.score } ?: 0
             }.thenBy { entry -> (ResultRanker.priority(query)+order).distinct().indexOf(entry.key).let { n -> if(n<0) order.size else n } }
@@ -33,4 +40,5 @@ object ResultSections {
                 Action.Navigate(dev.bautista.spotlight.control.SearchScope(name, "results"))
             )
         }
+    }
 }

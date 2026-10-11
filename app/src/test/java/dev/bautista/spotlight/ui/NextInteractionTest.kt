@@ -48,7 +48,7 @@ class NextInteractionTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent{SpotlightPanel(app,AppearancePresets.apply("iOS Light",AppConfig(files=false,animations=false)),{},"25 * 8",640f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("200",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertIsDisplayed()
         ui.onNodeWithText("25 * 8").assertIsDisplayed()
         capture("spotlight-next-phone-ios")
     }

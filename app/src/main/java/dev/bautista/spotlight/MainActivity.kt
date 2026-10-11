@@ -744,8 +744,9 @@ class MainActivity : ComponentActivity() {
                             }
                             }
                             Spacer(Modifier.height(16.dp))
+                            val installedVersion=remember { runCatching { packageManager.getPackageInfo(packageName,0).versionName }.getOrNull().orEmpty() }
                             Text(
-                                "Spotlight Next 1.0 · Centro de comandos",
+                                "Spotlight Next $installedVersion · Centro de comandos",
                                 fontSize = 12.sp,
                                 color = colors.onSurfaceVariant,
                             )
