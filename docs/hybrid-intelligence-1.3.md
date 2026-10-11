@@ -55,3 +55,5 @@ Capturas nativas de Compose generadas por Robolectric; no son capturas de un dis
 ![Plan revisable con brillo bloqueado y volumen disponible](hybrid-1.3-captures/revision-plan.png)
 
 ![Acciones en una ventana de teléfono](hybrid-1.3-captures/acciones-telefono.png)
+
+El rótulo de versión en Ajustes también lee el paquete instalado, reemplazando el texto fijo «1.0». Esta corrección final de presentación se verificó con `compileDebugKotlin` y `compileReleaseKotlin`; ambas compilaciones pasaron después de la verificación completa anterior.
