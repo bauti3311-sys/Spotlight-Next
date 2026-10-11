@@ -1,0 +1,53 @@
+name: Build Debug APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-apk-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  debug:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install required Android packages
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
+      - name: Set up Gradle and dependency cache
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build Debug APK
+        run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --stacktrace --console=plain
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotlight-next-1.1.0-debug-${{ github.run_number }}
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Unit tests and Android lint
+        run: bash gradlew :app:testDebugUnitTest :app:lintDebug --no-daemon --max-workers=2 --stacktrace --console=plain
+      - name: Backend local tests
+        run: python3 -m unittest discover -s backend -p 'test_*.py'
+      - name: Explain failed checks
+        if: failure()
+        run: |
+          echo '::error::La compilación o una verificación falló. Abrí el paso marcado en rojo para ver el error y su stacktrace.'
+          echo '### Verificación fallida' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Revisá el paso marcado en rojo. El APK solo se publica si assembleDebug termina correctamente; las pruebas o lint pueden fallar después.' >> "$GITHUB_STEP_SUMMARY"
