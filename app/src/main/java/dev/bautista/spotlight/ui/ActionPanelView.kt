@@ -42,7 +42,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
                 val bring=remember(action.title){BringIntoViewRequester()}
                 LaunchedEffect(selected,filterFocused){if(!filterFocused && selected==i)bring.bringIntoView()}
                 Surface(color=if(!filterFocused && i==selected)MaterialTheme.colorScheme.primary.copy(alpha=.12f) else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
-                    TextButton(onClick=action.perform,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.bringIntoViewRequester(bring)){
+                    TextButton(onClick=action.perform,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).focusProperties{canFocus=true}.focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.bringIntoViewRequester(bring)){
                         Icon(action.icon,null,Modifier.size(19.dp));Spacer(Modifier.width(12.dp));Column(Modifier.weight(1f)){Text(action.title,modifier=Modifier.fillMaxWidth());Text(action.description,modifier=Modifier.fillMaxWidth(),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}
                         val key=action.shortcut.ifBlank{if(all.firstOrNull()==action)"Enter" else ""};if(key.isNotBlank())Text(key,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                     }
