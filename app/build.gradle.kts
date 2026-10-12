@@ -1,6 +1,8 @@
 import java.util.Properties
+
+import java.util.Properties
 plugins { id("com.android.application"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose") }
-val releaseIdentity = java.util.Properties().apply {
+val releaseIdentity = Properties().apply {
     rootProject.file("release.properties").inputStream().use { load(it) }
 }
 
