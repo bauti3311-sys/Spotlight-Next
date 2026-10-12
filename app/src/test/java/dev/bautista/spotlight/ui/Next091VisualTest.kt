@@ -41,7 +41,7 @@ class Next091VisualTest {
     }
     @Test fun filesCommandsAndAiModesKeepCleanQueriesAndHaveFreshCaptures(){
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},availableHeightDp=700f)}
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Archivos · Ctrl/⌘+2").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Documentos PDF").fetchSemanticsNodes().isNotEmpty()};capture("files-tablet")
+        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Archivos · Ctrl/⌘+2").performClick();try { ui.waitUntil(15000){ui.onAllNodesWithText("Documentos PDF").fetchSemanticsNodes().isNotEmpty()} } catch (failure: androidx.compose.ui.test.ComposeTimeoutException) { println(ui.onRoot().printToString()); throw failure };capture("files-tablet")
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Comandos · Ctrl/⌘+3").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Crear nota").fetchSemanticsNodes().isNotEmpty()};capture("commands-tablet")
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Preguntá o pegá un texto en la barra").fetchSemanticsNodes().isNotEmpty()};capture("ai-setup-tablet")
     }
