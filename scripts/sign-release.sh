@@ -5,8 +5,10 @@ set +x
 for name in ANDROID_KEYSTORE_BASE64 ANDROID_STORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
   if [[ -z "${!name:-}" ]]; then echo "Missing required signing input: $name" >&2; exit 1; fi
 done
-# Installed 1.3.1 baseline; historical certificate unchanged.
-installed_version_code=26
+# Public identity is shared with Gradle; historical certificate unchanged.
+installed_version_code=$(python3 scripts/release_identity.py installed)
+release_code=$(python3 scripts/release_identity.py code)
+release_name=$(python3 scripts/release_identity.py name)
 umask 077
 scratch=$(mktemp -d "${RUNNER_TEMP:?}/spotlight-signing.XXXXXX")
 trap 'rm -rf "$scratch"' EXIT
@@ -24,7 +26,7 @@ unset ANDROID_STORE_PASSWORD ANDROID_KEY_PASSWORD ANDROID_KEY_ALIAS
 "$build_tools/apksigner" verify --verbose --print-certs "$scratch/release.apk" > "$scratch/verification.txt"
 "$build_tools/zipalign" -c -p 4 "$scratch/release.apk"
 "$build_tools/aapt" dump badging "$scratch/release.apk" > "$scratch/badging.txt"
-python3 scripts/verify_release.py "$scratch/badging.txt" "$installed_version_code" "$scratch/verification.txt" 27 2.0.0 > "$scratch/update-verification.txt"
+python3 scripts/verify_release.py "$scratch/badging.txt" "$installed_version_code" "$scratch/verification.txt" "$release_code" "$release_name" > "$scratch/update-verification.txt"
 mkdir -p app/build/outputs/verified-release
 cp "$scratch/release.apk" app/build/outputs/verified-release/spotlight-next-release.apk
 cp "$scratch/update-verification.txt" app/build/outputs/verified-release/update-verification.txt

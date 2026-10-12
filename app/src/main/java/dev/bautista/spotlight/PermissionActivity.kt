@@ -25,7 +25,7 @@ class PermissionActivity:ComponentActivity() {
     override fun onCreate(state:Bundle?) {
         super.onCreate(state)
         if(state!=null)return
-        val permissions=when(intent.getStringExtra("access")){"calendar"->listOf(Manifest.permission.READ_CALENDAR);"contacts"->listOf(Manifest.permission.READ_CONTACTS);else->listOf(Manifest.permission.READ_CONTACTS,Manifest.permission.READ_CALENDAR)+if(Build.VERSION.SDK_INT>=33)listOf(Manifest.permission.POST_NOTIFICATIONS) else emptyList()}
+        val permissions=when(intent.getStringExtra("access")){"calendar"->listOf(Manifest.permission.READ_CALENDAR);"calendar_write"->listOf(Manifest.permission.READ_CALENDAR,Manifest.permission.WRITE_CALENDAR);"location"->listOf(Manifest.permission.ACCESS_COARSE_LOCATION);"contacts"->listOf(Manifest.permission.READ_CONTACTS);else->listOf(Manifest.permission.READ_CONTACTS,Manifest.permission.READ_CALENDAR)+if(Build.VERSION.SDK_INT>=33)listOf(Manifest.permission.POST_NOTIFICATIONS) else emptyList()}
         ask.launch(permissions.toTypedArray())
     }
 }

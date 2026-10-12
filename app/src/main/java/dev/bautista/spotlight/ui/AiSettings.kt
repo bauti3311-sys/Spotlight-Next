@@ -23,6 +23,8 @@ import kotlinx.coroutines.*
     }
     if(config.aiProvider!="backend") {
         OutlinedTextField(key,{key=it},label={Text(if(vault.contains(config.aiProvider))"Reemplazar API key guardada" else "API key")},visualTransformation=PasswordVisualTransformation(),singleLine=true,modifier=Modifier.fillMaxWidth())
+        Row(Modifier.fillMaxWidth()) { Text("Responder preguntas con Enter",Modifier.weight(1f));Switch(config.aiRootConsent,{update(config.copy(aiRootConsent=it))}) }
+        Text("Si lo habilitás, Enter envía preguntas al proveedor configurado. Archivos y contexto personal siempre requieren revisión.",style=MaterialTheme.typography.bodySmall)
         OutlinedTextField(model,{model=it},label={Text("Modelo")},singleLine=true,modifier=Modifier.fillMaxWidth())
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             Button(enabled=!busy,onClick={busy=true;job=scope.launch{try{require(model.matches(Regex("[A-Za-z0-9._-]{1,100}"))){"Modelo inválido"};if(key.isNotBlank())withContext(Dispatchers.IO){vault.save(config.aiProvider,key)};update(config.copy(aiModel=model));key="";status="Configuración guardada"}catch(e:Exception){status="No se pudo guardar: ${e.message}"}finally{busy=false}}}){Text("Guardar")}

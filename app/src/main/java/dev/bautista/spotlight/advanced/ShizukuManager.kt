@@ -20,7 +20,10 @@ class ShizukuManager(private val context:Context) {
     private val received=Shizuku.OnBinderReceivedListener { refresh() }
     private val dead=Shizuku.OnBinderDeadListener { refresh() }
     private val permission=Shizuku.OnRequestPermissionResultListener { code,_ -> if(code==REQUEST)refresh() }
-    fun start(){
+    @Volatile private var started=false
+    @Synchronized fun start(){
+        if(started)return
+        started=true
         Shizuku.addBinderReceivedListenerSticky(received,handler)
         Shizuku.addBinderDeadListener(dead,handler)
         Shizuku.addRequestPermissionResultListener(permission,handler)
@@ -38,6 +41,7 @@ class ShizukuManager(private val context:Context) {
         if(alive && granted)seen=true
     }
     fun requestAuthorization():String? {
+        start()
         if(!runCatching{Shizuku.pingBinder()}.getOrDefault(false)){refresh();return "Iniciá Shizuku antes de solicitar autorización."}
         if(runCatching{Shizuku.isPreV11()}.getOrDefault(true))return "Actualizá Shizuku desde su fuente oficial."
         if(runCatching{Shizuku.shouldShowRequestPermissionRationale()}.getOrDefault(false))return "Permití Spotlight desde Aplicaciones autorizadas en Shizuku."

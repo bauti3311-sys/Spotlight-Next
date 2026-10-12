@@ -43,6 +43,7 @@ fun SpotlightBar(
     optionsMaxHeight:Dp=320.dp,
     optionsOpen:Boolean?=null,
     onSearchFocus:()->Unit={},
+    onSearchFocusChanged:(Boolean)->Unit={},
     quickMenu:(@Composable ()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
@@ -54,7 +55,7 @@ fun SpotlightBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                CommandIcons.Search,
+                HugeIcons.Search,
                 "Buscar",
                 Modifier.size(22.dp),
                 tint = colors.onSurface.copy(alpha = .60f),
@@ -63,7 +64,7 @@ fun SpotlightBar(
             BasicTextField(
                 query,
                 { onQueryChange(it.take(4000)) },
-                Modifier.weight(1f).focusRequester(focus).onFocusChanged{if(it.isFocused)onSearchFocus()},
+                Modifier.weight(1f).focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
                     TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 17.sp else 20.sp),
@@ -97,16 +98,16 @@ fun SpotlightBar(
             )
             if (suggestion != null)
                 Text(
-                    "Tab",
+                    "→",
                     fontSize = 10.sp,
                     color = colors.onSurfaceVariant,
                     modifier =
                         Modifier.clickable(onClick = onAcceptSuggestion).padding(horizontal = 6.dp),
                 )
-            onDictate?.let{dictate->IconButton(onClick=dictate,modifier=Modifier.size(48.dp)){Icon(CommandIcons.Mic,"Dictar consulta",Modifier.size(18.dp))}}
+            onDictate?.let{dictate->IconButton(onClick=dictate,modifier=Modifier.size(48.dp)){Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(18.dp))}}
             if (query.isNotEmpty())
                 IconButton(onClick = { onClear() }, modifier = Modifier.size(48.dp)) {
-                    Icon(CommandIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
+                    Icon(HugeIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
                 }
         }
     }

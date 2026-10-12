@@ -3,7 +3,7 @@ package dev.bautista.spotlight.search
 /** Presentation policy shared by touch and keyboard navigation. Nonempty searches order sections by their best relevance;
  * large provider batches cannot accumulate votes against a precise match. */
 object ResultSections {
-    val order = listOf("Sugerencias", "Mensajes", "Historial", "Fijados", "Recientes", "Aplicaciones", "Sistema", "Acciones y comandos", "Contactos y comunicación", "Ajustes del dispositivo", "Herramientas y conversiones", "Notas", "Fragmentos de texto", "Portapapeles", "Archivos y carpetas", "Búsqueda web", "IA", "Clima", "Deportes en vivo", "Información")
+    val order = listOf("Sugerencias", "Mensajes", "Historial", "Fijados", "Recientes", "Aplicaciones", "Sistema", "Acciones y comandos", "Contactos y comunicación", "Ajustes del dispositivo", "Herramientas y conversiones", "Notas", "Textos frecuentes", "Portapapeles", "Archivos y carpetas", "Búsqueda web", "IA", "Clima", "Deportes en vivo", "Información")
     fun category(item: Result): String = when {
         item.action is Action.Lookup -> when(item.action.type) {
             "weather" -> "Clima"
@@ -17,7 +17,7 @@ object ResultSections {
         item.category == "Web" -> "Búsqueda web"
         item.category in setOf("Calculadora", "Conversión", "Herramientas") -> "Herramientas y conversiones"
         item.category == "Consultas" -> "Fijados"
-        item.id.startsWith("snippet:") -> "Fragmentos de texto"
+        item.id.startsWith("snippet:") -> "Textos frecuentes"
         item.category in setOf("Acciones", "Comandos") -> "Acciones y comandos"
         else -> item.category
     }

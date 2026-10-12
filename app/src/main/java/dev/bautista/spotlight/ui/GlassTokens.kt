@@ -14,6 +14,7 @@ import dev.bautista.spotlight.data.Config
 object GlassTokens {
     val small=8.dp;val gap=12.dp;val inset=18.dp;val hit=48.dp
     const val selectionMs=90
+    fun selectionDuration(c:Config)=when(c.movement){"precise"->55;"liquid_immersive"->125;else->90}
     fun opacity(c:Config)=if(c.preset in setOf("raycast","pure","graphite","hybrid"))1f else c.opacity.coerceIn(.90f,1f)
 }
 @Composable fun Modifier.glassSurface(c:Config):Modifier {

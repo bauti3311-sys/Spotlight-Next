@@ -18,7 +18,7 @@ class NativeProviders(private val context:Context,private val fetcher:(suspend (
     private val client=OkHttpClient.Builder().connectTimeout(10,TimeUnit.SECONDS).readTimeout(15,TimeUnit.SECONDS).callTimeout(20,TimeUnit.SECONDS).build()
     private val mutex=Mutex()
     private suspend fun json(url:HttpUrl):JSONObject=suspendCancellableCoroutine { continuation ->
-        val call=client.newCall(Request.Builder().url(url).header("User-Agent","SpotlightNext/1.1 (personal Android client)").build())
+        val call=client.newCall(Request.Builder().url(url).header("User-Agent","SpotlightNext/Android (personal client)").build())
         continuation.invokeOnCancellation{call.cancel()}
         call.enqueue(object:Callback {
             override fun onFailure(call:Call,e:java.io.IOException){if(continuation.isActive)continuation.resumeWithException(e)}
@@ -39,6 +39,10 @@ class NativeProviders(private val context:Context,private val fetcher:(suspend (
             val place=geo.json.optJSONArray("results")?.optJSONObject(0) ?: error("No se encontró esa localidad.")
             lat=place.getDouble("latitude");lon=place.getDouble("longitude");label=listOf(place.getString("name"),place.optString("admin1"),place.optString("country")).filter{it.isNotBlank()}.distinct().joinToString(", ")
         }
+        return weatherAt(lat,lon,label,refresh)
+    }
+    suspend fun weatherAt(lat:Double,lon:Double,label:String="Ubicación aproximada",refresh:Boolean=false):NativeSnapshot {
+        require(lat.isFinite() && lon.isFinite() && lat in -90.0..90.0 && lon in -180.0..180.0)
         val data=cached("weather:$lat:$lon",15*60_000L,refresh,HttpUrl.Builder().scheme("https").host("api.open-meteo.com").addPathSegments("v1/forecast")
             .addQueryParameter("latitude",lat.toString()).addQueryParameter("longitude",lon.toString()).addQueryParameter("timezone","auto")
             .addQueryParameter("current","temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_gusts_10m")

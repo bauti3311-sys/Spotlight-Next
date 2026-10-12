@@ -33,8 +33,8 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
         "catalog"->CatalogPanel(app,onAction)
         "display-review"->DisplayReview(app,payload)
         "tasker"->TaskerPanel(app)
-        "weather-native"->WeatherPanel(app,payload)
-        "sports-native"->SportsFavoritesPanel(app,payload,onAction)
+        "weather-native"->WeatherPanel(app,payload,onAction)
+        "sports-native"->SportsAgendaPanel(app,payload,onAction)
     }
 }
 @Composable private fun CatalogPanel(app:SpotlightApp,onAction:(Action)->Unit) {
@@ -56,6 +56,10 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
     }
 }
 @Composable private fun DisplayReview(app:SpotlightApp,payload:String) {
+    var advanced by remember(payload){mutableStateOf(false)}
+    val nativeValue=payload.substringAfter(':').toIntOrNull()
+    if(payload.startsWith("screen_brightness:") && nativeValue!=null && nativeValue in 20..255 && !advanced){NativeBrightnessReview(app,nativeValue!!){advanced=true};return}
+    LaunchedEffect(Unit){app.shizuku.start()}
     val scope=rememberCoroutineScope();val state by app.shizuku.state.collectAsState();var message by remember(payload){mutableStateOf("")};var busy by remember{mutableStateOf(false)}
     val key=payload.substringBefore(':');val value=payload.substringAfter(':',"");val valid=dev.bautista.spotlight.advanced.AdvancedPolicy.validSetting(key,value)
     Column(Modifier.fillMaxWidth().padding(18.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
@@ -87,15 +91,31 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(message.isNotBlank())Text(message)
     }
 }
-@Composable private fun WeatherPanel(app:SpotlightApp,initial:String) {
+@Composable private fun WeatherPanel(app:SpotlightApp,initial:String,onAction:(Action)->Unit) {
     val repo=remember{NativeProviders(app)};val prefs=remember{app.getSharedPreferences("weather_native",Context.MODE_PRIVATE)}
-    var city by remember(initial){mutableStateOf(initial.removePrefix("tomorrow:").ifBlank{prefs.getString("city","Mar del Plata").orEmpty()})};var requested by remember(initial){mutableStateOf(city)}
+    val scope=rememberCoroutineScope()
+    var primary by remember{mutableStateOf(prefs.getString("primary_city",prefs.getString("city","Mar del Plata")).orEmpty())}
+    var cities by remember{mutableStateOf(prefs.getStringSet("cities",emptySet()).orEmpty().toSet())}
+    var coordinates by remember{mutableStateOf<Pair<Double,Double>?>(null)}
+    var locationMessage by remember{mutableStateOf("")}
+    var city by remember(initial){mutableStateOf(initial.removePrefix("tomorrow:").ifBlank{primary})};var requested by remember(initial){mutableStateOf(city)}
     var revision by remember{mutableIntStateOf(0)};var data by remember{mutableStateOf<NativeSnapshot?>(null)};var error by remember{mutableStateOf("")};var busy by remember{mutableStateOf(false)}
-    LaunchedEffect(requested,revision){busy=true;error="";try{data=repo.weather(requested,revision>0);prefs.edit().putString("city",requested).apply()}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message.orEmpty();data=null}finally{busy=false}}
+    LaunchedEffect(requested,revision,coordinates){busy=true;error="";try{data=coordinates?.let{repo.weatherAt(it.first,it.second,refresh=revision>0)} ?: repo.weather(requested,revision>0)}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message.orEmpty();data=null}finally{busy=false}}
     Column(Modifier.fillMaxWidth().heightIn(max=360.dp).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         Text(if(initial.startsWith("tomorrow:"))"Clima mañana" else "Clima",style=MaterialTheme.typography.titleLarge)
         OutlinedTextField(city,{city=it.take(100)},label={Text("Localidad")},singleLine=true,modifier=Modifier.fillMaxWidth())
-        Row{TextButton(enabled=!busy,onClick={requested=city.ifBlank{"Mar del Plata"};revision++}){Text("Consultar")};TextButton(enabled=!busy,onClick={city="Mar del Plata";requested=city;revision++}){Text("Mar del Plata")}}
+        Row{TextButton(enabled=!busy,onClick={coordinates=null;requested=city.ifBlank{primary};revision++}){Text("Consultar")};TextButton(enabled=!busy,onClick={coordinates=null;city=primary;requested=city;revision++}){Text("Ciudad principal")}}
+        Row(Modifier.horizontalScroll(rememberScrollState())){TextButton(onClick={primary=city.ifBlank{"Mar del Plata"};prefs.edit().putString("primary_city",primary).apply()}){Text("Usar como ciudad principal")};TextButton(onClick={if(city.isNotBlank()){cities=(cities+city).take(8).toSet();prefs.edit().putStringSet("cities",cities).apply()}}){Text("Guardar ciudad")}}
+        if(cities.isNotEmpty())Row(Modifier.horizontalScroll(rememberScrollState())){cities.forEach{saved->InputChip(saved==requested,{coordinates=null;city=saved;requested=saved;revision++},label={Text(saved)},trailingIcon={IconButton(onClick={cities=cities-saved;prefs.edit().putStringSet("cities",cities).apply()},modifier=Modifier.size(24.dp)){Icon(CommandIcons.Close,"Quitar ciudad",Modifier.size(14.dp))}})}}
+        TextButton(onClick={
+            if(androidx.core.content.ContextCompat.checkSelfPermission(app,android.Manifest.permission.ACCESS_COARSE_LOCATION)!=android.content.pm.PackageManager.PERMISSION_GRANTED){onAction(Action.Access("location","clima"));return@TextButton}
+            scope.launch {val latest=withContext(Dispatchers.IO){val lm=app.getSystemService(android.location.LocationManager::class.java);lm.getProviders(true).mapNotNull{provider->runCatching{lm.getLastKnownLocation(provider)}.getOrNull()}.filter{System.currentTimeMillis()-it.time in 0..3600000}.maxByOrNull{it.time}}
+                if(latest!=null){coordinates=(kotlin.math.round(latest.latitude*100)/100) to (kotlin.math.round(latest.longitude*100)/100);revision++;locationMessage="Ubicación reciente aproximada · sin iniciar GPS"}
+                else{coordinates=null;requested=primary;city=primary;revision++;locationMessage="No hay ubicación reciente. Se usa tu ciudad principal."}
+            }
+        }){Text("Usar ubicación aproximada reciente")}
+        if(locationMessage.isNotBlank())Text(locationMessage,style=MaterialTheme.typography.bodySmall)
+        Text("Principal: $primary · consultas bajo demanda, sin GPS permanente ni alertas periódicas activadas.",style=MaterialTheme.typography.bodySmall)
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
         data?.let {snapshot->val j=snapshot.json;val current=j.optJSONObject("current") ?: JSONObject()
             NextCard(j.optString("location_name"),ProviderValues.condition(current.optInt("weather_code",-1)),CommandIcons.Cloud){
@@ -106,6 +126,9 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
             }
             val hourly=j.optJSONObject("hourly");val times=hourly?.optJSONArray("time");val temperatures=hourly?.optJSONArray("temperature_2m");val rain=hourly?.optJSONArray("precipitation_probability")
             if(times!=null){Text("Próximas horas",style=MaterialTheme.typography.titleSmall);val currentTime=if(initial.startsWith("tomorrow:"))runCatching{java.time.LocalDate.parse(current.optString("time").take(10)).plusDays(1).toString()+"T00:00"}.getOrDefault("") else current.optString("time");val start=(0 until times.length()).firstOrNull{times.optString(it)>=currentTime.take(13)+":00"} ?: 0
+                val indices=(start until minOf(start+24,times.length())).toList()
+                WeatherChart("Temperatura por hora",indices.map{temperatures?.optDouble(it)?.takeIf{v->v.isFinite()}?.toFloat()}," °C")
+                WeatherChart("Probabilidad de lluvia",indices.map{rain?.optDouble(it)?.takeIf{v->v.isFinite()}?.toFloat()}," %",100f)
                 Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){for(i in start until minOf(start+12,times.length())){Surface(shape=RoundedCornerShape(10.dp),color=MaterialTheme.colorScheme.surfaceContainerLow){Column(Modifier.padding(12.dp)){Text(times.optString(i).substringAfter('T'));Text(if(temperatures?.isNull(i)==false)"${temperatures.optString(i)} °C" else "—");Text(if(rain?.isNull(i)==false)"${rain.optString(i)}% lluvia" else "—")}}}}
             }
             j.optJSONObject("daily")?.let {d->val days=d.optJSONArray("time");for(i in 0 until (days?.length() ?: 0)){NextCard(days!!.optString(i),"${d.optJSONArray("temperature_2m_min")?.optString(i)}° / ${d.optJSONArray("temperature_2m_max")?.optString(i)}° · Lluvia ${d.optJSONArray("precipitation_probability_max")?.optString(i)}%",CommandIcons.Cloud){Text("UV ${d.optJSONArray("uv_index_max")?.optString(i)} · Amanecer ${d.optJSONArray("sunrise")?.optString(i)?.substringAfter('T')} · Atardecer ${d.optJSONArray("sunset")?.optString(i)?.substringAfter('T')}",style=MaterialTheme.typography.bodySmall)}}}

@@ -49,6 +49,7 @@ data class Config(
     val shadowSize:Float=12f, val typeface:String="inter", val selectionStyle:String="glass",
     val landscapeWidth:Int=0, val landscapePosition:Float=-1f, val customThemes:String="[]",
     val sourcePriority:String="{}", val captureContext:Boolean=false, val learnedSequences:String="{}",
+    val aiRootConsent:Boolean=false, val movement:String="liquid_precision",
 
 )
 
@@ -127,7 +128,7 @@ class Preferences(private val context: Context) {
                 Config(
                     p[theme] ?: "auto",
                     p[opacity] ?: .96f,
-                    p[width] ?: 640,
+                    p[width] ?: 0,
                     p[position] ?: .16f,
                     p[contacts] ?: false,
                     p[files] ?: true,
@@ -167,7 +168,7 @@ class Preferences(private val context: Context) {
                     shadowSize=extra.optDouble("shadowSize",12.0).toFloat().coerceIn(0f,20f),typeface=extra.optString("typeface","inter"),
                     selectionStyle=extra.optString("selectionStyle","glass"),landscapeWidth=extra.optInt("landscapeWidth",0).coerceIn(0,1100),
                     landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
-                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}"
+                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision")
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;ready=true}}
             }
 
@@ -181,7 +182,7 @@ class Preferences(private val context: Context) {
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
                 .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
-                .put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).toString()
+                .put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width

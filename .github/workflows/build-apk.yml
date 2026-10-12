@@ -33,12 +33,14 @@ jobs:
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
       - name: Set up Gradle and dependency cache
         uses: gradle/actions/setup-gradle@v4
+      - name: Read public release identity
+        run: echo "SPOTLIGHT_VERSION=$(python3 scripts/release_identity.py name)" >> "$GITHUB_ENV"
       - name: Build Debug APK
         run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --stacktrace --console=plain
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: spotlight-next-2.0.0-debug-${{ github.run_number }}
+          name: spotlight-next-${{ env.SPOTLIGHT_VERSION }}-debug-${{ github.run_number }}
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
@@ -60,7 +62,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: verification-2.0-${{ github.run_number }}
+          name: verification-${{ env.SPOTLIGHT_VERSION }}-${{ github.run_number }}
           path: |
             app/build/test-results/
             app/build/reports/
