@@ -3,6 +3,9 @@ package dev.bautista.spotlight.ui
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.interaction.*
@@ -71,6 +74,7 @@ fun ResultRow(
     onDetails: () -> Unit,
     onFavorite: () -> Unit,
     animations: Boolean = true,
+    onInteraction:()->Unit={},
 ) {
     val colors = MaterialTheme.colorScheme
     val motion=animations && LocalMotion.current
@@ -80,7 +84,7 @@ fun ResultRow(
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionMs else 0),label="result-ink")
     val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)GlassTokens.selectionMs else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
             .clip(RoundedCornerShape(9.dp))
             .background(fill)
             .border(if(selected && LocalAppearance.current.selectionStyle=="glass")1.dp else 0.dp,colors.primary.copy(alpha=.16f),RoundedCornerShape(9.dp))

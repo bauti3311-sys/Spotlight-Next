@@ -95,6 +95,7 @@ fun SpotlightPanel(
         var pinned by remember { mutableStateOf(config.pins) }
         var noteEditor by remember { mutableStateOf(false) }
         var draft by remember { mutableStateOf("") }
+        var aiMessageTarget by remember {mutableStateOf("")}
         var aiText by remember { mutableStateOf("") }
         var aiLoading by remember { mutableStateOf(false) }
         val ai = remember { DirectAi(context) }
@@ -400,6 +401,7 @@ fun SpotlightPanel(
                         push();clearForms();showAi=true;category="Acciones";preview=null;menu=false
                         aiJob?.cancel()
                         aiText = ""
+                        aiMessageTarget=action.messageTarget
                         aiLoading = true
                         aiJob =
                             scope.launch {
@@ -729,6 +731,7 @@ fun SpotlightPanel(
                                         .padding(horizontal = 9.dp, vertical = 4.dp),
                             ) {
                                 itemsIndexed(displayed, key = { _, item -> item.id }) { i, item ->
+                                    if(query.isNotBlank() && searchScope==null && category=="Todo" && i in 0..1)Text(if(i==0)"Mejor coincidencia" else "Otros resultados",Modifier.padding(horizontal=12.dp,vertical=6.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
                                     if(query.isBlank() && displayed.map{ResultSections.category(it)}.distinct().size>1 && displayed.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
                                     ResultRow(
@@ -747,6 +750,7 @@ fun SpotlightPanel(
                                         },
                                         { toggleFavorite(item) },
                                         animations=motionEnabled,
+                                        onInteraction={selected=i;navigating=true},
                                     )
                                 }
                             }
@@ -933,6 +937,7 @@ fun SpotlightPanel(
                                 }
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
                                 TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,Action.Ask(prompt)))}){Text("Enviar") }
+                                if(aiMessageTarget.isNotBlank() && aiText.isNotBlank() && !aiLoading)TextButton(onClick={execute(Result("ai:message","Preparar mensaje","","Comunicación",0,Action.ComposeMessage(config.messageApp,aiMessageTarget,aiText)))}){Text("Preparar mensaje para $aiMessageTarget")}
                                 Row {
                                     TextButton(enabled=aiText.isNotBlank() && !aiLoading,onClick={scope.launch{app.contexts.saveConversation(conversation.lastOrNull{it.first=="user"}?.second.orEmpty(),aiText)}}){Text("Guardar conversación")}
                                     TextButton(onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
@@ -941,7 +946,7 @@ fun SpotlightPanel(
                                         onClick = {
                                             aiJob?.cancel()
                                             aiText = ""
-                                            conversation.clear()
+                                            conversation.clear();aiMessageTarget=""
                                         }
                                     ) {
                                         Text(if (aiLoading) "Detener" else "Nueva conversación")

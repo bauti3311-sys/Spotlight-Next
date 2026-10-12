@@ -16,6 +16,9 @@
  <application android:name=".SpotlightApp" android:label="Spotlight Next" android:icon="@drawable/ic_spotlight" android:theme="@style/AppTheme" android:allowBackup="false" android:dataExtractionRules="@xml/data_extraction_rules" android:usesCleartextTraffic="false" android:supportsRtl="true">
   <provider android:name="rikka.shizuku.ShizukuProvider" android:authorities="${applicationId}.shizuku" android:multiprocess="false" android:enabled="true" android:exported="true" android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"/>
   <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.files" android:exported="false" android:grantUriPermissions="true"><meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/shared_paths"/></provider>
+  <activity android:name=".ShareContextActivity" android:exported="true" android:label="Contexto de Spotlight" android:theme="@style/InvokeTheme">
+    <intent-filter><action android:name="android.intent.action.SEND"/><category android:name="android.intent.category.DEFAULT"/><data android:mimeType="text/*"/><data android:mimeType="application/pdf"/><data android:mimeType="image/*"/><data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document"/></intent-filter>
+  </activity>
   <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
   <activity android:name=".ProcessTextActivity" android:label="Spotlight Next" android:exported="true">
    <intent-filter><action android:name="android.intent.action.PROCESS_TEXT"/><category android:name="android.intent.category.DEFAULT"/><data android:mimeType="text/plain"/></intent-filter>

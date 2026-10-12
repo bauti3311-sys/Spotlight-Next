@@ -50,7 +50,7 @@ import org.json.JSONObject
 @Composable fun SearchTuning(c:Config,update:(Config)->Unit) {
  val priorities=runCatching{JSONObject(c.sourcePriority)}.getOrDefault(JSONObject())
  Text("Prioridades de fuentes",style=MaterialTheme.typography.titleSmall);Text("Ajustes moderados: las coincidencias exactas conservan prioridad.",style=MaterialTheme.typography.bodySmall)
- listOf("Aplicaciones","Archivos","Contactos","Comandos","IA").forEach{source->Text("$source · ${priorities.optInt(source,0)}");Slider(priorities.optInt(source,0).toFloat(),{value->val next=JSONObject(c.sourcePriority);next.put(source,value.toInt().coerceIn(-150,150));update(c.copy(sourcePriority=next.toString()))},valueRange=-150f..150f)}
+ listOf("Aplicaciones","Archivos","Contactos","Comandos","IA").forEach{source->Text("$source · ${priorities.optInt(source,0)}");Slider(priorities.optInt(source,0).toFloat(),{value->val next=JSONObject(priorities.toString());next.put(source,value.toInt().coerceIn(-150,150));update(c.copy(sourcePriority=next.toString()))},valueRange=-150f..150f)}
 }
 @Composable fun DiagnosticsPanel(app:SpotlightApp) {
  val state by app.shizuku.state.collectAsState();val openings by app.diagnostics.openings.collectAsState();val index by app.index.status.collectAsState()

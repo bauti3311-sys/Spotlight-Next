@@ -32,7 +32,7 @@ sealed interface Action {
 
     data class SaveNote(val text: String) : Action
 
-    data class Ask(val prompt: String,val sensitive:Boolean=false) : Action
+    data class Ask(val prompt: String,val sensitive:Boolean=false,val messageTarget:String="") : Action
 
     data class Lookup(val type: String, val query: String) : Action
 

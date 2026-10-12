@@ -24,7 +24,7 @@ unset ANDROID_STORE_PASSWORD ANDROID_KEY_PASSWORD ANDROID_KEY_ALIAS
 "$build_tools/apksigner" verify --verbose --print-certs "$scratch/release.apk" > "$scratch/verification.txt"
 "$build_tools/zipalign" -c -p 4 "$scratch/release.apk"
 "$build_tools/aapt" dump badging "$scratch/release.apk" > "$scratch/badging.txt"
-python3 scripts/verify_release.py "$scratch/badging.txt" "$installed_version_code" "$scratch/verification.txt" > "$scratch/update-verification.txt"
+python3 scripts/verify_release.py "$scratch/badging.txt" "$installed_version_code" "$scratch/verification.txt" 27 2.0.0 > "$scratch/update-verification.txt"
 mkdir -p app/build/outputs/verified-release
 cp "$scratch/release.apk" app/build/outputs/verified-release/spotlight-next-release.apk
 cp "$scratch/update-verification.txt" app/build/outputs/verified-release/update-verification.txt

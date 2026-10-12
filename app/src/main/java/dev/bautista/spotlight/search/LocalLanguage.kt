@@ -30,6 +30,9 @@ object StableResults {
     fun unique(items:List<Result>):List<Result> = items.distinctBy { when(val a=it.action){
         is Action.Launch->"launch:"+a.intent.toUri(0)
         is Action.InApp->"launch:"+a.intent.toUri(0)
+        is Action.ComposeSearch->"search:${a.topic}:${a.query}"
+        is Action.ComposeMessage->"message:${a.channel}:${a.target}:${a.text}:${a.replyKey}"
+        is Action.Ask->"ask:${a.prompt}:${a.messageTarget}"
         else->a.toString()
     }}
 }

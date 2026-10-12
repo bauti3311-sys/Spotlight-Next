@@ -37,7 +37,7 @@ import kotlinx.coroutines.*
             Text(item.title,style=MaterialTheme.typography.titleSmall)
             if(item.text.isNotBlank())SelectionContainer{Text(item.text.take(2000))}
             Row{TextButton(onClick={scope.launch{app.contexts.pinActive()}}){Text(if(item.pinned)"Contexto fijado" else "Fijar")};TextButton(onClick={app.contexts.clearActive()}){Text("Quitar")}}
-            TextButton(enabled=!busy,onClick={busy=true;scope.launch{try{val content=app.contexts.text(item);onAction(Action.Ask((if(payload.isBlank())"Resumí este contenido" else payload)+"\n\n"+content,true))}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."}finally{busy=false}}}){Text("Revisar envío a IA")}
+            TextButton(enabled=!busy,onClick={busy=true;scope.launch{try{val content=app.contexts.text(item);val target=Regex("(?:preparar|mandar|enviar).*?para (.+)$",RegexOption.IGNORE_CASE).find(payload)?.groupValues?.get(1).orEmpty();onAction(Action.Ask((if(payload.isBlank())"Resumí este contenido" else payload)+"\n\n"+content,true,target))}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."}finally{busy=false}}}){Text("Revisar envío a IA")}
         }
         TextButton(onClick={onAction(Action.Launch(Intent(app,dev.bautista.spotlight.ContextPickerActivity::class.java).putExtra("query",payload)))}){Text("Elegir documento con Android")}
         OutlinedTextField(text,{text=it.take(16000)},label={Text("Texto o enlace")},modifier=Modifier.fillMaxWidth(),minLines=2)

@@ -32,6 +32,11 @@ def verify(badging: str, installed_code: int) -> str:
 if __name__ == "__main__":
     try:
         print(verify(Path(sys.argv[1]).read_text(), int(sys.argv[2])), end="")
+        if len(sys.argv)>5:
+            badging=Path(sys.argv[1]).read_text()
+            identity=re.search(r"^package: name='[^']+' versionCode='([0-9]+)' versionName='([^']+)'",badging,re.M)
+            if not identity or identity[1]!=sys.argv[4] or identity[2]!=sys.argv[5]:
+                raise ValueError("APK version differs from the requested release")
         if len(sys.argv)>3:
             print(verify_certificate(Path(sys.argv[3]).read_text()), end="")
     except (ValueError, IndexError) as error:
