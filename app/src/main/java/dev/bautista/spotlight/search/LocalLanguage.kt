@@ -13,9 +13,10 @@ object LocalLanguage {
         return q.replace(Regex("\\s+%"),"%")
     }
     fun forSearch(raw:String):String {
-        val normalized=normalize(raw.trim()).replace(Regex("\\s+")," ")
+        if(raw.contains('"') || raw.trim().startsWith("mand",true) || raw.trim().startsWith("envia",true) || LocalPlan.parse(raw)!=null)return raw
         val canonical=canonical(raw)
-        return if(canonical==normalized || raw.trim().startsWith("mand",true) || raw.trim().startsWith("envia",true))raw else canonical
+        val control=Regex("^(?:(?:bajar|subir|poner|ajustar|cambiar) )?(?:el )?(?:brillo|volumen)\\b").containsMatchIn(canonical)
+        return if(control)canonical else raw
     }
     fun isQuestion(raw:String):Boolean=raw.trim().startsWith("¿") || Regex("^(que es|como funciona|por que|quien es|cual es|explicame)\\b").containsMatchIn(normalize(raw))
 }

@@ -20,7 +20,7 @@ sealed interface UniversalIntent {
                 // Brightness uses the existing reversible, confirmed Shizuku action.
                 return null
             }
-            Regex("^(?:abrir|iniciar|abrí|abre) (.+)$", RegexOption.IGNORE_CASE).matchEntire(text)?.let { return OpenApp(it.groupValues[1]) }
+            Regex("^(?:abrir|iniciar|abr[ií]|abre) (.+)$", RegexOption.IGNORE_CASE).matchEntire(text)?.let { return OpenApp(it.groupValues[1]) }
             Regex("^(?:buscar|busca|mostrame) (?:fotos|imagenes) de (.+)$").matchEntire(q)?.let {
                 return Photos(SearchQuery.natural("fotos de " + it.groupValues[1]))
             }

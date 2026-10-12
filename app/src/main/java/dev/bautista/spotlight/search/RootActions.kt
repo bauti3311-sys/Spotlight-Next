@@ -23,8 +23,8 @@ object RootActions {
         LocalPlan.step(raw)?.takeIf{it is PlanStep.RelativeBrightness || it is PlanStep.RelativeVolume || it is PlanStep.Media}?.let{add("plan-single","Revisar acción","Comprobar permisos y confirmar antes de ejecutar","Acciones",Action.SystemPanel("interpret",raw))}
         if(q.startsWith("clima"))add("weather",if(q.contains("manana"))"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:"+q.removePrefix("clima").replace("manana","").trim().removePrefix("en ") else q.removePrefix("clima").trim().removePrefix("en ")))
         Regex("^(?:como va|resultado de|partido de) (.+)$").matchEntire(q)?.let{add("sports","Consultar ${it.groupValues[1]}","Elegir equipo o competición real · datos del proveedor","Deportes",Action.SystemPanel("sports-native",it.groupValues[1]))}
-        Regex("^(?:buscar |escuchar )?musica(?: de)? (.+?)(?: en (spotify|youtube))?$").matchEntire(q)?.let{m->
-            val topic=m.groupValues[2].ifBlank{if(context.packageManager.getLaunchIntentForPackage("com.spotify.music")!=null)"spotify" else "youtube"}
+        Regex("^(?:buscar |escuchar |pon[eé] |poner |reproducir )?m[uú]sica(?: de)? (.+?)(?: en (spotify|youtube))?$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())?.let{m->
+            val topic=m.groupValues[2].lowercase().ifBlank{if(context.packageManager.getLaunchIntentForPackage("com.spotify.music")!=null)"spotify" else "youtube"}
             val term=m.groupValues[1]
             add("music:$topic","Buscar música en ${ActionCatalog.displayName(topic)}",term+" · búsqueda, sin iniciar reproducción","Acciones",Action.ComposeSearch(topic,ActionCatalog.packages[topic].orEmpty(),term))
         }
