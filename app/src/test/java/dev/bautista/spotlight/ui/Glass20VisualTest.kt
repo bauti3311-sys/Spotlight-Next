@@ -15,6 +15,7 @@ import org.robolectric.annotation.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 
+@OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)

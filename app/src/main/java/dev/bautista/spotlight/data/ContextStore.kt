@@ -35,7 +35,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         val b=j.optJSONArray("conversations") ?: JSONArray()
         mutableConversations.value=(0 until minOf(b.length(),30)).mapNotNull{i->runCatching{val x=b.getJSONObject(i);SavedConversation(x.getString("id"),x.getString("title"),x.getString("text").take(48000),x.getLong("created"))}.getOrNull()}
     }}}
-    fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>10*60000L)clearActive()}}
+    fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>=10*60000L)clearActive()}}
     private fun release(item:SharedContext){if(item.ownedFile.isBlank() || mutablePinned.value.any{it.ownedFile==item.ownedFile})return;val f=File(item.ownedFile);if(f.parentFile?.canonicalFile==File(context.noBackupFilesDir,"context-imports").canonicalFile)scope.launch{withContext(Dispatchers.IO){f.delete()}}}
     fun clearActive(){expiryJob?.cancel();val item=mutableActive.value;mutableActive.value=null;if(item!=null)release(item)}
     fun select(id:String){mutableActive.value=mutablePinned.value.firstOrNull{it.id==id}}
