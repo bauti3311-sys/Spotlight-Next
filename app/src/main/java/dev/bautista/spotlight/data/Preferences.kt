@@ -53,6 +53,8 @@ data class Config(
 )
 
 class Preferences(private val context: Context) {
+    @Volatile var ready:Boolean=false
+        private set
     @Volatile var isPrivate:Boolean=false
         private set
     private val next20=stringPreferencesKey("next20")
@@ -166,7 +168,7 @@ class Preferences(private val context: Context) {
                     selectionStyle=extra.optString("selectionStyle","glass"),landscapeWidth=extra.optInt("landscapeWidth",0).coerceIn(0,1100),
                     landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
                     sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}"
-                ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v}}
+                ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;ready=true}}
             }
 
     suspend fun update(c: Config) {

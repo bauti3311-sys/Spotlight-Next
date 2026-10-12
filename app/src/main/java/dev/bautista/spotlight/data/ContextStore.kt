@@ -43,7 +43,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         require(text.isNotBlank() && text.length<=16000)
         return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;scheduleExpiry()}
     }
-    fun offerAutomatic(text:String){if(!preferences.isPrivate && mutableActive.value?.pinned!=true && text.isNotBlank() && text.length<=8000)setText(text,"Portapapeles autorizado")}
+    fun offerAutomatic(text:String){if(preferences.ready && !preferences.isPrivate && mutableActive.value?.pinned!=true && text.isNotBlank() && text.length<=8000)setText(text,"Portapapeles autorizado")}
     suspend fun setDocument(uri:Uri,ownedFile:String=""):SharedContext=withContext(Dispatchers.IO) {
         require(uri.scheme=="content")
         val mime=context.contentResolver.getType(uri).orEmpty()

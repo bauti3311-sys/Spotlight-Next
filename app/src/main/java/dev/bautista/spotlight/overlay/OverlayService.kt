@@ -54,7 +54,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private val clipListener = ClipboardManager.OnPrimaryClipChangedListener { captureClipboard() }
 
     private fun captureClipboard() {
-        if (config.privateMode || app.preferences.isPrivate || (!config.clipboard && !config.captureContext) || view?.hasWindowFocus() != true) return
+        if (!app.preferences.ready || config.privateMode || app.preferences.isPrivate || (!config.clipboard && !config.captureContext) || view?.hasWindowFocus() != true) return
         runCatching {
             val clip = clipboard.primaryClip ?: return
             if (
