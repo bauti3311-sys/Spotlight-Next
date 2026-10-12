@@ -30,7 +30,7 @@ object ActionCatalog {
         val q=query.trim()
         val expression=Regex("^(?:(?:enviar|mandar|escribir)(?:le)?(?: un)? )?(mensaje|whatsapp business|whatsapp_business|whatsapp|wa|sms|correo|email)(?: por whatsapp)? a (.+)$",RegexOption.IGNORE_CASE).matchEntire(q) ?: return null
         val raw=expression.groupValues[2]
-        val colon=raw.indexOf(':'); val saying=Regex("\\s+diciendo\\s+",RegexOption.IGNORE_CASE).find(raw)
+        val colon=raw.indexOf(':'); val saying=Regex("\\s+(?:diciendo|que)\\s+",RegexOption.IGNORE_CASE).find(raw)
         val cut=if(colon>=0)colon else saying?.range?.first ?: -1
         val target=if(cut>=0)raw.take(cut).trim() else raw.trim()
         val body=if(colon>=0)raw.drop(colon+1).trim() else if(saying!=null)raw.drop(saying.range.last+1).trim() else ""

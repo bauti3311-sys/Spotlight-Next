@@ -142,6 +142,7 @@ class ProcessTextActivity : ComponentActivity() {
                         ) {
                             Text("Buscar en Spotlight")
                         }
+                        TextButton(enabled=text.isNotBlank(),onClick={app.contexts.setText(text);startActivity(Intent(this@ProcessTextActivity,InvokeActivity::class.java));finish()}){Text("Usar como contexto en Spotlight")}
                         if (editable)
                             Button(
                                 onClick = {

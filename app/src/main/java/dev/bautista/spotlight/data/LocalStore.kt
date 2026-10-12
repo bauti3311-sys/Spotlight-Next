@@ -36,7 +36,7 @@ class LocalStore(private val preferences: Preferences, private val scope: Corout
     @Synchronized fun deleteClip(text:String){expiry.remove(text);mutableClipFavorites.value=mutableClipFavorites.value-text;mutableClips.value=mutableClips.value-text}
 
     @Synchronized fun capture(text: String) {
-        if (text.isBlank() || text.length > 8000) return
+        if (preferences.isPrivate || text.isBlank() || text.length > 8000) return
         expiry[text]=System.currentTimeMillis()+retention*60000L
         mutableClips.value = (listOf(text) + mutableClips.value.filter { it != text }).take(limit)
         prune()

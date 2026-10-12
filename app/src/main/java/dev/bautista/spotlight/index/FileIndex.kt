@@ -104,11 +104,11 @@ class FileIndex(
         else c.trees
 
     suspend fun ensure(c: Config) {
-        observe(c.trees)
+        observe(c.trees + if(broadAllowed())setOf(android.provider.MediaStore.Files.getContentUri("external").toString()) else emptySet())
         if (
             broadAllowed() != lastBroad ||
                 c.trees != lastTrees ||
-                System.currentTimeMillis() - refreshed > 60000
+                System.currentTimeMillis() - refreshed > 600000
         )
             if (broadAllowed()) {
                 synchronized(this) {

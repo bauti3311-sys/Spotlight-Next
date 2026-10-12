@@ -37,7 +37,7 @@ class Next091VisualTest {
     @Test fun allFourThemesHaveFreshHomeCaptures(){
         var preset by mutableStateOf("macOS Glass")
         ui.setContent{SpotlightPanel(app,AppearancePresets.apply(preset,AppConfig(files=false,animations=false)),{},availableHeightDp=700f)}
-        AppearancePresets.names.forEach{name->ui.runOnIdle{preset=name};ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()};capture("home-"+name.substringBefore(' ').lowercase())}
+        AppearancePresets.names.forEach{name->ui.runOnIdle{preset=name};ui.waitUntil(15000){ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty()};capture("home-"+name.substringBefore(' ').lowercase())}
     }
     @Test fun filesCommandsAndAiModesKeepCleanQueriesAndHaveFreshCaptures(){
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},availableHeightDp=700f)}
@@ -68,7 +68,7 @@ class Next091VisualTest {
             ui.onNodeWithText("Responder").performClick();ui.onNodeWithText("¿A qué hora nos encontramos?").assertExists();ui.onNodeWithText("Mensaje").performTextInput("A las 18.");capture("whatsapp-reply-tablet")
         }finally{Replies.clear()}
     }
-    @Test @Config(qualifiers="w360dp-h800dp") fun phoneHomeHasTouchSizedModes(){ui.setContent{SpotlightPanel(app,AppearancePresets.apply("iOS Light",AppConfig(files=false,animations=false)),{},availableHeightDp=700f)};ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").assertIsDisplayed();capture("home-phone")}
+    @Test @Config(qualifiers="w360dp-h800dp") fun phoneHomeHasTouchSizedModes(){ui.setContent{SpotlightPanel(app,AppearancePresets.apply("iOS Light",AppConfig(files=false,animations=false)),{},availableHeightDp=700f)};ui.waitUntil(15000){ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").assertIsDisplayed();capture("home-phone")}
     @Test @Config(qualifiers="w915dp-h412dp") fun landscapeFitsAvailableHeight(){ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},"25 * 8",360f)};ui.waitUntil(15000){ui.onAllNodesWithText("200",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()};assertTrue(ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot.height<=360*app.resources.displayMetrics.density);capture("landscape-phone")}
     @OptIn(ExperimentalTestApi::class)
     @Test fun actionFilterSupportsArrowSelectionAndEnter(){var result="";val focus=FocusRequester();ui.setContent{SpotlightTheme{Column(Modifier.width(420.dp)){ActionPanelView(listOf(ContextAction("Abrir","Principal",CommandIcons.Apps,{result="open"}),ContextAction("Copiar","Texto",CommandIcons.ContentCopy,{result="copy"})),focus)}}};ui.onNode(hasSetTextAction()).performClick();ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.DirectionDown)};ui.waitForIdle();ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)};ui.runOnIdle{assertEquals("copy",result)}}

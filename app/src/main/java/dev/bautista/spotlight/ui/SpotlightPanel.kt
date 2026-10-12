@@ -41,6 +41,7 @@ fun SpotlightPanel(
     onClose: () -> Unit,
     initialQuery: String = "",
     availableHeightDp: Float? = null,
+    invocation:String="touch",
 ) =
     SpotlightTheme(config.theme, config) {
         val context = LocalContext.current
@@ -78,12 +79,14 @@ fun SpotlightPanel(
         val history = remember { mutableStateListOf<Location>() }
         fun push() { history.add(Location(query,category,searchScope,selected)) }
         var navigating by remember { mutableStateOf(false) }
+        var pointerSelecting by remember { mutableStateOf(false) }
         var preview by remember { mutableStateOf<Result?>(null) }
         var menu by remember { mutableStateOf(false) }
         var advancedActions by remember { mutableStateOf(false) }
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
         LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
+        var previousSearch by remember {mutableStateOf<String?>(null)}
         var loading by remember { mutableStateOf(false) }
         var error by remember { mutableStateOf("") }
         var card by remember { mutableStateOf<InfoCard?>(null) }
@@ -93,6 +96,7 @@ fun SpotlightPanel(
         var pinned by remember { mutableStateOf(config.pins) }
         var noteEditor by remember { mutableStateOf(false) }
         var draft by remember { mutableStateOf("") }
+        var aiMessageTarget by remember {mutableStateOf("")}
         var aiText by remember { mutableStateOf("") }
         var aiLoading by remember { mutableStateOf(false) }
         val ai = remember { DirectAi(context) }
@@ -101,6 +105,9 @@ fun SpotlightPanel(
         val clips by app.local.clips.collectAsState()
         val clipFavorites by app.local.clipFavorites.collectAsState()
         val notes by app.local.notes.collectAsState()
+        val activeContext by app.contexts.active.collectAsState()
+        val pinnedContexts by app.contexts.pinned.collectAsState()
+        val savedChats by app.contexts.conversations.collectAsState()
         val indexStatus by app.index.status.collectAsState()
         val indexRevision by app.index.revision.collectAsState()
         val colors = MaterialTheme.colorScheme
@@ -124,9 +131,9 @@ fun SpotlightPanel(
             searchScope=when(mode){"Apps"->SearchScope("","apps");"Archivos"->SearchScope("","files-mode");"Acciones"->SearchScope("","commands");"IA"->SearchScope("","ai");"Portapapeles"->SearchScope("","clipboard");else->null}
             focus.requestFocus()
         }
-        val filtered =
-            results.filter {
-                when (category) {
+        fun filterResults(items:List<Result>):List<Result> =
+            items.filter {
+                if(query.isNotBlank() && (it.id.startsWith("root:") || it.id.startsWith("registered:")))true else when (category) {
                     "Todo" -> true
                     "Apps" -> it.category == "Aplicaciones"
                     "Archivos" -> searchScope!=null || it.category == "Archivos"
@@ -135,6 +142,7 @@ fun SpotlightPanel(
                     else -> it.category !in setOf("Aplicaciones", "Archivos", "Portapapeles")
                 }
             }
+        val filtered=filterResults(results)
         var recentAppIds by remember { mutableStateOf(config.recent) }
         LaunchedEffect(results, config.recent) {
             val apps = results.filter { it.category == "Aplicaciones" }
@@ -147,10 +155,14 @@ fun SpotlightPanel(
                     )
                 }
         }
-        val displayed =
-            if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps")
+        fun present(items:List<Result>):List<Result> {
+            val filtered=filterResults(items)
+            return if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps" && query.isBlank())
                 dev.bautista.spotlight.control.CommandCenter.orderedApps(filtered, recentAppIds)
-            else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query)
+            else if(query.isNotBlank() && searchScope==null && category=="Todo")ResultSections.unified(filtered)
+            else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
+        }
+        val displayed=present(results)
         val recentCount =
             if (category == "Apps") displayed.takeWhile { it.subtitle.startsWith("Reciente") }.size
             else 0
@@ -316,7 +328,7 @@ fun SpotlightPanel(
                     }.onFailure {error="No se pudo preparar la sesión."}
                 }
                 is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
-                is Action.Navigate -> {push();clearForms();searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};results=emptyList();preview=null;menu=false;selected=0;focus.requestFocus()}
+                is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};results=emptyList();preview=null;menu=false;selected=0;focus.requestFocus()}
                 is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.ComposeSearch -> {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.AudioPanel -> {push();clearForms();audioPanel=true;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
@@ -352,21 +364,7 @@ fun SpotlightPanel(
                                     volume.getValue(action.command),
                                     android.media.AudioManager.FLAG_SHOW_UI,
                                 )
-                            else {
-                                val key =
-                                    when (action.command) {
-                                        "play" -> android.view.KeyEvent.KEYCODE_MEDIA_PLAY
-                                        "pause" -> android.view.KeyEvent.KEYCODE_MEDIA_PAUSE
-                                        "next" -> android.view.KeyEvent.KEYCODE_MEDIA_NEXT
-                                        else -> android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS
-                                    }
-                                audio.dispatchMediaKeyEvent(
-                                    android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, key)
-                                )
-                                audio.dispatchMediaKeyEvent(
-                                    android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, key)
-                                )
-                            }
+                            else dev.bautista.spotlight.control.MediaControl.execute(context,action.command)
                             error = "Acción ejecutada"
                         }
                         .onFailure { error = "La app activa no admite esta acción" }
@@ -408,6 +406,7 @@ fun SpotlightPanel(
                         push();clearForms();showAi=true;category="Acciones";preview=null;menu=false
                         aiJob?.cancel()
                         aiText = ""
+                        aiMessageTarget=action.messageTarget
                         aiLoading = true
                         aiJob =
                             scope.launch {
@@ -449,33 +448,32 @@ fun SpotlightPanel(
                 Text("Enviar texto a ${config.aiProvider}",style=MaterialTheme.typography.titleMedium)
                 Text("Se enviarán ${ask.prompt.length} caracteres al proveedor elegido.",style=MaterialTheme.typography.bodySmall)
                 SelectionContainer{Text(ask.prompt,Modifier.heightIn(max=220.dp).verticalScroll(rememberScrollState()),style=MaterialTheme.typography.bodySmall)}
-                if(!ai.configured(config))AiSettings(config){next->scope.launch{app.preferences.update(next)}}
+                if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.update(next)}}}
                 Row{TextButton(enabled=ai.configured(config),onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,ask.copy(sensitive=false)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
             }}
         }
         LaunchedEffect(query){ if(showAi){aiJob?.cancel();showAi=false} }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
-        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, searchScope, replyTargets, replyConnected,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
+        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, searchScope, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
             snapshotFlow { query }
                 .debounce(120)
                 .distinctUntilChanged()
                 .collectLatest { q ->
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
-                    navigating = false
-                    preview = null
-                    menu = false
+                    if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
                     cardJob?.cancel()
                     card = null
                     cardLoading = false
                     error = ""
                     loading = true
+                    val searchStarted=android.os.SystemClock.elapsedRealtime()
                     val parsed = SearchQuery.parse(q)
                     if (parsed.problem != null) error = parsed.problem
                     try {
                         coroutineScope {
                             val localRequest=TextTools.results(q).mapNotNull{it.action as? Action.Lookup}.firstOrNull{it.type.startsWith("text:")}
                             val request = localRequest ?: app.online.request(q)
-                            if (searchScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type != "translate")
+                            if (searchScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
                                 launch {
                                     cardLoading = true
                                     try {
@@ -492,7 +490,10 @@ fun SpotlightPanel(
                                     }
                                 }
                             app.search.search(q, config.copy(favorites = favorites,pins=pinned),searchScope).collect {
-                                results = it
+                                val selectedId=present(results).getOrNull(selected)?.id
+                                results = StableResults.merge(results,it,navigating || preview!=null)
+                                if(selectedId!=null && navigating){selected=present(results).indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}
+                                app.diagnostics.search(android.os.SystemClock.elapsedRealtime()-searchStarted)
                             }
                         }
                     } catch(e:CancellationException) {
@@ -513,10 +514,12 @@ fun SpotlightPanel(
                     device.hardKeyboardHidden !=
                         android.content.res.Configuration.HARDKEYBOARDHIDDEN_NO
             )
-                keyboard?.show()
+                if(config.autoKeyboard=="always" || config.autoKeyboard=="adaptive" && invocation=="keyboard")keyboard?.show()
+                else keyboard?.hide()
         }
-        LaunchedEffect(selected, category, displayed.size, navigating) {
-            if (displayed.isNotEmpty() && navigating) {
+        LaunchedEffect(selected, category, displayed.size, navigating, pointerSelecting) {
+            // Lock ordering on touch without moving the row underneath the finger.
+            if (displayed.isNotEmpty() && navigating && !pointerSelecting) {
                 val target = selected.coerceIn(0, displayed.lastIndex)
                 if (category == "Apps") {
                     if (motionEnabled)
@@ -552,11 +555,9 @@ fun SpotlightPanel(
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()
-                    .shadow(12.dp,RoundedCornerShape(config.corner.dp))
-                    .clip(RoundedCornerShape(config.corner.dp))
-                    .background(colors.surface.copy(alpha=if(config.preset=="hybrid")1f else maxOf(config.opacity,.97f)))
-                    .border(1.dp,colors.outlineVariant,RoundedCornerShape(config.corner.dp))
+                    .glassSurface(config)
                     .onPreviewKeyEvent { event ->
+                    if(event.type==KeyEventType.KeyDown)pointerSelecting=false
                     if (event.type != KeyEventType.KeyDown) false
                     else if (
                         noteEditor &&
@@ -606,7 +607,8 @@ fun SpotlightPanel(
                         when (event.key) {
                             Key.Escape,
                             Key.Back -> {
-                                if (preview != null) {preview=null;menu=false;focus.requestFocus()}
+                                if(searchOptions){searchOptions=false;focus.requestFocus()}
+                                else if (preview != null) {preview=null;menu=false;focus.requestFocus()}
                                 else if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || history.isNotEmpty())back()
                                 else if (noteEditor) noteEditor = false
                                 else onClose()
@@ -680,16 +682,20 @@ fun SpotlightPanel(
             ) {
                 SpotlightBar(
                     query,
-                    {
-                        showAi=false
-                        clearForms()
-                        query = it
-                        selected=0
-                        navigating = false
-                        results = emptyList()
-                        card = null
-                        preview = null
-                        menu = false
+                    { next ->
+                        // Selection/focus changes can report the same text. They must not
+                        // clear results: snapshotFlow only searches when text actually changes.
+                        if(next!=query) {
+                            showAi=false
+                            clearForms()
+                            query = next
+                            selected=0
+                            navigating = false
+                            results = emptyList()
+                            card = null
+                            preview = null
+                            menu = false
+                        }
                     },
                     category,
                     {
@@ -710,10 +716,19 @@ fun SpotlightPanel(
                     motionEnabled,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
+                    optionsOpen=searchOptions,
+                    onSearchFocus={app.diagnostics.markInteractive()},
+                    quickMenu={
+                        GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}.onFailure{error="No se pudo guardar la preferencia. Reintentá."}}},
+                            {launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))},
+                            {mode->searchOptions=false;selectMode(mode)})
+                    },
                     optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
                     onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
                 )
-                val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || config.suggestions
+                if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
+                if(activeContext!=null && !searchOptions)ContextChip(app,activeContext!!){action->execute(Result("context:active","","","Contexto",0,action))}
+                val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && displayed.isNotEmpty())
                 val resultList:@Composable ()->Unit = {
                             LazyColumn(
                                 state = listState,
@@ -727,6 +742,7 @@ fun SpotlightPanel(
                                         .padding(horizontal = 9.dp, vertical = 4.dp),
                             ) {
                                 itemsIndexed(displayed, key = { _, item -> item.id }) { i, item ->
+                                    if(query.isNotBlank() && searchScope==null && category=="Todo" && i in 0..1)Text(if(i==0)"Mejor coincidencia" else "Otros resultados",Modifier.padding(horizontal=12.dp,vertical=6.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
                                     if(query.isBlank() && displayed.map{ResultSections.category(it)}.distinct().size>1 && displayed.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
                                     ResultRow(
@@ -745,6 +761,7 @@ fun SpotlightPanel(
                                         },
                                         { toggleFavorite(item) },
                                         animations=motionEnabled,
+                                        onInteraction={pointerSelecting=true;selected=i;navigating=true},
                                     )
                                 }
                             }
@@ -872,9 +889,9 @@ fun SpotlightPanel(
                         else if(timerMinutes!=null)TimerForm(timerMinutes!!){back()}
                         else if(deletingNote!=null)Column(Modifier.padding(16.dp)){Text("¿Eliminar esta nota?");Text(deletingNote!!.title.take(160));Row{TextButton(onClick={val id=deletingNote!!.id.removePrefix("note:");scope.launch{app.local.deleteNote(id);back()}}){Text("Eliminar")};TextButton(onClick={back()}){Text("Cancelar")}}}
                         else if(snippetText!=null)snippetEditor()
-                        else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);TextButton(onClick={execute(Result("ai:tools","","","IA",0,Action.SystemPanel("agent")))}){Text("Preparar acciones con IA")};Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->scope.launch{app.preferences.update(next)}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
+                        else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);TextButton(onClick={execute(Result("ai:tools","","","IA",0,Action.SystemPanel("agent")))}){Text("Preparar acciones con IA")};Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.update(next)}}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
                         else if(notificationKey!=null)NotificationPreview(notificationKey!!,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{back()})
-                        else if(systemPage!=null) {if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->scope.launch{app.preferences.update(next)}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
+                        else if(systemPage!=null) {if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->app.scope.launch{runCatching{app.preferences.update(next)}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
                         else if(messageForm!=null)MessageEditor(messageForm!!,{launch(it)},{pending->launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access","contacts").putExtra("query",pending))},{back()})
                         else if(searchForm!=null)SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
                         else if(audioPanel)AudioControl {back()}
@@ -931,13 +948,16 @@ fun SpotlightPanel(
                                 }
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
                                 TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,Action.Ask(prompt)))}){Text("Enviar") }
+                                if(aiMessageTarget.isNotBlank() && aiText.isNotBlank() && !aiLoading)TextButton(onClick={execute(Result("ai:message","Preparar mensaje","","Comunicación",0,Action.ComposeMessage(config.messageApp,aiMessageTarget,aiText)))}){Text("Preparar mensaje para $aiMessageTarget")}
                                 Row {
+                                    TextButton(enabled=aiText.isNotBlank() && !aiLoading,onClick={scope.launch{app.contexts.saveConversation(conversation.lastOrNull{it.first=="user"}?.second.orEmpty(),aiText)}}){Text("Guardar conversación")}
+                                    TextButton(onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
                                     TextButton(onClick = { copy(aiText) }) { Text("Copiar") }
                                     TextButton(
                                         onClick = {
                                             aiJob?.cancel()
                                             aiText = ""
-                                            conversation.clear()
+                                            conversation.clear();aiMessageTarget=""
                                         }
                                     ) {
                                         Text(if (aiLoading) "Detener" else "Nueva conversación")
@@ -1038,7 +1058,7 @@ fun SpotlightPanel(
                         } else resultList()
                         if (displayed.isEmpty() && activeCard == null && !loading && !noteEditor && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null && snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null && category!="IA" && searchScope?.section!="files")
                             Text(
-                                when (category) {
+                                if(query.isBlank() && category=="Todo")"Escribí lo que querés encontrar o hacer." else when (category) {
                                     "Archivos" ->
                                         if (!app.index.broadAllowed() && config.trees.isEmpty())
                                             "Activá el acceso al almacenamiento compartido en Opciones."

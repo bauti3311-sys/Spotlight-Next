@@ -43,10 +43,27 @@ data class Config(
     val corner:Int=22, val textScale:Float=1f, val iconSize:Int=30, val maxHeight:Int=480, val adaptive:Boolean=true,
     val routines:String="[]", val onboarded:Boolean=false, val clipLimit:Int=20, val clipRetention:Int=15,
     val suggestions:Boolean=true, val hiddenSuggestions:Set<String> = emptySet(), val pinnedSuggestions:Set<String> = emptySet(),
-    val preset:String="hybrid", val clipboardShortcut:String="ctrl_shift_v",
+    val preset:String="glass", val clipboardShortcut:String="ctrl_shift_v",
+    val privateMode:Boolean=false, val autoKeyboard:String="adaptive",
+    val glassIntensity:Float=.45f, val surfaceTone:String="neutral", val borderWidth:Float=1f,
+    val shadowSize:Float=12f, val typeface:String="inter", val selectionStyle:String="glass",
+    val landscapeWidth:Int=0, val landscapePosition:Float=-1f, val customThemes:String="[]",
+    val sourcePriority:String="{}", val captureContext:Boolean=false, val learnedSequences:String="{}",
+
 )
 
 class Preferences(private val context: Context) {
+    @Volatile var ready:Boolean=false
+        private set
+    @Volatile var isPrivate:Boolean=false
+        private set
+    private val next20=stringPreferencesKey("next20")
+    @Volatile private var privacyRevision=0L
+    private val sequences=stringPreferencesKey("learnedSequences")
+    private val lastActionTime=longPreferencesKey("lastActionTime")
+    private val privateVersion=longPreferencesKey("privateVersion")
+    private val privateFlag=booleanPreferencesKey("privateMode")
+
     private val theme = stringPreferencesKey("theme")
     private val opacity = floatPreferencesKey("opacity")
     private val width = intPreferencesKey("width")
@@ -106,6 +123,7 @@ class Preferences(private val context: Context) {
         context.store.data
             .catch { emit(emptyPreferences()) }
             .map { p ->
+                val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")} .getOrDefault(org.json.JSONObject())
                 Config(
                     p[theme] ?: "auto",
                     p[opacity] ?: .96f,
@@ -141,12 +159,29 @@ class Preferences(private val context: Context) {
                     p[aiModel] ?: "gpt-4.1-mini", p[learning] ?: true, p[usageData] ?: "{}",
                     p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
                     p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
-                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "hybrid"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
-                )
+                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "glass"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
+                ).copy(privateMode=p[privateFlag] ?: false,
+                    autoKeyboard=extra.optString("autoKeyboard","adaptive").takeIf{it in setOf("adaptive","always","never")} ?: "adaptive",
+                    glassIntensity=extra.optDouble("glassIntensity",.45).toFloat().coerceIn(0f,1f),
+                    surfaceTone=extra.optString("surfaceTone","neutral"),borderWidth=extra.optDouble("borderWidth",1.0).toFloat().coerceIn(0f,2f),
+                    shadowSize=extra.optDouble("shadowSize",12.0).toFloat().coerceIn(0f,20f),typeface=extra.optString("typeface","inter"),
+                    selectionStyle=extra.optString("selectionStyle","glass"),landscapeWidth=extra.optInt("landscapeWidth",0).coerceIn(0,1100),
+                    landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
+                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}"
+                ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;ready=true}}
             }
 
     suspend fun update(c: Config) {
-        context.store.edit { p ->
+        val previousPrivate=isPrivate;val previousRevision=privacyRevision
+        val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode
+        try {context.store.edit { p ->
+            p[privateVersion]=revision
+            p[privateFlag]=c.privateMode
+            p[next20]=org.json.JSONObject().put("autoKeyboard",c.autoKeyboard).put("glassIntensity",c.glassIntensity.toDouble())
+                .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
+                .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
+                .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
+                .put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width
@@ -196,6 +231,7 @@ class Preferences(private val context: Context) {
             p[pinnedSuggestions]=c.pinnedSuggestions
 
         }
+        }catch(e:Exception){if(privacyRevision==revision){isPrivate=previousPrivate;privacyRevision=previousRevision};throw e}
     }
 
     suspend fun togglePin(query: String) {
@@ -216,6 +252,7 @@ class Preferences(private val context: Context) {
 
     suspend fun record(id: String) {
         context.store.edit { p ->
+            if(p[privateFlag]==true)return@edit
             p[recent] =
                 (listOf(id) + (p[recent]?.split("|") ?: emptyList()).filter { it != id })
                     .take(20)
@@ -229,7 +266,7 @@ class Preferences(private val context: Context) {
 
     suspend fun recordSelection(id:String) {
         context.store.edit { p ->
-            if(p[learning] != false) {
+            if(p[learning] != false && p[privateFlag]!=true) {
                 val data=runCatching { org.json.JSONObject(p[usageData] ?: "{}") }.getOrDefault(org.json.JSONObject())
                 val previous=data.optJSONObject(id)
                 data.put(id,org.json.JSONObject().put("count",((previous?.optInt("count") ?: 0)+1).coerceAtMost(10000)).put("time",System.currentTimeMillis()))
@@ -239,12 +276,22 @@ class Preferences(private val context: Context) {
         }
     }
 
-    suspend fun recordAction(query: String) {
-        if(query.isBlank()) return
-        context.store.edit { p -> p[actionRecent] = (listOf(query.take(4000)) + (p[actionRecent]?.split("|") ?: emptyList()).filter { it != query }).take(10).joinToString("|") }
+    suspend fun recordAction(query:String) {
+        if(query.isBlank())return
+        context.store.edit {p->if(p[privateFlag]==true)return@edit
+            val old=p[actionRecent]?.split("|")?.filter{it.isNotBlank()}.orEmpty();val now=System.currentTimeMillis()
+            if(p[learning]!=false && now-(p[lastActionTime] ?: 0L) in 0..120000L){
+                val previous=old.firstOrNull().orEmpty();val pair="$previous y $query"
+                if(dev.bautista.spotlight.search.LocalPlan.step(previous)!=null && dev.bautista.spotlight.search.LocalPlan.step(query)!=null && dev.bautista.spotlight.search.LocalPlan.parse(pair)!=null){
+                    val data=runCatching{org.json.JSONObject(p[sequences] ?: "{}").let {j->org.json.JSONObject().apply{j.keys().asSequence().filter{now-j.optJSONObject(it)!!.optLong("last",0)<30L*86400000}.take(49).forEach{put(it,j.getJSONObject(it))}}}}.getOrDefault(org.json.JSONObject())
+                    data.put(pair,org.json.JSONObject().put("count",(data.optJSONObject(pair)?.optInt("count",0) ?: 0)+1).put("last",now));p[sequences]=data.toString()
+                }
+            }
+            p[actionRecent]=(listOf(query.take(4000))+old.filter{it!=query}).take(10).joinToString("|");p[lastActionTime]=now
+        }
     }
 
     suspend fun clearHistory() {
-        context.store.edit { it.remove(recent); it.remove(actionRecent); it.remove(usageData) }
+        context.store.edit { it.remove(recent); it.remove(actionRecent); it.remove(usageData);it.remove(sequences);it.remove(lastActionTime) }
     }
 }

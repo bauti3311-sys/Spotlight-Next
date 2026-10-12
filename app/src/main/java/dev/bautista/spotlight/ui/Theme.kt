@@ -60,13 +60,33 @@ fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme),
     val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFADB5C4 else 0xFF566172; "purple" -> if(dark)0xFFB8A0FF else 0xFF7250CC; "rose" -> if(dark)0xFFFF8FAF else 0xFFBF3A62; "green" -> if(dark)0xFF66D6AE else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF7CB7FF else 0xFF0869D1 })
     val base=if(dark) Dark else Light
     val palette = when(config.preset){
+        "pure"->base.copy(background=if(dark)Color(0xFF111111) else Color.White,surface=if(dark)Color(0xFF171717) else Color.White,onSurface=if(dark)Color.White else Color(0xFF111111))
+        "glass"->base.copy(background=if(dark)Color(0xFF12151C) else Color(0xFFEFF2F7),surface=if(dark)Color(0xFF20252F) else Color(0xFFF8FAFE),surfaceVariant=if(dark)Color(0xFF2B3240) else Color(0xFFEDF1F8))
         "hybrid"->base.copy(background=if(dark)Color(0xFF151618) else Color(0xFFEDEEF0),surface=if(dark)Color(0xFF202124) else Color(0xFFFAFAF8),surfaceVariant=if(dark)Color(0xFF292B2F) else Color(0xFFF0F1EF),onSurface=if(dark)Color(0xFFF2F3F5) else Color(0xFF202226),onSurfaceVariant=if(dark)Color(0xFFBEC1C8) else Color(0xFF59616B))
         "raycast"->base.copy(background=if(dark)Color(0xFF171719) else Color(0xFFF0EFF3),surface=if(dark)Color(0xFF242426) else Color(0xFFFCFBFD),surfaceVariant=if(dark)Color(0xFF2C2C30) else Color(0xFFE9E7EE),onSurfaceVariant=if(dark)Color(0xFFB0ADB8) else Color(0xFF64606D))
         "graphite"->base.copy(background=if(dark)Color(0xFF1D2023) else Color(0xFFF2F3F4),surface=if(dark)Color(0xFF262A2D) else Color.White,surfaceVariant=if(dark)Color(0xFF303438) else Color(0xFFE9ECEF))
         "ios"->base.copy(background=if(dark)Color(0xFF15171C) else Color(0xFFF2F2F7),surface=if(dark)Color(0xFF23252B) else Color.White,surfaceVariant=if(dark)Color(0xFF2D3037) else Color(0xFFF2F2F7))
         else->base
     }.let{p->p.copy(primary=accent,onPrimary=if(accent.luminance()>.179f)Color(0xFF12151B) else Color.White,primaryContainer=lerp(p.surface,accent,if(dark).18f else .10f),onPrimaryContainer=p.onSurface,secondary=accent,onSecondary=if(accent.luminance()>.179f)Color(0xFF12151B) else Color.White,secondaryContainer=lerp(p.surface,accent,if(dark).12f else .08f),onSecondaryContainer=p.onSurface,tertiary=accent,onTertiary=p.background,tertiaryContainer=lerp(p.surface,accent,.08f),onTertiaryContainer=p.onSurface,outline=p.onSurface.copy(alpha=.24f),outlineVariant=p.onSurface.copy(alpha=.10f),surfaceTint=accent,surfaceContainerLowest=p.background,surfaceContainerLow=lerp(p.surface,p.background,.35f),surfaceContainer=p.surface,surfaceContainerHigh=lerp(p.surface,p.surfaceVariant,.5f),surfaceContainerHighest=p.surfaceVariant)}
-    MaterialTheme(colorScheme = palette, typography=SpotlightTypography) {
+    val font=when(config.typeface){"system"->FontFamily.Default;"mono"->FontFamily.Monospace;else->Inter}
+    val typography=SpotlightTypography.copy(displayLarge=SpotlightTypography.displayLarge.copy(fontFamily=font,fontSize=SpotlightTypography.displayLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+displayMedium=SpotlightTypography.displayMedium.copy(fontFamily=font,fontSize=SpotlightTypography.displayMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+displaySmall=SpotlightTypography.displaySmall.copy(fontFamily=font,fontSize=SpotlightTypography.displaySmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+headlineLarge=SpotlightTypography.headlineLarge.copy(fontFamily=font,fontSize=SpotlightTypography.headlineLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+headlineMedium=SpotlightTypography.headlineMedium.copy(fontFamily=font,fontSize=SpotlightTypography.headlineMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+headlineSmall=SpotlightTypography.headlineSmall.copy(fontFamily=font,fontSize=SpotlightTypography.headlineSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+titleLarge=SpotlightTypography.titleLarge.copy(fontFamily=font,fontSize=SpotlightTypography.titleLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+titleMedium=SpotlightTypography.titleMedium.copy(fontFamily=font,fontSize=SpotlightTypography.titleMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+titleSmall=SpotlightTypography.titleSmall.copy(fontFamily=font,fontSize=SpotlightTypography.titleSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+bodyLarge=SpotlightTypography.bodyLarge.copy(fontFamily=font,fontSize=SpotlightTypography.bodyLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+bodyMedium=SpotlightTypography.bodyMedium.copy(fontFamily=font,fontSize=SpotlightTypography.bodyMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+bodySmall=SpotlightTypography.bodySmall.copy(fontFamily=font,fontSize=SpotlightTypography.bodySmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+labelLarge=SpotlightTypography.labelLarge.copy(fontFamily=font,fontSize=SpotlightTypography.labelLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=SpotlightTypography.labelMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
+labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)))
+    val tone=when(config.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->palette.surface}
+    val toned=palette.copy(surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
+    MaterialTheme(colorScheme = toned, typography=typography) {
         val motion=rememberMotionAllowed(config.animations)
         CompositionLocalProvider(LocalMotion provides motion,LocalAppearance provides config, LocalContentColor provides MaterialTheme.colorScheme.onSurface, content=content)
     }

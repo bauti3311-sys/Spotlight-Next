@@ -41,6 +41,9 @@ fun SpotlightBar(
     onDismiss:(()->Unit)?=null,
     onOptionsChange:(Boolean)->Unit={},
     optionsMaxHeight:Dp=320.dp,
+    optionsOpen:Boolean?=null,
+    onSearchFocus:()->Unit={},
+    quickMenu:(@Composable ()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
@@ -60,10 +63,10 @@ fun SpotlightBar(
             BasicTextField(
                 query,
                 { onQueryChange(it.take(4000)) },
-                Modifier.weight(1f).focusRequester(focus),
+                Modifier.weight(1f).focusRequester(focus).onFocusChanged{if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=Inter, fontSize = if (compact) 17.sp else 20.sp),
+                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 17.sp else 20.sp),
                 cursorBrush = SolidColor(colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -85,7 +88,7 @@ fun SpotlightBar(
                                 maxLines = 1,
                                 fontSize = if (compact) 17.sp else 20.sp,
                                 color = colors.onSurface.copy(alpha = .30f),
-                                style=TextStyle(fontFamily=Inter,letterSpacing=0.sp),
+                                style=TextStyle(fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
                             )
                         inner()
@@ -109,27 +112,30 @@ fun SpotlightBar(
     }
     // A service overlay cannot safely host an Activity-style popup window.
     // Keep options in the same window/token as the editor.
-    var options by remember { mutableStateOf(false) }
+    var localOptions by remember { mutableStateOf(false) }
+    val options=optionsOpen ?: localOptions
+    fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
         Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
-            IconButton(onClick={options=!options;onOptionsChange(options)},modifier=Modifier.size(48.dp)) {
+            IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
                 Icon(CommandIcons.Sliders,"Opciones de búsqueda",Modifier.size(20.dp))
             }
         }
         if(options) {
             HorizontalDivider()
             Column(Modifier.fillMaxWidth().heightIn(max=optionsMaxHeight.coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
-                listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
+                if(quickMenu!=null)quickMenu()
+                else listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
                     val label=when(item){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->item}
                     DropdownMenuItem(text={Text(label)},modifier=Modifier.semantics {
                         contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl/⌘+$i"
                         selected=category==item
-                    },onClick={options=false;onOptionsChange(false);onCategoryChange(if(category==item)"Todo" else item)})
+                    },onClick={setOptions(false);onCategoryChange(if(category==item)"Todo" else item)})
                 }
                 onDismiss?.let { dismiss ->
                     HorizontalDivider()
-                    DropdownMenuItem(text={Text("Cerrar Spotlight")},modifier=Modifier.semantics{contentDescription="Cerrar Spotlight"},onClick={options=false;onOptionsChange(false);dismiss()})
+                    DropdownMenuItem(text={Text("Cerrar Spotlight")},modifier=Modifier.semantics{contentDescription="Cerrar Spotlight"},onClick={setOptions(false);dismiss()})
                 }
             }
         }

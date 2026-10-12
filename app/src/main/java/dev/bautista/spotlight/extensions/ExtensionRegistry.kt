@@ -26,7 +26,7 @@ object ExtensionRegistry {
         ExtensionDefinition("catalog","Centro de comandos",ExtensionIcon.WORKFLOW,"Productividad",listOf(command("catalog.open","Explorar packs y perfiles",Action.SystemPanel("catalog"))),explanation="30 acciones reales y cuatro perfiles manuales; sin eventos automáticos ocultos."),
         ExtensionDefinition("tasker","Tasker",ExtensionIcon.WORKFLOW,"Automatización",listOf(command("tasker.open","Descubrir tareas",Action.SystemPanel("tasker"))),ExtensionRequirement(packageName="net.dinglisch.android.taskerm"),"Proveedor oficial, parámetros, revisión y confirmación de finalización; requiere acceso externo en Tasker."),
         ExtensionDefinition("weather-direct","Clima nativo",ExtensionIcon.WEATHER,"Información",listOf(command("weather-direct.open","Pronóstico de Open-Meteo",Action.SystemPanel("weather-native"))),explanation="Sin clave ni backend. Localidad seleccionable, pronóstico horario y diario, caché sin conexión."),
-        ExtensionDefinition("sports-direct","Agenda deportiva nativa",ExtensionIcon.SPORTS,"Información",listOf(command("sports-direct.open","Consultar agenda",Action.SystemPanel("sports-native"))),explanation="TheSportsDB gratuito: hasta tres eventos, marcadores reportados y favoritos. No incluye cronología en vivo."),
+        ExtensionDefinition("sports-direct","Agenda deportiva nativa",ExtensionIcon.SPORTS,"Información",listOf(command("sports-direct.open","Consultar agenda",Action.SystemPanel("sports-native"))),explanation="TheSportsDB: equipos y competiciones favoritos, consultas dirigidas y caché. Cobertura limitada según plan; no garantiza datos en vivo."),
         ExtensionDefinition("apps","Aplicaciones",ExtensionIcon.APPS,"Aplicaciones",listOf(command("apps.open","Explorar aplicaciones",Action.SelectMode("Apps"))),explanation="Iconos reales, cinco recientes y catálogo alfabético. Acciones públicas mediante Android.",advancedAdapter="app-inspector"),
         ExtensionDefinition("files","Archivos",ExtensionIcon.FILES,"Archivos",listOf(command("files.search","Buscar archivos",Action.SelectMode("Archivos"))),explanation="Almacenamiento compartido autorizado, filtros y vistas previas. No lee datos privados de otras apps."),
         ExtensionDefinition("contacts","Contactos",ExtensionIcon.PEOPLE,"Comunicación",listOf(command("contacts.search","Buscar contactos",Action.Navigate(SearchScope("","contacts")))),ExtensionRequirement(permissions=setOf(Manifest.permission.READ_CONTACTS)),"Selector de coincidencias; los nombres repetidos no se fusionan."),
@@ -50,6 +50,16 @@ object ExtensionRegistry {
         ExtensionDefinition("system","Dispositivo",ExtensionIcon.SYSTEM,"Sistema",listOf(command("system.info","Información del dispositivo",Action.SystemPanel("device")),command("system.controls","Sistema y controles avanzados",Action.SystemPanel("controls"))),explanation="Diagnóstico público. Los cambios de pantalla requieren conexión ADB, validación y confirmación.",advancedAdapter="reversible-settings"),
         ExtensionDefinition("shizuku","Shizuku",ExtensionIcon.SHIELD,"Sistema",listOf(command("shizuku.setup","Configurar Shizuku",Action.SystemPanel("shizuku"))),explanation="API oficial, autorización explícita y conexión bajo demanda. La búsqueda estándar sigue funcionando.",advancedAdapter="shizuku-manager")
     )
+    fun searchCommands(context:Context,query:String,c:Config):List<Result> = extensions.filter{ExtensionStore.enabled(context,it.id) && (it.id !in setOf("catalog","focus","tasker") || it.id=="tasker" && normalize(query).contains("tasker"))}.flatMap { e ->
+        e.commands.mapNotNull { command ->
+            val match=maxOf(relevance(query,command.title),relevance(query,e.name))
+            if(match<500)return@mapNotNull null
+            val missing=e.requirements.packageName?.let{context.packageManager.getLaunchIntentForPackage(it)==null} ?: false
+            val permission=e.requirements.permissions.firstOrNull{ContextCompat.checkSelfPermission(context,it)!=PackageManager.PERMISSION_GRANTED}
+            val action=when{missing->Action.SystemPanel("extensions");permission==Manifest.permission.READ_CONTACTS->Action.Access("contacts");permission==Manifest.permission.READ_CALENDAR->Action.Access("calendar");else->command.action}
+            Result("registered:"+command.id,command.title,when{missing->"Aplicación no instalada · revisar alternativas";permission!=null->"Permiso pendiente · autorizar al seleccionar";else->e.explanation},e.category,match+300,action)
+        }
+    }
     fun resolve(id:String):RegisteredCommand?=extensions.flatMap{it.commands}.singleOrNull{it.id==id}
     suspend fun snapshot(context:Context,config:Config):List<ExtensionSnapshot> = withContext(Dispatchers.IO){
         val tasker=dev.bautista.spotlight.next.TaskerAdapter(context).discover()

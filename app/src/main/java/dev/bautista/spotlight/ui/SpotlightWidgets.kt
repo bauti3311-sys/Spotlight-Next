@@ -3,6 +3,9 @@ package dev.bautista.spotlight.ui
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.interaction.*
@@ -33,7 +36,8 @@ fun ResultIcon(
     } else
         Icon(
             when {
-                result.action is Action.SystemPanel -> when(result.action.page){"interpret"->CommandIcons.ListChecks;"display-review"->CommandIcons.Sun;"app"->CommandIcons.Apps;"device"->CommandIcons.Display;"shizuku"->CommandIcons.Shield;"focus"->CommandIcons.Timer;"agent"->CommandIcons.AutoAwesome;"extensions"->CommandIcons.Layers;"preferences:appearance"->CommandIcons.Display;"preferences:ai"->CommandIcons.AutoAwesome;"preferences:shortcuts"->CommandIcons.Keyboard;"preferences:suggestions"->CommandIcons.Star;"preferences:permissions"->CommandIcons.Shield;else->CommandIcons.Sliders}
+                result.action is Action.WorkflowRun -> when(dev.bautista.spotlight.automation.Workflows.parse(LocalAppearance.current.routines).firstOrNull{it.id==result.action.id}?.icon){"bolt"->CommandIcons.Bolt;"sun"->CommandIcons.Sun;"music"->CommandIcons.MusicNote;else->CommandIcons.Layers}
+                result.action is Action.SystemPanel -> when(result.action.page){"weather-native"->CommandIcons.Cloud;"sports-native"->CommandIcons.Sports;"context"->CommandIcons.Description;"context-ai"->CommandIcons.AutoAwesome;"conversation"->CommandIcons.Forum;"diagnostics"->CommandIcons.Info;"tasker","catalog","profiles"->CommandIcons.Layers;"interpret"->CommandIcons.ListChecks;"display-review"->CommandIcons.Sun;"app"->CommandIcons.Apps;"device"->CommandIcons.Display;"shizuku"->CommandIcons.Shield;"focus"->CommandIcons.Timer;"agent"->CommandIcons.AutoAwesome;"extensions"->CommandIcons.Layers;"preferences:appearance"->CommandIcons.Display;"preferences:ai"->CommandIcons.AutoAwesome;"preferences:shortcuts"->CommandIcons.Keyboard;"preferences:suggestions"->CommandIcons.Star;"preferences:permissions"->CommandIcons.Shield;else->CommandIcons.Sliders}
                 result.action is Action.ReadNotification -> CommandIcons.Forum
                 result.action is Action.SelectMode -> when(result.action.mode){"Apps"->CommandIcons.Apps;"Archivos"->CommandIcons.Folder;"IA"->CommandIcons.AutoAwesome;"Portapapeles"->CommandIcons.ContentCopy;else->CommandIcons.Bolt}
                 result.action is Action.NewNote -> CommandIcons.EditNote
@@ -71,18 +75,20 @@ fun ResultRow(
     onDetails: () -> Unit,
     onFavorite: () -> Unit,
     animations: Boolean = true,
+    onInteraction:()->Unit={},
 ) {
     val colors = MaterialTheme.colorScheme
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
     val pad=when(LocalAppearance.current.density){"compact"->5;"spacious"->13;"auto"->if(LocalConfiguration.current.screenWidthDp<600)6 else 9;else->9}
-    val ink by animateColorAsState(colors.onSurface,tween(if(motion)180 else 0),label="result-ink")
-    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)180 else 0),label="result-fill")
+    val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionMs else 0),label="result-ink")
+    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)GlassTokens.selectionMs else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
             .clip(RoundedCornerShape(9.dp))
             .background(fill)
+            .border(if(selected && LocalAppearance.current.selectionStyle=="glass")1.dp else 0.dp,colors.primary.copy(alpha=.16f),RoundedCornerShape(9.dp))
             .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
             .padding(start = 10.dp, end = 4.dp, top = pad.dp, bottom = pad.dp),
         verticalAlignment = Alignment.CenterVertically,

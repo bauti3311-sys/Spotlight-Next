@@ -34,7 +34,7 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
         "display-review"->DisplayReview(app,payload)
         "tasker"->TaskerPanel(app)
         "weather-native"->WeatherPanel(app,payload)
-        "sports-native"->SportsPanel(app,payload,onAction)
+        "sports-native"->SportsFavoritesPanel(app,payload,onAction)
     }
 }
 @Composable private fun CatalogPanel(app:SpotlightApp,onAction:(Action)->Unit) {
@@ -89,11 +89,11 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
 }
 @Composable private fun WeatherPanel(app:SpotlightApp,initial:String) {
     val repo=remember{NativeProviders(app)};val prefs=remember{app.getSharedPreferences("weather_native",Context.MODE_PRIVATE)}
-    var city by remember(initial){mutableStateOf(initial.ifBlank{prefs.getString("city","Mar del Plata").orEmpty()})};var requested by remember(initial){mutableStateOf(city)}
+    var city by remember(initial){mutableStateOf(initial.removePrefix("tomorrow:").ifBlank{prefs.getString("city","Mar del Plata").orEmpty()})};var requested by remember(initial){mutableStateOf(city)}
     var revision by remember{mutableIntStateOf(0)};var data by remember{mutableStateOf<NativeSnapshot?>(null)};var error by remember{mutableStateOf("")};var busy by remember{mutableStateOf(false)}
     LaunchedEffect(requested,revision){busy=true;error="";try{data=repo.weather(requested,revision>0);prefs.edit().putString("city",requested).apply()}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message.orEmpty();data=null}finally{busy=false}}
     Column(Modifier.fillMaxWidth().heightIn(max=360.dp).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
-        Text("Clima",style=MaterialTheme.typography.titleLarge)
+        Text(if(initial.startsWith("tomorrow:"))"Clima mañana" else "Clima",style=MaterialTheme.typography.titleLarge)
         OutlinedTextField(city,{city=it.take(100)},label={Text("Localidad")},singleLine=true,modifier=Modifier.fillMaxWidth())
         Row{TextButton(enabled=!busy,onClick={requested=city.ifBlank{"Mar del Plata"};revision++}){Text("Consultar")};TextButton(enabled=!busy,onClick={city="Mar del Plata";requested=city;revision++}){Text("Mar del Plata")}}
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
@@ -105,38 +105,12 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
                 Text("Precipitación ${ProviderValues.number(current,"precipitation"," mm")}")
             }
             val hourly=j.optJSONObject("hourly");val times=hourly?.optJSONArray("time");val temperatures=hourly?.optJSONArray("temperature_2m");val rain=hourly?.optJSONArray("precipitation_probability")
-            if(times!=null){Text("Próximas horas",style=MaterialTheme.typography.titleSmall);val currentTime=current.optString("time");val start=(0 until times.length()).firstOrNull{times.optString(it)>=currentTime.take(13)+":00"} ?: 0
+            if(times!=null){Text("Próximas horas",style=MaterialTheme.typography.titleSmall);val currentTime=if(initial.startsWith("tomorrow:"))runCatching{java.time.LocalDate.parse(current.optString("time").take(10)).plusDays(1).toString()+"T00:00"}.getOrDefault("") else current.optString("time");val start=(0 until times.length()).firstOrNull{times.optString(it)>=currentTime.take(13)+":00"} ?: 0
                 Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){for(i in start until minOf(start+12,times.length())){Surface(shape=RoundedCornerShape(10.dp),color=MaterialTheme.colorScheme.surfaceContainerLow){Column(Modifier.padding(12.dp)){Text(times.optString(i).substringAfter('T'));Text(if(temperatures?.isNull(i)==false)"${temperatures.optString(i)} °C" else "—");Text(if(rain?.isNull(i)==false)"${rain.optString(i)}% lluvia" else "—")}}}}
             }
             j.optJSONObject("daily")?.let {d->val days=d.optJSONArray("time");for(i in 0 until (days?.length() ?: 0)){NextCard(days!!.optString(i),"${d.optJSONArray("temperature_2m_min")?.optString(i)}° / ${d.optJSONArray("temperature_2m_max")?.optString(i)}° · Lluvia ${d.optJSONArray("precipitation_probability_max")?.optString(i)}%",CommandIcons.Cloud){Text("UV ${d.optJSONArray("uv_index_max")?.optString(i)} · Amanecer ${d.optJSONArray("sunrise")?.optString(i)?.substringAfter('T')} · Atardecer ${d.optJSONArray("sunset")?.optString(i)?.substringAfter('T')}",style=MaterialTheme.typography.bodySmall)}}}
             if(snapshot.stale)Text(snapshot.warning,color=MaterialTheme.colorScheme.error)
             Text("Open-Meteo · ${j.optString("timezone")} · Actualizado ${stamp(snapshot.fetchedAt)}",style=MaterialTheme.typography.labelSmall)
         }
-    }
-}
-@Composable private fun SportsPanel(app:SpotlightApp,initial:String,onAction:(Action)->Unit) {
-    val repo=remember{NativeProviders(app)};val prefs=remember{app.getSharedPreferences("sports_native",Context.MODE_PRIVATE)}
-    var sport by remember{mutableStateOf(prefs.getString("sport","Soccer").orEmpty())};var date by remember{mutableStateOf(LocalDate.now())};var revision by remember{mutableIntStateOf(0)}
-    var data by remember{mutableStateOf<NativeSnapshot?>(null)};var busy by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var filter by remember(initial){mutableStateOf(initial)}
-    var favorites by remember{mutableStateOf(prefs.getStringSet("favorites",emptySet()).orEmpty().toSet())}
-    LaunchedEffect(sport,date,revision){busy=true;error="";try{data=repo.sports(sport,date,revision>0);prefs.edit().putString("sport",sport).apply()}catch(e:CancellationException){throw e}catch(e:Exception){data=null;error=e.message.orEmpty()}finally{busy=false}}
-    Column(Modifier.fillMaxWidth().heightIn(max=360.dp).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){
-        Text("Agenda deportiva",style=MaterialTheme.typography.titleLarge)
-        Text("TheSportsDB gratuito: muestra limitada de hasta 3 eventos por consulta. No incluye cronología ni garantiza resultados en vivo.",style=MaterialTheme.typography.bodySmall)
-        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){listOf("Soccer" to "Fútbol","Basketball" to "Básquet","Motorsport" to "Motor","Tennis" to "Tenis","Baseball" to "Béisbol").forEach{(id,label)->FilterChip(selected=sport==id,onClick={sport=id},label={Text(label)})}}
-        Row{TextButton(enabled=!busy,onClick={date=date.minusDays(1)}){Text("Anterior")};TextButton(enabled=!busy,onClick={date=LocalDate.now();revision++}){Text("Hoy · actualizar")};TextButton(enabled=!busy,onClick={date=date.plusDays(1)}){Text("Siguiente")}}
-        Text(date.toString());OutlinedTextField(filter,{filter=it.take(100)},singleLine=true,label={Text("Filtrar equipo o torneo")},modifier=Modifier.fillMaxWidth())
-        if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
-        data?.let{snapshot->val events=snapshot.json.optJSONArray("events") ?: JSONArray();val items=(0 until events.length()).mapNotNull{events.optJSONObject(it)}.filter{filter.isBlank() || dev.bautista.spotlight.search.normalize(it.optString("strEvent")+" "+it.optString("strLeague")).contains(dev.bautista.spotlight.search.normalize(filter))}
-            if(items.isEmpty())NextCard("Sin eventos en esta muestra","La ausencia aquí no significa que no haya partidos. Podés buscar una cobertura más amplia en la web.",CommandIcons.Sports)
-            items.sortedByDescending{it.optString("idEvent") in favorites}.forEach{event->val id=event.optString("idEvent");NextCard(event.optString("strEvent","Evento"),event.optString("strLeague"),CommandIcons.Sports){
-                Text(ProviderValues.score(event),style=MaterialTheme.typography.titleLarge)
-                val status=event.optString("strStatus").takeUnless{it.isBlank() || it=="null"} ?: "Estado no informado";Text(status)
-                Text("Hora: ${event.optString("strTimestamp").takeUnless{it.isBlank() || it=="null"} ?: event.optString("strTime").takeUnless{it.isBlank() || it=="null"} ?: "No informada"}",style=MaterialTheme.typography.bodySmall)
-                if(id.isNotBlank())TextButton(onClick={favorites=if(id in favorites)favorites-id else (favorites+id).toList().takeLast(50).toSet();prefs.edit().putStringSet("favorites",favorites).apply()}){Text(if(id in favorites)"Quitar favorito" else "Fijar evento")}
-            }}
-            if(snapshot.stale)Text(snapshot.warning,color=MaterialTheme.colorScheme.error);Text("TheSportsDB · Actualizado ${stamp(snapshot.fetchedAt)}",style=MaterialTheme.typography.labelSmall)
-        }
-        TextButton(onClick={onAction(Action.Launch(Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com/search?q="+Uri.encode(filter.ifBlank{"resultados $sport $date"})))) )}){Text("Ampliar búsqueda en la web")}
     }
 }

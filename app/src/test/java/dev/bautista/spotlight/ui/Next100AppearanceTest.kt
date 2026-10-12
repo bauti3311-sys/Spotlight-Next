@@ -29,7 +29,7 @@ class Next100AppearanceTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         var preset by mutableStateOf(AppearancePresets.names.first())
         ui.setContent{Box(Modifier.fillMaxSize(),contentAlignment=Alignment.TopCenter){Box(Modifier.width(760.dp)){SpotlightPanel(app,AppearancePresets.apply(preset,dev.bautista.spotlight.data.Config(files=false,animations=false)),{},availableHeightDp=700f)}}}
-        AppearancePresets.names.forEach{name->ui.runOnIdle{preset=name};ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()};ui.runOnIdle{capture091(ui.activity,"next100-floating-"+name.substringBefore(' ').lowercase())}}
+        AppearancePresets.names.forEach{name->ui.runOnIdle{preset=name};ui.waitUntil(15000){ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty()};ui.runOnIdle{capture091(ui.activity,"next100-floating-"+name.substringBefore(' ').lowercase())}}
     }
     @Test fun deviceAndShizukuPanelsExposeActualMissingState(){
         val app=RuntimeEnvironment.getApplication() as SpotlightApp

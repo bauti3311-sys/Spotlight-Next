@@ -18,13 +18,14 @@ import org.json.*
 
 data class ToolExecution(val text:String,val action:Action?=null)
 class ToolAudit(context:Context) {
+    private val privacy=(context.applicationContext as? SpotlightApp)?.preferences
     private val prefs=context.getSharedPreferences("tool_audit",Context.MODE_PRIVATE)
-    @Synchronized fun record(id:String,status:String){val old=runCatching{JSONArray(prefs.getString("events","[]"))}.getOrDefault(JSONArray());val next=JSONArray();for(i in maxOf(0,old.length()-49) until old.length())next.put(old.getJSONObject(i));next.put(JSONObject().put("tool",id).put("status",status).put("time",System.currentTimeMillis()));prefs.edit().putString("events",next.toString()).apply()}
+    @Synchronized fun record(id:String,status:String){if(privacy?.isPrivate==true)return;val old=runCatching{JSONArray(prefs.getString("events","[]"))}.getOrDefault(JSONArray());val next=JSONArray();for(i in maxOf(0,old.length()-49) until old.length())next.put(old.getJSONObject(i));next.put(JSONObject().put("tool",id).put("status",status).put("time",System.currentTimeMillis()));prefs.edit().putString("events",next.toString()).apply()}
     fun summary():String=runCatching{val a=JSONArray(prefs.getString("events","[]"));(0 until a.length()).joinToString("\n"){val j=a.getJSONObject(it);"${j.getLong("time")} · ${j.getString("tool")} · ${j.getString("status")}"}}.getOrDefault("")
     fun clear(){prefs.edit().remove("events").apply()}
 }
 class ToolExecutor(private val app:SpotlightApp) {
-    fun available(c:Config):List<ToolDefinition> = ToolRegistry.definitions.filter{d->dev.bautista.spotlight.extensions.ExtensionStore.enabled(app,d.extension) && when{d.advanced->app.shizuku.state.value.available && (d.id!="write_display_setting" || app.shizuku.writeCapability.value==true);d.id=="search_contacts"->c.contacts && People.allowed(app);d.id=="calendar_agenda"->ContextCompat.checkSelfPermission(app,Manifest.permission.READ_CALENDAR)==PackageManager.PERMISSION_GRANTED;d.id=="search_files"->c.files && (app.index.broadAllowed() || c.trees.isNotEmpty());else->true}}
+    fun available(c:Config):List<ToolDefinition> = ToolRegistry.definitions.filter{d->dev.bautista.spotlight.extensions.ExtensionStore.enabled(app,d.extension) && when{d.advanced->app.shizuku.state.value.available && (d.id!="write_display_setting" || app.shizuku.writeCapability.value==true);d.id=="control_media"->listOf("play","pause","next","previous").any{MediaControl.available(app,it)};d.id=="search_contacts"->c.contacts && People.allowed(app);d.id=="calendar_agenda"->ContextCompat.checkSelfPermission(app,Manifest.permission.READ_CALENDAR)==PackageManager.PERMISSION_GRANTED;d.id=="search_files"->c.files && (app.index.broadAllowed() || c.trees.isNotEmpty());else->true}}
     suspend fun execute(call:ToolCall,c:Config,confirmed:Boolean=false):ToolExecution {
         val request=ToolRegistry.authorize(call,available(c).map{it.id}.toSet(),confirmed)
         try {
@@ -42,6 +43,7 @@ class ToolExecutor(private val app:SpotlightApp) {
                 is ToolRequest.Workflow->{check(Workflows.parse(c.routines).any{it.id==request.id}){"La rutina no existe."};ToolExecution("Rutina preparada para revisión.",Action.WorkflowRun(request.id))}
                 is ToolRequest.OpenApp->{val intent=app.packageManager.getLaunchIntentForPackage(request.packageName) ?: error("La aplicación no está instalada.");ToolExecution("Aplicación disponible para abrir.",Action.Launch(intent))}
                 is ToolRequest.Volume->{val audio=app.getSystemService(AudioManager::class.java);audio.setStreamVolume(AudioManager.STREAM_MUSIC,audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*request.percent/100,0);ToolExecution("Volumen multimedia solicitado: ${request.percent} %.")}
+                is ToolRequest.Media->ToolExecution(MediaControl.execute(app,request.command))
                 ToolRequest.Device->ToolExecution("${Build.MANUFACTURER} ${Build.MODEL}\nAndroid ${Build.VERSION.RELEASE} · API ${Build.VERSION.SDK_INT}",Action.SystemPanel("device"))
                 ToolRequest.Diagnostics->{val state=app.shizuku.state.value;ToolExecution("${state.status.label}\n${state.privilege}\nAPI de servicio ${state.version ?: "—"}",Action.SystemPanel("shizuku"))}
             }}}
