@@ -18,7 +18,7 @@ object RootActions {
         }
         Regex("^(?:poner |ajustar |cambiar )?(?:el )?(?:brillo|volumen)(?: al| a)? (-?\\d{1,9})\\s*%?$").matchEntire(q)?.let{m->
             val n=m.groupValues[1].toIntOrNull()
-            if(n==null || n !in 0..100)add("invalid","Porcentaje inválido","Usá un valor entre 0 y 100; no se modifica el dispositivo","Información",Action.RestoreQuery(raw),4000)
+            if(n==null || n !in 0..100)add("invalid","Porcentaje inválido · entre 0 y 100","Usá un valor entre 0 y 100; no se modifica el dispositivo","Información",Action.RestoreQuery(raw),4000)
         }
         LocalPlan.step(raw)?.takeIf{it is PlanStep.RelativeBrightness || it is PlanStep.RelativeVolume || it is PlanStep.Media}?.let{add("plan-single","Revisar acción","Comprobar permisos y confirmar antes de ejecutar","Acciones",Action.SystemPanel("interpret",raw))}
         if(q.startsWith("clima"))add("weather",if(q.contains("manana"))"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:" else q.removePrefix("clima").removePrefix(" en ").trim()))
@@ -31,6 +31,7 @@ object RootActions {
         if(q in setOf("buscar musica en spotify","buscar musica en youtube")){val topic=q.substringAfterLast(' ');add("music-form","Buscar en ${ActionCatalog.displayName(topic)}","Elegir el contenido a buscar","Acciones",Action.ComposeSearch(topic,ActionCatalog.packages[topic].orEmpty()))}
         if(q.contains("este archivo") || q.contains("este documento") || q.contains("este pdf") || q.contains("este texto") || q in setOf("explicame esto","resumir esto","traducir esto"))
             add("context","Trabajar con contexto autorizado","Elegir o revisar el contenido antes de usar IA","IA",Action.SystemPanel("context-ai",raw),4000)
+        if(q in setOf("pomodoro","concentracion","sesion de concentracion"))add("focus","Concentración","Temporizador local · abrir opciones", "Acciones",Action.SystemPanel(if(dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"focus"))"focus" else "extensions"),2900)
         if(q in setOf("contexto","contextos","contextos fijados","elegir documento"))add("context-list","Contexto y documentos","Elegir, fijar o quitar contenido autorizado","Contexto",Action.SystemPanel("context"))
         if(q in setOf("diagnostico","diagnostico de spotlight","diagnosticos"))add("diagnostics","Diagnóstico de Spotlight","Permisos, servicios y tiempos observados sin contenido privado","Sistema",Action.SystemPanel("diagnostics"))
         if(q in setOf("modo privado","privacidad"))add("privacy","Modo privado y datos","Suspender captura y aprendizaje sin borrar lo guardado","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","Privacidad y sistema")))

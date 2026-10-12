@@ -10,7 +10,7 @@ object LocalLanguage {
         q=q.replace("por ciento","%").replace("la pantalla","brillo")
         q=Regex("\\b("+words.keys.joinToString("|")+")\\b").replace(q){words.getValue(it.value).toString()}
         q=q.replace(Regex("(\\d{1,2}0) y (\\d)(?=\\s*%)")){(it.groupValues[1].toInt()+it.groupValues[2].toInt()).toString()}
-        return q
+        return q.replace(Regex("\\s+%"),"%")
     }
     fun forSearch(raw:String):String {
         val normalized=normalize(raw.trim()).replace(Regex("\\s+")," ")

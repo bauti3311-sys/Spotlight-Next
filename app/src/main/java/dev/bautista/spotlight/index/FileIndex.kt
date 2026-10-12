@@ -104,7 +104,7 @@ class FileIndex(
         else c.trees
 
     suspend fun ensure(c: Config) {
-        observe(c.trees)
+        observe(c.trees + if(broadAllowed())setOf(android.provider.MediaStore.Files.getContentUri("external").toString()) else emptySet())
         if (
             broadAllowed() != lastBroad ||
                 c.trees != lastTrees ||

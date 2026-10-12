@@ -132,7 +132,7 @@ fun SpotlightPanel(
         }
         val filtered =
             results.filter {
-                when (category) {
+                if(query.isNotBlank() && (it.id.startsWith("root:") || it.id.startsWith("registered:")))true else when (category) {
                     "Todo" -> true
                     "Apps" -> it.category == "Aplicaciones"
                     "Archivos" -> searchScope!=null || it.category == "Archivos"
@@ -708,7 +708,7 @@ fun SpotlightPanel(
                     optionsOpen=searchOptions,
                     onSearchFocus={app.diagnostics.markInteractive()},
                     quickMenu={
-                        GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}}},
+                        GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}.onFailure{error="No se pudo guardar la preferencia. Reintentá."}}},
                             {launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))},
                             {mode->searchOptions=false;selectMode(mode)})
                     },
