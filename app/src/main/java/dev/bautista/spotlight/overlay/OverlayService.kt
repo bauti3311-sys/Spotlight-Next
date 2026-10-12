@@ -41,6 +41,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var config by androidx.compose.runtime.mutableStateOf(Config())
     private var initialQuery = ""
     private var invocation = "touch"
+    private var contentExpanded=false
     private var availableHeightDp by androidx.compose.runtime.mutableFloatStateOf(480f)
 
     private fun updateAvailableHeight(imeBottom: Int = 0) {
@@ -135,7 +136,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     private fun params(): WindowManager.LayoutParams {
         val dm = resources.displayMetrics
-        val bounds=AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,0,config)
+        val bounds=AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,0,config,contentExpanded)
         val width=bounds.width
         return WindowManager.LayoutParams(
                 width,
@@ -175,6 +176,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         initialQuery = initialQuery,
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
+                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;view?.let{runCatching{wm.updateViewLayout(it,params())}}}},
                     )
                 }
             }
@@ -269,10 +271,11 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         val host=view
         if(host!=null && host.isAttachedToWindow && motionAllowed()) {
             host.animate().cancel()
-            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(90).withEndAction {if(view===host)finishClose()}.start()
+            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(when(config.movement){"precise"->55L;"liquid_immersive"->115L;else->90L}).withEndAction {if(view===host)finishClose()}.start()
         } else finishClose()
     }
     private fun finishClose() {
+        contentExpanded=false
         clipboard.removePrimaryClipChangedListener(clipListener)
         showJob?.cancel()
         composition?.disposeComposition()

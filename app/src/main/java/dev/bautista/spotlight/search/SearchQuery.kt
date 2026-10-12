@@ -61,6 +61,8 @@ private constructor(private val root: Node, val problem: String?, val plain: Str
                         "documentos" -> d.kind == "document" || d.kind == "email"
                         else -> d.name.lowercase().endsWith(".$v") || normalize(d.mime) == v
                     }
+                "modified-after", "created-after" -> timestamp(d, key) > 0 && v.toLongOrNull()?.let { timestamp(d,key) >= it } == true
+                "modified-before", "created-before" -> timestamp(d, key) > 0 && v.toLongOrNull()?.let { timestamp(d,key) < it } == true
                 "author",
                 "autor" -> normalize(d.author).contains(v)
                 "name",
@@ -78,6 +80,8 @@ private constructor(private val root: Node, val problem: String?, val plain: Str
                 else -> normalize(d.name + "\n" + d.text).contains(normalize(decoded))
             }
         }
+
+        private fun timestamp(d:Document,key:String)=if(key.startsWith("created"))d.created else d.modified
 
         private fun date(timestamp: Long, value: String): Boolean {
             if (timestamp <= 0) return false
@@ -212,6 +216,7 @@ private constructor(private val root: Node, val problem: String?, val plain: Str
         }
 
         fun natural(input: String): String {
+            QueryInterpreter.files(input)?.let{return it.query}
             var s = normalize(input.trim()).removePrefix("buscar ")
             if(s.startsWith("pdf ")){val rest=s.removePrefix("pdf ").removePrefix("de ");return "kind:pdf "+if(rest in setOf("ayer","hoy"))"modified:$rest" else rest}
             if(s.startsWith("archivos de "))return s.removePrefix("archivos de ")

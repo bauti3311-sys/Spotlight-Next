@@ -17,7 +17,19 @@ class ShareContextActivity:ComponentActivity() {
    val app=application as SpotlightApp
    val text=intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString().orEmpty()
    @Suppress("DEPRECATION") val uri=intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
-   if(uri==null){require(text.isNotBlank());app.contexts.setText(text.take(16000),"Texto compartido")}
+   @Suppress("DEPRECATION") val multiple=if(intent.action==Intent.ACTION_SEND_MULTIPLE)intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM).orEmpty() else emptyList()
+   if(multiple.isNotEmpty()) {
+    require(multiple.size<=12 && multiple.all{it.scheme=="content"})
+    val joined=withContext(Dispatchers.IO){multiple.mapIndexed{index,input->
+     ensureActive()
+     val size=contentResolver.query(input,arrayOf(OpenableColumns.SIZE),null,null,null)?.use{if(it.moveToFirst() && !it.isNull(0))it.getLong(0) else 0L} ?: 0L
+     require(size<=20L*1024*1024)
+     val mime=contentResolver.getType(input).orEmpty()
+     "Documento ${index+1}: "+dev.bautista.spotlight.index.DocumentText.extract(this@ShareContextActivity,input,mime).take(15000/multiple.size)
+    }.joinToString("\n\n").take(16000)}
+    app.contexts.setText(joined,"${multiple.size} documentos compartidos")
+   }
+   else if(uri==null){require(text.isNotBlank());app.contexts.setText(text.take(16000),"Texto compartido")}
    else {
     require(uri.scheme=="content")
     val persisted=runCatching{contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);true}.getOrDefault(false)

@@ -7,6 +7,7 @@ import dev.bautista.spotlight.control.ActionCatalog
 /** Local suggestions only. All network/content processing starts after explicit selection. */
 object RootActions {
     fun results(context:Context,raw:String,c:Config):List<Result> {
+        if(raw.contains('"') && !LocalLanguage.isQuestion(raw))return emptyList()
         val q=LocalLanguage.canonical(raw).removePrefix("¿").removeSuffix("?").trim();val rows=mutableListOf<Result>()
         fun add(id:String,title:String,detail:String,category:String,action:Action,score:Int=3400){rows+=Result("root:$id",title,detail,category,score,action)}
         val registeredMessage=dev.bautista.spotlight.next.IntentRouter.route(raw,c.messageApp) is Action.ComposeMessage || ActionCatalog.message(raw,c.messageApp)!=null
@@ -22,9 +23,11 @@ object RootActions {
             if(n==null || n !in 0..100)add("invalid","Porcentaje inválido · entre 0 y 100","Usá un valor entre 0 y 100; no se modifica el dispositivo","Información",Action.RestoreQuery(raw),4000)
         }
         LocalPlan.step(raw)?.takeIf{it is PlanStep.RelativeBrightness || it is PlanStep.RelativeVolume || it is PlanStep.Media}?.let{add("plan-single","Revisar acción","Comprobar permisos y confirmar antes de ejecutar","Acciones",Action.SystemPanel("interpret",raw))}
+        SportsRequest.parse(raw)?.let{add("sports-agenda","Consultar agenda deportiva","Favoritos y cobertura real del proveedor","Deportes",Action.SystemPanel("sports-native",raw),3900)}
+        if(WeatherRequests.matches(raw))add("weather-question","Consultar pronóstico","Open-Meteo · consulta solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:" else ""),3900)
         if(q.startsWith("clima")) {
             val tomorrow=Regex("\\bma[nñ]ana\\b",RegexOption.IGNORE_CASE).containsMatchIn(raw)
-            val city=Regex("^clima\\s*",RegexOption.IGNORE_CASE).replace(raw.trim().removePrefix("¿").removeSuffix("?"),"").let{Regex("\\bma[nñ]ana\\b",RegexOption.IGNORE_CASE).replace(it,"")}.trim().let{Regex("^en\\s+",RegexOption.IGNORE_CASE).replace(it,"")}
+            val city=Regex("^clima\\s*",RegexOption.IGNORE_CASE).replace(raw.trim().removePrefix("¿").removeSuffix("?"),"").let{Regex("\\b(?:ma[nñ]ana|hoy)\\b",RegexOption.IGNORE_CASE).replace(it,"")}.trim().let{Regex("^en\\s+",RegexOption.IGNORE_CASE).replace(it,"")}
             add("weather",if(tomorrow)"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(tomorrow)"tomorrow:$city" else city))
         }
         Regex("^¿?(?:c[oó]mo va|resultado de|partido de|c[oó]mo sali[oó]|cu[aá]ndo juega) (.+?)\\??$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())?.let{add("sports","Consultar ${it.groupValues[1]}","Elegir equipo o competición real · datos del proveedor","Deportes",Action.SystemPanel("sports-native",it.groupValues[1]))}
@@ -34,14 +37,16 @@ object RootActions {
             add("music:$topic","Buscar música en ${ActionCatalog.displayName(topic)}",term+" · búsqueda, sin iniciar reproducción","Acciones",Action.ComposeSearch(topic,ActionCatalog.packages[topic].orEmpty(),term))
         }
         if(q in setOf("buscar musica en spotify","buscar musica en youtube")){val topic=q.substringAfterLast(' ');add("music-form","Buscar en ${ActionCatalog.displayName(topic)}","Elegir el contenido a buscar","Acciones",Action.ComposeSearch(topic,ActionCatalog.packages[topic].orEmpty()))}
+        if(Regex("\\bestos(?: +\\d{1,2})? +(documentos|archivos|pdfs)\\b").containsMatchIn(q))add("selection","Trabajar con documentos seleccionados","Extracción local y revisión antes de enviar a IA","IA",Action.SystemPanel("selection-ai",raw),4200)
         if(q.contains("este archivo") || q.contains("este documento") || q.contains("este pdf") || q.contains("este texto") || q in setOf("explicame esto","resumir esto","traducir esto"))
             add("context","Trabajar con contexto autorizado","Elegir o revisar el contenido antes de usar IA","IA",Action.SystemPanel("context-ai",raw),4000)
         if(q in setOf("pomodoro","concentracion","sesion de concentracion"))add("focus","Concentración","Temporizador local · abrir opciones", "Acciones",Action.SystemPanel(if(dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"focus"))"focus" else "extensions"),2900)
+        if(q in setOf("calendario","mi calendario","agenda","mi agenda","que tengo manana","que tengo hoy") || dev.bautista.spotlight.control.CalendarLanguage.draft(raw)!=null || dev.bautista.spotlight.control.CalendarLanguage.free(raw)!=null)add("calendar","Calendario","Calendarios sincronizados · permisos opcionales","Agenda",Action.SystemPanel("calendar",raw),4100)
+        if(q in setOf("guardados","mis guardados","textos frecuentes"))add("saved","Guardados","Notas, textos, enlaces y documentos fijados","Guardados",Action.SystemPanel("saved"),3800)
         if(q in setOf("contexto","contextos","contextos fijados","elegir documento"))add("context-list","Contexto y documentos","Elegir, fijar o quitar contenido autorizado","Contexto",Action.SystemPanel("context"))
         if(q in setOf("diagnostico","diagnostico de spotlight","diagnosticos"))add("diagnostics","Diagnóstico de Spotlight","Permisos, servicios y tiempos observados sin contenido privado","Sistema",Action.SystemPanel("diagnostics"))
         if(q in setOf("modo privado","privacidad"))add("privacy","Modo privado y datos","Suspender captura y aprendizaje sin borrar lo guardado","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","Privacidad y sistema")))
-        if(LocalLanguage.isQuestion(raw) && rows.none{it.id=="root:context"})add("ai","Responder con IA","Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,true),1900)
-        if(rows.isEmpty() && q.split(' ').size>=7)add("complex","Revisar consulta con IA","Consulta remota opcional · revisar antes de enviar","IA",Action.Ask(raw,true),1000)
+        if(LocalLanguage.isQuestion(raw) && rows.isEmpty())add("ai","Responder con IA","Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,!c.aiRootConsent),3800)
         dev.bautista.spotlight.ui.SettingsGroups.names.filter{relevance(q,it)>=650}.forEach{group->add("settings:$group",group,"Abrir esta sección de ajustes de Spotlight","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group)),2100)}
         return rows
     }

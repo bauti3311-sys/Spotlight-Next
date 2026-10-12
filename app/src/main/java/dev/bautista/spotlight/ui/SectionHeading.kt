@@ -23,7 +23,7 @@ fun sectionIcon(name: String): ImageVector = when(name) {
     "Portapapeles" -> CommandIcons.ContentCopy
     "Notas" -> CommandIcons.EditNote
     "Agenda" -> CommandIcons.Event
-    "Fragmentos de texto" -> CommandIcons.Snippet
+    "Textos frecuentes" -> CommandIcons.Snippet
     "Fijados", "Consultas" -> CommandIcons.Pin
     "Recientes" -> CommandIcons.History
     "Sugerencias" -> CommandIcons.Star
