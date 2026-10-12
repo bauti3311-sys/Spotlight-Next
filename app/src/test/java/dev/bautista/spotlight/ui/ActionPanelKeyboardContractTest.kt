@@ -21,7 +21,9 @@ class ActionPanelKeyboardContractTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     @Test fun tabCyclesAndEnterRunsOnlyFocusedContextAction(){
         var action=""
-        ui.setContent{SpotlightTheme("dark"){val focus=remember{FocusRequester()};ActionPanelView(listOf(ContextAction("Abrir","Principal",CommandIcons.Chevron,{action="open"}),ContextAction("Compartir","Secundaria",CommandIcons.Share,{action="share"})),focus)}}
+        val focus=FocusRequester()
+        ui.setContent{SpotlightTheme("dark"){ActionPanelView(listOf(ContextAction("Abrir","Principal",CommandIcons.Chevron,{action="open"}),ContextAction("Compartir","Secundaria",CommandIcons.Share,{action="share"})),focus)}}
+        ui.runOnIdle{focus.requestFocus()}
         ui.waitUntil(15000){ui.onAllNodes(isFocused()).fetchSemanticsNodes().isNotEmpty()}
         ui.onNodeWithText("Abrir").assertIsFocused()
         ui.onNodeWithText("Abrir").performKeyInput{pressKey(Key.Tab)}

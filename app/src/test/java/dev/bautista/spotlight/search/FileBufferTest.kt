@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk=[26,35])
+@Config(sdk=[26,35],application=android.app.Application::class)
 class FileBufferTest {
     private fun row(id:Int)=Result("file:$id","$id.pdf","","Archivos",1,Action.Launch(Intent(Intent.ACTION_VIEW,Uri.parse("content://files/$id"))),mime="application/pdf")
     @Test fun threeFilesStaySelectedAndDuplicateUrisDoNotMultiply(){

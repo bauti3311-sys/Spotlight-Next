@@ -22,7 +22,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
     val distinct=actions.distinctBy{it.title};val all=distinct.take(1)+distinct.drop(1).sortedBy{listOf("Texto","Organizar","Más acciones","Sistema","Gestión").indexOf(it.group)};val visible=all.filter{normalize(it.title+" "+it.description).contains(normalize(filter))}
     val requests=remember(visible.map{it.title}){List(visible.size){if(it==0)focus else FocusRequester()}}
     LaunchedEffect(filter){selected=0}
-    LaunchedEffect(selected,filterFocused,visible.map{it.title}){if(!filterFocused)runCatching{requests.getOrNull(selected)?.requestFocus()}}
+    LaunchedEffect(selected,filterFocused,visible.map{it.title}){if(!filterFocused){withFrameNanos{ };runCatching{requests.getOrNull(selected)?.requestFocus()}}}
     Column(Modifier.fillMaxWidth().onPreviewKeyEvent{e->
         if(e.type!=KeyEventType.KeyDown || e.isCtrlPressed || e.isMetaPressed)false else when(e.key){
             Key.Tab->{filterFocused=false;selected=if(visible.isEmpty())0 else Math.floorMod(selected+if(e.isShiftPressed)-1 else 1,visible.size);true}
