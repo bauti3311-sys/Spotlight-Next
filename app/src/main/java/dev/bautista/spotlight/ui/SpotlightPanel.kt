@@ -130,8 +130,8 @@ fun SpotlightPanel(
             searchScope=when(mode){"Apps"->SearchScope("","apps");"Archivos"->SearchScope("","files-mode");"Acciones"->SearchScope("","commands");"IA"->SearchScope("","ai");"Portapapeles"->SearchScope("","clipboard");else->null}
             focus.requestFocus()
         }
-        val filtered =
-            results.filter {
+        fun filterResults(items:List<Result>):List<Result> =
+            items.filter {
                 if(query.isNotBlank() && (it.id.startsWith("root:") || it.id.startsWith("registered:")))true else when (category) {
                     "Todo" -> true
                     "Apps" -> it.category == "Aplicaciones"
@@ -141,6 +141,7 @@ fun SpotlightPanel(
                     else -> it.category !in setOf("Aplicaciones", "Archivos", "Portapapeles")
                 }
             }
+        val filtered=filterResults(results)
         var recentAppIds by remember { mutableStateOf(config.recent) }
         LaunchedEffect(results, config.recent) {
             val apps = results.filter { it.category == "Aplicaciones" }
@@ -153,11 +154,14 @@ fun SpotlightPanel(
                     )
                 }
         }
-        val displayed =
-            if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps" && query.isBlank())
+        fun present(items:List<Result>):List<Result> {
+            val filtered=filterResults(items)
+            return if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps" && query.isBlank())
                 dev.bautista.spotlight.control.CommandCenter.orderedApps(filtered, recentAppIds)
             else if(query.isNotBlank() && searchScope==null && category=="Todo")ResultSections.unified(filtered)
-            else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query)
+            else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
+        }
+        val displayed=present(results)
         val recentCount =
             if (category == "Apps") displayed.takeWhile { it.subtitle.startsWith("Reciente") }.size
             else 0
@@ -485,9 +489,9 @@ fun SpotlightPanel(
                                     }
                                 }
                             app.search.search(q, config.copy(favorites = favorites,pins=pinned),searchScope).collect {
-                                val selectedId=displayed.getOrNull(selected)?.id
+                                val selectedId=present(results).getOrNull(selected)?.id
                                 results = StableResults.merge(results,it,navigating || preview!=null)
-                                if(selectedId!=null && navigating){selected=results.indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}
+                                if(selectedId!=null && navigating){selected=present(results).indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}
                                 app.diagnostics.search(android.os.SystemClock.elapsedRealtime()-searchStarted)
                             }
                         }
