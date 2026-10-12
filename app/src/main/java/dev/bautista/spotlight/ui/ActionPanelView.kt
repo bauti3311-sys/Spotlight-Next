@@ -3,6 +3,8 @@ package dev.bautista.spotlight.ui
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.*
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.semantics.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -42,7 +44,13 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
                 val bring=remember(action.title){BringIntoViewRequester()}
                 LaunchedEffect(selected,filterFocused){if(!filterFocused && selected==i)bring.bringIntoView()}
                 Surface(color=if(!filterFocused && i==selected)MaterialTheme.colorScheme.primary.copy(alpha=.12f) else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
-                    TextButton(onClick=action.perform,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).focusProperties{canFocus=true}.focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.bringIntoViewRequester(bring)){
+                    val perform by rememberUpdatedState(action.perform)
+                    val active=!filterFocused && i==selected
+                    Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
+                        .focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.focusable()
+                        .semantics(mergeDescendants=true){role=Role.Button;this.selected=active;onClick(action.title){perform();true}}
+                        .pointerInput(action.title,i){detectTapGestures(onTap={selected=i;filterFocused=false;perform()})}
+                        .bringIntoViewRequester(bring).padding(horizontal=12.dp,vertical=8.dp),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically){
                         Icon(action.icon,null,Modifier.size(19.dp));Spacer(Modifier.width(12.dp));Column(Modifier.weight(1f)){Text(action.title,modifier=Modifier.fillMaxWidth());Text(action.description,modifier=Modifier.fillMaxWidth(),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}
                         val key=action.shortcut.ifBlank{if(all.firstOrNull()==action)"Enter" else ""};if(key.isNotBlank())Text(key,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                     }
