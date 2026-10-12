@@ -19,7 +19,9 @@ class PdfNativeDeviceTest {
     private val context get()=InstrumentationRegistry.getInstrumentation().targetContext
     private fun fixture():File {
         val file=File(context.cacheDir,"native-two-pages.pdf")
-        PdfDocument().use{pdf->for(number in 1..2){val page=pdf.startPage(PdfDocument.PageInfo.Builder(300,400,number).create());page.canvas.drawColor(Color.WHITE);page.canvas.drawText("Página $number",20f,40f,Paint().apply{color=Color.BLACK;textSize=18f});pdf.finishPage(page)};file.outputStream().use{pdf.writeTo(it)}}
+        val pdf=PdfDocument()
+        try {for(number in 1..2){val page=pdf.startPage(PdfDocument.PageInfo.Builder(300,400,number).create());page.canvas.drawColor(Color.WHITE);page.canvas.drawText("Página $number",20f,40f,Paint().apply{color=Color.BLACK;textSize=18f});pdf.finishPage(page)};file.outputStream().use{pdf.writeTo(it)}}
+        finally {pdf.close()}
         return file
     }
     @Test fun actualNativeRendererOpensTwoPagesAndClosesResources()=runBlocking {
