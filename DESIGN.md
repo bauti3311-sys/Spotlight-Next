@@ -12,7 +12,7 @@ Tokens centrales en GlassTokens: 8/12/18 dp, controles táctiles de 48 dp, selec
 
 ## Organización
 
-Inicio vacío o hasta cuatro sugerencias útiles, como una aplicación disponible o una acción reciente. Nunca se agregan accesos genéricos para rellenar la pantalla. Búsqueda con hasta doce resultados iniciales; máximo dos archivos y cuatro resultados de una misma familia. Ver más mantiene la consulta. La selección y el orden ya visible se conservan al navegar mientras llegan fuentes tardías.
+Inicio vacío o hasta cuatro sugerencias útiles, como una aplicación disponible o una acción reciente. Nunca se agregan accesos genéricos para rellenar la pantalla. Búsqueda con hasta doce resultados iniciales; máximo dos archivos y tres resultados de una misma familia. Ver más mantiene la consulta. La selección y el orden ya visible se conservan al navegar mientras llegan fuentes tardías.
 
 Las opciones rápidas comparten el host TYPE_APPLICATION_OVERLAY con la barra. No hay PopupWindow/DropdownMenu separado: evita el token de Activity inexistente y las pérdidas transitorias de foco. Tema, privacidad y efectos preceden a los filtros. Escape cierra primero el panel; los toques exteriores o el cierre explícito cierran Spotlight.
 
