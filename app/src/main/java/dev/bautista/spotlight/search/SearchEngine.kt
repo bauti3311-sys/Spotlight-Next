@@ -62,7 +62,7 @@ class SearchEngine(
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
         searchSources(query,c,scope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret")item.copy(action=action.copy(packageName=input)) else item;else->item}}+registered+saved,c)) else rows
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret")item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else rows
             send(all)
         }
     }.flowOn(Dispatchers.Default)

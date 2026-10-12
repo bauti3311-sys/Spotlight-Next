@@ -53,15 +53,15 @@ import org.json.JSONObject
  listOf("Aplicaciones","Archivos","Contactos","Comandos","IA").forEach{source->Text("$source · ${priorities.optInt(source,0)}");Slider(priorities.optInt(source,0).toFloat(),{value->val next=JSONObject(priorities.toString());next.put(source,value.toInt().coerceIn(-150,150));update(c.copy(sourcePriority=next.toString()))},valueRange=-150f..150f)}
 }
 @Composable fun DiagnosticsPanel(app:SpotlightApp) {
- val state by app.shizuku.state.collectAsState();val openings by app.diagnostics.openings.collectAsState();val index by app.index.status.collectAsState()
+ val state by app.shizuku.state.collectAsState();val writeCapability by app.shizuku.writeCapability.collectAsState();val notifications by dev.bautista.spotlight.control.Replies.connected.collectAsState();val openings by app.diagnostics.openings.collectAsState();val index by app.index.status.collectAsState()
  fun allowed(permission:String)=ContextCompat.checkSelfPermission(app,permission)==PackageManager.PERMISSION_GRANTED
  Text("Diagnóstico local",style=MaterialTheme.typography.titleMedium)
  Text("Superposición: ${if(Settings.canDrawOverlays(app))"permitida" else "pendiente"}")
  val services=Settings.Secure.getString(app.contentResolver,Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES).orEmpty()
  Text("Atajo accesible: ${if(services.contains(app.packageName))"habilitado" else "opcional, no habilitado"}")
- Text("Shizuku: ${state.status.label} · escritura ${if(app.shizuku.writeCapability.value==true)"autorizada" else "pendiente"}")
+ Text("Shizuku: ${state.status.label} · escritura ${if(writeCapability==true)"autorizada" else "pendiente"}")
  Text("Contactos: ${allowed(Manifest.permission.READ_CONTACTS)} · Calendario: ${allowed(Manifest.permission.READ_CALENDAR)}")
- Text("Notificaciones: ${dev.bautista.spotlight.control.Replies.connected.value}")
+ Text("Notificaciones: ${notifications}")
  Text("Índice: ${index.count} archivos · ${if(index.busy)"actualizando" else "en reposo"}")
  Text("Muestras de apertura: ${openings.size}");Text(app.diagnostics.report(),style=MaterialTheme.typography.bodySmall)
  Text("Observaciones del dispositivo actual; Work no dispone de acceso físico a tu Tab A9+.",style=MaterialTheme.typography.bodySmall)

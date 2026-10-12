@@ -9,11 +9,12 @@ object RootActions {
     fun results(context:Context,raw:String,c:Config):List<Result> {
         val q=LocalLanguage.canonical(raw).removePrefix("¿").removeSuffix("?").trim();val rows=mutableListOf<Result>()
         fun add(id:String,title:String,detail:String,category:String,action:Action,score:Int=3400){rows+=Result("root:$id",title,detail,category,score,action)}
-        val message=Regex("^(?:mandale|enviale|mandar|enviar)(?: un mensaje)?(?: a)? (.+?) que (.+)$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())
+        val registeredMessage=dev.bautista.spotlight.next.IntentRouter.route(raw,c.messageApp) is Action.ComposeMessage || ActionCatalog.message(raw,c.messageApp)!=null
+        val message=if(registeredMessage)null else Regex("^(?:mandale|enviale|mandar|enviar)(?: un mensaje)?(?: a)? (.+?) que (.+)$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())
         if(message!=null){val target=message.groupValues[1];val text=message.groupValues[2]
             val pkg=if(c.messageApp=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp"
             if(c.messageApp in setOf("whatsapp","whatsapp_business") && context.packageManager.getLaunchIntentForPackage(pkg)==null)
-                add("message:missing","WhatsApp no está instalado","Revisá la integración o instalá WhatsApp; no se cambia el canal sin elegirlo","Comunicación",Action.SystemPanel("extension","whatsapp"))
+                add("message:missing","WhatsApp no está instalado","Revisá la integración o instalá WhatsApp; no se cambia el canal sin elegirlo","Comunicación",Action.SystemPanel("extensions"))
             else add("message","Preparar mensaje para $target","Elegir contacto y revisar el texto; no se envía automáticamente","Comunicación",Action.ComposeMessage(c.messageApp,target,text))
         }
         Regex("^(?:poner |ajustar |cambiar )?(?:el )?(?:brillo|volumen)(?: al| a)? (-?\\d{1,9})\\s*%?$").matchEntire(q)?.let{m->
