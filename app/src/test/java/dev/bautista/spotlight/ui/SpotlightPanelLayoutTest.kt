@@ -85,7 +85,7 @@ class SpotlightPanelLayoutTest {
 
     @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
     @Test
-    fun tabAcceptsSuggestionWithoutOpeningActionsOrLaunchingAnApp() {
+    fun rightArrowAcceptsSuggestionWithoutOpeningActionsOrLaunchingAnApp() {
         val app = RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent {
             SpotlightPanel(

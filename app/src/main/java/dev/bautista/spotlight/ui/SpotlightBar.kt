@@ -97,7 +97,7 @@ fun SpotlightBar(
             )
             if (suggestion != null)
                 Text(
-                    "Tab",
+                    "→",
                     fontSize = 10.sp,
                     color = colors.onSurfaceVariant,
                     modifier =
