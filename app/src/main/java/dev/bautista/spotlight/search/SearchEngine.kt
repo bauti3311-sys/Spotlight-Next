@@ -54,17 +54,30 @@ class SearchEngine(
         apps = null
     }
 
-    fun search(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
+    fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {
+        val canonical=LocalLanguage.canonical(input)
+        val query=if(input.trim().startsWith("mand",true) || input.trim().startsWith("envia",true))input else canonical
+        val root=scope==null || scope.section in setOf("apps","commands","ai","files-mode") && input.isNotBlank()
+        val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
+        val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
+        val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
+        searchSources(query,c,scope).collect { rows ->
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(canonical,natural+rows+registered+saved,c)) else rows
+            send(all)
+        }
+    }.flowOn(Dispatchers.Default)
+
+    private fun searchSources(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
         if(scope==null) SearchModifiers.parse(input)?.let { modified -> search(modified.query,c,modified.scope).collect{send(it)};return@channelFlow }
         val query=ActionCatalog.canonical(dev.bautista.spotlight.personal.PersonalCommands.expand(input,c.aliases))
         if(scope==null && query.isBlank()){send(withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty())});return@channelFlow}
         if(scope?.section == "results") {
-            search(input,c).collect { send(it.filter { item -> ResultSections.category(item) == scope.topic }) };return@channelFlow
+            search(input,c).collect { send(it.filter { item -> scope.topic=="Todo" || ResultSections.category(item) == scope.topic }) };return@channelFlow
         }
         if(scope!=null) {
             val scoped=when(scope.section) {
                 "apps"->withContext(Dispatchers.IO){appList().filter{scope.kind!="music" || it.category==android.content.pm.ApplicationInfo.CATEGORY_AUDIO || it.id.substringBefore('/') in setOf("com.spotify.music","com.google.android.apps.youtube.music")}.mapNotNull{a->val score=relevance(query,a.label);if(score==0)null else Result(a.id,a.label,if(a.id in c.favorites)"Favorita" else "Abrir aplicación","Aplicaciones",score,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull())}}
-                "commands"->(listOfNotNull(dev.bautista.spotlight.next.IntentRouter.route(input,c.messageApp)?.let{Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,it),"Acción local · abrir para revisar","Comandos",2600,it)})+dev.bautista.spotlight.next.NativeCatalog.results(query,context)+(if(query.isBlank())dev.bautista.spotlight.extensions.ExtensionRegistry.results("extensiones")+dev.bautista.spotlight.advanced.AdvancedCommands.results("",true)+ActionCatalog.menu("acciones")+dev.bautista.spotlight.automation.Workflows.results("rutinas",c.routines,c.favorites) else dev.bautista.spotlight.extensions.ExtensionRegistry.results(query)+dev.bautista.spotlight.advanced.AdvancedCommands.results(query)+instant(query,c)+dev.bautista.spotlight.personal.PersonalCommands.results(query,c)+dev.bautista.spotlight.automation.Workflows.results(query,c.routines,c.favorites)+ActionCatalog.menu("acciones").filter{relevance(query,it.title)>0})).distinctBy{it.id}.sortedByDescending { if(it.action is Action.NewNote) 3000 else it.score }
+                "commands"->(listOfNotNull(dev.bautista.spotlight.next.IntentRouter.route(input,c.messageApp)?.let{Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,it),"Ver opciones y requisitos antes de ejecutar","Comandos",2600,it)})+dev.bautista.spotlight.next.NativeCatalog.results(query,context)+(if(query.isBlank())dev.bautista.spotlight.extensions.ExtensionRegistry.results("extensiones")+dev.bautista.spotlight.advanced.AdvancedCommands.results("",true)+ActionCatalog.menu("acciones")+dev.bautista.spotlight.automation.Workflows.results("rutinas",c.routines,c.favorites) else dev.bautista.spotlight.extensions.ExtensionRegistry.results(query)+dev.bautista.spotlight.advanced.AdvancedCommands.results(query)+instant(query,c)+dev.bautista.spotlight.personal.PersonalCommands.results(query,c)+dev.bautista.spotlight.automation.Workflows.results(query,c.routines,c.favorites)+ActionCatalog.menu("acciones").filter{relevance(query,it.title)>0})).distinctBy{it.id}.sortedByDescending { if(it.action is Action.NewNote) 3000 else it.score }
                 "ai"->if(query.isBlank())emptyList() else listOf(Result("ai:mode","Preguntar a la IA",query.take(120),"IA",2400,Action.Ask(query.removePrefix("ia "))))
                 "clipboard"->local.clips.value.filter{normalize(it).contains(normalize(query))}.mapIndexed{i,text->Result(LocalStore.clipId(text),text.take(100),if(text in local.clipFavorites.value)"Favorito temporal · copiar" else "Copiar texto capturado","Portapapeles",if(text in local.clipFavorites.value)1400-i else 1000-i,Action.Copy(text),preview=text)}
                 "topic"->integrations.menu(scope.topic,ActionCatalog.packages[scope.topic]?.let{context.packageManager.getLaunchIntentForPackage(it)},ActionCatalog.packages[scope.topic])
@@ -126,8 +139,8 @@ class SearchEngine(
                 search(action.scope.topic,c,action.scope.copy(topic="")).collect{send(it)}
             } else send(listOf(Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,action),when(action) {
                 is Action.ComposeMessage -> "Revisar destinatario · requiere app compatible y número; contactos opcionales"
-                is Action.SystemPanel -> if(action.page=="display-review") "Requiere Shizuku conectado y autorizado · confirmar cambio" else "Acción local · abrir para revisar"
-                else -> "Acción local · abrir para revisar"
+                is Action.SystemPanel -> if(action.page=="display-review") "Requiere Shizuku conectado y autorizado · confirmar cambio" else "Ver opciones y requisitos antes de ejecutar"
+                else -> "Ver opciones y requisitos antes de ejecutar"
             },"Comandos",2600,action)))
             return@channelFlow
         }
@@ -202,7 +215,7 @@ class SearchEngine(
                         )
                     },
             )
-            if (c.clipboard)
+            if (c.clipboard && !c.privateMode)
                 publish(
                     "clipboard",
                     local.clips.value

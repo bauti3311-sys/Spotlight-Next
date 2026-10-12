@@ -77,12 +77,13 @@ fun ResultRow(
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
     val pad=when(LocalAppearance.current.density){"compact"->5;"spacious"->13;"auto"->if(LocalConfiguration.current.screenWidthDp<600)6 else 9;else->9}
-    val ink by animateColorAsState(colors.onSurface,tween(if(motion)180 else 0),label="result-ink")
-    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)180 else 0),label="result-fill")
+    val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionMs else 0),label="result-ink")
+    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)GlassTokens.selectionMs else 0),label="result-fill")
     Row(
         Modifier.fillMaxWidth().heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
             .clip(RoundedCornerShape(9.dp))
             .background(fill)
+            .border(if(selected && LocalAppearance.current.selectionStyle=="glass")1.dp else 0.dp,colors.primary.copy(alpha=.16f),RoundedCornerShape(9.dp))
             .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
             .padding(start = 10.dp, end = 4.dp, top = pad.dp, bottom = pad.dp),
         verticalAlignment = Alignment.CenterVertically,

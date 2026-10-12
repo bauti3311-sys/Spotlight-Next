@@ -41,6 +41,7 @@ fun SpotlightBar(
     onDismiss:(()->Unit)?=null,
     onOptionsChange:(Boolean)->Unit={},
     optionsMaxHeight:Dp=320.dp,
+    quickMenu:(@Composable ()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
@@ -63,7 +64,7 @@ fun SpotlightBar(
                 Modifier.weight(1f).focusRequester(focus),
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=Inter, fontSize = if (compact) 17.sp else 20.sp),
+                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 17.sp else 20.sp),
                 cursorBrush = SolidColor(colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -85,7 +86,7 @@ fun SpotlightBar(
                                 maxLines = 1,
                                 fontSize = if (compact) 17.sp else 20.sp,
                                 color = colors.onSurface.copy(alpha = .30f),
-                                style=TextStyle(fontFamily=Inter,letterSpacing=0.sp),
+                                style=TextStyle(fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
                             )
                         inner()
@@ -120,7 +121,8 @@ fun SpotlightBar(
         if(options) {
             HorizontalDivider()
             Column(Modifier.fillMaxWidth().heightIn(max=optionsMaxHeight.coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
-                listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
+                if(quickMenu!=null)quickMenu()
+                else listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
                     val label=when(item){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->item}
                     DropdownMenuItem(text={Text(label)},modifier=Modifier.semantics {
                         contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl/⌘+$i"

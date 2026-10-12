@@ -22,7 +22,8 @@ class IntegrationRegistry(private val context: Context) {
             Capability("Buscar dentro de la app", if(resolves(Intent(Intent.ACTION_SEARCH).setPackage(packageName))) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Actividad pública de búsqueda"),
             Capability("Accesos directos publicados", if(launcher?.hasShortcutHostPermission() == true) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Android los reserva al lanzador predeterminado; Spotlight conserva tu lanzador actual")
         )
-        return base + if(packageName in setOf("com.whatsapp","com.whatsapp.w4b")) listOf(
+        val documented=if(packageName in setOf("com.spotify.music","com.google.android.youtube","com.google.android.apps.maps","com.sofascore.results"))listOf(Capability("Búsqueda documentada",CapabilityState.AVAILABLE,"Abrir búsqueda mediante enlace compatible o respaldo web; no controlar datos internos")) else emptyList()
+        return base + documented + if(packageName in setOf("com.whatsapp","com.whatsapp.w4b")) listOf(
             Capability("Elegir contactos",if(People.allowed(context)) CapabilityState.AVAILABLE else CapabilityState.PERMISSION_REQUIRED,"READ_CONTACTS se solicita al elegir un nombre"),
             Capability("Responder notificaciones",if(Replies.connected.value) CapabilityState.AVAILABLE else CapabilityState.PERMISSION_REQUIRED,"Acceso especial a notificaciones; solo respuestas que la app publica")
         ) else emptyList()

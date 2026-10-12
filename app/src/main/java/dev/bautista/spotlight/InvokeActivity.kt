@@ -19,7 +19,7 @@ class InvokeActivity : Activity() {
                     ContextCompat.startForegroundService(
                         this,
                         Intent(this, OverlayService::class.java)
-                            .putExtra("query", intent.getStringExtra("query")?.take(4000)),
+                            .putExtra("query", intent.getStringExtra("query")?.take(4000)).putExtra("invocation",intent.getStringExtra("invocation") ?: "touch"),
                     )
                 }
                 .onFailure {

@@ -13,40 +13,7 @@ import dev.bautista.spotlight.control.*
 import dev.bautista.spotlight.data.Config
 import kotlinx.coroutines.*
 
-@Composable fun AppearanceSettings(config: Config, update: (Config) -> Unit) {
-    Text("Diseños preparados",style=MaterialTheme.typography.labelLarge)
-    Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){AppearancePresets.names.forEach{name->AssistChip(onClick={update(AppearancePresets.apply(name,config))},label={Text(name)})}}
-    Surface(shape=androidx.compose.foundation.shape.RoundedCornerShape(config.corner.dp),color=MaterialTheme.colorScheme.surfaceVariant){Column(Modifier.fillMaxWidth().padding(16.dp)){Text("Buscar en Spotlight",style=MaterialTheme.typography.titleMedium);HorizontalDivider(Modifier.padding(vertical=10.dp));Text("Aplicaciones y acciones",color=MaterialTheme.colorScheme.primary);Text("Vista previa del diseño",style=MaterialTheme.typography.bodySmall)}}
-    var advanced by remember {mutableStateOf(false)}
-    TextButton(onClick={advanced=!advanced}){Text(if(advanced)"Ocultar opciones avanzadas" else "Opciones avanzadas")}
-    if(advanced) Column(verticalArrangement=Arrangement.spacedBy(8.dp)) {
-    Text("Estilo", style=MaterialTheme.typography.labelLarge)
-    Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-        listOf("spotlight" to "Spotlight", "raycast" to "Raycast").forEach { (id, label) ->
-            FilterChip(config.appearance==id, {update(config.copy(appearance=id))}, label={Text(label)})
-        }
-    }
-    Text("Acento", style=MaterialTheme.typography.labelLarge)
-    Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-        listOf("blue" to "Océano", "purple" to "Lavanda", "rose" to "Rosa", "green" to "Bosque", "orange" to "Ámbar").forEach { (id,label) ->
-            FilterChip(config.accent==id,{update(config.copy(accent=id))},label={Text(label)})
-        }
-    }
-    Text("Densidad", style=MaterialTheme.typography.labelLarge)
-    Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-        listOf("auto" to "Automática", "compact" to "Compacta", "balanced" to "Equilibrada", "spacious" to "Espaciosa").forEach { (id,label) ->
-            FilterChip(config.density==id,{update(config.copy(density=id))},label={Text(label)})
-        }
-    }
-    Text("Esquinas · ${config.corner} dp");Slider(config.corner.toFloat(),{update(config.copy(corner=it.toInt()))},valueRange=12f..32f)
-    Text("Texto · ${(config.textScale*100).toInt()} %");Slider(config.textScale,{update(config.copy(textScale=it))},valueRange=.9f..1.2f)
-    Text("Iconos · ${config.iconSize} dp");Slider(config.iconSize.toFloat(),{update(config.copy(iconSize=it.toInt()))},valueRange=24f..36f)
-    Text("Altura máxima · ${config.maxHeight} dp");Slider(config.maxHeight.toFloat(),{update(config.copy(maxHeight=it.toInt()))},valueRange=320f..640f)
-    Row{Text("Adaptar a teléfono y tablet",Modifier.weight(1f));Switch(config.adaptive,{update(config.copy(adaptive=it))})}
-    Row { Text("Material translúcido",Modifier.weight(1f));Switch(config.blur,{update(config.copy(blur=it))}) }
-    Text("Hybrid usa una superficie opaca para mantener el contraste. Los diseños anteriores conservan el control de material; la superficie mantiene al menos 97 % de opacidad. No se usa desenfoque de pantalla.",style=MaterialTheme.typography.bodySmall)
-    }
-}
+@Composable fun AppearanceSettings(config:Config,update:(Config)->Unit){GlassAppearance(config,update)}
 
 @Composable fun IntegrationSettings(config: Config, update: (Config) -> Unit) {
     val context=LocalContext.current
@@ -56,7 +23,7 @@ import kotlinx.coroutines.*
             val registry=IntegrationRegistry(context)
             context.packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),0)
                 .distinctBy { it.activityInfo.packageName }.sortedBy { it.loadLabel(context.packageManager).toString().lowercase() }
-                .map { it.loadLabel(context.packageManager).toString() to registry.capabilities(it.activityInfo.packageName) }
+                .map { it.loadLabel(context.packageManager).toString() to registry.capabilities(it.activityInfo.packageName) }.filter{it.second.any{cap->cap.title!="Abrir" && cap.state==CapabilityState.AVAILABLE}}
         }
     }
     Text("Las apps y sus actividades públicas se detectan automáticamente. No necesitás pegar enlaces.")

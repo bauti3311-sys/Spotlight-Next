@@ -50,6 +50,16 @@ object ExtensionRegistry {
         ExtensionDefinition("system","Dispositivo",ExtensionIcon.SYSTEM,"Sistema",listOf(command("system.info","Información del dispositivo",Action.SystemPanel("device")),command("system.controls","Sistema y controles avanzados",Action.SystemPanel("controls"))),explanation="Diagnóstico público. Los cambios de pantalla requieren conexión ADB, validación y confirmación.",advancedAdapter="reversible-settings"),
         ExtensionDefinition("shizuku","Shizuku",ExtensionIcon.SHIELD,"Sistema",listOf(command("shizuku.setup","Configurar Shizuku",Action.SystemPanel("shizuku"))),explanation="API oficial, autorización explícita y conexión bajo demanda. La búsqueda estándar sigue funcionando.",advancedAdapter="shizuku-manager")
     )
+    fun searchCommands(context:Context,query:String,c:Config):List<Result> = extensions.filter{ExtensionStore.enabled(context,it.id) && it.id !in setOf("catalog","focus","tasker") || it.id=="tasker" && normalize(query).contains("tasker")}.flatMap { e ->
+        e.commands.mapNotNull { command ->
+            val match=maxOf(relevance(query,command.title),relevance(query,e.name))
+            if(match<500)return@mapNotNull null
+            val missing=e.requirements.packageName?.let{context.packageManager.getLaunchIntentForPackage(it)==null} ?: false
+            val permission=e.requirements.permissions.firstOrNull{ContextCompat.checkSelfPermission(context,it)!=PackageManager.PERMISSION_GRANTED}
+            val action=when{missing->Action.SystemPanel("extensions");permission==Manifest.permission.READ_CONTACTS->Action.Access("contacts");permission==Manifest.permission.READ_CALENDAR->Action.Access("calendar");else->command.action}
+            Result("registered:"+command.id,command.title,when{missing->"Aplicación no instalada · revisar alternativas";permission!=null->"Permiso pendiente · autorizar al seleccionar";else->e.explanation},e.category,match+300,action)
+        }
+    }
     fun resolve(id:String):RegisteredCommand?=extensions.flatMap{it.commands}.singleOrNull{it.id==id}
     suspend fun snapshot(context:Context,config:Config):List<ExtensionSnapshot> = withContext(Dispatchers.IO){
         val tasker=dev.bautista.spotlight.next.TaskerAdapter(context).discover()

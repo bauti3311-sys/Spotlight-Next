@@ -38,8 +38,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private val app
         get() = application as SpotlightApp
 
-    private var config = Config()
+    private var config by androidx.compose.runtime.mutableStateOf(Config())
     private var initialQuery = ""
+    private var invocation = "touch"
     private var availableHeightDp by androidx.compose.runtime.mutableFloatStateOf(480f)
 
     private fun updateAvailableHeight(imeBottom: Int = 0) {
@@ -53,7 +54,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private val clipListener = ClipboardManager.OnPrimaryClipChangedListener { captureClipboard() }
 
     private fun captureClipboard() {
-        if (!config.clipboard || view?.hasWindowFocus() != true) return
+        if (config.privateMode || app.preferences.isPrivate || (!config.clipboard && !config.captureContext) || view?.hasWindowFocus() != true) return
         runCatching {
             val clip = clipboard.primaryClip ?: return
             if (
@@ -62,7 +63,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             )
                 return
             val text = clip.getItemAt(0).text?.toString() ?: return
-            app.local.capture(text)
+            if(config.clipboard)app.local.capture(text)
+            if(config.captureContext)app.contexts.offerAutomatic(text)
         }
     }
 
@@ -115,10 +117,18 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             return START_NOT_STICKY
         }
         initialQuery = intent?.getStringExtra("query")?.take(4000) ?: ""
+        invocation=intent?.getStringExtra("invocation") ?: "touch"
+        app.diagnostics.beginOpening()
         showJob =
             lifecycleScope.launch {
-                config = app.preferences.config.first()
-                show()
+                app.preferences.config.collect { next ->
+                    val old=config
+                    config=next
+                    if(view==null && !closing)show()
+                    else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
+                        updateAvailableHeight();view?.let{runCatching{wm.updateViewLayout(it,params())}}
+                    }
+                }
             }
         return START_NOT_STICKY
     }
@@ -164,6 +174,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         onClose = { close() },
                         initialQuery = initialQuery,
                         availableHeightDp = availableHeightDp,
+                        invocation = invocation,
                     )
                 }
             }
@@ -182,8 +193,12 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             wm.addView(host, params())
             view = host
             composition = panel
+            host.viewTreeObserver.addOnDrawListener(object:android.view.ViewTreeObserver.OnDrawListener {
+                var reported=false
+                override fun onDraw(){if(!reported){reported=true;app.diagnostics.markVisible()}}
+            })
             // Visible on the first frame: no competing window/Compose entrance animations.
-            if (config.clipboard) clipboard.addPrimaryClipChangedListener(clipListener)
+            clipboard.addPrimaryClipChangedListener(clipListener)
             host.postDelayed(
                 {
                     if (view === host && !focusSeen) {
@@ -219,6 +234,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 onFocus = { gained ->
                     if (gained) {
                         focusSeen = true
+                        app.diagnostics.markInteractive()
                         panel.post { captureClipboard() }
                     }
                     // IME, selection toolbars and child windows can take focus.

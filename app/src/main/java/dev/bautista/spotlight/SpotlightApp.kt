@@ -14,6 +14,8 @@ class SpotlightApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        scope.launch { preferences.config.collectLatest { } }
+        contexts.start()
         shizuku.start()
         scope.launch {shizuku.state.collectLatest {state->if(state.available)runCatching{advancedBackend.canWrite()} }}
         val filter =
@@ -44,6 +46,8 @@ class SpotlightApp : Application() {
     val reversibleSettings by lazy {dev.bautista.spotlight.advanced.ReversibleSettings(advancedBackend,settingsJournal)}
     val toolAudit by lazy {dev.bautista.spotlight.ai.ToolAudit(this)}
     val preferences by lazy { Preferences(this) }
+    val contexts by lazy { dev.bautista.spotlight.data.ContextStore(this,scope,preferences) }
+    val diagnostics by lazy { dev.bautista.spotlight.overlay.Diagnostics(this) }
     val local by lazy { dev.bautista.spotlight.data.LocalStore(preferences, scope) }
     val index by lazy { dev.bautista.spotlight.index.FileIndex(this) }
     val online by lazy { dev.bautista.spotlight.search.OnlineTools() }

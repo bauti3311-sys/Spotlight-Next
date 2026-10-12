@@ -18,8 +18,9 @@ import org.json.*
 
 data class ToolExecution(val text:String,val action:Action?=null)
 class ToolAudit(context:Context) {
+    private val privacy=(context.applicationContext as? SpotlightApp)?.preferences
     private val prefs=context.getSharedPreferences("tool_audit",Context.MODE_PRIVATE)
-    @Synchronized fun record(id:String,status:String){val old=runCatching{JSONArray(prefs.getString("events","[]"))}.getOrDefault(JSONArray());val next=JSONArray();for(i in maxOf(0,old.length()-49) until old.length())next.put(old.getJSONObject(i));next.put(JSONObject().put("tool",id).put("status",status).put("time",System.currentTimeMillis()));prefs.edit().putString("events",next.toString()).apply()}
+    @Synchronized fun record(id:String,status:String){if(privacy?.isPrivate==true)return;val old=runCatching{JSONArray(prefs.getString("events","[]"))}.getOrDefault(JSONArray());val next=JSONArray();for(i in maxOf(0,old.length()-49) until old.length())next.put(old.getJSONObject(i));next.put(JSONObject().put("tool",id).put("status",status).put("time",System.currentTimeMillis()));prefs.edit().putString("events",next.toString()).apply()}
     fun summary():String=runCatching{val a=JSONArray(prefs.getString("events","[]"));(0 until a.length()).joinToString("\n"){val j=a.getJSONObject(it);"${j.getLong("time")} · ${j.getString("tool")} · ${j.getString("status")}"}}.getOrDefault("")
     fun clear(){prefs.edit().remove("events").apply()}
 }

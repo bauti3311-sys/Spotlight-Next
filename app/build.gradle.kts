@@ -4,7 +4,7 @@ android {
  namespace = "dev.bautista.spotlight"
  compileSdk = 35
  buildToolsVersion = "35.0.0"
- defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = 26; versionName = "1.3.1" }
+ defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = 27; versionName = "2.0.0" }
  testOptions { unitTests.isIncludeAndroidResources = true }
  buildFeatures { compose = true; aidl = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }

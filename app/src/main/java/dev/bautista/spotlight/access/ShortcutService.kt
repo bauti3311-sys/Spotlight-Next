@@ -64,7 +64,7 @@ class ShortcutService : AccessibilityService() {
                         }
                         // AccessibilityService is bound by Android. Invoke the service
                         // directly: bringing our task forward would expose MainActivity.
-                        ContextCompat.startForegroundService(this, Intent(this, OverlayService::class.java).setAction("toggle"))
+                        ContextCompat.startForegroundService(this, Intent(this, OverlayService::class.java).setAction("toggle").putExtra("invocation","keyboard"))
                         true
                     }
                     .getOrDefault(false)
