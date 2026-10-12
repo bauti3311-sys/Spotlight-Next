@@ -20,3 +20,10 @@ Las pruebas históricas se conservan. Se actualizan las expectativas de relleno 
 8. Favorito deportivo real, resultados de otro equipo excluidos, sin datos/errores/caché antigua claramente identificados.
 
 Estado: verificaciones automáticas en curso; pendientes revisión de capturas y release firmado.
+
+
+## Cierre de entrega, 12 de octubre de 2026
+
+La ejecución final previa 38263129913 y el Release 38264201437 completaron 271 pruebas Android con cero fallos/errores. Lint Debug y Lint Release pasaron; backend 5 y verificador 10 pasaron. El Release optimizado fue firmado y verificado con apksigner y zipalign, conservando certificado y applicationId. Detalles y hash del APK en ENTREGA.md.
+
+La regresión de navegación se comprobó manteniendo resultados al mover solo el cursor, eligiendo tipos de archivo sin permisos opcionales, abriendo PDF y regresando al menú. El toque bloquea el orden sin activar el desplazamiento destinado al teclado. No hubo acceso físico a la Tab A9+.
