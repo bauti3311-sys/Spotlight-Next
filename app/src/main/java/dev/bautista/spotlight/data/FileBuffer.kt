@@ -19,9 +19,9 @@ class FileBuffer {
     }
     fun remove(id:String){selected.removeAll{it.id==id}}
     fun clear(){selected.clear()}
-    fun share():Intent {
+    fun share(context:Context?=null):Intent {
         check(selected.isNotEmpty())
-        val uris=ArrayList(selected.map{(it.action as Action.Launch).intent.data!!})
+        val uris=ArrayList(selected.map{val original=(it.action as Action.Launch).intent.data!!;if(original.scheme=="file"){require(context!=null);androidx.core.content.FileProvider.getUriForFile(context,context.packageName+".files",java.io.File(original.path!!))} else original})
         val mime=selected.mapNotNull{it.mime}.distinct().singleOrNull() ?: "*/*"
         val clip=ClipData.newRawUri("Selección de Spotlight",uris.first()).apply{uris.drop(1).forEach{addItem(ClipData.Item(it))}}
         return Intent(Intent.ACTION_SEND_MULTIPLE).setType(mime).putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION).also{it.clipData=clip}

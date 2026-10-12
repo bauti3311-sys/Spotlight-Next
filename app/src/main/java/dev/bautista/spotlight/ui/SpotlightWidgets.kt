@@ -36,6 +36,7 @@ fun ResultIcon(
     } else
         Icon(
             when {
+                result.mime=="application/pdf"->PhosphorIcons.Pdf
                 result.action is Action.WorkflowRun -> when(dev.bautista.spotlight.automation.Workflows.parse(LocalAppearance.current.routines).firstOrNull{it.id==result.action.id}?.icon){"bolt"->CommandIcons.Bolt;"sun"->CommandIcons.Sun;"music"->CommandIcons.MusicNote;else->CommandIcons.Layers}
                 result.action is Action.SystemPanel -> when(result.action.page){"saved"->PhosphorIcons.Saved;"calendar"->PhosphorIcons.Calendar;"weather-native"->PhosphorIcons.Weather;"sports-native"->CommandIcons.Sports;"context"->CommandIcons.Description;"context-ai"->CommandIcons.AutoAwesome;"conversation"->PhosphorIcons.Chat;"diagnostics"->CommandIcons.Info;"tasker","catalog","profiles"->CommandIcons.Layers;"interpret"->CommandIcons.ListChecks;"display-review"->CommandIcons.Sun;"app"->CommandIcons.Apps;"device"->CommandIcons.Display;"shizuku"->CommandIcons.Shield;"focus"->CommandIcons.Timer;"agent"->CommandIcons.AutoAwesome;"extensions"->CommandIcons.Layers;"preferences:appearance"->CommandIcons.Display;"preferences:ai"->CommandIcons.AutoAwesome;"preferences:shortcuts"->CommandIcons.Keyboard;"preferences:suggestions"->CommandIcons.Star;"preferences:permissions"->CommandIcons.Shield;else->CommandIcons.Sliders}
                 result.action is Action.ReadNotification -> CommandIcons.Forum

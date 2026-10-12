@@ -40,12 +40,12 @@ class PdfPreviewSession private constructor(private val fd:ParcelFileDescriptor,
     }
 }
 
-@Composable fun PdfQuickLook(context:Context,uri:Uri,page:Int,onPage:(Int)->Unit,expanded:Boolean) {
-    var session by remember(uri){mutableStateOf<PdfPreviewSession?>(null)}
-    var bitmap by remember(uri){mutableStateOf<Bitmap?>(null)}
-    var error by remember(uri){mutableStateOf("")}
-    var number by remember(uri,page){mutableStateOf((page+1).toString())}
-    LaunchedEffect(uri){
+@Composable fun PdfQuickLook(context:Context,uri:Uri,page:Int,onPage:(Int)->Unit,expanded:Boolean,revision:Long?=null) {
+    var session by remember(uri,revision){mutableStateOf<PdfPreviewSession?>(null)}
+    var bitmap by remember(uri,revision){mutableStateOf<Bitmap?>(null)}
+    var error by remember(uri,revision){mutableStateOf("")}
+    var number by remember(uri,revision,page){mutableStateOf((page+1).toString())}
+    LaunchedEffect(uri,revision){
         var opened:PdfPreviewSession?=null
         try {withContext(Dispatchers.IO){opened=PdfPreviewSession.open(context,uri)};session=opened;awaitCancellation()}
         catch(e:CancellationException){throw e}

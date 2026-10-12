@@ -14,7 +14,7 @@ import dev.bautista.spotlight.SpotlightApp
     var message by remember(value){mutableStateOf("")}
     var previous by remember{mutableStateOf<Pair<Int,Int>?>(null)}
     Column(Modifier.fillMaxWidth().padding(18.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-        Text("Brillo al ${value*100/255}%",style=MaterialTheme.typography.titleMedium)
+        Text("Brillo al ${kotlin.math.round(value*100f/255).toInt()}%",style=MaterialTheme.typography.titleMedium)
         Text("Android puede ajustar el brillo con el permiso de modificar ajustes. Al aplicar, se usa brillo manual; podés deshacerlo aquí. Shizuku es una alternativa opcional.")
         TextButton(onClick={runCatching{app.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS,Uri.parse("package:"+app.packageName)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))}.onFailure{message="Abrí el permiso de modificar ajustes desde Android."}}){Text("Permitir ajuste de brillo")}
         Button(onClick={

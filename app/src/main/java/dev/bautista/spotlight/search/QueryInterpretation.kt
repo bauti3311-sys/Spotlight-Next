@@ -4,7 +4,7 @@ import dev.bautista.spotlight.control.SearchScope
 import java.time.*
 import java.time.temporal.TemporalAdjusters
 
-enum class QueryIntent { SEARCH, FILES, APPLICATION, ACTION, KNOWLEDGE, CALENDAR }
+enum class QueryIntent { SEARCH, FILES, APPLICATION, ACTION, KNOWLEDGE, CALENDAR, WEATHER, SPORTS }
 data class FileConstraint(val kind:String,val terms:String,val start:Long?=null,val end:Long?=null,val dateField:String="modified",val dateLabel:String="") {
     val query:String get()=listOf("kind:$kind",terms,if(start!=null)"$dateField-after:$start" else "",if(end!=null)"$dateField-before:$end" else "").filter{it.isNotBlank()}.joinToString(" ")
 }
@@ -17,10 +17,14 @@ object QueryInterpreter {
     fun interpret(raw:String,scope:SearchScope?=null,today:LocalDate=LocalDate.now(),zone:ZoneId=ZoneId.systemDefault()):QueryInterpretation {
         if(scope!=null)return QueryInterpretation(raw,raw,QueryIntent.SEARCH,scope)
         SearchModifiers.parse(raw)?.let{return QueryInterpretation(raw,it.query,QueryIntent.SEARCH,it.scope)}
+        if(!LocalLanguage.isQuestion(raw) && (raw.contains('"') || Regex("\\b(AND|OR|NOT)\\b").containsMatchIn(raw)))return QueryInterpretation(raw,raw,QueryIntent.SEARCH)
         files(raw,today,zone)?.let{return QueryInterpretation(raw,it.query,QueryIntent.FILES,SearchScope("","files"),it)}
         val q=normalize(raw.trim()).removePrefix("¿").removeSuffix("?")
-        if(q in setOf("que tengo manana","mi agenda manana","agenda manana"))return QueryInterpretation(raw,"",QueryIntent.CALENDAR,SearchScope("","calendar","tomorrow"),calendarPeriod="tomorrow")
-        if(q in setOf("que tengo hoy","mi agenda hoy","agenda hoy"))return QueryInterpretation(raw,"",QueryIntent.CALENDAR,SearchScope("","calendar","today"),calendarPeriod="today")
+        if(q in setOf("que tengo manana","mi agenda manana","agenda manana"))return QueryInterpretation(raw,raw,QueryIntent.CALENDAR,calendarPeriod="tomorrow")
+        if(q in setOf("que tengo hoy","mi agenda hoy","agenda hoy"))return QueryInterpretation(raw,raw,QueryIntent.CALENDAR,calendarPeriod="today")
+        if(dev.bautista.spotlight.control.CalendarLanguage.draft(raw)!=null || dev.bautista.spotlight.control.CalendarLanguage.free(raw)!=null)return QueryInterpretation(raw,raw,QueryIntent.CALENDAR)
+        if(WeatherRequests.matches(raw) || q.startsWith("clima"))return QueryInterpretation(raw,raw,QueryIntent.WEATHER)
+        if(SportsRequest.parse(raw)!=null)return QueryInterpretation(raw,raw,QueryIntent.SPORTS)
         if(LocalLanguage.isQuestion(raw))return QueryInterpretation(raw,raw,QueryIntent.KNOWLEDGE,question=raw)
         return QueryInterpretation(raw,LocalLanguage.forSearch(raw),if(UniversalIntent.recognize(raw) is UniversalIntent.OpenApp)QueryIntent.APPLICATION else QueryIntent.SEARCH)
     }

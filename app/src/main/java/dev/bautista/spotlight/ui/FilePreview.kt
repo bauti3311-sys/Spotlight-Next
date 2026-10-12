@@ -21,7 +21,7 @@ private data class PreviewData(val text: String? = null, val bitmap: Bitmap? = n
 fun FilePreview(context: Context, item: Result, expanded:Boolean=false, page:Int?=null, onPage:((Int)->Unit)?=null) {
     var localPage by remember(item.id){mutableIntStateOf(0)}
     val pdfUri=(item.action as? Action.Launch)?.intent?.data
-    if(item.mime=="application/pdf" && pdfUri!=null){PdfQuickLook(context,pdfUri,page ?: localPage,{localPage=it;onPage?.invoke(it)},expanded);return}
+    if(item.mime=="application/pdf" && pdfUri!=null){PdfQuickLook(context,pdfUri,page ?: localPage,{localPage=it;onPage?.invoke(it)},expanded,item.modifiedAt);return}
     if (item.mime?.startsWith("audio/") == true) {
         AudioPreview(item)
         return

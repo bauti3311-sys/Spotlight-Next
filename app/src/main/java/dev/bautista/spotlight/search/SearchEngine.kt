@@ -64,7 +64,7 @@ class SearchEngine(
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
         searchSources(query,c,effectiveScope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret")item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else rows
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else rows
             send(all)
         }
     }.flowOn(Dispatchers.Default)
@@ -82,9 +82,9 @@ class SearchEngine(
                 "ai"->if(query.isBlank())emptyList() else listOf(Result("ai:mode","Preguntar a la IA",query.take(120),"IA",2400,Action.Ask(query.removePrefix("ia "))))
                 "clipboard"->local.clips.value.filter{normalize(it).contains(normalize(query))}.mapIndexed{i,text->Result(LocalStore.clipId(text),text.take(100),if(text in local.clipFavorites.value)"Favorito temporal · copiar" else "Copiar texto capturado","Portapapeles",if(text in local.clipFavorites.value)1400-i else 1000-i,Action.Copy(text),preview=text)}
                 "topic"->integrations.menu(scope.topic,ActionCatalog.packages[scope.topic]?.let{context.packageManager.getLaunchIntentForPackage(it)},ActionCatalog.packages[scope.topic])
-                "files-mode"->if(query.isBlank())ActionCatalog.fileMenu(scope) else if(c.files && (index.broadAllowed() || c.trees.isNotEmpty())){index.ensure(c);index.search(query,c)}else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento","Archivos",2000,Action.Access("files")))
+                "files-mode"->if(query.isBlank())ActionCatalog.fileMenu(scope) else if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())){index.ensure(c);index.search(query,c)}else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento","Archivos",2000,Action.Access("files")))
                 "files-menu"->ActionCatalog.fileMenu(scope)
-                "files"->if(c.files && (index.broadAllowed() || c.trees.isNotEmpty())){index.ensure(c);index.search(ActionCatalog.fileQuery(scope,query),c,scope.topic)} else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento en Opciones","Archivos",2000,Action.Access("files")))
+                "files"->if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())){index.ensure(c);index.search(ActionCatalog.fileQuery(scope,query),c,scope.topic)} else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento en Opciones","Archivos",2000,Action.Access("files")))
                 "contacts"->if(c.contacts && ContextCompat.checkSelfPermission(context,Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED){if(query.isBlank())listOf(Result("contacts:help","Escribí un nombre","Elegí entre contactos coincidentes","Contactos",2000,Action.RestoreQuery("/contacts ")))else contacts(query)}else listOf(Result("contacts:access","Permitir buscar contactos","Permiso opcional de Android","Contactos",2000,Action.Access("contacts",input)))
                 "calendar"->Agenda.search(context,query,scope.kind)
                 "replies"->if(!Replies.connected.value)listOf(Result("reply:access","Permitir leer notificaciones","Acceso especial de Android · opcional","Acciones",2000,Action.Access("notifications")))else Replies.results(query,ActionCatalog.packages[scope.topic] ?: "com.whatsapp")
@@ -289,7 +289,7 @@ class SearchEngine(
                     publish("files",listOf(Result("files:error","No se pudo leer el índice","Reintentar búsqueda o revisar el acceso a archivos","Archivos",100,Action.RestoreQuery(input))))
                 }
             }
-    }.map { rows -> val allowed=rows.filter { dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it) };if(rows.isNotEmpty() && allowed.isEmpty())listOf(Result("extensions:disabled","Extensión desactivada","Activá el módulo para usar esta acción","Comandos",2400,Action.SystemPanel("extensions"))) else allowed }
+    }.map { rows -> val allowed=rows.filter { !it.id.startsWith("extension:") || dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it) };if(rows.isNotEmpty() && allowed.isEmpty())listOf(Result("extensions:disabled","Extensión desactivada","Activá el módulo para usar esta acción","Comandos",2400,Action.SystemPanel("extensions"))) else allowed }
 
     private fun instant(query: String, c: Config): List<Result> {
         val q = query.trim()

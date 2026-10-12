@@ -20,7 +20,7 @@ import java.util.Date
     val scope=rememberCoroutineScope();val store=remember{SportsFavorites(app)};val repo=remember{NativeProviders(app)};val vault=remember{dev.bautista.spotlight.ai.CredentialVault(app)}
     var favorites by remember{mutableStateOf(store.list())};var selected by remember{mutableStateOf(favorites.firstOrNull {normalize(it.name).contains(normalize(initial))} ?: favorites.firstOrNull())}
     var onboarding by remember{mutableStateOf(favorites.isEmpty() || initial.isNotBlank() && favorites.none{normalize(it.name).contains(normalize(initial))})}
-    var sport by remember{mutableStateOf("Soccer")};var kind by remember{mutableStateOf("team")};var country by remember{mutableStateOf("Argentina")};var name by remember(initial){mutableStateOf(initial)}
+    var sport by remember{mutableStateOf(if(normalize(initial)=="nba")"Basketball" else "Soccer")};var kind by remember{mutableStateOf(if(normalize(initial)=="nba")"league" else "team")};var country by remember{mutableStateOf(if(normalize(initial)=="nba")"United States" else "Argentina")};var name by remember(initial){mutableStateOf(initial)}
     var choices by remember{mutableStateOf<List<SportsEntity>>(emptyList())};var snapshot by remember{mutableStateOf<NativeSnapshot?>(null)};var busy by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var next by remember{mutableStateOf(true)};var revision by remember{mutableIntStateOf(0)}
     var showProvider by remember{mutableStateOf(false)};var key by remember{mutableStateOf("")};var providerMessage by remember{mutableStateOf("")}
     LaunchedEffect(selected,next,revision){val entity=selected ?: return@LaunchedEffect;if(onboarding)return@LaunchedEffect;busy=true;error="";snapshot=null;try{snapshot=repo.sportsEntity(entity,next,revision>0)}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo consultar el proveedor. Comprobá la conexión y reintentá."}finally{busy=false}}
@@ -48,7 +48,7 @@ import java.util.Date
             if(favorites.isNotEmpty())TextButton(onClick={onboarding=false;revision++}){Text("Volver a favoritos")}
         }
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
-        TextButton(onClick={onAction(Action.ComposeSearch("sofascore","com.sofascore.results",selected?.name ?: name))}){Text("Buscar cobertura en Sofascore")}
+        TextButton(onClick={onAction(Action.ComposeSearch("sofascore","com.sofascore.results",if(onboarding)name else selected?.name ?: name))}){Text("Buscar cobertura en Sofascore")}
         TextButton(onClick={showProvider=!showProvider}){Text("Proveedor · opciones avanzadas")}
         if(showProvider){Text("La clave propia de TheSportsDB amplía la cobertura según tu suscripción. Se guarda cifrada en el dispositivo.");OutlinedTextField(key,{key=it.take(4096)},label={Text("Clave propia opcional")},visualTransformation=PasswordVisualTransformation(),singleLine=true,modifier=Modifier.fillMaxWidth());Row{TextButton(enabled=key.matches(Regex("[A-Za-z0-9]{1,4096}")),onClick={val value=key;key="";scope.launch{providerMessage=withContext(Dispatchers.IO){runCatching{vault.save("thesportsdb",value);"Clave guardada."}.getOrDefault("No se pudo guardar la clave.")};revision++}}){Text("Guardar")};TextButton(onClick={scope.launch{withContext(Dispatchers.IO){vault.delete("thesportsdb")};providerMessage="Acceso gratuito activado.";revision++}}){Text("Usar gratuito")}};if(providerMessage.isNotBlank())Text(providerMessage)}
     }

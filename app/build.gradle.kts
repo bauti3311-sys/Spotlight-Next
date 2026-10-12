@@ -8,7 +8,7 @@ android {
  namespace = "dev.bautista.spotlight"
  compileSdk = 35
  buildToolsVersion = "35.0.0"
- defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = releaseIdentity.getProperty("version.code").toInt(); versionName = releaseIdentity.getProperty("version.name") }
+ defaultConfig { testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"; applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = releaseIdentity.getProperty("version.code").toInt(); versionName = releaseIdentity.getProperty("version.name") }
  testOptions { unitTests.isIncludeAndroidResources = true }
  buildFeatures { compose = true; aidl = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -29,6 +29,8 @@ android {
  buildTypes { getByName("debug") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += "arm64-v8a" }; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") } }
 }
 dependencies {
+ androidTestImplementation("androidx.test.ext:junit:1.2.1")
+ androidTestImplementation("androidx.test:runner:1.6.2")
  implementation("dev.rikka.shizuku:api:13.1.5")
  implementation("dev.rikka.shizuku:provider:13.1.5")
  implementation(platform("androidx.compose:compose-bom:2024.12.01"))

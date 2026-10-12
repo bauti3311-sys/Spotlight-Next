@@ -128,7 +128,7 @@ class Preferences(private val context: Context) {
                 Config(
                     p[theme] ?: "auto",
                     p[opacity] ?: .96f,
-                    p[width] ?: 640,
+                    p[width] ?: 0,
                     p[position] ?: .16f,
                     p[contacts] ?: false,
                     p[files] ?: true,

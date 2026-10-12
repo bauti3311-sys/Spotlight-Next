@@ -35,7 +35,8 @@ import org.json.JSONArray
     Text("Texto · ${(draft.textScale*100).toInt()} %");Slider(draft.textScale,{draft=draft.copy(textScale=it)},valueRange=.9f..1.3f)
     Text("Iconos · ${draft.iconSize} dp");Slider(draft.iconSize.toFloat(),{draft=draft.copy(iconSize=it.toInt())},valueRange=24f..36f)
     Row(Modifier.horizontalScroll(rememberScrollState())){listOf("compact" to "Compacta","balanced" to "Equilibrada","spacious" to "Espaciosa").forEach{(key,label)->FilterChip(draft.density==key,{draft=draft.copy(density=key)},label={Text(label)})}}
-    Text("Ancho · ${draft.width} dp");Slider(draft.width.toFloat(),{draft=draft.copy(width=it.toInt())},valueRange=380f..1100f)
+    Row{Text("Ancho automático · 80% / 90%",Modifier.weight(1f));Switch(draft.width==0,{draft=draft.copy(width=if(it)0 else 640)})}
+    if(draft.width>0){Text("Ancho · ${draft.width} dp");Slider(draft.width.toFloat(),{draft=draft.copy(width=it.toInt())},valueRange=380f..1100f)}
     Text("Altura máxima · ${draft.maxHeight} dp");Slider(draft.maxHeight.toFloat(),{draft=draft.copy(maxHeight=it.toInt())},valueRange=320f..700f)
     Row(Modifier.horizontalScroll(rememberScrollState())){listOf("precise" to "Preciso","liquid_precision" to "Liquid Precision","liquid_immersive" to "Liquid Immersive").forEach{(key,label)->FilterChip(draft.movement==key,{draft=draft.copy(movement=key)},label={Text(label)})}}
     Row{Text("Reducir animaciones",Modifier.weight(1f));Switch(!draft.animations,{draft=draft.copy(animations=!it)})}

@@ -141,6 +141,8 @@ class FileIndex(
             } else refresh(c, false)
     }
 
+    suspend fun hasImports():Boolean=withContext(Dispatchers.IO){helper.readableDatabase.rawQuery("SELECT 1 FROM files WHERE tree = ? LIMIT 1",arrayOf("__imports__")).use{it.moveToFirst()}}
+
     fun cancelRefresh() {
         refreshJob?.cancel()
     }
