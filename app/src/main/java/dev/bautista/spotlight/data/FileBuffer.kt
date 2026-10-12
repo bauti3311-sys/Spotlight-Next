@@ -29,10 +29,12 @@ class FileBuffer {
     suspend fun text(context:Context):String=withContext(Dispatchers.IO){
         val snapshot=items;check(snapshot.isNotEmpty())
         val perFile=(15000/snapshot.size).coerceAtMost(8000)
-        snapshot.joinToString("\n\n"){item->
+        val texts=mutableListOf<String>()
+        for(item in snapshot){
             ensureActive();require((item.sizeBytes ?: 0)<=20L*1024*1024){"Archivo demasiado grande: ${item.title}"}
             val uri=(item.action as Action.Launch).intent.data!!
-            "Documento: ${item.title}\n"+dev.bautista.spotlight.index.DocumentText.extract(context,uri,dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime)).take(perFile)
-        }.take(16000).ifBlank{error("No se obtuvo texto compatible de los documentos seleccionados")}
+            texts+="Documento: ${item.title}\n"+dev.bautista.spotlight.index.DocumentText.extract(context,uri,dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime)).take(perFile)
+        }
+        texts.joinToString("\n\n").take(16000).ifBlank{error("No se obtuvo texto compatible de los documentos seleccionados")}
     }
 }
