@@ -21,7 +21,7 @@ object RootActions {
             if(n==null || n !in 0..100)add("invalid","Porcentaje inválido · entre 0 y 100","Usá un valor entre 0 y 100; no se modifica el dispositivo","Información",Action.RestoreQuery(raw),4000)
         }
         LocalPlan.step(raw)?.takeIf{it is PlanStep.RelativeBrightness || it is PlanStep.RelativeVolume || it is PlanStep.Media}?.let{add("plan-single","Revisar acción","Comprobar permisos y confirmar antes de ejecutar","Acciones",Action.SystemPanel("interpret",raw))}
-        if(q.startsWith("clima"))add("weather",if(q.contains("manana"))"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:" else q.removePrefix("clima").removePrefix(" en ").trim()))
+        if(q.startsWith("clima"))add("weather",if(q.contains("manana"))"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:"+q.removePrefix("clima").replace("manana","").trim().removePrefix("en ") else q.removePrefix("clima").trim().removePrefix("en ")))
         Regex("^(?:como va|resultado de|partido de) (.+)$").matchEntire(q)?.let{add("sports","Consultar ${it.groupValues[1]}","Elegir equipo o competición real · datos del proveedor","Deportes",Action.SystemPanel("sports-native",it.groupValues[1]))}
         Regex("^(?:buscar |escuchar )?musica(?: de)? (.+?)(?: en (spotify|youtube))?$").matchEntire(q)?.let{m->
             val topic=m.groupValues[2].ifBlank{if(context.packageManager.getLaunchIntentForPackage("com.spotify.music")!=null)"spotify" else "youtube"}
@@ -36,6 +36,7 @@ object RootActions {
         if(q in setOf("diagnostico","diagnostico de spotlight","diagnosticos"))add("diagnostics","Diagnóstico de Spotlight","Permisos, servicios y tiempos observados sin contenido privado","Sistema",Action.SystemPanel("diagnostics"))
         if(q in setOf("modo privado","privacidad"))add("privacy","Modo privado y datos","Suspender captura y aprendizaje sin borrar lo guardado","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","Privacidad y sistema")))
         if(LocalLanguage.isQuestion(raw) && rows.none{it.id=="root:context"})add("ai","Responder con IA","Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,true),1900)
+        if(rows.isEmpty() && q.split(' ').size>=7)add("complex","Revisar consulta con IA","Consulta remota opcional · revisar antes de enviar","IA",Action.Ask(raw,true),1000)
         dev.bautista.spotlight.ui.SettingsGroups.names.filter{relevance(q,it)>=650}.forEach{group->add("settings:$group",group,"Abrir esta sección de ajustes de Spotlight","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group)),2100)}
         return rows
     }

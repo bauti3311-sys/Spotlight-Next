@@ -2,7 +2,7 @@
 
 La validación automática utiliza Android/Robolectric y GitHub Actions. No hay acceso físico a la Samsung Galaxy Tab A9+; fluidez con One UI, teclado Samsung, rotaciones rápidas y gesto lateral requieren comprobación física. Los tiempos del diagnóstico son observaciones locales, no un benchmark de esa tablet.
 
-Glass no incluye desenfoque del fondo ni refracción. Se conserva la preferencia histórica de blur por compatibilidad, con superficie legible como alternativa. One Hand Operation+ es una app externa de Samsung: se configura el gesto y su acción compatible allí. Spotlight no instala un interceptor lateral ni inspecciona contenido global con accesibilidad; la posibilidad de seleccionar Invoke debe verificarse en la versión instalada de One Hand Operation+.
+Glass no incluye desenfoque del fondo ni refracción. Se conserva la preferencia histórica de blur por compatibilidad, con superficie legible como alternativa. One Hand Operation+ es una app externa de Samsung: se configura el gesto y su acción compatible allí. Spotlight no instala un interceptor lateral ni inspecciona contenido global con accesibilidad; la posibilidad de seleccionar la actividad «Spotlight · Buscar» debe verificarse en la versión instalada de One Hand Operation+.
 
 Android no ofrece permiso universal. Contactos, notificaciones, calendario, SAF/archivos y Shizuku son opcionales e independientes. No se puede buscar almacenamiento privado de WhatsApp u otras apps. Mensajes requieren destinatario, revisión y mecanismos realmente disponibles; abrir/buscar/preparar no equivale a enviar automáticamente.
 

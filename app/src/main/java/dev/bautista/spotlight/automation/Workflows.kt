@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.*
 import org.json.*
 
 data class WorkflowStep(val type:String,val value:String="",val onError:String="stop")
-data class Workflow(val id:String,val name:String,val alias:String="",val steps:List<WorkflowStep>)
+data class Workflow(val id:String,val name:String,val alias:String="",val steps:List<WorkflowStep>,val icon:String="layers")
 data class WorkflowProgress(val step:Int,val total:Int,val label:String,val output:String,val complete:Boolean=false,val failed:Boolean=false,val warning:String="")
 interface WorkflowHost {suspend fun copy(text:String);suspend fun note(text:String);suspend fun volume(level:Int);suspend fun timer(minutes:Int);suspend fun tool(call:ToolCall):String=error("Herramienta no disponible en este entorno.");suspend fun ai(text:String):String=error("IA no disponible.");suspend fun extract(uri:String):String=error("Archivo no disponible.")}
 object Workflows {
@@ -16,6 +16,7 @@ object Workflows {
     val labels=mapOf("text" to "Preparar texto","upper" to "Mayúsculas","lower" to "Minúsculas","copy" to "Copiar","note" to "Guardar nota","volume" to "Volumen","wait" to "Esperar","timer" to "Temporizador","clean" to "Limpiar espacios","dedupe" to "Quitar líneas duplicadas","require_text" to "Continuar si hay texto","setvar" to "Guardar variable","if_empty" to "Si entrada vacía","if_contains" to "Si entrada contiene","else" to "Si no","end" to "Fin de condición","tool" to "Consultar herramienta","tool_action" to "Acción revisable","ai_text" to "Procesar con IA","extract" to "Extraer archivo")
     fun validate(w:Workflow):String? {
         if(w.id.isBlank() || w.id.length>100)return "Identificador de rutina inválido."
+        if(w.icon !in setOf("layers","bolt","sun","music"))return "Icono de comando no compatible."
         if(w.name.isBlank() || w.name.length>60)return "Usá un nombre de hasta 60 caracteres."
         if(w.alias.isNotBlank() && !PersonalCommands.validAlias(w.alias))return "Alias inválido."
         if(w.steps.size !in 1..12)return "Elegí entre 1 y 12 pasos."
@@ -37,8 +38,8 @@ object Workflows {
             if(s.value.length>8000)return "El texto supera 8000 caracteres."
         };if(branches.isNotEmpty())return "Cerrá las condiciones con Fin.";return null
     }
-    fun parse(raw:String):List<Workflow> = runCatching {val a=JSONArray(raw);(0 until minOf(a.length(),30)).map{i->val j=a.getJSONObject(i);val steps=j.getJSONArray("steps");Workflow(j.getString("id"),j.getString("name"),j.optString("alias"),(0 until steps.length()).map{k->val s=steps.getJSONObject(k);WorkflowStep(s.getString("type"),s.optString("value"),s.optString("onError","stop"))})}.filter{validate(it)==null}}.getOrDefault(emptyList())
-    fun encode(items:List<Workflow>)=JSONArray().apply {items.take(30).forEach{w->put(JSONObject().put("id",w.id).put("name",w.name).put("alias",w.alias).put("steps",JSONArray().apply{w.steps.forEach{s->put(JSONObject().put("type",s.type).put("value",s.value).put("onError",s.onError))}}))}}.toString()
+    fun parse(raw:String):List<Workflow> = runCatching {val a=JSONArray(raw);(0 until minOf(a.length(),30)).map{i->val j=a.getJSONObject(i);val steps=j.getJSONArray("steps");Workflow(j.getString("id"),j.getString("name"),j.optString("alias"),(0 until steps.length()).map{k->val s=steps.getJSONObject(k);WorkflowStep(s.getString("type"),s.optString("value"),s.optString("onError","stop"))},j.optString("icon","layers"))}.filter{validate(it)==null}}.getOrDefault(emptyList())
+    fun encode(items:List<Workflow>)=JSONArray().apply {items.take(30).forEach{w->put(JSONObject().put("id",w.id).put("name",w.name).put("alias",w.alias).put("icon",w.icon).put("steps",JSONArray().apply{w.steps.forEach{s->put(JSONObject().put("type",s.type).put("value",s.value).put("onError",s.onError))}}))}}.toString()
     fun results(query:String,raw:String,favorites:Set<String>):List<Result> {
         val q=normalize(query.trim());return parse(raw).filter{q in setOf("rutinas","workflows") || q.isBlank() && "routine:${it.id}" in favorites || q.isNotBlank() && (relevance(q,it.name)>0 || it.alias.isNotBlank() && q==normalize(it.alias))}.map{Result("routine:${it.id}",it.name,"${it.steps.size} pasos · revisar y ejecutar","Acciones",1800,Action.WorkflowRun(it.id))}
     }

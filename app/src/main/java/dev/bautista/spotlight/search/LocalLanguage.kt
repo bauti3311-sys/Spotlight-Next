@@ -2,7 +2,7 @@ package dev.bautista.spotlight.search
 
 /** Small deterministic Spanish lexicon. Never calls a model or executes a query. */
 object LocalLanguage {
-    private val words=mapOf("cero" to 0,"uno" to 1,"dos" to 2,"tres" to 3,"cuatro" to 4,"cinco" to 5,"seis" to 6,"siete" to 7,"ocho" to 8,"nueve" to 9,"diez" to 10,"veinte" to 20,"treinta" to 30,"cuarenta" to 40,"cincuenta" to 50,"sesenta" to 60,"setenta" to 70,"ochenta" to 80,"noventa" to 90,"cien" to 100)
+    private val words=mapOf("cero" to 0,"uno" to 1,"dos" to 2,"tres" to 3,"cuatro" to 4,"cinco" to 5,"seis" to 6,"siete" to 7,"ocho" to 8,"nueve" to 9,"diez" to 10,"once" to 11,"doce" to 12,"trece" to 13,"catorce" to 14,"quince" to 15,"dieciseis" to 16,"diecisiete" to 17,"dieciocho" to 18,"diecinueve" to 19,"veintiuno" to 21,"veintidos" to 22,"veintitres" to 23,"veinticuatro" to 24,"veinticinco" to 25,"veintiseis" to 26,"veintisiete" to 27,"veintiocho" to 28,"veintinueve" to 29,"veinte" to 20,"treinta" to 30,"cuarenta" to 40,"cincuenta" to 50,"sesenta" to 60,"setenta" to 70,"ochenta" to 80,"noventa" to 90,"cien" to 100)
     fun canonical(raw:String):String {
         var q=normalize(raw.trim()).replace(Regex("\\s+")," ")
         val verbs=mapOf("abri" to "abrir","abre" to "abrir","baja" to "bajar","bajame" to "bajar","subi" to "subir","sube" to "subir","pone" to "poner","pon" to "poner","pausa" to "pausar","pausame" to "pausar","resumi" to "resumir","resume" to "resumir","mandale" to "mandar","enviale" to "mandar")

@@ -31,6 +31,7 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan):List<
         val ready=call!=null && call.name in available
         ReviewedStep(title,if(ready)call else null,when {
             ready->"Disponible · requiere tu confirmación"
+            step is PlanStep.Media->"Necesita acceso a notificaciones y una sesión multimedia que soporte esta acción."
             step is PlanStep.Brightness && step.percent*255/100<20->"El ajuste reversible admite un mínimo de 20/255; elegí un porcentaje mayor."
             step is PlanStep.Brightness->"Requiere Shizuku conectado, autorización de escritura y extensión Sistema activa."
             step is PlanStep.Open && call==null->"No hay una app única coincidente. Buscá y elegí la aplicación."

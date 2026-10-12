@@ -43,7 +43,7 @@ import org.json.JSONObject
  Text("Posición horizontal");Slider((if(c.landscapePosition<0)c.position else c.landscapePosition).coerceIn(.04f,.35f),{update(c.copy(landscapePosition=it))},valueRange=.04f..0.35f)
  TextButton(onClick={update(c.copy(landscapeWidth=0,landscapePosition=-1f))}){Text("Usar la posición general en ambas orientaciones")}
  Text("Gesto lateral compatible",style=MaterialTheme.typography.titleSmall)
- Text("Para no competir con Volver, asigná Spotlight Invoke a un gesto de One Hand Operation+. Allí configurás lado, zona, sensibilidad y apps excluidas; Spotlight no agrega una burbuja ni una capa invisible permanente.",style=MaterialTheme.typography.bodySmall)
+ Text("Para no competir con Volver, elegí «Spotlight · Buscar» como aplicación de un gesto de One Hand Operation+, si su selector permite elegir actividades. Allí configurás lado, zona, sensibilidad y apps excluidas; Spotlight no agrega una burbuja ni una capa invisible permanente.",style=MaterialTheme.typography.bodySmall)
  val context=LocalContext.current
  TextButton(onClick={val launch=context.packageManager.getLaunchIntentForPackage("com.samsung.android.sidegesturepad");runCatching{context.startActivity(launch ?: Intent(Intent.ACTION_VIEW,android.net.Uri.parse("https://galaxystore.samsung.com/detail/com.samsung.android.sidegesturepad")))}}){Text("Abrir One Hand Operation+")}
 }
