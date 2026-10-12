@@ -682,16 +682,20 @@ fun SpotlightPanel(
             ) {
                 SpotlightBar(
                     query,
-                    {
-                        showAi=false
-                        clearForms()
-                        query = it
-                        selected=0
-                        navigating = false
-                        results = emptyList()
-                        card = null
-                        preview = null
-                        menu = false
+                    { next ->
+                        // Selection/focus changes can report the same text. They must not
+                        // clear results: snapshotFlow only searches when text actually changes.
+                        if(next!=query) {
+                            showAi=false
+                            clearForms()
+                            query = next
+                            selected=0
+                            navigating = false
+                            results = emptyList()
+                            card = null
+                            preview = null
+                            menu = false
+                        }
                     },
                     category,
                     {

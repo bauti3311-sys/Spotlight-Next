@@ -42,6 +42,9 @@ class ActionHubVisualTest {
     }
     @Test fun lightHubOpensTypesBeforeListingFiles(){
         start("light");image("spotlight-whatsapp-light")
+        // Changing only the cursor must preserve the current results.
+        ui.onNode(hasSetTextAction()).performTextInputSelection(androidx.compose.ui.text.TextRange(0))
+        ui.onNodeWithText("Enviar mensaje").assertExists()
         ui.onNodeWithText("Buscar archivos").performClick()
         awaitText("Documentos PDF")
         ui.onNodeWithText("Imágenes").assertIsDisplayed()
