@@ -18,7 +18,10 @@ import kotlinx.coroutines.*
 private data class PreviewData(val text: String? = null, val bitmap: Bitmap? = null,val pages:Int=1)
 
 @Composable
-fun FilePreview(context: Context, item: Result) {
+fun FilePreview(context: Context, item: Result, expanded:Boolean=false, page:Int?=null, onPage:((Int)->Unit)?=null) {
+    var localPage by remember(item.id){mutableIntStateOf(0)}
+    val pdfUri=(item.action as? Action.Launch)?.intent?.data
+    if(item.mime=="application/pdf" && pdfUri!=null){PdfQuickLook(context,pdfUri,page ?: localPage,{localPage=it;onPage?.invoke(it)},expanded);return}
     if (item.mime?.startsWith("audio/") == true) {
         AudioPreview(item)
         return
@@ -132,7 +135,7 @@ fun FilePreview(context: Context, item: Result) {
         Image(
             it.asImageBitmap(),
             "Vista previa del archivo",
-            Modifier.fillMaxWidth().heightIn(max = 220.dp),
+            Modifier.fillMaxWidth().heightIn(max = if(expanded)540.dp else 320.dp),
         )
     }
     data?.text?.let { androidx.compose.foundation.text.selection.SelectionContainer {Text(it, fontSize = 13.sp)} }

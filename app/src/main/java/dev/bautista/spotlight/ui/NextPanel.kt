@@ -56,6 +56,10 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
     }
 }
 @Composable private fun DisplayReview(app:SpotlightApp,payload:String) {
+    var advanced by remember(payload){mutableStateOf(false)}
+    val nativeValue=payload.substringAfter(':').toIntOrNull()
+    if(payload.startsWith("screen_brightness:") && nativeValue!=null && nativeValue in 20..255 && !advanced){NativeBrightnessReview(app,nativeValue!!){advanced=true};return}
+    LaunchedEffect(Unit){app.shizuku.start()}
     val scope=rememberCoroutineScope();val state by app.shizuku.state.collectAsState();var message by remember(payload){mutableStateOf("")};var busy by remember{mutableStateOf(false)}
     val key=payload.substringBefore(':');val value=payload.substringAfter(':',"");val valid=dev.bautista.spotlight.advanced.AdvancedPolicy.validSetting(key,value)
     Column(Modifier.fillMaxWidth().padding(18.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {

@@ -54,7 +54,7 @@ fun SpotlightBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                CommandIcons.Search,
+                HugeIcons.Search,
                 "Buscar",
                 Modifier.size(22.dp),
                 tint = colors.onSurface.copy(alpha = .60f),
@@ -103,10 +103,10 @@ fun SpotlightBar(
                     modifier =
                         Modifier.clickable(onClick = onAcceptSuggestion).padding(horizontal = 6.dp),
                 )
-            onDictate?.let{dictate->IconButton(onClick=dictate,modifier=Modifier.size(48.dp)){Icon(CommandIcons.Mic,"Dictar consulta",Modifier.size(18.dp))}}
+            onDictate?.let{dictate->IconButton(onClick=dictate,modifier=Modifier.size(48.dp)){Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(18.dp))}}
             if (query.isNotEmpty())
                 IconButton(onClick = { onClear() }, modifier = Modifier.size(48.dp)) {
-                    Icon(CommandIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
+                    Icon(HugeIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
                 }
         }
     }

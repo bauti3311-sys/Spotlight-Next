@@ -37,6 +37,7 @@ import org.json.JSONArray
     Row(Modifier.horizontalScroll(rememberScrollState())){listOf("compact" to "Compacta","balanced" to "Equilibrada","spacious" to "Espaciosa").forEach{(key,label)->FilterChip(draft.density==key,{draft=draft.copy(density=key)},label={Text(label)})}}
     Text("Ancho · ${draft.width} dp");Slider(draft.width.toFloat(),{draft=draft.copy(width=it.toInt())},valueRange=380f..1100f)
     Text("Altura máxima · ${draft.maxHeight} dp");Slider(draft.maxHeight.toFloat(),{draft=draft.copy(maxHeight=it.toInt())},valueRange=320f..700f)
+    Row(Modifier.horizontalScroll(rememberScrollState())){listOf("precise" to "Preciso","liquid_precision" to "Liquid Precision","liquid_immersive" to "Liquid Immersive").forEach{(key,label)->FilterChip(draft.movement==key,{draft=draft.copy(movement=key)},label={Text(label)})}}
     Row{Text("Reducir animaciones",Modifier.weight(1f));Switch(!draft.animations,{draft=draft.copy(animations=!it)})}
     Row{FilterChip(draft.selectionStyle=="glass",{draft=draft.copy(selectionStyle="glass")},label={Text("Selección Glass")});FilterChip(draft.selectionStyle=="solid",{draft=draft.copy(selectionStyle="solid")},label={Text("Selección sólida")})}
     Text("El overlay usa un material nativo de alto contraste. El desenfoque de ventanas se reemplaza por translucidez y bordes suaves cuando no puede aislarse de forma segura en One UI.",style=MaterialTheme.typography.bodySmall)

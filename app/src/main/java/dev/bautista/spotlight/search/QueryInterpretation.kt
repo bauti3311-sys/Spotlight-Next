@@ -52,7 +52,7 @@ object QueryInterpreter {
 object FileSqlFilter {
     data class Filter(val selection:String,val args:List<String>)
     fun from(query:String):Filter {
-        if(Regex("\\b(OR|NOT)\\b").containsMatchIn(query))return Filter("",emptyList())
+        if(query.contains('"') || Regex("\\b(OR|NOT)\\b").containsMatchIn(query))return Filter("",emptyList())
         val clauses=mutableListOf<String>();val args=mutableListOf<String>()
         Regex("\\b(modified|created)-(after|before):(\\d+)").findAll(query).forEach{m->clauses+="${m.groupValues[1]} ${if(m.groupValues[2]=="after")">=" else "<"} ?";args+=m.groupValues[3]}
         Regex("(?:^|\\s)kind:(pdf|image|video|audio)(?=\\s|$)").find(query)?.groupValues?.get(1)?.let{kind->

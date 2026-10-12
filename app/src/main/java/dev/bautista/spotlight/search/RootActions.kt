@@ -34,9 +34,11 @@ object RootActions {
             add("music:$topic","Buscar música en ${ActionCatalog.displayName(topic)}",term+" · búsqueda, sin iniciar reproducción","Acciones",Action.ComposeSearch(topic,ActionCatalog.packages[topic].orEmpty(),term))
         }
         if(q in setOf("buscar musica en spotify","buscar musica en youtube")){val topic=q.substringAfterLast(' ');add("music-form","Buscar en ${ActionCatalog.displayName(topic)}","Elegir el contenido a buscar","Acciones",Action.ComposeSearch(topic,ActionCatalog.packages[topic].orEmpty()))}
+        if(q.contains("estos documentos") || q.contains("estos tres documentos") || q.contains("estos archivos"))add("selection","Trabajar con documentos seleccionados","Extracción local y revisión antes de enviar a IA","IA",Action.SystemPanel("selection-ai",raw),4200)
         if(q.contains("este archivo") || q.contains("este documento") || q.contains("este pdf") || q.contains("este texto") || q in setOf("explicame esto","resumir esto","traducir esto"))
             add("context","Trabajar con contexto autorizado","Elegir o revisar el contenido antes de usar IA","IA",Action.SystemPanel("context-ai",raw),4000)
         if(q in setOf("pomodoro","concentracion","sesion de concentracion"))add("focus","Concentración","Temporizador local · abrir opciones", "Acciones",Action.SystemPanel(if(dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"focus"))"focus" else "extensions"),2900)
+        if(q in setOf("guardados","mis guardados","textos frecuentes"))add("saved","Guardados","Notas, textos, enlaces y documentos fijados","Guardados",Action.SystemPanel("saved"),3800)
         if(q in setOf("contexto","contextos","contextos fijados","elegir documento"))add("context-list","Contexto y documentos","Elegir, fijar o quitar contenido autorizado","Contexto",Action.SystemPanel("context"))
         if(q in setOf("diagnostico","diagnostico de spotlight","diagnosticos"))add("diagnostics","Diagnóstico de Spotlight","Permisos, servicios y tiempos observados sin contenido privado","Sistema",Action.SystemPanel("diagnostics"))
         if(q in setOf("modo privado","privacidad"))add("privacy","Modo privado y datos","Suspender captura y aprendizaje sin borrar lo guardado","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","Privacidad y sistema")))

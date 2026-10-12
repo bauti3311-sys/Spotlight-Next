@@ -140,7 +140,7 @@ class SearchEngine(
                 search(action.scope.topic,c,action.scope.copy(topic="")).collect{send(it)}
             } else send(listOf(Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,action),when(action) {
                 is Action.ComposeMessage -> "Revisar destinatario · requiere app compatible y número; contactos opcionales"
-                is Action.SystemPanel -> if(action.page=="display-review") "Requiere Shizuku conectado y autorizado · confirmar cambio" else "Ver opciones y requisitos antes de ejecutar"
+                is Action.SystemPanel -> if(action.page=="display-review") "Android o Shizuku opcional · revisar permiso y confirmar cambio" else "Ver opciones y requisitos antes de ejecutar"
                 else -> "Ver opciones y requisitos antes de ejecutar"
             },"Comandos",2600,action)))
             return@channelFlow
