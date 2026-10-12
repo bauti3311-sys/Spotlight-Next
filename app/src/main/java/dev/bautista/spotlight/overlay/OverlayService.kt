@@ -234,7 +234,6 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 onFocus = { gained ->
                     if (gained) {
                         focusSeen = true
-                        app.diagnostics.markInteractive()
                         panel.post { captureClipboard() }
                     }
                     // IME, selection toolbars and child windows can take focus.

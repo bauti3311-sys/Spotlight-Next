@@ -5,8 +5,8 @@ set +x
 for name in ANDROID_KEYSTORE_BASE64 ANDROID_STORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
   if [[ -z "${!name:-}" ]]; then echo "Missing required signing input: $name" >&2; exit 1; fi
 done
-# Installed 1.3.0 baseline; historical certificate unchanged.
-installed_version_code=25
+# Installed 1.3.1 baseline; historical certificate unchanged.
+installed_version_code=26
 umask 077
 scratch=$(mktemp -d "${RUNNER_TEMP:?}/spotlight-signing.XXXXXX")
 trap 'rm -rf "$scratch"' EXIT

@@ -10,11 +10,10 @@ import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.data.Config
 
 @Composable fun GlassQuickMenu(c:Config,update:(Config)->Unit,onSettings:()->Unit,onFilter:(String)->Unit) {
-    Column(Modifier.fillMaxWidth().padding(horizontal=12.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+    Column(Modifier.fillMaxWidth().padding(horizontal=12.dp),verticalArrangement=Arrangement.spacedBy(0.dp)) {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Icon(CommandIcons.Display,null,Modifier.size(18.dp));TextButton(onClick={update(c.copy(theme=when(c.theme){"auto"->"light";"light"->"dark";else->"auto"}))}){Text("Tema · "+when(c.theme){"light"->"Claro";"dark"->"Oscuro";else->"Automático"})}}
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Icon(CommandIcons.Shield,null,Modifier.size(18.dp));Spacer(Modifier.width(12.dp));Text("Modo privado",Modifier.weight(1f));Switch(c.privateMode,{update(c.copy(privateMode=it))},Modifier.semantics{contentDescription="Modo privado"})}
-        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Text("Animaciones breves",Modifier.weight(1f));Switch(c.animations,{update(c.copy(animations=it))})}
-        TextButton(onClick=onSettings,modifier=Modifier.fillMaxWidth()){Icon(CommandIcons.Settings,null,Modifier.size(18.dp));Spacer(Modifier.width(12.dp));Text("Configuración completa",Modifier.weight(1f))}
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){TextButton(onClick={update(c.copy(animations=!c.animations))}){Text(if(c.animations)"Reducir animaciones" else "Activar animaciones")};TextButton(onClick=onSettings){Text("Configuración completa")}}
         HorizontalDivider()
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceEvenly){
             listOf("Todo" to CommandIcons.Search,"Apps" to CommandIcons.Apps,"Archivos" to CommandIcons.Folder,"Acciones" to CommandIcons.Bolt,"IA" to CommandIcons.AutoAwesome).forEachIndexed{i,(mode,icon)->

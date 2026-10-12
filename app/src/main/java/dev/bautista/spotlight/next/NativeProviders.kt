@@ -13,7 +13,7 @@ import kotlin.coroutines.resumeWithException
 
 data class NativeSnapshot(val json:JSONObject,val fetchedAt:Long,val stale:Boolean=false,val warning:String="")
 /** User-triggered, bounded HTTPS calls, cancellable and persistent per-request cache. */
-class NativeProviders(context:Context,private val fetcher:(suspend (HttpUrl)->JSONObject)?=null,private val clock:()->Long={System.currentTimeMillis()}) {
+class NativeProviders(private val context:Context,private val fetcher:(suspend (HttpUrl)->JSONObject)?=null,private val clock:()->Long={System.currentTimeMillis()}) {
     private val prefs=context.getSharedPreferences("native_provider_cache_v1",Context.MODE_PRIVATE)
     private val client=OkHttpClient.Builder().connectTimeout(10,TimeUnit.SECONDS).readTimeout(15,TimeUnit.SECONDS).callTimeout(20,TimeUnit.SECONDS).build()
     private val mutex=Mutex()
@@ -46,6 +46,22 @@ class NativeProviders(context:Context,private val fetcher:(suspend (HttpUrl)->JS
             .addQueryParameter("daily","temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max,sunrise,sunset")
             .addQueryParameter("forecast_days","5").build())
         return data.copy(json=JSONObject(data.json.toString()).put("location_name",label))
+    }
+    private suspend fun sportsKey():String=withContext(Dispatchers.IO){runCatching{dev.bautista.spotlight.ai.CredentialVault(context).read("thesportsdb")}.getOrNull().orEmpty().takeIf{it.matches(Regex("[A-Za-z0-9]{1,4096}"))} ?: "123"}
+    suspend fun sportsEntities(sport:String,country:String,kind:String,name:String=""):List<SportsEntity> {
+        require(sport in setOf("Soccer","Basketball","Motorsport","Tennis","Baseball") && kind in setOf("team","league"))
+        require(country.trim().length in 2..60)
+        val endpoint=if(kind=="team")"search_all_teams.php" else "search_all_leagues.php"
+        val key=sportsKey();val tier=if(key=="123")"free" else "own"
+        val data=cached("entities:$tier:$sport:$country:$kind",86400000L,false,HttpUrl.Builder().scheme("https").host("www.thesportsdb.com").addPathSegments("api/v1/json/$key/$endpoint").addQueryParameter("s",sport).addQueryParameter("c",country.trim()).build())
+        val a=data.json.optJSONArray(if(kind=="team")"teams" else "countries") ?: JSONArray()
+        return (0 until a.length()).mapNotNull {i->val j=a.optJSONObject(i) ?: return@mapNotNull null;val e=SportsEntity(j.optString(if(kind=="team")"idTeam" else "idLeague"),j.optString(if(kind=="team")"strTeam" else "strLeague"),kind,sport,country);e.takeIf{SportsFavorites.valid(it) && (name.isBlank() || dev.bautista.spotlight.search.normalize(it.name).contains(dev.bautista.spotlight.search.normalize(name)))}}
+    }
+    suspend fun sportsEntity(entity:SportsEntity,next:Boolean,refresh:Boolean=false):NativeSnapshot {
+        require(SportsFavorites.valid(entity))
+        val endpoint=if(entity.kind=="team")if(next)"eventsnext.php" else "eventslast.php" else if(next)"eventsnextleague.php" else "eventspastleague.php"
+        val key=sportsKey();val tier=if(key=="123")"free" else "own"
+        return cached("entity:$tier:${entity.kind}:${entity.id}:$next",300000L,refresh,HttpUrl.Builder().scheme("https").host("www.thesportsdb.com").addPathSegments("api/v1/json/$key/$endpoint").addQueryParameter("id",entity.id).build())
     }
     suspend fun sports(sport:String="Soccer",date:LocalDate=LocalDate.now(),refresh:Boolean=false):NativeSnapshot {
         require(sport in setOf("Soccer","Basketball","Motorsport","Tennis","Baseball"))

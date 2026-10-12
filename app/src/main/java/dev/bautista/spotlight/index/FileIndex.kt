@@ -108,7 +108,7 @@ class FileIndex(
         if (
             broadAllowed() != lastBroad ||
                 c.trees != lastTrees ||
-                System.currentTimeMillis() - refreshed > 60000
+                System.currentTimeMillis() - refreshed > 600000
         )
             if (broadAllowed()) {
                 synchronized(this) {

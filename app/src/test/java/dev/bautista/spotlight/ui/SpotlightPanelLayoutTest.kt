@@ -77,8 +77,8 @@ class SpotlightPanelLayoutTest {
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
         // Search runs asynchronously; popup/resize animations used to hide this race.
-        ui.waitUntil(15000) { ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty() }
-        ui.onNodeWithText("Crear una nota").assertExists();ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
+        ui.waitUntil(15000) { ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty() }
+        ui.onNodeWithText("Crear una nota").assertDoesNotExist();ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
         ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
     }
@@ -118,9 +118,9 @@ class SpotlightPanelLayoutTest {
             )
         }
         ui.waitUntil(15000) {
-            ui.onAllNodesWithText("Crear una nota nueva").fetchSemanticsNodes().isNotEmpty()
+            ui.onAllNodesWithText("Crear nota").fetchSemanticsNodes().isNotEmpty()
         }
-        ui.onNodeWithText("Crear una nota nueva").performClick()
+        ui.onNodeWithText("Crear nota").performClick()
         ui.onNodeWithText("Texto de la nota").assertIsDisplayed()
         ui.onAllNodes(hasSetTextAction())[1].performTextInput("Una nota de prueba")
         ui.onNodeWithText("Guardar").performClick()

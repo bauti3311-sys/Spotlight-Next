@@ -62,7 +62,7 @@ class SearchEngine(
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
         searchSources(query,c,scope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(canonical,natural+rows+registered+saved,c)) else rows
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(canonical,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret")item.copy(action=action.copy(packageName=input)) else item;else->item}}+registered+saved,c)) else rows
             send(all)
         }
     }.flowOn(Dispatchers.Default)

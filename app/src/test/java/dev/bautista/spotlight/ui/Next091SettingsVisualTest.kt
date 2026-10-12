@@ -12,5 +12,5 @@ import org.robolectric.annotation.*
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class Next091SettingsVisualTest {
     @get:Rule val ui=createAndroidComposeRule<MainActivity>()
-    @Test fun groupedSettingsHaveFreshCaptures(){ui.onNodeWithText("Preferencias").assertExists();ui.runOnIdle{capture091(ui.activity,"settings-general-tablet")};ui.onNodeWithText("Apariencia").performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Diseños preparados").fetchSemanticsNodes().isNotEmpty()};ui.runOnIdle{capture091(ui.activity,"settings-appearance-tablet")}}
+    @Test fun groupedSettingsHaveFreshCaptures(){ui.onNodeWithText("Buscar en todos los ajustes").assertExists();ui.runOnIdle{capture091(ui.activity,"settings-general-tablet")};ui.onAllNodesWithText("Apariencia")[0].performClick();ui.waitUntil(15000){ui.onAllNodesWithText("Spotlight Glass").fetchSemanticsNodes().isNotEmpty()};ui.runOnIdle{capture091(ui.activity,"settings-appearance-tablet")}}
 }

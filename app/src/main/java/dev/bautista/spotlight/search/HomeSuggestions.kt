@@ -14,9 +14,12 @@ object HomeSuggestions {
         fun row(id:String,title:String,subtitle:String,action:Action){items+=Result("suggest:$id",title,subtitle,"Sugerencias",2000-items.size,action)}
         val learned=if(c.learning && !c.privateMode)c.recent else emptyList()
         val packages=(c.favorites.sorted()+learned).map { it.substringBefore('/') }.distinct().take(12)
-        packages.take(1).forEach { pkg ->
+        var addedApp=false
+        packages.forEach { pkg ->
+            if(addedApp)return@forEach
             val intent=context.packageManager.getLaunchIntentForPackage(pkg) ?: return@forEach
             val info=runCatching{context.packageManager.getApplicationInfo(pkg,0)}.getOrNull() ?: return@forEach
+            addedApp=true
             items+=Result("suggest:app:$pkg",info.loadLabel(context.packageManager).toString(),if(pkg in c.favorites.map{it.substringBefore('/')})"Aplicación favorita" else "Aplicación reciente · aprendizaje local","Sugerencias",2200-items.size,Action.Launch(intent),info.loadIcon(context.packageManager))
         }
         if(c.learning && !c.privateMode)c.actionRecent.take(8).forEach { raw ->
@@ -26,6 +29,7 @@ object HomeSuggestions {
             } ?: return@forEach
             row("action:${normalize(raw)}",raw,if(action is Action.Device)"Acción reciente · aplicar al seleccionar" else "Acción reciente · abrir revisión",action)
         }
+        if(c.learning && !c.privateMode)runCatching{val sequences=org.json.JSONObject(c.learnedSequences);sequences.keys().asSequence().filter{sequences.getJSONObject(it).optInt("count",0)>=3 && System.currentTimeMillis()-sequences.getJSONObject(it).optLong("last",0)<30L*86400000}.take(1).forEach{raw->if(LocalPlan.parse(raw)!=null)row("sequence:${normalize(raw)}","Repetir secuencia","Hábitos locales · revisar y guardar como comando",Action.SystemPanel("interpret",raw))}}
         if(Replies.connected.value && Replies.targets.value.any{it.packageName=="com.whatsapp"})row("replies","Leer mensajes de WhatsApp","Notificaciones actuales autorizadas",Action.Navigate(SearchScope("whatsapp","replies")))
         if(c.clipboard && hasClips && !c.privateMode)row("clipboard","Consultar portapapeles","Textos capturados con Spotlight en foco",Action.SelectMode("Portapapeles"))
         return items.distinctBy{it.id}.filter{item ->

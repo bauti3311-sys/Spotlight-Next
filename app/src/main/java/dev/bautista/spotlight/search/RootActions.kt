@@ -20,6 +20,7 @@ object RootActions {
             val n=m.groupValues[1].toIntOrNull()
             if(n==null || n !in 0..100)add("invalid","Porcentaje inválido","Usá un valor entre 0 y 100; no se modifica el dispositivo","Información",Action.RestoreQuery(raw),4000)
         }
+        LocalPlan.step(raw)?.takeIf{it is PlanStep.RelativeBrightness || it is PlanStep.RelativeVolume || it is PlanStep.Media}?.let{add("plan-single","Revisar acción","Comprobar permisos y confirmar antes de ejecutar","Acciones",Action.SystemPanel("interpret",raw))}
         if(q.startsWith("clima"))add("weather",if(q.contains("manana"))"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:" else q.removePrefix("clima").removePrefix(" en ").trim()))
         Regex("^(?:como va|resultado de|partido de) (.+)$").matchEntire(q)?.let{add("sports","Consultar ${it.groupValues[1]}","Elegir equipo o competición real · datos del proveedor","Deportes",Action.SystemPanel("sports-native",it.groupValues[1]))}
         Regex("^(?:buscar |escuchar )?musica(?: de)? (.+?)(?: en (spotify|youtube))?$").matchEntire(q)?.let{m->

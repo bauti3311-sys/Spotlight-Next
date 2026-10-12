@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collectLatest
 
 class SpotlightApp : Application() {
+    val processStartedAt=android.os.SystemClock.elapsedRealtime()
     val scope =
         kotlinx.coroutines.CoroutineScope(
             kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO

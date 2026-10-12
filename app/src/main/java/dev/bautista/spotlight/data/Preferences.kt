@@ -48,7 +48,7 @@ data class Config(
     val glassIntensity:Float=.45f, val surfaceTone:String="neutral", val borderWidth:Float=1f,
     val shadowSize:Float=12f, val typeface:String="inter", val selectionStyle:String="glass",
     val landscapeWidth:Int=0, val landscapePosition:Float=-1f, val customThemes:String="[]",
-    val sourcePriority:String="{}", val captureContext:Boolean=false,
+    val sourcePriority:String="{}", val captureContext:Boolean=false, val learnedSequences:String="{}",
 
 )
 
@@ -56,6 +56,10 @@ class Preferences(private val context: Context) {
     @Volatile var isPrivate:Boolean=false
         private set
     private val next20=stringPreferencesKey("next20")
+    @Volatile private var privacyRevision=0L
+    private val sequences=stringPreferencesKey("learnedSequences")
+    private val lastActionTime=longPreferencesKey("lastActionTime")
+    private val privateVersion=longPreferencesKey("privateVersion")
     private val privateFlag=booleanPreferencesKey("privateMode")
 
     private val theme = stringPreferencesKey("theme")
@@ -161,13 +165,15 @@ class Preferences(private val context: Context) {
                     shadowSize=extra.optDouble("shadowSize",12.0).toFloat().coerceIn(0f,20f),typeface=extra.optString("typeface","inter"),
                     selectionStyle=extra.optString("selectionStyle","glass"),landscapeWidth=extra.optInt("landscapeWidth",0).coerceIn(0,1100),
                     landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
-                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false)
-                ).also{isPrivate=it.privateMode}
+                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}"
+                ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v}}
             }
 
     suspend fun update(c: Config) {
-        isPrivate=c.privateMode
-        context.store.edit { p ->
+        val previousPrivate=isPrivate;val previousRevision=privacyRevision
+        val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode
+        try {context.store.edit { p ->
+            p[privateVersion]=revision
             p[privateFlag]=c.privateMode
             p[next20]=org.json.JSONObject().put("autoKeyboard",c.autoKeyboard).put("glassIntensity",c.glassIntensity.toDouble())
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
@@ -223,6 +229,7 @@ class Preferences(private val context: Context) {
             p[pinnedSuggestions]=c.pinnedSuggestions
 
         }
+        }catch(e:Exception){if(privacyRevision==revision){isPrivate=previousPrivate;privacyRevision=previousRevision};throw e}
     }
 
     suspend fun togglePin(query: String) {
@@ -267,12 +274,22 @@ class Preferences(private val context: Context) {
         }
     }
 
-    suspend fun recordAction(query: String) {
-        if(query.isBlank()) return
-        context.store.edit { p -> if(p[privateFlag]==true)return@edit; p[actionRecent] = (listOf(query.take(4000)) + (p[actionRecent]?.split("|") ?: emptyList()).filter { it != query }).take(10).joinToString("|") }
+    suspend fun recordAction(query:String) {
+        if(query.isBlank())return
+        context.store.edit {p->if(p[privateFlag]==true)return@edit
+            val old=p[actionRecent]?.split("|")?.filter{it.isNotBlank()}.orEmpty();val now=System.currentTimeMillis()
+            if(p[learning]!=false && now-(p[lastActionTime] ?: 0L) in 0..120000L){
+                val previous=old.firstOrNull().orEmpty();val pair="$previous y $query"
+                if(dev.bautista.spotlight.search.LocalPlan.step(previous)!=null && dev.bautista.spotlight.search.LocalPlan.step(query)!=null && dev.bautista.spotlight.search.LocalPlan.parse(pair)!=null){
+                    val data=runCatching{org.json.JSONObject(p[sequences] ?: "{}").let {j->org.json.JSONObject().apply{j.keys().asSequence().filter{now-j.optJSONObject(it)!!.optLong("last",0)<30L*86400000}.take(49).forEach{put(it,j.getJSONObject(it))}}}}.getOrDefault(org.json.JSONObject())
+                    data.put(pair,org.json.JSONObject().put("count",(data.optJSONObject(pair)?.optInt("count",0) ?: 0)+1).put("last",now));p[sequences]=data.toString()
+                }
+            }
+            p[actionRecent]=(listOf(query.take(4000))+old.filter{it!=query}).take(10).joinToString("|");p[lastActionTime]=now
+        }
     }
 
     suspend fun clearHistory() {
-        context.store.edit { it.remove(recent); it.remove(actionRecent); it.remove(usageData) }
+        context.store.edit { it.remove(recent); it.remove(actionRecent); it.remove(usageData);it.remove(sequences);it.remove(lastActionTime) }
     }
 }

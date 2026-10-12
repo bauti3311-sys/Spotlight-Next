@@ -24,6 +24,7 @@ sealed interface ToolRequest {
     data class Workflow(val id:String):ToolRequest
     data class OpenApp(val packageName:String):ToolRequest
     data class Volume(val percent:Int):ToolRequest
+    data class Media(val command:String):ToolRequest
     data object Device:ToolRequest
     data object Diagnostics:ToolRequest
 }
@@ -42,6 +43,7 @@ object ToolRegistry {
         ToolDefinition("run_workflow","Revisar rutina","Abrir revisión de una rutina guardada. Cada operación sensible se confirma.","workflows",ToolRisk.PREPARE,listOf("id")),
         ToolDefinition("open_app","Abrir aplicación","Abrir una aplicación instalada y elegida.","apps",ToolRisk.PREPARE,listOf("package")),
         ToolDefinition("set_volume","Ajustar volumen","Cambiar volumen multimedia al porcentaje indicado tras confirmar.","media",ToolRisk.CHANGE,listOf("percent")),
+        ToolDefinition("control_media","Controlar reproducción","Controlar una sesión multimedia autorizada.","media",ToolRisk.CHANGE,listOf("command"),mapOf("command" to listOf("play","pause","next","previous"))),
         ToolDefinition("device_info","Información del dispositivo","Consultar fabricante, modelo y versión de Android.","system",ToolRisk.READ,emptyList()),
         ToolDefinition("shizuku_diagnostics","Diagnóstico de Shizuku","Consultar estado real de conexión y autorización; no solicitar permisos.","shizuku",ToolRisk.READ,emptyList()),
         ToolDefinition("read_display_setting","Consultar ajuste de pantalla","Leer únicamente los ajustes de pantalla registrados mediante ADB.","system",ToolRisk.READ,listOf("key"),mapOf("key" to AdvancedPolicy.settingKeys.toList()),advanced=true),
@@ -69,6 +71,7 @@ object ToolRegistry {
             "run_workflow"->ToolRequest.Workflow(text("id").also{require(it.length<=100)})
             "open_app"->ToolRequest.OpenApp(packageName())
             "set_volume"->ToolRequest.Volume(text("percent").toIntOrNull()?.also{require(it in 0..100)} ?: error("Porcentaje inválido."))
+            "control_media"->ToolRequest.Media(value("command"))
             "device_info"->ToolRequest.Device
             "shizuku_diagnostics"->ToolRequest.Diagnostics
             else->error("Herramienta no implementada.")

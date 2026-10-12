@@ -85,6 +85,7 @@ fun SpotlightPanel(
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
         LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
+        var previousSearch by remember {mutableStateOf<String?>(null)}
         var loading by remember { mutableStateOf(false) }
         var error by remember { mutableStateOf("") }
         var card by remember { mutableStateOf<InfoCard?>(null) }
@@ -357,21 +358,7 @@ fun SpotlightPanel(
                                     volume.getValue(action.command),
                                     android.media.AudioManager.FLAG_SHOW_UI,
                                 )
-                            else {
-                                val key =
-                                    when (action.command) {
-                                        "play" -> android.view.KeyEvent.KEYCODE_MEDIA_PLAY
-                                        "pause" -> android.view.KeyEvent.KEYCODE_MEDIA_PAUSE
-                                        "next" -> android.view.KeyEvent.KEYCODE_MEDIA_NEXT
-                                        else -> android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS
-                                    }
-                                audio.dispatchMediaKeyEvent(
-                                    android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, key)
-                                )
-                                audio.dispatchMediaKeyEvent(
-                                    android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, key)
-                                )
-                            }
+                            else dev.bautista.spotlight.control.MediaControl.execute(context,action.command)
                             error = "Acción ejecutada"
                         }
                         .onFailure { error = "La app activa no admite esta acción" }
@@ -466,9 +453,7 @@ fun SpotlightPanel(
                 .distinctUntilChanged()
                 .collectLatest { q ->
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
-                    navigating = false
-                    preview = null
-                    menu = false
+                    if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
                     cardJob?.cancel()
                     card = null
                     cardLoading = false
@@ -719,6 +704,7 @@ fun SpotlightPanel(
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
                     optionsOpen=searchOptions,
+                    onSearchFocus={app.diagnostics.markInteractive()},
                     quickMenu={
                         GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}}},
                             {launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))},

@@ -162,6 +162,7 @@ class MainActivity : ComponentActivity() {
                             )
                             SettingsLayout(settingsGroup,{settingsGroup=it}){
                             CompositionLocalProvider(LocalSettingsGroup provides settingsGroup){
+                            Section("Contexto autorizado · Inteligencia") { Text("Elegí documentos, fijá contextos y guardá conversaciones manualmente.");TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","contextos"))}){Text("Gestionar contexto")} }
                             Section("Privacidad · Spotlight Glass") { PrivacySettings(app,config,::update) }
                             Section("Invocación · teclado y posición") { InvocationSettings(config,::update) }
                             Section("Búsqueda · prioridades") { SearchTuning(config,::update) }
@@ -279,60 +280,7 @@ class MainActivity : ComponentActivity() {
                                         },
                                     )
                             }
-                            Section("Apariencia") {
-                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    listOf(
-                                            "auto" to "Sistema",
-                                            "dark" to "Oscuro",
-                                            "light" to "Claro",
-                                        )
-                                        .forEach { (value, label) ->
-                                            FilterChip(
-                                                selected = config.theme == value,
-                                                onClick = { update(config.copy(theme = value)) },
-                                                label = { Text(label) },
-                                            )
-                                        }
-                                }
-                                dev.bautista.spotlight.ui.AppearanceSettings(config, ::update)
-                                Text(
-                                    "Opacidad · ${(config.opacity*100).toInt()}%",
-                                    fontSize = 14.sp,
-                                )
-                                Slider(
-                                    value = config.opacity,
-                                    onValueChange = { update(config.copy(opacity = it)) },
-                                    valueRange = 0.8f..1f,
-                                )
-                                Text("Ancho · ${config.width} dp", fontSize = 14.sp)
-                                Slider(
-                                    value = config.width.toFloat(),
-                                    onValueChange = { update(config.copy(width = it.toInt())) },
-                                    valueRange = 380f..840f,
-                                )
-                                Text(
-                                    "Posición vertical · ${(config.position*100).toInt()}%",
-                                    fontSize = 14.sp,
-                                )
-                                Slider(
-                                    value = config.position,
-                                    onValueChange = { update(config.copy(position = it)) },
-                                    valueRange = 0.04f..0.3f,
-                                )
-                                Text(
-                                    "La barra deja el exterior transparente. El panel de resultados usa un material más sólido para facilitar la lectura.",
-                                    fontSize = 12.sp,
-                                )
-
-                                Toggle("Reducir animaciones", !config.animations) {
-                                    update(config.copy(animations = !it))
-                                }
-                                Text(
-                                    "Cerrá y volvé a abrir Spotlight para aplicar cambios. Los márgenes exteriores siempre quedan transparentes.",
-                                    fontSize = 12.sp,
-                                    color = colors.onSurfaceVariant,
-                                )
-                            }
+                            Section("Apariencia") { GlassAppearance(config,::update) }
                             Section("Búsqueda y privacidad") {
                                 Toggle("Aprender del uso · solo en este dispositivo",config.learning){update(config.copy(learning=it))}
                                 Toggle("Contactos", config.contacts) { enabled ->
@@ -801,7 +749,7 @@ private fun Section(title: String, content: @Composable ColumnScope.() -> Unit) 
     val query=LocalSettingsQuery.current
     if(query.isBlank() && SettingsGroups.of(title)!=LocalSettingsGroup.current)return
     if(query.isNotBlank() && !SettingsGroups.matches(title,query))return
-    var expanded by remember(title) { mutableStateOf(true) }
+    var expanded by remember(title) { mutableStateOf(!title.startsWith("Centro de comandos") && !title.startsWith("Tasker") && !title.startsWith("Rutinas")) }
     OutlinedCard(Modifier.fillMaxWidth().padding(top=12.dp),shape=RoundedCornerShape(18.dp),colors=CardDefaults.outlinedCardColors(containerColor=MaterialTheme.colorScheme.surface),border=BorderStroke(1.dp,MaterialTheme.colorScheme.outlineVariant)) {
         Column(Modifier.padding(16.dp)) {
             Row(Modifier.fillMaxWidth().clickable { expanded=!expanded },verticalAlignment=Alignment.CenterVertically) {

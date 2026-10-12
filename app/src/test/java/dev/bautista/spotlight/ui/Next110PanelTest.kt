@@ -32,8 +32,9 @@ class Next110PanelTest {
         ui.waitUntil(15000){ui.onAllNodesWithText("18 °C").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithText("18 °C").performScrollTo().assertIsDisplayed();capture("weather-cached-phone")
     }
     @Test fun missingSportsScoreIsVisibleWithoutFakeLiveMinute(){
-        val fixture=org.json.JSONObject().put("events",org.json.JSONArray().put(org.json.JSONObject().put("idEvent","fixture-1").put("strEvent","Equipo A vs Equipo B").put("strLeague","Liga de prueba")))
-        app.getSharedPreferences("native_provider_cache_v1",0).edit().putString("sports:Soccer:${java.time.LocalDate.now()}",org.json.JSONObject().put("saved",System.currentTimeMillis()).put("body",fixture).toString()).commit()
+        val fixture=org.json.JSONObject().put("events",org.json.JSONArray().put(org.json.JSONObject().put("idHomeTeam","133602").put("idEvent","fixture-1").put("strEvent","Equipo A vs Equipo B").put("strLeague","Liga de prueba")))
+        app.getSharedPreferences("native_provider_cache_v1",0).edit().putString("entity:free:team:133602:true",org.json.JSONObject().put("saved",System.currentTimeMillis()).put("body",fixture).toString()).commit()
+        dev.bautista.spotlight.next.SportsFavorites(app).save(listOf(dev.bautista.spotlight.next.SportsEntity("133602","Equipo A","team","Soccer")))
         ui.setContent{SpotlightTheme{Surface{NextPanel(app,"sports-native","") {}}}}
         ui.waitUntil(15000){ui.onAllNodesWithText("Marcador no informado").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithText("Marcador no informado").performScrollTo().assertIsDisplayed();ui.onNodeWithText("Estado no informado").assertExists();capture("sports-cached-tablet")
     }

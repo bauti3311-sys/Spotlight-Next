@@ -38,7 +38,7 @@ jobs:
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: spotlight-next-1.3.1-debug-${{ github.run_number }}
+          name: spotlight-next-2.0.0-debug-${{ github.run_number }}
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
@@ -55,3 +55,15 @@ jobs:
           echo '::error::La compilación o una verificación falló. Abrí el paso marcado en rojo para ver el error y su stacktrace.'
           echo '### Verificación fallida' >> "$GITHUB_STEP_SUMMARY"
           echo 'Revisá el paso marcado en rojo. El APK solo se publica si assembleDebug termina correctamente; las pruebas o lint pueden fallar después.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preserve verification reports and native UI captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-2.0-${{ github.run_number }}
+          path: |
+            app/build/test-results/
+            app/build/reports/
+            app/build/**/*-ui/*.png
+          if-no-files-found: ignore
+          retention-days: 14

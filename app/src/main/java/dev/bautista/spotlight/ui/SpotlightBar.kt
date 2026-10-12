@@ -42,6 +42,7 @@ fun SpotlightBar(
     onOptionsChange:(Boolean)->Unit={},
     optionsMaxHeight:Dp=320.dp,
     optionsOpen:Boolean?=null,
+    onSearchFocus:()->Unit={},
     quickMenu:(@Composable ()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
@@ -62,7 +63,7 @@ fun SpotlightBar(
             BasicTextField(
                 query,
                 { onQueryChange(it.take(4000)) },
-                Modifier.weight(1f).focusRequester(focus),
+                Modifier.weight(1f).focusRequester(focus).onFocusChanged{if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
                     TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 17.sp else 20.sp),

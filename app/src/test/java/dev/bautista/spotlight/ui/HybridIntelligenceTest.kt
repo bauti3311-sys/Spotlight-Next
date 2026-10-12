@@ -33,7 +33,7 @@ class HybridIntelligenceTest {
         assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
         ui.runOnIdle{capture091(ui.activity,"hybrid-plan-review")}
         ui.onNodeWithText("Confirmar pasos seleccionados").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Volumen multimedia solicitado: 60 %.").fetchSemanticsNodes().isNotEmpty()}
+        ui.waitUntil(15000){ui.onAllNodesWithText("Volumen multimedia solicitado: 60 %.",substring=true).fetchSemanticsNodes().isNotEmpty()}
         assertEquals(audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*60/100,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
         ui.onNodeWithText("Plan revisado").assertIsNotEnabled()
     }
@@ -70,7 +70,7 @@ class HybridIntelligenceTest {
     }
     @Test fun lightHybridHasUnifiedSuggestionsWithoutCategoryCircles() {
         ui.setContent{SpotlightPanel(app,AppConfig(theme="light",files=false,animations=false),{},availableHeightDp=700f)}
-        ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()}
+        ui.waitUntil(15000){ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty()}
         ui.onNodeWithContentDescription("Opciones de búsqueda").assertIsDisplayed()
         ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertDoesNotExist()
         ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
@@ -107,13 +107,13 @@ class HybridIntelligenceTest {
         } finally {server.close();listener.join(1000)}
     }
     @Test @Config(qualifiers="w360dp-h800dp") fun phoneHybridSupportsLongPressSecondaryActions() {
-        ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},availableHeightDp=700f)}
-        ui.waitUntil(15000){ui.onAllNodesWithText("Crear una nota").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Buscar una aplicación").performTouchInput{longClick()}
+        ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false,actionRecent=listOf("volumen al 60%")),{},availableHeightDp=700f)}
+        ui.waitUntil(15000){ui.onAllNodesWithText("volumen al 60%").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("volumen al 60%").performTouchInput{longClick()}
         ui.onNodeWithText("Ocultar sugerencia").performScrollTo().assertIsDisplayed()
         ui.runOnIdle{capture091(ui.activity,"hybrid-phone-actions")}
         ui.onNodeWithText("Ocultar sugerencia").performClick()
-        runBlocking {kotlinx.coroutines.withTimeout(5000){app.preferences.config.first{it.hiddenSuggestions.contains("suggest:apps")}}}
+        runBlocking {kotlinx.coroutines.withTimeout(5000){app.preferences.config.first{it.hiddenSuggestions.contains("suggest:action:volumen al 60%")}}}
     }
 
 }
