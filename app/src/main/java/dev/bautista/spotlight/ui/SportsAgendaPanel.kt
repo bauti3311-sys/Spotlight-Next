@@ -51,7 +51,12 @@ object SportsAgendaOrder {
             listOf("strLeague" to "Competición","strSport" to "Deporte","strStatus" to "Estado","dateEvent" to "Fecha","strTime" to "Hora del proveedor","strVenue" to "Lugar","intRound" to "Ronda").forEach{(key,label)->event.optString(key).takeUnless{it.isBlank()||it=="null"}?.let{Text("$label: $it")}}
             Text("Solo se muestran datos publicados por la fuente. Desglose de goles, cuartos o sets no disponible aquí.",style=MaterialTheme.typography.bodySmall)
             TextButton(onClick={onAction(Action.ComposeSearch("sofascore","com.sofascore.results",event.optString("strEvent")))}){Text("Más detalles en Sofascore")}
-        } ?: visible.forEach{item->TextButton(onClick={detail=item},modifier=Modifier.fillMaxWidth()){Column(Modifier.fillMaxWidth()){Text(item.json.optString("strEvent").ifBlank{"Encuentro"});Text(ProviderValues.score(item.json)+" · "+item.json.optString("dateEvent"),style=MaterialTheme.typography.bodySmall)}}}
+        } ?: visible.forEach{item->TextButton(onClick={detail=item},modifier=Modifier.fillMaxWidth()){Column(Modifier.fillMaxWidth()){
+            Text(item.json.optString("strEvent").ifBlank{"Encuentro"})
+            Text(ProviderValues.score(item.json),style=MaterialTheme.typography.bodySmall)
+            Text(item.json.optString("strStatus").takeUnless{it.isBlank() || it=="null"} ?: "Estado no informado",style=MaterialTheme.typography.bodySmall)
+            item.json.optString("dateEvent").takeUnless{it.isBlank() || it=="null"}?.let{Text(it,style=MaterialTheme.typography.bodySmall)}
+        }}}
         if(visible.isEmpty() && !busy)Text(if(request?.live==true)"No hay encuentros en curso informados para tus favoritos. La cobertura puede ser incompleta." else "No hay encuentros disponibles para esta consulta. Probá otro favorito o revisá la cobertura del proveedor.")
         if(busy){LinearProgressIndicator(Modifier.fillMaxWidth());Text(progress,style=MaterialTheme.typography.labelSmall)}
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
