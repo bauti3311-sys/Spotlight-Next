@@ -44,6 +44,8 @@ jobs:
         with:
           api-level: 29
           arch: x86_64
+          # The default userdata partition exceeds free space on hosted runners.
+          disk-size: 2G
           disable-animations: true
           emulator-boot-timeout: 300
           script: bash gradlew :app:connectedDebugAndroidTest --no-daemon --max-workers=2 --console=plain
