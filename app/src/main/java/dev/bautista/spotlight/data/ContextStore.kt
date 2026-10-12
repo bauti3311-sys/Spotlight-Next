@@ -20,6 +20,8 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private val file=AtomicFile(File(context.noBackupFilesDir,"spotlight-context-v1.json"))
     private val lock=Mutex()
     private var started=false
+    private var expiryJob:Job?=null
+    private fun scheduleExpiry(){expiryJob?.cancel();val item=mutableActive.value ?: return;if(!item.pinned)expiryJob=scope.launch{delay((item.created+600000L-System.currentTimeMillis()).coerceAtLeast(1));expire()}}
     private val mutableActive=MutableStateFlow<SharedContext?>(null)
     val active=mutableActive.asStateFlow()
     private val mutablePinned=MutableStateFlow<List<SharedContext>>(emptyList())
@@ -32,20 +34,20 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         mutablePinned.value=(0 until minOf(a.length(),30)).mapNotNull {i->runCatching{val x=a.getJSONObject(i);SharedContext(x.getString("id"),x.getString("title"),x.getString("kind"),x.optString("text").take(16000),x.optString("uri"),x.optString("mime"),x.getLong("created"),true)}.getOrNull()}
         val b=j.optJSONArray("conversations") ?: JSONArray()
         mutableConversations.value=(0 until minOf(b.length(),30)).mapNotNull{i->runCatching{val x=b.getJSONObject(i);SavedConversation(x.getString("id"),x.getString("title"),x.getString("text").take(48000),x.getLong("created"))}.getOrNull()}
-    }};scope.launch{while(isActive){delay(60000);expire()}}}
+    }}}
     fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>10*60000L)mutableActive.value=null}}
-    fun clearActive(){mutableActive.value=null}
+    fun clearActive(){expiryJob?.cancel();mutableActive.value=null}
     fun select(id:String){mutableActive.value=mutablePinned.value.firstOrNull{it.id==id}}
     fun setText(text:String,title:String="Texto seleccionado"):SharedContext {
         require(text.isNotBlank() && text.length<=16000)
-        return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value=it}
+        return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value=it;scheduleExpiry()}
     }
     fun offerAutomatic(text:String){if(!preferences.isPrivate && mutableActive.value?.pinned!=true && text.isNotBlank() && text.length<=8000)setText(text,"Portapapeles autorizado")}
     suspend fun setDocument(uri:Uri):SharedContext=withContext(Dispatchers.IO) {
         require(uri.scheme=="content")
         val mime=context.contentResolver.getType(uri).orEmpty()
         val title=runCatching{context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME),null,null,null)?.use{if(it.moveToFirst())it.getString(0) else null}}.getOrNull() ?: "Documento autorizado"
-        SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime).also{mutableActive.value=it}
+        SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime).also{mutableActive.value=it;scheduleExpiry()}
     }
     suspend fun text(item:SharedContext):String=withContext(Dispatchers.IO) {
         if(item.text.isNotBlank())item.text else {

@@ -12,6 +12,11 @@ object LocalLanguage {
         q=q.replace(Regex("(\\d{1,2}0) y (\\d)(?=\\s*%)")){(it.groupValues[1].toInt()+it.groupValues[2].toInt()).toString()}
         return q
     }
+    fun forSearch(raw:String):String {
+        val normalized=normalize(raw.trim()).replace(Regex("\\s+")," ")
+        val canonical=canonical(raw)
+        return if(canonical==normalized || raw.trim().startsWith("mand",true) || raw.trim().startsWith("envia",true))raw else canonical
+    }
     fun isQuestion(raw:String):Boolean=raw.trim().startsWith("¿") || Regex("^(que es|como funciona|por que|quien es|cual es|explicame)\\b").containsMatchIn(normalize(raw))
 }
 

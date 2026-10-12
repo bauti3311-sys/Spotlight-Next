@@ -56,7 +56,7 @@ class SearchEngine(
 
     fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {
         val canonical=LocalLanguage.canonical(input)
-        val query=if(input.trim().startsWith("mand",true) || input.trim().startsWith("envia",true))input else canonical
+        val query=if(input.trim().startsWith("mand",true) || input.trim().startsWith("envia",true))input else LocalLanguage.forSearch(input)
         val root=scope==null || scope.section in setOf("apps","commands","ai","files-mode") && input.isNotBlank()
         val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()

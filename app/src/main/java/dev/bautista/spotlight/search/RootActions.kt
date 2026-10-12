@@ -13,7 +13,7 @@ object RootActions {
         if(message!=null){val target=message.groupValues[1];val text=message.groupValues[2]
             val pkg=if(c.messageApp=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp"
             if(c.messageApp in setOf("whatsapp","whatsapp_business") && context.packageManager.getLaunchIntentForPackage(pkg)==null)
-                add("message:missing","WhatsApp no está instalado","Podés preparar el mensaje por SMS o instalar WhatsApp","Comunicación",Action.ComposeMessage("sms",target,text))
+                add("message:missing","WhatsApp no está instalado","Revisá la integración o instalá WhatsApp; no se cambia el canal sin elegirlo","Comunicación",Action.SystemPanel("extension","whatsapp"))
             else add("message","Preparar mensaje para $target","Elegir contacto y revisar el texto; no se envía automáticamente","Comunicación",Action.ComposeMessage(c.messageApp,target,text))
         }
         Regex("^(?:poner |ajustar |cambiar )?(?:el )?(?:brillo|volumen)(?: al| a)? (-?\\d{1,9})\\s*%?$").matchEntire(q)?.let{m->

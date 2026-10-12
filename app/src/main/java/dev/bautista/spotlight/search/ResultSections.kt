@@ -21,6 +21,11 @@ object ResultSections {
         item.category in setOf("Acciones", "Comandos") -> "Acciones y comandos"
         else -> item.category
     }
+    fun unified(items:List<Result>):List<Result> {
+        val counts=mutableMapOf<String,Int>()
+        val visible=ResultRanker.ordered(items).filter { val key=category(it);val n=(counts[key] ?: 0)+1;counts[key]=n;n<=if(key=="Archivos y carpetas")2 else 4 }.take(12)
+        return if(visible.size==items.size)visible else visible+Result("section:all","Ver más resultados","Mantener la consulta y ampliar resultados","Información",0,Action.Navigate(dev.bautista.spotlight.control.SearchScope("Todo","results")))
+    }
     fun grouped(items: List<Result>, limit: Int = 3, expanded: Boolean = false, query:String=""): List<Result> {
         if(query.isNotBlank()) {
             val ranked=ResultRanker.ordered(items)

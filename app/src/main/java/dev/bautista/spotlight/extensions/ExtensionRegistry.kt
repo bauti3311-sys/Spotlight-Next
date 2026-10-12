@@ -50,7 +50,7 @@ object ExtensionRegistry {
         ExtensionDefinition("system","Dispositivo",ExtensionIcon.SYSTEM,"Sistema",listOf(command("system.info","Información del dispositivo",Action.SystemPanel("device")),command("system.controls","Sistema y controles avanzados",Action.SystemPanel("controls"))),explanation="Diagnóstico público. Los cambios de pantalla requieren conexión ADB, validación y confirmación.",advancedAdapter="reversible-settings"),
         ExtensionDefinition("shizuku","Shizuku",ExtensionIcon.SHIELD,"Sistema",listOf(command("shizuku.setup","Configurar Shizuku",Action.SystemPanel("shizuku"))),explanation="API oficial, autorización explícita y conexión bajo demanda. La búsqueda estándar sigue funcionando.",advancedAdapter="shizuku-manager")
     )
-    fun searchCommands(context:Context,query:String,c:Config):List<Result> = extensions.filter{ExtensionStore.enabled(context,it.id) && it.id !in setOf("catalog","focus","tasker") || it.id=="tasker" && normalize(query).contains("tasker")}.flatMap { e ->
+    fun searchCommands(context:Context,query:String,c:Config):List<Result> = extensions.filter{ExtensionStore.enabled(context,it.id) && (it.id !in setOf("catalog","focus","tasker") || it.id=="tasker" && normalize(query).contains("tasker"))}.flatMap { e ->
         e.commands.mapNotNull { command ->
             val match=maxOf(relevance(query,command.title),relevance(query,e.name))
             if(match<500)return@mapNotNull null
