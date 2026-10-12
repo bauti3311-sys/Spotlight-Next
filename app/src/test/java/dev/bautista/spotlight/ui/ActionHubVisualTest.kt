@@ -36,15 +36,19 @@ class ActionHubVisualTest {
         val bitmap=Bitmap.createBitmap(view.width,view.height,Bitmap.Config.ARGB_8888);view.draw(Canvas(bitmap))
         val output=File("build/$name.png");output.parentFile?.mkdirs();output.outputStream().use{bitmap.compress(Bitmap.CompressFormat.PNG,100,it)};bitmap.recycle()
     }}
+    private fun awaitText(text:String){
+        try { ui.waitUntil(15000){ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()} }
+        catch(e:androidx.compose.ui.test.ComposeTimeoutException){ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
+    }
     @Test fun lightHubOpensTypesBeforeListingFiles(){
         start("light");image("spotlight-whatsapp-light")
         ui.onNodeWithText("Buscar archivos").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Documentos PDF").fetchSemanticsNodes().isNotEmpty()}
+        awaitText("Documentos PDF")
         ui.onNodeWithText("Imágenes").assertIsDisplayed()
         ui.onNodeWithText("Documentos PDF").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Activar búsqueda de archivos").fetchSemanticsNodes().isNotEmpty()}
+        awaitText("Activar búsqueda de archivos")
         ui.onNodeWithText("Volver").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Documentos PDF").fetchSemanticsNodes().isNotEmpty()}
+        awaitText("Documentos PDF")
     }
     @Test fun volumeSliderChangesAndroidMultimediaVolume(){
         val audio=ui.activity.getSystemService(android.media.AudioManager::class.java)

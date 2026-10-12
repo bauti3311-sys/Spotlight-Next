@@ -79,6 +79,7 @@ fun SpotlightPanel(
         val history = remember { mutableStateListOf<Location>() }
         fun push() { history.add(Location(query,category,searchScope,selected)) }
         var navigating by remember { mutableStateOf(false) }
+        var pointerSelecting by remember { mutableStateOf(false) }
         var preview by remember { mutableStateOf<Result?>(null) }
         var menu by remember { mutableStateOf(false) }
         var advancedActions by remember { mutableStateOf(false) }
@@ -327,7 +328,7 @@ fun SpotlightPanel(
                     }.onFailure {error="No se pudo preparar la sesión."}
                 }
                 is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
-                is Action.Navigate -> {push();clearForms();searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};results=emptyList();preview=null;menu=false;selected=0;focus.requestFocus()}
+                is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};results=emptyList();preview=null;menu=false;selected=0;focus.requestFocus()}
                 is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.ComposeSearch -> {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.AudioPanel -> {push();clearForms();audioPanel=true;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
@@ -516,8 +517,9 @@ fun SpotlightPanel(
                 if(config.autoKeyboard=="always" || config.autoKeyboard=="adaptive" && invocation=="keyboard")keyboard?.show()
                 else keyboard?.hide()
         }
-        LaunchedEffect(selected, category, displayed.size, navigating) {
-            if (displayed.isNotEmpty() && navigating) {
+        LaunchedEffect(selected, category, displayed.size, navigating, pointerSelecting) {
+            // Lock ordering on touch without moving the row underneath the finger.
+            if (displayed.isNotEmpty() && navigating && !pointerSelecting) {
                 val target = selected.coerceIn(0, displayed.lastIndex)
                 if (category == "Apps") {
                     if (motionEnabled)
@@ -555,6 +557,7 @@ fun SpotlightPanel(
                 Modifier.fillMaxWidth()
                     .glassSurface(config)
                     .onPreviewKeyEvent { event ->
+                    if(event.type==KeyEventType.KeyDown)pointerSelecting=false
                     if (event.type != KeyEventType.KeyDown) false
                     else if (
                         noteEditor &&
@@ -754,7 +757,7 @@ fun SpotlightPanel(
                                         },
                                         { toggleFavorite(item) },
                                         animations=motionEnabled,
-                                        onInteraction={selected=i;navigating=true},
+                                        onInteraction={pointerSelecting=true;selected=i;navigating=true},
                                     )
                                 }
                             }
