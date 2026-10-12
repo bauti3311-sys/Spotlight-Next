@@ -19,6 +19,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
+@OptIn(ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
