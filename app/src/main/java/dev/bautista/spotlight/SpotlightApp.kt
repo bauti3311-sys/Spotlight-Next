@@ -17,8 +17,6 @@ class SpotlightApp : Application() {
         super.onCreate()
         scope.launch { preferences.config.collectLatest { } }
         contexts.start()
-        shizuku.start()
-        scope.launch {shizuku.state.collectLatest {state->if(state.available)runCatching{advancedBackend.canWrite()} }}
         val filter =
             android.content.IntentFilter().apply {
                 addAction(android.content.Intent.ACTION_PACKAGE_ADDED)

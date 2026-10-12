@@ -1,10 +1,14 @@
 import java.util.Properties
 plugins { id("com.android.application"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose") }
+val releaseIdentity = java.util.Properties().apply {
+    rootProject.file("release.properties").inputStream().use { load(it) }
+}
+
 android {
  namespace = "dev.bautista.spotlight"
  compileSdk = 35
  buildToolsVersion = "35.0.0"
- defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = 27; versionName = "2.0.0" }
+ defaultConfig { applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = releaseIdentity.getProperty("version.code").toInt(); versionName = releaseIdentity.getProperty("version.name") }
  testOptions { unitTests.isIncludeAndroidResources = true }
  buildFeatures { compose = true; aidl = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }

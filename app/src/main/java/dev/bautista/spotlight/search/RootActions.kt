@@ -40,8 +40,7 @@ object RootActions {
         if(q in setOf("contexto","contextos","contextos fijados","elegir documento"))add("context-list","Contexto y documentos","Elegir, fijar o quitar contenido autorizado","Contexto",Action.SystemPanel("context"))
         if(q in setOf("diagnostico","diagnostico de spotlight","diagnosticos"))add("diagnostics","Diagnóstico de Spotlight","Permisos, servicios y tiempos observados sin contenido privado","Sistema",Action.SystemPanel("diagnostics"))
         if(q in setOf("modo privado","privacidad"))add("privacy","Modo privado y datos","Suspender captura y aprendizaje sin borrar lo guardado","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","Privacidad y sistema")))
-        if(LocalLanguage.isQuestion(raw) && rows.none{it.id=="root:context"})add("ai","Responder con IA","Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,true),1900)
-        if(rows.isEmpty() && q.split(' ').size>=7)add("complex","Revisar consulta con IA","Consulta remota opcional · revisar antes de enviar","IA",Action.Ask(raw,true),1000)
+        if(LocalLanguage.isQuestion(raw) && rows.none{it.id=="root:context"})add("ai","Responder con IA","Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,!c.aiRootConsent),3800)
         dev.bautista.spotlight.ui.SettingsGroups.names.filter{relevance(q,it)>=650}.forEach{group->add("settings:$group",group,"Abrir esta sección de ajustes de Spotlight","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group)),2100)}
         return rows
     }

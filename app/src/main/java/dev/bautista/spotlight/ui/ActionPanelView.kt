@@ -20,17 +20,20 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
 @Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester) {
     var filter by remember {mutableStateOf("")};var selected by remember{mutableIntStateOf(0)};var filterFocused by remember{mutableStateOf(false)}
     val distinct=actions.distinctBy{it.title};val all=distinct.take(1)+distinct.drop(1).sortedBy{listOf("Texto","Organizar","Más acciones","Sistema","Gestión").indexOf(it.group)};val visible=all.filter{normalize(it.title+" "+it.description).contains(normalize(filter))}
+    val requests=remember(visible.map{it.title}){List(visible.size){if(it==0)focus else FocusRequester()}}
     LaunchedEffect(filter){selected=0}
+    LaunchedEffect(selected,filterFocused,visible.map{it.title}){if(!filterFocused)runCatching{requests.getOrNull(selected)?.requestFocus()}}
     Column(Modifier.fillMaxWidth().onPreviewKeyEvent{e->
-        if(e.type!=KeyEventType.KeyDown || !filterFocused || e.isCtrlPressed || e.isMetaPressed)false else when(e.key){
-            Key.DirectionDown->{selected=(selected+1).coerceAtMost((visible.size-1).coerceAtLeast(0));true}
-            Key.DirectionUp->{selected=(selected-1).coerceAtLeast(0);true}
+        if(e.type!=KeyEventType.KeyDown || e.isCtrlPressed || e.isMetaPressed)false else when(e.key){
+            Key.Tab->{filterFocused=false;selected=if(visible.isEmpty())0 else Math.floorMod(selected+if(e.isShiftPressed)-1 else 1,visible.size);true}
+            Key.DirectionDown->{filterFocused=false;selected=(selected+1).coerceAtMost((visible.size-1).coerceAtLeast(0));true}
+            Key.DirectionUp->{filterFocused=false;selected=(selected-1).coerceAtLeast(0);true}
             Key.Enter,Key.NumPadEnter->{visible.getOrNull(selected)?.perform?.invoke();true}
             else->false
         }
     },verticalArrangement=Arrangement.spacedBy(8.dp)){
         Text("Acciones",style=MaterialTheme.typography.titleSmall)
-        OutlinedTextField(filter,{filter=it.take(120)},label={Text("Filtrar acciones")},singleLine=true,modifier=Modifier.fillMaxWidth().focusRequester(focus).onFocusChanged{filterFocused=it.isFocused},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))})
+        OutlinedTextField(filter,{filter=it.take(120)},label={Text("Filtrar acciones")},singleLine=true,modifier=Modifier.fillMaxWidth().onFocusChanged{filterFocused=it.isFocused},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))})
         Column(Modifier.fillMaxWidth().heightIn(max=240.dp).verticalScroll(rememberScrollState())){
             var previous=""
             visible.forEachIndexed{i,action->
@@ -39,7 +42,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
                 val bring=remember(action.title){BringIntoViewRequester()}
                 LaunchedEffect(selected,filterFocused){if(filterFocused && selected==i)bring.bringIntoView()}
                 Surface(color=if(filterFocused && i==selected)MaterialTheme.colorScheme.primary.copy(alpha=.12f) else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
-                    TextButton(onClick=action.perform,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).bringIntoViewRequester(bring)){
+                    TextButton(onClick=action.perform,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.bringIntoViewRequester(bring)){
                         Icon(action.icon,null,Modifier.size(19.dp));Spacer(Modifier.width(12.dp));Column(Modifier.weight(1f)){Text(action.title,modifier=Modifier.fillMaxWidth());Text(action.description,modifier=Modifier.fillMaxWidth(),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}
                         val key=action.shortcut.ifBlank{if(all.firstOrNull()==action)"Enter" else ""};if(key.isNotBlank())Text(key,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                     }
@@ -47,6 +50,6 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
             }
             if(visible.isEmpty())Text("No hay acciones con ese nombre.",style=MaterialTheme.typography.bodySmall)
         }
-        Text("↑↓ elegir · Enter ejecutar · Esc volver",style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("Tab / Shift+Tab · ↑↓ elegir · Enter ejecutar · Esc volver",style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

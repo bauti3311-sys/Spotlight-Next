@@ -71,6 +71,12 @@ class FileIndex(
             )
         }
 
+        override fun onOpen(db:SQLiteDatabase) {
+            super.onOpen(db)
+            db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_modified ON files(tree,modified DESC)")
+            db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_created ON files(tree,created)")
+            db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_mime ON files(tree,mime)")
+        }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
     }
 
@@ -507,7 +513,9 @@ class FileIndex(
 
     suspend fun search(input: String, c: Config, sourceTopic:String=""): List<Result> =
         withContext(Dispatchers.IO) {
-            val query = SearchQuery.parse(SearchQuery.natural(input))
+            val normalizedQuery = SearchQuery.natural(input)
+            val query = SearchQuery.parse(normalizedQuery)
+            val filter = dev.bautista.spotlight.search.FileSqlFilter.from(normalizedQuery)
             if (query.problem != null) return@withContext emptyList()
 
             val sources =
@@ -519,8 +527,8 @@ class FileIndex(
                 .query(
                     "files",
                     null,
-                    "tree IN (" + sources.joinToString(",") { "?" } + ")",
-                    sources.toTypedArray(),
+                    "tree IN (" + sources.joinToString(",") { "?" } + ")" + if(filter.selection.isBlank())"" else " AND ("+filter.selection+")",
+                    (sources.toList()+filter.args).toTypedArray(),
                     null,
                     null,
                     "modified DESC",

@@ -17,6 +17,7 @@ import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.advanced.*
 
 @Composable fun AdvancedPanel(app:SpotlightApp,page:String,onBack:()->Unit={}) {
+    LaunchedEffect(page){if(page!="device")app.shizuku.start()}
     val context=LocalContext.current
     val state by app.shizuku.state.collectAsState()
     var error by remember{mutableStateOf("")};var showDetails by remember{mutableStateOf(false)}

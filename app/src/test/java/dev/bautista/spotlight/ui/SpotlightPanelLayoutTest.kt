@@ -96,10 +96,10 @@ class SpotlightPanelLayoutTest {
                 availableHeightDp = 500f,
             )
         }
-        ui.waitUntil(15000) { ui.onAllNodesWithText("Tab").fetchSemanticsNodes().isNotEmpty() }
+        ui.waitUntil(15000) { ui.onAllNodesWithText("→").fetchSemanticsNodes().isNotEmpty() }
         ui.onNode(hasSetTextAction()).performClick()
         ui.onNode(hasSetTextAction()).performKeyInput {
-            pressKey(androidx.compose.ui.input.key.Key.Tab)
+            pressKey(androidx.compose.ui.input.key.Key.DirectionRight)
         }
         ui.onNode(hasSetTextAction()).assertTextEquals("youtube ")
         ui.onAllNodesWithText("Menú de acciones").assertCountEquals(0)

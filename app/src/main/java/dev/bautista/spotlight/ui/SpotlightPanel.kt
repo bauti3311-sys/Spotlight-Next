@@ -608,21 +608,23 @@ fun SpotlightPanel(
                             Key.Escape,
                             Key.Back -> {
                                 if(searchOptions){searchOptions=false;focus.requestFocus()}
-                                else if (preview != null) {preview=null;menu=false;focus.requestFocus()}
+                                else if(menu){menu=false;focus.requestFocus()}
+                                else if (preview != null) {preview=null;focus.requestFocus()}
                                 else if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || history.isNotEmpty())back()
                                 else if (noteEditor) noteEditor = false
                                 else onClose()
                                 true
                             }
                             Key.Tab -> {
-                                if (suggestion != null && !event.isShiftPressed) {
-                                    acceptSuggestion()
-                                } else if (chosen != null) {
+                                if (chosen != null) {
                                     preview = chosen
-                                    menu = !menu
+                                    menu = true
                                     navigating = true
                                 }
                                 true
+                            }
+                            Key.DirectionRight -> {
+                                if(suggestion!=null && !navigating){acceptSuggestion();true}else false
                             }
                             Key.Spacebar -> {
                                 if (navigating || event.isCtrlPressed) {

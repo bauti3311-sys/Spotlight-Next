@@ -46,7 +46,7 @@ class UniversalSearchTest {
         assertNull(UniversalIntent.recognize("x".repeat(4001)))
     }
     @Test fun photoDatesUseExistingParser() {
-        assertEquals(UniversalIntent.Photos("kind:image created:ayer"),UniversalIntent.recognize("buscar fotos de ayer"))
+        assertEquals(UniversalIntent.Photos(SearchQuery.natural("fotos de ayer")),UniversalIntent.recognize("buscar fotos de ayer"))
     }
     @Test fun engineProducesExecutableVolumeAndBrightnessActions()=runBlocking {
         assertEquals(Action.Device("volume:60"),engine().search("volumen al 60%",SearchConfig()).toList().last().single().action)
