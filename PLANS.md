@@ -37,3 +37,9 @@ Infraestructura `83e887a`: CI 38337171465 completo, cinco jobs correctos (Androi
 ## Turno autónomo actual — F1.1
 
 Base documental actual `372faa7`, rama aislada `feat/width-policy-f1`. Leer `docs/PROGRESO-AUTONOMO.md` de su punta antes de repetir trabajo. Objetivo: coherencia de automático/manual y override horizontal, preservando preferencias. Reserva remota `locks/spotlight-autonomy`; adquirir de forma atómica y no tomar un trabajo ocupado. La automatización conserva su cadencia; si este turno sigue activo, debe omitir edición concurrente.
+
+### Checkpoint probado de F1.1
+
+Producto en `6a59b6b` + `0ced615`, PR #8 borrador. Ancho general/override horizontal comparten una política; memoria manual persiste y se exporta/importa; restablecer posición conserva ancho. Local: 328 unitarias, lint 0 errores/10 advertencias, debug correcto, 12 comparaciones visuales y Python 5+12 correctos. Detalles y estado de reserva/CI en `docs/PROGRESO-AUTONOMO.md`; consultar checks/descripcion PR #8 antes de retomar.
+
+Siguiente F1.2: densidad y vista previa del ancho, desde el checkpoint de este PR para no perder trabajo sin integrar. Mantener rama aislada y PR borrador. One UI físico y F1.3 (métricas/insets/IME) siguen pendientes; no declarar F1 completo por este subhito.
