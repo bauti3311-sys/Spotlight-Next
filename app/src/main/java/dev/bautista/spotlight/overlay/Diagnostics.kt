@@ -11,6 +11,18 @@ class Diagnostics(private val context:Context) {
     private val samples=MutableStateFlow<List<OpeningSample>>(emptyList())
     val openings=samples.asStateFlow()
     private val searches=ArrayDeque<Long>()
+    // Opt-in, bounded process-local evidence. Never retain query text, topics, URIs or keys.
+    @Volatile private var searchTracing=false
+    private val searchTrace=ArrayDeque<String>()
+    @Synchronized fun enableSearchTracing(){searchTrace.clear();searchTracing=true}
+    fun traceSearch(event:String,section:String?,generation:Int,rows:Int?=null){
+        if(!searchTracing)return
+        synchronized(this){
+            searchTrace.addLast("${SystemClock.elapsedRealtime()} $event section=${section ?: "root"} generation=$generation rows=${rows ?: "-"}")
+            while(searchTrace.size>160)searchTrace.removeFirst()
+        }
+    }
+    @Synchronized fun searchTraceReport()=searchTrace.joinToString("\n")
     fun beginOpening(){begun=SystemClock.elapsedRealtime();visible=0L;interactive=0L;cold=begun-(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.processStartedAt.orZero()<1000L}
     fun markVisible(){if(begun>0 && visible==0L){visible=(SystemClock.elapsedRealtime()-begun).coerceAtLeast(1);complete()}}
     fun markInteractive(){if(begun>0 && interactive==0L){interactive=(SystemClock.elapsedRealtime()-begun).coerceAtLeast(1);complete()}}

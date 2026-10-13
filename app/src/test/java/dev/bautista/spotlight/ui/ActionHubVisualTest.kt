@@ -27,6 +27,7 @@ class ActionHubVisualTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     private fun start(theme:String){
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        app.diagnostics.enableSearchTracing()
         val info=android.content.pm.ResolveInfo().apply { activityInfo=android.content.pm.ActivityInfo().apply { packageName="com.whatsapp";name="com.whatsapp.Main";applicationInfo=android.content.pm.ApplicationInfo().apply {packageName="com.whatsapp"} } }
         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER).setPackage("com.whatsapp"),info)
         ui.setContent {Box(Modifier.width(780.dp).padding(24.dp)){SpotlightPanel(app,AppConfig(theme=theme,files=false,animations=false),{},initialQuery="whatsapp",availableHeightDp=640f)}}
@@ -43,7 +44,7 @@ class ActionHubVisualTest {
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS)
             ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
         } }
-        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
+        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("Search lifecycle:\n"+(RuntimeEnvironment.getApplication() as SpotlightApp).diagnostics.searchTraceReport());println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
     }
     @Test fun lightHubOpensTypesBeforeListingFiles(){
         start("light");image("spotlight-whatsapp-light")

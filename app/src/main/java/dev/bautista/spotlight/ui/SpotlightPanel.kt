@@ -98,6 +98,7 @@ fun SpotlightPanel(
         fun invalidateResults() {
             // Returning to the same text within a debounce/frame still needs to refill cleared rows.
             searchGeneration++
+            app.diagnostics.traceSearch("invalidated",searchScope?.section,searchGeneration,0)
             results=emptyList()
         }
         var error by remember { mutableStateOf("") }
@@ -480,11 +481,14 @@ fun SpotlightPanel(
         LaunchedEffect(query){ if(showAi){aiJob?.cancel();showAi=false} }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
         LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
-            snapshotFlow { Triple(query,searchScope,searchGeneration) }
+            snapshotFlow { Triple(query,searchScope,searchGeneration).also {
+                app.diagnostics.traceSearch("observed",it.second?.section,it.third)
+            } }
                 .debounce(120)
                 .distinctUntilChanged()
                 .collectLatest { (q,requestScope,generation) ->
                     fun isCurrentRequest()=generation==searchGeneration && q==query && requestScope==searchScope
+                    app.diagnostics.traceSearch(if(isCurrentRequest())"started" else "obsolete-start",requestScope?.section,generation)
                     if(!isCurrentRequest())return@collectLatest
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
                     if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
@@ -517,6 +521,7 @@ fun SpotlightPanel(
                                     }
                                 }
                             app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope).collect {
+                                app.diagnostics.traceSearch(if(isCurrentRequest())"received" else "obsolete-rows",requestScope?.section,generation,it.size)
                                 if(!isCurrentRequest())return@collect
                                 val selectedId=present(results).getOrNull(selected)?.id
                                 results = StableResults.merge(results,it,navigating || preview!=null)
@@ -525,10 +530,12 @@ fun SpotlightPanel(
                             }
                         }
                     } catch(e:CancellationException) {
+                        app.diagnostics.traceSearch("cancelled",requestScope?.section,generation)
                         throw e
                     } catch(e:Exception) {
                         error="Una fuente no respondió. Los resultados disponibles se conservan; probá de nuevo o revisá sus permisos."
                     } finally {
+                        app.diagnostics.traceSearch(if(isCurrentRequest())"finished" else "obsolete-finish",requestScope?.section,generation)
                         if(isCurrentRequest())loading = false
                     }
                 }
