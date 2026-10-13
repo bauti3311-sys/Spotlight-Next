@@ -16,4 +16,23 @@ class PortableConfigTest {
  @Test fun invalidImportsAreAtomicAndNeverAcceptCredentialsOrPermissionFlags(){val original=AppConfig();for(value in listOf(JSONObject().put("apiKey","private"),JSONObject().put("opacity",0.1),JSONObject().put("theme","fake"),JSONObject().put("contacts",true),JSONObject().put("routines",JSONArray("""[{"id":"x","name":"Bad","steps":[{"type":"shell"}]}]""")))){val root=JSONObject().put("format","spotlight-next").put("version",1).put("settings",value);assertNotNull(runCatching{ConfigTransfer.decode(root.toString(),original)}.exceptionOrNull())};assertEquals(AppConfig(),original)}
  @Test fun focusPauseResumeAndCompletionCountOnlyOnce(){val context=RuntimeEnvironment.getApplication();context.getSharedPreferences("focus_session",0).edit().clear().commit();val timer=FocusSession(context);timer.statistics(true);timer.start(1,now=1000);timer.pause(31000);assertEquals(30000,timer.snapshot(31000).remaining);timer.resume(100000);assertEquals(10000,timer.snapshot(120000).remaining);assertEquals("finished",timer.snapshot(130000).status);assertEquals(1,timer.snapshot(131000).completed);assertEquals(1,timer.snapshot(132000).completed)}
  @Test fun rebootOrMonotonicResetDiscardsSessionAndStatsAreOptIn(){val context=RuntimeEnvironment.getApplication();context.getSharedPreferences("focus_session",0).edit().clear().commit();val timer=FocusSession(context);timer.start(1,now=10000);assertEquals("idle",timer.snapshot(500).status);timer.start(1,now=1000);assertEquals(0,timer.snapshot(61000).completed)}
+ @Test fun automaticAndLargeManualWidthsMustRoundTripWithoutLosingManualMemory(){
+  for(width in listOf(0,1000)){
+   val original=AppConfig(width=width,manualWidth=1000)
+   val restored=ConfigTransfer.decode(ConfigTransfer.encode(original),AppConfig(width=640))
+   assertEquals(width,restored.width)
+   assertEquals(1000,restored.manualWidth)
+  }
+ }
+ @Test fun legacyAutomaticWidthWithoutMemoryImportsAndInvalidWidthValuesStayAtomic(){
+  val current=AppConfig(width=820)
+  fun payload(settings:JSONObject)=JSONObject().put("format","spotlight-next").put("version",1).put("settings",settings).toString()
+  val restored=ConfigTransfer.decode(payload(JSONObject().put("width",0)),current)
+  assertEquals(0,restored.width);assertEquals(820,restored.manualWidth)
+  for(value in listOf(-1,1101,900.5,"0",false)){
+   assertTrue(runCatching{ConfigTransfer.decode(payload(JSONObject().put("width",value)),current)}.isFailure)
+  }
+  assertTrue(runCatching{ConfigTransfer.decode(payload(JSONObject().put("manualWidth",0)),current)}.isFailure)
+  assertEquals(AppConfig(width=820),current)
+ }
 }

@@ -1,0 +1,11 @@
+# Evidencia nativa F1.2
+
+`before-tablet.png` ejecuta GlassAppearance real del commit 2a5607e; `after-tablet.png` ejecuta el borrador espacioso de OverlayAppearancePreviewTest en esta rama. SDK 33, Robolectric NATIVE, Application, viewport 1280×800 dp/dpi160, Surface ancho completo, Column vertical desplazada al inicio y padding16. Config: width820, landscapeWidth460, manualWidth820, densityspacious, animationsfalse; tema del borrador automático y contenedor oscuro. Datos de ejemplo sin APIs.
+
+Antes: probe temporal F12BeforeCaptureTest en el worktree base, `bash gradlew :app:testDebugUnitTest --tests '*F12BeforeCaptureTest' --no-daemon --max-workers=2 --console=plain`, 1/1 correcto; captura091 de Activity. El probe se eliminó y git status quedó limpio en 2a5607e, sin commit/push a esa rama. Para reproducir, abrir un worktree aislado en ese SHA, crear prueba con la regla AndroidComposeRule<ComponentActivity>, las anotaciones anteriores, y renderizar `SpotlightTheme("dark", c) { Surface(Modifier.fillMaxWidth()) { Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp)) { GlassAppearance(c) {} } } }`; exigir Buscar en Spotlight visible y capturar091 la Activity.
+
+Después: `bash gradlew :app:testDebugUnitTest --tests '*OverlayAppearancePreviewTest' ...`, 7/7 correctos; densityChangesRowsButNeverWindowWidthOrSavedDraft vuelve al inicio del scroll antes de capturar. La fila se mide y exige visible antes de capturar; cambiar el borrador no persiste hasta aplicar. La vista previa antigua ocupaba 1248 dp aunque el override era 460; ahora muestra 460 dp y filas reales.
+
+`diff-tablet.png` = Pillow ImageChops.difference de las dos imágenes RGB originales, sin máscaras ni reajuste de tamaño: bbox (16,156,1264,800), 341885 píxeles distintos/1024000. Las variaciones de altura desplazan controles posteriores intencionalmente. No es una medición de velocidad ni una aprobación de nuevas baselines para esconder fallos. Los PNG anteriores de Roborazzi no cambiaron; cinco referencias nuevas se verifican junto a los doce previos.
+
+Las otras capturas en `app/src/test/snapshots/appearance-*.png` cubren 1280×800, 800×1280, 390×844 y 844×390, controles de densidad y vista previa inicial. No reemplazan TYPE_APPLICATION_OVERLAY real, teclado físico ni pruebas One UI en Galaxy Tab A9+.
