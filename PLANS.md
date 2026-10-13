@@ -70,3 +70,8 @@ CI final del producto e0639d8 / run38366740355 falló en menú ActionHub: 340/34
 
 ## Reanudación F1.2 — ActionHub
 Rama fix/action-hub-f12-continuation desde 424757d; reserva scheduled-f9a4844c-6b36-431f-a6cf-9cc0f3a5403c. Retomar pérdida de filas contextual confirmada en CI 38368556541 antes de F1.3. Mantener 25 ciclos y todas las aserciones; estado/evidencia final en progreso y notas.
+
+## Checkpoint diagnóstico F1.2 — PR #10
+Rama fix/action-hub-f12-continuation, base 424757d. Diario opt-in acotado a 160 eventos, sin consultas/tópicos/URIs/claves; informe de fallo con fases, identidad de estado, snapshots, recomposer y lifecycle. Default desactivado; no se evalúan trazas detalladas en uso normal.
+Se reprodujo pérdida de presentación después de recibir/asignar filas. Misma instancia de estado, Activity RESUMED/visible, recomposer Idle sin trabajo pendiente. Notificación explícita, snapshot atómico y cambiar el reloj del fixture NO resolvieron el fallo; cambios experimentales retirados.
+341 pruebas locales finales: 339 correctas, 2 timeouts (ActionHub y Next110), sin omisiones/aserciones reducidas. CI diagnóstico 490f3d8 /38389843466 tuvo cinco jobs correctos, pero no demuestra causa resuelta. F1.2 continúa abierto y checkpoint/autonomous-next conserva2a5607e. Calidad/píxeles y CI final se registran en nota del SHA y descripción PR. Retomar PR #10 antes de F1.3: aislar publicación y observación/invalidation de resultados, conservando25 ciclos/15s.
