@@ -473,11 +473,12 @@ fun SpotlightPanel(
         }
         LaunchedEffect(query){ if(showAi){aiJob?.cancel();showAi=false} }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
-        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, searchScope, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
-            snapshotFlow { query }
+        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
+            snapshotFlow { query to searchScope }
                 .debounce(120)
                 .distinctUntilChanged()
-                .collectLatest { q ->
+                .flowOn(Dispatchers.Default)
+                .collectLatest { (q,requestScope) ->
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
                     if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
                     cardJob?.cancel()
@@ -492,7 +493,7 @@ fun SpotlightPanel(
                         coroutineScope {
                             val localRequest=TextTools.results(q).mapNotNull{it.action as? Action.Lookup}.firstOrNull{it.type.startsWith("text:")}
                             val request = localRequest ?: app.online.request(q)
-                            if (searchScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
+                            if (requestScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
                                 launch {
                                     cardLoading = true
                                     try {
@@ -508,7 +509,7 @@ fun SpotlightPanel(
                                         cardLoading = false
                                     }
                                 }
-                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),searchScope).collect {
+                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope).collect {
                                 val selectedId=present(results).getOrNull(selected)?.id
                                 results = StableResults.merge(results,it,navigating || preview!=null)
                                 if(selectedId!=null && navigating){selected=present(results).indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}
