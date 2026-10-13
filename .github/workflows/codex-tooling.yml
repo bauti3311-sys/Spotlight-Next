@@ -4,12 +4,14 @@ on:
   push:
     branches: [chore/codex-infrastructure-2.0.1]
   pull_request:
-    branches: [main]
+    branches: [main, chore/codex-infrastructure-2.0.1]
     paths:
       - '.agents/**'
       - '.codex/**'
       - '.maestro/**'
       - 'visual-lab/**'
+      - 'app/src/main/**'
+      - 'app/src/androidTest/**'
       - 'app/src/test/**'
       - 'app/build.gradle.kts'
       - 'build.gradle.kts'
@@ -57,6 +59,7 @@ jobs:
             app/build/test-results/
             app/build/reports/
             app/build/outputs/roborazzi/
+            app/build/091-ui/f1-width-*.png
           retention-days: 14
   web-lab:
     runs-on: ubuntu-24.04

@@ -36,7 +36,7 @@ Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criteri
 - [ ] Probar en tablet real: orientación, invocación, Enter/Tab, PDF, superposición sobre otras apps, restauración de preferencias y consumo. Depende del usuario.
 
 ### F1 · Ventana adaptable y ajustes coherentes — PRIMER HITO DE DESARROLLO
-- [ ] Unificar semántica de ancho: **automático / manual**, orientación horizontal con override explícito y botón claro de restablecimiento; impedir que un override oculto contradiga visualmente la opción "Automático".
+- [x] Unificar semántica de ancho: **automático / manual**, orientación horizontal con override explícito y botón claro de restablecimiento; impedir que un override oculto contradiga visualmente la opción "Automático". F1.1 implementado en PR #8, con persistencia/importación y capturas nativas verificadas localmente; revisar CI y progreso antes de continuar. Validación física One UI sigue separada.
 - [ ] Separar claramente densidad compacta/equilibrada/espaciosa del **ancho físico**. Etiquetas comprensibles y vista previa precisa antes de aplicar.
 - [ ] Cálculo confiable de métricas actuales/insets/IME en One UI; limitar a pantalla usable y centrar horizontalmente. No fijar un ancho de teléfono a tablet.
 - [ ] Ancho adaptable al contenido: barra inicial compacta si se elige, expansión gradual al tener resultados/Quick Look/acciones; sin saltos bruscos ni cambio involuntario de preferencias.
