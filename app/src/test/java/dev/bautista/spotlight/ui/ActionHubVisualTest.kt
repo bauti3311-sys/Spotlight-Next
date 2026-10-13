@@ -53,21 +53,26 @@ class ActionHubVisualTest {
         ui.onNodeWithText("Enviar mensaje").assertExists()
         ui.onNodeWithText("Buscar archivos").performClick()
         awaitText("Documentos PDF")
+        ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
         ui.onNodeWithText("Imágenes").assertIsDisplayed()
         ui.onNodeWithText("Documentos PDF").performClick()
         awaitText("Activar búsqueda de archivos")
         ui.onNodeWithText("Volver").performClick()
         awaitText("Documentos PDF")
+        ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
         repeat(24) {
             ui.onNodeWithText("Volver").performClick()
             awaitText("Buscar archivos")
             ui.onNodeWithText("Buscar archivos").performClick()
             awaitText("Documentos PDF")
+            ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
             ui.onNodeWithText("Documentos PDF").performClick()
             awaitText("Activar búsqueda de archivos")
             ui.onNodeWithText("Volver").performClick()
             awaitText("Documentos PDF")
+            ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
         }
+        image("091-ui/action-hub-file-types-light")
     }
     @Test fun returningToSameQueryWithinAFrameMustKeepResults() {
         start("light")

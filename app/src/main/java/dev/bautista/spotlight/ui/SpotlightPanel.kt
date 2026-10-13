@@ -200,11 +200,6 @@ fun SpotlightPanel(
             }
         }
         val activeCard = card.takeIf { category in setOf("Todo", "Acciones", "IA") }
-        val chosen =
-            displayed.getOrNull(selected.coerceIn(0, (displayed.size - 1).coerceAtLeast(0)))
-        LaunchedEffect(chosen?.id,navigating,menu) {
-            if(!menu && navigating && chosen?.category=="Archivos" && chosen.mime!=DocumentsContract.Document.MIME_TYPE_DIR)preview=chosen
-        }
         fun saveDraft() {
             scope.launch {
                 runCatching { app.local.saveNote(draft,editingNoteId) }
@@ -580,6 +575,14 @@ fun SpotlightPanel(
                 .testTag("spotlight-root")
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
+            // The result pane is a subcomposition: observe provider state in the pane
+            // rather than capturing only the outer composition's computed list.
+            val visibleResults=present(resultsState.value)
+            val selectedResult=visibleResults.getOrNull(selected.coerceIn(0,(visibleResults.size-1).coerceAtLeast(0)))
+            LaunchedEffect(selectedResult?.id,navigating,menu) {
+                if(!menu && navigating && selectedResult?.category=="Archivos" && selectedResult.mime!=DocumentsContract.Document.MIME_TYPE_DIR)preview=selectedResult
+            }
+            if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("pane-raw-${resultsState.value.size}",searchScope?.section,searchGeneration,visibleResults.size)
             val compact = maxWidth < 560.dp
             // WindowManager WRAP_CONTENT bounds change after every layout. Never
             // use this Box's previous height as the next result pane's limit.
@@ -620,21 +623,21 @@ fun SpotlightPanel(
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && ((config.clipboardShortcut=="ctrl_shift_v" && event.isShiftPressed && event.key==Key.V) || (config.clipboardShortcut=="ctrl_p" && !event.isShiftPressed && event.key==Key.P))) {selectMode("Portapapeles",true);true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.K) {
-                        chosen?.let {
+                        selectedResult?.let {
                             preview=it
                             menu=!menu
                             navigating=true
                         }
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.F) {
-                        chosen?.let { toggleFavorite(it) }
+                        selectedResult?.let { toggleFavorite(it) }
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.C) {
                         copy(
                             activeCard?.copyText
-                                ?: (chosen?.action as? Action.Copy)?.text
-                                ?: chosen?.preview
-                                ?: chosen?.title
+                                ?: (selectedResult?.action as? Action.Copy)?.text
+                                ?: selectedResult?.preview
+                                ?: selectedResult?.title
                                 ?: query
                         )
                         true
@@ -642,7 +645,7 @@ fun SpotlightPanel(
                         web()
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.R) {
-                        chosen?.let { locate(it) }
+                        selectedResult?.let { locate(it) }
                         true
                     } else
                         when (event.key) {
@@ -658,8 +661,8 @@ fun SpotlightPanel(
                                 true
                             }
                             Key.Tab -> {
-                                if (chosen != null) {
-                                    preview = chosen
+                                if (selectedResult != null) {
+                                    preview = selectedResult
                                     menu = true
                                     navigating = true
                                 }
@@ -670,7 +673,7 @@ fun SpotlightPanel(
                             }
                             Key.Spacebar -> {
                                 if (navigating || event.isCtrlPressed) {
-                                    preview = if (preview?.id == chosen?.id) null else chosen
+                                    preview = if (preview?.id == selectedResult?.id) null else selectedResult
                                     menu = false
                                     true
                                 } else false
@@ -683,11 +686,11 @@ fun SpotlightPanel(
                                             true,
                                             columns,
                                             recentCount,
-                                            displayed.size,
+                                            visibleResults.size,
                                         )
                                     else
                                         (selected + 1).coerceAtMost(
-                                            (displayed.size - 1).coerceAtLeast(0)
+                                            (visibleResults.size - 1).coerceAtLeast(0)
                                         )
                                 navigating = true
                                 true
@@ -700,7 +703,7 @@ fun SpotlightPanel(
                                             false,
                                             columns,
                                             recentCount,
-                                            displayed.size,
+                                            visibleResults.size,
                                         )
                                     else (selected - 1).coerceAtLeast(0)
                                 navigating = true
@@ -711,13 +714,13 @@ fun SpotlightPanel(
                                 if (category == "Apps" && navigating) {
                                     selected =
                                         (selected + if (event.key == Key.DirectionRight) 1 else -1)
-                                            .coerceIn(0, (displayed.size - 1).coerceAtLeast(0))
+                                            .coerceIn(0, (visibleResults.size - 1).coerceAtLeast(0))
                                     true
                                 } else false
                             }
                             Key.Enter,
                             Key.NumPadEnter -> {
-                                chosen?.let { execute(it) }
+                                selectedResult?.let { execute(it) }
                                 true
                             }
                             else -> false
@@ -751,7 +754,7 @@ fun SpotlightPanel(
                         aiText = ""
                         category = "Todo"
                     },
-                    { chosen?.let { execute(it) } },
+                    { selectedResult?.let { execute(it) } },
                     focus,
                     config.opacity,
                     compact,
@@ -777,7 +780,7 @@ fun SpotlightPanel(
                     {launch(Intent.createChooser(fileBuffer.share(context),"Compartir selección"))},
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))})
                 if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
-                val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && displayed.isNotEmpty())
+                val expanded = systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && visibleResults.isNotEmpty())
                 val resultList:@Composable ()->Unit = {
                             LazyColumn(
                                 state = listState,
@@ -786,14 +789,14 @@ fun SpotlightPanel(
                                         .heightIn(
                                             max =
                                                 if (preview != null && !widePreview) resultLimit * .45f
-                                                else minOf(resultLimit,(displayed.size*70+displayed.map{ResultSections.category(it)}.distinct().size*30+12).dp)
+                                                else minOf(resultLimit,(visibleResults.size*70+visibleResults.map{ResultSections.category(it)}.distinct().size*30+12).dp)
                                         )
                                         .padding(horizontal = 9.dp, vertical = 4.dp),
                             ) {
-                                itemsIndexed(displayed, key = { _, item -> item.id }) { i, item ->
+                                itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
                                     if(query.isNotBlank() && searchScope==null && category=="Todo" && i in 0..1)Text(if(i==0)"Mejor coincidencia" else "Otros resultados",Modifier.padding(horizontal=12.dp,vertical=6.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
-                                    if(query.isBlank() && displayed.map{ResultSections.category(it)}.distinct().size>1 && displayed.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
+                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
                                     ResultRow(
                                         item,
                                         i == selected,
@@ -934,7 +937,7 @@ fun SpotlightPanel(
                                 color = colors.error,
                                 fontSize = 12.sp,
                             )
-                        if(searchScope?.section=="files" && !loading && displayed.isEmpty())Text("No se encontraron archivos de este tipo. Probá otro filtro o actualizá el índice en Opciones.",Modifier.padding(horizontal=18.dp,vertical=12.dp),fontSize=13.sp,color=colors.onSurfaceVariant)
+                        if(searchScope?.section=="files" && !loading && visibleResults.isEmpty())Text("No se encontraron archivos de este tipo. Probá otro filtro o actualizá el índice en Opciones.",Modifier.padding(horizontal=18.dp,vertical=12.dp),fontSize=13.sp,color=colors.onSurfaceVariant)
                         if(pendingAsk!=null)aiReview()
                         else if(pendingWorkflow!=null)WorkflowRunner(pendingWorkflow!!,app.local,onAction={action->execute(Result("routine:prepared","","","Acciones",0,action))}){pendingWorkflow=null}
                         else if(clipEditing!=null)ClipboardEditor(clipEditing!!,{app.local.editClip(clipEditing!!,it);back()},{back()})
@@ -1028,7 +1031,7 @@ fun SpotlightPanel(
                                                 resultLimit,
                                                 (maxOf(
                                                         1,
-                                                        ((displayed.size - recentCount + columns -
+                                                        ((visibleResults.size - recentCount + columns -
                                                             1) / columns) +
                                                             if (recentCount > 0)
                                                                 (recentCount + columns - 1) /
@@ -1042,7 +1045,7 @@ fun SpotlightPanel(
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                                 verticalArrangement = Arrangement.spacedBy(6.dp),
                             ) {
-                                displayed.forEachIndexed { i, item ->
+                                visibleResults.forEachIndexed { i, item ->
                                     if (i == 0 || (recentCount > 0 && i == recentCount)) {
                                         item(
                                             key = "heading:$i",
@@ -1106,7 +1109,7 @@ fun SpotlightPanel(
                             // On narrow windows, give contextual actions the full result area.
                             // Closing Quick Look restores the list and its selection.
                         } else resultList()
-                        if (displayed.isEmpty() && activeCard == null && !loading && !noteEditor && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null && snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null && category!="IA" && searchScope?.section!="files")
+                        if (visibleResults.isEmpty() && activeCard == null && !loading && !noteEditor && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null && snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null && category!="IA" && searchScope?.section!="files")
                             Text(
                                 if(query.isBlank() && category=="Todo")"Escribí lo que querés encontrar o hacer." else when (category) {
                                     "Archivos" ->
