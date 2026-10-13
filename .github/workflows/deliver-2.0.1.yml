@@ -1,0 +1,90 @@
+name: Authorized Spotlight 2.0.1 delivery
+
+on:
+  push:
+    branches: [ci/deliver-2.0.1-9bb9d0c]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: authorized-spotlight-2.0.1-delivery
+  cancel-in-progress: false
+
+env:
+  VERIFIED_SHA: 9bb9d0ca7a97e9798ae5197c3ee32958e643dd6d
+
+jobs:
+  delivery:
+    # One explicitly authorized branch. Never PRs, forks, or arbitrary refs.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/ci/deliver-2.0.1-9bb9d0c' && github.repository == 'bauti3311-sys/Spotlight-Next'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: source
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.VERIFIED_SHA }}
+          path: source
+          persist-credentials: false
+      - name: Require successful checks on the exact source SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 ../.github/scripts/delivery_gate.py checks "$VERIFIED_SHA"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Test and build the pinned Release source
+        run: |
+          test "$(git rev-parse HEAD)" = "$VERIFIED_SHA"
+          python3 -m unittest discover -s ../.github/scripts -p 'test_*.py'
+          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:lintRelease :app:assembleRelease --no-daemon --max-workers=2 --console=plain
+          python3 -m unittest discover -s backend -p 'test_*.py'
+          python3 -m unittest discover -s scripts -p 'test_*.py'
+      - name: Sign only this verified source with the historical key
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: bash scripts/sign-release.sh
+      - name: Compare with the previously distributed historical APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/bauti3311-sys/Spotlight-Next/actions/artifacts/11753988125/zip > "$RUNNER_TEMP/spotlight-baseline.zip"
+          python3 ../.github/scripts/delivery_gate.py baseline "$RUNNER_TEMP/spotlight-baseline.zip" "$RUNNER_TEMP/spotlight-baseline.apk"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$RUNNER_TEMP/spotlight-baseline.apk" > "$RUNNER_TEMP/baseline-cert.txt"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$RUNNER_TEMP/spotlight-baseline.apk" > "$RUNNER_TEMP/baseline-badging.txt"
+          python3 ../.github/scripts/delivery_gate.py package "$VERIFIED_SHA" "$RUNNER_TEMP/baseline-badging.txt" "$RUNNER_TEMP/baseline-cert.txt"
+      - name: Upload signed APK, exact source ZIP and verification together
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotlight-next-2.0.1-verified-9bb9d0c
+          path: source/app/build/outputs/delivery/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+      - name: Preserve test and lint evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotlight-next-2.0.1-delivery-checks-${{ github.run_number }}
+          path: |
+            source/app/build/test-results/
+            source/app/build/reports/
+            source/verified-checks.json
+          retention-days: 30
+          if-no-files-found: ignore
