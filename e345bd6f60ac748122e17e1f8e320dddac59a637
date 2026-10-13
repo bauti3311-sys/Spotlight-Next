@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-13T18:57:33.110923-03:00",
+  "owner": "manual-2f07d211-9919-491b-b0cf-5f3783392aa6",
+  "state": "active",
+  "checkpoint": "e345bd6f60ac748122e17e1f8e320dddac59a637",
+  "branch": "fix/window-metrics-safe-area-f13",
+  "validated_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "local": "361/361 units,17/17 comparisons,lint0errors/10warnings,debug/testAPK,14Python scripts+5backend passed. NativeIME Shadow precondition shown and postcondition hidden added to header regression.",
+  "ci": [
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38473770076",
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38473770039"
+  ],
+  "next": "Verify current emulators: cached driver --reinstall-driver=false, native IMM hide before Tab focus, and100ms stableIME inside unchanged15s deadline. Keep capture-time assertions. F725 verified API30tablet6geometry/captures12, but phone lastIME race and coldMaestro fail. Use complete WMS snapshots if cold focus still red. Do not advance pointer until all green. PhysicalOneUI separate; F1.4 not started."
+}
