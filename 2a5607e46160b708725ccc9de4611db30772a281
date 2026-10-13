@@ -1,0 +1,19 @@
+{
+  "source_sha": "2a5607e46160b708725ccc9de4611db30772a281",
+  "branch": "feat/width-policy-f1",
+  "pr": 8,
+  "status": "VALIDADO_AUTOMATICAMENTE",
+  "ci": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38346023892",
+  "ci_jobs": "all 5 successful",
+  "unit_tests": 328,
+  "native_pixel_comparisons": 12,
+  "python_tests": 17,
+  "lint_errors": 0,
+  "lint_warnings": 10,
+  "next_submilestone": "F1.2 density and truthful width preview",
+  "reservation_owner": "manual-d241406e-21b0-4ace-b61b-4af11fd839a6",
+  "repository_edits_completed": true,
+  "closed_at": "2026-10-13T04:39:32.448374+00:00",
+  "main_merge_release": "none",
+  "physical_one_ui": "pending"
+}
