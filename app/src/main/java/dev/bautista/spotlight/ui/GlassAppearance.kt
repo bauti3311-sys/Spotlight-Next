@@ -18,12 +18,7 @@ import org.json.JSONArray
     Text("Probá el tema en la vista previa y aplicalo cuando quieras. Tus datos e integraciones se conservan.",style=MaterialTheme.typography.bodySmall)
     Row(Modifier.horizontalScroll(rememberScrollState())){AppearancePresets.names.forEach{family->FilterChip(draft.preset==AppearancePresets.apply(family,draft).preset,{draft=AppearancePresets.apply(family,draft)},label={Text(family)})}}
     Row{listOf("auto" to "Automático","light" to "Claro","dark" to "Oscuro").forEach{(key,label)->FilterChip(draft.theme==key,{draft=draft.copy(theme=key)},label={Text(label)})}}
-    SpotlightTheme(draft.theme,draft){Column(Modifier.fillMaxWidth().glassSurface(draft).padding(18.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        Text("Buscar en Spotlight",style=MaterialTheme.typography.titleMedium);HorizontalDivider()
-        var selection by remember{mutableStateOf(true)}
-        Text("Acción principal",Modifier.fillMaxWidth().clickable{selection=!selection}.background(if(selection)MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface).padding(12.dp))
-        Text("Vista previa interactiva · sin ejecutar acciones",style=MaterialTheme.typography.bodySmall)
-    }}
+    OverlayAppearancePreview(draft)
     Row(Modifier.horizontalScroll(rememberScrollState())){listOf("blue" to "Océano","purple" to "Lavanda","rose" to "Rosa","green" to "Bosque","orange" to "Ámbar","graphite" to "Grafito").forEach{(key,label)->FilterChip(draft.accent==key,{draft=draft.copy(accent=key)},label={Text(label)})}}
     Row{listOf("neutral","warm","cool").forEach{tone->FilterChip(draft.surfaceTone==tone,{draft=draft.copy(surfaceTone=tone)},label={Text(when(tone){"warm"->"Cálido";"cool"->"Frío";else->"Neutro"})})}}
     Text("Opacidad · ${(draft.opacity*100).toInt()} %");Slider(draft.opacity,{draft=draft.copy(opacity=it)},valueRange=.9f..1f)
@@ -34,9 +29,8 @@ import org.json.JSONArray
     Row(Modifier.horizontalScroll(rememberScrollState())){listOf("inter" to "Inter","system" to "Sistema","mono" to "Monoespaciada").forEach{(key,label)->FilterChip(draft.typeface==key,{draft=draft.copy(typeface=key)},label={Text(label)})}}
     Text("Texto · ${(draft.textScale*100).toInt()} %");Slider(draft.textScale,{draft=draft.copy(textScale=it)},valueRange=.9f..1.3f)
     Text("Iconos · ${draft.iconSize} dp");Slider(draft.iconSize.toFloat(),{draft=draft.copy(iconSize=it.toInt())},valueRange=24f..36f)
-    Row(Modifier.horizontalScroll(rememberScrollState())){listOf("compact" to "Compacta","balanced" to "Equilibrada","spacious" to "Espaciosa").forEach{(key,label)->FilterChip(draft.density==key,{draft=draft.copy(density=key)},label={Text(label)})}}
-    Row{Text("Ancho automático · 80% / 90%",Modifier.weight(1f));Switch(draft.width==0,{draft=draft.copy(width=if(it)0 else 640)})}
-    if(draft.width>0){Text("Ancho · ${draft.width} dp");Slider(draft.width.toFloat(),{draft=draft.copy(width=it.toInt())},valueRange=380f..1100f)}
+    OverlayDensitySettings(draft){draft=it}
+    OverlayWidthSettings(draft){draft=it}
     Text("Altura máxima · ${draft.maxHeight} dp");Slider(draft.maxHeight.toFloat(),{draft=draft.copy(maxHeight=it.toInt())},valueRange=320f..700f)
     Row(Modifier.horizontalScroll(rememberScrollState())){listOf("precise" to "Preciso","liquid_precision" to "Liquid Precision","liquid_immersive" to "Liquid Immersive").forEach{(key,label)->FilterChip(draft.movement==key,{draft=draft.copy(movement=key)},label={Text(label)})}}
     Row{Text("Reducir animaciones",Modifier.weight(1f));Switch(!draft.animations,{draft=draft.copy(animations=!it)})}

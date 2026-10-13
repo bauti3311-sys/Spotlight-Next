@@ -19,7 +19,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-@OptIn(ExperimentalTestApi::class)
+@OptIn(ExperimentalTestApi::class, androidx.compose.runtime.ExperimentalComposeApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -27,10 +27,11 @@ class ActionHubVisualTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     private fun start(theme:String){
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        app.diagnostics.enableSearchTracing()
         val info=android.content.pm.ResolveInfo().apply { activityInfo=android.content.pm.ActivityInfo().apply { packageName="com.whatsapp";name="com.whatsapp.Main";applicationInfo=android.content.pm.ApplicationInfo().apply {packageName="com.whatsapp"} } }
         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER).setPackage("com.whatsapp"),info)
         ui.setContent {Box(Modifier.width(780.dp).padding(24.dp)){SpotlightPanel(app,AppConfig(theme=theme,files=false,animations=false),{},initialQuery="whatsapp",availableHeightDp=640f)}}
-        ui.waitUntil(15000){ui.onAllNodesWithText("Enviar mensaje").fetchSemanticsNodes().isNotEmpty()}
+        awaitText("Enviar mensaje")
     }
     private fun image(name:String){ui.runOnIdle {
         val view=ui.activity.window.decorView
@@ -39,11 +40,11 @@ class ActionHubVisualTest {
     }}
     private fun awaitText(text:String){
         try { ui.waitUntil(15000){
-            // Robolectric pauses Android's looper; provider completions post back to it.
-            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            // Advance paused Android time as well as draining queued provider/frame callbacks.
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS)
             ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
         } }
-        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
+        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("UI lifecycle=${ui.activity.lifecycle.currentState} attached=${ui.activity.window.decorView.isAttachedToWindow} shown=${ui.activity.window.decorView.isShown} autoClock=${ui.mainClock.autoAdvance}");println("Recomposers: "+androidx.compose.runtime.Recomposer.runningRecomposers.value.map { "state=${(it.state as? kotlinx.coroutines.flow.StateFlow<*>)?.value} pending=${it.hasPendingWork} changes=${it.changeCount}" });println("Search lifecycle:\n"+(RuntimeEnvironment.getApplication() as SpotlightApp).diagnostics.searchTraceReport());println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
     }
     @Test fun lightHubOpensTypesBeforeListingFiles(){
         start("light");image("spotlight-whatsapp-light")
@@ -52,11 +53,37 @@ class ActionHubVisualTest {
         ui.onNodeWithText("Enviar mensaje").assertExists()
         ui.onNodeWithText("Buscar archivos").performClick()
         awaitText("Documentos PDF")
+        ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
         ui.onNodeWithText("Imágenes").assertIsDisplayed()
         ui.onNodeWithText("Documentos PDF").performClick()
         awaitText("Activar búsqueda de archivos")
         ui.onNodeWithText("Volver").performClick()
         awaitText("Documentos PDF")
+        ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
+        repeat(24) {
+            ui.onNodeWithText("Volver").performClick()
+            awaitText("Buscar archivos")
+            ui.onNodeWithText("Buscar archivos").performClick()
+            awaitText("Documentos PDF")
+            ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
+            ui.onNodeWithText("Documentos PDF").performClick()
+            awaitText("Activar búsqueda de archivos")
+            ui.onNodeWithText("Volver").performClick()
+            awaitText("Documentos PDF")
+            ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
+        }
+        image("091-ui/action-hub-file-types-light")
+    }
+    @Test fun returningToSameQueryWithinAFrameMustKeepResults() {
+        start("light")
+        val edit=ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsActions.SetText].action!!
+        ui.runOnIdle {
+            org.junit.Assert.assertTrue(edit(androidx.compose.ui.text.AnnotatedString("whatsappx")))
+            org.junit.Assert.assertTrue(edit(androidx.compose.ui.text.AnnotatedString("whatsapp")))
+        }
+        ui.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("whatsapp")))
+        awaitText("Enviar mensaje")
+        ui.onNodeWithText("Buscar archivos").assertExists()
     }
     @Test fun volumeSliderChangesAndroidMultimediaVolume(){
         val audio=ui.activity.getSystemService(android.media.AudioManager::class.java)

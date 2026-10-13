@@ -44,7 +44,11 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var contentExpanded=false
     private var availableHeightDp by androidx.compose.runtime.mutableFloatStateOf(480f)
 
-    private fun updateAvailableHeight(imeBottom: Int = 0) {
+    // Insets are event-driven; preference and rotation refreshes must not imply IME dismissal.
+    private var lastBottomInset = 0
+
+    internal fun updateAvailableHeight(imeBottom: Int = lastBottomInset) {
+        lastBottomInset = imeBottom
         val dm = resources.displayMetrics
         val top = AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,imeBottom,config).top
         availableHeightDp =
