@@ -8,6 +8,7 @@ diagnose_failure() {
     # CI emulators contain only the synthetic fixtures from these flows.
     adb shell uiautomator dump /data/local/tmp/spotlight-ui.xml || true
     adb shell cat /data/local/tmp/spotlight-ui.xml || true
+    adb logcat -d -s SpotlightOverlay AndroidRuntime WindowManager || true
   fi
   exit "$result"
 }

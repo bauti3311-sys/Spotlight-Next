@@ -35,16 +35,16 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var closing=false
     private var focusSeen = false
     private var showJob: Job? = null
-    private val wm by lazy {
-        // WindowMetrics need a visual context associated with this overlay type.
-        val overlayManager = if (Build.VERSION.SDK_INT >= 30) runCatching {
+    private val overlayContext: Context by lazy {
+        // The manager and its views must share the overlay's visual context.
+        if (Build.VERSION.SDK_INT >= 30) runCatching {
             val display = getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY)
             createDisplayContext(requireNotNull(display))
                 .createWindowContext(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, null)
-                .getSystemService(WindowManager::class.java)
-        }.getOrNull() else null
-        overlayManager ?: getSystemService(WindowManager::class.java)
+        }.getOrNull() ?: this else this
     }
+    private val wm by lazy { overlayContext.getSystemService(WindowManager::class.java) }
+
     private val app
         get() = application as SpotlightApp
 
@@ -195,8 +195,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     private fun show() {
         val openingBounds = updateAvailableHeight()
+        if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) android.util.Log.d("SpotlightOverlay", "Opening geometry=$openingBounds")
         val panel =
-            ComposeView(this).apply {
+            ComposeView(overlayContext).apply {
                 setBackgroundColor(android.graphics.Color.TRANSPARENT)
                 setViewTreeLifecycleOwner(this@OverlayService)
                 setViewTreeSavedStateRegistryOwner(this@OverlayService)
@@ -251,6 +252,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 2500L,
             )
         } catch (e: RuntimeException) {
+            android.util.Log.e("SpotlightOverlay", "Overlay window attachment failed", e)
             Toast.makeText(
                     this,
                     "No se pudo mostrar la ventana. Revisá el permiso de superposición.",
@@ -266,7 +268,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     // host itself, not only on the ComposeView child.
     internal fun createHost(panel: ComposeView): WindowFocusHost {
         return WindowFocusHost(
-                this,
+                overlayContext,
                 onOutside = { close() },
                 onFocus = { gained ->
                     if (gained) {
