@@ -37,3 +37,12 @@
 - Main/merge/firma/release: NO. APK histórico 9bb9d0c permanece intacto.
 - Próximo subhito: F1.2, separar visualmente densidad de controles del ancho físico y preparar una vista previa fiel. Retomar desde la punta de este PR comprobando checks y reserva; no repetir F1.1 ni partir del árbol antiguo de infraestructura perdiendo sus cambios. Conservar ramas/PRs borrador sin merges; una nueva rama puede descender del checkpoint verificado, manteniendo la infraestructura como ancestro.
 - Pendiente humano: validar controles/persistencia/orientación con teclado y One UI en Galaxy Tab A9+. F1 completo aún NO está terminado; métricas/insets/IME y expansión siguen pendientes.
+
+## 2026-10-13T06:08:28.103011+00:00 — F1.2 inicio reservado
+
+- Estado: EN CURSO; base `2a5607e46160b708725ccc9de4611db30772a281`, rama `feat/density-preview-f1`. Zona America/Argentina/Buenos_Aires.
+- Reserva: propietario `scheduled-7403530c-96d0-4e92-a468-e6a8785d3951`, commit `b207f9556b208fa18e7b0b60129ed696c818a0f4` en `locks/spotlight-autonomy`. Solo este propietario puede liberar; si aparece en otro ciclo, omitir edición concurrente.
+- Base: CI 38346023892 correcto, cinco jobs; nota final de F1.1 leída. No repetir F1.1.
+- Alcance: densidad describe espaciado de filas, no ancho; vista previa con ResultRow real y ancho calculado por AdaptiveLayout para la orientación actual. Sin métricas nuevas (F1.3), dependencias ni APIs remotas.
+- Criterios: borrador no persiste hasta aplicar; densidad conserva ancho/override/memoria; vista previa respeta automático/manual/override y límites en teléfono/tablet, vertical/horizontal. Capturas nativas y checks pertinentes antes de declarar terminado.
+- Pruebas F1.2: aún no ejecutadas. Siguiente acción: implementar y probar componentes de ajustes y vista previa; continuar esta rama si hay interrupción. Main/merge/firma/release: NO.
