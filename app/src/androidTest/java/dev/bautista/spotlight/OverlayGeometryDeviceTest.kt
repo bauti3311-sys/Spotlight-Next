@@ -161,7 +161,7 @@ class OverlayGeometryDeviceTest {
             shell("appops set ${context.packageName} SYSTEM_ALERT_WINDOW allow")
             shell("settings put secure show_ime_with_hard_keyboard 1")
             val fixture = original.copy(width = 0, landscapeWidth = 0, position = .35f,
-                landscapePosition = .35f, adaptive = true, files = false, animations = false, clipboard = false, captureContext = false)
+                landscapePosition = .35f, adaptive = true, autoKeyboard = "always", files = false, animations = false, clipboard = false, captureContext = false)
             runBlocking { app.preferences.update(fixture) }
             scenario.onActivity { it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
             context.startForegroundService(Intent(context, OverlayService::class.java)

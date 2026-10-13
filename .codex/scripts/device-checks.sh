@@ -12,6 +12,11 @@ diagnose_failure() {
     adb shell cat /data/local/tmp/spotlight-ui.xml || true
     adb logcat -d -s SpotlightOverlay AndroidRuntime WindowManager || true
     if [[ -f .maestro/output/overlay-startup-log.txt ]]; then cat .maestro/output/overlay-startup-log.txt; fi
+    for input_snapshot in .maestro/output/input-cold-*.txt; do
+      [[ -f "$input_snapshot" ]] || continue
+      echo "$input_snapshot"
+      sed -n '/Input Dispatcher State:/,$p' "$input_snapshot"
+    done
     for snapshot in .maestro/output/window-cold-*.txt; do
       [[ -f "$snapshot" ]] || continue
       awk 'FNR==1 {print FILENAME ": " $0} /Window #[0-9]+ Window.*Spotlight/ {capture=1} capture && /Window #[0-9]+ Window/ && $0 !~ /Spotlight/ {capture=0} capture || /mCurrentFocus=|mFocusedApp=/ {print FILENAME ": " $0}' "$snapshot"
@@ -38,6 +43,7 @@ if [[ "${CI:-}" == true ]]; then
     for sample in {1..30}; do
       date -u +%FT%TZ > ".maestro/output/window-cold-$sample.txt"
       adb shell dumpsys window >> ".maestro/output/window-cold-$sample.txt"
+      adb shell dumpsys input > ".maestro/output/input-cold-$sample.txt"
       sleep 1
     done
   ) &
