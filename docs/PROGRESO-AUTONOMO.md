@@ -101,3 +101,9 @@
 - La reserva propia se libera al terminar registros/notas; comprobar refs/heads/locks/spotlight-autonomy y nota final. Propietario scheduled-7403530c-96d0-4e92-a468-e6a8785d3951; no quedan ediciones activas después del cierre.
 - Siguiente acción exacta: retomar punta PR #9 antes de F1.3, reproducir ActionHub con diagnóstico de inicio/emisión/cancelación y estado de consulta/contexto/generación; aislar si el collector no emite o las filas se limpian/filtran. Mantener prueba de 25 ciclos y reproducción de edición, repetir suite/píxeles/CI tras corregir. Sin pedir intervención humana para este fallo; One UI físico sigue como validación separada.
 - Main, PR #5/#6 y checkpoints históricos intactos. Sin nuevas dependencias, compras, APIs pagas, merges, firma ni releases. No se detectó una señal de cuota agotada; este cierre no afirma agotamiento ni reset de créditos.
+
+## 2026-10-13T08:13:05.661262-03:00 — reanudación F1.2 / ActionHub
+
+- Reserva scheduled-f9a4844c-6b36-431f-a6cf-9cc0f3a5403c, commit 9245d8782886bdfa57594b098ee85eaacb4f2854; rama fix/action-hub-f12-continuation desde 424757d (PR #9). Estado: diagnóstico en curso.
+- CI 38368556541 confirmado: cuatro jobs correctos, android-quality falla en Activar búsqueda de archivos (341 tests, 1 fallo). No repetir implementación de densidad ni avanzar F1.3.
+- Criterio: diagnosticar y corregir pérdida del menú conservando 25 ciclos, plazo y aserciones; ejecutar unitarias/lint/debug/píxeles/Python y CI. Puntero validado conserva 2a5607e hasta cierre comprobado. Sin dependencias nuevas, main, merges ni releases.

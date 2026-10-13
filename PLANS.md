@@ -67,3 +67,6 @@ CI de 45ac6c7 quedó verde, pero no resuelve por sí solo la repetición local p
 ## Prioridad de reanudación — checkpoint F1.2 pendiente
 
 CI final del producto e0639d8 / run38366740355 falló en menú ActionHub: 340/341 correctos, otros cuatro jobs correctos. Local pasó341 y17 píxeles, pero no declarar resuelto el fallo intermitente de contexto. F1.2 permanece pendiente de cierre integral; retomar punta feat/density-preview-f1 / PR #9 y su nota antes de F1.3. No volver al árbol viejo ni repetir UI/densidad ya implementadas. Puntero validado permanece2a5607e; reserva propia liberada al cerrar (comprobar remoto/nota). Diagnosticar por qué el menú queda sin filas con consulta vacía; mantener todas las condiciones, 25 ciclos, reproducción de texto y 15 s.
+
+## Reanudación F1.2 — ActionHub
+Rama fix/action-hub-f12-continuation desde 424757d; reserva scheduled-f9a4844c-6b36-431f-a6cf-9cc0f3a5403c. Retomar pérdida de filas contextual confirmada en CI 38368556541 antes de F1.3. Mantener 25 ciclos y todas las aserciones; estado/evidencia final en progreso y notas.
