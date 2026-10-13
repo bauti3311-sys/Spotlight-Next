@@ -20,8 +20,8 @@ class Next091NavigationTest {
     private fun query()=ui.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("")))
     private fun awaitText(text:String) {
         ui.waitUntil(15000) {
-            // Android provider completions post to the paused Robolectric main looper.
-            Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            // Advance paused Android time so delayed debounce/provider messages can run; keep the real 15 s deadline.
+            Shadows.shadowOf(android.os.Looper.getMainLooper()).idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS)
             ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
         }
     }

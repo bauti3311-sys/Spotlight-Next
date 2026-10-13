@@ -46,7 +46,7 @@ jobs:
       - run: bash .codex/scripts/doctor.sh android
       - name: Functional tests, lint and build
         run: |
-          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --max-workers=2 --console=plain
+          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug -Pspotlight.test.verbose=true --no-daemon --max-workers=2 --console=plain
           mkdir -p app/build/functional-unit-evidence
           cp -R app/build/test-results/testDebugUnitTest app/build/functional-unit-evidence/
           cp -R app/build/reports/tests/testDebugUnitTest app/build/functional-unit-evidence/html

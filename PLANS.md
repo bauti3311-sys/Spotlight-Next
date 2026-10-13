@@ -53,3 +53,7 @@ Local: 340 unitarias sin fallos/errores/omisiones, siete tests específicos fina
 La verificación remota final se consulta en checks/descripción PR #9 y `git notes --ref=spotlight-autonomy show <SHA>`; el puntero duradero solo avanzará tras los checks verdes. La reserva propia permanece activa hasta ese cierre; leer su JSON y no editar mientras exista. Si hay interrupción, retomar esta rama/checkpoint pendiente antes de otro subhito.
 
 Siguiente F1.3: revisar métricas actuales/insets/IME en OverlayService/AdaptiveLayout, definir casos pantalla usable/rotación y límites, reproducir antes de corregir. Prueba física Galaxy Tab A9+ separada; no afirmar F1 completo ni One UI validado. Sin main/merges/firma/releases; preservar PRs históricos.
+
+### Cierre remoto F1.2 pendiente
+
+CI 38357821467 falló en una espera ActionHub existente (339/340 correctos; resto de jobs correcto). Ver último evento de PROGRESO; reserva aún activa. Fixtures hacen progresar el reloj Android pausado conservando plazo/aserciones; seis específicas pasaron inicialmente. Logs verbose solo tests/CI, sin dependencias/runtime nuevo. Resultado definitivo de repeticiones/suite/píxeles/CI en notas del SHA y descripción PR #9; no retomar F1.3 si ese cierre falta.
