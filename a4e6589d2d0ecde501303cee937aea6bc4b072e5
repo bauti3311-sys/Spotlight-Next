@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-13T21:09:40.821423+00:00",
+  "owner": "manual-2f07d211-9919-491b-b0cf-5f3783392aa6",
+  "state": "active",
+  "checkpoint": "a4e6589d2d0ecde501303cee937aea6bc4b072e5",
+  "branch": "fix/window-metrics-safe-area-f13",
+  "validated_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "local": "App source c34:360/360 units,17/17 native comparisons, lint0errors/10warnings,debug,testAPK,Python13+5 passed. a4 adds only native assertions/docs; nativeAPK and lint passed. New native assertions NOT executed yet.",
+  "ci": [
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38468073370",
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38468073357"
+  ],
+  "next": "Verify these final runs. Fix actual failures before advancing checkpoint pointer. F1.4 not started; physical One UI separate."
+}
