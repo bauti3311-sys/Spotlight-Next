@@ -36,8 +36,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var focusSeen = false
     private var showJob: Job? = null
     private val overlayContext: Context by lazy {
-        // The manager and its views must share the overlay's visual context.
-        if (Build.VERSION.SDK_INT >= 30) runCatching {
+        // Android 11 may return a WindowContext after denying its token registration,
+        // without throwing. Keep the service manager there; WindowMetrics still applies.
+        // From Android 12, manager and views share the registered visual context.
+        if (Build.VERSION.SDK_INT >= 31) runCatching {
             val display = getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY)
             createDisplayContext(requireNotNull(display))
                 .createWindowContext(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, null)
