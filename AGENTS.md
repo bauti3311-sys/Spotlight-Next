@@ -1,6 +1,6 @@
 # Spotlight Next — instrucciones para Codex
 
-Leé `docs/RENOVACION-APROBADA.md` para el contrato funcional y `docs/CODEX-ENTORNO-APROBADO.md` para la infraestructura aprobada. Usá `PLANS.md` para continuidad.
+Leé `docs/RENOVACION-APROBADA.md` para el contrato funcional y `docs/CODEX-ENTORNO-APROBADO.md` para la infraestructura aprobada. Usá `PLANS.md` para continuidad y `docs/ROADMAP-AUTONOMA-SPOTLIGHT-NEXT.md` como orden de hitos verificables y política de reanudación; nunca asumir que el reset de créditos dispara tareas.
 
 - Kotlin y Jetpack Compose nativos. Priorizar funcionamiento verificable; no agregar pantallas/modos redundantes ni dependencias en bloque.
 - Enter desde resultados ejecuta la acción principal. Tab abre y recorre acciones, Shift+Tab retrocede; Enter en acciones ejecuta la enfocada. Escape cierra acciones antes de vistas secundarias y del overlay.
