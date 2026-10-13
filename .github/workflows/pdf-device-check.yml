@@ -3,10 +3,11 @@ name: Native PDF Android check
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [main, chore/codex-infrastructure-2.0.1]
     paths:
       - "app/src/androidTest/**"
       - "app/src/main/java/dev/bautista/spotlight/ui/PdfQuickLook.kt"
+      - "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt"
       - "app/build.gradle.kts"
       - ".github/workflows/pdf-device-check.yml"
 
