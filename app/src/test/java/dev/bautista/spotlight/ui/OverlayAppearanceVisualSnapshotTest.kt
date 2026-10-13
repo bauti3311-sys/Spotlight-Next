@@ -33,7 +33,7 @@ class OverlayAppearanceVisualSnapshotTest {
         ui.onNodeWithTag("preview-width-label").assertIsDisplayed()
         ui.onRoot().captureRoboImage("src/test/snapshots/$name.png")
     }
-    private val base=AppConfig(width=0,landscapeWidth=460,theme="dark",animations=false)
+    private val base=AppConfig(width=0,landscapeWidth=460,theme="dark",animations=false,density="balanced")
     @Test fun tabletCompact(){capture("appearance-tablet-compact",base.copy(density="compact"))}
     @Test fun tabletSpacious(){capture("appearance-tablet-spacious",base.copy(density="spacious"))}
     @Test @Config(qualifiers="w800dp-h1280dp") fun tabletPortrait(){capture("appearance-tablet-vertical",base)}

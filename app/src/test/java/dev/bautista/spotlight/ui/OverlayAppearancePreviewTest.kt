@@ -51,17 +51,47 @@ class OverlayAppearancePreviewTest {
     @Test @Config(qualifiers="w844dp-h390dp") fun phoneLandscapeUsesActualHorizontalOverride() {
         show(AppConfig(width=0,landscapeWidth=460,animations=false));check(460,"horizontal específico","phone-horizontal")
     }
+    @Test fun widthDraftUpdatesPreviewAndRestoresWithoutSaving() {
+        val saved=AppConfig(width=820,landscapeWidth=460,manualWidth=820,animations=false)
+        ui.setContent{SpotlightTheme("dark",saved){Surface{
+            Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp)){
+                GlassAppearance(saved){fail("Previewing must not save preferences")}
+            }
+        }}}
+        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
+        ui.onNodeWithText("Restablecer ancho horizontal").performScrollTo().performClick()
+        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(820.dp)
+        ui.onNodeWithContentDescription("Ancho general automático").performScrollTo().performClick()
+        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(1024.dp)
+        ui.onNodeWithTag("preview-width-label").assertTextContains("Ancho visible: 1024 dp · automático general")
+        ui.onNodeWithText("Restaurar vista previa").performScrollTo().performClick()
+        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
+        ui.onNodeWithTag("preview-width-label").assertTextContains("Ancho visible: 460 dp · horizontal específico")
+        assertEquals(820,saved.width);assertEquals(460,saved.landscapeWidth);assertEquals(820,saved.manualWidth)
+    }
+    @Test fun legacyAutomaticDensityIsExplainedWithoutChangingPreferences() {
+        val c=AppConfig(width=0,landscapeWidth=460,density="auto",animations=false)
+        ui.setContent{SpotlightTheme("dark",c){OverlayDensitySettings(c){fail("Rendering must not save preferences")}}}
+        ui.onNodeWithText("Actual: automático según el tamaño de pantalla.").assertIsDisplayed()
+        listOf("Compacta","Equilibrada","Espaciosa").forEach{ui.onNodeWithText(it).assertIsNotSelected()}
+    }
     @Test fun densityChangesRowsButNeverWindowWidthOrSavedDraft() {
         var saved by mutableStateOf(AppConfig(width=820,landscapeWidth=460,manualWidth=820,pins=setOf("apuntes"),animations=false,density="compact"))
+        lateinit var pageScroll:androidx.compose.foundation.ScrollState
         ui.setContent{SpotlightTheme("dark",saved){Surface{
-            Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp)){GlassAppearance(saved){saved=it}}
+            Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState().also{pageScroll=it}).padding(16.dp)){GlassAppearance(saved){saved=it}}
         }}}
         // Compare the whole selectable row, not text size (density only affects padding).
-        fun selectedRowHeight():Float {ui.onNodeWithText("2 + 2 = 4").performScrollTo();return ui.onNode(isSelected()).fetchSemanticsNode().boundsInRoot.height}
+        fun selectedRowHeight():Float {ui.onNodeWithTag("appearance-preview-viewport").performScrollTo();ui.onNodeWithText("2 + 2 = 4").assertIsDisplayed();val bounds=ui.onNode(isSelected() and hasText("2 + 2 = 4")).getUnclippedBoundsInRoot();return bounds.bottom.value-bounds.top.value}
         val compact=selectedRowHeight()
-        ui.onNodeWithText("Espaciosa").performScrollTo().performClick()
+        // Scroll the outer card first: the chips have their own horizontal scroll parent.
+        ui.onNodeWithTag("density-settings").performScrollTo()
+        ui.onNodeWithText("Espaciosa").performClick().assertIsSelected()
         ui.runOnIdle{assertEquals("compact",saved.density);assertEquals(820,saved.width);assertEquals(460,saved.landscapeWidth)}
         val spacious=selectedRowHeight()
+        ui.runOnIdle{pageScroll.dispatchRawDelta(-pageScroll.value.toFloat())}
+        ui.waitForIdle()
+        ui.runOnIdle{capture091(ui.activity,"f12-density-draft-spacious")}
         assertTrue("Spacious rows must add vertical room: $compact -> $spacious",spacious>compact)
         ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
         ui.onNodeWithText("Aplicar tema").performScrollTo().performClick()
