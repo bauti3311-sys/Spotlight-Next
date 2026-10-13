@@ -240,14 +240,20 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             ViewCompat.requestApplyInsets(host)
             host.viewTreeObserver.addOnDrawListener(object:android.view.ViewTreeObserver.OnDrawListener {
                 var reported=false
-                override fun onDraw(){if(!reported){reported=true;app.diagnostics.markVisible()}}
+                override fun onDraw(){if(!reported){
+                    reported=true
+                    app.diagnostics.markVisible()
+                    if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+                        android.util.Log.d("SpotlightOverlay", "First draw: windowFocus=${host.hasWindowFocus()} editorFocus=${panel.hasFocus()}")
+                    }
+                }}
             })
             // Visible on the first frame: no competing window/Compose entrance animations.
             clipboard.addPrimaryClipChangedListener(clipListener)
             host.postDelayed(
                 {
                     if (view === host && !focusSeen) {
-                        android.util.Log.w("SpotlightOverlay", "Focus watchdog: no window focus; size=${host.width}x${host.height}")
+                        android.util.Log.w("SpotlightOverlay", "Focus watchdog: callbackSeen=$focusSeen actualFocus=${host.hasWindowFocus()} shown=${host.isShown} visibility=${host.windowVisibility} size=${host.width}x${host.height}")
                         Toast.makeText(
                                 this,
                                 "Esta pantalla no permitió enfocar Spotlight. Abrilo desde otra app.",
