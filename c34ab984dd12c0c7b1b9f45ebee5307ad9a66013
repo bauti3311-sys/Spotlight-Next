@@ -1,0 +1,14 @@
+{
+  "owner": "manual-2f07d211-9919-491b-b0cf-5f3783392aa6",
+  "state": "active",
+  "checkpoint": "c34ab984dd12c0c7b1b9f45ebee5307ad9a66013",
+  "lease": "59bbfb2ade9258cb82b0a5acb26d61c8ca1c59cd",
+  "branch": "fix/window-metrics-safe-area-f13",
+  "validated_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "local": "21 specific tests passed; lint/debug/test APK passed. Integral360 in progress. Prior356/17 snapshots and Python18 passed.",
+  "ci": [
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38467016513",
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38467016520"
+  ],
+  "next": "Verify this checkpoint CI first. Fix remaining API30 cold overlay focus or capture export if red. F1.4 not started. Physical One UI pending separately."
+}
