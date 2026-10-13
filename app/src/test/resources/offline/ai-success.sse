@@ -1,0 +1,6 @@
+data: {"type":"response.output_text.delta","delta":"Hola "}
+
+data: {"type":"response.output_text.delta","delta":"mundo"}
+
+data: [DONE]
+

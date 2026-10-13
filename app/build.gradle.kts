@@ -53,6 +53,7 @@ dependencies {
  implementation("com.google.mlkit:language-id:17.0.6")
  implementation("com.tom-roush:pdfbox-android:2.0.27.0")
  testImplementation("junit:junit:4.13.2")
+ testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
  testImplementation("org.robolectric:robolectric:4.14.1")
  testImplementation("androidx.compose.ui:ui-test-junit4")
  debugImplementation("androidx.compose.ui:ui-test-manifest")
