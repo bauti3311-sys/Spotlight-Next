@@ -91,6 +91,10 @@ class OverlayGeometryDeviceTest {
         try { File(directory, "$stage.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) } }
         finally { bitmap.recycle() }
         File(directory, "$stage.txt").writeText("API=${Build.VERSION.SDK_INT}\nroot=$root\nvisible=$visible\nime=$keyboard\nqueryFocused=true\n")
+        // AGP may uninstall the target APK after the run, removing app-specific files.
+        val source = directory.absolutePath.replace("'", "'\"'\"'")
+        val exported = shell("mkdir -p /data/local/tmp/spotlight-geometry && cp -R '$source'/. /data/local/tmp/spotlight-geometry/ && echo exported")
+        assertEquals("Capture export failed before test cleanup", "exported", exported)
     }
 
     @Test fun softwareImeWidthChangeAndRotationKeepOverlaySafeAndQueryFocused() {

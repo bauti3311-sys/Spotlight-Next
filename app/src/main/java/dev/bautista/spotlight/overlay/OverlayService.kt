@@ -57,6 +57,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     // Insets are event-driven; preference and rotation refreshes must not imply IME dismissal.
     private var lastBottomInset = 0
     private var lastSystemBottomInset = 0
+    private var lastLoggedGeometry: OverlayBounds? = null
 
     private fun bounds(): OverlayBounds {
         val screen = OverlayViewport.read(wm, resources, lastSystemBottomInset, view, lastBottomInset)
@@ -66,6 +67,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     private fun refreshWindowGeometry() {
         val geometry = updateAvailableHeight()
+        if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0 && lastLoggedGeometry != geometry) {
+            lastLoggedGeometry = geometry
+            android.util.Log.d("SpotlightOverlay", "Geometry=$geometry bottom=$lastBottomInset system=$lastSystemBottomInset")
+        }
         view?.let { host ->
             val next = params(geometry)
             val current = host.layoutParams as? WindowManager.LayoutParams
@@ -240,6 +245,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             host.postDelayed(
                 {
                     if (view === host && !focusSeen) {
+                        android.util.Log.w("SpotlightOverlay", "Focus watchdog: no window focus; size=${host.width}x${host.height}")
                         Toast.makeText(
                                 this,
                                 "Esta pantalla no permitió enfocar Spotlight. Abrilo desde otra app.",
@@ -271,6 +277,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 overlayContext,
                 onOutside = { close() },
                 onFocus = { gained ->
+                    if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+                        android.util.Log.d("SpotlightOverlay", "Window focus=$gained")
+                    }
                     if (gained) {
                         focusSeen = true
                         panel.post { captureClipboard() }
