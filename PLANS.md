@@ -63,3 +63,7 @@ CI 38357821467 falló en una espera ActionHub existente (339/340 correctos; rest
 Producto 14fc5e9925f1300d6373a5b6660ec43ee40eac71: una reproducción determinista mostró pérdida de resultados al editar y restaurar texto en un mismo frame; invalidaciones con generación y observación atómica de consulta/contexto la corrigen. No se añadió flowOn ni se cambiaron teclas/Quick Look. RED->GREEN y 25 ciclos de navegación, 341 unitarias, 17 píxeles, lint y debug correctos. Sin nuevas dependencias; las trazas temporales no están en fuente ni APK.
 
 CI de 45ac6c7 quedó verde, pero no resuelve por sí solo la repetición local posterior; validar el SHA final con esta corrección, consultar nota/descripcion PR #9 y mantener reserva hasta cerrar. El puntero solo avanza por FF tras CI correcto. Siguiente F1.3, salvo fallo que obligue a retomar este checkpoint.
+
+## Prioridad de reanudación — checkpoint F1.2 pendiente
+
+CI final del producto e0639d8 / run38366740355 falló en menú ActionHub: 340/341 correctos, otros cuatro jobs correctos. Local pasó341 y17 píxeles, pero no declarar resuelto el fallo intermitente de contexto. F1.2 permanece pendiente de cierre integral; retomar punta feat/density-preview-f1 / PR #9 y su nota antes de F1.3. No volver al árbol viejo ni repetir UI/densidad ya implementadas. Puntero validado permanece2a5607e; reserva propia liberada al cerrar (comprobar remoto/nota). Diagnosticar por qué el menú queda sin filas con consulta vacía; mantener todas las condiciones, 25 ciclos, reproducción de texto y 15 s.
