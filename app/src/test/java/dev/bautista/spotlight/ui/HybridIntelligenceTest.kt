@@ -8,6 +8,7 @@ import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.data.Config as AppConfig
 import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
 import org.junit.*
 import org.junit.Assert.*
@@ -112,8 +113,16 @@ class HybridIntelligenceTest {
         ui.onNodeWithText("volumen al 60%").performTouchInput{longClick()}
         ui.onNodeWithText("Ocultar sugerencia").performScrollTo().assertIsDisplayed()
         ui.runOnIdle{capture091(ui.activity,"hybrid-phone-actions")}
-        ui.onNodeWithText("Ocultar sugerencia").performClick()
-        runBlocking {kotlinx.coroutines.withTimeout(5000){app.preferences.config.first{it.hiddenSuggestions.contains("suggest:action:volumen al 60%")}}}
+        val hidden=java.util.concurrent.atomic.AtomicBoolean(false)
+        val observation=app.scope.launch {
+            app.preferences.config.first{it.hiddenSuggestions.contains("suggest:action:volumen al 60%")}
+            hidden.set(true)
+        }
+        try {
+            ui.onNodeWithText("Ocultar sugerencia").performClick()
+            // Pump Compose/main-looper work while the UI coroutine persists the change.
+            ui.waitUntil(5000){hidden.get()}
+        } finally {observation.cancel()}
     }
 
 }

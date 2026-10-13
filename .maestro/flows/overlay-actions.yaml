@@ -1,0 +1,6 @@
+appId: dev.bautista.spotlight.next
+name: Assert contextual actions after physical Tab
+---
+- assertVisible: "Acciones"
+- assertVisible: "Copiar resultado"
+- takeScreenshot: .maestro/output/context-panel

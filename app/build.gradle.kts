@@ -1,5 +1,5 @@
 import java.util.Properties
-plugins { id("com.android.application"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose") }
+plugins { id("com.android.application"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose"); id("io.github.takahirom.roborazzi") }
 val releaseIdentity = Properties().apply {
     rootProject.file("release.properties").inputStream().use { load(it) }
 }
@@ -53,6 +53,9 @@ dependencies {
  implementation("com.google.mlkit:language-id:17.0.6")
  implementation("com.tom-roush:pdfbox-android:2.0.27.0")
  testImplementation("junit:junit:4.13.2")
+ testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+ testImplementation("io.github.takahirom.roborazzi:roborazzi:1.29.0")
+ testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.29.0")
  testImplementation("org.robolectric:robolectric:4.14.1")
  testImplementation("androidx.compose.ui:ui-test-junit4")
  debugImplementation("androidx.compose.ui:ui-test-manifest")

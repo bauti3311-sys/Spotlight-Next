@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "automerge": false,
+  "dependencyDashboard": true,
+  "dependencyDashboardApproval": true,
+  "minimumReleaseAge": "7 days",
+  "packageRules": [
+    {
+      "matchPackageNames": ["/^org\\.jetbrains\\.kotlin/", "com.android.application", "androidx.compose:compose-bom", "gradle"],
+      "groupName": "android-toolchain-reviewed",
+      "automerge": false,
+      "dependencyDashboardApproval": true
+    },
+    {
+      "matchFileNames": ["visual-lab/**"],
+      "groupName": "visual-lab-reviewed",
+      "automerge": false
+    }
+  ]
+}

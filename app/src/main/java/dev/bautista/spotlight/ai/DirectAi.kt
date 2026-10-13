@@ -44,7 +44,7 @@ class DirectAi(private val credentials:AiCredentials,private val client:OkHttpCl
         emitAll(callbackFlow {
             val call=client.newCall(request)
             call.enqueue(object:Callback {
-                override fun onFailure(call:Call,e:IOException){close(IOException(if(call.isCanceled())"Consulta cancelada" else "No se pudo conectar al proveedor de IA."))}
+                override fun onFailure(call:Call,e:IOException){close(IOException(if(call.isCanceled() && e !is java.io.InterruptedIOException)"Consulta cancelada" else "No se pudo conectar al proveedor de IA."))}
                 override fun onResponse(call:Call,response:Response){response.use {r->try{
                     if(!r.isSuccessful)error(AiProtocol.error(r.code))
                     val source=r.body?.source() ?: error("Respuesta vacía");val event=StringBuilder();var received=false
