@@ -11,3 +11,6 @@ signing/credentials.properties
 
 *.keystore
 *.jks
+.codex/tools/
+.codex/artifacts/
+.maestro/output/

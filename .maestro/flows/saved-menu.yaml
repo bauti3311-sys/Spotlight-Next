@@ -1,0 +1,11 @@
+appId: dev.bautista.spotlight.next
+name: Saved content inside Spotlight
+---
+- extendedWaitUntil:
+    visible: "Guardados"
+    timeout: 15000
+- pressKey: Enter
+- assertVisible: "Nueva nota"
+- assertVisible: "Buscar en Guardados"
+- takeScreenshot: .maestro/output/saved
+- pressKey: Escape

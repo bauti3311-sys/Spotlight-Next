@@ -1,0 +1,144 @@
+name: Codex development tools
+
+on:
+  push:
+    branches: [chore/codex-infrastructure-2.0.1]
+  pull_request:
+    paths:
+      - '.agents/**'
+      - '.codex/**'
+      - '.maestro/**'
+      - 'visual-lab/**'
+      - 'app/src/test/**'
+      - 'app/build.gradle.kts'
+      - 'build.gradle.kts'
+      - '.github/workflows/codex-tooling.yml'
+      - 'AGENTS.md'
+      - 'PLANS.md'
+      - 'renovate.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codex-tools-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android-quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: bash .codex/scripts/doctor.sh android
+      - name: Functional tests, lint and build
+        run: |
+          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --max-workers=2 --console=plain
+          python3 -m unittest discover -s backend -p 'test_*.py'
+          python3 -m unittest discover -s scripts -p 'test_*.py'
+      - name: Compare approved native pixel baselines
+        run: bash gradlew :app:verifyRoborazziDebug --tests '*VisualSnapshotTest' --no-daemon --max-workers=2 --console=plain
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-functional-visual-${{ github.run_number }}
+          path: |
+            app/build/test-results/
+            app/build/reports/
+            app/build/outputs/roborazzi/
+          retention-days: 14
+  web-lab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: visual-lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: visual-lab/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-lab-tablet-phone-${{ github.run_number }}
+          path: |
+            visual-lab/test-results/
+            visual-lab/playwright-report/
+          retention-days: 14
+  secrets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash .codex/scripts/install-tool.sh gitleaks
+      - run: bash .codex/scripts/check-secrets.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: redacted-secrets-report-${{ github.run_number }}
+          path: .codex/artifacts/gitleaks.json
+          retention-days: 14
+  maestro-device:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [pixel_6, pixel_c]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --console=plain
+      - run: bash .codex/scripts/install-tool.sh maestro
+      - name: Free unused runner space and enable KVM
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: ${{ matrix.profile }}
+          disk-size: 2G
+          disable-animations: true
+          script: |
+            adb install app/build/outputs/apk/debug/app-debug.apk
+            bash .codex/scripts/device-checks.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maestro-${{ matrix.profile }}-${{ github.run_number }}
+          path: |
+            .maestro/output/
+            ~/.maestro/tests/
+          retention-days: 14
+          if-no-files-found: ignore

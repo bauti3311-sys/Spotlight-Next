@@ -8,7 +8,7 @@ Actualizado: 2026-10-13. Este archivo registra decisiones, evidencia y siguiente
 - Debug, unitarias, lint y Python: [run 38321571252](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38321571252), correcto.
 - PdfRenderer real: [run 38321571205](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38321571205), tres pruebas correctas en Android 29.
 - Local: `:app:assembleDebugAndroidTest`, `:app:lintRelease` y `:app:assembleRelease` ejecutados; R8 correcto y lint 0 errores/10 advertencias.
-- Firma/ZIP exacto: rama separada `ci/deliver-2.0.1-9bb9d0c`, fuente fija anterior; [run 38329360568](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38329360568) iniciado. Actualizar el resultado cuando termine; no afirmar firmado todavía.
+- Firma/ZIP exacto: rama separada `ci/deliver-2.0.1-9bb9d0c`, fuente fija anterior; [run 38329360568](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38329360568) correcto. [Entrega privada conjunta](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38329360568/artifacts/11782506585): APK histórico, ZIP fuente, manifiesto de hashes y verificación comparada con el APK distribuido 2.0.0/27. Orquestador `d70a85e`; fuente APK/ZIP `9bb9d0c`.
 - main sigue en `47259ce2d7259f0ddfa5d85b7c73f07983d8cd6d`. PR #5 y ambos checkpoints preservados.
 - No hay Galaxy Tab A9+ conectada. Comparación de manifiesto/certificado no equivale a instalación física.
 
@@ -25,3 +25,11 @@ Actualizado: 2026-10-13. Este archivo registra decisiones, evidencia y siguiente
 Registrar objetivo y alcance, rama/base SHA, decisiones y referencias/licencias, cambios pequeños, comandos realmente ejecutados, resultados/checks, artefactos/SHA y pendientes. Separar herramientas configuradas de herramientas ejecutadas; referencias visuales de código reutilizable; validación automática de prueba física.
 
 Cada nueva tarea continúa desde la última evidencia: no reiniciar ni revalidar indiscriminadamente si nada relevante cambió. Cuando falle una prueba, reproducir y corregir su causa conservando el contrato.
+
+## Infraestructura gradual
+
+Rama `chore/codex-infrastructure-2.0.1`, separada del APK entregado. AGENTS/skills validados; MockWebServer añadido solo a tests, seis contratos offline y tres tests IA previos pasaron. Detectó normalización incorrecta de timeout/cancelación, corregida sin cambiar la aserción, exclusivamente en esta rama.
+
+Laboratorio React/TypeScript/Vite con lockfile: build y seis pruebas Chromium tablet/teléfono correctas; referencias como inspector y prototipo propio. Roborazzi compatible 1.29.0: diez PNG reales versionados, registro y verificación correctos. Gitleaks escaneó 55 commits sin hallazgos. Maestro 2.11.0: dos flujos con sintaxis válida; MCP stdio inicializa y lista herramientas. Configuración ejemplo permite solo herramientas locales, sin operaciones Cloud.
+
+Core completo de infraestructura y CI teléfono/tablet en curso: no declarar su resultado hasta terminar. No hay emulador local; las capturas de PDF renderizado/carga, Macrobenchmark/Baseline Profiles y diagnóstico LeakCanary quedan como siguiente incorporación gradual. Perfetto tiene configuración/launcher preparados, sin mediciones afirmadas. Renovate está preparado, no activado como bot. ktlint/Detekt siguen en evaluación antes de reformatear legado.

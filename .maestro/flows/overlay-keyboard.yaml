@@ -1,0 +1,28 @@
+appId: dev.bautista.spotlight.next
+name: Overlay keyboard and orientation
+---
+- extendedWaitUntil:
+    visible: "4"
+    timeout: 15000
+- assertVisible: "2\\+2"
+- pressKey: Tab
+- assertVisible: "Acciones"
+- assertVisible: "Copiar resultado"
+- takeScreenshot: .maestro/output/context-panel
+- pressKey: Tab
+- pressKey: Escape
+- assertNotVisible: "Acciones"
+- assertVisible: "2\\+2"
+- pressKey: Escape
+- pressKey: Enter
+- assertVisible: "2\\+2"
+- tapOn: "Opciones de búsqueda"
+- assertVisible: "Modo privado"
+- takeScreenshot: .maestro/output/options-menu
+- pressKey: Escape
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: "2\\+2"
+- takeScreenshot: .maestro/output/landscape
+- setOrientation: PORTRAIT
+- pressKey: Escape
+- assertNotVisible: "2\\+2"
