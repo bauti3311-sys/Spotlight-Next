@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-13T18:32:45.048059-03:00",
+  "owner": "manual-2f07d211-9919-491b-b0cf-5f3783392aa6",
+  "state": "active",
+  "checkpoint": "f7251dadc544fa87f01a416dbd48954ef454d529",
+  "branch": "fix/window-metrics-safe-area-f13",
+  "validated_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "local": "361/361 units,17/17 comparisons,lint0errors/10warnings,debug/testAPK,Python13 scripts and5backend passed. RED action header reproduced and GREEN actual Compose screenshots308600pixel diff, simulatedIME explicit.",
+  "ci": [
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38471028619",
+    "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38471028632"
+  ],
+  "next": "Verify final matrix. MediaStore export and keyboard/action header fixes awaiting emulator evidence. Driver preparation is hypothesis for cold API30 focus; use WMS pre-watchdog snapshots if red. Do not advance pointer until green. F1.4 not started; physicalOneUI separate."
+}
