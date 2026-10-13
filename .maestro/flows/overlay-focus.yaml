@@ -1,0 +1,13 @@
+appId: dev.bautista.spotlight.next
+name: Focus and type in overlay
+---
+- extendedWaitUntil:
+    visible: "4"
+    timeout: 15000
+- assertVisible: "2\\+2"
+- tapOn: "2\\+2"
+- eraseText
+- inputText: "2+2"
+- extendedWaitUntil:
+    visible: "4"
+    timeout: 15000

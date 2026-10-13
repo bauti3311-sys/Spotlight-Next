@@ -4,6 +4,7 @@ on:
   push:
     branches: [chore/codex-infrastructure-2.0.1]
   pull_request:
+    branches: [main]
     paths:
       - '.agents/**'
       - '.codex/**'
