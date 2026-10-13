@@ -48,6 +48,14 @@ fun SpotlightPanel(
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
         val keyboard = LocalSoftwareKeyboardController.current
+        val platformView = LocalView.current
+        fun hideKeyboardForActions() {
+            keyboard?.hide()
+            platformView.windowToken?.let { token ->
+                context.getSystemService(android.view.inputmethod.InputMethodManager::class.java)
+                    ?.hideSoftInputFromWindow(token, 0)
+            }
+        }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
         var query by remember { mutableStateOf(initialQuery) }
@@ -93,7 +101,7 @@ fun SpotlightPanel(
         LaunchedEffect(preview!=null,showAi,systemPage?.page){onContentExpansion(preview!=null || showAi || systemPage?.page in setOf("calendar","sports-native","weather-native"))}
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
-        LaunchedEffect(menu) { if (menu) keyboard?.hide() }
+        LaunchedEffect(menu) { if (menu) hideKeyboardForActions() }
         LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
         var previousSearch by remember {mutableStateOf<String?>(null)}
         var loading by remember { mutableStateOf(false) }
@@ -663,6 +671,8 @@ fun SpotlightPanel(
                             }
                             Key.Tab -> {
                                 if (selectedResult != null) {
+                                    // Hide while the query still owns its native input connection.
+                                    hideKeyboardForActions()
                                     preview = selectedResult
                                     menu = true
                                     navigating = true

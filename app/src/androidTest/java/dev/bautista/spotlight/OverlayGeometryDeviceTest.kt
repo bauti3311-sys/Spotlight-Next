@@ -77,7 +77,19 @@ class OverlayGeometryDeviceTest {
         return width
     }
     private fun assertAndCapture(context: Context, stage: String, expectIme: Boolean = true) {
-        await("Unexpected IME visibility during $stage") { (keyboardBounds() != null) == expectIme }
+        var previous: Rect? = null
+        var stableSince = SystemClock.uptimeMillis()
+        var sampled = false
+        await("Unexpected or unsettled IME visibility during $stage") {
+            val current = keyboardBounds()
+            val now = SystemClock.uptimeMillis()
+            if (!sampled || current != previous || (current != null) != expectIme) {
+                sampled = true
+                previous = current
+                stableSince = now
+            }
+            (current != null) == expectIme && now - stableSince >= 100
+        }
         await("Query editor lost focus during $stage") {
             automation.windows.any { it.root?.packageName?.toString() == context.packageName && focusedQuery(it.root) }
         }
