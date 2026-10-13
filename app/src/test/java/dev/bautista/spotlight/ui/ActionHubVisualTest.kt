@@ -38,8 +38,12 @@ class ActionHubVisualTest {
         val output=File("build/$name.png");output.parentFile?.mkdirs();output.outputStream().use{bitmap.compress(Bitmap.CompressFormat.PNG,100,it)};bitmap.recycle()
     }}
     private fun awaitText(text:String){
-        try { ui.waitUntil(15000){ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()} }
-        catch(e:androidx.compose.ui.test.ComposeTimeoutException){ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
+        try { ui.waitUntil(15000){
+            // Robolectric pauses Android's looper; provider completions post back to it.
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
+        } }
+        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
     }
     @Test fun lightHubOpensTypesBeforeListingFiles(){
         start("light");image("spotlight-whatsapp-light")
