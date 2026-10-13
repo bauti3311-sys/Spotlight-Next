@@ -46,3 +46,24 @@
 - Alcance: densidad describe espaciado de filas, no ancho; vista previa con ResultRow real y ancho calculado por AdaptiveLayout para la orientación actual. Sin métricas nuevas (F1.3), dependencias ni APIs remotas.
 - Criterios: borrador no persiste hasta aplicar; densidad conserva ancho/override/memoria; vista previa respeta automático/manual/override y límites en teléfono/tablet, vertical/horizontal. Capturas nativas y checks pertinentes antes de declarar terminado.
 - Pruebas F1.2: aún no ejecutadas. Siguiente acción: implementar y probar componentes de ajustes y vista previa; continuar esta rama si hay interrupción. Main/merge/firma/release: NO.
+
+## 2026-10-13T03:38:06.323460-03:00 — checkpoint F1.2 probado localmente
+
+- Fecha/zona: 2026-10-13T03:38:06.323460-03:00, America/Argentina/Buenos_Aires.
+- Subhito: F1.2, densidad independiente y vista previa inicial fiel al cálculo actual de ancho. Estado: VALIDADO LOCALMENTE; CI final pendiente de cierre en [checks PR #9](https://github.com/bauti3311-sys/Spotlight-Next/pull/9/checks), descripción y nota final del SHA.
+- Base -> producto: `2a5607e46160b708725ccc9de4611db30772a281` -> `50a5bf2cb79614e52fa2d920ebfba1b810b9ebdb`. El commit final con estos registros/CI se identifica en el PR y refs/notes, sin alterar el árbol probado después de CI.
+- Rama/PR: `feat/density-preview-f1`, PR #9 borrador a `chore/codex-infrastructure-2.0.1`; infraestructura 372faa7 permanece como ancestro.
+- Reserva propia: `scheduled-7403530c-96d0-4e92-a468-e6a8785d3951`, commit `b207f9556b208fa18e7b0b60129ed696c818a0f4`; ACTIVA hasta cerrar CI. Para recuperación consultar punta de esta rama, este registro y la nota final; no tomar F1.3 si este checkpoint aún está pendiente. Solo el propietario libera su reserva, verificando SHA remoto.
+- Archivos: OverlayAppearancePreview, GlassAppearance, tests de geometría/borrador/selección y snapshots. Cinco PNG nuevos, doce anteriores sin cambios. CI conserva informe funcional completo y capturas f12.
+- Comandos ejecutados:
+  - `bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --max-workers=2 --console=plain`: 340 tests, 0 fallos/errores/omisiones; lint 0 errores/10 advertencias (1 información); debug correcto.
+  - `bash gradlew :app:testDebugUnitTest --tests '*OverlayAppearancePreviewTest' ...`: siete tests finales correctos; además exigen visibilidad de fila y chip seleccionado.
+  - `:app:recordRoborazziDebug --tests '*OverlayAppearanceVisualSnapshotTest'`: cinco referencias nuevas propias (compacta/espaciosa/tablet vertical/teléfono vertical y horizontal), revisadas visualmente.
+  - `:app:verifyRoborazziDebug --tests '*VisualSnapshotTest'`: 17 comparaciones correctas; ningún PNG previo actualizado.
+  - Python `unittest discover -s backend` 5/5 y `-s scripts` 12/12; sin claves reales/APIs pagas.
+  - Gitleaks 8.30.1: 71 commits examinados sin hallazgos antes de los últimos checkpoints; CI vuelve a escanear el historial final.
+- Investigación: test nuevo desplazaba el contenedor horizontal de chips sin traerlos al viewport; ahora desplaza la tarjeta externa y verifica selección/visibilidad. Selector de fila acotado y altura sin recorte. En suite apareció timeout de Next091NavigationTest (339 tests, 1 fallo); la prueba aislada sobre base pasó. Se drena el looper Android pausado, igual que ActionHubVisualTest, con condiciones/aserciones/plazo original de 15 s. Suite final pasó; buscador/overlay sin cambios.
+- Capturas/diff: `docs/visual/f1.2/{before,after,diff}-tablet.png`, Compose nativo SDK 33, 1280×800, mismo ancho general 820/override 460/densidad espaciosa; antes ejecutado contra 2a5607e con probe temporal eliminado, árbol base limpio. Diff sin máscaras: 341885 píxeles distintos de 1024000; cambio de interfaz previsto, no medida de rendimiento. Ver README de procedencia. Teléfono/tablet y ambas orientaciones en `app/src/test/snapshots/appearance-*.png`; UI funcional `app/build/091-ui/f12-*.png`.
+- Impacto/dependencias/licencias: ninguna dependencia ni recurso externo nuevo; componentes propios con Compose/ResultRow/Inter existentes. Debug local 177738334 -> 177738334 bytes; capturas fuera del APK. Release y rendimiento no medidos.
+- Límites: preview utiliza configuración dp/orientación actual y ventana inicial sin expansión; no resuelve aún diferencias WindowMetrics/insets/IME de One UI. Validación física Galaxy Tab A9+ sigue pendiente. Main/merge/firma/release: NO.
+- Siguiente acción exacta: comprobar CI del commit final; si verde, avanzar checkpoint/autonomous-next por fast-forward, publicar nota de cierre y liberar solo esta reserva. Próximo ciclo F1.3: reproducir cálculos de espacio usable/rotación/IME antes de cambiar OverlayService/AdaptiveLayout.

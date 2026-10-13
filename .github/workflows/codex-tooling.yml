@@ -47,6 +47,9 @@ jobs:
       - name: Functional tests, lint and build
         run: |
           bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --max-workers=2 --console=plain
+          mkdir -p app/build/functional-unit-evidence
+          cp -R app/build/test-results/testDebugUnitTest app/build/functional-unit-evidence/
+          cp -R app/build/reports/tests/testDebugUnitTest app/build/functional-unit-evidence/html
           python3 -m unittest discover -s backend -p 'test_*.py'
           python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Compare approved native pixel baselines
@@ -56,10 +59,12 @@ jobs:
         with:
           name: native-functional-visual-${{ github.run_number }}
           path: |
+            app/build/functional-unit-evidence/
             app/build/test-results/
             app/build/reports/
             app/build/outputs/roborazzi/
             app/build/091-ui/f1-width-*.png
+            app/build/091-ui/f12-*.png
           retention-days: 14
   web-lab:
     runs-on: ubuntu-24.04

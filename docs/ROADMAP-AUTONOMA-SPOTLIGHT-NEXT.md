@@ -8,7 +8,7 @@ Una **única barra flotante** tipo macOS Spotlight/Raycast/Alfred, invocable por
 
 ## Punto de partida probado / límites conocidos
 - APK histórico Spotlight Next 2.0.1 / versionCode 28: fuente exacta `9bb9d0ca7a97e9798ae5197c3ee32958e643dd6d`, rama `fix/recover-2.0.1-ci`, PR #6 borrador. La firma y el ZIP exacto se verificaron en GitHub Actions [38329360568](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38329360568).
-- Infraestructura avanzada en `chore/codex-infrastructure-2.0.1`, PR #7 borrador, a la fecha referencia `83e887a`, CI [38337171465](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38337171465) correcto. Partir de **la punta actual** de esta rama tras leer `PLANS.md`; no de main ni del SHA antiguo sin verificar.
+- Infraestructura avanzada en `chore/codex-infrastructure-2.0.1`, PR #7 borrador, a la fecha referencia `83e887a`, CI [38337171465](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38337171465) correcto. Comprobar **la punta actual** de esta rama y continuar desde `checkpoint/autonomous-next` validado, manteniendo infraestructura como ancestro; leer `PLANS.md`, progreso, PR y `refs/notes/spotlight-autonomy`. No volver al árbol antiguo perdiendo avances sin integrar.
 - `main` y PR #5 permanecen intactos. Conservar `checkpoint/documents-2.0.1` y `checkpoint/integrations-2.0.1`.
 - La Galaxy Tab A9+ pudo actualizar físicamente; el usuario corrigió una ventana demasiado angosta restableciendo **Ancho horizontal**. Esto demuestra un conflicto de UX entre ancho general, ancho horizontal y densidad "Espaciosa"; NO considerar corregido el diseño de configuración.
 - Falta evaluación física sistemática de One UI, batería, accesibilidad y comportamiento con teclado/permisos. Los emuladores NO reemplazan estas pruebas.
@@ -37,7 +37,7 @@ Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criteri
 
 ### F1 · Ventana adaptable y ajustes coherentes — PRIMER HITO DE DESARROLLO
 - [x] Unificar semántica de ancho: **automático / manual**, orientación horizontal con override explícito y botón claro de restablecimiento; impedir que un override oculto contradiga visualmente la opción "Automático". F1.1 implementado en PR #8, con persistencia/importación y capturas nativas verificadas localmente; revisar CI y progreso antes de continuar. Validación física One UI sigue separada.
-- [ ] Separar claramente densidad compacta/equilibrada/espaciosa del **ancho físico**. Etiquetas comprensibles y vista previa precisa antes de aplicar.
+- [x] Separar claramente densidad compacta/equilibrada/espaciosa del **ancho físico**. F1.2 en PR #9: etiquetas, automático antiguo y vista previa inicial con ResultRow/AdaptiveLayout compartidos; borrador/restauración probados, capturas nativas teléfono/tablet en ambas orientaciones. 340 unitarias y 17 comparaciones locales correctas; consultar CI final y notas antes de continuar. One UI físico y métricas/insets siguen separados.
 - [ ] Cálculo confiable de métricas actuales/insets/IME en One UI; limitar a pantalla usable y centrar horizontalmente. No fijar un ancho de teléfono a tablet.
 - [ ] Ancho adaptable al contenido: barra inicial compacta si se elige, expansión gradual al tener resultados/Quick Look/acciones; sin saltos bruscos ni cambio involuntario de preferencias.
 - **Aceptar solo si:** pruebas de valores guardados/rotación/overrides/IME/tablet+teléfono, captura real en los dos tamaños, sin pérdida del ancho que el usuario configuró.
@@ -120,7 +120,7 @@ Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criteri
 - **Aceptar solo si:** simulación end-to-end sobre rama protegida, artefactos accesibles y que el APK actualice sin desinstalar.
 
 ## Política por ciclo de Codex (incluidos turnos nocturnos)
-**Antes:** confirmar rama y SHAs, verificar que el PR #7/infraestructura actual es la base; leer AGENTS, PLANS, roadmap, avance, último CI. No rehacer hitos ya completados.
+**Antes:** leer `checkpoint/autonomous-next` y su nota final; comprobar/adquirir atómicamente `locks/spotlight-autonomy` con propietario único antes de editar. Si una reserva ajena sigue activa o no se demuestra cierre, omitir edición y registrar el solapamiento en el hilo, sin borrarla por antigüedad. Confirmar rama y SHAs, verificar que el PR #7/infraestructura actual es la base; leer AGENTS, PLANS, roadmap, avance, último CI. No rehacer hitos ya completados.
 
 **Elegir:** el PRIMER subhito pendiente que no dependa de autorización humana, compra, acceso a tablet física o clave. Concentrarse en ese subhito. Registrar hipótesis de riesgo y criterios de aceptación antes de tocar código.
 

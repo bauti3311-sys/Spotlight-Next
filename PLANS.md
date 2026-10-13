@@ -43,3 +43,13 @@ Base documental actual `372faa7`, rama aislada `feat/width-policy-f1`. Leer `doc
 Producto en `6a59b6b` + `0ced615`, PR #8 borrador. Ancho general/override horizontal comparten una política; memoria manual persiste y se exporta/importa; restablecer posición conserva ancho. Local: 328 unitarias, lint 0 errores/10 advertencias, debug correcto, 12 comparaciones visuales y Python 5+12 correctos. Detalles y estado de reserva/CI en `docs/PROGRESO-AUTONOMO.md`; consultar checks/descripcion PR #8 antes de retomar.
 
 Siguiente F1.2: densidad y vista previa del ancho, desde el checkpoint de este PR para no perder trabajo sin integrar. Mantener rama aislada y PR borrador. One UI físico y F1.3 (métricas/insets/IME) siguen pendientes; no declarar F1 completo por este subhito.
+
+## Checkpoint F1.2 — densidad y vista previa
+
+Continuación aislada desde `checkpoint/autonomous-next` = `2a5607e`, rama `feat/density-preview-f1`, [PR #9 borrador](https://github.com/bauti3311-sys/Spotlight-Next/pull/9) dirigido a infraestructura. Producto hasta `50a5bf2`: espaciado explícitamente independiente del ancho, automático antiguo explicado, vista previa con filas reales y geometría compartida. Cambiar/restaurar el borrador no persiste; aplicar conserva los anchos y datos.
+
+Local: 340 unitarias sin fallos/errores/omisiones, siete tests específicos finales correctos, 17 comparaciones nativas (12 referencias anteriores intactas), Python 5+12, lint 0 errores/10 advertencias y assembleDebug correctos. Antes/después/diff reales en `docs/visual/f1.2`; cinco PNG nuevos de densidad/preview en snapshots. Sin dependencias nuevas; debug local conserva 177738334 bytes (release/rendimiento no medidos). CI conserva ahora el informe unitario completo antes de que Roborazzi lo reemplace.
+
+La verificación remota final se consulta en checks/descripción PR #9 y `git notes --ref=spotlight-autonomy show <SHA>`; el puntero duradero solo avanzará tras los checks verdes. La reserva propia permanece activa hasta ese cierre; leer su JSON y no editar mientras exista. Si hay interrupción, retomar esta rama/checkpoint pendiente antes de otro subhito.
+
+Siguiente F1.3: revisar métricas actuales/insets/IME en OverlayService/AdaptiveLayout, definir casos pantalla usable/rotación y límites, reproducir antes de corregir. Prueba física Galaxy Tab A9+ separada; no afirmar F1 completo ni One UI validado. Sin main/merges/firma/releases; preservar PRs históricos.
