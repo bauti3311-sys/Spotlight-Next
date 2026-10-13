@@ -5,3 +5,5 @@ OverlayGeometryCaptureTest rasteriza SpotlightPanel real con Compose NATIVE/SDK3
 Mismos controles/preferencias antes/después. Antes usa algoritmo histórico del servicio (display completo, posición sin IME, altura mínima100dp); después usa viewport seguro y límite superior del teclado. El test exige bounds reales fuera de IME y dentro de ancho seguro.
 
 Tablet horizontal1280x800:76992 píxeles distintos; teléfono vertical390x844:6246. Diff RGB absoluto sin máscaras. Baselines existentes intactos. Archivos before/after/diff versionados; workflow conserva f13-*.png como evidencia.
+
+El fixture antes/después mantiene el centrado del marco ajustado de WindowManager.

@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
 import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.data.Config as AppConfig
 import dev.bautista.spotlight.overlay.AdaptiveLayout
@@ -55,13 +56,14 @@ class OverlayGeometryCaptureTest {
             OverlayBounds(it.width, it.top, (height - it.top - ime - 24f).coerceAtLeast(100f))
         }
         var shown by mutableStateOf(old)
-        var corrected by mutableStateOf(false)
         ui.setContent {
             Box(Modifier.fillMaxSize().background(Color(0xffe4e7ec))) {
                 Box(Modifier.offset(y = (height - ime).dp).fillMaxWidth().height(ime.dp)
                     .background(Color(0xffb7c0ce)))
-                val x = if (corrected) safeLeft + (frame.width - shown.width) / 2 else (width - shown.width) / 2
-                Box(Modifier.offset(x = x.dp, y = (24 + shown.top).dp).width(shown.width.dp)) {
+                Box(Modifier.offset {
+                    val x = safeLeft + (frame.width - shown.width) / 2
+                    IntOffset(x.dp.roundToPx(), (24 + shown.top).dp.roundToPx())
+                }.width(shown.width.dp)) {
                     SpotlightPanel(app, c, {}, availableHeightDp = shown.heightDp)
                 }
             }
@@ -69,7 +71,7 @@ class OverlayGeometryCaptureTest {
         ui.onNode(hasSetTextAction()).assertExists()
         ui.waitForIdle()
         ui.runOnIdle { capture091(ui.activity, "f13-$name-before") }
-        ui.runOnIdle { shown = next; corrected = true }
+        ui.runOnIdle { shown = next }
         ui.waitForIdle()
         val actual = ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
         val density = app.resources.displayMetrics.density
