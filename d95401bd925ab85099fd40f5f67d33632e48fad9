@@ -1,0 +1,107 @@
+{
+  "source_sha": "d95401bd925ab85099fd40f5f67d33632e48fad9",
+  "product_sha": "c6b357cf1aeb6cb82d3e3b6890b8c1df172f2ff1",
+  "fix_sha": "5ba1e5d",
+  "base_sha": "424757d9fbd58c2568802618950b968662717743",
+  "previous_validated": "2a5607e46160b708725ccc9de4611db30772a281",
+  "branch": "fix/action-hub-f12-continuation",
+  "pr": 10,
+  "owner": "scheduled-f9a4844c-6b36-431f-a6cf-9cc0f3a5403c",
+  "reservation_commit": "faab5eeab1598adbbe427dba69f5d2fb0d6013e0",
+  "local": {
+    "unit_tests": 341,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "forced_repeat": 341,
+    "native_pixel_comparisons": 17,
+    "python_backend": 5,
+    "python_scripts": 12,
+    "lint_errors": 0,
+    "lint_warnings": 10,
+    "assembleDebug": "passed",
+    "package_id": "dev.bautista.spotlight.next",
+    "version": "2.0.1/28"
+  },
+  "commands": [
+    "bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug -Pspotlight.test.verbose=true --no-daemon --max-workers=2 --console=plain",
+    "bash gradlew :app:testDebugUnitTest --rerun -Pspotlight.test.verbose=true --no-daemon --max-workers=2 --console=plain",
+    "bash gradlew :app:verifyRoborazziDebug --tests '*VisualSnapshotTest' --no-daemon --max-workers=2 --console=plain",
+    "python -m unittest discover -s backend",
+    "python -m unittest discover -s scripts",
+    "CI: bash gradlew :app:connectedDebugAndroidTest --no-daemon --max-workers=2 --console=plain"
+  ],
+  "ci_product": {
+    "development": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38396241075",
+    "jobs": "all 5 success",
+    "pdf": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38396240951",
+    "native_tests": 3,
+    "result": "success"
+  },
+  "ci_closure": {
+    "development": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38398146928",
+    "pdf": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38398146856",
+    "jobs": [
+      {
+        "name": "web-lab",
+        "id": 115298538152,
+        "result": "success"
+      },
+      {
+        "name": "secrets",
+        "id": 115298538252,
+        "result": "success"
+      },
+      {
+        "name": "android-quality",
+        "id": 115298538255,
+        "result": "success"
+      },
+      {
+        "name": "maestro-device (pixel_c)",
+        "id": 115298538275,
+        "result": "success"
+      },
+      {
+        "name": "maestro-device (pixel_6)",
+        "id": 115298538317,
+        "result": "success"
+      }
+    ],
+    "native_pdf": {
+      "id": 115298537870,
+      "result": "success",
+      "tests": 3,
+      "android": "10/API29"
+    }
+  },
+  "red_evidence": {
+    "ci": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38392826218",
+    "unit_tests": 341,
+    "failed": 1,
+    "test": "ActionHubVisualTest.lightHubOpensTypesBeforeListingFiles",
+    "local_diagnostic_failed": 2
+  },
+  "change": "Observe live provider state in result subcomposition; primary action and automatic Quick Look use its current selection. Existing 25 cycles and 15 s retained, missing-stale-permission assertions added.",
+  "captures": [
+    "docs/diagnostics/f1.2-actionhub-stale-menu.png",
+    "docs/diagnostics/f1.2-actionhub-current-menu.png",
+    "docs/diagnostics/f1.2-actionhub-menu-diff.png"
+  ],
+  "diff": {
+    "width": 1280,
+    "height": 800,
+    "changed_pixels": 299419,
+    "total_pixels": 1024000,
+    "masks": "none"
+  },
+  "dependencies_added": [],
+  "external_resources_added": [],
+  "next_submilestone": "F1.3: reproduce OverlayService.params() using displayMetrics/IME=0 and updateAvailableHeight(imeBottom), including width/preference changes while IME is visible, rotation and usable system-bar bounds. Then inspect WindowMetrics/API fallback and AdaptiveLayout; retain widths/density/preferences, test phone/tablet. Do not repeat F1.1/F1.2.",
+  "physical_one_ui": "pending, separate from emulators",
+  "main_merge_release": "none",
+  "status": "VALIDADO_AUTOMATICAMENTE",
+  "repository_edits_completed": true,
+  "closed_at": "2026-10-13 12:44:37 UTC",
+  "reservation_finalization": "Release only own faab5ee after evidence/pointer publication; verify owner and remote absence. Final PR records actual release."
+}
