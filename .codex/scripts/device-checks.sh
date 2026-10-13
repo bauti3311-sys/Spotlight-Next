@@ -2,6 +2,7 @@
 set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 cd "$root"
+spotlight_log_pid=""
 diagnose_failure() {
   result=$?
   if [[ $result != 0 && "${CI:-}" == true ]]; then
@@ -9,11 +10,18 @@ diagnose_failure() {
     adb shell uiautomator dump /data/local/tmp/spotlight-ui.xml || true
     adb shell cat /data/local/tmp/spotlight-ui.xml || true
     adb logcat -d -s SpotlightOverlay AndroidRuntime WindowManager || true
+    if [[ -f .maestro/output/overlay-startup-log.txt ]]; then cat .maestro/output/overlay-startup-log.txt; fi
   fi
+  if [[ -n "$spotlight_log_pid" ]]; then kill "$spotlight_log_pid" 2>/dev/null || true; fi
   exit "$result"
 }
 trap diagnose_failure EXIT
 adb get-state >/dev/null || { echo 'Se requiere emulador o dispositivo conectado.' >&2; exit 2; }
+if [[ "${CI:-}" == true ]]; then
+  mkdir -p .maestro/output
+  adb logcat -v threadtime -s SpotlightOverlay AndroidRuntime WindowManager > .maestro/output/overlay-startup-log.txt &
+  spotlight_log_pid=$!
+fi
 adb shell appops set dev.bautista.spotlight.next SYSTEM_ALERT_WINDOW allow
 adb shell am start -n dev.bautista.spotlight.next/dev.bautista.spotlight.InvokeActivity --es query '2+2' --es invocation keyboard
 bash .codex/scripts/maestro.sh test .maestro/flows/overlay-focus.yaml
