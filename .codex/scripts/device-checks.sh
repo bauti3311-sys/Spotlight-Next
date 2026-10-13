@@ -4,6 +4,7 @@ root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 cd "$root"
 spotlight_log_pid=""
 spotlight_window_pid=""
+spotlight_trace_pid=""
 diagnose_failure() {
   result=$?
   if [[ $result != 0 && "${CI:-}" == true ]]; then
@@ -22,6 +23,13 @@ diagnose_failure() {
       awk 'FNR==1 {print FILENAME ": " $0} /Window #[0-9]+ Window.*Spotlight/ {capture=1} capture && /Window #[0-9]+ Window/ && $0 !~ /Spotlight/ {capture=0} capture || /mCurrentFocus=|mFocusedApp=/ {print FILENAME ": " $0}' "$snapshot"
     done
   fi
+  if [[ -n "$spotlight_trace_pid" ]]; then
+    wait "$spotlight_trace_pid" || echo 'Perfetto capture failed; inspect trace-start.log' >&2
+    if adb pull /data/misc/perfetto-traces/spotlight-cold.pftrace .maestro/output/spotlight-cold.pftrace; then
+      "$root/.codex/tools/perfetto/58.2/linux-amd64/trace_processor_shell" .maestro/output/spotlight-cold.pftrace --query-file "$root/.codex/perfetto/cold-start.sql" > .maestro/output/cold-start-summary.csv || echo 'Trace summary failed' >&2
+      cat .maestro/output/cold-start-summary.csv
+    fi
+  fi
   if [[ -n "$spotlight_log_pid" ]]; then kill "$spotlight_log_pid" 2>/dev/null || true; fi
   if [[ -n "$spotlight_window_pid" ]]; then kill "$spotlight_window_pid" 2>/dev/null || true; fi
   exit "$result"
@@ -38,6 +46,10 @@ fi
 # The original focus/actions assertions and time limits remain unchanged.
 bash .codex/scripts/maestro.sh test --reinstall-driver=false .maestro/flows/driver-ready.yaml
 if [[ "${CI:-}" == true ]]; then
+  # Record the cold first-frame/input handoff with the existing bounded 15s config.
+  adb push .codex/perfetto/spotlight.cfg /data/local/tmp/spotlight-cold.cfg
+  adb shell perfetto --txt -c /data/local/tmp/spotlight-cold.cfg -o /data/misc/perfetto-traces/spotlight-cold.pftrace > .maestro/output/trace-start.log 2>&1 &
+  spotlight_trace_pid=$!
   # Observe WindowManager before the unchanged 2500ms watchdog removes a cold window.
   (
     for sample in {1..30}; do

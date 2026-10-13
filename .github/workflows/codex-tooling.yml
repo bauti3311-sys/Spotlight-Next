@@ -131,6 +131,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --console=plain
       - run: bash .codex/scripts/install-tool.sh maestro
+      - run: bash .codex/scripts/install-tool.sh perfetto
       - name: Free unused runner space and enable KVM
         run: |
           sudo rm -rf /usr/share/dotnet

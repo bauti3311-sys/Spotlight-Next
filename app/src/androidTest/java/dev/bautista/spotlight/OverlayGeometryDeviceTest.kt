@@ -201,6 +201,18 @@ class OverlayGeometryDeviceTest {
             }
             assertAndCapture(context, "landscape-ime-hidden", expectIme = false)
             assertEquals("Hiding IME changed automatic width", autoWidth, windowWidth())
+            // The IME window can disappear before its focus/input-connection handoff
+            // completes. Semantics focus alone does not mean IMM can accept a show.
+            await("Overlay input connection did not recover after hiding IME") {
+                var ready = false
+                instrumentation.runOnMainSync {
+                    val root = host()
+                    val input = root?.let { editor(it) }
+                    ready = root?.hasWindowFocus() == true && input != null &&
+                        context.getSystemService(InputMethodManager::class.java).isActive(input)
+                }
+                ready
+            }
             instrumentation.runOnMainSync {
                 val view = requireNotNull(editor(requireNotNull(host())))
                 context.getSystemService(InputMethodManager::class.java).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
