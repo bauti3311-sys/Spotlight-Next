@@ -74,7 +74,8 @@ fun SpotlightPanel(
         fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
         var category by remember { mutableStateOf("Todo") }
         var searchOptions by remember { mutableStateOf(false) }
-        var results by remember { mutableStateOf(emptyList<Result>()) }
+        val resultsState=remember { mutableStateOf(emptyList<Result>()) }
+        var results by resultsState
         var searchGeneration by remember { mutableIntStateOf(0) }
         var selected by remember { mutableIntStateOf(0) }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int)
@@ -180,7 +181,7 @@ fun SpotlightPanel(
             else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
         }
         val displayed=present(results)
-        app.diagnostics.traceSearch("presented-raw-${results.size}",searchScope?.section,searchGeneration,displayed.size)
+        if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("presented-raw-${results.size}-state-${System.identityHashCode(resultsState)}-snapshot-${androidx.compose.runtime.snapshots.Snapshot.current.id}",searchScope?.section,searchGeneration,displayed.size)
         val recentCount =
             if (category == "Apps") displayed.takeWhile { it.subtitle.startsWith("Reciente") }.size
             else 0
@@ -525,6 +526,7 @@ fun SpotlightPanel(
                                 app.diagnostics.traceSearch(if(isCurrentRequest())"received" else "obsolete-rows",requestScope?.section,generation,it.size)
                                 if(!isCurrentRequest())return@collect
                                 val selectedId=present(results).getOrNull(selected)?.id
+                                if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("before-${results.size}-same-${results==it}-state-${System.identityHashCode(resultsState)}-snapshot-${androidx.compose.runtime.snapshots.Snapshot.current.id}",requestScope?.section,generation)
                                 results = StableResults.merge(results,it,navigating || preview!=null)
                                 app.diagnostics.traceSearch("applied",requestScope?.section,generation,results.size)
                                 if(selectedId!=null && navigating){selected=present(results).indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}

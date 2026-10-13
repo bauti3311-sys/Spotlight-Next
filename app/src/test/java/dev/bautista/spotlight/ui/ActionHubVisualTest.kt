@@ -19,7 +19,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-@OptIn(ExperimentalTestApi::class)
+@OptIn(ExperimentalTestApi::class, androidx.compose.runtime.ExperimentalComposeApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -44,7 +44,7 @@ class ActionHubVisualTest {
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS)
             ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
         } }
-        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("Search lifecycle:\n"+(RuntimeEnvironment.getApplication() as SpotlightApp).diagnostics.searchTraceReport());println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
+        catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("UI lifecycle=${ui.activity.lifecycle.currentState} attached=${ui.activity.window.decorView.isAttachedToWindow} shown=${ui.activity.window.decorView.isShown} autoClock=${ui.mainClock.autoAdvance}");println("Recomposers: "+androidx.compose.runtime.Recomposer.runningRecomposers.value.map { "state=${(it.state as? kotlinx.coroutines.flow.StateFlow<*>)?.value} pending=${it.hasPendingWork} changes=${it.changeCount}" });println("Search lifecycle:\n"+(RuntimeEnvironment.getApplication() as SpotlightApp).diagnostics.searchTraceReport());println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
     }
     @Test fun lightHubOpensTypesBeforeListingFiles(){
         start("light");image("spotlight-whatsapp-light")

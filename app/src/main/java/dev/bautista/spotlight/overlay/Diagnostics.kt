@@ -14,6 +14,7 @@ class Diagnostics(private val context:Context) {
     // Opt-in, bounded process-local evidence. Never retain query text, topics, URIs or keys.
     @Volatile private var searchTracing=false
     private val searchTrace=ArrayDeque<String>()
+    val searchTracingEnabled get()=searchTracing
     @Synchronized fun enableSearchTracing(){searchTrace.clear();searchTracing=true}
     fun traceSearch(event:String,section:String?,generation:Int,rows:Int?=null){
         if(!searchTracing)return
