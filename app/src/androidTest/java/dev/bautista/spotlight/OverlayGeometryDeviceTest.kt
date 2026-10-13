@@ -68,12 +68,17 @@ class OverlayGeometryDeviceTest {
         if (node.isEditable && node.isFocused && node.text?.toString() == "2+2") return true
         return (0 until node.childCount).any { focusedQuery(node.getChild(it)) }
     }
-    private fun assertAndCapture(context: Context, stage: String) {
-        await("IME disappeared during $stage") { keyboardBounds() != null }
+    private fun windowWidth(): Int {
+        var width = 0
+        instrumentation.runOnMainSync { width = host()?.width ?: 0 }
+        return width
+    }
+    private fun assertAndCapture(context: Context, stage: String, expectIme: Boolean = true) {
+        await("Unexpected IME visibility during $stage") { (keyboardBounds() != null) == expectIme }
         await("Query editor lost focus during $stage") {
             automation.windows.any { it.root?.packageName?.toString() == context.packageName && focusedQuery(it.root) }
         }
-        val keyboard = requireNotNull(keyboardBounds())
+        val keyboard = keyboardBounds()
         val root = Rect()
         val visible = Rect()
         instrumentation.runOnMainSync {
@@ -84,7 +89,10 @@ class OverlayGeometryDeviceTest {
             view.getWindowVisibleDisplayFrame(visible)
         }
         assertTrue("Unsafe root=$root visible=$visible ($stage)", visible.contains(root))
-        assertTrue("Overlay overlaps IME: root=$root ime=$keyboard ($stage)", root.bottom <= keyboard.top)
+        if (expectIme) {
+            assertNotNull("IME disappeared before capture ($stage)", keyboard)
+            assertTrue("Overlay overlaps IME: root=$root ime=$keyboard ($stage)", root.bottom <= requireNotNull(keyboard).top)
+        } else assertNull("IME reappeared before capture ($stage)", keyboard)
         val directory = requireNotNull(context.getExternalFilesDir("f13-device"))
         directory.mkdirs()
         val bitmap = requireNotNull(automation.takeScreenshot())
@@ -121,7 +129,7 @@ class OverlayGeometryDeviceTest {
             shell("appops set ${context.packageName} SYSTEM_ALERT_WINDOW allow")
             shell("settings put secure show_ime_with_hard_keyboard 1")
             val fixture = original.copy(width = 0, landscapeWidth = 0, position = .35f,
-                landscapePosition = .35f, files = false, animations = false, clipboard = false, captureContext = false)
+                landscapePosition = .35f, adaptive = true, files = false, animations = false, clipboard = false, captureContext = false)
             runBlocking { app.preferences.update(fixture) }
             scenario.onActivity { it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
             context.startForegroundService(Intent(context, OverlayService::class.java)
@@ -137,16 +145,36 @@ class OverlayGeometryDeviceTest {
                 context.getSystemService(InputMethodManager::class.java).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
             }
             assertAndCapture(context, "portrait-auto")
-            runBlocking { app.preferences.update(OverlayWidthPolicy.manual(fixture, 320)) }
+            val manualPixels = (380 * context.resources.displayMetrics.density).toInt()
+            // Portrait phones may cap the saved manual width to their safe viewport.
+            val portraitPixels = minOf(manualPixels, windowWidth())
+            runBlocking { app.preferences.update(OverlayWidthPolicy.manual(fixture, 380)) }
+            assertEquals(380, runBlocking { app.preferences.config.first() }.width)
+            await("Portrait manual width not applied") { windowWidth() == portraitPixels }
             instrumentation.waitForIdleSync()
             assertAndCapture(context, "portrait-manual")
             scenario.onActivity { it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
             await("Landscape not applied") { context.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE }
             instrumentation.waitForIdleSync()
+            await("Rotation lost manual width") { windowWidth() == manualPixels }
             assertAndCapture(context, "landscape-manual")
             runBlocking { app.preferences.update(fixture) }
             instrumentation.waitForIdleSync()
+            await("Automatic width did not restore") { windowWidth() > manualPixels }
             assertAndCapture(context, "landscape-auto")
+            val autoWidth = windowWidth()
+            instrumentation.runOnMainSync {
+                val view = requireNotNull(editor(requireNotNull(host())))
+                context.getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            assertAndCapture(context, "landscape-ime-hidden", expectIme = false)
+            assertEquals("Hiding IME changed automatic width", autoWidth, windowWidth())
+            instrumentation.runOnMainSync {
+                val view = requireNotNull(editor(requireNotNull(host())))
+                context.getSystemService(InputMethodManager::class.java).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
+            assertAndCapture(context, "landscape-ime-restored")
+            assertEquals("Showing IME changed automatic width", autoWidth, windowWidth())
             assertEquals(original.density, runBlocking { app.preferences.config.first() }.density)
         } finally {
             context.stopService(Intent(context, OverlayService::class.java))
