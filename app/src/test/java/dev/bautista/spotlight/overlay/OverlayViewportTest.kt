@@ -18,7 +18,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class OverlayViewportTest {
-    @Test @Config(sdk = [28], application = Application::class)
+    @Test @Config(sdk = [28], qualifiers = "w800dp-h1280dp", application = Application::class)
     fun legacyVisibleFrameDoesNotSubtractKeyboardTwice() {
         val context = ApplicationProvider.getApplicationContext<Application>()
         val host = object : View(context) {
@@ -29,6 +29,45 @@ class OverlayViewportTest {
         assertEquals(800, screen.width)
         assertEquals(1208, screen.height)
         assertEquals(956, screen.height - screen.keyboardOcclusion(300))
+    }
+
+    @Test @Config(sdk = [28], qualifiers = "w800dp-h1280dp", application = Application::class)
+    fun resizedLegacyOverlayStillDetectsKeyboardWhenLocalInsetIsZero() {
+        val context = ApplicationProvider.getApplicationContext<Application>()
+        val host = object : View(context) {
+            override fun getWindowVisibleDisplayFrame(outRect: Rect) { outRect.set(0, 24, 800, 980) }
+        }
+        val screen = OverlayViewport.read(context.getSystemService(WindowManager::class.java),
+            context.resources, 48, host, 0)
+        assertEquals(1208, screen.height)
+        assertEquals(252, screen.keyboardOcclusion(0))
+    }
+
+    @Test fun modernMetricsSupplyKeyboardEvenWhenOverlayLocalInsetIsZero() {
+        val insets = WindowInsets.Builder()
+            .setInsetsIgnoringVisibility(WindowInsets.Type.systemBars(), Insets.of(0, 24, 0, 48))
+            .setInsets(WindowInsets.Type.ime(), Insets.of(0, 0, 0, 300))
+            .setVisible(WindowInsets.Type.ime(), true).build()
+        val screen = OverlayViewport.fromWindowMetrics(WindowMetrics(Rect(0, 0, 1280, 800), insets), 1f)
+        assertEquals(728, screen.height)
+        assertEquals(252, screen.keyboardOcclusion(0))
+    }
+
+    @Test @Config(application = Application::class)
+    fun modernVisibleFrameCoversMissingGlobalAndLocalImeInsets() {
+        val context = ApplicationProvider.getApplicationContext<Application>()
+        val insets = WindowInsets.Builder().setInsetsIgnoringVisibility(
+            WindowInsets.Type.systemBars(), Insets.of(0, 24, 0, 48)).build()
+        val actual = context.getSystemService(WindowManager::class.java)
+        val wm = object : WindowManager by actual {
+            override fun getCurrentWindowMetrics() = WindowMetrics(Rect(0, 0, 1280, 800), insets)
+        }
+        val host = object : View(context) {
+            override fun getWindowVisibleDisplayFrame(outRect: Rect) { outRect.set(0, 24, 1280, 500) }
+        }
+        val screen = OverlayViewport.read(wm, context.resources, 48, host, 0)
+        assertEquals(728, screen.height)
+        assertEquals(252, screen.keyboardOcclusion(0))
     }
 
     @Test fun keyboardCannotChooseHorizontalWidthOnPortraitTablet() {

@@ -4,6 +4,7 @@ import android.app.*
 import android.content.*
 import android.content.res.Configuration
 import android.graphics.PixelFormat
+import android.hardware.display.DisplayManager
 import android.os.*
 import android.provider.Settings
 import android.view.*
@@ -34,7 +35,16 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var closing=false
     private var focusSeen = false
     private var showJob: Job? = null
-    private val wm by lazy { getSystemService(WindowManager::class.java) }
+    private val wm by lazy {
+        // WindowMetrics need a visual context associated with this overlay type.
+        val overlayManager = if (Build.VERSION.SDK_INT >= 30) runCatching {
+            val display = getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY)
+            createDisplayContext(requireNotNull(display))
+                .createWindowContext(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, null)
+                .getSystemService(WindowManager::class.java)
+        }.getOrNull() else null
+        overlayManager ?: getSystemService(WindowManager::class.java)
+    }
     private val app
         get() = application as SpotlightApp
 
@@ -55,9 +65,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     private fun refreshWindowGeometry() {
-        updateAvailableHeight()
+        val geometry = updateAvailableHeight()
         view?.let { host ->
-            val next = params()
+            val next = params(geometry)
             val current = host.layoutParams as? WindowManager.LayoutParams
             if (current?.width != next.width || current?.y != next.y) {
                 runCatching { wm.updateViewLayout(host, next) }
@@ -65,9 +75,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         }
     }
 
-    internal fun updateAvailableHeight(imeBottom: Int = lastBottomInset) {
+    internal fun updateAvailableHeight(imeBottom: Int = lastBottomInset): OverlayBounds {
         lastBottomInset = imeBottom
-        availableHeightDp = bounds().heightDp
+        return bounds().also { availableHeightDp = it.heightDp }
     }
 
     private val clipboard by lazy { getSystemService(ClipboardManager::class.java) }
@@ -153,9 +163,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         return START_NOT_STICKY
     }
 
-    private fun params(): WindowManager.LayoutParams {
-        val bounds = bounds()
-        val width=bounds.width
+    private fun params(geometry: OverlayBounds = bounds()): WindowManager.LayoutParams {
+        val width=geometry.width
         return WindowManager.LayoutParams(
                 width,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -166,7 +175,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             )
             .apply {
                 gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                y = bounds.top
+                y = geometry.top
                 softInputMode =
                     WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED
@@ -185,7 +194,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     private fun show() {
-        updateAvailableHeight()
+        val openingBounds = updateAvailableHeight()
         val panel =
             ComposeView(this).apply {
                 setBackgroundColor(android.graphics.Color.TRANSPARENT)
@@ -201,25 +210,23 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         initialQuery = initialQuery,
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
-                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;view?.let{runCatching{wm.updateViewLayout(it,params())}}}},
+                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry()}},
                     )
                 }
             }
         focusSeen = false
         val host = createHost(panel)
         ViewCompat.setOnApplyWindowInsetsListener(host) { _, insets ->
-            lastSystemBottomInset = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars()).bottom
-            updateAvailableHeight(
-                maxOf(
-                    insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom,
-                )
+            lastSystemBottomInset = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()).bottom
+            lastBottomInset = maxOf(
+                insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
+                insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom,
             )
             refreshWindowGeometry()
             insets
         }
         try {
-            wm.addView(host, params())
+            wm.addView(host, params(openingBounds))
             view = host
             composition = panel
             ViewCompat.requestApplyInsets(host)
