@@ -180,6 +180,7 @@ fun SpotlightPanel(
             else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
         }
         val displayed=present(results)
+        app.diagnostics.traceSearch("presented-raw-${results.size}",searchScope?.section,searchGeneration,displayed.size)
         val recentCount =
             if (category == "Apps") displayed.takeWhile { it.subtitle.startsWith("Reciente") }.size
             else 0
@@ -525,6 +526,7 @@ fun SpotlightPanel(
                                 if(!isCurrentRequest())return@collect
                                 val selectedId=present(results).getOrNull(selected)?.id
                                 results = StableResults.merge(results,it,navigating || preview!=null)
+                                app.diagnostics.traceSearch("applied",requestScope?.section,generation,results.size)
                                 if(selectedId!=null && navigating){selected=present(results).indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}
                                 app.diagnostics.search(android.os.SystemClock.elapsedRealtime()-searchStarted)
                             }
