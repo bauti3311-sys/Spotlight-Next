@@ -92,9 +92,14 @@ class OverlayGeometryDeviceTest {
         finally { bitmap.recycle() }
         File(directory, "$stage.txt").writeText("API=${Build.VERSION.SDK_INT}\nroot=$root\nvisible=$visible\nime=$keyboard\nqueryFocused=true\n")
         // AGP may uninstall the target APK after the run, removing app-specific files.
-        val source = directory.absolutePath.replace("'", "'\"'\"'")
-        val exported = shell("mkdir -p /data/local/tmp/spotlight-geometry && cp -R '$source'/. /data/local/tmp/spotlight-geometry/ && echo exported")
-        assertEquals("Capture export failed before test cleanup", "exported", exported)
+        // executeShellCommand executes an argv, not a shell expression with &&.
+        val source = directory.absolutePath
+        assertTrue("Unexpected capture path", source.none { it.isWhitespace() })
+        shell("mkdir -p /data/local/tmp/spotlight-geometry")
+        shell("cp -R $source/. /data/local/tmp/spotlight-geometry/")
+        val exported = shell("ls /data/local/tmp/spotlight-geometry/$stage.png")
+        assertEquals("Capture export failed before test cleanup",
+            "/data/local/tmp/spotlight-geometry/$stage.png", exported)
     }
 
     @Test fun softwareImeWidthChangeAndRotationKeepOverlaySafeAndQueryFocused() {
