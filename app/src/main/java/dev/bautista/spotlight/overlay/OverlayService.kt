@@ -46,13 +46,28 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     // Insets are event-driven; preference and rotation refreshes must not imply IME dismissal.
     private var lastBottomInset = 0
+    private var lastSystemBottomInset = 0
+
+    private fun bounds(): OverlayBounds {
+        val screen = OverlayViewport.read(wm, resources, lastSystemBottomInset, view, lastBottomInset)
+        return AdaptiveLayout.bounds(screen.width, screen.height, screen.density,
+            screen.keyboardOcclusion(lastBottomInset), config, contentExpanded, screen.landscape)
+    }
+
+    private fun refreshWindowGeometry() {
+        updateAvailableHeight()
+        view?.let { host ->
+            val next = params()
+            val current = host.layoutParams as? WindowManager.LayoutParams
+            if (current?.width != next.width || current?.y != next.y) {
+                runCatching { wm.updateViewLayout(host, next) }
+            }
+        }
+    }
 
     internal fun updateAvailableHeight(imeBottom: Int = lastBottomInset) {
         lastBottomInset = imeBottom
-        val dm = resources.displayMetrics
-        val top = AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,imeBottom,config).top
-        availableHeightDp =
-            ((dm.heightPixels - top - imeBottom) / dm.density - 24f).coerceAtLeast(100f)
+        availableHeightDp = bounds().heightDp
     }
 
     private val clipboard by lazy { getSystemService(ClipboardManager::class.java) }
@@ -131,7 +146,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     config=next
                     if(view==null && !closing)show()
                     else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
-                        updateAvailableHeight();view?.let{runCatching{wm.updateViewLayout(it,params())}}
+                        refreshWindowGeometry()
                     }
                 }
             }
@@ -139,8 +154,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     private fun params(): WindowManager.LayoutParams {
-        val dm = resources.displayMetrics
-        val bounds=AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,0,config,contentExpanded)
+        val bounds = bounds()
         val width=bounds.width
         return WindowManager.LayoutParams(
                 width,
@@ -156,6 +170,13 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 softInputMode =
                     WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED
+                if (Build.VERSION.SDK_INT >= 30) {
+                    setFitInsetsTypes(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
+                    setFitInsetsIgnoringVisibility(true)
+                }
+                if (Build.VERSION.SDK_INT >= 28) {
+                    layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER
+                }
                 title = "Spotlight"
                 // Keep all pixels outside the actual capsule/circles transparent.
                 // FLAG_BLUR_BEHIND blurs the rectangular window footprint on One UI.
@@ -187,18 +208,21 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         focusSeen = false
         val host = createHost(panel)
         ViewCompat.setOnApplyWindowInsetsListener(host) { _, insets ->
+            lastSystemBottomInset = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars()).bottom
             updateAvailableHeight(
                 maxOf(
                     insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
                     insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom,
                 )
             )
+            refreshWindowGeometry()
             insets
         }
         try {
             wm.addView(host, params())
             view = host
             composition = panel
+            ViewCompat.requestApplyInsets(host)
             host.viewTreeObserver.addOnDrawListener(object:android.view.ViewTreeObserver.OnDrawListener {
                 var reported=false
                 override fun onDraw(){if(!reported){reported=true;app.diagnostics.markVisible()}}
@@ -262,8 +286,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updateAvailableHeight()
-        view?.let { runCatching { wm.updateViewLayout(it, params()) } }
+        refreshWindowGeometry()
+        view?.let { ViewCompat.requestApplyInsets(it) }
     }
 
     private fun motionAllowed()=config.animations && runCatching { Settings.Global.getFloat(contentResolver,Settings.Global.ANIMATOR_DURATION_SCALE,1f)>0 }.getOrDefault(false)

@@ -65,6 +65,7 @@ jobs:
             app/build/outputs/roborazzi/
             app/build/091-ui/f1-width-*.png
             app/build/091-ui/f12-*.png
+            app/build/091-ui/f13-*.png
           retention-days: 14
   web-lab:
     runs-on: ubuntu-24.04

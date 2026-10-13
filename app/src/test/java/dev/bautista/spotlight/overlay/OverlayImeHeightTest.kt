@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28], application = android.app.Application::class)
+@Config(sdk = [28, 33], application = android.app.Application::class)
 class OverlayImeHeightTest {
     @Test fun geometryRefreshRetainsKeyboardUntilInsetsReportItHidden() = verifyInsetRetention()
 
