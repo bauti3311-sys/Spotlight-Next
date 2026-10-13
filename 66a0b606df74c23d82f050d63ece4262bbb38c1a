@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-13T19:25:32.075791-03:00",
+  "owner": "manual-2f07d211-9919-491b-b0cf-5f3783392aa6",
+  "state": "closed-pending-api30-focus-and-ci",
+  "checkpoint": "66a0b606df74c23d82f050d63ece4262bbb38c1a",
+  "base": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "branch": "fix/window-metrics-safe-area-f13",
+  "pr": "https://github.com/bauti3311-sys/Spotlight-Next/pull/12",
+  "lease_release": "Atomic note-ref update plus deletion of own refs/heads/locks/spotlight-autonomy",
+  "verified_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b UNCHANGED",
+  "validated_checkpoint": false,
+  "local": {
+    "units": "361/361,0fail/error/skip",
+    "visual": "17/17 baselines unchanged;before/after native fixtures with explicit simulatedIME",
+    "specific": "23/23",
+    "python": "14scripts+5backend",
+    "lint": "0errors/10warnings",
+    "build": "debug and debugAndroidTest assembled"
+  },
+  "ci": {
+    "current_development": "38476801728 in_progress",
+    "current_pdf": "38476801622 in_progress",
+    "previous_e345": "38473770076 failed: Androidquality/web/secrets success, Maestro29 both success, Maestro30 cold fail; allNative UiAutomation alreadyregistered; cleanup added in66",
+    "previous_pdf": "38473770039 success,4instrumented",
+    "earlier_real_geometry": "F725 API30tablet6phases/12files passed; phone30lastIME snapshot raced, strengthened stable100ms within unchanged15s"
+  },
+  "block": "ColdAPI30 WMSassignsFocus toSpotlight but no client callback within unchanged2500ms; firstDraw/actualFocus probe added. NoKVM/localemulator, physicalOneUI notverified. F1.3 notclosed; F1.4 notstarted.",
+  "next": "Fetch latest notes and PR12 tip. Resume66 first, wait/check itsCI (do not cancel by redundant push). VerifyUiAutomation cleanup, readFirstDraw/actualFocus alongsideWMSglobalFocus. IfactualFocus=true/callbackSeen=false inspectledger; iffalse/DRAW_PENDING profileInputDispatcher/firstframe withPerfetto before architecture changes; preserve2500ms/15s/assertions/baselines. Do not restartfrominfra losingcontinuation.",
+  "protected": "main/PR5/PR6/checkpoint integrations/documents intact; no force/merge/sign/release/depsbulk/paidAPI"
+}
