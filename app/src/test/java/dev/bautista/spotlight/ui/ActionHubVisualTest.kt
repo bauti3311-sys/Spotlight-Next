@@ -30,7 +30,7 @@ class ActionHubVisualTest {
         val info=android.content.pm.ResolveInfo().apply { activityInfo=android.content.pm.ActivityInfo().apply { packageName="com.whatsapp";name="com.whatsapp.Main";applicationInfo=android.content.pm.ApplicationInfo().apply {packageName="com.whatsapp"} } }
         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER).setPackage("com.whatsapp"),info)
         ui.setContent {Box(Modifier.width(780.dp).padding(24.dp)){SpotlightPanel(app,AppConfig(theme=theme,files=false,animations=false),{},initialQuery="whatsapp",availableHeightDp=640f)}}
-        ui.waitUntil(15000){ui.onAllNodesWithText("Enviar mensaje").fetchSemanticsNodes().isNotEmpty()}
+        awaitText("Enviar mensaje")
     }
     private fun image(name:String){ui.runOnIdle {
         val view=ui.activity.window.decorView
@@ -39,8 +39,8 @@ class ActionHubVisualTest {
     }}
     private fun awaitText(text:String){
         try { ui.waitUntil(15000){
-            // Robolectric pauses Android's looper; provider completions post back to it.
-            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            // Advance paused Android time as well as draining queued provider/frame callbacks.
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS)
             ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
         } }
         catch(e:androidx.compose.ui.test.ComposeTimeoutException){println("Navigation timeout waiting for $text\n"+ui.onRoot(useUnmergedTree=true).printToString());ui.onRoot(useUnmergedTree=true).printToLog("action-hub-navigation");image("091-ui/action-hub-navigation-failure");throw e}
@@ -57,6 +57,27 @@ class ActionHubVisualTest {
         awaitText("Activar búsqueda de archivos")
         ui.onNodeWithText("Volver").performClick()
         awaitText("Documentos PDF")
+        repeat(24) {
+            ui.onNodeWithText("Volver").performClick()
+            awaitText("Buscar archivos")
+            ui.onNodeWithText("Buscar archivos").performClick()
+            awaitText("Documentos PDF")
+            ui.onNodeWithText("Documentos PDF").performClick()
+            awaitText("Activar búsqueda de archivos")
+            ui.onNodeWithText("Volver").performClick()
+            awaitText("Documentos PDF")
+        }
+    }
+    @Test fun returningToSameQueryWithinAFrameMustKeepResults() {
+        start("light")
+        val edit=ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsActions.SetText].action!!
+        ui.runOnIdle {
+            org.junit.Assert.assertTrue(edit(androidx.compose.ui.text.AnnotatedString("whatsappx")))
+            org.junit.Assert.assertTrue(edit(androidx.compose.ui.text.AnnotatedString("whatsapp")))
+        }
+        ui.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("whatsapp")))
+        awaitText("Enviar mensaje")
+        ui.onNodeWithText("Buscar archivos").assertExists()
     }
     @Test fun volumeSliderChangesAndroidMultimediaVolume(){
         val audio=ui.activity.getSystemService(android.media.AudioManager::class.java)

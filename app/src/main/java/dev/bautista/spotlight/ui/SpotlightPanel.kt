@@ -75,6 +75,7 @@ fun SpotlightPanel(
         var category by remember { mutableStateOf("Todo") }
         var searchOptions by remember { mutableStateOf(false) }
         var results by remember { mutableStateOf(emptyList<Result>()) }
+        var searchGeneration by remember { mutableIntStateOf(0) }
         var selected by remember { mutableIntStateOf(0) }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int)
         val history = remember { mutableStateListOf<Location>() }
@@ -94,6 +95,11 @@ fun SpotlightPanel(
         LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
         var previousSearch by remember {mutableStateOf<String?>(null)}
         var loading by remember { mutableStateOf(false) }
+        fun invalidateResults() {
+            // Returning to the same text within a debounce/frame still needs to refill cleared rows.
+            searchGeneration++
+            results=emptyList()
+        }
         var error by remember { mutableStateOf("") }
         var card by remember { mutableStateOf<InfoCard?>(null) }
         var cardLoading by remember { mutableStateOf(false) }
@@ -134,7 +140,7 @@ fun SpotlightPanel(
         fun selectMode(mode:String,clearQuery:Boolean=false) {
             if(!clearQuery && mode==category && searchScope?.section !in setOf("files","results"))return
             push();clearForms();aiJob?.cancel();showAi=false;noteEditor=false;preview=null;menu=false;advancedActions=false
-            cardJob?.cancel();card=null;selected=0;navigating=false;results=emptyList()
+            cardJob?.cancel();card=null;selected=0;navigating=false;invalidateResults()
             if(clearQuery)query=""
             category=mode
             searchScope=when(mode){"Apps"->SearchScope("","apps");"Archivos"->SearchScope("","files-mode");"Acciones"->SearchScope("","commands");"IA"->SearchScope("","ai");"Portapapeles"->SearchScope("","clipboard");else->null}
@@ -184,7 +190,7 @@ fun SpotlightPanel(
         fun acceptSuggestion() {
             suggestion?.let {
                 query = it
-                results = emptyList()
+                invalidateResults()
                 selected = 0
                 preview = null
                 menu = false
@@ -347,7 +353,7 @@ fun SpotlightPanel(
                     }.onFailure {error="No se pudo preparar la sesión."}
                 }
                 is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
-                is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};results=emptyList();preview=null;menu=false;selected=0;focus.requestFocus()}
+                is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};invalidateResults();preview=null;menu=false;selected=0;focus.requestFocus()}
                 is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.ComposeSearch -> {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.AudioPanel -> {push();clearForms();audioPanel=true;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
@@ -394,7 +400,7 @@ fun SpotlightPanel(
                     app.scope.launch { app.preferences.record(action.intent.component?.let { "${it.packageName}/${it.className}" } ?: item.id) }
                 }
                 is Action.RestoreQuery -> {
-                    push();clearForms();searchScope=null;query=action.query;category="Todo";results=emptyList();selected=0;navigating=false;preview=null;menu=false
+                    push();clearForms();searchScope=null;query=action.query;category="Todo";invalidateResults();selected=0;navigating=false;preview=null;menu=false
                     focus.requestFocus()
                 }
                 is Action.EditNote -> {
@@ -473,11 +479,13 @@ fun SpotlightPanel(
         }
         LaunchedEffect(query){ if(showAi){aiJob?.cancel();showAi=false} }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
-        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, searchScope, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
-            snapshotFlow { query }
+        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
+            snapshotFlow { Triple(query,searchScope,searchGeneration) }
                 .debounce(120)
                 .distinctUntilChanged()
-                .collectLatest { q ->
+                .collectLatest { (q,requestScope,generation) ->
+                    fun isCurrentRequest()=generation==searchGeneration && q==query && requestScope==searchScope
+                    if(!isCurrentRequest())return@collectLatest
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
                     if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
                     cardJob?.cancel()
@@ -492,7 +500,7 @@ fun SpotlightPanel(
                         coroutineScope {
                             val localRequest=TextTools.results(q).mapNotNull{it.action as? Action.Lookup}.firstOrNull{it.type.startsWith("text:")}
                             val request = localRequest ?: app.online.request(q)
-                            if (searchScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
+                            if (requestScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
                                 launch {
                                     cardLoading = true
                                     try {
@@ -508,7 +516,8 @@ fun SpotlightPanel(
                                         cardLoading = false
                                     }
                                 }
-                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),searchScope).collect {
+                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope).collect {
+                                if(!isCurrentRequest())return@collect
                                 val selectedId=present(results).getOrNull(selected)?.id
                                 results = StableResults.merge(results,it,navigating || preview!=null)
                                 if(selectedId!=null && navigating){selected=present(results).indexOfFirst{it.id==selectedId}.coerceAtLeast(0)}
@@ -520,7 +529,7 @@ fun SpotlightPanel(
                     } catch(e:Exception) {
                         error="Una fuente no respondió. Los resultados disponibles se conservan; probá de nuevo o revisá sus permisos."
                     } finally {
-                        loading = false
+                        if(isCurrentRequest())loading = false
                     }
                 }
         }
@@ -715,7 +724,7 @@ fun SpotlightPanel(
                             query = next
                             selected=0
                             navigating = false
-                            results = emptyList()
+                            invalidateResults()
                             card = null
                             preview = null
                             menu = false
