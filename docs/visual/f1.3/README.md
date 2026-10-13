@@ -7,3 +7,5 @@ Mismos controles/preferencias antes/después. Antes usa algoritmo histórico del
 Tablet horizontal1280x800:76992 píxeles distintos; teléfono vertical390x844:6246. Diff RGB absoluto sin máscaras. Baselines existentes intactos. Archivos before/after/diff versionados; workflow conserva f13-*.png como evidencia.
 
 El fixture antes/después mantiene el centrado del marco ajustado de WindowManager.
+
+ActionsIme: fixture Compose NATIVE tablet con controlador IME simulado, viewport246dp antes de Tab. RED real: encabezado Acciones fuera de vista; GREEN: cerrar IME al entrar a acciones permite recuperar700dp manteniendo foco en Copiar resultado. 308600 píxeles distintos, diffRGB absoluto sin máscaras. No es captura de dispositivo ni prueba OneUI.

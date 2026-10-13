@@ -3,6 +3,7 @@ set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 cd "$root"
 spotlight_log_pid=""
+spotlight_window_pid=""
 diagnose_failure() {
   result=$?
   if [[ $result != 0 && "${CI:-}" == true ]]; then
@@ -11,8 +12,13 @@ diagnose_failure() {
     adb shell cat /data/local/tmp/spotlight-ui.xml || true
     adb logcat -d -s SpotlightOverlay AndroidRuntime WindowManager || true
     if [[ -f .maestro/output/overlay-startup-log.txt ]]; then cat .maestro/output/overlay-startup-log.txt; fi
+    for snapshot in .maestro/output/window-cold-*.txt; do
+      [[ -f "$snapshot" ]] || continue
+      awk 'FNR==1 {print FILENAME ": " $0} /Window #[0-9]+ Window.*Spotlight/ {capture=1} capture && /Window #[0-9]+ Window/ && $0 !~ /Spotlight/ {capture=0} capture || /mCurrentFocus=|mFocusedApp=/ {print FILENAME ": " $0}' "$snapshot"
+    done
   fi
   if [[ -n "$spotlight_log_pid" ]]; then kill "$spotlight_log_pid" 2>/dev/null || true; fi
+  if [[ -n "$spotlight_window_pid" ]]; then kill "$spotlight_window_pid" 2>/dev/null || true; fi
   exit "$result"
 }
 trap diagnose_failure EXIT
@@ -21,6 +27,21 @@ if [[ "${CI:-}" == true ]]; then
   mkdir -p .maestro/output
   adb logcat -v threadtime -s SpotlightOverlay AndroidRuntime WindowManager > .maestro/output/overlay-startup-log.txt &
   spotlight_log_pid=$!
+
+fi
+# Driver installation/startup must finish before opening the cold overlay.
+# The original focus/actions assertions and time limits remain unchanged.
+bash .codex/scripts/maestro.sh test .maestro/flows/driver-ready.yaml
+if [[ "${CI:-}" == true ]]; then
+  # Observe WindowManager before the unchanged 2500ms watchdog removes a cold window.
+  (
+    for sample in {1..30}; do
+      date -u +%FT%TZ > ".maestro/output/window-cold-$sample.txt"
+      adb shell dumpsys window windows >> ".maestro/output/window-cold-$sample.txt"
+      sleep 1
+    done
+  ) &
+  spotlight_window_pid=$!
 fi
 adb shell appops set dev.bautista.spotlight.next SYSTEM_ALERT_WINDOW allow
 adb shell am start -n dev.bautista.spotlight.next/dev.bautista.spotlight.InvokeActivity --es query '2+2' --es invocation keyboard

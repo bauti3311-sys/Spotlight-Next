@@ -93,6 +93,7 @@ fun SpotlightPanel(
         LaunchedEffect(preview!=null,showAi,systemPage?.page){onContentExpansion(preview!=null || showAi || systemPage?.page in setOf("calendar","sports-native","weather-native"))}
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
+        LaunchedEffect(menu) { if (menu) keyboard?.hide() }
         LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
         var previousSearch by remember {mutableStateOf<String?>(null)}
         var loading by remember { mutableStateOf(false) }

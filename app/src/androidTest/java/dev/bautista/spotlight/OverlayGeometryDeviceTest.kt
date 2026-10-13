@@ -1,12 +1,15 @@
 package dev.bautista.spotlight
 
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.os.Looper
 import android.os.SystemClock
 import android.view.View
@@ -99,15 +102,32 @@ class OverlayGeometryDeviceTest {
         try { File(directory, "$stage.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) } }
         finally { bitmap.recycle() }
         File(directory, "$stage.txt").writeText("API=${Build.VERSION.SDK_INT}\nroot=$root\nvisible=$visible\nime=$keyboard\nqueryFocused=true\n")
-        // AGP may uninstall the target APK after the run, removing app-specific files.
-        // executeShellCommand executes an argv, not a shell expression with &&.
-        val source = directory.absolutePath
-        assertTrue("Unexpected capture path", source.none { it.isWhitespace() })
-        shell("mkdir -p /data/local/tmp/spotlight-geometry")
-        shell("cp -R $source/. /data/local/tmp/spotlight-geometry/")
-        val exported = shell("ls /data/local/tmp/spotlight-geometry/$stage.png")
-        assertEquals("Capture export failed before test cleanup",
-            "/data/local/tmp/spotlight-geometry/$stage.png", exported)
+        // Shared Downloads survives AGP uninstall; Android 11 blocks shell reads of
+        // Android/data. Publish only these synthetic emulator fixtures via scoped storage.
+        for (file in listOf(File(directory, "$stage.png"), File(directory, "$stage.txt"))) {
+            val values = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)
+                put(MediaStore.MediaColumns.MIME_TYPE, if (file.extension == "png") "image/png" else "text/plain")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/spotlight-geometry/")
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            }
+            val resolver = context.contentResolver
+            val uri = requireNotNull(resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values))
+            try {
+                requireNotNull(resolver.openOutputStream(uri)).use { output ->
+                    file.inputStream().use { it.copyTo(output) }
+                }
+                resolver.update(uri, ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }, null, null)
+                requireNotNull(resolver.openInputStream(uri)).use { input ->
+                    assertArrayEquals("Capture publication corrupted ${file.name}", file.readBytes(), input.readBytes())
+                }
+            } catch (failure: Throwable) {
+                resolver.delete(uri, null, null)
+                throw failure
+            }
+        }
+        val target = "/sdcard/${Environment.DIRECTORY_DOWNLOADS}/spotlight-geometry/$stage.png"
+        assertEquals("Capture export failed before test cleanup", target, shell("ls $target"))
     }
 
     @Test fun softwareImeWidthChangeAndRotationKeepOverlaySafeAndQueryFocused() {
