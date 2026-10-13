@@ -1,0 +1,61 @@
+{
+  "owner": "scheduled-500ee0a9-63fc-434a-a85c-017941618de1",
+  "branch": "fix/ime-inset-retention-f13",
+  "base_sha": "d95401bd925ab85099fd40f5f67d33632e48fad9",
+  "checkpoint": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "status": "VALIDADO_AUTOMATICAMENTE_F13_PARCIAL",
+  "started_at": "2026-10-13T16:09:24.344477+00:00",
+  "lease_sha": "063f752572fa9b7aae023061f330c2c00b9a2a16",
+  "pr": 11,
+  "source_sha": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "product_sha": "59424834fc3d1ed19a9ff04ae44131bd2d4fcccd",
+  "submilestone": "F1.3 partial: retain last bottom inset during geometry refresh",
+  "local": {
+    "unit_tests": 344,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "native_pixel_comparisons": 17,
+    "python_backend": 5,
+    "python_scripts": 12,
+    "lint_errors": 0,
+    "lint_warnings": 10,
+    "assembleDebug": "success"
+  },
+  "red": {
+    "unit_tests": 1,
+    "failed": 1,
+    "expected_height_dp": 229,
+    "actual_height_dp": 409
+  },
+  "ci": {
+    "development": 38429614697,
+    "pdf": 38429614811,
+    "state": "success",
+    "jobs": {
+      "android-quality": "success",
+      "web-lab": "success",
+      "secrets": "success",
+      "maestro-phone": "success",
+      "maestro-tablet": "success"
+    },
+    "pdf_native_tests": 3,
+    "pdf_android": "10/API29",
+    "pdf_job": 115408332249
+  },
+  "next_submilestone": "Continue F1.3 from e38eae8: inspect WindowMetrics/service overlay metrics with compatible fallback; usable system-bar/cutout bounds, IME width changes and rotation; preserve manual/horizontal widths, density and preview. Do not repeat F1.1/F1.2 or inset-retention fix.",
+  "physical_one_ui": "pending, separate from Robolectric and emulator tests",
+  "new_dependencies": [],
+  "main_merge_release": "none",
+  "baselines_changed": false,
+  "closed_at": "2026-10-13T16:31:44.037987+00:00",
+  "reservation_commit": "063f752572fa9b7aae023061f330c2c00b9a2a16",
+  "reservation_finalization": "Release only own lease after publishing evidence/pointer; final PR records actual remote absence.",
+  "commands": [
+    "bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --max-workers=2 --console=plain",
+    "bash gradlew :app:verifyRoborazziDebug --tests '*VisualSnapshotTest' --no-daemon --max-workers=2 --console=plain",
+    "python -m unittest discover -s backend",
+    "python -m unittest discover -s scripts",
+    "CI: :app:connectedDebugAndroidTest; Maestro pixel_6/pixel_c"
+  ]
+}
