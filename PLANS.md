@@ -57,3 +57,9 @@ Siguiente F1.3: revisar métricas actuales/insets/IME en OverlayService/Adaptive
 ### Cierre remoto F1.2 pendiente
 
 CI 38357821467 falló en una espera ActionHub existente (339/340 correctos; resto de jobs correcto). Ver último evento de PROGRESO; reserva aún activa. Fixtures hacen progresar el reloj Android pausado conservando plazo/aserciones; seis específicas pasaron inicialmente. Logs verbose solo tests/CI, sin dependencias/runtime nuevo. Resultado definitivo de repeticiones/suite/píxeles/CI en notas del SHA y descripción PR #9; no retomar F1.3 si ese cierre falta.
+
+### Cierre local definitivo F1.2
+
+Producto 14fc5e9925f1300d6373a5b6660ec43ee40eac71: una reproducción determinista mostró pérdida de resultados al editar y restaurar texto en un mismo frame; invalidaciones con generación y observación atómica de consulta/contexto la corrigen. No se añadió flowOn ni se cambiaron teclas/Quick Look. RED->GREEN y 25 ciclos de navegación, 341 unitarias, 17 píxeles, lint y debug correctos. Sin nuevas dependencias; las trazas temporales no están en fuente ni APK.
+
+CI de 45ac6c7 quedó verde, pero no resuelve por sí solo la repetición local posterior; validar el SHA final con esta corrección, consultar nota/descripcion PR #9 y mantener reserva hasta cerrar. El puntero solo avanza por FF tras CI correcto. Siguiente F1.3, salvo fallo que obligue a retomar este checkpoint.
