@@ -57,6 +57,27 @@ class ActionHubVisualTest {
         awaitText("Activar búsqueda de archivos")
         ui.onNodeWithText("Volver").performClick()
         awaitText("Documentos PDF")
+        repeat(24) {
+            ui.onNodeWithText("Volver").performClick()
+            awaitText("Buscar archivos")
+            ui.onNodeWithText("Buscar archivos").performClick()
+            awaitText("Documentos PDF")
+            ui.onNodeWithText("Documentos PDF").performClick()
+            awaitText("Activar búsqueda de archivos")
+            ui.onNodeWithText("Volver").performClick()
+            awaitText("Documentos PDF")
+        }
+    }
+    @Test fun returningToSameQueryWithinAFrameMustKeepResults() {
+        start("light")
+        val edit=ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsActions.SetText].action!!
+        ui.runOnIdle {
+            org.junit.Assert.assertTrue(edit(androidx.compose.ui.text.AnnotatedString("whatsappx")))
+            org.junit.Assert.assertTrue(edit(androidx.compose.ui.text.AnnotatedString("whatsapp")))
+        }
+        ui.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("whatsapp")))
+        awaitText("Enviar mensaje")
+        ui.onNodeWithText("Buscar archivos").assertExists()
     }
     @Test fun volumeSliderChangesAndroidMultimediaVolume(){
         val audio=ui.activity.getSystemService(android.media.AudioManager::class.java)
