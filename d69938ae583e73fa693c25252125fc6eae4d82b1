@@ -1,0 +1,42 @@
+{
+  "owner": "f2-touch-20261014",
+  "state": "closed; locally verified checkpoint; remote CI pending; publishing notes with own reservation release",
+  "date": "2026-10-14T04:45:14.715680-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "branch": "fix/quicklook-touch-target-f2",
+  "checkpoint": "58ac0a2d4cb4f96c9fbef46da4f4104475c251ae",
+  "base": "876f7cb4df3e990c86d4129943801c3f9508e555",
+  "source": "d69938ae583e73fa693c25252125fc6eae4d82b1",
+  "pr": "https://github.com/bauti3311-sys/Spotlight-Next/pull/15",
+  "subhit": "F2.1 explicit48dp QuickLook close and bounded contextual action list",
+  "local": {
+    "unit": 370,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "visual": 17,
+    "python": 32,
+    "lint": "0errors/10warnings/1info",
+    "debug": "success",
+    "integral": "4m37s; f2-final-integral.log",
+    "visual_command": "verifyRoborazziDebug --tests *VisualSnapshotTest;47s",
+    "captures": "docs/visual/f2-touch",
+    "baseline": "1 intentionally reviewed contextual reference;16 unchanged; clipping/list-empty regressions corrected BEFORE updating; hash/bbox recorded"
+  },
+  "ci": {
+    "38528330222": "cancelled by concurrency after documentary push; not success",
+    "38528963148": "in_progress; secrets success; web skipped; Android pending"
+  },
+  "mistake": "Documentary push was published before predecessor CI finished, triggering full PR path evaluation and cancelling it. No further commits/retries/matrices.",
+  "integral_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b unchanged",
+  "pending": [
+    "F1.3 cold focus open",
+    "physical Android16 OneUI not tested",
+    "debug delivery4dd683c dispatch remains human/Forbidden; APK source8dd2524 does not include this F2 change"
+  ],
+  "next": "FIRST consult CI38528963148 for58ac0a2. If successful record evidence in notes/PR without rerunning passed checks, then F2 contrast/theme tokens from this branch. If failed investigate concrete cause, no weakened assertions/emulators. F1.3/e38 remain open/unchanged.",
+  "dependencies": "none added; existing Compose/Material tokens; no paid APIs, emulator, historical signing or releases",
+  "main_and_historic_refs": "unchanged",
+  "lease_sha": "75dd523232891578e9e4a32d7dab9c4f3f097b0d",
+  "ci_checked_at": "2026-10-14T04:45:14.715680-03:00"
+}
