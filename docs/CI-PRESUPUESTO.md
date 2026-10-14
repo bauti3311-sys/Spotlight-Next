@@ -6,7 +6,7 @@ El usuario informó aproximadamente 198 minutos gratuitos restantes el 13 de oct
 
 `Codex development tools` ejecuta un job rápido con Python offline, Actionlint y Gitleaks. Android conserva las unitarias, lint, debug, compilación del APK de instrumentación y las 17 comparaciones nativas cuando cambian archivos Android/Gradle. El laboratorio web conserva build y Playwright cuando cambia `visual-lab/`. No arranca emuladores.
 
-Los PR nuevos comparan contra su base. En un push posterior solo se usa el delta del push si la última ejecución del SHA anterior terminó correctamente. Si falló, sigue activa, se canceló o no se puede comprobar, se vuelve a comprobar el diff completo del PR. Esto evita que un cambio documental cancele pruebas pendientes y deje un verde sin evidencia. El SHA se valida y los nombres de archivos se leen con delimitadores NUL.
+Los PR nuevos comparan contra su base. En un push posterior solo se usa el delta del push si la última ejecución del SHA anterior terminó correctamente. Si falló, sigue activa, se canceló o no se puede comprobar, se vuelve a comprobar el diff completo del PR; en push sin evidencia previa se comprueba el árbol completo. Esto evita que un cambio documental cancele pruebas pendientes y deje un verde sin evidencia. El SHA se valida y los nombres de archivos se leen con delimitadores NUL.
 
 Los cambios exclusivamente documentales no requieren SDK o Chromium; si el PR ya contiene código sin verificar, se mantienen sus checks. Agrupar commits relacionados en un push. Publicar la evidencia final en notas Git y descripción del PR evita otro build por un commit documental.
 

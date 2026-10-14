@@ -15,7 +15,7 @@ def comparison_base(event_name, event, previous_verified=False):
         candidate = (event.get('before') if event.get('action') == 'synchronize' and previous_verified
                      else event['pull_request']['base']['sha'])
     elif event_name == 'push':
-        candidate = event.get('before')
+        candidate = event.get('before') if previous_verified else None
     else:
         raise ValueError(f'Unsupported event: {event_name}')
     if not candidate or candidate == '0' * 40:
@@ -41,14 +41,14 @@ def changed_paths(base):
 
 
 def previous_quick_ci_succeeded(event_name, event):
-    if event_name != 'pull_request' or event.get('action') != 'synchronize':
+    if event_name not in ('pull_request', 'push') or (event_name == 'pull_request' and event.get('action') != 'synchronize'):
         return False
     sha = event.get('before', '')
     token = os.environ.get('GITHUB_TOKEN')
     repository = os.environ.get('GITHUB_REPOSITORY', '')
     if not token or not re.fullmatch(r'[0-9a-fA-F]{40}', sha) or not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
         return False
-    url = f'https://api.github.com/repos/{repository}/actions/workflows/codex-tooling.yml/runs?head_sha={sha}&event=pull_request&per_page=10'
+    url = f'https://api.github.com/repos/{repository}/actions/workflows/codex-tooling.yml/runs?head_sha={sha}&event={event_name}&per_page=10'
     request = urllib.request.Request(url, headers={'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github+json'})
     try:
         with urllib.request.urlopen(request, timeout=10) as response:

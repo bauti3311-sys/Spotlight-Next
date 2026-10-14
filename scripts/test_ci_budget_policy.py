@@ -33,7 +33,9 @@ class CiBudgetPolicyTest(unittest.TestCase):
         self.assertEqual('b' * 40, PATHS.comparison_base('pull_request', event))
         self.assertEqual('a' * 40, PATHS.comparison_base('pull_request', event, previous_verified=True))
         with self.assertRaises(ValueError):
-            PATHS.comparison_base('push', {'before': '--bad-sha'})
+            PATHS.comparison_base('push', {'before': '--bad-sha'}, previous_verified=True)
+        self.assertEqual('4b825dc642cb6eb9a060e54bf8d69288fbee4904', PATHS.comparison_base('push', {'before': 'a' * 40}))
+        self.assertEqual('a' * 40, PATHS.comparison_base('push', {'before': 'a' * 40}, previous_verified=True))
 
     def test_previous_ci_failure_cancellation_and_api_failure_are_conservative(self):
         event = {'action': 'synchronize', 'before': 'a' * 40}
@@ -48,6 +50,10 @@ class CiBudgetPolicyTest(unittest.TestCase):
         ]}
         with patch.dict('os.environ', env), patch.object(PATHS.urllib.request, 'urlopen', return_value=io.StringIO(json.dumps(payload))):
             self.assertFalse(PATHS.previous_quick_ci_succeeded('pull_request', event))
+        payload = {'workflow_runs': [{'head_sha': 'a' * 40, 'status': 'completed', 'conclusion': 'success'}]}
+        with patch.dict('os.environ', env), patch.object(PATHS.urllib.request, 'urlopen', return_value=io.StringIO(json.dumps(payload))) as fetch:
+            self.assertTrue(PATHS.previous_quick_ci_succeeded('push', {'before': 'a' * 40}))
+            self.assertIn('event=push', fetch.call_args.args[0].full_url)
         with patch.dict('os.environ', env), patch.object(PATHS.urllib.request, 'urlopen', side_effect=OSError('offline')):
             self.assertFalse(PATHS.previous_quick_ci_succeeded('pull_request', event))
 
