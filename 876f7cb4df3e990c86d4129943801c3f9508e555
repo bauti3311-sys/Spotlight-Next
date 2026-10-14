@@ -1,0 +1,57 @@
+{
+  "owner": "functional-f14-760777f2-ef5a-487c-abf8-8d157d325955",
+  "state": "closed; releasing own reservation atomically with notes",
+  "date": "2026-10-14T01:18:48.709360-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "branch": "feat/contextual-expansion-f14",
+  "checkpoint": "876f7cb4df3e990c86d4129943801c3f9508e555",
+  "app_source": "8dd25249268fc072d1871e037fe6d7a4112795d1",
+  "base": "ef0063b8cc6177e29d400a01aca0ed210151cde7",
+  "pr": "https://github.com/bauti3311-sys/Spotlight-Next/pull/14",
+  "ci": {
+    "38508039593": "success; app unit368 visual17 lint0errors/10warnings debug",
+    "38510373747": "completed success; final quick CI"
+  },
+  "local_tests": "368 unit;17 visual;32 Python;gitleaks139commits0leaks;actionlint passed",
+  "visual_review": "5 intentional references reviewed;12 unchanged; docs/visual/f1.4",
+  "artifacts": {
+    "source_commit": "8dd25249268fc072d1871e037fe6d7a4112795d1",
+    "source_ci": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38508039593",
+    "variant": "debug",
+    "package": "dev.bautista.spotlight.next",
+    "versionCode": 28,
+    "versionName": "2.0.1",
+    "minSdk": 26,
+    "targetSdk": 35,
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "apk": {
+      "name": "Spotlight-Next-debug-8dd2524.apk",
+      "size": 177754718,
+      "sha256": "9808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb"
+    },
+    "source_zip": {
+      "name": "Spotlight-Next-source-8dd2524.zip",
+      "sha256": "cdc24384400d7cfc007bd1d636683ee2f914af4eddf40548ce63f9623917b913"
+    },
+    "certificate": "Android Debug",
+    "certificate_sha256": "92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182",
+    "historical_update_compatibility": "NOT verified; historical signing unavailable locally",
+    "known_issue": "F1.3 cold window focus on emulator API30/36 remains unresolved; real OneUI not tested",
+    "tests": "368 unit; lint0errors/10warnings;17native visual;23Python; no new emulator",
+    "official_release": false
+  },
+  "validated_pointer": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b unchanged",
+  "pending": [
+    "F1.3 cold focus unresolved",
+    "physical Android16 OneUI validation",
+    "historical update certificate compatibility unverified"
+  ],
+  "next": "Recover branch at 876f7cb; physical Galaxy Tab A9+ evaluation, then bounded native visual review F2; no new cold-focus investigation without concrete hypothesis. No merges/releases.",
+  "no_active_build_processes": true,
+  "lease_sha": "5dbc946f88b5f6ec93b22950e5834b65f3b650f1"
+}
