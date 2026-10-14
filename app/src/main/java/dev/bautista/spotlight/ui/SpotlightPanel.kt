@@ -605,7 +605,9 @@ fun SpotlightPanel(
                         ?: (LocalConfiguration.current.screenHeightDp * (1f - config.position) -
                             24f))
                     .dp
-            val widePreview=config.adaptive && maxWidth>=600.dp
+            val actionSheetWidth=if(maxWidth<560.dp)maxWidth else minOf(360.dp,maxWidth)
+            val richPreview=PreviewPresentation.needsInspector(preview)
+            val widePreview=config.adaptive && maxWidth>=600.dp && richPreview
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
             val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
             val resultLimit = (panelLimit - 90.dp).coerceAtLeast(0.dp)
@@ -671,7 +673,7 @@ fun SpotlightPanel(
                             Key.Escape,
                             Key.Back -> {
                                 if(searchOptions){searchOptions=false;focus.requestFocus()}
-                                else if(menu){menu=false;focus.requestFocus()}
+                                else if(menu){menu=false;if(!richPreview)preview=null;focus.requestFocus()}
                                 else if(expandedPreview){expandedPreview=false;focus.requestFocus()}
                                 else if (preview != null) {preview=null;focus.requestFocus()}
                                 else if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || history.isNotEmpty())back()
@@ -691,7 +693,7 @@ fun SpotlightPanel(
                             }
                             Key.Spacebar -> {
                                 if (navigating || event.isCtrlPressed) {
-                                    preview = if (preview?.id == selectedResult?.id) null else selectedResult
+                                    preview = if (preview?.id == selectedResult?.id) null else selectedResult?.takeIf{PreviewPresentation.needsInspector(it)}
                                     menu = false
                                     true
                                 } else false
@@ -808,13 +810,13 @@ fun SpotlightPanel(
                                     Modifier.fillMaxWidth().onFocusChanged{resultsFocused=it.hasFocus}.focusGroup()
                                         .heightIn(
                                             max =
-                                                if (preview != null && !widePreview) resultLimit * .45f
+                                                if (richPreview && !widePreview) resultLimit * .45f
                                                 else minOf(resultLimit,(visibleResults.size*70+visibleResults.map{ResultSections.category(it)}.distinct().size*30+12).dp)
                                         )
-                                        .padding(horizontal = 9.dp, vertical = 4.dp),
+                                        .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
-                                    if(query.isNotBlank() && searchScope==null && category=="Todo" && i==0)Text("Mejor coincidencia",Modifier.padding(horizontal=16.dp,vertical=10.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
+                                    if(query.isNotBlank() && searchScope==null && category=="Todo" && i==0)Text("Mejor coincidencia",Modifier.padding(horizontal=12.dp,vertical=8.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
                                     if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
                                     ResultRow(
@@ -841,7 +843,8 @@ fun SpotlightPanel(
                 }
                 val details:@Composable ()->Unit = {
                         preview?.let { item ->
-                            if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=16.dp)) {
+                            if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
+                                if(richPreview) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Box(Modifier.size(44.dp).background(colors.primary.copy(alpha=.10f),RoundedCornerShape(12.dp)).padding(9.dp)) { ResultIcon(item,Modifier.fillMaxSize()) };Spacer(Modifier.width(12.dp))
                                     Text(
@@ -885,6 +888,7 @@ fun SpotlightPanel(
                                     )
                                 }
                                 QuickLookMetadata(item)
+                                }
                                 if(menu) {
                                     val actions=mutableListOf<ContextAction>()
                                     fun add(title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,perform:()->Unit){actions+=ContextAction(title,description,icon,perform)}
@@ -913,7 +917,7 @@ fun SpotlightPanel(
                                         listOf("Explicar" to "Explicá", "Resumir" to "Resumí").forEach{(label,prompt)->add("$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome){execute(Result("ai:text",label,"","IA",0,Action.Ask(prompt+" este texto:\n"+text,true)))}}
                                     }
                                     if(item.id.startsWith("note:"))add("Eliminar nota","Revisar antes de eliminar",CommandIcons.Delete){clearForms();deletingNote=item;preview=null;menu=false}
-                                    ActionPanelView(actions,actionFocus)
+                                    ActionPanelView(actions,actionFocus,onClose=if(richPreview)null else {{preview=null;menu=false;focus.requestFocus()}})
                                 }
                             }
                         }
@@ -1125,10 +1129,18 @@ fun SpotlightPanel(
                                     }
                                 }
                             }
-                        else if(expandedPreview && preview!=null)details()
-                        else if(widePreview && preview!=null) ContextSplitPanel(minOf(resultLimit,400.dp),{resultList()},{details()}) else if(menu && preview!=null && !widePreview) {
-                            // On narrow windows, give contextual actions the full result area.
-                            // Closing Quick Look restores the list and its selection.
+                        else if(expandedPreview && richPreview)details()
+                        else if(widePreview) ContextSplitPanel(minOf(resultLimit,400.dp),{resultList()},{details()})
+                        else if(menu && preview!=null && !richPreview) {
+                            // A single continuous window: keep the selected value on the
+                            // left and reveal a bounded action sheet on the right, on demand.
+                            Box(Modifier.fillMaxWidth()) {
+                                resultList()
+                                Box(Modifier.align(Alignment.TopEnd).width(actionSheetWidth)
+                                    .background(colors.surface)
+                                    .border(.5.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(12.dp))
+                                    .clip(RoundedCornerShape(12.dp))) { details() }
+                            }
                         } else resultList()
                         if (visibleResults.isEmpty() && activeCard == null && !loading && !noteEditor && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null && snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null && category!="IA" && searchScope?.section!="files")
                             Text(
@@ -1147,7 +1159,7 @@ fun SpotlightPanel(
                                 fontSize = 13.sp,
                                 color = colors.onSurfaceVariant,
                             )
-                        if(!expandedPreview && (!widePreview || category=="Apps"))details()
+                        if(richPreview && !expandedPreview && (!widePreview || category=="Apps"))details()
                         if (category == "Archivos" && (indexStatus.truncated || indexStatus.busy))
                             Text(
                                 indexStatus.message,
@@ -1156,19 +1168,18 @@ fun SpotlightPanel(
                                 color = colors.onSurfaceVariant,
                             )
                         HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
-                        Text(
-                            if(systemPage!=null || messageForm!=null || searchForm!=null) "Tab siguiente campo   esc volver" else when {
-                                menu -> "↵ ejecutar acción   esc volver a resultados"
-                                suggestion != null -> "Ctrl+Space completar   ↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
-                                else -> "↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
-                            },
-                            Modifier.padding(horizontal = 18.dp, vertical = 10.dp),
-                            fontSize = 10.sp,
-                            lineHeight = 14.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            color = colors.onSurfaceVariant,
-                        )
+                        if(systemPage!=null || messageForm!=null || searchForm!=null || menu)
+                            Text(if(menu)"↵ ejecutar acción   esc volver a resultados" else "Tab siguiente campo   esc volver",
+                                Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
+                        else Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=16.dp),verticalAlignment=Alignment.CenterVertically) {
+                            Text(if(suggestion!=null)"Ctrl+Space completar" else "↑↓ elegir",fontSize=11.sp,color=colors.onSurfaceVariant)
+                            Spacer(Modifier.weight(1f))
+                            Text("↵ ejecutar",fontSize=11.sp,color=colors.onSurfaceVariant)
+                            TextButton(enabled=selectedResult!=null,onClick={
+                                hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true
+                            }) {Text("Tab acciones",fontSize=11.sp,color=colors.onSurfaceVariant)}
+                            Text("esc cerrar",fontSize=11.sp,color=colors.onSurfaceVariant)
+                        }
                     }
                 }
             }

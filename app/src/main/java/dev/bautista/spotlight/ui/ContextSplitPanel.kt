@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.*
                 contentDescription="Divisor ajustable del panel contextual"
                 customActions=listOf(CustomAccessibilityAction("Ampliar resultados"){fraction=(fraction+.05f).coerceAtMost(.65f);true},CustomAccessibilityAction("Ampliar vista previa"){fraction=(fraction-.05f).coerceAtLeast(.35f);true})
             }.pointerInput(width){detectDragGestures{change,amount->change.consume();fraction=(fraction+amount.x/width).coerceIn(.35f,.65f)}},contentAlignment=androidx.compose.ui.Alignment.Center){
-                Box(Modifier.width(1.dp).fillMaxHeight().background(MaterialTheme.colorScheme.outlineVariant))
-                Box(Modifier.width(3.dp).height(32.dp).background(MaterialTheme.colorScheme.primary.copy(alpha=.4f)))
+                Box(Modifier.width(1.dp).fillMaxHeight().background(MaterialTheme.colorScheme.onSurface.copy(alpha=.07f)))
+                Box(Modifier.width(3.dp).height(32.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha=.18f)))
             }
-            Column(Modifier.weight(1-fraction).background(MaterialTheme.colorScheme.surfaceContainerLow)){right()}
+            Column(Modifier.weight(1-fraction)){right()}
         }
     }
 }

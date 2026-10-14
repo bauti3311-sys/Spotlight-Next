@@ -82,28 +82,28 @@ fun ResultRow(
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
-    val pad=when(LocalAppearance.current.density){"compact"->8;"spacious"->16;"auto"->if(LocalConfiguration.current.screenWidthDp<600)9 else 12;else->12}
+    val pad=when(LocalAppearance.current.density){"compact"->4;"spacious"->10;else->6}
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
-    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=.16f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
+    val fill by animateColorAsState(if(selected)GlassTokens.selection() else if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(LocalAppearance.current.density=="compact")52.dp else 64.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
-            .clip(RoundedCornerShape(12.dp))
+        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(LocalAppearance.current.density=="compact")52.dp else GlassTokens.rowMinimum).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+            .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
 
             .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
             .padding(start = 12.dp, end = 8.dp, top = pad.dp, bottom = pad.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.width(3.dp).height(28.dp).background(if(selected)colors.primary else Color.Transparent,RoundedCornerShape(2.dp)))
-        Spacer(Modifier.width(12.dp))
-        if(result.icon!=null)ResultIcon(result,Modifier.size(LocalAppearance.current.iconSize.dp),colors.primary) else Box(Modifier.size((LocalAppearance.current.iconSize+6).dp).clip(RoundedCornerShape(10.dp)).background(colors.primary.copy(alpha=.07f)).padding(5.dp)){ResultIcon(result,Modifier.fillMaxSize(),colors.primary)}
+        // Native application artwork keeps its own identity. Utility glyphs have
+        // one stroke treatment and no tinted tile or selection stripe.
+        ResultIcon(result,Modifier.size(if(result.icon!=null)30.dp else GlassTokens.glyph),colors.onSurfaceVariant)
         Spacer(Modifier.width(11.dp))
         Column(Modifier.weight(1f)) {
             Text(
                 result.title,
                 color = ink,
                 fontWeight = FontWeight.Medium,
-                fontSize = (16*LocalAppearance.current.textScale).sp,
+                fontSize = (15.5f*LocalAppearance.current.textScale).sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -115,10 +115,10 @@ fun ResultRow(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        if(result.id.startsWith("smart:") || result.id=="intent:local") Text(
-            "Intención", color=colors.primary, style=MaterialTheme.typography.labelSmall,
-            modifier=Modifier.padding(horizontal=6.dp).clip(RoundedCornerShape(6.dp)).background(colors.primary.copy(alpha=.08f)).padding(horizontal=6.dp,vertical=3.dp)
-        )
+        if(LocalConfiguration.current.screenWidthDp>=600)Text(
+            if(result.id.startsWith("smart:") || result.id=="intent:local")"Intención" else result.category,
+            modifier=Modifier.padding(horizontal=12.dp).widthIn(max=110.dp),
+            color=colors.onSurfaceVariant,fontSize=11.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(48.dp)) {
             Icon(

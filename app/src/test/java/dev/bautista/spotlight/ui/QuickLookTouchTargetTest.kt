@@ -45,17 +45,17 @@ class QuickLookTouchTargetTest {
         }
         ui.waitUntil(15000) { ui.onAllNodesWithText("4").fetchSemanticsNodes().isNotEmpty() }
         ui.onNode(hasSetTextAction()).performKeyInput { pressKey(Key.Tab) }
-        ui.waitUntil(15000) { ui.onAllNodesWithContentDescription("Cerrar vista rápida").fetchSemanticsNodes().isNotEmpty() }
+        ui.waitUntil(15000) { ui.onAllNodesWithContentDescription("Cerrar acciones").fetchSemanticsNodes().isNotEmpty() }
         ui.waitForIdle()
         ui.onNodeWithText("Copiar resultado").assertIsDisplayed()
-        ui.onNodeWithText("Tab / Shift+Tab · ↑↓ elegir · Enter ejecutar · Esc volver").assertIsDisplayed()
+        ui.onNodeWithText("Tab siguiente · Shift+Tab anterior").assertIsDisplayed()
         ui.onRoot().captureRoboImage("build/091-ui/f2-close-$device.png",
             roborazziOptions = RoborazziOptions(taskType = RoborazziTaskType.Record))
         ui.onNodeWithText("Guardar como nota").performScrollTo().assertIsDisplayed()
-        ui.onNodeWithContentDescription("Cerrar vista rápida")
+        ui.onNodeWithContentDescription("Cerrar acciones")
             .assertWidthIsAtLeast(48.dp).assertHeightIsAtLeast(48.dp)
             .performTouchInput { click(Offset(4f, center.y)) }
-        ui.onNodeWithContentDescription("Cerrar vista rápida").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Cerrar acciones").assertDoesNotExist()
         ui.onNodeWithText("Acciones").assertDoesNotExist()
         ui.onNode(hasSetTextAction()).assertTextEquals("2+2")
         ui.onAllNodesWithText("4").assertCountEquals(1)

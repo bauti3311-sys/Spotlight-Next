@@ -25,7 +25,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
     val group:String get()=when{title.startsWith("Eliminar")->"Gestión";title.contains("Permisos")||title.contains("Shizuku")||title.contains("componentes")->"Sistema";title.contains("favorita")||title.contains("consulta")||title.contains("sugerencia")->"Organizar";title.startsWith("Copiar")||title.startsWith("Guardar")||title.contains("IA")||title.startsWith("Traducir")->"Texto";else->"Más acciones"}
 }
 @OptIn(ExperimentalFoundationApi::class)
-@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester) {
+@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null) {
     var searching by remember {mutableStateOf(false)}
     var filter by remember {mutableStateOf("")};var selected by remember{mutableIntStateOf(0)};var filterFocused by remember{mutableStateOf(false)}
     val distinct=actions.distinctBy{it.title};val all=distinct.take(1)+distinct.drop(1).sortedBy{listOf("Texto","Organizar","Más acciones","Sistema","Gestión").indexOf(it.group)};val visible=all.filter{normalize(it.title+" "+it.description).contains(normalize(filter))}
@@ -41,9 +41,12 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
             else->false
         }
     },verticalArrangement=Arrangement.spacedBy(8.dp)){
-        Text("Acciones",style=MaterialTheme.typography.titleSmall)
-        Text("Tab siguiente · Shift+Tab anterior", style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+            Text("Acciones",Modifier.weight(1f),style=MaterialTheme.typography.titleSmall)
+            onClose?.let { close -> IconButton(onClick=close,modifier=Modifier.size(GlassTokens.hit)) {
+                Icon(HugeIcons.Close,"Cerrar acciones",Modifier.size(18.dp))
+            } }
+        }
         if(!searching) TextButton(onClick={searching=true}) { Icon(HugeIcons.Search,null,Modifier.size(15.dp));Spacer(Modifier.width(8.dp));Text("Buscar acciones",style=MaterialTheme.typography.labelMedium) }
         if(searching) BasicTextField(filter,{filter=it.take(120)},singleLine=true,
             textStyle=TextStyle(color=MaterialTheme.colorScheme.onSurface,fontFamily=Inter,fontSize=13.sp),
@@ -55,10 +58,10 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
             var previous=""
             visible.forEachIndexed{i,action->
                 val group=if(all.firstOrNull()==action)"Principal" else action.group
-                if(group!=previous){Text(group,Modifier.padding(start=10.dp,top=10.dp,bottom=4.dp),style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant);previous=group}
+                if(group!=previous){if(previous.isNotBlank())Spacer(Modifier.height(6.dp));previous=group}
                 val bring=remember(action.title){BringIntoViewRequester()}
                 LaunchedEffect(selected,filterFocused){if(!filterFocused && selected==i)bring.bringIntoView()}
-                Surface(color=if(!filterFocused && i==selected)MaterialTheme.colorScheme.primary.copy(alpha=.12f) else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
+                Surface(color=if(!filterFocused && i==selected)GlassTokens.selection() else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
                     val perform by rememberUpdatedState(action.perform)
                     val active=!filterFocused && i==selected
                     Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
@@ -73,6 +76,6 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
             }
             if(visible.isEmpty())Text("No hay acciones con ese nombre.",style=MaterialTheme.typography.bodySmall)
         }
-        Text("Tab / Shift+Tab · ↑↓ elegir · Enter ejecutar · Esc volver",style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("Tab siguiente · Shift+Tab anterior",style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

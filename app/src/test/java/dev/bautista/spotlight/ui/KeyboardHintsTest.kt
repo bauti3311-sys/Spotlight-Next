@@ -49,12 +49,12 @@ class KeyboardHintsTest {
         ui.onNodeWithText("Copiar resultado").performKeyInput { pressKey(Key.Escape) }
         ui.onNodeWithText("Tab acciones", substring = true).assertIsDisplayed()
         ui.onNodeWithText("Acciones").assertDoesNotExist()
-        ui.onAllNodesWithText("4").assertCountEquals(2)
+        ui.onAllNodesWithText("4").assertCountEquals(1)
+        ui.onNodeWithContentDescription("Divisor ajustable del panel contextual").assertDoesNotExist()
+        ui.onNode(hasSetTextAction()).assertTextEquals("2+2").assertIsFocused()
         ui.runOnIdle { assertEquals("Escape must dismiss actions before the overlay", 0, closed) }
         ui.onNode(hasSetTextAction()).performKeyInput { pressKey(Key.Escape) }
         ui.onAllNodesWithText("4").assertCountEquals(1)
-        ui.runOnIdle { assertEquals("Escape must dismiss preview before the overlay", 0, closed) }
-        ui.onNode(hasSetTextAction()).performKeyInput { pressKey(Key.Escape) }
-        ui.runOnIdle { assertEquals(1, closed) }
+        ui.runOnIdle { assertEquals("Simple results have no redundant preview layer", 1, closed) }
     }
 }

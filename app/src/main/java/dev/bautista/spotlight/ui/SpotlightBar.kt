@@ -63,12 +63,12 @@ fun SpotlightBar(
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
         Row(
             fieldModifier
-                .height(76.dp)
-                .padding(start = 20.dp, end = 4.dp),
+                .height(GlassTokens.searchHeight)
+                .padding(start = 8.dp, end = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
-                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(23.dp),tint=colors.primary)
+                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(GlassTokens.glyph),tint=colors.onSurfaceVariant)
             }
             Spacer(Modifier.width(8.dp))
             BasicTextField(
@@ -93,7 +93,7 @@ fun SpotlightBar(
                 }.focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 19.sp else 24.sp),
+                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 18.sp else 21.sp),
                 cursorBrush = SolidColor(colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -102,7 +102,7 @@ fun SpotlightBar(
                         if (query.isEmpty())
                             Text(
                                 when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar en Spotlight"},
-                                fontSize = if (compact) 19.sp else 24.sp,
+                                fontSize = if (compact) 18.sp else 21.sp,
                                 color = colors.onSurface.copy(alpha = .52f),
                                 maxLines = 1,
                             )
@@ -114,7 +114,7 @@ fun SpotlightBar(
                                 },
                                 modifier = Modifier.clearAndSetSemantics { },
                                 maxLines = 1,
-                                fontSize = if (compact) 19.sp else 24.sp,
+                                fontSize = if (compact) 18.sp else 21.sp,
                                 color = colors.onSurface.copy(alpha = .30f),
                                 style=TextStyle(fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
@@ -145,7 +145,7 @@ fun SpotlightBar(
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
         Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
-            Row(Modifier.padding(end=12.dp),verticalAlignment=Alignment.CenterVertically) {
+            Row(Modifier.padding(end=8.dp),verticalAlignment=Alignment.CenterVertically) {
                 onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
                 onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
                 onSettings?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Settings,"Abrir Ajustes",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }

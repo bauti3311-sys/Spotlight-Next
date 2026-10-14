@@ -33,8 +33,6 @@ fun sectionIcon(name: String): ImageVector = when(name) {
 
 @Composable fun SectionHeading(name: String) {
     Row(Modifier.fillMaxWidth().padding(start=10.dp,end=8.dp,top=14.dp,bottom=6.dp),verticalAlignment=Alignment.CenterVertically) {
-        Icon(sectionIcon(name),null,Modifier.size(14.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(Modifier.width(8.dp))
-        Text(name,fontSize=11.sp,color=MaterialTheme.colorScheme.onSurfaceVariant);Spacer(Modifier.width(10.dp));HorizontalDivider(Modifier.weight(1f),color=MaterialTheme.colorScheme.outlineVariant.copy(alpha=.65f))
+        Text(name,fontSize=12.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
