@@ -197,3 +197,8 @@ Se retoma primero el checkpoint propio43c8723 desde la rama económica6af16ef/PR
 ### Cierre dirigido Android16 — 14/10 UTC
 
 CI38499316489 fallido: Maestro frío falla; cuatro nativas correctas y12 archivos de geometría exportados. El hook43c8723 queda probado en API36, no en API30. Local7 viewport+23Python, Actionlint/bash correctos; sin cambios Android/UI/deps. Ver último PROGRESO para comandos, artefacto y logs. F1.3 sigue abierto, puntero integral e38eae8 intacto. Próximo: primer buffer/foco frío con reproducción concreta; después una sola tablet16 si hay corrección. LegacyIME y OneUI físico separados. Continuar desde puntaPR13/rama económica, sin workflows antiguos ni reintentos idénticos. Cierre/reserva en notas del SHA final.
+
+
+### Apertura fría — análisis local, acceso a evidencia bloqueado
+
+Base1f52f67, PR13. Ver docs/DIAGNOSTICO-APERTURA-FRIA.md: OnDraw no equivale a buffer presentado; los12 archivos son pares de geometría posteriores, no dumps fríos. No se demuestra una causa final. Descarga del ZIP11864974587 al executor devuelve403; se necesita adjuntarlo al hilo o acceso soportado. Local15startup/viewport+23Python correctos; cero instrumentación nueva, códigoAndroid intacto. F1.3/e38 sin cierre/avance. Próximo: recuperarZIP y separar primerbuffer/foco/IME antes de una única prueba discriminante. Reserva y SHA final en notas.
