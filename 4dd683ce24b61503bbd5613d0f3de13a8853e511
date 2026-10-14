@@ -1,0 +1,17 @@
+{
+  "owner": "delivery-20261014-debug",
+  "state": "delivery prepared; dispatch blocked by Forbidden; closing",
+  "date": "2026-10-14T01:25:15.342558-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "branch": "fix/debug-artifact-delivery",
+  "checkpoint": "4dd683ce24b61503bbd5613d0f3de13a8853e511",
+  "functional_continuation": "feat/contextual-expansion-f14 / 876f7cb4df3e990c86d4129943801c3f9508e555 unchanged",
+  "source_for_delivery": "8dd25249268fc072d1871e037fe6d7a4112795d1",
+  "verification": "existing APK apksigner verified; SHA256 matched; source ZIP unzip -t valid; actionlint passed; git diff -- app empty",
+  "apk_existing_size": 177754718,
+  "apk_existing_sha256": "9808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb",
+  "pending": "User must open Actions/Build Debug APK/Run workflow on fix/debug-artifact-delivery; connector lacks dispatch and gh receives Forbidden. No execution/artifacts claimed. Runner APK hash/cert may differ.",
+  "changes": "only existing manual build-apk workflow and docs/DESCARGA-DEBUG.md; immutable source; APK+source uploads; no tests/emulators/release/historical signing; bounded15min",
+  "main_and_checkpoints": "unchanged",
+  "next": "finish delivery with manual run; retain functional checkpoint876, F1.3 unresolved; no new development in this cycle"
+}
