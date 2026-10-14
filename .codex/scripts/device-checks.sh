@@ -48,7 +48,7 @@ fi
 # Driver installation/startup must finish before opening the cold overlay.
 # The original focus/actions assertions and time limits remain unchanged.
 bash .codex/scripts/maestro.sh test --reinstall-driver=false .maestro/flows/driver-ready.yaml
-if [[ "${CI:-}" == true ]]; then
+if [[ "${CI:-}" == true && "${SPOTLIGHT_CAPTURE_TRACE:-false}" == true ]]; then
   # Record the cold first-frame/input handoff with the existing bounded 15s config.
   adb shell perfetto --txt -c - -o /data/misc/perfetto-traces/spotlight-cold.pftrace < .codex/perfetto/spotlight.cfg > .maestro/output/trace-start.log 2>&1 &
   spotlight_trace_pid=$!

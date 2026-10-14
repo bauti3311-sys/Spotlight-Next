@@ -8,6 +8,12 @@ case "${1:-}" in
     url=https://github.com/mobile-dev-inc/Maestro/releases/download/cli-2.11.0/maestro.zip
     digest=5384593cb4e7a106489e75a821d157dd43f4e438df6bc308b72e82c685e1283a
     ;;
+  actionlint)
+    version=1.7.12
+    archive=actionlint_1.7.12_linux_amd64.tar.gz
+    url=https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+    digest=8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+    ;;
   perfetto)
     version=58.2
     archive=linux-amd64.zip
@@ -20,7 +26,7 @@ case "${1:-}" in
     url=https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
     digest=551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
     ;;
-  *) echo 'Uso: install-tool.sh maestro|gitleaks|perfetto (una herramienta por vez)' >&2; exit 2 ;;
+  *) echo 'Uso: install-tool.sh maestro|gitleaks|perfetto|actionlint (una herramienta por vez)' >&2; exit 2 ;;
 esac
 destination="$root/.codex/tools/$1/$version"
 if [[ -f "$destination/.verified-download" ]]; then
@@ -36,6 +42,8 @@ if [[ "$1" == maestro ]]; then
 elif [[ "$1" == perfetto ]]; then
   unzip -q "$scratch/$archive" linux-amd64/trace_processor_shell -d "$destination"
   chmod +x "$destination/linux-amd64/trace_processor_shell"
+elif [[ "$1" == actionlint ]]; then
+  tar -xzf "$scratch/$archive" -C "$destination" actionlint LICENSE.txt
 else
   tar -xzf "$scratch/$archive" -C "$destination" gitleaks LICENSE
 fi

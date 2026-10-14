@@ -1,10 +1,6 @@
 name: Build Debug APK
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -33,10 +29,12 @@ jobs:
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
       - name: Set up Gradle and dependency cache
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
       - name: Read public release identity
         run: echo "SPOTLIGHT_VERSION=$(python3 scripts/release_identity.py name)" >> "$GITHUB_ENV"
       - name: Build Debug APK
-        run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --stacktrace --console=plain
+        run: bash gradlew :app:assembleDebug --build-cache --no-daemon --max-workers=2 --stacktrace --console=plain
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
@@ -46,7 +44,7 @@ jobs:
           retention-days: 7
           compression-level: 0
       - name: Unit tests and Android lint
-        run: bash gradlew :app:testDebugUnitTest :app:lintDebug --no-daemon --max-workers=2 --stacktrace --console=plain
+        run: bash gradlew :app:testDebugUnitTest :app:lintDebug --build-cache --no-daemon --max-workers=2 --stacktrace --console=plain
       - name: Backend local tests
         run: |
           python3 -m unittest discover -s backend -p 'test_*.py'

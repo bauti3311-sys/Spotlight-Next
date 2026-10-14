@@ -2,38 +2,98 @@ name: Codex development tools
 
 on:
   push:
-    branches: [chore/codex-infrastructure-2.0.1]
-  pull_request:
     branches: [main, chore/codex-infrastructure-2.0.1]
     paths:
-      - '.agents/**'
+      - 'app/**'
+      - 'backend/**'
+      - 'scripts/**'
       - '.codex/**'
       - '.maestro/**'
       - 'visual-lab/**'
-      - 'app/src/main/**'
-      - 'app/src/androidTest/**'
-      - 'app/src/test/**'
-      - 'app/build.gradle.kts'
-      - 'build.gradle.kts'
-      - '.github/workflows/codex-tooling.yml'
+      - 'gradle/**'
+      - '*.gradle.kts'
+      - 'gradle.properties'
+      - 'gradlew*'
+      - '.github/workflows/**'
+      - '.agents/**'
       - 'AGENTS.md'
-      - 'PLANS.md'
+      - 'renovate.json'
+  pull_request:
+    branches: [main, chore/codex-infrastructure-2.0.1, test/native-pdf-api36-f13]
+    paths:
+      - 'app/**'
+      - 'backend/**'
+      - 'scripts/**'
+      - '.codex/**'
+      - '.maestro/**'
+      - 'visual-lab/**'
+      - 'gradle/**'
+      - '*.gradle.kts'
+      - 'gradle.properties'
+      - 'gradlew*'
+      - '.github/workflows/**'
+      - '.agents/**'
+      - 'AGENTS.md'
       - 'renovate.json'
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: codex-tools-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  secrets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      android: ${{ steps.scope.outputs.android }}
+      web: ${{ steps.scope.outputs.web }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: scope
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 .codex/scripts/ci-paths.py
+      - name: Cache pinned development tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            .codex/tools/gitleaks/
+            .codex/tools/actionlint/
+          key: ci-tools-${{ runner.os }}-${{ hashFiles('.codex/scripts/install-tool.sh') }}
+      - run: bash .codex/scripts/install-tool.sh gitleaks
+      - run: bash .codex/scripts/install-tool.sh actionlint
+      - name: Validate workflow syntax and expressions
+        run: .codex/tools/actionlint/1.7.12/actionlint -color
+      - name: Offline Python regressions
+        run: |
+          python3 -m unittest discover -s backend -p 'test_*.py'
+          python3 -m unittest discover -s scripts -p 'test_*.py'
+      - run: bash .codex/scripts/check-secrets.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quick-secrets-${{ github.run_number }}
+          path: .codex/artifacts/gitleaks.json
+          retention-days: 7
   android-quality:
+    needs: secrets
+    if: needs.secrets.outputs.android == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -43,17 +103,17 @@ jobs:
           packages: 'platform-tools'
       - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
       - run: bash .codex/scripts/doctor.sh android
       - name: Functional tests, lint and build
         run: |
-          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug -Pspotlight.test.verbose=true --no-daemon --max-workers=2 --console=plain
+          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest -Pspotlight.test.verbose=true --build-cache --no-daemon --max-workers=2 --console=plain
           mkdir -p app/build/functional-unit-evidence
           cp -R app/build/test-results/testDebugUnitTest app/build/functional-unit-evidence/
           cp -R app/build/reports/tests/testDebugUnitTest app/build/functional-unit-evidence/html
-          python3 -m unittest discover -s backend -p 'test_*.py'
-          python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Compare approved native pixel baselines
-        run: bash gradlew :app:verifyRoborazziDebug --tests '*VisualSnapshotTest' --no-daemon --max-workers=2 --console=plain
+        run: bash gradlew :app:verifyRoborazziDebug --tests '*VisualSnapshotTest' --build-cache --no-daemon --max-workers=2 --console=plain
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -68,6 +128,8 @@ jobs:
             app/build/091-ui/f13-*.png
           retention-days: 14
   web-lab:
+    needs: secrets
+    if: needs.secrets.outputs.web == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     defaults:
@@ -75,6 +137,9 @@ jobs:
         working-directory: visual-lab
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -92,73 +157,3 @@ jobs:
             visual-lab/test-results/
             visual-lab/playwright-report/
           retention-days: 14
-  secrets:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: bash .codex/scripts/install-tool.sh gitleaks
-      - run: bash .codex/scripts/check-secrets.sh
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: redacted-secrets-report-${{ github.run_number }}
-          path: .codex/artifacts/gitleaks.json
-          retention-days: 14
-  maestro-device:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        profile: [pixel_6, pixel_c]
-        api: [29, 30]
-        include:
-          - profile: pixel_c
-            api: 36
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - uses: android-actions/setup-android@v4
-        with:
-          packages: 'platform-tools'
-      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - uses: gradle/actions/setup-gradle@v4
-      - run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --console=plain
-      - run: bash .codex/scripts/install-tool.sh maestro
-      - run: bash .codex/scripts/install-tool.sh perfetto
-      - name: Free unused runner space and enable KVM
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-      - uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api }}
-          arch: x86_64
-          profile: ${{ matrix.profile }}
-          disk-size: 2G
-          disable-animations: true
-          script: |
-            if [ "${{ matrix.api }}" = "36" ]; then adb shell wm size 1200x1920; adb shell wm density 240; fi
-            adb shell wm size
-            adb shell wm density
-            adb install app/build/outputs/apk/debug/app-debug.apk
-            bash .codex/scripts/device-suite.sh
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: maestro-${{ matrix.profile }}-api${{ matrix.api }}-${{ github.run_number }}
-          path: |
-            .maestro/output/
-            app/build/outputs/androidTest-results/
-            app/build/reports/androidTests/
-            ~/.maestro/tests/
-          retention-days: 14
-          if-no-files-found: ignore
