@@ -25,6 +25,10 @@ Una **única barra flotante** tipo macOS Spotlight/Raycast/Alfred, invocable por
 9. Conservar package ID, datos, versión incremental y certificado histórico. Firmar **solo** en workflow protegido; nada de claves en código, ZIP ni logs. Publicación protegida, sin gastar dinero ni habilitar servicios externos sin permiso.
 10. Ante límite de uso/créditos: **dejar checkpoint**, resumir próxima tarea exacta y detenerse. No suponer que el reset de créditos reinicia automáticamente una ejecución. Retomar solo en ejecución/automatización efectivamente programada.
 
+## Prioridad de infraestructura: conservar minutos CI
+
+Instrucción del usuario del13/10/2026: aproximadamente198 minutos gratuitos restantes. Antes de más validaciones costosas, usar la infraestructura económica preparada en `fix/economical-ci-android16` y `docs/CI-PRESUPUESTO.md`: CI rápida por rutas, Android16 tablet manual prioritario y legacy/completa manual. No ejecutar matrices nuevas para probar workflows ni considerar cerrada F1.3 por un verde rápido. No modificar main/integrarPRs o contratarserviciospagos. Leer notas y progreso para SHA/PR finales; conservar checkpointvalidado e38eae8 mientras F1.3 frío sigue rojo.
+
 ## Hoja de ruta priorizada
 Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criterio de aceptación.
 
