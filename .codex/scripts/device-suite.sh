@@ -11,7 +11,7 @@ bash .codex/scripts/device-checks.sh || maestro_result=$?
 # processes afterward so Android 11 releases the exclusive UiAutomation client.
 adb shell am force-stop dev.mobile.maestro || driver_result=$?
 adb shell am force-stop dev.mobile.maestro.test || driver_result=$?
-bash gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.bautista.spotlight.OverlayGeometryDeviceTest,dev.bautista.spotlight.PdfNativeDeviceTest --no-daemon --max-workers=2 --console=plain || native_result=$?
+bash gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.bautista.spotlight.OverlayGeometryDeviceTest,dev.bautista.spotlight.PdfNativeDeviceTest --build-cache --no-daemon --max-workers=2 --console=plain || native_result=$?
 mkdir -p .maestro/output
 if [[ $native_result != 0 ]]; then
   adb logcat -d -s SpotlightGeometry SpotlightOverlay > .maestro/output/native-overlay-log.txt || true
