@@ -276,3 +276,36 @@ Análisis estático: OnDrawListener ocurre antes de dibujar, no confirma buffer 
 Comando local: source /workspace/toolchains/env.sh; bash gradlew :app:testDebugUnitTest --tests '*OverlayStartupTest' --tests '*OverlayViewportTest' --build-cache --offline --no-daemon --max-workers=2 --console=plain. Resultado15/15,0fallos/errores/omisiones,31s. unittest discover scripts18 y backend5 correctos. Sin cambios Android/UI/deps/licencias, baselines, assertions o plazos; sin instrumentación nueva ni matrices. Se publican únicamente diagnóstico/continuidad y notas; no afirmar un arreglo.
 
 Bloqueo humano/técnico: adjuntarZIP al hilo o habilitar descarga soportada. Siguiente: inspeccionar evidencia real antes de decidir instrumentación única que discrimine buffer/foco/IME. F1.3 abierto, F1.4 pendiente, checkpointintegral e38 intacto. Main/históricos/firma/releases conservados. Reserva propia se libera atómicamente con notas al cerrar.
+
+
+## 2026-10-14T00:18:10.904958-03:00 — F1.4: expansión real, checkpoint temprano
+
+Owner `functional-f14-760777f2-ef5a-487c-abf8-8d157d325955`, reserva `ed0530e9a7a74da433c6c0b2e58f2f0601733c3a` adquirida atómicamente, rama feat/contextual-expansion-f14 desdeef0063b/PR13. Nueva estrategia aprobada incorporada brevemente en AGENTS/roadmap: estabilidad y producto independientes, máximo una investigación adicional dirigida F1.3; no bloqueo funcional, no porcentajes de cuota inventados. No otra sesión/Actions activa al iniciar.
+
+Implementado: consulta activa y acciones solicitan expansión existente; ancho estable al reemplazar resultados; ValueAnimator nativo cancelable, frames antiguos ignorados, geometría/preferencias/rotación inmediatas, cierre cancela. Sin datos/deps/package/firma nuevos. RED2ContentExpansionTest, luego GREEN específico (ContentExpansion, accionesIME, viewport, transición). Error de compilación setCurrentFraction corregido sin quitar asserts. Capturador antiguo omitió textos; PixelCopy agotóespera; artefactosRoborazzi corregidos, RED regenerado con mismo pipeline. Capturas/diff reales docs/visual/f1.4, no baselines aceptadas. Último XML es RED temporal de captura, no presentar como suite final; fuente restaurada y pendiente integral final.
+
+Checkpoint temprano commit/push en esta rama; integral/CI pendientes, no avanzar e38. Siguiente: footer anuncia Tabcompletar/CtrlK aunque contrato realTabacciones; corregir UX y probar teclas, después validar integral. No main/merges/releases, no nueva investigaciónF1.3 ni emuladores.
+
+
+## 2026-10-14T00:45:35.297208-03:00 — segunda unidad funcional y validación integral
+
+Desdecheckpointf91882a, mismareserva/ramafeat/contextual-expansion-f14. Footer corregido: Tababreacciones (no completar), flechaderecha completa, pistasTab/ShiftTab junto aAcciones. Missingbraces hacía FilePreview y Abrir en otra app incondicionales: restringidos a documentos reales Action.Launch conURI/no-directorio. Calculadora conserva contenido/copia sin falsaaperturaexterna. Nueva prueba RED por pistas, luego por botón externo; GREEN reforzado prueba Escape acciones→preview→overlay, sin reducirasserts. Fixture corregida por captura durante layout y por losdos textos4 legítimos.
+
+Integral local ejecutada: source /workspace/toolchains/env.sh; bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --build-cache --offline --no-daemon --max-workers=2 --console=plain. **368/368,0fallos/errores/omisiones**, lint0errores/10advertencias/1info, debugcorrecto,5m20s. XMLfuncional preservado en scratch/f14-unit-evidence antesdevisual. Python18scripts+5backend yActionlint correctos.
+
+Visual: verifyRoborazziDebug --tests '*VisualSnapshotTest' primero17/5fallos por cambios intencionales; revisados TODOS los cinco comparadores y bboxes/hashes. Cuatro cambioslimitadosfooter; contexto solo derecha, eliminarfalsoarchivo/hints/accionesreubicadas, mismo1280×564. Exactamente cinco referencias actualizadas manualmente, doceintactas; rerun17/17 correcto36s. No masks ni asserts/timeouts rebajados. Evidencia docs/visual/f1.4/keyboard/review.json ycomparadores. F1.3 frío continúa rojo conocido, NO ocultado por estasreferencias.
+
+APKdebug compilado177754718bytes, SHA2569808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb; apksigner verify correcto, CNAndroidDebug SHA25692e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. Firma histórica no disponiblelocalmente; compatibilidad actualizaciónNOvalidada. Package/dev.bautista.spotlight.next ydatos/versiones conservados. Sin nuevosdeps/licencias/APIsde pago/releases/main/merges/emuladores.
+
+PRborrador nuevo apilado sobre fix/economical-ci-android16 para no sobrescribirPR13 ni arrastrarF1.3 aldiff; workflows rápidos/manuales aceptan esabase. CIremota se verifica antesdecerrar, resultadofinal/SHA ennotas. e38 se conserva incluso conCIrápidaverde; F1.4 implementado/localvalidado, OneUI/performance separados. Próximo líneaB: búsqueda yaccionescontextuales/IAinline bajo demanda confixtures; líneaA solo hipótesis dirigida. Cuota y automatización no tienen fuente verificada, no afirmarporcentaje/actividad.
+
+
+## 2026-10-14T01:13:50.787520-03:00 — CI correcta y recuperación atomizada
+
+CIapp8dd2524 [38508039593](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38508039593) final correcta: secrets yandroid-quality verdes, weblab omitido. Sin emuladores. FuenteAndroid preservada en la siguienteunidad.
+
+Nueva herramienta scripts/autonomy_lock.py usa exclusión compartidaGit, no archivo local: status, acquire conownerúnico, updatecheckpointFF yrelease propietario/SHA. Compara SHA viejo ANUNCIADO enpre-push, yGit lo comprueba entransacciónatómica; noforce. Delega hooks existentes/configurados sinbypass. Notasdivergentes rechazanliberaciónatómica. Reserva antigua o desconocida no reclamable. Nueve tests con dosreposGit reales/concurrencia/negociación/hook/SHA/notas/antigüedad, en2s; total27scripts+5backend correctos offline. No APIs/claves/dependencias/costos ni códigoAndroidnuevo. CLIprobado constatus real depropietariopropio; se usará para actualizar/liberarestareserva.
+
+CandidatoAPK y ZIP fuente8dd2524 preparados enworkspace/shared, JSONmanifestconhashes/certificado, NO release. AssembleDebug confirmado despuésdecommit (17s cache, fuenteproducciónidentical). minSdk26 target35 yarm64 presentes; packageVersion28/2.0.1 preservados. APKsha9808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb, AndroidDebugcert92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. Históricasigning/actualizaciónnoverificadas; adb sin dispositivos. No borrardatos ni prometerOneUI.
+
+ÚltimoSHApublicado/CIrápidafinal/propietariocierre ennotas yPR14. Mantener e38integral, PR5/6/13 ycheckpoints. Próximosubhitoconcreto F2: revisiónnativa acotada decontraste/controlesytáctil antes de incorporarunabiblioteca; F1.3 no bloquealíneaB ni obtiene cierre falso. Ningún porcentaje/cuota/automatización confirmado.

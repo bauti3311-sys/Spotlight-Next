@@ -19,7 +19,7 @@ on:
       - 'AGENTS.md'
       - 'renovate.json'
   pull_request:
-    branches: [main, chore/codex-infrastructure-2.0.1, test/native-pdf-api36-f13]
+    branches: [main, chore/codex-infrastructure-2.0.1, test/native-pdf-api36-f13, fix/economical-ci-android16]
     paths:
       - 'app/**'
       - 'backend/**'

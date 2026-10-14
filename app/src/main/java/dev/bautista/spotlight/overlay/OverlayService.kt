@@ -54,6 +54,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var initialQuery = ""
     private var invocation = "touch"
     private var contentExpanded=false
+    private val widthTransition = OverlayWidthTransition()
     private var availableHeightDp by androidx.compose.runtime.mutableFloatStateOf(480f)
 
     // Insets are event-driven; preference and rotation refreshes must not imply IME dismissal.
@@ -67,7 +68,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             screen.keyboardOcclusion(lastBottomInset), config, contentExpanded, screen.landscape)
     }
 
-    private fun refreshWindowGeometry() {
+    private fun refreshWindowGeometry(animateWidth: Boolean = false) {
         val geometry = updateAvailableHeight()
         if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0 && lastLoggedGeometry != geometry) {
             lastLoggedGeometry = geometry
@@ -76,8 +77,18 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         view?.let { host ->
             val next = params(geometry)
             val current = host.layoutParams as? WindowManager.LayoutParams
-            if (current?.width != next.width || current?.y != next.y) {
-                runCatching { wm.updateViewLayout(host, next) }
+            // Only content transitions animate. Insets, rotation and manual preferences
+            // cancel them immediately so stale frames cannot cross a new safe area.
+            widthTransition.move(current?.width ?: next.width, next.width,
+                animateWidth && motionAllowed(),
+                when (config.movement) { "precise" -> 140L; "liquid_immersive" -> 260L; else -> 190L }) { width ->
+                if (view === host && !closing) {
+                    val frame = params(geometry).apply { this.width = width }
+                    val actual = host.layoutParams as? WindowManager.LayoutParams
+                    if (actual?.width != frame.width || actual?.y != frame.y) {
+                        runCatching { wm.updateViewLayout(host, frame) }
+                    }
+                }
             }
         }
     }
@@ -218,7 +229,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         initialQuery = initialQuery,
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
-                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry()}},
+                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry(animateWidth = true)}},
                     )
                 }
             }
@@ -320,6 +331,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private fun close() {
         if(closing) return
         closing=true
+        widthTransition.cancel()
         clipboard.removePrimaryClipChangedListener(clipListener)
         showJob?.cancel()
         val host=view
@@ -342,6 +354,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     override fun onDestroy() {
         closing=true
+        widthTransition.cancel()
         view?.animate()?.cancel()
         clipboard.removePrimaryClipChangedListener(clipListener)
         composition?.disposeComposition()

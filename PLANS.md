@@ -202,3 +202,28 @@ CI38499316489 fallido: Maestro frío falla; cuatro nativas correctas y12 archivo
 ### Apertura fría — análisis local, acceso a evidencia bloqueado
 
 Base1f52f67, PR13. Ver docs/DIAGNOSTICO-APERTURA-FRIA.md: OnDraw no equivale a buffer presentado; los12 archivos son pares de geometría posteriores, no dumps fríos. No se demuestra una causa final. Descarga del ZIP11864974587 al executor devuelve403; se necesita adjuntarlo al hilo o acceso soportado. Local15startup/viewport+23Python correctos; cero instrumentación nueva, códigoAndroid intacto. F1.3/e38 sin cierre/avance. Próximo: recuperarZIP y separar primerbuffer/foco/IME antes de una única prueba discriminante. Reserva y SHA final en notas.
+
+
+## Nueva estrategia y F1.4 independiente
+
+Baseef0063b, rama feat/contextual-expansion-f14. F1.3 sigue abierto; no investigar otra vez sin hipótesis. El ancho automático se expande con consulta activa/acciones/QuickLook y vuelve al estado compacto al limpiar/cerrar las capas. La consulta mantiene ancho estable entre carga/resultados. ValueAnimator nativo cancelable; insets/rotación/preferencias aplican inmediatamente y descartan frames obsoletos. Ancho manual/densidad conservados; movimiento reducido inmediato.
+
+RED2tests nuevos por falta de expansión; GREEN específico ContentExpansionTest/OverlayActionsImeTest/OverlayViewportTest/OverlayWidthTransitionTest. Capturas antes/después/diff en docs/visual/f1.4, revisadas; sin baselines/deps nuevos. Integral/CI aún pendientes. Siguiente unidad: corregir las pistas de teclado del footer, que anuncian Tab completar pese a ejecutar acciones; después integral local y CI económica, sin emuladores. Reserva funcional activa; checkpoint temprano en progreso/notas.
+
+
+### Cierre local: expansión y acciones verificadas
+
+368 unitarias (0fallos/errores/omisiones), lint0errores/10advertencias/1info, assembleDebug correctos (5m20s). Roborazzi17 correctos después de revisar cinco cambios intencionales de pistas/acciones; doce referencias intactas. Python23 y Actionlint correctos. Sourcecode: Tab acciones/ShiftTab anterior visibles donde se usan; Escape por capas probado; se corrigieron llaves faltantes que llamaban FilePreview y Abrir en otra app para TODO resultado. Solo documentos reales con Action.Launch/URI conservan esa vista y apertura explícita.
+
+APKdebug177754718bytes, SHA2569808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb; certificado desarrollo92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. No firma histórica local disponible, no prometer actualización sobre la app instalada. Se prepara prueba, no release. CI final/PR en notas; integrar pruebas rápidas para PR apilado sobre fix/economical-ci-android16 (sin tocarPR13/main). No nuevo emulador.
+
+F1.4 implementado y validado localmente; OneUI físico, animación real/IME y F1.3 frío quedan separados. CI económica pendiente al publicar PR. Después: mejorar búsqueda/contexto en líneaB y evaluar IA inline bajo demanda con fixtures offline; no reabrir diagnósticoF1.3 sin hipótesis. Fuente recuperable feat/contextual-expansion-f14, últimoSHA en notas y PR; e38 integral intacto.
+
+
+### Continuidad compartida convertida en herramienta
+
+App8dd2524 verificada remotamente en CI38508039593: rápido+Android correctos, web omitido, sin emuladores. Se agrega scripts/autonomy_lock.py status/acquire/update/release: adquisición exclusiva, propietario/SHA, checkpoint hacia delante, comprobación del objeto anunciado durante negociación sin force y hooks existentes preservados. Publicación atómica notas+liberación opcional; no reclaim por edad. Nueve tests Git reales, totalPython27scripts+5backend correctos. Esta unidad no cambia Android y su CI final será rápida por delta verificado. Ver docs/AUTONOMIA-RESERVA.md; usar herramienta para futuras reservas, sin omitir lectura de notas/PR/progreso.
+
+APKdebug y ZIP exacto8dd2524 preparados en /workspace/shared/Spotlight-Next-debug-8dd2524.apk y Spotlight-Next-source-8dd2524.zip, con manifestJSON/hashes/certificado. Assemble de fuente comprometida confirmado en17s (cache). minSdk26/target35, arm64 presente, package/version28/2.0.1 conservados. Ningún dispositivo conectado a adb, OneUI no probado. Debug no demuestra compatibilidad con firma histórica; no proponer borrar datos para instalar. No publicación/release/firmahistórica.
+
+La rama de recuperación siguefeat/contextual-expansion-f14, PR14 borrador; puntafinal ennotas sobree38. Próximo funcional segúnroadmap: F2 revisión visual nativa acotada (contraste/controles/táctil) antesde elegir una biblioteca; después búsqueda/IAinline. No reiniciar F1.3 ni repetir F1.1/F1.2. Reservar investigación restante solo para hipótesis demostrable.
