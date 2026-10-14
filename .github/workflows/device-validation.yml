@@ -1,6 +1,9 @@
 name: Spotlight device validation
 
 on:
+  pull_request:
+    branches: [main, chore/codex-infrastructure-2.0.1, test/native-pdf-api36-f13]
+    types: [labeled]
   workflow_dispatch:
     inputs:
       scope:
@@ -18,11 +21,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: spotlight-devices-${{ github.ref }}
+  group: spotlight-devices-${{ (github.event_name == 'workflow_dispatch' || contains(fromJSON('["ci/android16","ci/android16-trace","ci/legacy","ci/complete"]'), github.event.label.name)) && (github.event.pull_request.head.ref || github.ref_name) || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   select-targets:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(fromJSON('["ci/android16","ci/android16-trace","ci/legacy","ci/complete"]'), github.event.label.name) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
@@ -30,15 +34,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - id: targets
         env:
-          SPOTLIGHT_DEVICE_SCOPE: ${{ inputs.scope }}
+          SPOTLIGHT_DEVICE_SCOPE: ${{ inputs.scope || (github.event.label.name == 'ci/legacy' && 'legacy-complete') || (github.event.label.name == 'ci/complete' && 'complete') || 'android16-tablet' }}
         run: python3 .codex/scripts/device-matrix.py
   maestro-device:
     needs: select-targets
     env:
-      SPOTLIGHT_CAPTURE_TRACE: ${{ inputs.capture_trace }}
+      SPOTLIGHT_CAPTURE_TRACE: ${{ inputs.capture_trace || github.event.label.name == 'ci/android16-trace' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
@@ -65,7 +70,7 @@ jobs:
           path: .codex/tools/
           key: device-tools-${{ runner.os }}-${{ hashFiles('.codex/scripts/install-tool.sh') }}
       - run: bash .codex/scripts/install-tool.sh maestro
-      - if: inputs.capture_trace
+      - if: env.SPOTLIGHT_CAPTURE_TRACE == 'true'
         run: bash .codex/scripts/install-tool.sh perfetto
       - name: Free unused runner space and enable KVM
         run: |
