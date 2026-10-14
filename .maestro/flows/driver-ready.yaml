@@ -1,0 +1,4 @@
+appId: dev.bautista.spotlight.next
+name: Prepare automation driver on launcher before cold invocation
+---
+- pressKey: Home

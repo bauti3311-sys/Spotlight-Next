@@ -22,4 +22,21 @@ class AiTransportTest {
     @Test fun multilineSseAndLastUnterminatedEventAreParsed():Unit=runBlocking {val data="data: {\"type\":\"response.output_text.delta\",\ndata: \"delta\":\"Hola \"}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"mundo\"}";assertEquals("Hola mundo",DirectAi(creds,client(data)).answer(Config(),listOf("user" to "hola")).toList().joinToString(""))}
     @Test fun authorizationErrorsNeverEchoSecrets():Unit=runBlocking {val error=runCatching{DirectAi(creds,client("private-test-value",401)).answer(Config(),listOf("user" to "hola")).collect{}}.exceptionOrNull()!!;assertTrue(error.message!!.contains("Clave"));assertFalse(error.message!!.contains("private-test-value"))}
     @Test fun emptyAndMalformedStreamsFail():Unit=runBlocking {for(raw in listOf("data: [DONE]\n\n","data: broken\n\n")){assertNotNull(runCatching{DirectAi(creds,client(raw)).answer(Config(),listOf("user" to "hola")).collect{}}.exceptionOrNull())}}
+    @Test fun localSearchAndConfigurationDoNotInitializeHttpTransport(): Unit = runBlocking {
+        var constructions = 0
+        var initializedOn: Thread? = null
+        val caller = Thread.currentThread()
+        val ai = DirectAi(creds, clientFactory = {
+            constructions++
+            initializedOn = Thread.currentThread()
+            client("data: {\"type\":\"response.output_text.delta\",\"delta\":\"fixture\"}\n\n")
+        })
+        assertTrue(ai.configured(Config()))
+        val reply = ai.answer(Config(), listOf("user" to "fixture"))
+        assertEquals("Opening search or creating a Flow must not initialize HTTP", 0, constructions)
+        repeat(2) { assertEquals(listOf("fixture"), reply.toList()) }
+        assertEquals("Explicit answers reuse the same transport", 1, constructions)
+        assertNotSame("HTTP initialization must leave the caller thread", caller, initializedOn)
+    }
+
 }

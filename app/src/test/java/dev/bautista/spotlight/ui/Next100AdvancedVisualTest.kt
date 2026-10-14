@@ -30,7 +30,8 @@ class Next100AdvancedVisualTest {
     @Test fun extensionRegistryFiltersAndKeepsSearchContext(){
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},"extensiones",700f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("Extensiones e integraciones").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithText("Extensiones e integraciones").performClick()
-        ui.onNodeWithText("Filtrar extensiones").performTextInput("Notas");ui.waitUntil(15000){ui.onAllNodesWithText("Notas").fetchSemanticsNodes().isNotEmpty()};ui.onNode(hasText("Notas") and !hasSetTextAction()).performClick();ui.onNodeWithText("Crear nota").assertExists();capture("extensions-notes-tablet")
+        val notesRow = hasText("Notas") and !hasSetTextAction()
+        ui.onNodeWithText("Filtrar extensiones").performTextInput("Notas");ui.waitUntil(15000){ui.onAllNodes(notesRow).fetchSemanticsNodes().isNotEmpty()};ui.onNode(notesRow).performClick();ui.onNodeWithText("Crear nota").assertExists();capture("extensions-notes-tablet")
         ui.onAllNodesWithText("Volver").onFirst().performClick();ui.onNode(hasSetTextAction()).assertTextContains("extensiones")
     }
 }

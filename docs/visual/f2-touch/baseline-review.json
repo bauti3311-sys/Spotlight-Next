@@ -1,0 +1,17 @@
+{
+  "baseline": "tablet-context-panel.png",
+  "before_sha256": "da6bad6e9b591ce9413d9e327a0b0cd66b97d9f2aefc9514d465b394b58540c0",
+  "after_sha256": "054d84a3738869328ec1fe3945cf22ed91ba9d6a67f9bb01f295b54ab1e41b70",
+  "size": [
+    1280,
+    564
+  ],
+  "diff_bbox": [
+    664,
+    92,
+    1248,
+    546
+  ],
+  "reason": "Intentional 48dp close header, bounded scrollable action list, keyboard footer preserved; left search/results unchanged;16 other comparisons passed",
+  "review": "compare image inspected manually; no masks/assertion weakening"
+}

@@ -1,0 +1,107 @@
+name: Spotlight device validation
+
+on:
+  pull_request:
+    branches: [main, chore/codex-infrastructure-2.0.1, test/native-pdf-api36-f13, fix/economical-ci-android16]
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'Costly validation scope; Android16 tablet is the default'
+        type: choice
+        required: true
+        default: android16-tablet
+        options: [android16-tablet, legacy-complete, complete]
+      capture_trace:
+        description: 'Collect Perfetto and input/window snapshots for diagnosis'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spotlight-devices-${{ (github.event_name == 'workflow_dispatch' || contains(fromJSON('["ci/android16","ci/android16-trace","ci/legacy","ci/complete"]'), github.event.label.name)) && (github.event.pull_request.head.ref || github.ref_name) || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  select-targets:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(fromJSON('["ci/android16","ci/android16-trace","ci/legacy","ci/complete"]'), github.event.label.name) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - id: targets
+        env:
+          SPOTLIGHT_DEVICE_SCOPE: ${{ inputs.scope || (github.event.label.name == 'ci/legacy' && 'legacy-complete') || (github.event.label.name == 'ci/complete' && 'complete') || 'android16-tablet' }}
+        run: python3 .codex/scripts/device-matrix.py
+  maestro-device:
+    needs: select-targets
+    env:
+      SPOTLIGHT_CAPTURE_TRACE: ${{ inputs.capture_trace || github.event.label.name == 'ci/android16-trace' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.select-targets.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+      - run: bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --build-cache --no-daemon --max-workers=2 --console=plain
+      - name: Cache pinned device tools
+        uses: actions/cache@v4
+        with:
+          path: .codex/tools/
+          key: device-tools-${{ runner.os }}-${{ hashFiles('.codex/scripts/install-tool.sh') }}
+      - run: bash .codex/scripts/install-tool.sh maestro
+      - if: env.SPOTLIGHT_CAPTURE_TRACE == 'true'
+        run: bash .codex/scripts/install-tool.sh perfetto
+      - name: Free unused runner space and enable KVM
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          arch: x86_64
+          profile: ${{ matrix.profile }}
+          disk-size: 2G
+          disable-animations: true
+          script: |
+            if [ "${{ matrix.api }}" = "36" ] && [ "${{ matrix.profile }}" = "pixel_c" ]; then adb shell wm size 1200x1920; adb shell wm density 240; fi
+            adb shell wm size
+            adb shell wm density
+            adb install app/build/outputs/apk/debug/app-debug.apk
+            bash .codex/scripts/device-suite.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maestro-${{ matrix.profile }}-api${{ matrix.api }}-${{ github.run_number }}
+          path: |
+            .maestro/output/
+            app/build/outputs/androidTest-results/
+            app/build/reports/androidTests/
+            ~/.maestro/tests/
+          retention-days: 7
+          if-no-files-found: ignore

@@ -26,7 +26,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
     val requests=remember(visible.map{it.title}){List(visible.size){if(it==0)focus else FocusRequester()}}
     LaunchedEffect(filter){selected=0}
     LaunchedEffect(selected,filterFocused,visible.map{it.title}){if(!filterFocused){withFrameNanos{ };runCatching{requests.getOrNull(selected)?.requestFocus()}}}
-    Column(Modifier.fillMaxWidth().onPreviewKeyEvent{e->
+    Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).onPreviewKeyEvent{e->
         if(e.type!=KeyEventType.KeyDown || e.isCtrlPressed || e.isMetaPressed)false else when(e.key){
             Key.Tab->{filterFocused=false;selected=if(visible.isEmpty())0 else Math.floorMod(selected+if(e.isShiftPressed)-1 else 1,visible.size);true}
             Key.DirectionDown->{filterFocused=false;selected=(selected+1).coerceAtMost((visible.size-1).coerceAtLeast(0));true}
@@ -36,8 +36,10 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
         }
     },verticalArrangement=Arrangement.spacedBy(8.dp)){
         Text("Acciones",style=MaterialTheme.typography.titleSmall)
+        Text("Tab siguiente · Shift+Tab anterior", style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
         OutlinedTextField(filter,{filter=it.take(120)},label={Text("Filtrar acciones")},singleLine=true,modifier=Modifier.fillMaxWidth().onFocusChanged{filterFocused=it.isFocused},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))})
-        Column(Modifier.fillMaxWidth().heightIn(max=240.dp).verticalScroll(rememberScrollState())){
+        Column(Modifier.fillMaxWidth().weight(1f, fill=false).heightIn(max=240.dp).verticalScroll(rememberScrollState())){
             var previous=""
             visible.forEachIndexed{i,action->
                 val group=if(all.firstOrNull()==action)"Principal" else action.group

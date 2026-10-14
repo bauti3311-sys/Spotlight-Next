@@ -3,12 +3,16 @@ Actualizado: 2026-10-13 · Propietario: usuario del proyecto · Objetivo: Samsun
 
 > Este documento es el **orden de trabajo y mecanismo de continuidad**, no una declaración de que las funciones estén listas. El contrato detallado está en `docs/RENOVACION-APROBADA.md`; las reglas en `AGENTS.md`; el entorno y herramientas en `docs/CODEX-ENTORNO-APROBADO.md`; el estado técnico en `PLANS.md`. Ante una contradicción, preservar seguridad/contrato y explicitarla antes de modificar comportamiento.
 
+## Estrategia aprobada — 14/10/2026
+
+Dos líneas independientes: estabilidad (F1.3 abierto, como máximo una investigación adicional con hipótesis comprobable) y desarrollo funcional (F1.4 y siguientes). No reiterar diagnóstico ni matrices idénticas. Al terminar una unidad, probar, commit/push y continuar otra tarea útil mientras haya recursos. Cuota solo desde fuente confiable; si no existe, checkpoints frecuentes sin inventar porcentajes. El puntero integral siguee38eae8 hasta cumplir todos sus criterios; un avance parcial de producto no oculta incidencias. No prometer automatización sin verificarla.
+
 ## Norte del producto
 Una **única barra flotante** tipo macOS Spotlight/Raycast/Alfred, invocable por gesto/atajo, rápida y elegante. El usuario escribe una intención; recibe resultados y acciones útiles sin saltar entre modos. IA integrada como segunda capa bajo demanda, búsqueda local primero; Quick Look nativo; integraciones Android reales dentro de los permisos y límites de Android. App nativa Kotlin/Jetpack Compose, sin webview React para su interfaz principal.
 
 ## Punto de partida probado / límites conocidos
 - APK histórico Spotlight Next 2.0.1 / versionCode 28: fuente exacta `9bb9d0ca7a97e9798ae5197c3ee32958e643dd6d`, rama `fix/recover-2.0.1-ci`, PR #6 borrador. La firma y el ZIP exacto se verificaron en GitHub Actions [38329360568](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38329360568).
-- Infraestructura avanzada en `chore/codex-infrastructure-2.0.1`, PR #7 borrador, a la fecha referencia `83e887a`, CI [38337171465](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38337171465) correcto. Partir de **la punta actual** de esta rama tras leer `PLANS.md`; no de main ni del SHA antiguo sin verificar.
+- Infraestructura avanzada en `chore/codex-infrastructure-2.0.1`, PR #7 borrador, a la fecha referencia `83e887a`, CI [38337171465](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38337171465) correcto. Comprobar **la punta actual** de esta rama y continuar desde `checkpoint/autonomous-next` validado, manteniendo infraestructura como ancestro; leer `PLANS.md`, progreso, PR y `refs/notes/spotlight-autonomy`. No volver al árbol antiguo perdiendo avances sin integrar.
 - `main` y PR #5 permanecen intactos. Conservar `checkpoint/documents-2.0.1` y `checkpoint/integrations-2.0.1`.
 - La Galaxy Tab A9+ pudo actualizar físicamente; el usuario corrigió una ventana demasiado angosta restableciendo **Ancho horizontal**. Esto demuestra un conflicto de UX entre ancho general, ancho horizontal y densidad "Espaciosa"; NO considerar corregido el diseño de configuración.
 - Falta evaluación física sistemática de One UI, batería, accesibilidad y comportamiento con teclado/permisos. Los emuladores NO reemplazan estas pruebas.
@@ -25,6 +29,10 @@ Una **única barra flotante** tipo macOS Spotlight/Raycast/Alfred, invocable por
 9. Conservar package ID, datos, versión incremental y certificado histórico. Firmar **solo** en workflow protegido; nada de claves en código, ZIP ni logs. Publicación protegida, sin gastar dinero ni habilitar servicios externos sin permiso.
 10. Ante límite de uso/créditos: **dejar checkpoint**, resumir próxima tarea exacta y detenerse. No suponer que el reset de créditos reinicia automáticamente una ejecución. Retomar solo en ejecución/automatización efectivamente programada.
 
+## Prioridad de infraestructura: conservar minutos CI
+
+Instrucción del usuario del13/10/2026: aproximadamente198 minutos gratuitos restantes. Antes de más validaciones costosas, usar la infraestructura económica preparada en `fix/economical-ci-android16` y `docs/CI-PRESUPUESTO.md`: CI rápida por rutas, Android16 tablet manual prioritario y legacy/completa manual. No ejecutar matrices nuevas para probar workflows ni considerar cerrada F1.3 por un verde rápido. No modificar main/integrarPRs o contratarserviciospagos. Leer notas y progreso para SHA/PR finales; conservar checkpointvalidado e38eae8 mientras F1.3 frío sigue rojo.
+
 ## Hoja de ruta priorizada
 Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criterio de aceptación.
 
@@ -36,13 +44,14 @@ Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criteri
 - [ ] Probar en tablet real: orientación, invocación, Enter/Tab, PDF, superposición sobre otras apps, restauración de preferencias y consumo. Depende del usuario.
 
 ### F1 · Ventana adaptable y ajustes coherentes — PRIMER HITO DE DESARROLLO
-- [ ] Unificar semántica de ancho: **automático / manual**, orientación horizontal con override explícito y botón claro de restablecimiento; impedir que un override oculto contradiga visualmente la opción "Automático".
-- [ ] Separar claramente densidad compacta/equilibrada/espaciosa del **ancho físico**. Etiquetas comprensibles y vista previa precisa antes de aplicar.
-- [ ] Cálculo confiable de métricas actuales/insets/IME en One UI; limitar a pantalla usable y centrar horizontalmente. No fijar un ancho de teléfono a tablet.
-- [ ] Ancho adaptable al contenido: barra inicial compacta si se elige, expansión gradual al tener resultados/Quick Look/acciones; sin saltos bruscos ni cambio involuntario de preferencias.
+- [x] Unificar semántica de ancho: **automático / manual**, orientación horizontal con override explícito y botón claro de restablecimiento; impedir que un override oculto contradiga visualmente la opción "Automático". F1.1 implementado en PR #8, con persistencia/importación y capturas nativas verificadas localmente; revisar CI y progreso antes de continuar. Validación física One UI sigue separada.
+- [x] Separar claramente densidad compacta/equilibrada/espaciosa del **ancho físico**. F1.2 implementado en PR #9 y cierre en PR #10: etiquetas, automático antiguo y preview nativo; corrección5ba1e5d observa filas/selección/Quick Look directamente en el panel, tras reproducir lista anterior pese a recibir filas. Dos suites locales341/341 después, manteniendo25 ciclos/15s y reforzando assertions; captura después/diff real. Producto c6b357c verificado: CI38396241075 cinco jobs correctos y PDF38396240951 tres pruebas Android reales correctas. Leer nota/punta PR #10 para cierre documental; siguiente F1.3. One UI físico e insets separados.
+- [ ] Cálculo confiable de métricas actuales/insets/IME en One UI; limitar a pantalla usable y centrar horizontalmente. No fijar un ancho de teléfono a tablet. Implementación automática F1.3 en continuación de PR #11: viewport WindowMetrics API30+/fallback, áreas seguras, IME/nav sin doble resta, orientación independiente y límite de posición;353 unitarias,17 baselines,lint/debug y fixtures nativos teléfono/tablet correctos localmente. Leer notas/PR para CI final. Validación física One UI sigue pendiente, por eso esta casilla no se marca completa. Continuación PR #12: geometría/IME y capturas verificadas, pero arranque frío API30 falla aunque WMS asigna foco; leer nota/CI del último checkpoint pendiente y mantener F1.3 abierto y avanzar con F1.4 independiente, sin repetir F1.1/F1.2. Validación dirigida Android16 en CI38499316489: checkpoint de animación43c8723 ejecutado;4 nativas y12 archivos de captura correctos, pero Maestro frío vuelve a fallar. F1.3 continúa abierto; no repetir una corrida idéntica sin corrección. Ver progreso/notas de PR13.
+- [x] F1.4: ancho automático se expande con consulta activa/Quick Look/acciones y contrae al limpiar/cerrar capas; transición nativa cancelable, geometría/preferencias inmediatas, manual/densidad preservados. Rama feat/contextual-expansion-f14:368 unitarias, lint/debug,17 comparaciones nativas y23Python correctos localmente; ver PR/notas paraCI final. OneUI físico/performance pendiente. Una preferencia adicional de barra inicialmente más angosta no se incorpora sin evaluación: automático inicial histórico preservado.
 - **Aceptar solo si:** pruebas de valores guardados/rotación/overrides/IME/tablet+teléfono, captura real en los dos tamaños, sin pérdida del ancho que el usuario configuró.
 
 ### F2 · Sistema visual nativo premium
+- [x] F2.1 acotado: cierre Quick Look con espacio explícito48dp y panel contextual acotado/desplazable, conservando acción principal e hints. Fuente d69938a/PR15:370 unitarias,17 comparaciones visuales, lint/debug correctos localmente; una referencia intencional revisada,16 intactas. CI38528330222 del cierre en notas. F2 completo y OneUI físico siguen pendientes.
 - [ ] Tokens Compose centrales: tipografía (Inter si licencia/distribución permitida), espaciado, radio, colores, estados, foco, densidad y transiciones. Iconos reales coherentes (Phosphor/Hugeicons solo subsets con licencia apta).
 - [ ] Base estilo Raycast/macOS: alto contraste limpio, sombras discretas, bordes calibrados, modo claro/oscuro, diseño tipo floating command palette.
 - [ ] Evaluar **Compose Unstyled** solo donde aporta comportamientos reutilizables; **Haze** para vidrio sobre contenido propio; **AndroidLiquidGlass/Backdrop** en superficies pequeñas si rendimiento/capacidades lo justifican. Fallback matte; NO asumir blur del fondo de otras apps.
@@ -120,7 +129,7 @@ Una casilla `[x]` solo corresponde cuando hay evidencia reproducible del criteri
 - **Aceptar solo si:** simulación end-to-end sobre rama protegida, artefactos accesibles y que el APK actualice sin desinstalar.
 
 ## Política por ciclo de Codex (incluidos turnos nocturnos)
-**Antes:** confirmar rama y SHAs, verificar que el PR #7/infraestructura actual es la base; leer AGENTS, PLANS, roadmap, avance, último CI. No rehacer hitos ya completados.
+**Antes:** leer `checkpoint/autonomous-next` y su nota final; comprobar/adquirir atómicamente `locks/spotlight-autonomy` con propietario único antes de editar. Si una reserva ajena sigue activa o no se demuestra cierre, omitir edición y registrar el solapamiento en el hilo, sin borrarla por antigüedad. Confirmar rama y SHAs, verificar que el PR #7/infraestructura actual es la base; leer AGENTS, PLANS, roadmap, avance, último CI. No rehacer hitos ya completados.
 
 **Elegir:** el PRIMER subhito pendiente que no dependa de autorización humana, compra, acceso a tablet física o clave. Concentrarse en ese subhito. Registrar hipótesis de riesgo y criterios de aceptación antes de tocar código.
 

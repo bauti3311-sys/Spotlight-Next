@@ -2,19 +2,23 @@ name: Native PDF Android check
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main]
-    paths:
-      - "app/src/androidTest/**"
-      - "app/src/main/java/dev/bautista/spotlight/ui/PdfQuickLook.kt"
-      - "app/build.gradle.kts"
-      - ".github/workflows/pdf-device-check.yml"
+    inputs:
+      api:
+        description: 'Android API (36 = Android16)'
+        type: choice
+        default: '36'
+        options: ['36', '30', '29']
+      profile:
+        description: 'Tablet by default; phone available for legacy diagnosis'
+        type: choice
+        default: pixel_c
+        options: [pixel_c, pixel_6]
 
 permissions:
   contents: read
 
 concurrency:
-  group: native-pdf-${{ github.ref }}
+  group: spotlight-devices-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -34,6 +38,8 @@ jobs:
           packages: 'platform-tools'
       - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
       - name: Free unused hosted runner SDK space for the Android emulator
         # Emulator 37 still reserves over 7 GB despite a smaller AVD disk setting.
         # This job uses Java/Android only; the runner is discarded after the job.
@@ -48,13 +54,16 @@ jobs:
       - name: Execute real PdfRenderer tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: ${{ inputs.api }}
+          profile: ${{ inputs.profile }}
           arch: x86_64
           # The default userdata partition exceeds free space on hosted runners.
           disk-size: 2G
           disable-animations: true
           emulator-boot-timeout: 300
-          script: bash gradlew :app:connectedDebugAndroidTest --no-daemon --max-workers=2 --console=plain
+          script: |
+            if [ "${{ inputs.api }}" = "36" ] && [ "${{ inputs.profile }}" = "pixel_c" ]; then adb shell wm size 1200x1920; adb shell wm density 240; fi
+            bash gradlew :app:connectedDebugAndroidTest --build-cache --no-daemon --max-workers=2 --console=plain
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -62,5 +71,5 @@ jobs:
           path: |
             app/build/outputs/androidTest-results/
             app/build/reports/androidTests/
-          retention-days: 14
+          retention-days: 7
           if-no-files-found: ignore
