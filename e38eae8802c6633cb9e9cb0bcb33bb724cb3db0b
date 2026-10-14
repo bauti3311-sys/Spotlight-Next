@@ -126,3 +126,39 @@
   "lease_sha": "79df61281abed3dc11f9a0aa2b113b2dd0eab544",
   "next": "Resume fix/economical-ci-android16 at 6af16ef, not old PR12 workflows. F1.3: diagnose cold rendering/focus and IME restoration; directed Android16 tablet validation only when meaningful. Legacy/full manual; physical One UI separate. F1.4 remains pending. No main merges, signing, releases or paid services."
 }
+
+{
+  "owner": "cycle-native36-09e1c057-f407-41c4-8951-63664b0c7438",
+  "state": "closed-partial-android16-native-verified-cold-focus-failed",
+  "date": "2026-10-13T23:21:03.116116-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "base": "6af16ef0f7b8549876caad7d5223fbdf1ad57114",
+  "checkpoint": "1f52f67a9a03cefb3e0a44a470bfce16645a1e1b",
+  "branch": "fix/economical-ci-android16",
+  "pr": 13,
+  "CI": {
+    "run": 38499316489,
+    "tested_sha": "6af16ef0f7b8549876caad7d5223fbdf1ad57114",
+    "conclusion": "failure",
+    "targets": "one tablet API36 1200x1920 density240",
+    "native_tests": "4/4 passed, zero skipped",
+    "maestro": "cold assertion 4 visible failed; first draw and watchdog actualFocus=false",
+    "suite_exit": "Maestro=1 native=0 capture=0 driver=0",
+    "capture_files": 12,
+    "artifact": 11864974587,
+    "artifact_sha256": "6f249d40d7a8ce41873a6b33069b546becf388dc8e6c962855505b39cf618948"
+  },
+  "local": {
+    "viewport_tests": 7,
+    "Python": 23,
+    "actionlint": "pass",
+    "bash_syntax": "pass",
+    "initial_gradle": "download failed before tests; retry offline passed"
+  },
+  "source_unchanged": "app/.codex/.github identical between tested6af and final1f; only continuity docs changed",
+  "validated_checkpoint": false,
+  "durable_pointer_unchanged": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "lease_release": "atomic own lease deletion with notes",
+  "lease_sha": "06010067389a909ab611f877f765567a0d862cc7",
+  "next": "Resume fix/economical-ci-android16 at1f52f67. F1.3 remains open: reproduce/diagnose first buffer and cold focus before another directedAPI36 test. Legacy30IME and physicalOneUI separate. Native43 animation validatedAPI36 only, not legacy. No repeat identical runs, full matrices, main merges or releases."
+}
