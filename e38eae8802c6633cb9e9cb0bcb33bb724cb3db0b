@@ -340,3 +340,50 @@
   "next": "Continue from6de57a9/test/f2-ci-closure (same Android as verified58), descendant of infrastructure/e38; F2 bounded contrast/theme tokens for dark/light existing accents. Do not repeat F2.1 or greenCI38528963148.",
   "lease_sha": "785c75e9ebbd48278893a70ab0a2280ea1491421"
 }
+
+{
+  "owner": "debug-delivery-f21-20261014",
+  "state": "closed; debug artifacts delivered successfully; own lease release atomic with notes",
+  "date": "2026-10-14T09:35:01.799682-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "branch": "fix/debug-delivery-f21",
+  "checkpoint": "619aecc5f1e8e09e740aa10a4994c48f46bd1dee",
+  "source_commit": "58ac0a2d4cb4f96c9fbef46da4f4104475c251ae",
+  "source_ci": 38528963148,
+  "source_ci_status": "success",
+  "delivery_run": 38562918546,
+  "delivery_status": "completed/success",
+  "job": 115848246674,
+  "build": "assembleDebug success3m41s; no tests/emulators; Actionlint/gitdiffcheck passed; localcachedassemble29s37uptodate",
+  "artifacts": [
+    {
+      "name": "Spotlight-Next-debug-58ac0a2",
+      "id": 11892668703,
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38562918546/artifacts/11892668703",
+      "download_zip_bytes": 177762212,
+      "download_zip_sha256": "bf9410195766caf28017c95e5d647a9445dfd8eaecd71ae7c206191c9e5b6de3",
+      "expires_at": "2026-10-21T12:23:48Z",
+      "contents": "APK;SHA256SUMS(actual APK digest);certificate.txt;package.txt;SOURCE_COMMIT"
+    },
+    {
+      "name": "Spotlight-Next-source-58ac0a2",
+      "id": 11893183408,
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38562918546/artifacts/11893183408",
+      "download_zip_bytes": 4009215,
+      "download_zip_sha256": "b174f77a46de193e060f17f5c2df46f8fdeeb107b6ebfec9272918a4ec321aa7",
+      "expires_at": "2026-10-21T12:23:50Z",
+      "contents": "complete source ZIP gitarchive58;SHA256SUMS;SOURCE_COMMIT"
+    }
+  ],
+  "validation": "runner apksigner verify;zipalign4;package dev.bautista.spotlight.next version2.0.1/code28;min26/ARM64 enforced;sourcezipunzip-t;artifact digests match upload logs/API not expired;source artifact successfully downloaded with connector",
+  "integrity_note": "Published hashes are artifact ZIP digests, NOT extracted APK hash. Actual APK digest computed in runner and stored SHA256SUMS and run summary. Executor did not extract uploaded APK; local APK178657864bytes/SHA34a1fd6f46079b29a8e621b98f45f4e725d737a91ed4b84800c21ced0dba6b38 must not be used to validate runner artifact.",
+  "signing": "debug only; localcert92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182 differs from reference historical11B0B3B37544BD95B128DE52798FA7FFB7489F94819614B1ADA383BD4EE7A6CF;runner certificate in artifact;installed certificate not inspected;no historical signing used or changed;conflict if previous install uses historical signature",
+  "pending": [
+    "physical OneUI Android16 install/run and knownF1.3coldfocus",
+    "no promise of updating installed APK with different signer;do not uninstall/delete user data"
+  ],
+  "functional_continuation": "6de57a9/test/f2-ci-closure/PR15 unchanged. No F2.2/new development in this delivery task; wait for physical feedback/new instruction.",
+  "main_refs": "main47259ce;integrale38;historiccheckpoints unchanged;no merges/releases/new PRs",
+  "next": "User download logged-in GitHub artifact links, extract APK zip in SamsungMyFiles, open APK;if certificate conflict stop, keep installed data. No manual workflow needed for this successful delivery.",
+  "lease_sha": "44406b74c70b22f7a9c8d6e7bd7e5949fd3ba008"
+}
