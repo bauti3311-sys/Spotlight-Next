@@ -74,10 +74,23 @@ fun SpotlightBar(
             BasicTextField(
                 visibleValue,
                 { next ->
+                    val previousText=editorValue.text
                     editorValue=next.copy(text=next.text.take(4000))
-                    if(editorValue.text!=query)onQueryChange(editorValue.text)
+                    // Compare consecutive input events, not a query captured before this frame.
+                    if(editorValue.text!=previousText)onQueryChange(editorValue.text)
                 },
-                Modifier.weight(1f).focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
+                Modifier.weight(1f).semantics {
+                    // Accessibility replacement can arrive twice before recomposition. Forward
+                    // both events using live state; the controlled field otherwise drops a
+                    // replacement equal to its last rendered value.
+                    setText { replacement ->
+                        val text=replacement.text.take(4000)
+                        val previous=editorValue.text
+                        editorValue=TextFieldValue(text,TextRange(text.length))
+                        if(text!=previous)onQueryChange(text)
+                        true
+                    }
+                }.focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
                     TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 19.sp else 24.sp),

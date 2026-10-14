@@ -58,7 +58,7 @@ fun OverlayAppearancePreview(c: Config, simple:Boolean=false) {
             Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
                 Box(Modifier.width(canvasWidth), contentAlignment=Alignment.TopCenter) {
                     SpotlightTheme(c.theme, c) {
-                        Column(Modifier.width(width.dp).testTag("appearance-preview-window").heightIn(max=180.dp).glassSurface(c).verticalScroll(rememberScrollState()).padding(16.dp)) {
+                        Column(Modifier.width(width.dp).testTag("appearance-preview-window").heightIn(max=240.dp).glassSurface(c).verticalScroll(rememberScrollState()).padding(16.dp)) {
                             Text("Buscar en Spotlight", style=MaterialTheme.typography.titleMedium, modifier=Modifier.padding(bottom=8.dp))
                             HorizontalDivider()
                             examples.forEachIndexed { index, result ->
