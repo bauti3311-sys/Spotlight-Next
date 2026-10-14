@@ -36,7 +36,10 @@ class RaycastCompositionCaptureTest {
         ui.setContent {focus=LocalFocusManager.current;Box(Modifier.width(width.dp)) {
             SpotlightPanel(app,AppConfig(files=files,online=false,animations=false,learning=false,suggestions=false,theme=theme,preset=preset),{closed++},query,700f)
         }}
-        ui.onNode(hasSetTextAction()).assertIsFocused().assertTextEquals(query)
+        val editor=ui.onNode(hasSetTextAction()).assertIsFocused()
+        if(query.isEmpty()) editor.assert(SemanticsMatcher.expectValue(
+            androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("")))
+        else editor.assertTextEquals(query)
     }
     private fun await(text:String)=ui.waitUntil(15000){ui.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()}
     private fun capture(name:String) {

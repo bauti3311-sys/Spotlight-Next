@@ -61,4 +61,25 @@ class GeminiPresentationTest {
         }
         ui.onNode(hasSetTextAction()).assertIsDisplayed().performTextInput("2+2")
     }
+    @Test @Config(application=dev.bautista.spotlight.SpotlightApp::class)
+    fun footerExecutesNativeCopyAndOpensActionsWithoutClosingOverlay() {
+        val app=org.robolectric.RuntimeEnvironment.getApplication() as dev.bautista.spotlight.SpotlightApp
+        var closed=0
+        ui.setContent {Box(Modifier.width(660.dp)) {
+            SpotlightPanel(app,AppConfig(files=false,online=false,animations=false,learning=false,suggestions=false,theme="dark"),{closed++},"2+2",700f)
+        }}
+        ui.waitUntil(15000){ui.onAllNodesWithText("4").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("↵ Copiar").performClick()
+        ui.runOnIdle {
+            val clipboard=app.getSystemService(android.content.ClipboardManager::class.java)
+            Assert.assertEquals("4",clipboard.primaryClip?.getItemAt(0)?.text?.toString())
+            Assert.assertEquals(0,closed)
+        }
+        ui.onNodeWithText("Tab acciones").performClick()
+        ui.waitUntil(15000){ui.onAllNodesWithText("Copiar resultado").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("Copiar resultado").assertIsFocused()
+        ui.onNode(hasSetTextAction()).assertTextEquals("2+2")
+        ui.runOnIdle {Assert.assertEquals(0,closed)}
+    }
+
 }

@@ -1171,15 +1171,11 @@ fun SpotlightPanel(
                         if(systemPage!=null || messageForm!=null || searchForm!=null || menu)
                             Text(if(menu)"↵ ejecutar acción   esc volver a resultados" else "Tab siguiente campo   esc volver",
                                 Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
-                        else Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=16.dp),verticalAlignment=Alignment.CenterVertically) {
-                            Text(if(suggestion!=null)"Ctrl+Space completar" else "↑↓ elegir",fontSize=11.sp,color=colors.onSurfaceVariant)
-                            Spacer(Modifier.weight(1f))
-                            Text("↵ ejecutar",fontSize=11.sp,color=colors.onSurfaceVariant)
-                            TextButton(enabled=selectedResult!=null,onClick={
-                                hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true
-                            }) {Text("Tab acciones",fontSize=11.sp,color=colors.onSurfaceVariant)}
-                            Text("esc cerrar",fontSize=11.sp,color=colors.onSurfaceVariant)
-                        }
+                        else GlassContextFooter(
+                            suggestion=suggestion!=null,enabled=selectedResult!=null,
+                            primaryLabel=if(selectedResult?.action is Action.Copy)"Copiar" else "Ejecutar",
+                            onExecute={selectedResult?.let{execute(it)}},
+                            onActions={hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true})
                     }
                 }
             }

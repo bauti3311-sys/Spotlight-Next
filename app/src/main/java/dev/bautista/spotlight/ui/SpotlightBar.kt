@@ -146,9 +146,9 @@ fun SpotlightBar(
         Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
             Row(Modifier.padding(end=8.dp),verticalAlignment=Alignment.CenterVertically) {
-                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
-                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
-                onSettings?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Settings,"Abrir Ajustes",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
+                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(15.dp),tint=colors.onSurfaceVariant) } }
+                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(15.dp),tint=colors.onSurfaceVariant) } }
+                onSettings?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Settings,"Abrir Ajustes",Modifier.size(15.dp),tint=colors.onSurfaceVariant) } }
             }
         }
         if(options) {

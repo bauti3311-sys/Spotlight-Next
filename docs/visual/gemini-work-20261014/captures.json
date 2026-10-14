@@ -1,0 +1,72 @@
+{
+  "renderer": "Robolectric 4.14.1 API33 GraphicsMode.NATIVE / real production Compose",
+  "physical_device": false,
+  "fixture_application_icons": true,
+  "pdf_page_rendered": false,
+  "images": [
+    {
+      "file": "after/tablet-pdf-renderer-unavailable.png",
+      "sha256": "02e35c5f5f2b30edd4844199963664b96f681040875071453fe2e63b2404b408",
+      "pixels": [
+        720,
+        530
+      ]
+    },
+    {
+      "file": "after/tablet-multiple-selection-dark.png",
+      "sha256": "51bb0cba67c2032462a81ecc265052d5685c2c72843b7b7362b549f2dd838f68",
+      "pixels": [
+        720,
+        530
+      ]
+    },
+    {
+      "file": "after/tablet-applications-dark.png",
+      "sha256": "1c039abdb92203c9bbdef901a9cda72f660e3e7a6140b5a005c1bea25efbab0f",
+      "pixels": [
+        720,
+        530
+      ]
+    },
+    {
+      "file": "after/gemini-graphite-calculator.png",
+      "sha256": "1777c8609cc6036d9a0211bcc68286f3cfcac8c3e3e67200a07e7ea82ac1a098",
+      "pixels": [
+        660,
+        264
+      ]
+    },
+    {
+      "file": "after/gemini-macos-light-portrait.png",
+      "sha256": "f4e7cf58f40255a0d838c3b884c8ed2b30c4815fdc54d6ccb5536ec8b8445374",
+      "pixels": [
+        660,
+        264
+      ]
+    },
+    {
+      "file": "after/gemini-obsidian-empty.png",
+      "sha256": "229eeb51ac9147082c92c5b6fba98abdc0e64f40eb2a60b33a97945fb1251fb5",
+      "pixels": [
+        660,
+        80
+      ]
+    },
+    {
+      "file": "after/tablet-actions-dark.png",
+      "sha256": "1e43204c7ee77385d299fa131664b76574980ae253188658086eec0fccb70629",
+      "pixels": [
+        720,
+        512
+      ]
+    },
+    {
+      "file": "after/gemini-obsidian-calculator.png",
+      "sha256": "249bc4ea0b353deb3e294f376f90f2c12104b75f7976d807d160b2a89faf9421",
+      "pixels": [
+        660,
+        264
+      ]
+    }
+  ]
+}
