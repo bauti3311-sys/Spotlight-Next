@@ -161,6 +161,8 @@ jobs:
           APK_URL: ${{ steps.apk.outputs.artifact-url }}
           SOURCE_URL: ${{ steps.source.outputs.artifact-url }}
         run: |
-          echo "[APK de prueba compatible (extraer ZIP)]($APK_URL)" >> "$GITHUB_STEP_SUMMARY"
-          echo "[ZIP fuente del mismo SHA]($SOURCE_URL)" >> "$GITHUB_STEP_SUMMARY"
-          echo 'Debug privado, no release oficial. Paquete/certificado históricos, código29 superior27/28. Android8+/ARM64, Android16 cumple requisitos estáticos. OneUI físico y foco frío pendientes. No desinstalar ni borrar datos.' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "[APK de prueba compatible (extraer ZIP)]($APK_URL)"
+            echo "[ZIP fuente del mismo SHA]($SOURCE_URL)"
+            echo 'Debug privado, no release oficial. Paquete/certificado históricos, código29 superior27/28. Android8+/ARM64, Android16 cumple requisitos estáticos. OneUI físico y foco frío pendientes. No desinstalar ni borrar datos.'
+          } >> "$GITHUB_STEP_SUMMARY"

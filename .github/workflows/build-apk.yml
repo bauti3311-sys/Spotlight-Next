@@ -94,6 +94,8 @@ jobs:
           APK_URL: ${{ steps.apk.outputs.artifact-url }}
           SOURCE_URL: ${{ steps.source.outputs.artifact-url }}
         run: |
-          echo "[Descargar APK debug (ZIP de artefacto)]($APK_URL)" >> "$GITHUB_STEP_SUMMARY"
-          echo "[Descargar ZIP fuente (ZIP de artefacto)]($SOURCE_URL)" >> "$GITHUB_STEP_SUMMARY"
-          echo 'Requiere sesión en GitHub con acceso al repositorio privado. Extraer ZIP del artefacto para obtener archivo.' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "[Descargar APK debug (ZIP de artefacto)]($APK_URL)"
+            echo "[Descargar ZIP fuente (ZIP de artefacto)]($SOURCE_URL)"
+            echo 'Requiere sesión en GitHub con acceso al repositorio privado. Extraer ZIP del artefacto para obtener archivo.'
+          } >> "$GITHUB_STEP_SUMMARY"
