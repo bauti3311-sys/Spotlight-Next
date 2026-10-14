@@ -50,6 +50,7 @@ class OverlayAppearancePreviewTest {
     }
     @Test @Config(qualifiers="w844dp-h390dp") fun phoneLandscapeUsesActualHorizontalOverride() {
         show(AppConfig(width=0,landscapeWidth=460,animations=false));check(460,"horizontal específico","phone-horizontal")
+        ui.onNodeWithText("Calculadora · resultado local").performScrollTo().assertIsDisplayed()
     }
     @Test fun widthDraftUpdatesPreviewAndRestoresWithoutSaving() {
         val saved=AppConfig(width=820,landscapeWidth=460,manualWidth=820,animations=false)

@@ -21,6 +21,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.*
 
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
@@ -50,6 +52,10 @@ fun SpotlightBar(
     onSettings:(()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
+    var editorValue by remember { mutableStateOf(TextFieldValue(query,TextRange(query.length))) }
+    // Selection belongs to the editor. External completion/restoration places the caret at the end.
+    val visibleValue=if(editorValue.text==query)editorValue else TextFieldValue(query,TextRange(query.length))
+    SideEffect { if(editorValue!=visibleValue)editorValue=visibleValue }
     var localOptions by remember { mutableStateOf(false) }
     val options=optionsOpen ?: localOptions
     fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}
@@ -66,8 +72,11 @@ fun SpotlightBar(
             }
             Spacer(Modifier.width(8.dp))
             BasicTextField(
-                query,
-                { onQueryChange(it.take(4000)) },
+                visibleValue,
+                { next ->
+                    editorValue=next.copy(text=next.text.take(4000))
+                    if(editorValue.text!=query)onQueryChange(editorValue.text)
+                },
                 Modifier.weight(1f).focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =

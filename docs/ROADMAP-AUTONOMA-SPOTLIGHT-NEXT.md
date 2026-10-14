@@ -1,4 +1,8 @@
 # Spotlight Next — hoja de ruta maestra y continuidad autónoma
+
+## Prioridad vigente: transformación aprobada14/10/2026
+La especificación nueva sustituye controles técnicos de ancho y accesos snippets/rutinas/modos, conservando datos. Rama feat/premium-product-checkpoint desde Android58ac0a2 verificado. Correcciones críticas26095b3 publicadas; prototipo22e0921 recuperable, cierre integral/CI/entrega pendiente. Primero cerrar barra/resultados/inspector, apariencia simple y APK compatible29+ZIP exacto con capturas nativas; luego revisión física del usuario. No iniciar IA/integraciones extensas antes de ese checkpoint/revisión. F1.3 frío sigue incidencia conocida: solo hipótesis nueva dirigida; no bloquear producto. Resultado definitivo y próxima acción en notas/PR; checkpoint integral e38 se conserva.
+
 Actualizado: 2026-10-13 · Propietario: usuario del proyecto · Objetivo: Samsung Galaxy Tab A9+ (One UI), Android nativo sin root.
 
 > Este documento es el **orden de trabajo y mecanismo de continuidad**, no una declaración de que las funciones estén listas. El contrato detallado está en `docs/RENOVACION-APROBADA.md`; las reglas en `AGENTS.md`; el entorno y herramientas en `docs/CODEX-ENTORNO-APROBADO.md`; el estado técnico en `PLANS.md`. Ante una contradicción, preservar seguridad/contrato y explicitarla antes de modificar comportamiento.

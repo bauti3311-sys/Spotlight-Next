@@ -31,6 +31,13 @@ class ProductEntryPointsTest {
         ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
         ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
     }
+    @Test fun catalogAlsoHidesRetiredModesAndKeepsRealAndroidActions() {
+        val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        ui.setContent { SpotlightTheme { NextPanel(app,"catalog",""){} } }
+        ui.onNodeWithText("Modo estudio").assertDoesNotExist()
+        ui.onNodeWithText("Modo lectura").assertDoesNotExist()
+        ui.onNodeWithText("Ajustes de Wi-Fi").performScrollTo().assertIsDisplayed()
+    }
     @Test fun retiredCapabilitiesAreHiddenWhileDataAndUsefulActionsRemain() {
         val legacy=AppConfig(snippets=setOf("old|preserve"),routines="[]",pins=setOf("pdf"))
         assertFalse(ProductVisibility.allowed(Result("snippet:old","old","","Textos",1,Action.Copy("preserve"))))

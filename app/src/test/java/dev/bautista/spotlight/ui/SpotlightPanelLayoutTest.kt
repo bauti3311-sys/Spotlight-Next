@@ -85,7 +85,7 @@ class SpotlightPanelLayoutTest {
 
     @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
     @Test
-    fun rightArrowAcceptsSuggestionWithoutOpeningActionsOrLaunchingAnApp() {
+    fun explicitShortcutAcceptsSuggestionWhileRightArrowOnlyEdits() {
         val app = RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent {
             SpotlightPanel(
@@ -96,12 +96,20 @@ class SpotlightPanelLayoutTest {
                 availableHeightDp = 500f,
             )
         }
-        ui.waitUntil(15000) { ui.onAllNodesWithText("→").fetchSemanticsNodes().isNotEmpty() }
+        ui.waitUntil(15000) { ui.onAllNodesWithText("⌃Space").fetchSemanticsNodes().isNotEmpty() }
         ui.onNode(hasSetTextAction()).performClick()
         ui.onNode(hasSetTextAction()).performKeyInput {
             pressKey(androidx.compose.ui.input.key.Key.DirectionRight)
         }
-        ui.onNode(hasSetTextAction()).assertTextEquals("youtube ")
+        ui.onNode(hasSetTextAction()).assertTextEquals("yout").assertIsFocused()
+        ui.onNode(hasSetTextAction()).performKeyInput {
+            keyDown(androidx.compose.ui.input.key.Key.CtrlLeft)
+            pressKey(androidx.compose.ui.input.key.Key.Spacebar)
+            keyUp(androidx.compose.ui.input.key.Key.CtrlLeft)
+        }
+        ui.onNode(hasSetTextAction()).assertTextEquals("youtube ").assertIsFocused()
+        ui.onNode(hasSetTextAction()).performTextInput("x")
+        ui.onNode(hasSetTextAction()).assertTextEquals("youtube x").assertIsFocused()
         ui.onAllNodesWithText("Menú de acciones").assertCountEquals(0)
     }
 

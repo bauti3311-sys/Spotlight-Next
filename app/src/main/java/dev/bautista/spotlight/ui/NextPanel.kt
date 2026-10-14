@@ -41,13 +41,14 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
     var pack by remember{mutableStateOf("Todos")};var filter by remember{mutableStateOf("")}
     val prefs=remember{app.getSharedPreferences("catalog_v1",Context.MODE_PRIVATE)}
     var disabled by remember{mutableStateOf(prefs.getStringSet("disabled",emptySet()).orEmpty().toSet())}
-    val packs=listOf("Todos")+NativeCatalog.items.map{it.pack}.distinct()
+    val productItems=NativeCatalog.items.filter{ProductVisibility.allowedAction(it.action)}
+    val packs=listOf("Todos")+productItems.map{it.pack}.distinct()
     Column(Modifier.fillMaxWidth().heightIn(max=360.dp).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){
         Text("Centro de comandos",style=MaterialTheme.typography.titleLarge)
         Text("Acciones listas para usar. Cada una indica sus requisitos y abre una revisión cuando corresponde.",style=MaterialTheme.typography.bodySmall)
         OutlinedTextField(filter,{filter=it.take(100)},label={Text("Buscar acciones")},singleLine=true,modifier=Modifier.fillMaxWidth())
         Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){packs.forEach {FilterChip(selected=pack==it,onClick={pack=it},label={Text(it)})}}
-        NativeCatalog.items.filter{(pack=="Todos" || it.pack==pack) && (filter.isBlank() || dev.bautista.spotlight.search.normalize(it.title+" "+it.detail).contains(dev.bautista.spotlight.search.normalize(filter)))}.forEach {item->
+        productItems.filter{(pack=="Todos" || it.pack==pack) && (filter.isBlank() || dev.bautista.spotlight.search.normalize(it.title+" "+it.detail).contains(dev.bautista.spotlight.search.normalize(filter)))}.forEach {item->
             NextCard(item.title,item.detail,when(item.pack){"Clima y deportes"->if(item.id=="weather")CommandIcons.Cloud else CommandIcons.Sports;"Comunicación"->CommandIcons.Forum;"Multimedia"->CommandIcons.MusicNote;"Shizuku"->CommandIcons.Shield;"IA"->CommandIcons.AutoAwesome;"Sistema"->CommandIcons.Settings;else->CommandIcons.Layers}){
                 Text(item.requirement,style=MaterialTheme.typography.labelSmall)
                 Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){TextButton(enabled=item.id !in disabled,onClick={onAction(item.action)}){Text("Abrir")};TextButton(onClick={disabled=if(item.id in disabled)disabled-item.id else disabled+item.id;prefs.edit().putStringSet("disabled",disabled).apply()}){Text(if(item.id in disabled)"Activar" else "Desactivar")}}

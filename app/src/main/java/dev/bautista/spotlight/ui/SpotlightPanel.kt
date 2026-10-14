@@ -584,6 +584,8 @@ fun SpotlightPanel(
         }
         BoxWithConstraints(
             Modifier.fillMaxWidth()
+                .heightIn(max=availableHeightDp?.coerceAtLeast(0f)?.dp ?: Dp.Infinity)
+                .clipToBounds()
                 .testTag("spotlight-root")
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
@@ -605,7 +607,7 @@ fun SpotlightPanel(
                     .dp
             val widePreview=config.adaptive && maxWidth>=600.dp
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
-            val panelLimit = (viewport - (if(compact && config.adaptive)152.dp else 96.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
+            val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
             val resultLimit = (panelLimit - 90.dp).coerceAtLeast(0.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
