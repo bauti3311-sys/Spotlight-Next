@@ -90,3 +90,39 @@
   "next": "Fetch latest notes and PR12 tip. Resume66 first, wait/check itsCI (do not cancel by redundant push). VerifyUiAutomation cleanup, readFirstDraw/actualFocus alongsideWMSglobalFocus. IfactualFocus=true/callbackSeen=false inspectledger; iffalse/DRAW_PENDING profileInputDispatcher/firstframe withPerfetto before architecture changes; preserve2500ms/15s/assertions/baselines. Do not restartfrominfra losingcontinuation.",
   "protected": "main/PR5/PR6/checkpoint integrations/documents intact; no force/merge/sign/release/depsbulk/paidAPI"
 }
+
+{
+  "date": "2026-10-13T22:30:21.141681-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "owner": "manual-fb480e14-22c6-458b-a459-29d4e99929c3",
+  "state": "closed-ci-budget-verified-F1.3-pending",
+  "branch": "fix/economical-ci-android16",
+  "checkpoint": "6af16ef0f7b8549876caad7d5223fbdf1ad57114",
+  "pr": "https://github.com/bauti3311-sys/Spotlight-Next/pull/13",
+  "base": "43c8723bbcdfaa89f38958664fbf9f11c392e88b",
+  "source_pr12_sha": "15cbdaad049822e5fe9319c18e57454b2f999851",
+  "ci": {
+    "run": 38494776530,
+    "conclusion": "success",
+    "scope": "quick workflow configuration only",
+    "python_passed": 23,
+    "actionlint": "passed",
+    "gitleaks": "passed, zero leaks",
+    "android_quality": "skipped by paths",
+    "web_lab": "skipped by paths",
+    "new_emulators": 0
+  },
+  "source_previous_evidence": {
+    "unit_tests": 362,
+    "native_visual_comparisons": 17,
+    "old_device_run": 38488258740,
+    "old_device_conclusion": "failure: cold focus API30/36; tablet30 IME restoration",
+    "api36_native_geometry_and_pdf": "4 passed",
+    "animation_checkpoint_43c8723": "compiled; NOT executed on device"
+  },
+  "validated_checkpoint": false,
+  "validated_pointer_unchanged": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "lease_release": "atomic own lease deletion with these notes",
+  "lease_sha": "79df61281abed3dc11f9a0aa2b113b2dd0eab544",
+  "next": "Resume fix/economical-ci-android16 at 6af16ef, not old PR12 workflows. F1.3: diagnose cold rendering/focus and IME restoration; directed Android16 tablet validation only when meaningful. Legacy/full manual; physical One UI separate. F1.4 remains pending. No main merges, signing, releases or paid services."
+}
