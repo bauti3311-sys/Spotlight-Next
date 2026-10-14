@@ -202,3 +202,10 @@ CI38499316489 fallido: Maestro frío falla; cuatro nativas correctas y12 archivo
 ### Apertura fría — análisis local, acceso a evidencia bloqueado
 
 Base1f52f67, PR13. Ver docs/DIAGNOSTICO-APERTURA-FRIA.md: OnDraw no equivale a buffer presentado; los12 archivos son pares de geometría posteriores, no dumps fríos. No se demuestra una causa final. Descarga del ZIP11864974587 al executor devuelve403; se necesita adjuntarlo al hilo o acceso soportado. Local15startup/viewport+23Python correctos; cero instrumentación nueva, códigoAndroid intacto. F1.3/e38 sin cierre/avance. Próximo: recuperarZIP y separar primerbuffer/foco/IME antes de una única prueba discriminante. Reserva y SHA final en notas.
+
+
+## Nueva estrategia y F1.4 independiente
+
+Baseef0063b, rama feat/contextual-expansion-f14. F1.3 sigue abierto; no investigar otra vez sin hipótesis. El ancho automático se expande con consulta activa/acciones/QuickLook y vuelve al estado compacto al limpiar/cerrar las capas. La consulta mantiene ancho estable entre carga/resultados. ValueAnimator nativo cancelable; insets/rotación/preferencias aplican inmediatamente y descartan frames obsoletos. Ancho manual/densidad conservados; movimiento reducido inmediato.
+
+RED2tests nuevos por falta de expansión; GREEN específico ContentExpansionTest/OverlayActionsImeTest/OverlayViewportTest/OverlayWidthTransitionTest. Capturas antes/después/diff en docs/visual/f1.4, revisadas; sin baselines/deps nuevos. Integral/CI aún pendientes. Siguiente unidad: corregir las pistas de teclado del footer, que anuncian Tab completar pese a ejecutar acciones; después integral local y CI económica, sin emuladores. Reserva funcional activa; checkpoint temprano en progreso/notas.

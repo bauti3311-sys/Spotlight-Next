@@ -98,7 +98,10 @@ fun SpotlightPanel(
         var bufferBusy by remember{mutableStateOf(false)}
         var menu by remember { mutableStateOf(false) }
         var advancedActions by remember { mutableStateOf(false) }
-        LaunchedEffect(preview!=null,showAi,systemPage?.page){onContentExpansion(preview!=null || showAi || systemPage?.page in setOf("calendar","sports-native","weather-native"))}
+        // Hold width across loading/result replacement; typing must not pulse the window.
+        val expandForContent = query.isNotBlank() || menu || preview != null || showAi ||
+            systemPage?.page in setOf("calendar", "sports-native", "weather-native")
+        LaunchedEffect(expandForContent) { onContentExpansion(expandForContent) }
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
         LaunchedEffect(menu) { if (menu) hideKeyboardForActions() }

@@ -276,3 +276,12 @@ Análisis estático: OnDrawListener ocurre antes de dibujar, no confirma buffer 
 Comando local: source /workspace/toolchains/env.sh; bash gradlew :app:testDebugUnitTest --tests '*OverlayStartupTest' --tests '*OverlayViewportTest' --build-cache --offline --no-daemon --max-workers=2 --console=plain. Resultado15/15,0fallos/errores/omisiones,31s. unittest discover scripts18 y backend5 correctos. Sin cambios Android/UI/deps/licencias, baselines, assertions o plazos; sin instrumentación nueva ni matrices. Se publican únicamente diagnóstico/continuidad y notas; no afirmar un arreglo.
 
 Bloqueo humano/técnico: adjuntarZIP al hilo o habilitar descarga soportada. Siguiente: inspeccionar evidencia real antes de decidir instrumentación única que discrimine buffer/foco/IME. F1.3 abierto, F1.4 pendiente, checkpointintegral e38 intacto. Main/históricos/firma/releases conservados. Reserva propia se libera atómicamente con notas al cerrar.
+
+
+## 2026-10-14T00:18:10.904958-03:00 — F1.4: expansión real, checkpoint temprano
+
+Owner `functional-f14-760777f2-ef5a-487c-abf8-8d157d325955`, reserva `ed0530e9a7a74da433c6c0b2e58f2f0601733c3a` adquirida atómicamente, rama feat/contextual-expansion-f14 desdeef0063b/PR13. Nueva estrategia aprobada incorporada brevemente en AGENTS/roadmap: estabilidad y producto independientes, máximo una investigación adicional dirigida F1.3; no bloqueo funcional, no porcentajes de cuota inventados. No otra sesión/Actions activa al iniciar.
+
+Implementado: consulta activa y acciones solicitan expansión existente; ancho estable al reemplazar resultados; ValueAnimator nativo cancelable, frames antiguos ignorados, geometría/preferencias/rotación inmediatas, cierre cancela. Sin datos/deps/package/firma nuevos. RED2ContentExpansionTest, luego GREEN específico (ContentExpansion, accionesIME, viewport, transición). Error de compilación setCurrentFraction corregido sin quitar asserts. Capturador antiguo omitió textos; PixelCopy agotóespera; artefactosRoborazzi corregidos, RED regenerado con mismo pipeline. Capturas/diff reales docs/visual/f1.4, no baselines aceptadas. Último XML es RED temporal de captura, no presentar como suite final; fuente restaurada y pendiente integral final.
+
+Checkpoint temprano commit/push en esta rama; integral/CI pendientes, no avanzar e38. Siguiente: footer anuncia Tabcompletar/CtrlK aunque contrato realTabacciones; corregir UX y probar teclas, después validar integral. No main/merges/releases, no nueva investigaciónF1.3 ni emuladores.
