@@ -16,11 +16,14 @@ object GlassTokens {
     val actionPanelMaxHeight=360.dp
     val windowRadius=20.dp;val searchHeight=68.dp;val listInset=8.dp
     val rowRadius=9.dp;val rowMinimum=56.dp;val glyph=22.dp
+    val searchText=21.sp;val compactSearchText=18.sp
+    val resultText=15.5.sp;val secondaryText=12.5.sp;val metadataText=11.sp
     val graphite=Color(0xFF202122);val paper=Color(0xFFFAFAF9)
     val darkInk=Color(0xFFF2F2F2);val lightInk=Color(0xFF232426)
     val darkSecondary=Color(0xFFAAA9A7);val lightSecondary=Color(0xFF646568)
     @Composable fun selection()=MaterialTheme.colorScheme.onSurface.copy(alpha=.08f)
     @Composable fun hover()=MaterialTheme.colorScheme.onSurface.copy(alpha=.04f)
+    const val glyphStroke=1.5f
     const val selectionMs=90
     fun selectionDuration(c:Config)=when(c.movement){"precise"->55;"liquid_immersive"->125;else->90}
     fun opacity(c:Config)=if(c.preset in setOf("raycast","pure","graphite","hybrid"))1f else c.opacity.coerceIn(.90f,1f)

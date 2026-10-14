@@ -93,7 +93,7 @@ fun SpotlightBar(
                 }.focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 18.sp else 21.sp),
+                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText),
                 cursorBrush = SolidColor(colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -102,7 +102,7 @@ fun SpotlightBar(
                         if (query.isEmpty())
                             Text(
                                 when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar en Spotlight"},
-                                fontSize = if (compact) 18.sp else 21.sp,
+                                fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText,
                                 color = colors.onSurface.copy(alpha = .52f),
                                 maxLines = 1,
                             )
@@ -114,7 +114,7 @@ fun SpotlightBar(
                                 },
                                 modifier = Modifier.clearAndSetSemantics { },
                                 maxLines = 1,
-                                fontSize = if (compact) 18.sp else 21.sp,
+                                fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText,
                                 color = colors.onSurface.copy(alpha = .30f),
                                 style=TextStyle(fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,

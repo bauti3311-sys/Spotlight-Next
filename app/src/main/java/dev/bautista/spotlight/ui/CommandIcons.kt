@@ -17,7 +17,7 @@ object CommandIcons {
     val Delete by lazy { icon("Delete","M3 6h18","M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6","M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2","M10 10v8","M14 10v8") }
     val FindInPage by lazy { icon("FindInPage","M6 22H4V2h10l6 6v5","M14 2v6h6","M9 16a4 4 0 1 0 8 0a4 4 0 1 0-8 0","m16 19 5 3") }
     private fun icon(name: String, vararg paths: String): ImageVector = ImageVector.Builder(name,24.dp,24.dp,24f,24f).apply {
-        paths.forEach { addPath(PathParser().parsePathString(it).toNodes(), fill=null, stroke=SolidColor(Color.Black), strokeLineWidth=1.75f, strokeLineCap=StrokeCap.Round, strokeLineJoin=StrokeJoin.Round) }
+        paths.forEach { addPath(PathParser().parsePathString(it).toNodes(), fill=null, stroke=SolidColor(Color.Black), strokeLineWidth=GlassTokens.glyphStroke, strokeLineCap=StrokeCap.Round, strokeLineJoin=StrokeJoin.Round) }
     }.build()
     val Mic by lazy {icon("Mic","M9 5a3 3 0 0 1 6 0v7a3 3 0 0 1-6 0Z","M5 10v2a7 7 0 0 0 14 0v-2","M12 19v3","M8 22h8")}
     val Search by lazy { icon("Search", "m21 21-4.34-4.34", "M3.0,11.0a8.0,8.0 0 1,0 16.0,0a8.0,8.0 0 1,0 -16.0,0") }

@@ -161,3 +161,6 @@ Bloqueo y siguiente acción exacta:
 
 ## Definición de terminado
 La hoja es completa solo cuando la UX de una sola barra, búsqueda, IA bajo demanda, Quick Look, productividad, integración nativa, calendario, deportes/clima, personalización y distribución funcionan con evidencias de calidad y las excepciones físicas están documentadas. **No declarar "Spotlight terminada" por CI verde de un único hito.**
+
+## Dirección prioritaria aprobada 14/10/2026 — checkpoint Raycast A/B
+Reemplaza iteraciones cosméticas y diagnóstico indefinido por composición visible: superficie continua/barra/lista/selección + inspector solo enriquecido/acciones discretas. Implementación en feat/premium-product-checkpoint;397 unitarias integrales locales,18 dirigidas después del ajuste final y17 comparaciones nativas correctas, capturas antes/después en docs/visual/raycast-checkpoint. Portapapeles y edición nativa corregidos; un único slider de ancho con migración conservadora; modos rechazados ocultos y datos preservados. Estado EN CURSO hasta CI exacta/entrega y revisión física; no marcar F2 completo por píxeles. F1.3 permanece incidencia abierta, e38 integral conservado. Continuar primero cierre de este checkpoint/nota del PR antes de cualquier nuevo subhito; no reiniciar desde rama antigua ni repetir investigaciones.

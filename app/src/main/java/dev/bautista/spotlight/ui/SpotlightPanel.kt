@@ -846,7 +846,7 @@ fun SpotlightPanel(
                             if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
                                 if(richPreview) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Box(Modifier.size(44.dp).background(colors.primary.copy(alpha=.10f),RoundedCornerShape(12.dp)).padding(9.dp)) { ResultIcon(item,Modifier.fillMaxSize()) };Spacer(Modifier.width(12.dp))
+                                    ResultIcon(item,Modifier.size(GlassTokens.glyph),colors.onSurfaceVariant);Spacer(Modifier.width(12.dp))
                                     Text(
                                         item.title,
                                         Modifier.weight(1f),

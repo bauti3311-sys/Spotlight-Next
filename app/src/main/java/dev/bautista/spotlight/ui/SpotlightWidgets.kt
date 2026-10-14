@@ -19,6 +19,7 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.core.graphics.drawable.toBitmap
 import dev.bautista.spotlight.search.*
@@ -103,24 +104,25 @@ fun ResultRow(
                 result.title,
                 color = ink,
                 fontWeight = FontWeight.Medium,
-                fontSize = (15.5f*LocalAppearance.current.textScale).sp,
+                fontSize = GlassTokens.resultText*LocalAppearance.current.textScale,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 result.subtitle,
                 color = colors.onSurfaceVariant,
-                fontSize = (12.5f*LocalAppearance.current.textScale).sp,
+                fontSize = GlassTokens.secondaryText*LocalAppearance.current.textScale,
                 maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
         if(LocalConfiguration.current.screenWidthDp>=600)Text(
             if(result.id.startsWith("smart:") || result.id=="intent:local")"Intención" else result.category,
-            modifier=Modifier.padding(horizontal=12.dp).widthIn(max=110.dp),
-            color=colors.onSurfaceVariant,fontSize=11.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            modifier=Modifier.padding(horizontal=12.dp).width(110.dp),
+            color=colors.onSurfaceVariant,fontSize=GlassTokens.metadataText,textAlign=TextAlign.End,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
-        if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(48.dp)) {
+        Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
+        if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(GlassTokens.hit)) {
             Icon(
                 CommandIcons.Chevron,
                 "Operaciones del resultado",
@@ -129,6 +131,8 @@ fun ResultRow(
             )
         }
     }
+    }
+
 }
 
 @Composable

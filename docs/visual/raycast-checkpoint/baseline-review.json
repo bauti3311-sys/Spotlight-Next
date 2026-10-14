@@ -1,0 +1,111 @@
+{
+  "review": "All 17 native actual images visually reviewed in three contact sheets and main full captures; intentional approved redesign only",
+  "masks_added": false,
+  "assertions_disabled": false,
+  "legacy_width_fixtures": "Migration APIs tested in isolation; three width controls are not connected to product settings",
+  "physical_acceptance": false,
+  "changes": [
+    {
+      "file": "app/src/test/snapshots/appearance-phone-horizontal.png",
+      "before_sha256": "4c3332cd52a0faf443f18f48a1112bc8862283a298daf4e8fb805d6b9f776e83",
+      "after_sha256": "78b192719e71ece35f7db2ab84d19e3594adcae2a81187962a54a89eb2575d6a",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/appearance-phone-vertical.png",
+      "before_sha256": "404119f31c0ae246a680d177c08a9a1a05c38834d0127ce12dc84f7c9ea0e280",
+      "after_sha256": "ca5c438c642c4cf581ec11b083ce082c88e420a4b62b5d4ea72b170c536261bf",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/appearance-tablet-compact.png",
+      "before_sha256": "614f6614b51164c3d2ea8d42fc1a97db289338e5a2c2e2e0b7c46c356fa96abb",
+      "after_sha256": "060788ab13a6669f5903c292f5664114349345cad46da0517f35767397581757",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/appearance-tablet-spacious.png",
+      "before_sha256": "3845db706515ddf63f7def105faec2041f5c206fff3582b0a217d82401839106",
+      "after_sha256": "ffc75639de0ff651c9fe3183dc25a84238c78b492e82ae2927b1b166f60c404b",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/appearance-tablet-vertical.png",
+      "before_sha256": "4fa97639e6b1c567b4104d30374b820747c460a38db90c2c05b3294eba4e67dd",
+      "after_sha256": "96bc347ccc2c0cadb38863119558e8b8916989d7a6b4f696ca7f193891958279",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/landscape-results.png",
+      "before_sha256": "8b583f2a1c3455b89a39d3e8732fbbc8b62f4f6050524291f340ab75e4385e45",
+      "after_sha256": "add94b03540b5cdbfc549ddd5076b100d593d331607219a39d46b700c9de0f74",
+      "reason": "Reviewed flat list, neutral selection, aligned metadata, 68dp bar, fixed row geometry and right footer"
+    },
+    {
+      "file": "app/src/test/snapshots/phone-results.png",
+      "before_sha256": "9c9567d37e2305d862e05f185d7f2f19260bfd34facef16b855fe4ffb68b6d18",
+      "after_sha256": "f6c350e3ef1ab15fa8da1c26d5e274db79b3b403c0f69798adaa0075f88790e3",
+      "reason": "Reviewed flat list, neutral selection, aligned metadata, 68dp bar, fixed row geometry and right footer"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-context-panel.png",
+      "before_sha256": "4ca7216fdf4f5f9bca782888ebb7c208f56f5414682cb51781feba8d4bd89aeb",
+      "after_sha256": "9a832e53d96110dc3dd74437a61f6c669a6bd72b7c76c12b1f061aa958613f13",
+      "reason": "Reviewed single value and bounded action sheet, no redundant inspector; keyboard assertions preserved"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-initial.png",
+      "before_sha256": "3d2e737bc172d5455c90188c9f41348f4fa0c4dd998c82a898e3892f1ca8a035",
+      "after_sha256": "27df413803eda3540f05f136b1a4face40f365fc66e4afbb111af2ee9015af3f",
+      "reason": "Reviewed flat list, neutral selection, aligned metadata, 68dp bar, fixed row geometry and right footer"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-options.png",
+      "before_sha256": "439218fb997535c6c658e2591a8079a000bc797a164671ee1606964dcfbeeda0",
+      "after_sha256": "008d33b109a5f824bcfc897eedac8fb6307320b918707452cb6939544b23501e",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-pdf-error.png",
+      "before_sha256": "536010ed21079b1b6e9b40827fcc56c062d44fe11f17b5e5aea7c2b6ab35f8b9",
+      "after_sha256": "1b660a9973c68fb17c952fc9604c524522d25ce4fe0a9f8d3087ec7e9b0f5d2a",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-preferences.png",
+      "before_sha256": "bbdb125869201be4022949f511dcee8dec0f15e5822cbfce18923f38f3a3b1ed",
+      "after_sha256": "6583a52334586e1b990974f01a54fcb8721dd8679368bbd689143a8e63181dcb",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-results.png",
+      "before_sha256": "7b49b5fc3760bdef5799203966815a8876d33ac4e1f0b2503d21d5c9fedc165f",
+      "after_sha256": "c5a08f07dc35e4104b59b8e48cb3558f5c48338ac9454c5770dd12c4457e0be7",
+      "reason": "Reviewed flat list, neutral selection, aligned metadata, 68dp bar, fixed row geometry and right footer"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-saved.png",
+      "before_sha256": "45e378fae90a979d387307d54da705485025285bbcd0480cbcd9a2ab7a14afa4",
+      "after_sha256": "c36cbdb138f604d02787fb0d241b3aa76bc08874f8bc2445a68b49bc320959ed",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/tablet-selection.png",
+      "before_sha256": "7694a00c74676822ab45ad13befbbdf6679fff62a1ce3679279e8a7b17146128",
+      "after_sha256": "3207be67f2a3f3841f75dd16ae71d0c5d6ee29452358ca8399b78e00a9f0622e",
+      "reason": "Reviewed flat list, neutral selection, aligned metadata, 68dp bar, fixed row geometry and right footer"
+    },
+    {
+      "file": "app/src/test/snapshots/width-phone-active-override.png",
+      "before_sha256": "dfc3aa722f406597850eca215664b727afd2536be4ad7be9c58ae46d0e47d4d4",
+      "after_sha256": "70ffe1e7e3eed7dfb3bbd49707ef7261f441b2f649777622ba5ebf2f9e47150b",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    },
+    {
+      "file": "app/src/test/snapshots/width-tablet-active-override.png",
+      "before_sha256": "10ce43cec44b6ccbbceb0b9ffb621ff379b1c58f62ccff98d16b95dedce3d833",
+      "after_sha256": "c77b409834ec46215a763ac4b60f7824b4c814496ee22457e570f2e9bbda1c69",
+      "reason": "Reviewed neutral graphite/paper palette and 1.5 stroke, unchanged functional fixture"
+    }
+  ]
+}

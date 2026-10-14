@@ -11,3 +11,25 @@ Límites: Robolectric no verifica el blur entre ventanas, InputDispatcher/IME re
 Iconografía auditada: Hugeicons free Stroke Rounded (controles de barra, licencia conservada) ofrece los accesos esenciales; Lucide ISC ya cubre las acciones/utilidades; Phosphor Regular MIT identifica PDF y recursos puntuales. No se descarga ninguna familia ni se copian iconos premium de la referencia. Se unifican tamaño/tinte neutral y se eliminan azulejos de fondo; los bitmaps originales de las apps permanecen. La cobertura limitada de Hugeicons evita sustituir iconos de acciones por glifos genéricos o inventados. Unificación completa de familias pendiente de revisión visual física.
 
 Las pruebas de Escape cambian el contrato de consultas simples de forma explícita: acciones → lista → cerrar overlay; mantienen foco, consulta, contador de cierres y ausencia de duplicación. Los documentos mantienen su capa de Quick Look. Los antiguos fixtures de cálculo prueban ahora «Cerrar acciones», con los mismos objetivos táctiles y assertions de conservación de consulta/overlay. Ningún test se desactiva ni se cambia un timeout.
+
+Blur nativo evaluado: Android31+ expone comprobación de cross-window blur y Window.setBackgroundBlurRadius; el overlay actual es un ComposeView agregado por WindowManager, no una Window de Activity. FLAG_BLUR_BEHIND/LayoutParams.blurBehindRadius actúa sobre el área rectangular de ventana (problema One UI ya documentado en el código). RenderEffect difumina los propios píxeles, incluido texto, y no reemplaza un desenfoque del fondo entre ventanas. No recurrir a APIs ocultas/SurfaceControl ni root. Este checkpoint implementa alternativa neutral con gradiente suave y alto contraste, conservando el overlay. Blur físico queda pendiente, no se presenta como implementado.
+
+PDF: el fixture válido1.4/una página quedó abierto en el Quick Look real, pero Robolectric4.14/API33 carece de implementación nativa de PdfRenderer y devuelve0 páginas. Se conserva captura del estado «El PDF no contiene páginas», identificada como renderer-unavailable, no como PDF renderizado. La prueba de composición cubre selección, inspector, expansión y Escape por capas; no sustituye PdfNativeDeviceTest instrumentado ni declara que este PDF tenga0 páginas realmente. No hay sombras personalizadas ni bitmaps ilustrativos para conseguir una imagen aparente. Render de página real y One UI quedan para dispositivo/instrumentación autorizada.
+
+## Evidencia para revisión del producto
+| Estado | Captura real en `after/` |
+|---|---|
+| Inicial oscura | tablet-initial-dark.png |
+| Apps instaladas de fixture | tablet-applications-dark.png |
+| 2+2, un único valor | tablet-results-dark.png |
+| Varios resultados/selección | tablet-multiple-selection-dark.png |
+| Acciones secundarias oscuras | tablet-actions-dark.png |
+| Acciones claras | tablet-inspector-light.png |
+| PDF/inspector con limitación de renderer | tablet-pdf-renderer-unavailable.png |
+| Tablet vertical clara, qualifiers800x1280 | tablet-portrait-light.png |
+
+`comparisons/` juxtapone píxeles de capturas reales del prototipo previo y esta composición; sin reconstrucción, masks ni mockups. `captures.json` registra hashes/dimensiones. Los fixtures de aplicaciones usan PackageManager real bajo Robolectric, datos sintéticos e iconos de plataforma; no son capturas de apps instaladas en Samsung.
+
+Raycast reproducido: superficie continua, selección neutral, filas sin tarjetas, metadatos alineados, accesos subordinados y acciones a la derecha bajo demanda. Adaptado: objetivos48dp, texto18/21sp en barra y15.5sp en resultados, dos líneas legibles, densidades56/60/68dp, acciones dentro del mismo token de overlay. Pendiente: aceptación física, blur entre ventanas, IME/foco frío/One UI y página PDF real. No confundir las capturas de composición con esa validación.
+
+Regresión adicional RED→GREEN: metadatos desplazaban48px al aparecer el control de acciones. Se reserva su espacio y se verifica altura/columna antes/después de selección en Compacta/Normal/Espaciosa, sin variar timeouts o reducir assertions. Tokens tipográficos y trazo1.5 centralizados; no dependencias nuevas.
