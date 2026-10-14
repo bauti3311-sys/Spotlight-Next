@@ -192,3 +192,8 @@ PR13 borrador apilado sobre test/native-pdf-api36-f13: solo configuración, sin 
 ## F1.3 — reanudación dirigida de animaciones IME (14/10 UTC)
 
 Se retoma primero el checkpoint propio43c8723 desde la rama económica6af16ef/PR13. Una sola tablet Android16 en run38499316489; pruebas existentes completas en ese destino, sin matriz legacy ni trazas. Resultado pendiente; ver último evento de PROGRESO y notas para cierre. La reserva cycle-native36 figura en locks/spotlight-autonomy; no editar mientras esté activa. No confundir este diagnóstico con cierre F1.3 o validación física One UI.
+
+
+### Cierre dirigido Android16 — 14/10 UTC
+
+CI38499316489 fallido: Maestro frío falla; cuatro nativas correctas y12 archivos de geometría exportados. El hook43c8723 queda probado en API36, no en API30. Local7 viewport+23Python, Actionlint/bash correctos; sin cambios Android/UI/deps. Ver último PROGRESO para comandos, artefacto y logs. F1.3 sigue abierto, puntero integral e38eae8 intacto. Próximo: primer buffer/foco frío con reproducción concreta; después una sola tablet16 si hay corrección. LegacyIME y OneUI físico separados. Continuar desde puntaPR13/rama económica, sin workflows antiguos ni reintentos idénticos. Cierre/reserva en notas del SHA final.
