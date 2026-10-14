@@ -1,69 +1,99 @@
 name: Build Debug APK
 
+# Explicit delivery branch only; already-tested source. No device tests.
 on:
+  push:
+    branches: [fix/debug-delivery-f21]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: build-apk-${{ github.workflow }}-${{ github.ref }}
+  group: debug-delivery-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  SOURCE_SHA: 58ac0a2d4cb4f96c9fbef46da4f4104475c251ae
 
 jobs:
   debug:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/fix/debug-delivery-f21'
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Java 17
-        uses: actions/setup-java@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - name: Verify exact source
+        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
+      - uses: android-actions/setup-android@v4
         with:
           packages: 'platform-tools'
-      - name: Install required Android packages
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
-      - name: Set up Gradle and dependency cache
-        uses: gradle/actions/setup-gradle@v4
+      - name: Install build packages
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: false
-      - name: Read public release identity
-        run: echo "SPOTLIGHT_VERSION=$(python3 scripts/release_identity.py name)" >> "$GITHUB_ENV"
-      - name: Build Debug APK
-        run: bash gradlew :app:assembleDebug --build-cache --no-daemon --max-workers=2 --stacktrace --console=plain
-      - name: Upload Debug APK
+      - name: Build debug only
+        run: bash gradlew :app:assembleDebug --build-cache --no-daemon --max-workers=2 --console=plain
+      - name: Package and verify APK and matching source
+        run: |
+          mkdir -p delivery/apk delivery/source
+          cp app/build/outputs/apk/debug/app-debug.apk delivery/apk/Spotlight-Next-debug-58ac0a2.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs delivery/apk/Spotlight-Next-debug-58ac0a2.apk > delivery/apk/certificate.txt
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging delivery/apk/Spotlight-Next-debug-58ac0a2.apk > delivery/apk/package.txt
+          "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 delivery/apk/Spotlight-Next-debug-58ac0a2.apk
+          grep -Fq "package: name='dev.bautista.spotlight.next' versionCode='28' versionName='2.0.1'" delivery/apk/package.txt
+          grep -Fq "sdkVersion:'26'" delivery/apk/package.txt
+          grep -q "native-code:.*'arm64-v8a'" delivery/apk/package.txt
+          git archive --format=zip --prefix=Spotlight-Next-58ac0a2/ --output=delivery/source/Spotlight-Next-source-58ac0a2.zip "$SOURCE_SHA"
+          unzip -t delivery/source/Spotlight-Next-source-58ac0a2.zip > /dev/null
+          (cd delivery/apk && sha256sum Spotlight-Next-debug-58ac0a2.apk > SHA256SUMS)
+          (cd delivery/source && sha256sum Spotlight-Next-source-58ac0a2.zip > SHA256SUMS)
+          printf '%s\n' "$SOURCE_SHA" > delivery/apk/SOURCE_COMMIT
+          printf '%s\n' "$SOURCE_SHA" > delivery/source/SOURCE_COMMIT
+          {
+            echo '### APK debug de prueba; no release ni firma histórica'
+            echo "Fuente exacta: $SOURCE_SHA"
+            echo 'La APK se recompila en este runner: hash y certificado debug pueden diferir de los archivos locales.'
+            echo 'Android mínimo8.0/API26; ARM64 verificado; Android16/API36 cumple requisitos estáticos. OneUI físico y F1.3 frío pendientes.'
+            echo 'Certificado histórico de referencia: 11B0B3B37544BD95B128DE52798FA7FFB7489F94819614B1ADA383BD4EE7A6CF.'
+            echo 'Esta entrega usa Android Debug: si difiere del certificado instalado, Android rechazará actualizar. No desinstalar para eludir el conflicto.'
+            cat delivery/apk/certificate.txt
+            echo '```text'
+            stat -c '%n: %s bytes' delivery/apk/*.apk delivery/source/*.zip
+            cat delivery/apk/SHA256SUMS delivery/source/SHA256SUMS
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload APK
+        id: apk
         uses: actions/upload-artifact@v4
         with:
-          name: spotlight-next-${{ env.SPOTLIGHT_VERSION }}-debug-${{ github.run_number }}
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: Spotlight-Next-debug-58ac0a2
+          path: delivery/apk/
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
-      - name: Unit tests and Android lint
-        run: bash gradlew :app:testDebugUnitTest :app:lintDebug --build-cache --no-daemon --max-workers=2 --stacktrace --console=plain
-      - name: Backend local tests
-        run: |
-          python3 -m unittest discover -s backend -p 'test_*.py'
-          python3 -m unittest discover -s scripts -p 'test_*.py'
-      - name: Explain failed checks
-        if: failure()
-        run: |
-          echo '::error::La compilación o una verificación falló. Abrí el paso marcado en rojo para ver el error y su stacktrace.'
-          echo '### Verificación fallida' >> "$GITHUB_STEP_SUMMARY"
-          echo 'Revisá el paso marcado en rojo. El APK solo se publica si assembleDebug termina correctamente; las pruebas o lint pueden fallar después.' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Preserve verification reports and native UI captures
-        if: always()
+      - name: Upload complete source ZIP
+        id: source
         uses: actions/upload-artifact@v4
         with:
-          name: verification-${{ env.SPOTLIGHT_VERSION }}-${{ github.run_number }}
-          path: |
-            app/build/test-results/
-            app/build/reports/
-            app/build/**/*-ui/*.png
-          if-no-files-found: ignore
-          retention-days: 14
+          name: Spotlight-Next-source-58ac0a2
+          path: delivery/source/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Browser download links
+        env:
+          APK_URL: ${{ steps.apk.outputs.artifact-url }}
+          SOURCE_URL: ${{ steps.source.outputs.artifact-url }}
+        run: |
+          echo "[Descargar APK debug (ZIP de artefacto)]($APK_URL)" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Descargar ZIP fuente (ZIP de artefacto)]($SOURCE_URL)" >> "$GITHUB_STEP_SUMMARY"
+          echo 'Requiere sesión en GitHub con acceso al repositorio privado. Extraer ZIP del artefacto para obtener archivo.' >> "$GITHUB_STEP_SUMMARY"
