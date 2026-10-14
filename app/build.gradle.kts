@@ -63,6 +63,10 @@ dependencies {
 
 // Robolectric fetches its Android runtime inside the test JVM, outside Gradle's repositories.
 tasks.withType<Test>().configureEach {
+ if (providers.gradleProperty("spotlight.test.verbose").orNull == "true") {
+  testLogging.showStandardStreams = true
+  testLogging.exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+ }
  systemProperty("robolectric.dependency.repo.url", "https://repo.maven.apache.org/maven2")
  listOf("http.proxyHost", "http.proxyPort", "https.proxyHost", "https.proxyPort", "javax.net.ssl.trustStore").forEach { key ->
   System.getProperty(key)?.let { systemProperty(key, it) }

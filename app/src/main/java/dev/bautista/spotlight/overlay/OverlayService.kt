@@ -4,6 +4,7 @@ import android.app.*
 import android.content.*
 import android.content.res.Configuration
 import android.graphics.PixelFormat
+import android.hardware.display.DisplayManager
 import android.os.*
 import android.provider.Settings
 import android.view.*
@@ -34,7 +35,18 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var closing=false
     private var focusSeen = false
     private var showJob: Job? = null
-    private val wm by lazy { getSystemService(WindowManager::class.java) }
+    private val overlayContext: Context by lazy {
+        // Android 11 may return a WindowContext after denying its token registration,
+        // without throwing. Keep the service manager there; WindowMetrics still applies.
+        // From Android 12, manager and views share the registered visual context.
+        if (Build.VERSION.SDK_INT >= 31) runCatching {
+            val display = getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY)
+            createDisplayContext(requireNotNull(display))
+                .createWindowContext(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, null)
+        }.getOrNull() ?: this else this
+    }
+    private val wm by lazy { overlayContext.getSystemService(WindowManager::class.java) }
+
     private val app
         get() = application as SpotlightApp
 
@@ -44,11 +56,35 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var contentExpanded=false
     private var availableHeightDp by androidx.compose.runtime.mutableFloatStateOf(480f)
 
-    private fun updateAvailableHeight(imeBottom: Int = 0) {
-        val dm = resources.displayMetrics
-        val top = AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,imeBottom,config).top
-        availableHeightDp =
-            ((dm.heightPixels - top - imeBottom) / dm.density - 24f).coerceAtLeast(100f)
+    // Insets are event-driven; preference and rotation refreshes must not imply IME dismissal.
+    private var lastBottomInset = 0
+    private var lastSystemBottomInset = 0
+    private var lastLoggedGeometry: OverlayBounds? = null
+
+    private fun bounds(): OverlayBounds {
+        val screen = OverlayViewport.read(wm, resources, lastSystemBottomInset, view, lastBottomInset)
+        return AdaptiveLayout.bounds(screen.width, screen.height, screen.density,
+            screen.keyboardOcclusion(lastBottomInset), config, contentExpanded, screen.landscape)
+    }
+
+    private fun refreshWindowGeometry() {
+        val geometry = updateAvailableHeight()
+        if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0 && lastLoggedGeometry != geometry) {
+            lastLoggedGeometry = geometry
+            android.util.Log.d("SpotlightOverlay", "Geometry=$geometry bottom=$lastBottomInset system=$lastSystemBottomInset")
+        }
+        view?.let { host ->
+            val next = params(geometry)
+            val current = host.layoutParams as? WindowManager.LayoutParams
+            if (current?.width != next.width || current?.y != next.y) {
+                runCatching { wm.updateViewLayout(host, next) }
+            }
+        }
+    }
+
+    internal fun updateAvailableHeight(imeBottom: Int = lastBottomInset): OverlayBounds {
+        lastBottomInset = imeBottom
+        return bounds().also { availableHeightDp = it.heightDp }
     }
 
     private val clipboard by lazy { getSystemService(ClipboardManager::class.java) }
@@ -127,17 +163,15 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     config=next
                     if(view==null && !closing)show()
                     else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
-                        updateAvailableHeight();view?.let{runCatching{wm.updateViewLayout(it,params())}}
+                        refreshWindowGeometry()
                     }
                 }
             }
         return START_NOT_STICKY
     }
 
-    private fun params(): WindowManager.LayoutParams {
-        val dm = resources.displayMetrics
-        val bounds=AdaptiveLayout.bounds(dm.widthPixels,dm.heightPixels,dm.density,0,config,contentExpanded)
-        val width=bounds.width
+    private fun params(geometry: OverlayBounds = bounds()): WindowManager.LayoutParams {
+        val width=geometry.width
         return WindowManager.LayoutParams(
                 width,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -148,10 +182,17 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             )
             .apply {
                 gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                y = bounds.top
+                y = geometry.top
                 softInputMode =
                     WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED
+                if (Build.VERSION.SDK_INT >= 30) {
+                    setFitInsetsTypes(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
+                    setFitInsetsIgnoringVisibility(true)
+                }
+                if (Build.VERSION.SDK_INT >= 28) {
+                    layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER
+                }
                 title = "Spotlight"
                 // Keep all pixels outside the actual capsule/circles transparent.
                 // FLAG_BLUR_BEHIND blurs the rectangular window footprint on One UI.
@@ -160,9 +201,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     private fun show() {
-        updateAvailableHeight()
+        val openingBounds = updateAvailableHeight()
+        if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) android.util.Log.d("SpotlightOverlay", "Opening geometry=$openingBounds")
         val panel =
-            ComposeView(this).apply {
+            ComposeView(overlayContext).apply {
                 setBackgroundColor(android.graphics.Color.TRANSPARENT)
                 setViewTreeLifecycleOwner(this@OverlayService)
                 setViewTreeSavedStateRegistryOwner(this@OverlayService)
@@ -176,34 +218,42 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         initialQuery = initialQuery,
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
-                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;view?.let{runCatching{wm.updateViewLayout(it,params())}}}},
+                        onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry()}},
                     )
                 }
             }
         focusSeen = false
         val host = createHost(panel)
         ViewCompat.setOnApplyWindowInsetsListener(host) { _, insets ->
-            updateAvailableHeight(
-                maxOf(
-                    insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom,
-                )
+            lastSystemBottomInset = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()).bottom
+            lastBottomInset = maxOf(
+                insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
+                insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom,
             )
+            refreshWindowGeometry()
             insets
         }
         try {
-            wm.addView(host, params())
+            wm.addView(host, params(openingBounds))
             view = host
             composition = panel
+            ViewCompat.requestApplyInsets(host)
             host.viewTreeObserver.addOnDrawListener(object:android.view.ViewTreeObserver.OnDrawListener {
                 var reported=false
-                override fun onDraw(){if(!reported){reported=true;app.diagnostics.markVisible()}}
+                override fun onDraw(){if(!reported){
+                    reported=true
+                    app.diagnostics.markVisible()
+                    if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+                        android.util.Log.d("SpotlightOverlay", "First draw: windowFocus=${host.hasWindowFocus()} editorFocus=${panel.hasFocus()}")
+                    }
+                }}
             })
             // Visible on the first frame: no competing window/Compose entrance animations.
             clipboard.addPrimaryClipChangedListener(clipListener)
             host.postDelayed(
                 {
                     if (view === host && !focusSeen) {
+                        android.util.Log.w("SpotlightOverlay", "Focus watchdog: callbackSeen=$focusSeen actualFocus=${host.hasWindowFocus()} shown=${host.isShown} visibility=${host.windowVisibility} size=${host.width}x${host.height}")
                         Toast.makeText(
                                 this,
                                 "Esta pantalla no permitió enfocar Spotlight. Abrilo desde otra app.",
@@ -216,6 +266,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 2500L,
             )
         } catch (e: RuntimeException) {
+            android.util.Log.e("SpotlightOverlay", "Overlay window attachment failed", e)
             Toast.makeText(
                     this,
                     "No se pudo mostrar la ventana. Revisá el permiso de superposición.",
@@ -231,9 +282,12 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     // host itself, not only on the ComposeView child.
     internal fun createHost(panel: ComposeView): WindowFocusHost {
         return WindowFocusHost(
-                this,
+                overlayContext,
                 onOutside = { close() },
                 onFocus = { gained ->
+                    if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+                        android.util.Log.d("SpotlightOverlay", "Window focus=$gained")
+                    }
                     if (gained) {
                         focusSeen = true
                         panel.post { captureClipboard() }
@@ -258,8 +312,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updateAvailableHeight()
-        view?.let { runCatching { wm.updateViewLayout(it, params()) } }
+        refreshWindowGeometry()
+        view?.let { ViewCompat.requestApplyInsets(it) }
     }
 
     private fun motionAllowed()=config.animations && runCatching { Settings.Global.getFloat(contentResolver,Settings.Global.ANIMATOR_DURATION_SCALE,1f)>0 }.getOrDefault(false)

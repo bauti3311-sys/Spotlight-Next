@@ -4,12 +4,14 @@ on:
   push:
     branches: [chore/codex-infrastructure-2.0.1]
   pull_request:
-    branches: [main]
+    branches: [main, chore/codex-infrastructure-2.0.1]
     paths:
       - '.agents/**'
       - '.codex/**'
       - '.maestro/**'
       - 'visual-lab/**'
+      - 'app/src/main/**'
+      - 'app/src/androidTest/**'
       - 'app/src/test/**'
       - 'app/build.gradle.kts'
       - 'build.gradle.kts'
@@ -44,7 +46,10 @@ jobs:
       - run: bash .codex/scripts/doctor.sh android
       - name: Functional tests, lint and build
         run: |
-          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --max-workers=2 --console=plain
+          bash gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug -Pspotlight.test.verbose=true --no-daemon --max-workers=2 --console=plain
+          mkdir -p app/build/functional-unit-evidence
+          cp -R app/build/test-results/testDebugUnitTest app/build/functional-unit-evidence/
+          cp -R app/build/reports/tests/testDebugUnitTest app/build/functional-unit-evidence/html
           python3 -m unittest discover -s backend -p 'test_*.py'
           python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Compare approved native pixel baselines
@@ -54,9 +59,13 @@ jobs:
         with:
           name: native-functional-visual-${{ github.run_number }}
           path: |
+            app/build/functional-unit-evidence/
             app/build/test-results/
             app/build/reports/
             app/build/outputs/roborazzi/
+            app/build/091-ui/f1-width-*.png
+            app/build/091-ui/f12-*.png
+            app/build/091-ui/f13-*.png
           retention-days: 14
   web-lab:
     runs-on: ubuntu-24.04
@@ -105,6 +114,10 @@ jobs:
       fail-fast: false
       matrix:
         profile: [pixel_6, pixel_c]
+        api: [29, 30]
+        include:
+          - profile: pixel_c
+            api: 36
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -118,6 +131,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - run: bash gradlew :app:assembleDebug --no-daemon --max-workers=2 --console=plain
       - run: bash .codex/scripts/install-tool.sh maestro
+      - run: bash .codex/scripts/install-tool.sh perfetto
       - name: Free unused runner space and enable KVM
         run: |
           sudo rm -rf /usr/share/dotnet
@@ -126,20 +140,25 @@ jobs:
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: ${{ matrix.api }}
           arch: x86_64
           profile: ${{ matrix.profile }}
           disk-size: 2G
           disable-animations: true
           script: |
+            if [ "${{ matrix.api }}" = "36" ]; then adb shell wm size 1200x1920; adb shell wm density 240; fi
+            adb shell wm size
+            adb shell wm density
             adb install app/build/outputs/apk/debug/app-debug.apk
-            bash .codex/scripts/device-checks.sh
+            bash .codex/scripts/device-suite.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: maestro-${{ matrix.profile }}-${{ github.run_number }}
+          name: maestro-${{ matrix.profile }}-api${{ matrix.api }}-${{ github.run_number }}
           path: |
             .maestro/output/
+            app/build/outputs/androidTest-results/
+            app/build/reports/androidTests/
             ~/.maestro/tests/
           retention-days: 14
           if-no-files-found: ignore
