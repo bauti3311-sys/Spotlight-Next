@@ -1,0 +1,166 @@
+name: Private tablet product checkpoint
+
+on:
+  push:
+    branches: [test/premium-tablet-delivery]
+    paths: [.github/workflows/premium-tablet-delivery.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: premium-tablet-delivery
+  cancel-in-progress: true
+env:
+  SOURCE_SHA: SOURCE_PIN
+  VERIFIED_RUN: CI_PIN
+
+jobs:
+  deliver:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.actor == 'bauti3311-sys' && github.ref == 'refs/heads/test/premium-tablet-delivery' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Require exact approved source CI before building or signing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$VERIFIED_RUN" > approved.json
+          python3 - <<'PY'
+          import json, os
+          r=json.load(open('approved.json'))
+          assert r['head_sha']==os.environ['SOURCE_SHA']
+          assert r['status']=='completed' and r['conclusion']=='success'
+          assert r['head_repository']['full_name']==os.environ['GITHUB_REPOSITORY']
+          assert r['name']=='Codex development tools'
+          PY
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - name: Require immutable source
+        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+      - name: Install build and signature tools
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build already-tested debug source only
+        run: bash gradlew :app:assembleDebug --build-cache --no-daemon --max-workers=2 --console=plain
+      - name: Compare historical identity before accessing signing Secrets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p input/historical input/candidate delivery/apk delivery/source
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/11753988125/zip" > historical.zip
+          echo 'e4fde53dca0029e211662552a3b3f30a629b48a34ee60cc77a177ea991c74379  historical.zip' | sha256sum -c -
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import PurePosixPath
+          with zipfile.ZipFile('historical.zip') as z:
+              for i in z.infolist():
+                  p=PurePosixPath(i.filename)
+                  assert not p.is_absolute() and '..' not in p.parts
+                  assert (i.external_attr >> 16) & 0o170000 != 0o120000
+              z.extractall('input/historical')
+          PY
+          cp app/build/outputs/apk/debug/app-debug.apk input/candidate/unsigned-update.apk
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          "$tools/apksigner" verify --print-certs input/historical/spotlight-next-release.apk > input/historical/cert.txt
+          "$tools/aapt" dump badging input/historical/spotlight-next-release.apk > input/historical/package.txt
+          "$tools/apksigner" verify --print-certs input/candidate/unsigned-update.apk > input/candidate/cert.txt
+          "$tools/aapt" dump badging input/candidate/unsigned-update.apk > input/candidate/package.txt
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from verify_update_pair import identity
+          from verify_release import verify_certificate
+          old=identity(Path('input/historical/package.txt').read_text())
+          new=identity(Path('input/candidate/package.txt').read_text())
+          verify_certificate(Path('input/historical/cert.txt').read_text())
+          assert old['package']==new['package']=='dev.bautista.spotlight.next'
+          assert old['code']==27 and new['code']==29 and new['code']>28
+          assert new['name']=='2.0.1' and new['minSdk']==26
+          manifest=Path('input/candidate/package.txt').read_text()
+          assert 'application-debuggable' in manifest and "'arm64-v8a'" in manifest
+          PY
+      - name: Sign private test update with existing historical key
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          set +x
+          for field in ANDROID_KEYSTORE_BASE64 ANDROID_STORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            test -n "${!field:-}" || { echo 'Historical signing unavailable; withholding APK'; exit 1; }
+          done
+          umask 077
+          private_dir=$(mktemp -d "$RUNNER_TEMP/product-key.XXXXXX")
+          trap 'rm -rf "$private_dir"' EXIT
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$private_dir/key.jks"
+          unset ANDROID_KEYSTORE_BASE64
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" sign --ks "$private_dir/key.jks" --ks-key-alias "$ANDROID_KEY_ALIAS" --ks-pass env:ANDROID_STORE_PASSWORD --key-pass env:ANDROID_KEY_PASSWORD --out delivery/apk/Spotlight-Next-tablet-preview-29.apk input/candidate/unsigned-update.apk > "$private_dir/sign.log" 2>&1 || { echo 'Historical signing failed; withholding APK'; exit 1; }
+          unset ANDROID_STORE_PASSWORD ANDROID_KEY_PASSWORD ANDROID_KEY_ALIAS
+      - name: Validate final certificate, unchanged payload and exact source ZIP
+        run: |
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          "$tools/apksigner" verify --verbose --print-certs delivery/apk/Spotlight-Next-tablet-preview-29.apk > delivery/apk/certificate.txt
+          "$tools/zipalign" -c 4 delivery/apk/Spotlight-Next-tablet-preview-29.apk
+          "$tools/aapt" dump badging delivery/apk/Spotlight-Next-tablet-preview-29.apk > delivery/apk/package.txt
+          python3 - <<'PY'
+          import sys,os,json,hashlib
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from verify_update_pair import identity,verify_unchanged
+          from verify_release import verify_certificate
+          p=Path('delivery/apk/Spotlight-Next-tablet-preview-29.apk')
+          verify_certificate(Path('delivery/apk/certificate.txt').read_text())
+          verify_unchanged('input/candidate/unsigned-update.apk',p)
+          assert Path('delivery/apk/package.txt').read_text()==Path('input/candidate/package.txt').read_text()
+          report=dict(source=os.environ['SOURCE_SHA'],ci=int(os.environ['VERIFIED_RUN']),identity=identity(Path('delivery/apk/package.txt').read_text()),certificate='11b0b3b37544bd95b128de52798fa7ffb7489f94819614b1ada383bd4ee7a6cf',sha256=hashlib.file_digest(p.open('rb'),'sha256').hexdigest(),apk_bytes=p.stat().st_size,payload_unchanged=True,compatible_with_published_codes=[27,28],physical_OneUI_update_tested=False,known_issue='F1.3 cold focus remains open')
+          Path('delivery/apk/verification.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+          git archive --format=zip --prefix=Spotlight-Next-preview-29/ --output=delivery/source/Spotlight-Next-source-preview-29.zip "$SOURCE_SHA"
+          unzip -t delivery/source/Spotlight-Next-source-preview-29.zip > /dev/null
+          (cd delivery/apk && sha256sum Spotlight-Next-tablet-preview-29.apk > SHA256SUMS)
+          (cd delivery/source && sha256sum Spotlight-Next-source-preview-29.zip > SHA256SUMS)
+          printf '%s\n' "$SOURCE_SHA" > delivery/apk/SOURCE_COMMIT
+          printf '%s\n' "$SOURCE_SHA" > delivery/source/SOURCE_COMMIT
+          cat delivery/apk/verification.json >> "$GITHUB_STEP_SUMMARY"
+          cat delivery/apk/SHA256SUMS delivery/source/SHA256SUMS
+      - name: Upload historically compatible private debug APK
+        id: apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: Spotlight-Next-tablet-preview-29
+          path: delivery/apk/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
+      - name: Upload complete matching source ZIP
+        id: source
+        uses: actions/upload-artifact@v4
+        with:
+          name: Spotlight-Next-source-preview-29
+          path: delivery/source/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
+      - name: Browser download links and honest installation limits
+        env:
+          APK_URL: ${{ steps.apk.outputs.artifact-url }}
+          SOURCE_URL: ${{ steps.source.outputs.artifact-url }}
+        run: |
+          echo "[APK de prueba compatible (extraer ZIP)]($APK_URL)" >> "$GITHUB_STEP_SUMMARY"
+          echo "[ZIP fuente del mismo SHA]($SOURCE_URL)" >> "$GITHUB_STEP_SUMMARY"
+          echo 'Debug privado, no release oficial. Paquete/certificado históricos, código29 superior27/28. Android8+/ARM64, Android16 cumple requisitos estáticos. OneUI físico y foco frío pendientes. No desinstalar ni borrar datos.' >> "$GITHUB_STEP_SUMMARY"
