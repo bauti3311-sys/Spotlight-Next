@@ -1,0 +1,43 @@
+{
+  "owner": "product-transform-20261014",
+  "state": "closed-user-request-work-handoff",
+  "reservation_released": true,
+  "release_method": "autonomy_lock.py release --publish-notes atomic owner/SHA checked",
+  "branch": "feat/premium-product-checkpoint",
+  "published_head": "a47e3bf8aeee098eff0e4696b56bdbe1ea713096",
+  "android_source": "68aa267b34105b45ca9c43c622547582d55be97b",
+  "pr": 16,
+  "pr_draft": true,
+  "timestamp": "2026-10-14T16:20:09.139615-03:00",
+  "local_validation": {
+    "integral_unit": 397,
+    "integral_failures": 0,
+    "final_directed": 18,
+    "final_visual": 17,
+    "python": 35,
+    "lint_errors": 0,
+    "lint_warnings": 10,
+    "debug": "passed",
+    "debugAndroidTest": "compiled-not-executed"
+  },
+  "ci": {
+    "id": 38605745221,
+    "sha": "68aa267b34105b45ca9c43c622547582d55be97b",
+    "conclusion": "failure",
+    "cause": "actionlint shellcheck SC2129 build-apk.yml:96 consecutive summary redirects",
+    "android_job": "skipped-not-tested",
+    "url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38605745221"
+  },
+  "closing_commit_ci": "[skip ci] docs/template-only; Android unchanged, not CI success",
+  "captures": "docs/visual/raycast-checkpoint",
+  "limits": [
+    "F1.3 cold focus open",
+    "physical One UI and blur not validated",
+    "Robolectric PDF native renderer unavailable; no actual page capture"
+  ],
+  "new_signed_apk_or_zip_published": false,
+  "inactive_delivery_template": ".codex/templates/premium-tablet-delivery.yml.in",
+  "integral_checkpoint_preserved": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "next": "Work recover a47e3bf/PR16, acquire own fresh reservation, fix SC2129 without disabling checks, run economical exact CI, then authorized protected compatible APK29+sameSHA source ZIP for physical review. No new features before evaluation.",
+  "session": "This session stopped by user; no Gradle/test processes remain. Notes become public only if own release succeeds atomically."
+}
