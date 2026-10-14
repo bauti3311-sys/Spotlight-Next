@@ -18,6 +18,9 @@ import android.view.inspector.WindowInspector
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsAnimationCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
@@ -37,6 +40,7 @@ import java.io.FileInputStream
 @RunWith(AndroidJUnit4::class)
 @SdkSuppress(minSdkVersion = 29)
 class OverlayGeometryDeviceTest {
+    private val imeAnimations = java.util.concurrent.ConcurrentHashMap.newKeySet<WindowInsetsAnimationCompat>()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val automation get() = instrumentation.uiAutomation
     private fun shell(command: String): String = automation.executeShellCommand(command).use {
@@ -88,7 +92,7 @@ class OverlayGeometryDeviceTest {
                 previous = current
                 stableSince = now
             }
-            (current != null) == expectIme && now - stableSince >= 100
+            (current != null) == expectIme && imeAnimations.isEmpty() && now - stableSince >= 100
         }
         await("Query editor lost focus during $stage") {
             automation.windows.any { it.root?.packageName?.toString() == context.packageName && focusedQuery(it.root) }
@@ -183,6 +187,16 @@ class OverlayGeometryDeviceTest {
                 ready
             }
             instrumentation.runOnMainSync {
+                ViewCompat.setWindowInsetsAnimationCallback(requireNotNull(host()),
+                    object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_CONTINUE_ON_SUBTREE) {
+                        override fun onPrepare(animation: WindowInsetsAnimationCompat) {
+                            if (animation.typeMask and WindowInsetsCompat.Type.ime() != 0) imeAnimations.add(animation)
+                        }
+                        override fun onProgress(insets: WindowInsetsCompat, animations: MutableList<WindowInsetsAnimationCompat>) = insets
+                        override fun onEnd(animation: WindowInsetsAnimationCompat) {
+                            if (imeAnimations.remove(animation)) android.util.Log.d("SpotlightGeometry", "IME animation ended; active=${imeAnimations.size}")
+                        }
+                    })
                 val view = requireNotNull(editor(requireNotNull(host())))
                 context.getSystemService(InputMethodManager::class.java).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
             }
@@ -231,6 +245,8 @@ class OverlayGeometryDeviceTest {
             assertEquals("Showing IME changed automatic width", autoWidth, windowWidth())
             assertEquals(original.density, runBlocking { app.preferences.config.first() }.density)
         } finally {
+            instrumentation.runOnMainSync { host()?.let { ViewCompat.setWindowInsetsAnimationCallback(it, null) } }
+            imeAnimations.clear()
             context.stopService(Intent(context, OverlayService::class.java))
             instrumentation.waitForIdleSync()
             runBlocking { app.preferences.update(original) }
