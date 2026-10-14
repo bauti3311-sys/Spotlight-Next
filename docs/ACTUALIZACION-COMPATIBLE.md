@@ -15,3 +15,13 @@ La comparación es contra APK histórica publicada, no lectura física del certi
 Si la firma falla por inputs ausentes/incorrectos o certificado distinto, no se entrega APK y no se genera clave. Mantener la app anterior con sus datos; recuperar acceso a la clave original en GitHub Secrets sin pegar claves al chat. Si el certificado realmente instalado fuera otro, conservar la instalación y aportar únicamente la APK antigua pública para identificar su firma y la clave correcta. Una copia del certificado público por sí sola no permite firmar.
 
 Resultado final/run/enlace/digests y propietario/cierre en notas de continuidad. No PR nuevo ni commits posteriores que reinicien el job. Fuente funcional58 y checkpoint integral e38 conservados; no nuevas features.
+
+## Resultado 14/10/2026
+
+Firma histórica actual disponible: CI38575553197 correcta. Debug anteriorb609… y publicada histórica11b0… eran diferentes; nueva privada11b0… coincide con histórica. Paqueteigual,código27→28, payloadinmutable verificado.
+
+Descarga: https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38575553197/artifacts/11900151748 . Iniciar sesiónGitHub, extraerZIP y abrir `Spotlight-Next-update-58ac0a2.apk` en Misarchivos; Android debe ofrecer Actualizar si instalada corresponde a histórica comparada. No desinstalar ni borrar datos.
+
+APK177819655bytes, SHA256 `45a21f56f607e8c9efcd38d8d27ed6e7e7f67883867584fc090a71fef2f12e6e`. Certificado `11b0b3b37544bd95b128de52798fa7ffb7489f94819614b1ada383bd4ee7a6cf`. ZIPenlace SHA256 `3f2c808c0f78618f48f49e3595700ae866e06e6dade9181c9a25a8d718a5f3c5`; diferencias de nivel (APKextraída/ZIPdescarga). Disponiblehasta21octubre.
+
+No instalacióntablet realizada ni certificadode suinstalaciónleído. Si siguiera conflicto, preservarapp y aportarAPKantigua pública para comparación de firma/código; nunca claves.
