@@ -118,3 +118,42 @@
   "next": "User download logged-in GitHub artifact links, extract APK zip in SamsungMyFiles, open APK;if certificate conflict stop, keep installed data. No manual workflow needed for this successful delivery.",
   "lease_sha": "44406b74c70b22f7a9c8d6e7bd7e5949fd3ba008"
 }
+
+{
+  "owner": "historical-update-20261014",
+  "state": "closed; private compatible APK delivered; own reservation released with evidence",
+  "date": "2026-10-14T11:08:27.182707-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "branch": "fix/historical-update-58ac0a2",
+  "checkpoint": "10e0b1cafb02eaa9afb322a242c187aa56225d4d",
+  "orchestration": "d670ba85e3bb0eef36828d44a48ec5dd271ab314",
+  "source_android": "58ac0a2d4cb4f96c9fbef46da4f4104475c251ae",
+  "source_ci": 38528963148,
+  "signing_run": 38575553197,
+  "signing_status": "completed/success",
+  "job": 115891572792,
+  "comparison": {
+    "package_old_and_new": "dev.bautista.spotlight.next",
+    "historical_version": "2.0.0/code27",
+    "new_version": "2.0.1/code28",
+    "historical_certificate": "11b0b3b37544bd95b128de52798fa7ffb7489f94819614b1ada383bd4ee7a6cf",
+    "rejected_debug_certificate": "b6091555f09f8d2c4f41278a88d8cada1e0629fb9b519f5234aea609edef1d00",
+    "new_signed_certificate": "11b0b3b37544bd95b128de52798fa7ffb7489f94819614b1ada383bd4ee7a6cf"
+  },
+  "artifact": {
+    "id": 11900151748,
+    "name": "Spotlight-Next-compatible-update-58ac0a2",
+    "url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38575553197/artifacts/11900151748",
+    "apk_bytes": 177819655,
+    "apk_sha256": "45a21f56f607e8c9efcd38d8d27ed6e7e7f67883867584fc090a71fef2f12e6e",
+    "download_zip_bytes": 179232936,
+    "download_zip_sha256": "3f2c808c0f78618f48f49e3595700ae866e06e6dade9181c9a25a8d718a5f3c5",
+    "expires_at": "2026-10-21T13:53:19Z"
+  },
+  "validation": "actual historical/new artifacts downloaded in runner with pinned ZIP digests;signatures/manifests checked before Secrets;key available/valid TODAY proven by sign+strictcert11;apksigner/zipalign success;compiled payload identical before/after signing;3cheap verifier tests/Actionlint/bash-n/diffcheck passed;no rebuild/emulators/expensive tests",
+  "key_safety": "existing4Secrets used only in scoped owner/repo/ref signing step;keystore temporary077/trapclean;no private key/alias/password logs/artifacts/cache;no Secret changes or new key;no PR/fork signer",
+  "scope": "APK remains private debug test update, not official release;Android code/package/preferences untouched;main/PRs/historiccheckpoint/e38 unchanged;doc-only finalpush triggered0additionalruns",
+  "limits": "comparison against historical PUBLISHED APK, not certificate read physically from installed tablet;update compatible if installed matches historical;physical install/data preservation not performed;F1.3coldfocus known",
+  "next": "User download/extractAPK/update without uninstall or data clear. If conflict persists keep app/data and inspect public APK used for installed version to compare actual signer/version. No new development until feedback/instruction. Functional base6de/PR15 remains;deliveredAndroid58",
+  "lease_sha": "f060999a8bde3781ccf3ad071a2df11fd4a89697"
+}
