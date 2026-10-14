@@ -28,6 +28,8 @@ Gradle usa build-cache y permite escribir caché en estas ramas; Node conserva l
 
 Una CI rápida verde no equivale a validación de emulador, One UI o release. F1.3 continúa abierto: el CI38488258740 falló apertura fría en API30 y36. Android16 ejecutó correctamente geometría y los tres PDF, pero Maestro frío falló. La tablet30 mostró una discrepancia entre visibilidad IME en accesibilidad y WindowMetrics. El checkpoint de animaciones43c8723 está compilado, todavía no ejecutado en dispositivo.
 
+El PR de configuración se apila sobre `test/native-pdf-api36-f13` (43c8723): el diff muestra solo infraestructura y no incorpora F1.3 a otra rama. El ancestro de infraestructura se conserva. Así la apertura del PR no recompila código Android heredado sin cambios.
+
 La optimización se prueba con Actionlint, tests Python de selección/cancelación y revisión de eventos. No se lanza una matriz para probarla. Para la siguiente corrección F1.3, usar primero validación local y luego una ejecución Android16 dirigida cuando corresponda; reservar legacy/completa para cierre o cambios de compatibilidad. No declarar ese cierre con checks manuales ausentes o rojos.
 
 La configuración se prepara en un PR borrador sin merges. Afecta a la CI del head que la contiene; las otras ramas conservan sus definiciones hasta incorporar explícitamente estos commits. Para continuar, partir de esta rama de infraestructura económica, no empujar a PR12 con los workflows antiguos. Los nuevos workflows manuales pueden requerir su incorporación autorizada a la rama predeterminada para aparecer en la interfaz de GitHub. No integrar main automáticamente para habilitarlos.
