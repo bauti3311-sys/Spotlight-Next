@@ -82,18 +82,20 @@ fun ResultRow(
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
-    val pad=when(LocalAppearance.current.density){"compact"->5;"spacious"->13;"auto"->if(LocalConfiguration.current.screenWidthDp<600)6 else 9;else->9}
+    val pad=when(LocalAppearance.current.density){"compact"->8;"spacious"->16;"auto"->if(LocalConfiguration.current.screenWidthDp<600)9 else 12;else->12}
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
-    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=if(LocalAppearance.current.preset=="raycast") .22f else .12f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
+    val fill by animateColorAsState(if(selected)colors.primary.copy(alpha=.16f) else if(hovered)colors.onSurface.copy(alpha=.045f) else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=52.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
-            .clip(RoundedCornerShape(9.dp))
+        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(LocalAppearance.current.density=="compact")52.dp else 64.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+            .clip(RoundedCornerShape(12.dp))
             .background(fill)
-            .border(if(selected && LocalAppearance.current.selectionStyle=="glass")1.dp else 0.dp,colors.primary.copy(alpha=.16f),RoundedCornerShape(9.dp))
+
             .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
-            .padding(start = 10.dp, end = 4.dp, top = pad.dp, bottom = pad.dp),
+            .padding(start = 12.dp, end = 8.dp, top = pad.dp, bottom = pad.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        Box(Modifier.width(3.dp).height(28.dp).background(if(selected)colors.primary else Color.Transparent,RoundedCornerShape(2.dp)))
+        Spacer(Modifier.width(12.dp))
         if(result.icon!=null)ResultIcon(result,Modifier.size(LocalAppearance.current.iconSize.dp),colors.primary) else Box(Modifier.size((LocalAppearance.current.iconSize+6).dp).clip(RoundedCornerShape(10.dp)).background(colors.primary.copy(alpha=.07f)).padding(5.dp)){ResultIcon(result,Modifier.fillMaxSize(),colors.primary)}
         Spacer(Modifier.width(11.dp))
         Column(Modifier.weight(1f)) {
@@ -101,14 +103,14 @@ fun ResultRow(
                 result.title,
                 color = ink,
                 fontWeight = FontWeight.Medium,
-                fontSize = (14*LocalAppearance.current.textScale).sp,
+                fontSize = (16*LocalAppearance.current.textScale).sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 result.subtitle,
                 color = colors.onSurfaceVariant,
-                fontSize = (12*LocalAppearance.current.textScale).sp,
+                fontSize = (12.5f*LocalAppearance.current.textScale).sp,
                 maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -120,9 +122,9 @@ fun ResultRow(
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(48.dp)) {
             Icon(
-                CommandIcons.Sliders,
+                CommandIcons.Chevron,
                 "Operaciones del resultado",
-                Modifier.size(20.dp),
+                Modifier.size(18.dp),
                 tint = ink.copy(alpha = .7f),
             )
         }
@@ -145,7 +147,7 @@ fun InfoCardView(card: InfoCard, onCopy: () -> Unit, onLink: () -> Unit,onShare:
             color = colors.onSurfaceVariant,
             modifier = Modifier.padding(top = 6.dp, bottom = 12.dp),
         )
-        SelectionContainer { Text(card.body, fontSize = (14*LocalAppearance.current.textScale).sp, lineHeight = 21.sp) }
+        SelectionContainer { Text(card.body, fontSize = (16*LocalAppearance.current.textScale).sp, lineHeight = 21.sp) }
         card.rows.forEach { (label, value) ->
             Row(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
                 Text(

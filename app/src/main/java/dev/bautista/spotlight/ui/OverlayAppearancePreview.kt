@@ -1,5 +1,6 @@
 package dev.bautista.spotlight.ui
 
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
@@ -18,15 +19,15 @@ import dev.bautista.spotlight.search.Action
 import dev.bautista.spotlight.search.Result
 
 @Composable
-fun OverlayDensitySettings(c: Config, update: (Config) -> Unit) {
+fun OverlayDensitySettings(c: Config, simple:Boolean=false, update: (Config) -> Unit) {
     Surface(Modifier.fillMaxWidth().testTag("density-settings"), shape=RoundedCornerShape(16.dp), color=MaterialTheme.colorScheme.surfaceContainerLow) {
         Column(Modifier.padding(16.dp), verticalArrangement=Arrangement.spacedBy(8.dp)) {
             Text("Espaciado de resultados", style=MaterialTheme.typography.titleSmall)
-            Text("La densidad cambia el espacio dentro de las filas. No cambia el ancho de la ventana.", style=MaterialTheme.typography.bodySmall)
-            if(c.density=="auto") Text("Actual: automático según el tamaño de pantalla.", style=MaterialTheme.typography.bodySmall)
+            if(!simple) Text("La densidad cambia el espacio dentro de las filas. No cambia el ancho de la ventana.", style=MaterialTheme.typography.bodySmall)
+            if(c.density=="auto" && !simple) Text("Actual: automático según el tamaño de pantalla.", style=MaterialTheme.typography.bodySmall)
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-                listOf("compact" to "Compacta", "balanced" to "Equilibrada", "spacious" to "Espaciosa").forEach { (key, label) ->
-                    FilterChip(c.density==key, { update(c.copy(density=key)) }, label={ Text(label) })
+                listOf("compact" to "Compacta", "balanced" to if(simple)"Normal" else "Equilibrada", "spacious" to "Espaciosa").forEach { (key, label) ->
+                    FilterChip(c.density==key || (simple && key=="balanced" && c.density=="auto"), { update(c.copy(density=key)) }, label={ Text(label) })
                 }
             }
         }
@@ -35,7 +36,7 @@ fun OverlayDensitySettings(c: Config, update: (Config) -> Unit) {
 
 /** Uses the same geometry and result renderer as the overlay; never launches sample actions. */
 @Composable
-fun OverlayAppearancePreview(c: Config) {
+fun OverlayAppearancePreview(c: Config, simple:Boolean=false) {
     val screen=LocalConfiguration.current
     val landscape=screen.screenWidthDp>screen.screenHeightDp
     // Inputs are dp with density 1, so the geometry's returned width is also dp.
@@ -49,15 +50,15 @@ fun OverlayAppearancePreview(c: Config) {
     }
     Column(Modifier.fillMaxWidth(), verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Vista previa · ${if(landscape) "horizontal" else "vertical"}", style=MaterialTheme.typography.titleSmall)
-        Text("Ancho visible: $width dp · $source", style=MaterialTheme.typography.bodySmall, modifier=Modifier.testTag("preview-width-label"))
-        if(requested>width) Text("Configurado: $requested dp; limitado al espacio de esta pantalla.", style=MaterialTheme.typography.bodySmall)
-        Text("Tamaño real · deslizá horizontalmente si no cabe en Ajustes. Tocá una fila para probar la selección; no ejecuta acciones.", style=MaterialTheme.typography.bodySmall)
+        if(!simple) Text("Ancho visible: $width dp · $source", style=MaterialTheme.typography.bodySmall, modifier=Modifier.testTag("preview-width-label"))
+        if(!simple && requested>width) Text("Configurado: $requested dp; limitado al espacio de esta pantalla.", style=MaterialTheme.typography.bodySmall)
+        if(!simple) Text("Tamaño real · deslizá horizontalmente si no cabe en Ajustes. Tocá una fila para probar la selección; no ejecuta acciones.", style=MaterialTheme.typography.bodySmall)
         BoxWithConstraints(Modifier.fillMaxWidth().testTag("appearance-preview-viewport")) {
             val canvasWidth=maxOf(maxWidth, width.dp)
             Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
                 Box(Modifier.width(canvasWidth), contentAlignment=Alignment.TopCenter) {
                     SpotlightTheme(c.theme, c) {
-                        Column(Modifier.width(width.dp).testTag("appearance-preview-window").glassSurface(c).padding(16.dp)) {
+                        Column(Modifier.width(width.dp).testTag("appearance-preview-window").heightIn(max=180.dp).glassSurface(c).verticalScroll(rememberScrollState()).padding(16.dp)) {
                             Text("Buscar en Spotlight", style=MaterialTheme.typography.titleMedium, modifier=Modifier.padding(bottom=8.dp))
                             HorizontalDivider()
                             examples.forEachIndexed { index, result ->

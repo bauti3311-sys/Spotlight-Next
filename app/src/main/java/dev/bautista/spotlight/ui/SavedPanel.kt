@@ -17,7 +17,6 @@ import dev.bautista.spotlight.search.*
     var filter by remember{mutableStateOf("")}
     val rows=remember(notes,contexts,chats,c.snippets,c.pins,c.quickLinks,filter){
         val base=notes.map{Result("note:${it.id}",it.text.lineSequence().first().take(100),"Nota · editar","Guardados",0,Action.EditNote(it.id,it.text))}+
-            PersonalCommands.results("textos",c).filter{it.id.startsWith("snippet:")}+
             c.pins.map{Result("pin:$it",it,"Consulta fijada","Guardados",0,Action.RestoreQuery(it))}+
             contexts.map{Result("context:${it.id}",it.title,"Documento, enlace o texto fijado","Guardados",0,Action.SystemPanel("context",it.id))}+
             chats.map{Result("conversation:${it.id}",it.title,"Conversación guardada","Guardados",0,Action.SystemPanel("conversation",it.id))}+

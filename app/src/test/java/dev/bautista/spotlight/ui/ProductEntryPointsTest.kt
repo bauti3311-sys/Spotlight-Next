@@ -1,0 +1,48 @@
+package dev.bautista.spotlight.ui
+
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import dev.bautista.spotlight.SpotlightApp
+import dev.bautista.spotlight.data.Config as AppConfig
+import dev.bautista.spotlight.search.Action
+import dev.bautista.spotlight.search.Result
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
+class ProductEntryPointsTest {
+    @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
+    @Test fun visibleShortcutsOpenRealSavedAndSettingsWithoutChangingQuery() {
+        val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        ui.setContent { SpotlightPanel(app,AppConfig(files=false,animations=false,pins=setOf("pdf de ayer")),{},initialQuery="2+2") }
+        ui.onNodeWithContentDescription("Opciones de búsqueda").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Abrir Guardados").assertIsDisplayed().performClick()
+        ui.onNodeWithText("pdf de ayer").assertExists()
+        ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
+        ui.onNodeWithContentDescription("Abrir Ajustes").performClick()
+        ui.onNodeWithTag("window-width-slider").assertExists()
+        ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
+        ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
+    }
+    @Test fun retiredCapabilitiesAreHiddenWhileDataAndUsefulActionsRemain() {
+        val legacy=AppConfig(snippets=setOf("old|preserve"),routines="[]",pins=setOf("pdf"))
+        assertFalse(ProductVisibility.allowed(Result("snippet:old","old","","Textos",1,Action.Copy("preserve"))))
+        assertFalse(ProductVisibility.allowed(Result("routine:old","old","","Rutinas",1,Action.WorkflowRun("old"))))
+        assertFalse(ProductVisibility.allowed(Result("mode:old","old","","Modos",1,Action.SystemPanel("profiles"))))
+        assertTrue(ProductVisibility.allowed(Result("note:keep","keep","","Notas",1,Action.Copy("keep"))))
+        assertEquals(setOf("old|preserve"),legacy.snippets)
+        val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        ui.setContent { SpotlightPanel(app,legacy.copy(files=false,animations=false),{},initialQuery="2+2") }
+        ui.waitUntil(15000) { ui.onAllNodesWithText("4").fetchSemanticsNodes().isNotEmpty() }
+        ui.onAllNodesWithContentDescription("Operaciones del resultado").onFirst().performClick()
+        ui.onNodeWithText("Guardar como nota").assertExists()
+        ui.onNodeWithText("Guardar texto frecuente").assertDoesNotExist()
+    }
+}

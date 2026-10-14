@@ -1,0 +1,58 @@
+[
+  {
+    "name": "tablet-initial-dark.png",
+    "before": [
+      720,
+      84
+    ],
+    "after": [
+      720,
+      100
+    ],
+    "changed_pixels": 25951,
+    "api": 33,
+    "physical_OneUI": false
+  },
+  {
+    "name": "tablet-inspector-light.png",
+    "before": [
+      720,
+      564
+    ],
+    "after": [
+      720,
+      580
+    ],
+    "changed_pixels": 203282,
+    "api": 33,
+    "physical_OneUI": false
+  },
+  {
+    "name": "tablet-portrait-light.png",
+    "before": [
+      640,
+      318
+    ],
+    "after": [
+      640,
+      326
+    ],
+    "changed_pixels": 82514,
+    "api": 33,
+    "physical_OneUI": false
+  },
+  {
+    "name": "tablet-results-dark.png",
+    "before": [
+      720,
+      318
+    ],
+    "after": [
+      720,
+      326
+    ],
+    "changed_pixels": 94573,
+    "api": 33,
+    "physical_OneUI": false
+  }
+]

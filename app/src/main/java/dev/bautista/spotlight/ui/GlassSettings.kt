@@ -38,7 +38,6 @@ import org.json.JSONObject
  Text("Teclado virtual",style=MaterialTheme.typography.titleSmall)
  Row(Modifier.horizontalScroll(rememberScrollState())){listOf("adaptive" to "Según invocación","always" to "Automático","never" to "Manual").forEach{(key,label)->FilterChip(c.autoKeyboard==key,{update(c.copy(autoKeyboard=key))},label={Text(label)})}}
  Text("La invocación táctil muestra primero la barra. El atajo físico enfoca el campo sin esperar al IME.",style=MaterialTheme.typography.bodySmall)
- OverlayWidthSettings(c,update)
  Text("Posición horizontal");Slider((if(c.landscapePosition<0)c.position else c.landscapePosition).coerceIn(.04f,.35f),{update(c.copy(landscapePosition=it))},valueRange=.04f..0.35f)
  TextButton(onClick={update(c.copy(landscapePosition=-1f))}){Text("Usar la posición general en ambas orientaciones")}
  Text("Gesto lateral compatible",style=MaterialTheme.typography.titleSmall)

@@ -58,16 +58,13 @@ class OverlayAppearancePreviewTest {
                 GlassAppearance(saved){fail("Previewing must not save preferences")}
             }
         }}}
-        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
-        ui.onNodeWithText("Restablecer ancho horizontal").performScrollTo().performClick()
-        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(820.dp)
-        ui.onNodeWithContentDescription("Ancho general automático").performScrollTo().performClick()
-        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(1024.dp)
-        ui.onNodeWithTag("preview-width-label").assertTextContains("Ancho visible: 1024 dp · automático general")
-        ui.onNodeWithText("Restaurar vista previa").performScrollTo().performClick()
-        ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
-        ui.onNodeWithTag("preview-width-label").assertTextContains("Ancho visible: 460 dp · horizontal específico")
-        assertEquals(820,saved.width);assertEquals(460,saved.landscapeWidth);assertEquals(820,saved.manualWidth)
+        ui.onNodeWithTag("appearance-preview-window").performScrollTo().assertWidthIsEqualTo(460.dp)
+        ui.onNodeWithTag("window-width-slider").performScrollTo().performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress){it(.7f)}
+        val expected=dev.bautista.spotlight.data.WindowSizePolicy.width(1280f,.7f).dp
+        ui.onNodeWithTag("appearance-preview-window").performScrollTo().assertWidthIsEqualTo(expected)
+        ui.onNodeWithText("Descartar cambios").performScrollTo().performClick()
+        ui.onNodeWithTag("appearance-preview-window").performScrollTo().assertWidthIsEqualTo(460.dp)
+        ui.runOnIdle{assertEquals(820,saved.width);assertEquals(460,saved.landscapeWidth);assertEquals(820,saved.manualWidth);assertEquals(-1f,saved.windowScale)}
     }
     @Test fun legacyAutomaticDensityIsExplainedWithoutChangingPreferences() {
         val c=AppConfig(width=0,landscapeWidth=460,density="auto",animations=false)
@@ -94,7 +91,7 @@ class OverlayAppearancePreviewTest {
         ui.runOnIdle{capture091(ui.activity,"f12-density-draft-spacious")}
         assertTrue("Spacious rows must add vertical room: $compact -> $spacious",spacious>compact)
         ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
-        ui.onNodeWithText("Aplicar tema").performScrollTo().performClick()
+        ui.onNodeWithText("Aplicar apariencia").performScrollTo().performClick()
         ui.runOnIdle{assertEquals("spacious",saved.density);assertEquals(820,saved.width);assertEquals(820,saved.manualWidth);assertEquals(460,saved.landscapeWidth);assertEquals(setOf("apuntes"),saved.pins)}
     }
 }

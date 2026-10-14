@@ -22,7 +22,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private var started=false
     private var expiryJob:Job?=null
     // Process-local deduplication: never persist clipboard text just to remember an event.
-    private var lastAutomaticText:String?=null
+    private var lastAutomaticFingerprint:String?=null
     private var automaticId:String?=null
     private fun scheduleExpiry(){expiryJob?.cancel();val item=mutableActive.value ?: return;if(!item.pinned)expiryJob=scope.launch{delay((item.created+600000L-System.currentTimeMillis()).coerceAtLeast(1));expire()}}
     private val mutableActive=MutableStateFlow<SharedContext?>(null)
@@ -48,11 +48,12 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     }
     fun offerAutomatic(text:String) {
         if(!preferences.ready || preferences.isPrivate || text.isBlank() || text.length>8000) return
-        if(text==lastAutomaticText) return
+        val fingerprint=java.security.MessageDigest.getInstance("SHA-256").digest(text.toByteArray(Charsets.UTF_8)).joinToString(""){"%02x".format(it)}
+        if(fingerprint==lastAutomaticFingerprint) return
         val current=mutableActive.value
         // Explicit selection (including documents) always has priority over an automatic offer.
         if(current!=null && (current.pinned || current.id!=automaticId)) return
-        lastAutomaticText=text
+        lastAutomaticFingerprint=fingerprint
         automaticId=setText(text,"Portapapeles").id
     }
     suspend fun setDocument(uri:Uri,ownedFile:String=""):SharedContext=withContext(Dispatchers.IO) {

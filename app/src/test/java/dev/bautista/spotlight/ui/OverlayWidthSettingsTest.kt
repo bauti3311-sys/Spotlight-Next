@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.data.Config as AppConfig
@@ -20,6 +21,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
+/** New approved UI contract; legacy geometry/storage remain covered by policy/persistence tests. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=Application::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -30,66 +32,53 @@ class OverlayWidthSettingsTest {
             Column(Modifier.widthIn(max=680.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp)){content()}
         }}}
     }
-    private fun capture(name:String)=ui.runOnIdle{capture091(ui.activity,"f1-width-$name")}
-    @Test fun appearanceShowsActiveHorizontalExceptionToAutomatic() {
+    @Test fun appearanceHasOneWidthControlAndNoTechnicalOverrides() {
         show{GlassAppearance(AppConfig(width=0,landscapeWidth=380,animations=false),{})}
-        ui.onNodeWithText("Altura máxima",substring=true).performScrollTo()
-        capture("tablet-automatic-horizontal")
-        ui.onNodeWithText("Horizontal: 380 dp · ancho específico").assertIsDisplayed()
+        ui.onNodeWithTag("window-width-slider").performScrollTo().assertIsDisplayed()
+        ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
+        ui.onNodeWithContentDescription("Ancho general automático").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Ancho horizontal específico").assertDoesNotExist()
+        ui.onNodeWithText("Altura máxima",substring=true).assertDoesNotExist()
     }
     @Test fun resettingPositionMustNotEraseHorizontalWidth() {
         var config by mutableStateOf(AppConfig(width=820,landscapeWidth=460,landscapePosition=.25f,animations=false))
         show{InvocationSettings(config){config=it}}
         ui.onNodeWithText("Usar la posición general en ambas orientaciones").performScrollTo().performClick()
         ui.runOnIdle{assertEquals(460,config.landscapeWidth);assertEquals(-1f,config.landscapePosition);assertEquals(820,config.width)}
+        ui.onNodeWithTag("window-width-slider").assertDoesNotExist()
     }
-    @Test fun restoringHorizontalWidthKeepsPositionAndOtherPreferences() {
+    @Test fun newWidthChoicePreservesPositionSavedDataAndLegacyValues() {
         var config by mutableStateOf(AppConfig(width=0,landscapeWidth=380,landscapePosition=.25f,pins=setOf("pdf de ayer"),animations=false))
-        show{InvocationSettings(config){config=it}}
-        ui.onNodeWithText("Restablecer ancho horizontal").performScrollTo().performClick()
-        ui.onNodeWithText("Horizontal: automático general").assertIsDisplayed()
-        ui.runOnIdle{assertEquals(0,config.width);assertEquals(0,config.landscapeWidth);assertEquals(.25f,config.landscapePosition);assertEquals(setOf("pdf de ayer"),config.pins)}
+        show{WindowSizeSettings(config){config=it}}
+        ui.onNodeWithTag("window-width-slider").performSemanticsAction(SemanticsActions.SetProgress){it(.75f)}
+        ui.runOnIdle{assertEquals(.75f,config.windowScale);assertEquals(0,config.width);assertEquals(380,config.landscapeWidth);assertEquals(.25f,config.landscapePosition);assertEquals(setOf("pdf de ayer"),config.pins)}
     }
-    @Test fun appearanceDraftRemembersManualWidthAndOnlyAppliesOnRequest() {
+    @Test fun appearanceDraftOnlyAppliesOnRequest() {
         var config by mutableStateOf(AppConfig(width=820,landscapeWidth=460,animations=false))
         show{GlassAppearance(config){config=it}}
-        ui.onNodeWithContentDescription("Ancho general automático").performScrollTo().performClick()
-        ui.onNodeWithText("Horizontal: 460 dp · ancho específico").assertIsDisplayed()
-        ui.runOnIdle{assertEquals(820,config.width)}
-        ui.onNodeWithContentDescription("Ancho general automático").performClick()
-        ui.onNodeWithText("Ancho general: 820 dp").performScrollTo().assertIsDisplayed()
-        ui.onNodeWithText("Aplicar tema").performScrollTo().performClick()
-        ui.runOnIdle{assertEquals(820,config.width);assertEquals(820,config.manualWidth);assertEquals(460,config.landscapeWidth)}
+        ui.onNodeWithTag("window-width-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.6f)}
+        ui.runOnIdle{assertEquals(-1f,config.windowScale);assertEquals(820,config.width)}
+        ui.onNodeWithText("Aplicar apariencia").performScrollTo().performClick()
+        ui.runOnIdle{assertEquals(.6f,config.windowScale);assertEquals(820,config.width);assertEquals(820,config.manualWidth);assertEquals(460,config.landscapeWidth)}
     }
-    @Test @Config(qualifiers="w390dp-h844dp") fun phoneShowsExplicitHorizontalOverrideAndAccessibleControls() {
-        var config by mutableStateOf(AppConfig(width=0,landscapeWidth=380,animations=false))
-        show{OverlayWidthSettings(config){config=it}}
-        ui.onNodeWithContentDescription("Ancho general automático").assertIsDisplayed().assertIsOn()
-        ui.onNodeWithContentDescription("Ancho horizontal específico").assertIsDisplayed().assertIsOn()
-        ui.onNodeWithText("Horizontal: 380 dp · ancho específico").assertIsDisplayed()
-        capture("phone-automatic-horizontal")
-        ui.onNodeWithText("Restablecer ancho horizontal").performClick()
-        ui.onNodeWithContentDescription("Ancho horizontal específico").assertIsOff()
+    @Test @Config(qualifiers="w390dp-h844dp") fun phoneExposesOneAccessibleCompactToWideSlider() {
+        show{WindowSizeSettings(AppConfig(width=0,landscapeWidth=380),{})}
+        ui.onNodeWithContentDescription("Ancho de la ventana").assertIsDisplayed()
+        ui.onNodeWithText("Compacta").assertIsDisplayed();ui.onNodeWithText("Amplia").assertIsDisplayed()
+        ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
         ui.onNodeWithTag("width-horizontal-slider").assertDoesNotExist()
-        ui.onNodeWithText("Horizontal: automático general").assertIsDisplayed()
-        capture("phone-reset-horizontal")
     }
-    @Test fun enablingHorizontalWidthIsExplicitAndDoesNotDisableGeneralAutomatic() {
-        var config by mutableStateOf(AppConfig(width=0,manualWidth=900,animations=false))
-        show{OverlayWidthSettings(config){config=it}}
-        ui.onNodeWithTag("width-horizontal-slider").assertDoesNotExist()
-        ui.onNodeWithContentDescription("Ancho horizontal específico").performClick()
-        ui.onNodeWithText("Horizontal: 900 dp · ancho específico").assertIsDisplayed()
-        ui.onNodeWithContentDescription("Ancho general automático").assertIsOn()
-        ui.runOnIdle{assertEquals(0,config.width);assertEquals(900,config.landscapeWidth)}
-        capture("tablet-explicit-horizontal")
+    @Test fun openingSettingsDoesNotMigrateLegacyGeometryArbitrarily() {
+        var config by mutableStateOf(AppConfig(width=0,manualWidth=900,landscapeWidth=460,animations=false))
+        show{WindowSizeSettings(config){config=it}}
+        ui.onNodeWithTag("window-width-slider").assertExists()
+        ui.runOnIdle{assertEquals(-1f,config.windowScale);assertEquals(0,config.width);assertEquals(900,config.manualWidth);assertEquals(460,config.landscapeWidth)}
     }
-    @Test @Config(qualifiers="w844dp-h390dp") fun landscapeControlsRemainReachableAndResetKeepsManualGeneral() {
+    @Test @Config(qualifiers="w844dp-h390dp") fun landscapeControlRemainsReachableWithoutTechnicalText() {
         var config by mutableStateOf(AppConfig(width=820,landscapeWidth=460,landscapePosition=.25f,animations=false))
-        show{OverlayWidthSettings(config){config=it}}
-        ui.onNodeWithText("Restablecer ancho horizontal").performScrollTo().assertIsDisplayed().performClick()
-        ui.onNodeWithText("Horizontal: 820 dp · ancho general").assertIsDisplayed()
-        ui.runOnIdle{assertEquals(820,config.width);assertEquals(.25f,config.landscapePosition)}
-        capture("phone-landscape-reset")
+        show{WindowSizeSettings(config){config=it}}
+        ui.onNodeWithTag("window-width-slider").performScrollTo().assertIsDisplayed().performSemanticsAction(SemanticsActions.SetProgress){it(.4f)}
+        ui.runOnIdle{assertEquals(.4f,config.windowScale);assertEquals(820,config.width);assertEquals(460,config.landscapeWidth);assertEquals(.25f,config.landscapePosition)}
+        ui.onNodeWithText("Ancho general",substring=true).assertDoesNotExist()
     }
 }

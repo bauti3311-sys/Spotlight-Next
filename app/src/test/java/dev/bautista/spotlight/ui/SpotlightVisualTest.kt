@@ -31,7 +31,7 @@ class SpotlightVisualTest {
                 }
             }
         }
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertIsDisplayed()
         val output=File("build/spotlight-$theme.png");output.parentFile?.mkdirs()
         ui.runOnIdle {
             val view=ui.activity.window.decorView

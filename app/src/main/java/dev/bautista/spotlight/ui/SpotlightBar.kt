@@ -46,29 +46,32 @@ fun SpotlightBar(
     onSearchFocus:()->Unit={},
     onSearchFocusChanged:(Boolean)->Unit={},
     quickMenu:(@Composable ()->Unit)?=null,
+    onSaved:(()->Unit)?=null,
+    onSettings:(()->Unit)?=null,
 ) {
     val colors = MaterialTheme.colorScheme
+    var localOptions by remember { mutableStateOf(false) }
+    val options=optionsOpen ?: localOptions
+    fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}
+
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
         Row(
             fieldModifier
-                .height(60.dp)
-                .padding(horizontal = 18.dp),
+                .height(76.dp)
+                .padding(start = 20.dp, end = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                HugeIcons.Search,
-                "Buscar",
-                Modifier.size(22.dp),
-                tint = colors.onSurface.copy(alpha = .60f),
-            )
-            Spacer(Modifier.width(12.dp))
+            IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
+                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(23.dp),tint=colors.primary)
+            }
+            Spacer(Modifier.width(8.dp))
             BasicTextField(
                 query,
                 { onQueryChange(it.take(4000)) },
                 Modifier.weight(1f).focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 17.sp else 20.sp),
+                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 19.sp else 24.sp),
                 cursorBrush = SolidColor(colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -77,7 +80,7 @@ fun SpotlightBar(
                         if (query.isEmpty())
                             Text(
                                 when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar en Spotlight"},
-                                fontSize = if (compact) 17.sp else 20.sp,
+                                fontSize = if (compact) 19.sp else 24.sp,
                                 color = colors.onSurface.copy(alpha = .52f),
                                 maxLines = 1,
                             )
@@ -89,7 +92,7 @@ fun SpotlightBar(
                                 },
                                 modifier = Modifier.clearAndSetSemantics { },
                                 maxLines = 1,
-                                fontSize = if (compact) 17.sp else 20.sp,
+                                fontSize = if (compact) 19.sp else 24.sp,
                                 color = colors.onSurface.copy(alpha = .30f),
                                 style=TextStyle(fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
@@ -106,7 +109,7 @@ fun SpotlightBar(
                     modifier =
                         Modifier.clickable(onClick = onAcceptSuggestion).padding(horizontal = 6.dp),
                 )
-            onDictate?.let{dictate->IconButton(onClick=dictate,modifier=Modifier.size(48.dp)){Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(18.dp))}}
+
             if (query.isNotEmpty())
                 IconButton(onClick = { onClear() }, modifier = Modifier.size(48.dp)) {
                     Icon(HugeIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
@@ -115,19 +118,20 @@ fun SpotlightBar(
     }
     // A service overlay cannot safely host an Activity-style popup window.
     // Keep options in the same window/token as the editor.
-    var localOptions by remember { mutableStateOf(false) }
-    val options=optionsOpen ?: localOptions
-    fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+    val showSaved=maxWidth>=480.dp
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
         Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
-            IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
-                Icon(CommandIcons.Sliders,"Opciones de búsqueda",Modifier.size(20.dp))
+            Row(Modifier.padding(end=12.dp),verticalAlignment=Alignment.CenterVertically) {
+                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
+                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
+                onSettings?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Settings,"Abrir Ajustes",Modifier.size(21.dp),tint=colors.onSurfaceVariant) } }
             }
         }
         if(options) {
             HorizontalDivider()
-            Column(Modifier.fillMaxWidth().heightIn(max=optionsMaxHeight.coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
+            Column(Modifier.fillMaxWidth().heightIn(max=(optionsMaxHeight-16.dp).coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
                 if(quickMenu!=null)quickMenu()
                 else listOf("Todo","Apps","Archivos","Acciones","IA").forEachIndexed { i,item ->
                     val label=when(item){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->item}
@@ -143,4 +147,5 @@ fun SpotlightBar(
             }
         }
     }
+}
 }
