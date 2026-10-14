@@ -37,19 +37,20 @@ val Accent = Color(0xFF0A84FF)
 private val Dark =
     darkColorScheme(
         primary = Accent,
-        background = Color(0xFF17191F),
-        surface = Color(0xFF242730),
-        onSurface = Color(0xFFF5F5F5),
-        surfaceVariant = Color(0xFF20232B),
+        background = Color(0xFF18191A),
+        surface = GlassTokens.graphite,
+        onSurface = GlassTokens.darkInk,
+        surfaceVariant = Color(0xFF28292A),
+        onSurfaceVariant = GlassTokens.darkSecondary,
     )
 private val Light =
     lightColorScheme(
         primary = Color(0xFF007AFF),
         background = Color(0xFFF2F2F2),
-        surface = Color(0xFFFAFBFD),
-        onSurface = Color(0xFF222222),
+        surface = GlassTokens.paper,
+        onSurfaceVariant = GlassTokens.lightSecondary,
+        onSurface = GlassTokens.lightInk,
         surfaceVariant = Color(0xFFF0F2F7),
-        onSurfaceVariant = Color(0xFF666666),
     )
 
 val LocalAppearance = staticCompositionLocalOf { Config() }
@@ -61,7 +62,7 @@ fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme),
     val base=if(dark) Dark else Light
     val palette = when(config.preset){
         "pure"->base.copy(background=if(dark)Color(0xFF111111) else Color.White,surface=if(dark)Color(0xFF171717) else Color.White,onSurface=if(dark)Color.White else Color(0xFF111111))
-        "glass"->base.copy(background=if(dark)Color(0xFF12151C) else Color(0xFFEFF2F7),surface=if(dark)Color(0xFF20252F) else Color(0xFFF8FAFE),surfaceVariant=if(dark)Color(0xFF2B3240) else Color(0xFFEDF1F8))
+        "glass"->base.copy(background=if(dark)Color(0xFF12151C) else Color(0xFFEFF2F7),surface=if(dark)GlassTokens.graphite else GlassTokens.paper,surfaceVariant=if(dark)Color(0xFF28292A) else Color(0xFFF0F0EE))
         "hybrid"->base.copy(background=if(dark)Color(0xFF151618) else Color(0xFFEDEEF0),surface=if(dark)Color(0xFF202124) else Color(0xFFFAFAF8),surfaceVariant=if(dark)Color(0xFF292B2F) else Color(0xFFF0F1EF),onSurface=if(dark)Color(0xFFF2F3F5) else Color(0xFF202226),onSurfaceVariant=if(dark)Color(0xFFBEC1C8) else Color(0xFF59616B))
         "raycast"->base.copy(background=if(dark)Color(0xFF171719) else Color(0xFFF0EFF3),surface=if(dark)Color(0xFF242426) else Color(0xFFFCFBFD),surfaceVariant=if(dark)Color(0xFF2C2C30) else Color(0xFFE9E7EE),onSurfaceVariant=if(dark)Color(0xFFB0ADB8) else Color(0xFF64606D))
         "graphite"->base.copy(background=if(dark)Color(0xFF1D2023) else Color(0xFFF2F3F4),surface=if(dark)Color(0xFF262A2D) else Color.White,surfaceVariant=if(dark)Color(0xFF303438) else Color(0xFFE9ECEF))

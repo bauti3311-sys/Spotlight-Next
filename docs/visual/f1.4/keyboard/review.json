@@ -1,0 +1,82 @@
+[
+  {
+    "name": "tablet-results",
+    "size": [
+      1280,
+      318
+    ],
+    "difference_bounds": [
+      108,
+      285,
+      408,
+      296
+    ],
+    "old_sha256": "89ecbbbfd27431a33ca3e9ec48167223661db16aa3600a72a89ff063336d536d",
+    "new_sha256": "cbedc211e1d225affde433b72fd09e572a70dd7c60c5c318b7b90aed57fa5ddb",
+    "reason": "Only footer hints"
+  },
+  {
+    "name": "tablet-selection",
+    "size": [
+      1280,
+      318
+    ],
+    "difference_bounds": [
+      108,
+      285,
+      408,
+      296
+    ],
+    "old_sha256": "5095c5c158bbc6ba459956b523e2fe191ef3580629b844c473dcaabca78f505b",
+    "new_sha256": "ff227abbe651cca8af2e4e3c122f245a29f3a94a013771c97c77d9e3afbf5630",
+    "reason": "Only footer hints"
+  },
+  {
+    "name": "phone-results",
+    "size": [
+      390,
+      306
+    ],
+    "difference_bounds": [
+      108,
+      273,
+      355,
+      284
+    ],
+    "old_sha256": "1aa1e8622e03b253e0b8c0dcd5e961968af6ac2fdd34cf88d39f03a72503fa31",
+    "new_sha256": "7658945e4c35b3af4109ba8d4e2a68e443e9208a3483dfbe4933549fc5f7b0b3",
+    "reason": "Only footer hints"
+  },
+  {
+    "name": "landscape-results",
+    "size": [
+      915,
+      318
+    ],
+    "difference_bounds": [
+      108,
+      285,
+      408,
+      296
+    ],
+    "old_sha256": "bd48749b9fd8c7365b83eede969fe31b1b036bf7fff6a332f402bea50eb1e4b8",
+    "new_sha256": "4c216d11488c29a82b31265fe4d57e55b1956177f3353afad74f6826a24701d4",
+    "reason": "Only footer hints"
+  },
+  {
+    "name": "tablet-context-panel",
+    "size": [
+      1280,
+      564
+    ],
+    "difference_bounds": [
+      664,
+      126,
+      1248,
+      550
+    ],
+    "old_sha256": "c186717cc3f67edf7d8ab13a0260a54a37693edda50711deb0ca9b945c484633",
+    "new_sha256": "da6bad6e9b591ce9413d9e327a0b0cd66b97d9f2aefc9514d465b394b58540c0",
+    "reason": "Remove invalid file preview/external button for calculator; pin keyboard hints inside actions; same left results"
+  }
+]

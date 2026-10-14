@@ -50,6 +50,8 @@ data class Config(
     val landscapeWidth:Int=0, val landscapePosition:Float=-1f, val customThemes:String="[]",
     val sourcePriority:String="{}", val captureContext:Boolean=false, val learnedSequences:String="{}",
     val aiRootConsent:Boolean=false, val movement:String="liquid_precision",
+    val manualWidth:Int=if(width>0)width else 640,
+    val windowScale:Float=-1f, // -1 preserves legacy geometry until the user changes the new slider
 
 )
 
@@ -168,7 +170,9 @@ class Preferences(private val context: Context) {
                     shadowSize=extra.optDouble("shadowSize",12.0).toFloat().coerceIn(0f,20f),typeface=extra.optString("typeface","inter"),
                     selectionStyle=extra.optString("selectionStyle","glass"),landscapeWidth=extra.optInt("landscapeWidth",0).coerceIn(0,1100),
                     landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
-                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision")
+                    sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision"),
+                    manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
+                    windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;ready=true}}
             }
 
@@ -182,7 +186,7 @@ class Preferences(private val context: Context) {
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
                 .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
-                .put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).toString()
+                .put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width

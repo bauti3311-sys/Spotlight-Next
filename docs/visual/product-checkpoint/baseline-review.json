@@ -1,0 +1,209 @@
+{
+  "api": 33,
+  "physical_OneUI": false,
+  "masks_added": false,
+  "assertions_reduced": false,
+  "changed": [
+    {
+      "name": "appearance-phone-horizontal.png",
+      "before_sha256": "64f4e61f33826847da79043b7ee0aa984e8f2765257cb1bc89da894942ba4726",
+      "after_sha256": "4c3332cd52a0faf443f18f48a1112bc8862283a298daf4e8fb805d6b9f776e83",
+      "before": [
+        680,
+        390
+      ],
+      "after": [
+        680,
+        390
+      ],
+      "reason": "Same legacy width/density fixture; redesigned rows, bounded scrollable preview; spacious second row clipping corrected before approval."
+    },
+    {
+      "name": "appearance-phone-vertical.png",
+      "before_sha256": "c4fe389faa8a1ee28143cc48ce6b16cefcae1ad05d2a4b5b2f5327d0859e5e03",
+      "after_sha256": "404119f31c0ae246a680d177c08a9a1a05c38834d0127ce12dc84f7c9ea0e280",
+      "before": [
+        390,
+        521
+      ],
+      "after": [
+        390,
+        533
+      ],
+      "reason": "Same legacy width/density fixture; redesigned rows, bounded scrollable preview; spacious second row clipping corrected before approval."
+    },
+    {
+      "name": "appearance-tablet-compact.png",
+      "before_sha256": "f860226a3d17bc1edefe7de10b62ca18714b33e87a7fb5427f0770976ce03c01",
+      "after_sha256": "614f6614b51164c3d2ea8d42fc1a97db289338e5a2c2e2e0b7c46c356fa96abb",
+      "before": [
+        680,
+        449
+      ],
+      "after": [
+        680,
+        461
+      ],
+      "reason": "Same legacy width/density fixture; redesigned rows, bounded scrollable preview; spacious second row clipping corrected before approval."
+    },
+    {
+      "name": "appearance-tablet-spacious.png",
+      "before_sha256": "adbba6f13a3e372d6eb88ca3cc2b75e007803325d8eb96d8698d26d4a6da3dca",
+      "after_sha256": "3845db706515ddf63f7def105faec2041f5c206fff3582b0a217d82401839106",
+      "before": [
+        680,
+        481
+      ],
+      "after": [
+        680,
+        493
+      ],
+      "reason": "Same legacy width/density fixture; redesigned rows, bounded scrollable preview; spacious second row clipping corrected before approval."
+    },
+    {
+      "name": "appearance-tablet-vertical.png",
+      "before_sha256": "14e4a8343dac2df4955d4c49a48793575ea3bdd30e2349de6e35d2f22c5e8fa9",
+      "after_sha256": "4fa97639e6b1c567b4104d30374b820747c460a38db90c2c05b3294eba4e67dd",
+      "before": [
+        680,
+        465
+      ],
+      "after": [
+        680,
+        477
+      ],
+      "reason": "Same legacy width/density fixture; redesigned rows, bounded scrollable preview; spacious second row clipping corrected before approval."
+    },
+    {
+      "name": "landscape-results.png",
+      "before_sha256": "4c216d11488c29a82b31265fe4d57e55b1956177f3353afad74f6826a24701d4",
+      "after_sha256": "8b583f2a1c3455b89a39d3e8732fbbc8b62f4f6050524291f340ab75e4385e45",
+      "before": [
+        915,
+        318
+      ],
+      "after": [
+        915,
+        326
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "phone-results.png",
+      "before_sha256": "7658945e4c35b3af4109ba8d4e2a68e443e9208a3483dfbe4933549fc5f7b0b3",
+      "after_sha256": "9c9567d37e2305d862e05f185d7f2f19260bfd34facef16b855fe4ffb68b6d18",
+      "before": [
+        390,
+        306
+      ],
+      "after": [
+        390,
+        314
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-context-panel.png",
+      "before_sha256": "054d84a3738869328ec1fe3945cf22ed91ba9d6a67f9bb01f295b54ab1e41b70",
+      "after_sha256": "4ca7216fdf4f5f9bca782888ebb7c208f56f5414682cb51781feba8d4bd89aeb",
+      "before": [
+        1280,
+        564
+      ],
+      "after": [
+        1280,
+        580
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-initial.png",
+      "before_sha256": "83b6fd15e4f82bbebdbc39f728f8c876c00310de9e17e86f461cea305a7cc998",
+      "after_sha256": "3d2e737bc172d5455c90188c9f41348f4fa0c4dd998c82a898e3892f1ca8a035",
+      "before": [
+        1280,
+        84
+      ],
+      "after": [
+        1280,
+        100
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-options.png",
+      "before_sha256": "fceb8c393ee73b96d5ab20092b1990fe9bd5a138cc6c71a30181215d0b6a4184",
+      "after_sha256": "439218fb997535c6c658e2591a8079a000bc797a164671ee1606964dcfbeeda0",
+      "before": [
+        1280,
+        327
+      ],
+      "after": [
+        1280,
+        343
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-preferences.png",
+      "before_sha256": "6ce1b7036dd777a17c57a1dac48afb38f22162d015ed69c793e900090e2d3afc",
+      "after_sha256": "bbdb125869201be4022949f511dcee8dec0f15e5822cbfce18923f38f3a3b1ed",
+      "before": [
+        680,
+        340
+      ],
+      "after": [
+        680,
+        340
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-results.png",
+      "before_sha256": "cbedc211e1d225affde433b72fd09e572a70dd7c60c5c318b7b90aed57fa5ddb",
+      "after_sha256": "7b49b5fc3760bdef5799203966815a8876d33ac4e1f0b2503d21d5c9fedc165f",
+      "before": [
+        1280,
+        318
+      ],
+      "after": [
+        1280,
+        326
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-saved.png",
+      "before_sha256": "d04eb68ed88f04082544fac9f5e19ee76d20fd3bc25fe3b776e8915950bd8f02",
+      "after_sha256": "45e378fae90a979d387307d54da705485025285bbcd0480cbcd9a2ab7a14afa4",
+      "before": [
+        680,
+        308
+      ],
+      "after": [
+        680,
+        248
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    },
+    {
+      "name": "tablet-selection.png",
+      "before_sha256": "ff227abbe651cca8af2e4e3c122f245a29f3a94a013771c97c77d9e3afbf5630",
+      "after_sha256": "7694a00c74676822ab45ad13befbbdf6679fff62a1ce3679279e8a7b17146128",
+      "before": [
+        1280,
+        318
+      ],
+      "after": [
+        1280,
+        326
+      ],
+      "reason": "Approved search surface/selection, conditional inspector, simplified appearance or retired snippets; native comparison manually inspected."
+    }
+  ],
+  "unchanged": [
+    "width-tablet-active-override.png",
+    "tablet-pdf-error.png",
+    "width-phone-active-override.png"
+  ]
+}

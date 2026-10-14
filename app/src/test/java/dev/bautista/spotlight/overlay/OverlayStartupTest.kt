@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28], application = android.app.Application::class)
+@Config(sdk = [28, 30], application = android.app.Application::class)
 @LooperMode(LooperMode.Mode.PAUSED)
 class OverlayStartupTest {
     @Test
@@ -51,6 +51,7 @@ class OverlayStartupTest {
         try {
             val panel = ComposeView(service)
             val host = service.createHost(panel)
+            assertSame("API30 must not retain a denied WindowContext token", service, host.context)
             assertSame(service, host.findViewTreeLifecycleOwner())
             assertSame(service, host.findViewTreeSavedStateRegistryOwner())
             assertSame(service, host.findViewTreeViewModelStoreOwner())

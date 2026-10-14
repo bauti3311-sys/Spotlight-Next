@@ -1,0 +1,121 @@
+{
+  "renderer": "Robolectric4.14.1 native graphics API33",
+  "physical_OneUI": false,
+  "blur_tested": false,
+  "pdf_page_rendered": false,
+  "fixtures": "Synthetic PackageManager applications and valid local PDF; production SpotlightPanel/Quick Look",
+  "images": [
+    {
+      "file": "after/tablet-actions-dark.png",
+      "sha256": "8f9b17a5d0fefc778665336715a89a6aec6060ab6e473b925f9a2723456a59f4",
+      "pixels": [
+        720,
+        524
+      ]
+    },
+    {
+      "file": "after/tablet-applications-dark.png",
+      "sha256": "171690c1db9fafdb578706820d2b881c2976a5fc3955c0f293a379b8a63c2282",
+      "pixels": [
+        720,
+        534
+      ]
+    },
+    {
+      "file": "after/tablet-initial-dark.png",
+      "sha256": "6fb9fdb53859fee1e2864ee7530b3db0724523f56d096a85f1cfb87b660ff1de",
+      "pixels": [
+        720,
+        92
+      ]
+    },
+    {
+      "file": "after/tablet-inspector-light.png",
+      "sha256": "343d636683222a05976ba5b229c6f7b06bf94614cab80265f4d875fe92c2fe50",
+      "pixels": [
+        720,
+        524
+      ]
+    },
+    {
+      "file": "after/tablet-multiple-selection-dark.png",
+      "sha256": "ebe374fac180b1c6c65a834b8ae1fefe5fd6d893649cbde7e0c0a470361cddba",
+      "pixels": [
+        720,
+        534
+      ]
+    },
+    {
+      "file": "after/tablet-pdf-renderer-unavailable.png",
+      "sha256": "30b89f63d447eefff83aae236f8a7c4a91cd08a9cf0fae9be5e3f9f57b520c21",
+      "pixels": [
+        720,
+        534
+      ]
+    },
+    {
+      "file": "after/tablet-portrait-light.png",
+      "sha256": "f2c4e9a18df9deecb457a3f5607bb1077c6ddb604303aadb4e0cefee531678f0",
+      "pixels": [
+        640,
+        304
+      ]
+    },
+    {
+      "file": "after/tablet-results-dark.png",
+      "sha256": "b909e7b6a86d33d9032aa9059e19a08368ca07553e26c5f87bad316334f535fc",
+      "pixels": [
+        720,
+        304
+      ]
+    },
+    {
+      "file": "before/actions-prototype.png",
+      "sha256": "bad8221377374413d36aed600953a6be17b78694a2ff7a81b39bbd4e11c274e8",
+      "pixels": [
+        720,
+        580
+      ]
+    },
+    {
+      "file": "before/calculator-prototype.png",
+      "sha256": "df50f95b4a0b4320aa33c2868b4d828adafc161c2374919ed43c50fa7f73c119",
+      "pixels": [
+        720,
+        326
+      ]
+    },
+    {
+      "file": "before/initial-prototype.png",
+      "sha256": "3c7ba14db41af632b6561563d7dde588d11d6555c0798b1dc4fc023967fc972b",
+      "pixels": [
+        720,
+        100
+      ]
+    },
+    {
+      "file": "comparisons/actions-before-after.png",
+      "sha256": "c898590a390d80bbcb7ccc929fc4bbc5a14ad7a84b3518c485c5d410d20f1aea",
+      "pixels": [
+        1464,
+        624
+      ]
+    },
+    {
+      "file": "comparisons/calculator-before-after.png",
+      "sha256": "944ae8859cf24902de64ec25974c11cab57130e4f0d35adc9e253f4ee0866ecd",
+      "pixels": [
+        1464,
+        370
+      ]
+    },
+    {
+      "file": "comparisons/initial-before-after.png",
+      "sha256": "12aaa753fcb297ae4a6f5f8039ca096ef358805ba476363dc82ea55891799bf2",
+      "pixels": [
+        1464,
+        144
+      ]
+    }
+  ]
+}

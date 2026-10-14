@@ -21,18 +21,19 @@ import java.io.File
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class NextInteractionTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
-    @Test fun routineReviewLivesInsideOverlayPanel(){
+    @Test fun legacyRoutineRetainsReviewButHasNoProductEntryPoint(){
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         val routine=dev.bautista.spotlight.automation.Workflow("test","Preparación",steps=listOf(dev.bautista.spotlight.automation.WorkflowStep("text","Hola")))
         val data=dev.bautista.spotlight.automation.Workflows.encode(listOf(routine))
-        ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false,routines=data),{},"rutinas",640f)}
-        ui.waitUntil(15000){ui.onAllNodesWithText("Preparación").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Preparación").performClick()
-        ui.onNode(hasText("Revisá los pasos antes de ejecutar:") and hasAnyAncestor(hasTestTag("spotlight-results"))).assertExists()
+        val row=dev.bautista.spotlight.search.Result("routine:test","Preparación","","Rutinas",1,dev.bautista.spotlight.search.Action.WorkflowRun("test"))
+        org.junit.Assert.assertFalse(ProductVisibility.allowed(row))
+        org.junit.Assert.assertEquals("Preparación",dev.bautista.spotlight.automation.Workflows.parse(data).single().name)
+        // Retain legacy executor safety coverage; it is no longer a product entry point.
+        ui.setContent{SpotlightTheme{WorkflowRunner(routine,app.local){}}}
+        ui.onNodeWithText("Revisá los pasos antes de ejecutar:").assertExists()
         ui.onNodeWithText("Ejecutar").performClick()
         ui.waitUntil(15000){ui.onAllNodesWithText("1/1 · Completada").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Cerrar").performClick()
-        ui.onNodeWithText("rutinas").assertExists()
+        ui.onNodeWithText("Cerrar").assertExists().performClick()
     }
     private fun capture(name:String){ui.runOnIdle{val view=ui.activity.window.decorView;val bitmap=Bitmap.createBitmap(view.width,view.height,Bitmap.Config.ARGB_8888);view.draw(Canvas(bitmap));File("build/$name.png").outputStream().use{bitmap.compress(Bitmap.CompressFormat.PNG,100,it)};bitmap.recycle()}}
     @Test fun tabletActionsAreFilterableAndBackKeepsQuery(){
@@ -40,6 +41,7 @@ class NextInteractionTest {
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},"25 * 8",640f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("200",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
         ui.onAllNodesWithContentDescription("Operaciones del resultado").onFirst().performClick()
+        ui.onNodeWithText("Buscar acciones").performClick()
         ui.onNodeWithText("Filtrar acciones").performTextInput("Copiar")
         ui.onNodeWithText("Copiar resultado").assertExists()
         capture("spotlight-next-tablet-actions")
@@ -48,7 +50,7 @@ class NextInteractionTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent{SpotlightPanel(app,AppearancePresets.apply("iOS Light",AppConfig(files=false,animations=false)),{},"25 * 8",640f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("200",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertIsDisplayed()
         ui.onNodeWithText("25 * 8").assertIsDisplayed()
         capture("spotlight-next-phone-ios")
     }

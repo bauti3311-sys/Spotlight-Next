@@ -1,32 +1,54 @@
-name: Build Signed Release APK
+name: Private Historical-Compatible Update
 
 on:
-  workflow_dispatch:
   push:
-    branches: [main]
+    branches: [fix/historical-update-58ac0a2]
     paths:
-      - "app/**"
-      - "scripts/**"
-      - "release.properties"
-      - ".github/workflows/release-apk.yml"
+      - .github/workflows/release-apk.yml
+      - scripts/sign-private-update.sh
+      - scripts/verify_update_pair.py
+  workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: signed-release-main
+  group: private-historical-update-58ac0a2
   cancel-in-progress: true
 
 jobs:
-  release:
-    # Never expose signing secrets to PRs, arbitrary refs, or forks.
-    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && github.ref == 'refs/heads/main' && github.repository == 'bauti3311-sys/Spotlight-Next'
+  compatible-update:
+    # Explicitly authorized branch/owner; never PRs, forks or arbitrary input refs.
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.actor == 'bauti3311-sys' && github.ref == 'refs/heads/fix/historical-update-58ac0a2' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Validate approved runs and immutable input ZIPs (no signing Secrets)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api repos/bauti3311-sys/Spotlight-Next/actions/runs/38528963148 --jq '.head_sha + " " + .conclusion')" = '58ac0a2d4cb4f96c9fbef46da4f4104475c251ae success'
+          test "$(gh api repos/bauti3311-sys/Spotlight-Next/actions/runs/38562918546 --jq '.head_sha + " " + .conclusion')" = '619aecc5f1e8e09e740aa10a4994c48f46bd1dee success'
+          mkdir -p archives input/candidate input/historical public
+          gh api repos/bauti3311-sys/Spotlight-Next/actions/artifacts/11892668703/zip > archives/candidate.zip
+          gh api repos/bauti3311-sys/Spotlight-Next/actions/artifacts/11753988125/zip > archives/historical.zip
+          echo 'bf9410195766caf28017c95e5d647a9445dfd8eaecd71ae7c206191c9e5b6de3  archives/candidate.zip' | sha256sum -c -
+          echo 'e4fde53dca0029e211662552a3b3f30a629b48a34ee60cc77a177ea991c74379  archives/historical.zip' | sha256sum -c -
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import PurePosixPath
+          for name in ['candidate', 'historical']:
+              with zipfile.ZipFile(f'archives/{name}.zip') as z:
+                  for item in z.infolist():
+                      p = PurePosixPath(item.filename)
+                      if p.is_absolute() or '..' in p.parts or (item.external_attr >> 16) & 0o170000 == 0o120000:
+                          raise ValueError('Unsafe archive entry')
+                  z.extractall(f'input/{name}')
+          PY
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -34,42 +56,35 @@ jobs:
       - uses: android-actions/setup-android@v4
         with:
           packages: 'platform-tools'
-      - name: Install Android packages
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
-      - uses: gradle/actions/setup-gradle@v4
-      - name: Read public release identity
-        run: echo "SPOTLIGHT_VERSION=$(python3 scripts/release_identity.py name)" >> "$GITHUB_ENV"
-      - name: Tests, lint, and unsigned Release
+      - name: Install signature/manifest tools only
+        run: sdkmanager 'build-tools;35.0.0'
+      - name: Compare existing APKs before any private-key access
         run: |
-          bash gradlew :app:testDebugUnitTest :app:lintRelease :app:assembleDebug :app:assembleRelease --no-daemon --max-workers=2 --console=plain
-          python3 -m unittest discover -s backend -p 'test_*.py'
-          python3 -m unittest discover -s scripts -p 'test_*.py'
-      - name: Sign with historical key and verify update conditions
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          "$tools/apksigner" verify --print-certs input/historical/spotlight-next-release.apk > public/historical.cert.txt
+          "$tools/apksigner" verify --print-certs input/candidate/Spotlight-Next-debug-58ac0a2.apk > public/candidate.cert.txt
+          "$tools/aapt" dump badging input/historical/spotlight-next-release.apk > public/historical.badging.txt
+          "$tools/aapt" dump badging input/candidate/Spotlight-Next-debug-58ac0a2.apk > public/candidate.badging.txt
+          python3 scripts/verify_update_pair.py preflight public | tee public/comparison.json
+      - name: Sign only with existing historical Secrets; verify same payload/certificate
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: bash scripts/sign-release.sh
-      - name: Upload verified Release APK
+        run: bash scripts/sign-private-update.sh
+      - name: Upload compatible private test update (not a release)
+        id: update
         uses: actions/upload-artifact@v4
         with:
-          name: spotlight-next-${{ env.SPOTLIGHT_VERSION }}-release-${{ github.run_number }}
-          path: |
-            app/build/outputs/verified-release/spotlight-next-release.apk
-            app/build/outputs/verified-release/update-verification.txt
+          name: Spotlight-Next-compatible-update-58ac0a2
+          path: delivery/update/
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 7
           compression-level: 0
-
-      - name: Preserve verification reports and native UI captures
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: verification-${{ env.SPOTLIGHT_VERSION }}-${{ github.run_number }}
-          path: |
-            app/build/test-results/
-            app/build/reports/
-            app/build/**/*-ui/*.png
-          if-no-files-found: ignore
-          retention-days: 14
+      - name: Download link and installation limits
+        env:
+          APK_URL: ${{ steps.update.outputs.artifact-url }}
+        run: |
+          echo "[Descargar actualización compatible de prueba]($APK_URL)" >> "$GITHUB_STEP_SUMMARY"
+          echo 'Mismo paquete/certificado histórico, código28 frente a27. Payload idéntico al debug verificado58ac0a2; no desinstalar ni borrar datos. Instalación física y certificado de la APK realmente instalada en la tablet no leídos.' >> "$GITHUB_STEP_SUMMARY"

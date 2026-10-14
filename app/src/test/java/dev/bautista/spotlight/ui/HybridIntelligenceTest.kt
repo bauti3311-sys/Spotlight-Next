@@ -72,7 +72,7 @@ class HybridIntelligenceTest {
     @Test fun lightHybridHasUnifiedSuggestionsWithoutCategoryCircles() {
         ui.setContent{SpotlightPanel(app,AppConfig(theme="light",files=false,animations=false),{},availableHeightDp=700f)}
         ui.waitUntil(15000){ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithContentDescription("Opciones de búsqueda").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").assertIsDisplayed()
         ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertDoesNotExist()
         ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
         ui.runOnIdle{capture091(ui.activity,"hybrid-light-home")}

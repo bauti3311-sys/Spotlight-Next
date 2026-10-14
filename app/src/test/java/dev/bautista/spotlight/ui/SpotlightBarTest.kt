@@ -27,12 +27,12 @@ class SpotlightBarTest {
                     onOptionsChange={opened=it},optionsMaxHeight=99.dp)
             }
         }
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
         ui.runOnIdle { assertTrue(opened) }
         val height=ui.onNodeWithTag("spotlight-bar").fetchSemanticsNode().boundsInRoot.height
         val density=org.robolectric.RuntimeEnvironment.getApplication().resources.displayMetrics.density
         assertTrue("Options must fit above the keyboard",height<=160*density+1f)
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
         ui.runOnIdle { assertFalse(opened) }
     }
 
@@ -45,11 +45,11 @@ class SpotlightBarTest {
                     remember { FocusRequester() },.96f,false)
             }
         }
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
         ui.onNodeWithContentDescription("Búsqueda universal").assertExists()
         ui.onAllNodes(isPopup()).assertCountEquals(0)
         ui.onNode(hasSetTextAction()).assertTextEquals("Cerati")
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
         ui.onNodeWithContentDescription("Búsqueda universal").assertDoesNotExist()
         ui.runOnIdle { assertEquals("Cerati",text) }
     }
@@ -79,11 +79,11 @@ class SpotlightBarTest {
                 "IA · Ctrl/⌘+4" to "IA",
             )
             .forEach { (description, value) ->
-                ui.onNodeWithContentDescription("Opciones de búsqueda").performClick()
+                ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
                 ui.onNodeWithContentDescription(description).assertExists().performClick()
                 ui.runOnIdle { assertEquals(value, category) }
             }
-        ui.onNodeWithContentDescription("Opciones de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick();ui.onNodeWithContentDescription("IA · Ctrl/⌘+4").performClick()
         ui.runOnIdle { assertEquals("Todo", category) }
     }
 

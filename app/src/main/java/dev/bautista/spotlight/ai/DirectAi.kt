@@ -35,14 +35,24 @@ object AiProtocol {
     fun error(code:Int)=when(code){401,403->"Clave no autorizada. Revisá tu API key y permisos.";404->"Modelo no disponible. Elegí otro en Ajustes.";429->"Límite de uso alcanzado. Revisá la cuota del proveedor.";else->"No se pudo consultar IA (HTTP $code)."}
 }
 
-class DirectAi(private val credentials:AiCredentials,private val client:OkHttpClient=OkHttpClient.Builder().connectTimeout(15,TimeUnit.SECONDS).readTimeout(90,TimeUnit.SECONDS).callTimeout(180,TimeUnit.SECONDS).followRedirects(false).followSslRedirects(false).build()) {
+class DirectAi(
+    private val credentials: AiCredentials,
+    client: OkHttpClient? = null,
+    clientFactory: () -> OkHttpClient = {
+        OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(90, TimeUnit.SECONDS).callTimeout(180, TimeUnit.SECONDS)
+            .followRedirects(false).followSslRedirects(false).build()
+    },
+) {
+    // Search constructs this facade; TLS/HTTP is needed only for an explicit answer.
+    private val transport by lazy { client ?: clientFactory() }
     constructor(context:Context):this(CredentialVault(context))
     fun configured(c:Config)=if(c.aiProvider=="backend")c.endpoint.isNotBlank() else credentials.contains(c.aiProvider)
     fun answer(c:Config,messages:List<Pair<String,String>>):Flow<String> = flow {
         if(c.aiProvider=="backend"){emitAll(AiClient().answer(c.endpoint,messages));return@flow}
         val request=withContext(Dispatchers.IO){ val key=runCatching{credentials.read(c.aiProvider)}.getOrElse{error("No se pudo leer la clave. Guardala nuevamente.")}.orEmpty();AiProtocol.request(c,key,messages) }
         emitAll(callbackFlow {
-            val call=client.newCall(request)
+            val call=withContext(Dispatchers.IO) { transport.newCall(request) }
             call.enqueue(object:Callback {
                 override fun onFailure(call:Call,e:IOException){close(IOException(if(call.isCanceled() && e !is java.io.InterruptedIOException)"Consulta cancelada" else "No se pudo conectar al proveedor de IA."))}
                 override fun onResponse(call:Call,response:Response){response.use {r->try{
