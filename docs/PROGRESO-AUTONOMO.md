@@ -309,3 +309,12 @@ Nueva herramienta scripts/autonomy_lock.py usa exclusión compartidaGit, no arch
 CandidatoAPK y ZIP fuente8dd2524 preparados enworkspace/shared, JSONmanifestconhashes/certificado, NO release. AssembleDebug confirmado despuésdecommit (17s cache, fuenteproducciónidentical). minSdk26 target35 yarm64 presentes; packageVersion28/2.0.1 preservados. APKsha9808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb, AndroidDebugcert92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. Históricasigning/actualizaciónnoverificadas; adb sin dispositivos. No borrardatos ni prometerOneUI.
 
 ÚltimoSHApublicado/CIrápidafinal/propietariocierre ennotas yPR14. Mantener e38integral, PR5/6/13 ycheckpoints. Próximosubhitoconcreto F2: revisiónnativa acotada decontraste/controlesytáctil antes de incorporarunabiblioteca; F1.3 no bloquealíneaB ni obtiene cierre falso. Ningún porcentaje/cuota/automatización confirmado.
+
+
+## 2026-10-14T04:12:00.219063-03:00 — F2 espacio táctil explícito Quick Look, checkpoint temprano
+
+Base876f7cb/PR14, rama fix/quicklook-touch-target-f2, propietario f2-touch-20261014. Reserva compartida adquirida atómicamente, infraestructura372faa y checkpoint integral e38 ancestros confirmados. CI previas38508039593 y38510373747 correctas. Entrega4dd683c separada, dispatchForbidden/humano; no perder continuidad funcional. F1.3 permanece abierto.
+
+Botón Cerrar vista rápida: layout28→48dp mediante GlassTokens.hit existente, icono17dp intacto. No afirmar que el hit target implícito de Material fuera28: la mejora reserva espacio explícito para no solapar vecinos. RED2tests nativos con ancho28, GREEN2+KeyboardHintsTest; toque lateral real cierra preview/acciones preservando consulta/overlay. Fixture esquina fuera del círculo y error size corregidos, assertions/plazos preservados. Capturas y diferencias tablet horizontal/teléfono vertical en docs/visual/f2-touch; API33 Robolectric, no OneUI físico. Python27scripts+5backend correctos. Sin deps/licencias nuevas.
+
+Integral local unidad/lint/debug en ejecución, visual17 pendiente: no declarar cierre ni mover checkpoint/autonomous-next. Checkpoint fuente se publica temprano; SHA final/CI/cierre en notas. Siguiente acción exacta: verificar integral, comparar17baselines, revisar diferencias intencionales sin ocultar regresiones, publicar PRborrador dirigido a infraestructura y liberar solo reserva propia. No main/merges/releases/emuladores.

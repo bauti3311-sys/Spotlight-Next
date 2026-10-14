@@ -851,7 +851,7 @@ fun SpotlightPanel(
                                             preview = null
                                             menu = false
                                         },
-                                        modifier = Modifier.size(28.dp),
+                                        modifier = Modifier.size(GlassTokens.hit),
                                     ) {
                                         Icon(
                                             CommandIcons.Close,

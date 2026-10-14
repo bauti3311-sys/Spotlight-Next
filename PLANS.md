@@ -227,3 +227,12 @@ App8dd2524 verificada remotamente en CI38508039593: rápido+Android correctos, w
 APKdebug y ZIP exacto8dd2524 preparados en /workspace/shared/Spotlight-Next-debug-8dd2524.apk y Spotlight-Next-source-8dd2524.zip, con manifestJSON/hashes/certificado. Assemble de fuente comprometida confirmado en17s (cache). minSdk26/target35, arm64 presente, package/version28/2.0.1 conservados. Ningún dispositivo conectado a adb, OneUI no probado. Debug no demuestra compatibilidad con firma histórica; no proponer borrar datos para instalar. No publicación/release/firmahistórica.
 
 La rama de recuperación siguefeat/contextual-expansion-f14, PR14 borrador; puntafinal ennotas sobree38. Próximo funcional segúnroadmap: F2 revisión visual nativa acotada (contraste/controles/táctil) antesde elegir una biblioteca; después búsqueda/IAinline. No reiniciar F1.3 ni repetir F1.1/F1.2. Reservar investigación restante solo para hipótesis demostrable.
+
+
+## 2026-10-14T04:12:00.219063-03:00 — F2 espacio táctil explícito Quick Look, checkpoint temprano
+
+Base876f7cb/PR14, rama fix/quicklook-touch-target-f2, propietario f2-touch-20261014. Reserva compartida adquirida atómicamente, infraestructura372faa y checkpoint integral e38 ancestros confirmados. CI previas38508039593 y38510373747 correctas. Entrega4dd683c separada, dispatchForbidden/humano; no perder continuidad funcional. F1.3 permanece abierto.
+
+Botón Cerrar vista rápida: layout28→48dp mediante GlassTokens.hit existente, icono17dp intacto. No afirmar que el hit target implícito de Material fuera28: la mejora reserva espacio explícito para no solapar vecinos. RED2tests nativos con ancho28, GREEN2+KeyboardHintsTest; toque lateral real cierra preview/acciones preservando consulta/overlay. Fixture esquina fuera del círculo y error size corregidos, assertions/plazos preservados. Capturas y diferencias tablet horizontal/teléfono vertical en docs/visual/f2-touch; API33 Robolectric, no OneUI físico. Python27scripts+5backend correctos. Sin deps/licencias nuevas.
+
+Integral local unidad/lint/debug en ejecución, visual17 pendiente: no declarar cierre ni mover checkpoint/autonomous-next. Checkpoint fuente se publica temprano; SHA final/CI/cierre en notas. Siguiente acción exacta: verificar integral, comparar17baselines, revisar diferencias intencionales sin ocultar regresiones, publicar PRborrador dirigido a infraestructura y liberar solo reserva propia. No main/merges/releases/emuladores.
