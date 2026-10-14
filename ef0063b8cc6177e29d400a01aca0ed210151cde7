@@ -1,0 +1,27 @@
+{
+  "owner": "cold-analysis-4d070662-dbb9-492e-8a7c-185df94706f1",
+  "state": "closed-blocked-artifact-access-cold-focus-unresolved",
+  "date": "2026-10-13T23:41:50.287785-03:00",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "base": "1f52f67a9a03cefb3e0a44a470bfce16645a1e1b",
+  "checkpoint": "ef0063b8cc6177e29d400a01aca0ed210151cde7",
+  "branch": "fix/economical-ci-android16",
+  "pr": 13,
+  "local_tests": {
+    "startup": 8,
+    "viewport": 7,
+    "Python": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_instrumented_runs": 0,
+  "android_workflows_unchanged": true,
+  "artifact_blocker": "11864974587 File Service download HTTP403; images/XML/TXT NOT inspected",
+  "diagnosis": "OnDraw is before draw, not buffer presentation; twelve exported files are warm native geometry pairs. Actual cold focus false in prior logs; ultimate cause not proven. WMG adds hardware acceleration conditionally from ApplicationInfo, absence in params is not proof. Cold and native differ preferences/launch/IME; not controlled comparison.",
+  "validated_checkpoint": false,
+  "validated_pointer_unchanged": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+  "next": "Attach ZIP11864974587 directly to thread or enable supported download; inspect cold hierarchy/screenshot/log and six native pairs. Only then define at most one discriminating Android16 buffer/focus/IME validation. Do not rerun same emulator or change watchdog/assertions/baselines.",
+  "lease_release": "atomic notes plus own lease deletion",
+  "lease_sha": "898932d6521fc21de39c31d41706b63a4e6f5a0a"
+}
