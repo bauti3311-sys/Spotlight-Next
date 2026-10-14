@@ -103,6 +103,16 @@ class OverlayGeometryDeviceTest {
             root.set(xy[0], xy[1], xy[0] + view.width, xy[1] + view.height)
             view.getWindowVisibleDisplayFrame(visible)
         }
+        instrumentation.runOnMainSync {
+            val view = requireNotNull(host())
+            val input = editor(view)
+            val globalIme = if (Build.VERSION.SDK_INT >= 30) {
+                val insets = view.context.getSystemService(android.view.WindowManager::class.java)
+                    .currentWindowMetrics.windowInsets
+                "visible=${insets.isVisible(android.view.WindowInsets.Type.ime())} bounds=${insets.getInsets(android.view.WindowInsets.Type.ime())}"
+            } else "legacy"
+            android.util.Log.d("SpotlightGeometry", "stage=$stage accessibilityIme=$keyboard globalIme=$globalIme root=$root visibleFrame=$visible windowFocus=${view.hasWindowFocus()} inputActive=${input != null && context.getSystemService(InputMethodManager::class.java).isActive(input)}")
+        }
         assertTrue("Unsafe root=$root visible=$visible ($stage)", visible.contains(root))
         if (expectIme) {
             assertNotNull("IME disappeared before capture ($stage)", keyboard)

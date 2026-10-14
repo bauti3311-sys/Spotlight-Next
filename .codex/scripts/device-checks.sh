@@ -24,7 +24,10 @@ diagnose_failure() {
     done
   fi
   if [[ -n "$spotlight_trace_pid" ]]; then
-    wait "$spotlight_trace_pid" || echo 'Perfetto capture failed; inspect trace-start.log' >&2
+    if ! wait "$spotlight_trace_pid"; then
+      echo 'Perfetto capture failed:' >&2
+      cat .maestro/output/trace-start.log >&2
+    fi
     if adb pull /data/misc/perfetto-traces/spotlight-cold.pftrace .maestro/output/spotlight-cold.pftrace; then
       "$root/.codex/tools/perfetto/58.2/linux-amd64/trace_processor_shell" .maestro/output/spotlight-cold.pftrace --query-file "$root/.codex/perfetto/cold-start.sql" > .maestro/output/cold-start-summary.csv || echo 'Trace summary failed' >&2
       cat .maestro/output/cold-start-summary.csv
@@ -47,8 +50,7 @@ fi
 bash .codex/scripts/maestro.sh test --reinstall-driver=false .maestro/flows/driver-ready.yaml
 if [[ "${CI:-}" == true ]]; then
   # Record the cold first-frame/input handoff with the existing bounded 15s config.
-  adb push .codex/perfetto/spotlight.cfg /data/local/tmp/spotlight-cold.cfg
-  adb shell perfetto --txt -c /data/local/tmp/spotlight-cold.cfg -o /data/misc/perfetto-traces/spotlight-cold.pftrace > .maestro/output/trace-start.log 2>&1 &
+  adb shell perfetto --txt -c - -o /data/misc/perfetto-traces/spotlight-cold.pftrace < .codex/perfetto/spotlight.cfg > .maestro/output/trace-start.log 2>&1 &
   spotlight_trace_pid=$!
   # Observe WindowManager before the unchanged 2500ms watchdog removes a cold window.
   (

@@ -21,6 +21,7 @@ class DeviceSuiteTest(unittest.TestCase):
                 binary.mkdir()
                 adb = binary / 'adb'
                 adb.write_text('''#!/usr/bin/env bash
+if [[ "$1" == "logcat" ]]; then exit 0; fi
 if [[ "$1 $2 $3" == "shell am force-stop" ]]; then
   printf 'driver-stop:%s\\n' "$4" >> "$SPOTLIGHT_TEST_EVENTS"
   exit "$SPOTLIGHT_DRIVER_STOP_STATUS"
