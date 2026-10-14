@@ -23,6 +23,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.*
 
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun SpotlightBar(
     query: String,
@@ -64,7 +65,7 @@ fun SpotlightBar(
             BasicTextField(
                 query,
                 { onQueryChange(it.take(4000)) },
-                Modifier.weight(1f).focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
+                Modifier.weight(1f).focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
                     TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) 17.sp else 20.sp),
@@ -86,6 +87,7 @@ fun SpotlightBar(
                                     withStyle(SpanStyle(color=Color.Transparent)){append(query)}
                                     append(suggestion.drop(query.length))
                                 },
+                                modifier = Modifier.clearAndSetSemantics { },
                                 maxLines = 1,
                                 fontSize = if (compact) 17.sp else 20.sp,
                                 color = colors.onSurface.copy(alpha = .30f),
@@ -98,7 +100,7 @@ fun SpotlightBar(
             )
             if (suggestion != null)
                 Text(
-                    "→",
+                    "⌃Space",
                     fontSize = 10.sp,
                     color = colors.onSurfaceVariant,
                     modifier =

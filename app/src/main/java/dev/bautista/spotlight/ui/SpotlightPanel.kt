@@ -623,6 +623,8 @@ fun SpotlightPanel(
                         true
                     } else if(menu && event.key !in listOf(Key.Escape,Key.Back) && !((event.isCtrlPressed || event.isMetaPressed) && event.key==Key.K)) false
                     else if ((noteEditor || systemPage!=null || messageForm!=null || searchForm!=null || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null) && event.key !in listOf(Key.Escape, Key.Back)) false
+                    else if(searchFocused && event.key in listOf(Key.DirectionLeft,Key.DirectionRight,Key.MoveHome,Key.MoveEnd)) false
+                    else if(searchFocused && event.isShiftPressed && event.key in listOf(Key.DirectionUp,Key.DirectionDown)) false
                     else if(!searchFocused && !resultsFocused && event.key !in listOf(Key.Escape,Key.Back) && !((event.isCtrlPressed || event.isMetaPressed) && event.key==Key.K)) false
                     else if (
                         (event.isCtrlPressed || event.isMetaPressed) &&
@@ -653,6 +655,9 @@ fun SpotlightPanel(
                                 ?: query
                         )
                         true
+                    } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.Spacebar && suggestion!=null && searchFocused) {
+                        acceptSuggestion()
+                        true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.B) {
                         web()
                         true
@@ -681,9 +686,6 @@ fun SpotlightPanel(
                                     navigating = true
                                 }
                                 true
-                            }
-                            Key.DirectionRight -> {
-                                if(suggestion!=null && !navigating){acceptSuggestion();true}else false
                             }
                             Key.Spacebar -> {
                                 if (navigating || event.isCtrlPressed) {
@@ -1154,7 +1156,7 @@ fun SpotlightPanel(
                         Text(
                             if(systemPage!=null || messageForm!=null || searchForm!=null) "Tab siguiente campo   esc volver" else when {
                                 menu -> "↵ ejecutar acción   esc volver a resultados"
-                                suggestion != null -> "→ completar   ↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
+                                suggestion != null -> "Ctrl+Space completar   ↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
                                 else -> "↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
                             },
                             Modifier.padding(horizontal = 18.dp, vertical = 10.dp),

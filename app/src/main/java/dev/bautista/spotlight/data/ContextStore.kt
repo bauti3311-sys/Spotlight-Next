@@ -21,6 +21,9 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private val lock=Mutex()
     private var started=false
     private var expiryJob:Job?=null
+    // Process-local deduplication: never persist clipboard text just to remember an event.
+    private var lastAutomaticText:String?=null
+    private var automaticId:String?=null
     private fun scheduleExpiry(){expiryJob?.cancel();val item=mutableActive.value ?: return;if(!item.pinned)expiryJob=scope.launch{delay((item.created+600000L-System.currentTimeMillis()).coerceAtLeast(1));expire()}}
     private val mutableActive=MutableStateFlow<SharedContext?>(null)
     val active=mutableActive.asStateFlow()
@@ -41,14 +44,22 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     fun select(id:String){mutableActive.value=mutablePinned.value.firstOrNull{it.id==id}}
     fun setText(text:String,title:String="Texto seleccionado"):SharedContext {
         require(text.isNotBlank() && text.length<=16000)
-        return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;scheduleExpiry()}
+        return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
     }
-    fun offerAutomatic(text:String){if(preferences.ready && !preferences.isPrivate && mutableActive.value?.pinned!=true && text.isNotBlank() && text.length<=8000)setText(text,"Portapapeles autorizado")}
+    fun offerAutomatic(text:String) {
+        if(!preferences.ready || preferences.isPrivate || text.isBlank() || text.length>8000) return
+        if(text==lastAutomaticText) return
+        val current=mutableActive.value
+        // Explicit selection (including documents) always has priority over an automatic offer.
+        if(current!=null && (current.pinned || current.id!=automaticId)) return
+        lastAutomaticText=text
+        automaticId=setText(text,"Portapapeles").id
+    }
     suspend fun setDocument(uri:Uri,ownedFile:String=""):SharedContext=withContext(Dispatchers.IO) {
         require(uri.scheme=="content")
         val mime=context.contentResolver.getType(uri).orEmpty()
         val title=runCatching{context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME),null,null,null)?.use{if(it.moveToFirst())it.getString(0) else null}}.getOrNull() ?: "Documento autorizado"
-        SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;scheduleExpiry()}
+        SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
     }
     suspend fun text(item:SharedContext):String=withContext(Dispatchers.IO) {
         if(item.text.isNotBlank())item.text else {
