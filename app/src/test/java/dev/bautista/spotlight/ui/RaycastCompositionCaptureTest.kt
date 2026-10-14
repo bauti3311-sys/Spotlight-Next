@@ -32,9 +32,9 @@ class RaycastCompositionCaptureTest {
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private var closed=0
     private lateinit var focus:androidx.compose.ui.focus.FocusManager
-    private fun show(query:String,theme:String="dark",files:Boolean=false,width:Int=720) {
+    private fun show(query:String,theme:String="dark",files:Boolean=false,width:Int=720,preset:String="glass") {
         ui.setContent {focus=LocalFocusManager.current;Box(Modifier.width(width.dp)) {
-            SpotlightPanel(app,AppConfig(files=files,online=false,animations=false,learning=false,suggestions=false,theme=theme),{closed++},query,700f)
+            SpotlightPanel(app,AppConfig(files=files,online=false,animations=false,learning=false,suggestions=false,theme=theme,preset=preset),{closed++},query,700f)
         }}
         ui.onNode(hasSetTextAction()).assertIsFocused().assertTextEquals(query)
     }
@@ -43,6 +43,10 @@ class RaycastCompositionCaptureTest {
         ui.runOnIdle{focus.clearFocus(force=true)};ui.waitForIdle()
         ui.onRoot().captureRoboImage("build/raycast-captures/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
     }
+    @Test fun approvedObsidianEmptyBar() {show("",width=660);capture("gemini-obsidian-empty")}
+    @Test fun approvedObsidianCalculator() {show("2+2",width=660);await("4");ui.onAllNodesWithText("4").assertCountEquals(1);capture("gemini-obsidian-calculator")}
+    @Test fun approvedGraphiteCalculator() {show("2+2",width=660,preset="raycast");await("4");capture("gemini-graphite-calculator")}
+    @Test @Config(qualifiers="w800dp-h1280dp") fun approvedMacosLightPortrait() {show("2+2",theme="light",width=660);await("4");capture("gemini-macos-light-portrait")}
     @Test fun installedApplicationResultsAndSelection() {
         val launcher=Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
         listOf("Galería","Galería de fotos","Galería privada","Galería compartida").forEachIndexed { i,label ->

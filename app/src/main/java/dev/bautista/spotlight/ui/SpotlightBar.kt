@@ -64,13 +64,13 @@ fun SpotlightBar(
         Row(
             fieldModifier
                 .height(GlassTokens.searchHeight)
-                .padding(start = 8.dp, end = 0.dp),
+                .padding(start = 4.dp, end = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
-                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(GlassTokens.glyph),tint=colors.onSurfaceVariant)
+                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(18.dp),tint=colors.onSurfaceVariant)
             }
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(4.dp))
             BasicTextField(
                 visibleValue,
                 { next ->

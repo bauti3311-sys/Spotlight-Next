@@ -2,6 +2,7 @@ package dev.bautista.spotlight.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -33,7 +34,7 @@ fun ResultIcon(
     if (result.icon != null) {
         val bitmap =
             remember(result.id, result.icon) { result.icon.toBitmap(80, 80).asImageBitmap() }
-        Image(bitmap, result.category, modifier.clip(RoundedCornerShape(9.dp)))
+        Image(bitmap, result.category, modifier.clip(RoundedCornerShape(7.dp)))
     } else
         Icon(
             when {
@@ -83,13 +84,20 @@ fun ResultRow(
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
-    val pad=when(LocalAppearance.current.density){"compact"->4;"spacious"->10;else->6}
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+    val inline=maxWidth>=560.dp
+    val appearance=LocalAppearance.current
+    val pad=if(inline)when(appearance.density){"compact"->2;"spacious"->6;else->4} else when(appearance.density){"compact"->4;"spacious"->10;else->6}
+    val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")
+    val dark=colors.surface.luminance()<.5f
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
-    val fill by animateColorAsState(if(selected)GlassTokens.selection() else if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
+    val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(LocalAppearance.current.density=="compact")52.dp else GlassTokens.rowMinimum).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(inline)GlassTokens.rowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
+            .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
+            .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=amount*if(dark).14f else .10f),RoundedCornerShape(GlassTokens.rowRadius))
 
             .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
             .padding(start = 12.dp, end = 8.dp, top = pad.dp, bottom = pad.dp),
@@ -97,8 +105,15 @@ fun ResultRow(
     ) {
         // Native application artwork keeps its own identity. Utility glyphs have
         // one stroke treatment and no tinted tile or selection stripe.
-        ResultIcon(result,Modifier.size(if(result.icon!=null)30.dp else GlassTokens.glyph),colors.onSurfaceVariant)
-        Spacer(Modifier.width(11.dp))
+        ResultIcon(result,Modifier.size(if(result.icon!=null)26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+        Spacer(Modifier.width(12.dp))
+        if(inline) Row(Modifier.weight(1f),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
+            Text(result.title,Modifier.weight(1f,fill=false),color=ink,
+                fontWeight=if(selected)FontWeight.Medium else FontWeight.Normal,
+                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
+            if(result.subtitle.isNotBlank()) Text(result.subtitle,Modifier.weight(1f),color=colors.onSurfaceVariant,
+                fontSize=GlassTokens.secondaryText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
+        } else {
         Column(Modifier.weight(1f)) {
             Text(
                 result.title,
@@ -116,13 +131,15 @@ fun ResultRow(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        if(LocalConfiguration.current.screenWidthDp>=600)Text(
+        }
+        if(inline)Text(
             if(result.id.startsWith("smart:") || result.id=="intent:local")"Intención" else result.category,
-            modifier=Modifier.padding(horizontal=12.dp).width(110.dp),
+            modifier=Modifier.padding(horizontal=8.dp).width(90.dp),
             color=colors.onSurfaceVariant,fontSize=GlassTokens.metadataText,textAlign=TextAlign.End,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
-        Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
-        if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(GlassTokens.hit)) {
+        Box(Modifier.size(if(inline)32.dp else GlassTokens.hit),contentAlignment=Alignment.Center) {
+        CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
+        if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
             Icon(
                 CommandIcons.Chevron,
                 "Operaciones del resultado",
@@ -130,9 +147,11 @@ fun ResultRow(
                 tint = ink.copy(alpha = .7f),
             )
         }
+        }
     }
     }
 
+    }
 }
 
 @Composable

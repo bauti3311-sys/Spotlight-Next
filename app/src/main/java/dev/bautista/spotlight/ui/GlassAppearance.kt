@@ -1,6 +1,8 @@
 package dev.bautista.spotlight.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,9 +18,14 @@ import dev.bautista.spotlight.data.Config
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("auto" to "Sistema","light" to "Claro","dark" to "Oscuro").forEach { (key,label)->
             FilterChip(draft.theme==key,{draft=draft.copy(theme=key)},label={Text(label)})
         } }
+        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            listOf(Triple("glass","dark","Obsidian Glass"),Triple("raycast","dark","Graphite"),Triple("glass","light","macOS Light")).forEach { (preset,theme,label)->
+                FilterChip(draft.preset==preset && draft.theme==theme,{draft=draft.copy(preset=preset,theme=theme)},label={Text(label)})
+            }
+        }
         WindowSizeSettings(draft){draft=it}
         Text("Acento",style=MaterialTheme.typography.titleSmall)
-        Row(horizontalArrangement=Arrangement.spacedBy(4.dp)) { listOf("blue" to "Azul","purple" to "Lila","rose" to "Rosa","graphite" to "Grafito").forEach { (key,label)->
+        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(4.dp)) { listOf("blue" to "Azul","purple" to "Lila","rose" to "Rosa","green" to "Verde","graphite" to "Neutro").forEach { (key,label)->
             FilterChip(draft.accent==key,{draft=draft.copy(accent=key)},label={Text(label)})
         } }
         OverlayDensitySettings(draft,simple=true){draft=it}
