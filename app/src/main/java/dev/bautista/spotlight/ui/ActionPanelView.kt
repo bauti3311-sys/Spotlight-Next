@@ -36,6 +36,8 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
         }
     },verticalArrangement=Arrangement.spacedBy(8.dp)){
         Text("Acciones",style=MaterialTheme.typography.titleSmall)
+        Text("Tab siguiente · Shift+Tab anterior", style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
         OutlinedTextField(filter,{filter=it.take(120)},label={Text("Filtrar acciones")},singleLine=true,modifier=Modifier.fillMaxWidth().onFocusChanged{filterFocused=it.isFocused},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))})
         Column(Modifier.fillMaxWidth().heightIn(max=240.dp).verticalScroll(rememberScrollState())){
             var previous=""

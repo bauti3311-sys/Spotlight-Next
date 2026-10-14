@@ -862,11 +862,13 @@ fun SpotlightPanel(
                                 }
                                 if (
                                     item.category == "Archivos" &&
-                                        item.mime != DocumentsContract.Document.MIME_TYPE_DIR
-                                )
+                                        item.mime != DocumentsContract.Document.MIME_TYPE_DIR &&
+                                        item.action is Action.Launch && item.action.intent.data != null
+                                ) {
                                     TextButton(onClick={expandedPreview=!expandedPreview}){Text(if(expandedPreview)"Volver al panel lateral" else "Ampliar vista previa")}
                                     FilePreview(context, item,expandedPreview,previewPages[item.id] ?: 0,{previewPages[item.id]=it})
                                     TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
+                                }
                                 SelectionContainer {
                                     Text(
                                         item.preview ?: item.subtitle,
@@ -1150,10 +1152,11 @@ fun SpotlightPanel(
                             )
                         HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
                         Text(
-                            if(systemPage!=null || messageForm!=null || searchForm!=null) "Tab siguiente campo   esc volver" else if (suggestion != null)
-                                "Tab completar   ↑↓ elegir   ↵ abrir   esc cerrar"
-                            else
-                                "↑↓ elegir   ↵ abrir   espacio vista rápida   Ctrl+K acciones   esc cerrar",
+                            if(systemPage!=null || messageForm!=null || searchForm!=null) "Tab siguiente campo   esc volver" else when {
+                                menu -> "↵ ejecutar acción   esc volver a resultados"
+                                suggestion != null -> "→ completar   ↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
+                                else -> "↑↓ elegir   ↵ ejecutar   Tab acciones   esc cerrar"
+                            },
                             Modifier.padding(horizontal = 18.dp, vertical = 10.dp),
                             fontSize = 10.sp,
                             lineHeight = 14.sp,
