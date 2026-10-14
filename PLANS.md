@@ -218,3 +218,12 @@ RED2tests nuevos por falta de expansión; GREEN específico ContentExpansionTest
 APKdebug177754718bytes, SHA2569808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb; certificado desarrollo92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. No firma histórica local disponible, no prometer actualización sobre la app instalada. Se prepara prueba, no release. CI final/PR en notas; integrar pruebas rápidas para PR apilado sobre fix/economical-ci-android16 (sin tocarPR13/main). No nuevo emulador.
 
 F1.4 implementado y validado localmente; OneUI físico, animación real/IME y F1.3 frío quedan separados. CI económica pendiente al publicar PR. Después: mejorar búsqueda/contexto en líneaB y evaluar IA inline bajo demanda con fixtures offline; no reabrir diagnósticoF1.3 sin hipótesis. Fuente recuperable feat/contextual-expansion-f14, últimoSHA en notas y PR; e38 integral intacto.
+
+
+### Continuidad compartida convertida en herramienta
+
+App8dd2524 verificada remotamente en CI38508039593: rápido+Android correctos, web omitido, sin emuladores. Se agrega scripts/autonomy_lock.py status/acquire/update/release: adquisición exclusiva, propietario/SHA, checkpoint hacia delante, comprobación del objeto anunciado durante negociación sin force y hooks existentes preservados. Publicación atómica notas+liberación opcional; no reclaim por edad. Nueve tests Git reales, totalPython27scripts+5backend correctos. Esta unidad no cambia Android y su CI final será rápida por delta verificado. Ver docs/AUTONOMIA-RESERVA.md; usar herramienta para futuras reservas, sin omitir lectura de notas/PR/progreso.
+
+APKdebug y ZIP exacto8dd2524 preparados en /workspace/shared/Spotlight-Next-debug-8dd2524.apk y Spotlight-Next-source-8dd2524.zip, con manifestJSON/hashes/certificado. Assemble de fuente comprometida confirmado en17s (cache). minSdk26/target35, arm64 presente, package/version28/2.0.1 conservados. Ningún dispositivo conectado a adb, OneUI no probado. Debug no demuestra compatibilidad con firma histórica; no proponer borrar datos para instalar. No publicación/release/firmahistórica.
+
+La rama de recuperación siguefeat/contextual-expansion-f14, PR14 borrador; puntafinal ennotas sobree38. Próximo funcional segúnroadmap: F2 revisión visual nativa acotada (contraste/controles/táctil) antesde elegir una biblioteca; después búsqueda/IAinline. No reiniciar F1.3 ni repetir F1.1/F1.2. Reservar investigación restante solo para hipótesis demostrable.

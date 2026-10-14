@@ -298,3 +298,14 @@ Visual: verifyRoborazziDebug --tests '*VisualSnapshotTest' primero17/5fallos por
 APKdebug compilado177754718bytes, SHA2569808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb; apksigner verify correcto, CNAndroidDebug SHA25692e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. Firma histórica no disponiblelocalmente; compatibilidad actualizaciónNOvalidada. Package/dev.bautista.spotlight.next ydatos/versiones conservados. Sin nuevosdeps/licencias/APIsde pago/releases/main/merges/emuladores.
 
 PRborrador nuevo apilado sobre fix/economical-ci-android16 para no sobrescribirPR13 ni arrastrarF1.3 aldiff; workflows rápidos/manuales aceptan esabase. CIremota se verifica antesdecerrar, resultadofinal/SHA ennotas. e38 se conserva incluso conCIrápidaverde; F1.4 implementado/localvalidado, OneUI/performance separados. Próximo líneaB: búsqueda yaccionescontextuales/IAinline bajo demanda confixtures; líneaA solo hipótesis dirigida. Cuota y automatización no tienen fuente verificada, no afirmarporcentaje/actividad.
+
+
+## 2026-10-14T01:13:50.787520-03:00 — CI correcta y recuperación atomizada
+
+CIapp8dd2524 [38508039593](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/38508039593) final correcta: secrets yandroid-quality verdes, weblab omitido. Sin emuladores. FuenteAndroid preservada en la siguienteunidad.
+
+Nueva herramienta scripts/autonomy_lock.py usa exclusión compartidaGit, no archivo local: status, acquire conownerúnico, updatecheckpointFF yrelease propietario/SHA. Compara SHA viejo ANUNCIADO enpre-push, yGit lo comprueba entransacciónatómica; noforce. Delega hooks existentes/configurados sinbypass. Notasdivergentes rechazanliberaciónatómica. Reserva antigua o desconocida no reclamable. Nueve tests con dosreposGit reales/concurrencia/negociación/hook/SHA/notas/antigüedad, en2s; total27scripts+5backend correctos offline. No APIs/claves/dependencias/costos ni códigoAndroidnuevo. CLIprobado constatus real depropietariopropio; se usará para actualizar/liberarestareserva.
+
+CandidatoAPK y ZIP fuente8dd2524 preparados enworkspace/shared, JSONmanifestconhashes/certificado, NO release. AssembleDebug confirmado despuésdecommit (17s cache, fuenteproducciónidentical). minSdk26 target35 yarm64 presentes; packageVersion28/2.0.1 preservados. APKsha9808aad66e76014d2bc43396f503cde0997e46c6ec2130c048c19dd12d4073eb, AndroidDebugcert92e631296a7ed975b5926adb876cb97af090dcd28bc3c0bbec5c2dff138c8182. Históricasigning/actualizaciónnoverificadas; adb sin dispositivos. No borrardatos ni prometerOneUI.
+
+ÚltimoSHApublicado/CIrápidafinal/propietariocierre ennotas yPR14. Mantener e38integral, PR5/6/13 ycheckpoints. Próximosubhitoconcreto F2: revisiónnativa acotada decontraste/controlesytáctil antes de incorporarunabiblioteca; F1.3 no bloquealíneaB ni obtiene cierre falso. Ningún porcentaje/cuota/automatización confirmado.
