@@ -329,3 +329,6 @@ Recuperación verificada, reserva propia reanudada. Corregidos ranking y home (2
 
 #### Checkpoint funcional15/10
 420 pruebas actuales correctas tras ajuste final de home/pie. Gate Android completo en copia aislada para impedir interferencia de archivos temporales de sincronización; lint Preview sin supresión, firmado histórico aún sin CI del SHA exacto. Se mantiene Preview independiente autorizada. Ver progreso y docs/visual/gemini-work-20261015.
+
+### Pausa técnica15/10 — entorno offline, trabajo publicado
+Último cambio Android8ad8ca2;420 tests actuales correctos. Gate final interrumpido por409 environment_offline. No hay APK final descargable ni CI verde declaradas. Continuar desde HEAD de fix/work-gemini-native-20261014, comprobar reserva propia y recuperar derivados antes de repetir trabajo. Estado exacto: docs/HANDOFF-WORK-20261015.md.

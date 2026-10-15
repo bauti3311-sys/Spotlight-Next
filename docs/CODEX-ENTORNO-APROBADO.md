@@ -43,3 +43,8 @@ Emuladores de tablet/teléfono cuando sea posible. Galaxy Tab A9+ requiere valid
 APK firmado únicamente en flujo autorizado/protegido y sin secretos en PRs. Checks completos antes de firmar, identidad/certificado históricos, ZIP del mismo commit, hashes e informe. Publicación conjunta en GitHub Releases u otro mecanismo privado confiable después de aprobar la versión. No auto-merge de fallos ni quitar controles.
 
 Orden: recuperación/entrega 2.0.1; AGENTS/PLANS/skills; pruebas visuales/funcionales; laboratorio/evaluación Compose; automatización general. Las herramientas costosas no se instalan innecesariamente en todos los entornos.
+
+### Work15/10: sincronización y extracción de herramientas
+Se observó packageDebug fallando por `.rsync-tmp/classes.dex` transitorio dentro de build durante la sincronización de Work. Para los gates se copió el mismo árbol fuente, sin build/.gradle/.rsync-tmp, a un temporal fuera de la raíz sincronizada. Se reutilizaron JDK17/SDK35/Gradle8.10.2 y dependencias verificadas; no se rebajaron controles. Guardar informes y comprobar hashes de entradas de producción antes de asociar el APK a un SHA.
+
+Tar verificó los SHA256 de actionlint/Gitleaks pero falló restaurando propietarios Unix inexistentes en Work. `--no-same-owner` evita ese error conservando archivos/modos; no cambia versiones, URLs ni hashes. ShellCheck del script corregido pasó. La desconexión posterior impidió confirmar los últimos reintentos de instalación y la entrega. Si el entorno informa409 environment_offline, no asumir que una tarea en curso terminó correctamente: comprobar logs/artefactos al reconectar.

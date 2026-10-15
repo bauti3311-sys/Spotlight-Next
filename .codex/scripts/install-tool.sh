@@ -43,9 +43,9 @@ elif [[ "$1" == perfetto ]]; then
   unzip -q "$scratch/$archive" linux-amd64/trace_processor_shell -d "$destination"
   chmod +x "$destination/linux-amd64/trace_processor_shell"
 elif [[ "$1" == actionlint ]]; then
-  tar -xzf "$scratch/$archive" -C "$destination" actionlint LICENSE.txt
+  tar --no-same-owner -xzf "$scratch/$archive" -C "$destination" actionlint LICENSE.txt
 else
-  tar -xzf "$scratch/$archive" -C "$destination" gitleaks LICENSE
+  tar --no-same-owner -xzf "$scratch/$archive" -C "$destination" gitleaks LICENSE
 fi
 printf '%s\n' "$digest" > "$destination/.verified-download"
 printf 'Herramienta local verificada: %s %s\n' "$1" "$version"
