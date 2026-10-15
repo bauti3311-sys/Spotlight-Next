@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.*
     val pill=when { !dark->Color(0xF0F4F4F8);graphite->Color(0xF01F2025);else->Color(0xEB18181D) }
     BoxWithConstraints(Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(base.copy(alpha=0f),base)))) {
         val showHints=maxWidth>=520.dp
-        Row(Modifier.fillMaxWidth().heightIn(min=56.dp).padding(horizontal=12.dp,vertical=4.dp),verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=12.dp,vertical=1.dp),verticalAlignment=Alignment.CenterVertically) {
             if(showHints && suggestion) Text("Ctrl+Space completar",fontSize=11.sp,color=colors.onSurfaceVariant)
             Spacer(Modifier.weight(1f))
             // The visible capsule is 32 dp; the native buttons retain 48 dp hit areas.

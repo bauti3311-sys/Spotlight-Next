@@ -57,7 +57,7 @@ class GeminiHomeCaptureTest {
         for(label in listOf("Archivos de prueba","Calculadora de prueba","Música de prueba","Navegador de prueba","Notas de prueba","Informe autorizado de prueba.pdf","Atlas de estudio de prueba.pdf"))ui.onNodeWithText(label).assertIsDisplayed()
         val last=ui.onNodeWithText("Notas de prueba").fetchSemanticsNode().boundsInRoot
         val footer=ui.onNodeWithText("↵ Abrir aplicación").fetchSemanticsNode().boundsInRoot
-        Assert.assertTrue("The final row must be fully above the footer",last.bottom+8f<footer.top)
+        Assert.assertTrue("The final row must be fully above the footer: last=$last footer=$footer",last.bottom+8f<footer.top)
         ui.onAllNodesWithText("En reproducción").assertCountEquals(0)
         ui.onNodeWithText("↵ Abrir aplicación").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         ui.onNodeWithContentDescription("Divisor ajustable del panel contextual").assertDoesNotExist()

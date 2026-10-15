@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
  <application android:label="Spotlight Next Preview" tools:replace="android:label">
+  <!-- Same service/type inherited from main, explicit for suffix-variant lint resolution. -->
+  <service android:name="dev.bautista.spotlight.overlay.OverlayService" android:foregroundServiceType="specialUse"/>
   <activity-alias android:name=".SpotlightSearchShortcut" android:label="Spotlight Preview · Buscar" tools:replace="android:label"/>
   <service android:name=".overlay.SpotlightTile" android:label="Spotlight Preview" tools:replace="android:label"/>
  </application>

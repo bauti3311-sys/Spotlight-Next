@@ -31,8 +31,8 @@ fun sectionIcon(name: String): ImageVector = when(name) {
     else -> CommandIcons.TravelExplore
 }
 
-@Composable fun SectionHeading(name: String) {
-    Row(Modifier.fillMaxWidth().padding(start=10.dp,end=8.dp,top=14.dp,bottom=6.dp),verticalAlignment=Alignment.CenterVertically) {
+@Composable fun SectionHeading(name: String,first:Boolean=false) {
+    Row(Modifier.fillMaxWidth().padding(start=10.dp,end=8.dp,top=if(first)7.dp else 14.dp,bottom=6.dp),verticalAlignment=Alignment.CenterVertically) {
         Text(name,fontSize=11.sp,lineHeight=15.sp,letterSpacing=0.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

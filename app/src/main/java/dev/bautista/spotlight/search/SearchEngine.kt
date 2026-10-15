@@ -77,7 +77,7 @@ class SearchEngine(
             val suggestedPackages=suggestions.mapNotNull{(it.action as? Action.Launch)?.intent?.component?.packageName}.toSet()
             val applications=withContext(Dispatchers.IO){if(!dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"apps"))emptyList() else appList().filter{it.id.substringBefore('/') !in suggestedPackages && it.id.substringBefore('/')!=context.packageName}.sortedBy{normalize(it.label)}.take(2).map{a->Result(a.id,a.label,"Aplicación instalada","Aplicaciones",100,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull())}}
             send(suggestions+applications)
-            if(c.files) {
+            if(c.files && dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"files")) {
                 val documents=withContext(Dispatchers.IO){try {index.search("",c,recentDocuments=true).asSequence().filter{item->
                     val uri=(item.action as? Action.Launch)?.intent?.data ?: return@filter false
                     // Check that a still-authorized source can be opened, off the UI thread.

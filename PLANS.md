@@ -326,3 +326,6 @@ Tras62aa4ef: comparación de los3adjuntos nuevos (hashes/doc en docs/GEMINI-COMP
 
 ### Work15/10 — continuidad exacta de0a35569
 Recuperación verificada, reserva propia reanudada. Corregidos ranking y home (2 regresiones reproducidas); presentación Gemini y AI sobre infraestructura nativa; Preview separada autorizada.32 pruebas dirigidas y30 Python correctas; compilación Kotlin y actionlint/ShellCheck correctos. Sigue validación integral/capturas/entrega; no declarar aún APK compatible, CI verde ni pruebas físicas nuevas. Detalle en docs/PROGRESO-AUTONOMO.md.
+
+#### Checkpoint funcional15/10
+420 pruebas actuales correctas tras ajuste final de home/pie. Gate Android completo en copia aislada para impedir interferencia de archivos temporales de sincronización; lint Preview sin supresión, firmado histórico aún sin CI del SHA exacto. Se mantiene Preview independiente autorizada. Ver progreso y docs/visual/gemini-work-20261015.

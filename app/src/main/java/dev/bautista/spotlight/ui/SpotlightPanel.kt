@@ -826,7 +826,7 @@ fun SpotlightPanel(
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
                                     if(query.isNotBlank() && searchScope==null && category=="Todo" && i==0)Text("Mejor coincidencia",Modifier.padding(horizontal=12.dp,vertical=8.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
-                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section)
+                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section,first=i==0 && homeLayout)
                                     ResultRow(
                                         item,
                                         i == selected,
