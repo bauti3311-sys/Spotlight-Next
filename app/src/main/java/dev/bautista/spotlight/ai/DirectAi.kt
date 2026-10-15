@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.*
@@ -13,7 +14,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 object AiProtocol {
-    fun defaultModel(provider:String)=if(provider=="gemini")"gemini-3.5-flash" else "gpt-4.1-mini"
+    fun defaultModel(provider:String)=if(provider=="gemini")"gemini-3.8-flash" else "gpt-4.1-mini"
     fun request(c:Config,key:String,messages:List<Pair<String,String>>):Request {
         require(key.isNotBlank() && !key.contains('\n') && !key.contains('\r')) {"Guardá tu API key en Ajustes → Inteligencia artificial."}
         require(c.aiModel.matches(Regex("[A-Za-z0-9._-]{1,100}"))) {"Modelo inválido"}
@@ -48,6 +49,48 @@ class DirectAi(
     private val transport by lazy { client ?: clientFactory() }
     constructor(context:Context):this(CredentialVault(context))
     fun configured(c:Config)=if(c.aiProvider=="backend")c.endpoint.isNotBlank() else credentials.contains(c.aiProvider)
+    /** Explicit metadata request, using the same vault and transport. Never called by search. */
+    fun availableGeminiModels(c:Config):Flow<List<String>> = flow {
+        require(c.aiProvider=="gemini") {"Seleccioná Gemini para consultar sus modelos."}
+        val key=withContext(Dispatchers.IO){credentials.read("gemini").orEmpty()}
+        require(key.isNotBlank() && !key.contains('\n') && !key.contains('\r')) {"Guardá tu API key de Gemini primero."}
+        val names=linkedSetOf<String>();val visited=mutableSetOf<String>();var token=""
+        while(true) {
+            check(visited.add(token) && visited.size<=10) {"No se pudo completar la lista de modelos."}
+            val url="https://generativelanguage.googleapis.com/v1beta/models".toHttpUrl().newBuilder().addQueryParameter("pageSize","1000")
+                .apply{if(token.isNotEmpty())addQueryParameter("pageToken",token)}.build()
+            val request=Request.Builder().url(url).header("x-goog-api-key",key).get().build()
+            val page=callbackFlow<JSONObject> {
+                val call=withContext(Dispatchers.IO){transport.newCall(request)}
+                call.enqueue(object:Callback {
+                    override fun onFailure(call:Call,e:IOException){close(IOException("No se pudieron consultar los modelos de Gemini."))}
+                    override fun onResponse(call:Call,response:Response){response.use{r->
+                        try {
+                            if(!r.isSuccessful)error(AiProtocol.error(r.code))
+                            val source=r.body?.source() ?: error("Lista de modelos vacía.")
+                            source.request(2L*1024*1024+1)
+                            check(source.buffer.size<=2L*1024*1024){"Lista de modelos demasiado grande."}
+                            val document=try{JSONObject(source.readUtf8())}catch(_:JSONException){error("Lista de modelos inválida.")}
+                            trySend(document).getOrThrow();close()
+                        }catch(e:Exception){close(e)}
+                    }}
+                })
+                awaitClose{call.cancel()}
+            }.single()
+            val models=page.optJSONArray("models") ?: JSONArray()
+            for(i in 0 until models.length()) {
+                val model=models.optJSONObject(i) ?: continue
+                val methods=model.optJSONArray("supportedGenerationMethods") ?: continue
+                val name=model.optString("name").removePrefix("models/")
+                if((0 until methods.length()).any{methods.optString(it)=="generateContent"} && name.matches(Regex("gemini-[A-Za-z0-9._-]{1,93}")))names+=name
+            }
+            token=page.optString("nextPageToken").trim()
+            if(token.isEmpty())break
+        }
+        check(names.isNotEmpty()) {"La clave no devolvió modelos Gemini compatibles con generación de texto."}
+        emit(names.sorted())
+    }
+
     fun answer(c:Config,messages:List<Pair<String,String>>):Flow<String> = flow {
         if(c.aiProvider=="backend"){emitAll(AiClient().answer(c.endpoint,messages));return@flow}
         val request=withContext(Dispatchers.IO){ val key=runCatching{credentials.read(c.aiProvider)}.getOrElse{error("No se pudo leer la clave. Guardala nuevamente.")}.orEmpty();AiProtocol.request(c,key,messages) }

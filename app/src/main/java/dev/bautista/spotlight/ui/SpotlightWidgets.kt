@@ -31,7 +31,13 @@ fun ResultIcon(
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
 ) {
-    if (result.icon != null) {
+    if(result.mime=="application/pdf") {
+        val dark=MaterialTheme.colorScheme.surface.luminance()<.5f
+        val blue=if(dark)Color(0xFF4DA7CB) else Color(0xFF237799)
+        Box(modifier.clip(RoundedCornerShape(6.dp)).background(blue.copy(alpha=.12f)).border(1.dp,blue.copy(alpha=.16f),RoundedCornerShape(6.dp)),contentAlignment=Alignment.Center) {
+            Icon(PhosphorIcons.Pdf,"Archivo PDF",Modifier.size(15.dp),tint=blue)
+        }
+    } else if (result.icon != null) {
         val bitmap =
             remember(result.id, result.icon) { result.icon.toBitmap(80, 80).asImageBitmap() }
         Image(bitmap, result.category, modifier.clip(RoundedCornerShape(7.dp)))
@@ -79,6 +85,7 @@ fun ResultRow(
     onFavorite: () -> Unit,
     animations: Boolean = true,
     onInteraction:()->Unit={},
+    playing:Boolean=false,
 ) {
     val colors = MaterialTheme.colorScheme
     val motion=animations && LocalMotion.current
@@ -105,14 +112,14 @@ fun ResultRow(
     ) {
         // Native application artwork keeps its own identity. Utility glyphs have
         // one stroke treatment and no tinted tile or selection stripe.
-        ResultIcon(result,Modifier.size(if(result.icon!=null)26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+        ResultIcon(result,Modifier.size(if(result.icon!=null || result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
         if(inline) Row(Modifier.weight(1f),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
             Text(result.title,Modifier.weight(1f,fill=false),color=ink,
                 fontWeight=if(selected)FontWeight.Medium else FontWeight.Normal,
-                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
+                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(result.subtitle.isNotBlank()) Text(result.subtitle,Modifier.weight(1f),color=colors.onSurfaceVariant,
-                fontSize=GlassTokens.secondaryText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
+                fontSize=GlassTokens.secondaryText*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
         } else {
         Column(Modifier.weight(1f)) {
             Text(
@@ -132,12 +139,15 @@ fun ResultRow(
             )
         }
         }
+        if(playing) Text("En reproducción",Modifier.padding(start=6.dp).clip(RoundedCornerShape(5.dp))
+            .background(Color(0x2222C58B)).border(1.dp,Color(0x3322C58B),RoundedCornerShape(5.dp)).padding(horizontal=8.dp,vertical=3.dp),
+            color=if(dark)Color(0xFF8ED9BC) else Color(0xFF16684D),fontSize=10.sp,maxLines=1)
         if(inline)Text(
-            if(result.id.startsWith("smart:") || result.id=="intent:local")"Intención" else result.category,
+            if(result.id.startsWith("smart:") || result.id=="intent:local")"Intención" else when {result.category=="Aplicaciones" || result.id.startsWith("suggest:app:")->"Aplicación";result.mime=="application/pdf"->"Archivo PDF";else->result.category},
             modifier=Modifier.padding(horizontal=8.dp).width(90.dp),
-            color=colors.onSurfaceVariant,fontSize=GlassTokens.metadataText,textAlign=TextAlign.End,maxLines=1,overflow=TextOverflow.Ellipsis)
+            color=colors.onSurfaceVariant,fontSize=GlassTokens.metadataText,letterSpacing=0.sp,textAlign=TextAlign.End,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
-        Box(Modifier.size(if(inline)32.dp else GlassTokens.hit),contentAlignment=Alignment.Center) {
+        if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
         if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
             Icon(

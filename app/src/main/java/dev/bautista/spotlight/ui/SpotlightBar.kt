@@ -103,7 +103,7 @@ fun SpotlightBar(
                             Text(
                                 when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar en Spotlight"},
                                 fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText,
-                                color = colors.onSurface.copy(alpha = .52f),
+                                color = colors.onSurface.copy(alpha = .52f),letterSpacing=0.sp,
                                 maxLines = 1,
                             )
                         if (suggestion != null && query.isNotEmpty())

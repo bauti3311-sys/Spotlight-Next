@@ -127,6 +127,7 @@ fun SpotlightPanel(
         var aiLoading by remember { mutableStateOf(false) }
         val ai = remember { DirectAi(context) }
         val conversation = remember { mutableListOf<Pair<String, String>>() }
+        val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
         var favorites by remember { mutableStateOf(config.favorites) }
         val clips by app.local.clips.collectAsState()
         val clipFavorites by app.local.clipFavorites.collectAsState()
@@ -190,6 +191,7 @@ fun SpotlightPanel(
             return if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps" && query.isBlank())
                 dev.bautista.spotlight.control.CommandCenter.orderedApps(filtered, recentAppIds)
             else if(query.isNotBlank() && searchScope==null && category=="Todo")ResultSections.unified(filtered)
+            else if(query.isBlank() && searchScope==null && category=="Todo")ResultSections.home(filtered)
             else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
         }
         val displayed=present(results)
@@ -323,10 +325,13 @@ fun SpotlightPanel(
                     }
                 }
         }
+        fun favoriteId(item:Result):String = if(item.id.startsWith("suggest:app:"))
+            (item.action as? Action.Launch)?.intent?.component?.let{"${it.packageName}/${it.className}"} ?: item.id else item.id
         fun toggleFavorite(item: Result) {
-            if(item.category=="Aplicaciones" || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:")) {
-                favorites=if(item.id in favorites) favorites-item.id else favorites+item.id
-                scope.launch {app.preferences.favorite(item.id)}
+            if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:")) {
+                val id=favoriteId(item)
+                favorites=if(id in favorites) favorites-id else favorites+id
+                scope.launch {app.preferences.favorite(id)}
             } else if(query.isNotBlank()) {
                 val value=query.trim()
                 pinned=if(value in pinned) pinned-value else pinned+value
@@ -610,7 +615,8 @@ fun SpotlightPanel(
             val widePreview=config.adaptive && maxWidth>=600.dp && richPreview
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
             val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
-            val resultLimit = (panelLimit - 90.dp).coerceAtLeast(0.dp)
+            val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
+            val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()
@@ -811,18 +817,20 @@ fun SpotlightPanel(
                                         .heightIn(
                                             max =
                                                 if (richPreview && !widePreview) resultLimit * .45f
-                                                else minOf(resultLimit,(visibleResults.size*70+visibleResults.map{ResultSections.category(it)}.distinct().size*30+12).dp)
+                                                else minOf(resultLimit,if(query.isBlank() && searchScope==null && category=="Todo")
+                                                    (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size + (visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp
+                                                else (visibleResults.size*70+visibleResults.map{ResultSections.category(it)}.distinct().size*30+12).dp)
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
                                     if(query.isNotBlank() && searchScope==null && category=="Todo" && i==0)Text("Mejor coincidencia",Modifier.padding(horizontal=12.dp,vertical=8.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
-                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(section)
+                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section)
                                     ResultRow(
                                         item,
                                         i == selected,
-                                        if(item.category=="Aplicaciones" || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))item.id in favorites else query.trim() in pinned,
+                                        if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned,
                                         {
                                             selected = i
                                             if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
@@ -837,7 +845,9 @@ fun SpotlightPanel(
                                         { toggleFavorite(item) },
                                         animations=motionEnabled,
                                         onInteraction={pointerSelecting=true;selected=i;navigating=true},
+                                        playing=(item.action as? Action.Launch)?.intent?.component?.packageName in playingPackages,
                                     )
+                                    if(query.isBlank() && searchScope==null && category=="Todo")Spacer(Modifier.height(3.dp))
                                 }
                             }
                 }
@@ -898,7 +908,7 @@ fun SpotlightPanel(
                                         add("Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
                                     }
                                     if(item.category=="Aplicaciones")add("Acciones de ${item.title}","Capacidades públicas disponibles",CommandIcons.Apps){execute(Result("app:actions",item.title,"","Acciones",0,Action.RestoreQuery(item.title)))}
-                                    if(item.category=="Aplicaciones" || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add(if(item.id in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
+                                    if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add(if(favoriteId(item) in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
                                     if(item.action !is Action.Copy)add("Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
                                     if(query.isNotBlank())add(if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
                                     if(item.category in setOf("Archivos","Notas","Portapapeles","Textos frecuentes"))add("Compartir","Selector de aplicaciones Android",CommandIcons.Share){share(item)}
@@ -1022,10 +1032,7 @@ fun SpotlightPanel(
                             ) {
                                 Text("Inteligencia artificial", fontWeight = FontWeight.SemiBold)
                                 SelectionContainer {
-                                    Text(
-                                        if (aiText.isBlank()) "Pensando…" else aiText,
-                                        lineHeight = 23.sp,
-                                    )
+                                    if(aiText.isBlank())Text("Pensando…",lineHeight=23.sp) else AiMarkdown(aiText)
                                 }
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
                                 TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,Action.Ask(prompt)))}){Text("Enviar") }
@@ -1037,8 +1044,7 @@ fun SpotlightPanel(
                                     TextButton(
                                         onClick = {
                                             aiJob?.cancel()
-                                            aiText = ""
-                                            conversation.clear();aiMessageTarget=""
+                                            if(!aiLoading){aiText="";conversation.clear();aiMessageTarget=""}
                                         }
                                     ) {
                                         Text(if (aiLoading) "Detener" else "Nueva conversación")
@@ -1173,7 +1179,7 @@ fun SpotlightPanel(
                                 Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
                         else GlassContextFooter(
                             suggestion=suggestion!=null,enabled=selectedResult!=null,
-                            primaryLabel=if(selectedResult?.action is Action.Copy)"Copiar" else "Ejecutar",
+                            primaryLabel=when {selectedResult?.action is Action.Copy->"Copiar";selectedResult?.category=="Archivos"->"Abrir documento";(selectedResult?.action as? Action.Launch)?.intent?.component!=null->"Abrir aplicación";selectedResult?.action is Action.Launch->"Abrir";else->"Ejecutar"},
                             onExecute={selectedResult?.let{execute(it)}},
                             onActions={hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true})
                     }

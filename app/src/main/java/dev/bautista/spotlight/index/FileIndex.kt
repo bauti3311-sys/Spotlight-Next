@@ -513,7 +513,7 @@ class FileIndex(
             }
         }
 
-    suspend fun search(input: String, c: Config, sourceTopic:String=""): List<Result> =
+    suspend fun search(input: String, c: Config, sourceTopic:String="",recentDocuments:Boolean=false): List<Result> =
         withContext(Dispatchers.IO) {
             val normalizedQuery = SearchQuery.natural(input)
             val query = SearchQuery.parse(normalizedQuery)
@@ -529,12 +529,12 @@ class FileIndex(
                 .query(
                     "files",
                     null,
-                    "tree IN (" + sources.joinToString(",") { "?" } + ")" + if(filter.selection.isBlank())"" else " AND ("+filter.selection+")",
+                    "tree IN (" + sources.joinToString(",") { "?" } + ")" + (if(filter.selection.isBlank())"" else " AND ("+filter.selection+")") + if(recentDocuments)" AND modified > 0 AND (mime LIKE 'application/%' OR mime LIKE 'text/%')" else "",
                     (sources.toList()+filter.args).toTypedArray(),
                     null,
                     null,
                     "modified DESC",
-                    "200000",
+                    if(recentDocuments)"32" else "200000",
                 )
                 .use { row ->
                     fun string(key: String) = row.getString(row.getColumnIndexOrThrow(key)) ?: ""

@@ -21,6 +21,8 @@ object ResultSections {
         item.category in setOf("Acciones", "Comandos") -> "Acciones y comandos"
         else -> item.category
     }
+    fun home(items:List<Result>):List<Result> = items.sortedBy { when(it.category){"Sugerencias"->0;"Archivos"->1;"Aplicaciones"->2;else->3} }
+    fun homeHeading(item:Result)=when(item.category){"Sugerencias"->"Sugerencias frecuentes";"Archivos"->"Archivos recientes";else->category(item)}
     fun unified(items:List<Result>):List<Result> {
         val counts=mutableMapOf<String,Int>()
         val visible=items.filter { val key=category(it);val n=(counts[key] ?: 0)+1;counts[key]=n;n<=if(key=="Archivos y carpetas")2 else 3 }.take(12)

@@ -20,16 +20,20 @@ import androidx.compose.ui.unit.*
     BoxWithConstraints(Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(base.copy(alpha=0f),base)))) {
         val showHints=maxWidth>=520.dp
         Row(Modifier.fillMaxWidth().heightIn(min=56.dp).padding(horizontal=12.dp,vertical=4.dp),verticalAlignment=Alignment.CenterVertically) {
-            if(showHints) Text(if(suggestion)"Ctrl+Space completar" else "↑↓ elegir · esc cerrar",fontSize=11.sp,color=colors.onSurfaceVariant)
+            if(showHints && suggestion) Text("Ctrl+Space completar",fontSize=11.sp,color=colors.onSurfaceVariant)
             Spacer(Modifier.weight(1f))
-            if(enabled) Row(Modifier.shadow(8.dp,CircleShape).clip(CircleShape).background(pill)
-                .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=.13f),CircleShape),verticalAlignment=Alignment.CenterVertically) {
+            // The visible capsule is 32 dp; the native buttons retain 48 dp hit areas.
+            if(enabled) Box {
+                Box(Modifier.matchParentSize().padding(vertical=8.dp).shadow(8.dp,CircleShape).clip(CircleShape).background(pill)
+                    .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=.10f),CircleShape))
+                Row(verticalAlignment=Alignment.CenterVertically) {
                 TextButton(onClick=onExecute,contentPadding=PaddingValues(horizontal=12.dp),modifier=Modifier.heightIn(min=48.dp)) {
                     Text("↵ $primaryLabel",fontSize=12.sp,color=colors.onSurface)
                 }
                 Box(Modifier.width(1.dp).height(12.dp).background(colors.onSurface.copy(alpha=.10f)))
                 TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=12.dp),modifier=Modifier.heightIn(min=48.dp)) {
                     Text("Tab acciones",fontSize=12.sp,color=colors.onSurfaceVariant)
+                }
                 }
             }
         }

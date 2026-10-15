@@ -18,7 +18,11 @@ object LocalLanguage {
         val control=Regex("^(?:(?:bajar|subir|poner|ajustar|cambiar) )?(?:el )?(?:brillo|volumen)\\b").containsMatchIn(canonical)
         return if(control)canonical else raw
     }
-    fun isQuestion(raw:String):Boolean=raw.trim().startsWith("¿") || Regex("^(que es|que significa|como funciona|como puedo|como hacer|por que|quien es|cual es|cuales son|explicame|explica|defini|define)\\b").containsMatchIn(normalize(raw))
+    fun isQuestion(raw:String):Boolean {
+        val q=normalize(raw.trim()).replace(Regex("\\s+")," ")
+        val prefixes=listOf("que es","que significa","como funciona","como puedo","como hacer","por que","quien es","cual es","cuales son","explicame","explica","defini","define","resumi","resumir","resume","ayudame a","redacta","redactame","compara","comparame")
+        return q.startsWith("¿") || prefixes.any{q==it || q.startsWith("$it ")}
+    }
 }
 
 /** Keep the selected identity and already-visible order when late sources arrive. */

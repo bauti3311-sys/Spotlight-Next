@@ -48,7 +48,7 @@ class ProductEntryPointsTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent { SpotlightPanel(app,legacy.copy(files=false,animations=false),{},initialQuery="2+2") }
         ui.waitUntil(15000) { ui.onAllNodesWithText("4").fetchSemanticsNodes().isNotEmpty() }
-        ui.onAllNodesWithContentDescription("Operaciones del resultado").onFirst().performClick()
+        ui.onNodeWithText("Tab acciones").performClick()
         ui.onNodeWithText("Guardar como nota").assertExists()
         ui.onNodeWithText("Guardar texto frecuente").assertDoesNotExist()
     }

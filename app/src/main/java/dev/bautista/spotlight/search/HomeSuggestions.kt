@@ -12,15 +12,25 @@ object HomeSuggestions {
         if(!c.suggestions)return emptyList()
         val items=mutableListOf<Result>()
         fun row(id:String,title:String,subtitle:String,action:Action){items+=Result("suggest:$id",title,subtitle,"Sugerencias",2000-items.size,action)}
+        val pm=context.packageManager
+        val launcher=android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+        val available=runCatching{pm.queryIntentActivities(launcher,0)}.getOrDefault(emptyList())
+            .filter{it.activityInfo?.packageName!=context.packageName}.distinctBy{it.activityInfo.packageName}
         val learned=if(c.learning && !c.privateMode)c.recent else emptyList()
-        val packages=(c.favorites.sorted()+learned).map { it.substringBefore('/') }.distinct().take(12)
-        var addedApp=false
-        packages.forEach { pkg ->
-            if(addedApp)return@forEach
-            val intent=context.packageManager.getLaunchIntentForPackage(pkg) ?: return@forEach
-            val info=runCatching{context.packageManager.getApplicationInfo(pkg,0)}.getOrNull() ?: return@forEach
-            addedApp=true
-            items+=Result("suggest:app:$pkg",info.loadLabel(context.packageManager).toString(),if(pkg in c.favorites.map{it.substringBefore('/')})"Aplicación favorita" else "Aplicación reciente · aprendizaje local","Sugerencias",2200-items.size,Action.Launch(intent),info.loadIcon(context.packageManager))
+        val usage=if(c.learning && !c.privateMode)runCatching{org.json.JSONObject(c.usageData)}.getOrDefault(org.json.JSONObject()) else org.json.JSONObject()
+        val frequent=usage.keys().asSequence().sortedByDescending{usage.optJSONObject(it)?.optInt("count",0) ?: 0}.toList()
+        val packages=(c.favorites.sorted()+learned+frequent).map{it.removePrefix("suggest:app:").substringBefore('/')}.distinct()
+        val ordered=available.sortedWith(compareBy<android.content.pm.ResolveInfo>{packages.indexOf(it.activityInfo.packageName).let{n->if(n<0)Int.MAX_VALUE else n}}.thenBy{normalize(it.loadLabel(pm).toString())})
+        ordered.take(3).forEach { info ->
+            val a=info.activityInfo;val pkg=a.packageName
+            val intent=android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER).setComponent(android.content.ComponentName(pkg,a.name))
+            val detail=when {
+                c.favorites.any{it.substringBefore('/')==pkg}->"Aplicación favorita"
+                learned.any{it.substringBefore('/')==pkg}->"Aplicación reciente · aprendizaje local"
+                frequent.any{it.substringBefore('/')==pkg}->"Aplicación frecuente · aprendizaje local"
+                else->"Aplicación instalada"
+            }
+            items+=Result("suggest:app:$pkg",info.loadLabel(pm).toString(),detail,"Sugerencias",2200-items.size,Action.Launch(intent),runCatching{info.loadIcon(pm)}.getOrNull())
         }
         if(c.learning && !c.privateMode)c.actionRecent.take(8).forEach { raw ->
             val action=when(val intent=UniversalIntent.recognize(raw)) {

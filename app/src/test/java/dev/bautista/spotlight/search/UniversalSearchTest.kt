@@ -105,4 +105,39 @@ class UniversalSearchTest {
         assertEquals("action",ResultSections.grouped(rows,query="volumen al 60%").first().id)
         assertEquals(listOf("a","b"),ResultRanker.rank("",listOf(row("b","B","Notas",500),row("a","A","Notas",500)),SearchConfig()).map{it.id})
     }
+    @Test fun exactAndPrefixInstalledAppBeatGenericCommandsRegardlessOfLearning() {
+        val exact=Result("org.webos/Main","webOS Dev Manager","","Aplicaciones",1000,Action.Launch(android.content.Intent().setComponent(android.content.ComponentName("org.webos","Main"))))
+        val prefix=exact.copy(id="org.webos/tools",title="webOS Dev Manager Tools",score=800)
+        val wifi=row("wifi","Ajustes Wi-Fi","Comandos",4000)
+        val whatsapp=exact.copy(id="com.whatsapp/Main",title="WhatsApp",score=2500)
+        val c=SearchConfig(favorites=setOf("wifi","com.whatsapp/Main"),usageData="{\"wifi\":{\"count\":99999}}")
+        val ranked=ResultRanker.rank("webOS Dev Manager",listOf(wifi,whatsapp,prefix,exact),c)
+        assertEquals(listOf(exact.id,prefix.id),ranked.take(2).map{it.id})
+    }
+
+    @Test fun calculatedValueRemainsPrimaryAheadOfWebFallback()=runBlocking {
+        val rows=engine().search("2+2",SearchConfig(files=false,contacts=false)).toList().last()
+        assertEquals(Action.Copy("4"),rows.first().action)
+        assertTrue(rows.any{it.category=="Web"})
+    }
+
+    @Test fun naturalQuestionExamplesOfferOnlyExplicitAiAndContextReview()=runBlocking {
+        for(query in listOf("Explicame el reflejo vestibuloocular","Qué significa esta palabra","Ayudame a redactar un mensaje","Compará estas dos opciones")) {
+            val rows=engine().search(query,SearchConfig(files=false,contacts=false)).toList().last()
+            val action=rows.map{it.action}.filterIsInstance<Action.Ask>().first()
+            assertEquals(query,action.prompt);assertTrue(action.sensitive)
+        }
+        val document=engine().search("Resumí este documento",SearchConfig(files=false,contacts=false)).toList().last()
+        assertTrue(document.any{it.action is Action.SystemPanel && (it.action as Action.SystemPanel).page in setOf("context-ai","interpret")})
+        assertTrue(document.none{it.action is Action.Ask})
+        assertFalse(LocalLanguage.isQuestion("Comparador de precios"))
+    }
+
+    @Test fun multiwordAppQueriesRequireEveryTokenRatherThanAnUnrelatedSharedWord() {
+        assertEquals(620,relevance("web dev", "webOS Dev Manager"))
+        assertEquals(1000,relevance("webOS Dev Manager", "webOS Dev Manager"))
+        assertEquals(0,relevance("web dev", "WhatsApp"))
+        assertEquals(0,relevance("web dev", "Web navegador"))
+    }
+
 }

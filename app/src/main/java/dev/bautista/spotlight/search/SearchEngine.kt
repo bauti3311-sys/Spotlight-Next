@@ -71,7 +71,22 @@ class SearchEngine(
 
     private fun searchSources(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
         val query=ActionCatalog.canonical(dev.bautista.spotlight.personal.PersonalCommands.expand(input,c.aliases))
-        if(scope==null && query.isBlank()){send(withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty())});return@channelFlow}
+        if(scope==null && query.isBlank()) {
+            if(!c.suggestions){send(emptyList());return@channelFlow}
+            val suggestions=withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty())}
+            val suggestedPackages=suggestions.mapNotNull{(it.action as? Action.Launch)?.intent?.component?.packageName}.toSet()
+            val applications=withContext(Dispatchers.IO){if(!dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"apps"))emptyList() else appList().filter{it.id.substringBefore('/') !in suggestedPackages && it.id.substringBefore('/')!=context.packageName}.sortedBy{normalize(it.label)}.take(2).map{a->Result(a.id,a.label,"Aplicación instalada","Aplicaciones",100,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull())}}
+            send(suggestions+applications)
+            if(c.files) {
+                val documents=withContext(Dispatchers.IO){try {index.search("",c,recentDocuments=true).asSequence().filter{item->
+                    val uri=(item.action as? Action.Launch)?.intent?.data ?: return@filter false
+                    // Check that a still-authorized source can be opened, off the UI thread.
+                    runCatching{context.contentResolver.openAssetFileDescriptor(uri,"r")?.use{true} ?: false}.getOrDefault(false)
+                }.take(2).toList()}catch(e:CancellationException){throw e}catch(_:Exception){emptyList()}}
+                if(documents.isNotEmpty())send(suggestions+documents+applications)
+            }
+            return@channelFlow
+        }
         if(scope?.section == "results") {
             search(input,c).collect { send(it.filter { item -> scope.topic=="Todo" || ResultSections.category(item) == scope.topic }) };return@channelFlow
         }

@@ -52,6 +52,7 @@ data class Result(
     val parentUri: String? = null,
     val positionMs: Long? = null,
     val sizeBytes:Long?=null, val modifiedAt:Long?=null,
+    val matchClass:Int=0,
 )
 
 fun normalize(s: String): String =
@@ -69,6 +70,10 @@ fun relevance(query: String, title: String): Int {
     if (t.startsWith(q)) return 800
     if (t.split(' ').any { it.startsWith(q) }) return 650
     if (t.contains(q)) return 500
+    // Multiword queries may abbreviate each name token; every query token must match.
+    val words=q.split(Regex("[^\\p{L}\\p{N}]+")).filter{it.isNotEmpty()}
+    val titles=t.split(Regex("[^\\p{L}\\p{N}]+"))
+    if(words.size>1 && words.all{word->titles.any{it.startsWith(word)}})return 620
     if (q.length < 3 || q.length > 128 || t.length > 256) return 0
     val d = distance(q, t)
     return if (d <= 2) 250 - d * 40 else 0

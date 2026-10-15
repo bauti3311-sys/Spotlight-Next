@@ -40,7 +40,7 @@ class NextInteractionTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},"25 * 8",640f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("200",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
-        ui.onAllNodesWithContentDescription("Operaciones del resultado").onFirst().performClick()
+        ui.onNodeWithText("Tab acciones").performClick()
         ui.onNodeWithText("Buscar acciones").performClick()
         ui.onNodeWithText("Filtrar acciones").performTextInput("Copiar")
         ui.onNodeWithText("Copiar resultado").assertExists()
