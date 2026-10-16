@@ -1,0 +1,38 @@
+{
+  "source": "103be38dbeebfcf689ae8637d368be8e60e3a5fe",
+  "platform": "Robolectric API33, native graphics; not physical OneUI",
+  "scope": "Only Settings and its simple preview. Existing other 16 baselines untouched; strict verification pending.",
+  "manualReview": "Labels fully visible in phone; single width; independent rail; no permanent inspector. Four new MainActivity references and one authorized Appearance update.",
+  "references": [
+    {
+      "file": "settings-tablet-obsidian.png",
+      "previousSha256": null,
+      "newSha256": "2a0323041418d5ecb95450503da0624179de3f55fc6bf2658086ffdb0e3b41f3",
+      "changedPixels": null
+    },
+    {
+      "file": "settings-tablet-graphite.png",
+      "previousSha256": null,
+      "newSha256": "87407cff955f55c14dfbea4f5b487b00972acad2f1242ca55b45c80d43d9fe31",
+      "changedPixels": null
+    },
+    {
+      "file": "settings-tablet-light.png",
+      "previousSha256": null,
+      "newSha256": "2cc42c2774cfe66536041d6fda939f5c28b478d5291d21c874fa519bd7d92ad4",
+      "changedPixels": null
+    },
+    {
+      "file": "settings-phone-obsidian.png",
+      "previousSha256": null,
+      "newSha256": "4dd49a4e08d4767a3e17707ca6a2800084f51ef8c63c935f51efed5e65de9c06",
+      "changedPixels": null
+    },
+    {
+      "file": "tablet-preferences.png",
+      "previousSha256": "7603544346e759cdfa1cdd51aca917505ea8b5affd7226ef25181a7a46f7b719",
+      "newSha256": "86f00601fd00a57d2b4cfd639dcf392b07ab22c894a4cf1331ba2e30fd4ea118",
+      "changedPixels": 34344
+    }
+  ]
+}

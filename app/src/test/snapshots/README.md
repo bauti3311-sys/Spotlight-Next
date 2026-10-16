@@ -11,3 +11,9 @@ Matriz inicial: barra, resultados, selección, panel contextual, menú, Guardado
 F1.1 añade dos referencias del control de ancho (`width-*-active-override.png`), revisadas en teléfono y tablet. `OverlayWidthVisualSnapshotTest` comparte el filtro `*VisualSnapshotTest`, por lo que CI verifica las doce referencias. Los diez PNG originales permanecen intactos.
 
 F1.2 añade cinco referencias `appearance-*.png`: filas reales compactas/espaciosas con igual ancho, tablet vertical y teléfono en ambas orientaciones. Fixtures equilibradas explícitas; el automático antiguo se prueba sin migrarlo. CI verifica 17 referencias; las doce anteriores siguen intactas. Antes/después/diff del árbol base real: `docs/visual/f1.2`.
+
+## Ajustes integral · 16/10/2026
+
+La autorización nueva del usuario permite renovar únicamente Ajustes y sus componentes. SettingsVisualSnapshotTest agrega cuatro referencias de MainActivity: Obsidian/Graphite/macOS Light en tablet y Obsidian en teléfono. `tablet-preferences.png` se actualiza tras revisar la eliminación de temas duplicados y controles recortados. Las otras16referencias anteriores se conservan byte por byte. Total21; el filtro existente `*VisualSnapshotTest` las incluye sin cambiar CI ni tolerancias.
+
+Registro dirigido usado: `:app:recordRoborazziDebug --tests '*SettingsVisualSnapshotTest' --tests '*VisualSnapshotTest.preferences'`. No registrar las demás para ocultar regresiones. Revisión y hashes en `docs/visual/integral-settings/review.json`; verificar posteriormente las21 con `:app:verifyRoborazziDebug --tests '*VisualSnapshotTest'`. Capturas Compose con gráficos nativos/API33 bajo Robolectric, no dispositivo físico One UI. Las nuevas referencias muestran la actividad de Ajustes, no cambian la barra o Quick Look.
