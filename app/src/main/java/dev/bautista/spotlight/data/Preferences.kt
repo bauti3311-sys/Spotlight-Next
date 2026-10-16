@@ -203,6 +203,29 @@ class Preferences(private val context: Context) {
         }
     }
 
+    suspend fun saveNativeCommand(command:dev.bautista.spotlight.automation.Workflow) {
+        require(dev.bautista.spotlight.automation.NativeCommands.isNative(command)){"Comando nativo no válido."}
+        context.store.edit { p ->
+            val current=runCatching{org.json.JSONArray(p[routines] ?: "[]")}.getOrElse{error("No se pudieron leer los comandos existentes. Exportá la configuración antes de repararlos.")}
+            check(current.length()<30){"Se alcanzó el límite de 30 elementos guardados. No se borró contenido anterior."}
+            val item=org.json.JSONArray(dev.bautista.spotlight.automation.Workflows.encode(listOf(command))).getJSONObject(0)
+            current.put(item);p[routines]=current.toString()
+        }
+    }
+
+    suspend fun deleteNativeCommand(id:String) {
+        context.store.edit { p ->
+            val current=runCatching{org.json.JSONArray(p[routines] ?: "[]")}.getOrElse{error("No se pudieron leer los comandos existentes.")}
+            val kept=org.json.JSONArray()
+            for(i in 0 until current.length()) {
+                val item=current.optJSONObject(i)
+                if(item?.optString("id")==id && item.optString("kind")==dev.bautista.spotlight.automation.NativeCommands.KIND)continue
+                kept.put(current.get(i))
+            }
+            p[routines]=kept.toString()
+        }
+    }
+
     suspend fun update(c: Config) {
         val previousPrivate=isPrivate;val previousRevision=privacyRevision
         val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode

@@ -20,10 +20,19 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 
 internal data class ReviewedStep(val title:String,val call:ToolCall?,val requirement:String)
-internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan):List<ReviewedStep> {
+internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan,boundCalls:List<ToolCall?> = emptyList()):List<ReviewedStep> {
     val capabilities=ToolExecutor(app).capabilities(c).associateBy { it.definition.id }
     val available=capabilities.filterValues { it.status==CapabilityStatus.AVAILABLE }.keys
-    return plan.steps.map { step ->
+    return plan.steps.mapIndexed { index,step ->
+        boundCalls.getOrNull(index)?.let { saved ->
+            require(dev.bautista.spotlight.automation.NativeCommands.accepts(saved)){"Acción guardada no compatible."}
+            val request=ToolRegistry.decode(saved)
+            val installed=if(request is ToolRequest.OpenApp)withContext(Dispatchers.IO){app.packageManager.getLaunchIntentForPackage(request.packageName)!=null} else true
+            val title=when(request){is ToolRequest.OpenApp->"Abrir ${if(step is PlanStep.Open)step.name else request.packageName}";is ToolRequest.Volume->"Volumen al ${request.percent}%";is ToolRequest.Media->"Control multimedia · ${request.command}";is ToolRequest.SettingWrite->"Brillo al ${(request.value.toInt()*100+254)/255}%";else->error("Acción guardada no compatible.")}
+            val ready=installed && saved.name in available
+            val packageDetail=if(request is ToolRequest.OpenApp && plan.steps.count{it is PlanStep.Open && step is PlanStep.Open && it.name==step.name}>1)" · ${request.packageName}" else ""
+            return@mapIndexed ReviewedStep(title,if(ready)saved else null,when{!installed->"La aplicación guardada no está instalada o no ofrece apertura.";ready->"Disponible$packageDetail · requiere tu confirmación";else->capabilities[saved.name]?.let{"${it.status.label} · ${it.reason}"} ?: "La herramienta no está disponible."})
+        }
         val title:String
         val call:ToolCall?
         when(step) {
