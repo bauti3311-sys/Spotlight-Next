@@ -69,7 +69,7 @@ class UniversalSearchTest {
         assertEquals("rehabilitación vestibular",(ai.action as Action.Ask).prompt)
         assertTrue(rows.any { it.id=="smart:web" && it.action is Action.Launch })
         assertTrue(ai.subtitle.contains("Solo al seleccionar"))
-        assertTrue((ai.action as Action.Ask).sensitive)
+        assertEquals(AiInputOrigin.USER_QUERY,(ai.action as Action.Ask).origin);assertFalse(AiRequestPolicy.requiresReview(ai.action as Action.Ask))
     }
     @Test fun installedAppLaunchesFromUniversalBarAndKeepsStableIdentity()=runBlocking {
         val context=RuntimeEnvironment.getApplication()
@@ -125,7 +125,7 @@ class UniversalSearchTest {
         for(query in listOf("Explicame el reflejo vestibuloocular","Qué significa esta palabra","Ayudame a redactar un mensaje","Compará estas dos opciones")) {
             val rows=engine().search(query,SearchConfig(files=false,contacts=false)).toList().last()
             val action=rows.map{it.action}.filterIsInstance<Action.Ask>().first()
-            assertEquals(query,action.prompt);assertTrue(action.sensitive)
+            assertEquals(query,action.prompt);assertEquals(AiInputOrigin.USER_QUERY,action.origin);assertFalse(AiRequestPolicy.requiresReview(action))
         }
         val document=engine().search("Resumí este documento",SearchConfig(files=false,contacts=false)).toList().last()
         assertTrue(document.any{it.action is Action.SystemPanel && (it.action as Action.SystemPanel).page in setOf("context-ai","interpret")})

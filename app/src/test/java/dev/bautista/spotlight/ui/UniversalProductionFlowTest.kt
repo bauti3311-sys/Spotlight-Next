@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.runBlocking
 
 /** Exercises production SearchEngine -> SpotlightPanel -> DirectAi; HTTP and keys are test fixtures only. */
+@OptIn(ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
 class UniversalProductionFlowTest {
@@ -49,8 +50,33 @@ class UniversalProductionFlowTest {
         assertEquals(1,contents.length())
         assertEquals(query,contents.getJSONObject(0).getJSONArray("parts").getJSONObject(0).getString("text"))
         assertEquals(1,server.requestCount)
-        ui.onNodeWithText("Copiar respuesta").assertExists()
+        ui.onNodeWithText("Copiar").assertExists()
     }
+    @Test fun spotifyAndVolumeUseReviewedNativeToolsNotRemoteAi(){
+        val pkg="com.spotify.music"
+        val application=android.content.pm.ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel="Spotify"}
+        val activity=android.content.pm.ActivityInfo().apply{packageName=pkg;name="$pkg.Main";applicationInfo=application;nonLocalizedLabel="Spotify";exported=true}
+        org.robolectric.Shadows.shadowOf(app.packageManager).installPackage(android.content.pm.PackageInfo().apply{packageName=pkg;applicationInfo=application;activities=arrayOf(activity)})
+        val launcher=android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+        val info=android.content.pm.ResolveInfo().apply{activityInfo=activity}
+        org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,info)
+        org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(launcher).setPackage(pkg),info)
+        org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_INFO).setPackage(pkg),info)
+        app.search.invalidateApps()
+        val audio=app.getSystemService(android.media.AudioManager::class.java)
+        audio.setStreamVolume(android.media.AudioManager.STREAM_MUSIC,audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC),0)
+        show("Abrí Spotify y bajá el volumen al 40%")
+        ui.waitUntil(15000){ui.onAllNodesWithText("Revisar interpretación").fetchSemanticsNodes().isNotEmpty()}
+        assertEquals(0,server.requestCount)
+        ui.onNodeWithText("Revisar interpretación").performClick()
+        ui.waitUntil(15000){ui.onAllNodes(hasText("Confirmar pasos seleccionados") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("Confirmar pasos seleccionados").assertIsEnabled().performClick()
+        ui.waitUntil(15000){audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)==audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)*40/100}
+        val launch=org.robolectric.Shadows.shadowOf(app).nextStartedActivity
+        assertEquals(pkg,launch.component!!.packageName)
+        assertEquals(0,server.requestCount)
+    }
+
     @Test fun documentCompoundSendsExactlyFrozenReviewedPromptAfterSeparateConsent()=runBlocking {
         val file=File(app.cacheDir,"rehabilitacion vestibular.pdf")
         requireNotNull(javaClass.getResourceAsStream("/visual/raycast-fixture.pdf")).use{input->file.outputStream().use{input.copyTo(it)}}
@@ -59,10 +85,11 @@ class UniversalProductionFlowTest {
         ui.waitUntil(15000){ui.onAllNodesWithText("Preparar consulta sobre PDF con Gemini").fetchSemanticsNodes().isNotEmpty()}
         assertEquals(0,server.requestCount)
         ui.onNodeWithText("Preparar consulta sobre PDF con Gemini").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Revisar y autorizar envío a Gemini").fetchSemanticsNodes().isNotEmpty()}
+        ui.waitUntil(15000){ui.onAllNodes(hasText("Revisar y autorizar envío a Gemini") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
         assertEquals(0,server.requestCount)
-        ui.onNodeWithText("Revisar y autorizar envío a Gemini").performClick()
-        val displayed=ui.onNodeWithTag("ai-review-prompt").fetchSemanticsNode().config[SemanticsProperties.Text].joinToString(""){it.text}
+        ui.onNodeWithText("Revisar y autorizar envío a Gemini").performScrollTo().assertIsDisplayed().performClick()
+        ui.waitUntil(15000){ui.onAllNodesWithTag("ai-review-prompt",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
+        val displayed=ui.onNodeWithTag("ai-review-prompt",useUnmergedTree=true).fetchSemanticsNode().config[SemanticsProperties.Text].joinToString(""){it.text}
         assertTrue(displayed.contains("rehabilitacion vestibular.pdf"))
         assertEquals(0,server.requestCount)
         ui.onNodeWithText("Enviar",useUnmergedTree=true).performClick()

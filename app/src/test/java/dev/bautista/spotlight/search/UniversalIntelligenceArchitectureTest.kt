@@ -65,7 +65,7 @@ class UniversalIntelligenceArchitectureTest {
 
             val rows = engine().search(query, geminiConfig).toList().last()
             val first = rows.first()
-            assertEquals("root:ai", first.id)
+            assertEquals("universal:ai", first.id)
             assertEquals("Responder con Gemini", first.title)
             assertTrue(first.action is Action.Ask)
             assertEquals(query, (first.action as Action.Ask).prompt)
@@ -96,6 +96,9 @@ class UniversalIntelligenceArchitectureTest {
         assertNotNull(pdfAnatomia.fileConstraint)
         assertEquals("pdf", pdfAnatomia.fileConstraint!!.kind)
         assertEquals("anatomia", pdfAnatomia.fileConstraint!!.terms)
+        assertEquals("opened", pdfAnatomia.fileConstraint!!.dateField)
+        assertNotNull(pdfAnatomia.fileConstraint!!.unsupportedDateReason)
+        assertFalse(pdfAnatomia.fileConstraint!!.query.contains("modified-"))
         assertEquals(Instant.parse("2026-10-14T03:00:00Z").toEpochMilli(), pdfAnatomia.fileConstraint!!.start)
         assertTrue(RequiredPermission.READ_EXTERNAL_STORAGE_OR_SAF in pdfAnatomia.permissions)
 

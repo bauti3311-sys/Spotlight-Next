@@ -63,7 +63,7 @@ class SearchEngine(
             when(resolution.primaryIntent) {
                 PrimaryIntentKind.KNOWLEDGE_AI -> {
                     val question=resolution.entities.firstOrNull{it.type==EntityType.TOPIC_QUERY}?.value ?: input
-                    send(listOf(Result("universal:ai",spec.primaryTitle,spec.primarySubtitle,"IA",4100,AiRequestPolicy.question(question))) + instant(question,c).filter{it.id=="web"})
+                    send(listOf(Result("universal:ai",spec.primaryTitle,spec.primarySubtitle,"IA",4100,AiRequestPolicy.question(question))) + instant(question,c).filter{it.id=="web"}.map{it.copy(id="smart:web")})
                     return@channelFlow
                 }
                 PrimaryIntentKind.COMPOUND_ACTION,PrimaryIntentKind.FOCUS_STUDY -> {

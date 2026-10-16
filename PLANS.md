@@ -335,3 +335,6 @@ Recuperación verificada, reserva propia reanudada. Corregidos ranking y home (2
 
 ## Work16/10 — integración universal, checkpoint previo a Gradle
 Rama nueva feat/work-universal-intelligence-20261016 desde3c3c68e. Estética aprobada físicamente por el usuario, no se rediseña. Auditoría e integración controlada del ZIP corregido; consentimiento tipado, SearchEngine conectado y fechas de apertura explícitamente no soportadas. Ver docs/UNIVERSAL-INTEGRACION-20261016.md. Pruebas nuevas preparadas, todavía no ejecutadas; checkpoint parcial antes de tareas largas, sin CI/main/PR16/firma histórica.
+
+### Work16/10 — flujos de producción dirigidos correctos
+SearchEngine→SpotlightPanel→DirectAi: Enter explícito, Markdown y PDF con payload igual al prompt autorizado; plan Spotify+volumen verificado con herramientas Android/fixtures. Python30+5 correctas. Preview Universal adicional para coexistir con la Preview anterior cuya clave temporal no sobrevivió. Suite integral/lint/visual todavía pendientes; no declarar estabilidad integral ni proveedor real probado.

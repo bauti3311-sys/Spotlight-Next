@@ -55,7 +55,7 @@ object ExtensionRegistry {
         val normQuery=normalize(query.trim())
         // Bare action verbs ("buscar", "abrir", "ver") must not dump indistinguishable extension commands.
         if(normQuery in genericVerbStopwords)return emptyList()
-        return extensions.filter{ExtensionStore.enabled(context,it.id) && it.id !in setOf("catalog","focus","snippets","workflows") && (it.id!="tasker" || normQuery.contains("tasker"))}.flatMap { e ->
+        return extensions.filter{ExtensionStore.enabled(context,it.id) && it.id !in setOf("catalog","focus","snippets","workflows","tasker")}.flatMap { e ->
             e.commands.mapNotNull { command ->
                 val displayTitle=if(command.title=="Buscar contenido")"Buscar en ${e.name}" else command.title
                 val match=maxOf(relevance(query,displayTitle),relevance(query,e.name))

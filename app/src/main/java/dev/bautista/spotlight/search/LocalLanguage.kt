@@ -73,7 +73,7 @@ object StableResults {
             val actSig=actionSignature(item.action)
             val visSig="${normalize(item.title)}|${normalize(item.subtitle)}|${normalize(item.category)}"
             val isNewAction=seenActions.add(actSig)
-            val isNewVisual=if(item.category in setOf("Archivos","Contactos"))true else seenVisual.add(visSig)
+            val isNewVisual=if(item.category in setOf("Archivos","Contactos","Notas","Portapapeles","Guardados"))true else seenVisual.add(visSig)
             isNewAction && isNewVisual
         }
     }

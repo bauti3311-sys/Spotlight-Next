@@ -35,6 +35,13 @@ android {
    signingConfig = signingConfigs.getByName("debug")
    matchingFallbacks += listOf("release")
   }
+  // A separate local-signature sandbox; preserves both installed production and old Preview.
+  create("universalPreview") {
+   initWith(getByName("preview"))
+   applicationIdSuffix = ".preview.universal"
+   versionNameSuffix = "-universal-preview"
+   matchingFallbacks += listOf("release")
+  }
  }
 }
 dependencies {
