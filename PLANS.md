@@ -341,3 +341,6 @@ SearchEngine→SpotlightPanel→DirectAi: Enter explícito, Markdown y PDF con p
 
 ### Work16/10 — regresiones previas a la segunda integral
 Primera integral431/10 fallos identificados; no se desactivaron pruebas. Adaptadores de traducción/Pomodoro y orden de ámbitos conservados, prioridad de acciones corregida. Capturas nativas de inicio3temas revisadas, selección/bordes/barra sin rediseño. Dirigidas de notas/modos pasan tras restaurar ranking antes de deduplicación. Segunda integral/lint/APK pendientes.
+
+## Work16/10 — entrega universal validada localmente
+432 Android +30 scripts+5 backend correctas; lint3variantes0errores; Debug/ReleaseR8/UniversalPreviewR8 compilados.17comparaciones nativas contra3c3c68e aprobada sin cambios y0píxeles distintos; revisión manual antes de refrescar referencias antiguas. Sin modificar estética,OverlayService/teclado/paquete principal/firma histórica/preferencias,main oPR16; ceroActions. Universal Preview independiente .next.preview.universal para preservar ambas instalaciones previas. Matriz completa y límites físicos/proveedor/apertura por fecha en docs/UNIVERSAL-MATRIZ-20261016.md. Entrega APK+fuente del mismoSHA e informes mediante conversación. No afirmar validación física ni Gemini real con tests de fixture.
