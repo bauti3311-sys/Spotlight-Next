@@ -12,6 +12,7 @@ import org.junit.runner.RunWith
 import org.robolectric.*
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import kotlinx.coroutines.runBlocking
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
@@ -19,6 +20,11 @@ import org.robolectric.annotation.GraphicsMode
 class Next091AdvancedVisualTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
+    // DataStore survives across these Robolectric application instances. Do not
+    // leak the note created by this class into later SavedPanel pixel fixtures.
+    @After fun clearPersistedFixtureNotes()=runBlocking {
+        app.preferences.editNotes { "[]" }
+    }
     private fun capture(name:String){ui.waitForIdle();ui.runOnIdle{capture091(ui.activity,name)}}
     @Test fun localTextCardWorksWithoutInternet(){ui.setContent{SpotlightPanel(app,AppConfig(files=false,online=false,animations=false),{},"mayúsculas: hola",700f)};ui.waitUntil(15000){ui.onAllNodesWithText("Procesado localmente").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithText("HOLA").assertExists();capture("text-tools-tablet");ui.onNodeWithText("Copiar").performClick();assertEquals("HOLA",app.getSystemService(ClipboardManager::class.java).primaryClip!!.getItemAt(0).text.toString())}
     @Test fun snippetHasRequiredFieldsAndCopiesCompletedText(){ui.setContent{SpotlightTheme{SnippetForm("Hola {nombre}",{text->app.getSystemService(ClipboardManager::class.java).setPrimaryClip(android.content.ClipData.newPlainText("Legacy test",text))},{})}};ui.onNodeWithText("Copiar fragmento").assertIsNotEnabled();ui.onNodeWithText("Nombre").performTextInput("Juan");ui.onNodeWithText("Hola Juan").assertExists();capture("snippet-form-tablet");ui.onNodeWithText("Copiar fragmento").performClick();assertEquals("Hola Juan",app.getSystemService(ClipboardManager::class.java).primaryClip!!.getItemAt(0).text.toString())}
