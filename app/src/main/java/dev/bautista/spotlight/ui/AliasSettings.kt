@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 
 @Composable fun AliasSettings(config:Config,update:(Config)->Unit){
     val context=LocalContext.current
-    val choices by produceState<List<String>>(emptyList()){value=withContext(Dispatchers.IO){(context.packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),0).map{it.loadLabel(context.packageManager).toString()}+listOf("crear nota","preguntar a IA","temporizador","herramientas de texto","snippets","sonido","bluetooth","portapapeles")).distinct().sorted()}}
+    val choices by produceState<List<String>>(emptyList()){value=withContext(Dispatchers.IO){(context.packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),0).map{it.loadLabel(context.packageManager).toString()}+listOf("crear nota","preguntar a IA","temporizador","herramientas de texto","sonido","bluetooth","portapapeles")).distinct().sorted()}}
     var alias by remember{mutableStateOf("")};var target by remember{mutableStateOf("")};var open by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")}
     Column(verticalArrangement=Arrangement.spacedBy(8.dp)){
         Text("Alias opcionales",style=MaterialTheme.typography.titleMedium)

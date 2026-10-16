@@ -31,7 +31,7 @@ import org.json.JSONObject
  var clear by remember{mutableStateOf(false)}
  TextButton(onClick={clear=true}){Text("Borrar historial y restablecer aprendizaje")}
  if(clear){Text("¿Borrar recientes y hábitos? Tus preferencias y elementos guardados se conservan.");Row{TextButton(onClick={clear=false;scope.launch{app.preferences.clearHistory()}}){Text("Confirmar borrado")};TextButton(onClick={clear=false}){Text("Cancelar")}}}
- TextButton(onClick={app.local.clearClips()}){Text("Vaciar portapapeles temporal")}
+ ConfirmedSettingsButton("Vaciar portapapeles temporal","Se borrará únicamente el historial temporal de Spotlight."){app.local.clearClips()}
  TextButton(onClick={app.startActivity(Intent(app,dev.bautista.spotlight.InvokeActivity::class.java).putExtra("query","contextos").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))}){Text("Gestionar contextos y conversaciones")}
 }
 @Composable fun InvocationSettings(c:Config,update:(Config)->Unit) {
@@ -62,7 +62,7 @@ import org.json.JSONObject
  Text("Notificaciones: ${notifications}")
  Text("Índice: ${index.count} archivos · ${if(index.busy)"actualizando" else "en reposo"}")
  Text("Muestras de apertura: ${openings.size}");Text(app.diagnostics.report(),style=MaterialTheme.typography.bodySmall)
- Text("Observaciones del dispositivo actual; Work no dispone de acceso físico a tu Tab A9+.",style=MaterialTheme.typography.bodySmall)
+ Text("Estados del dispositivo actual. Los permisos pueden cambiar desde los ajustes de Android.",style=MaterialTheme.typography.bodySmall)
  val context=LocalContext.current
  TextButton(onClick={context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,app.diagnostics.report()),"Exportar diagnóstico"))}){Text("Exportar diagnóstico sin contenido privado")}
  TextButton(onClick={app.diagnostics.clear()}){Text("Limpiar mediciones")}

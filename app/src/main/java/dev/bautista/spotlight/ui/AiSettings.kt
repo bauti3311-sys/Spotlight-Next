@@ -29,7 +29,7 @@ import kotlinx.coroutines.*
         OutlinedTextField(model,{model=it},label={Text("Modelo")},singleLine=true,modifier=Modifier.fillMaxWidth())
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             Button(enabled=!busy,onClick={busy=true;job=scope.launch{try{require(model.matches(Regex("[A-Za-z0-9._-]{1,100}"))){"Modelo inválido"};if(key.isNotBlank())withContext(Dispatchers.IO){vault.save(config.aiProvider,key)};update(config.copy(aiModel=model));key="";status="Configuración guardada"}catch(e:Exception){status="No se pudo guardar: ${e.message}"}finally{busy=false}}}){Text("Guardar")}
-            TextButton(enabled=!busy,onClick={job=scope.launch{withContext(Dispatchers.IO){vault.delete(config.aiProvider)};status="Clave eliminada";key=""}}){Text("Eliminar clave")}
+            ConfirmedSettingsButton("Eliminar clave","Elimina únicamente la credencial del proveedor seleccionado en este dispositivo.",enabled=!busy){job=scope.launch{withContext(Dispatchers.IO){vault.delete(config.aiProvider)};status="Clave eliminada";key=""}}
         }
         if(config.aiProvider=="gemini") {
             TextButton(enabled=!busy && vault.contains("gemini"),onClick={busy=true;status="Consultando modelos…";job=scope.launch{try{ai.availableGeminiModels(config).collect{models=it};status="Elegí un modelo y guardá la configuración."}catch(e:CancellationException){throw e}catch(e:Exception){status=e.message ?: "No se pudo consultar la lista."}finally{busy=false}}}){Text("Consultar modelos disponibles")}

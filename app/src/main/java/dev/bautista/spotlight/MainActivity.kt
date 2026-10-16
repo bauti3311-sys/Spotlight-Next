@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
     private var importPreview by mutableStateOf<String?>(null)
     private val configExport=registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")){uri->if(uri!=null)lifecycleScope.launch{runCatching{val raw=dev.bautista.spotlight.data.ConfigTransfer.encode(app.preferences.config.first());withContext(Dispatchers.IO){contentResolver.openOutputStream(uri,"wt")?.use{it.write(raw.toByteArray())} ?: error("No se pudo guardar.")}}.onSuccess{transferMessage="Configuración exportada."}.onFailure{transferMessage=it.message ?: "No se pudo exportar."}}}
     private val configImport=registerForActivityResult(ActivityResultContracts.OpenDocument()){uri->if(uri!=null)lifecycleScope.launch{runCatching{val raw=withContext(Dispatchers.IO){contentResolver.openInputStream(uri)?.use{val out=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192);while(true){val n=it.read(buffer);if(n<0)break;require(out.size()+n<=2_000_000){"Archivo demasiado grande."};out.write(buffer,0,n)};out.toString("UTF-8")} ?: error("No se pudo leer.")};val current=app.preferences.config.first();importSummary=withContext(Dispatchers.Default){dev.bautista.spotlight.data.ConfigTransfer.summary(dev.bautista.spotlight.data.ConfigTransfer.decode(raw,current))};importPreview=raw}.onFailure{transferMessage=it.message ?: "No se pudo importar."}}}
+    private var permissionRevision by mutableIntStateOf(0)
     private var broadGranted by mutableStateOf(false)
     private var overlayGranted by mutableStateOf(false)
     private var audioUri by mutableStateOf<Uri?>(null)
@@ -82,6 +83,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        permissionRevision++
         broadGranted = app.index.broadAllowed()
         overlayGranted = Settings.canDrawOverlays(this)
         app.search.invalidateApps()
@@ -90,13 +92,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val config by
-                app.preferences.config.collectAsState(
-                    initial = dev.bautista.spotlight.data.Config()
-                )
+            val loadedConfig by app.preferences.config.collectAsState(initial=null)
+            if(loadedConfig==null) {
+                SpotlightTheme { Surface(Modifier.fillMaxSize()){Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center){Text("Cargando preferencias…")}} }
+                return@setContent
+            }
+            val config=requireNotNull(loadedConfig)
             val scope = rememberCoroutineScope()
             var endpoint by remember(config.endpoint) { mutableStateOf(config.endpoint) }
-            var settingsGroup by remember{mutableStateOf(intent.getStringExtra("group")?.takeIf{it in SettingsGroups.names} ?: "Apariencia")}
+            var settingsGroup by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(SettingsGroups.canonical(intent.getStringExtra("group"))) }
             val notificationAccess by dev.bautista.spotlight.control.Replies.connected.collectAsState()
             var endpointError by remember { mutableStateOf("") }
             fun update(c: dev.bautista.spotlight.data.Config) {
@@ -109,81 +113,46 @@ class MainActivity : ComponentActivity() {
                         Modifier.fillMaxSize()
                             .statusBarsPadding()
                             .navigationBarsPadding()
-                            .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 24.dp, vertical = 28.dp),
+                            .padding(horizontal = 20.dp, vertical = 16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Column(Modifier.widthIn(max = 1100.dp).fillMaxWidth()) {
-                            Text(
-                                "SPOTLIGHT",
-                                color = colors.primary,
-                                fontSize = 12.sp,
-                                letterSpacing = 3.sp,
-                            )
-                            Spacer(Modifier.height(12.dp))
-                            Text(
-                                "Spotlight Next",
-                                style = MaterialTheme.typography.headlineLarge,
-                            )
-                            Spacer(Modifier.height(12.dp))
-                            Text(
-                                "Tu barra de búsqueda y acciones, siempre a mano.",
-                                color = colors.onSurfaceVariant,
-                            )
-                            Spacer(Modifier.height(20.dp))
-                            Spacer(Modifier.height(16.dp))
-                            Button(
-                                onClick = {
-                                    if (overlayGranted)
-                                        startActivity(
-                                            Intent(this@MainActivity, InvokeActivity::class.java)
-                                        )
-                                    else
-                                        startActivity(
-                                            Intent(
-                                                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                                Uri.parse("package:$packageName"),
-                                            )
-                                        )
-                                },
-                                Modifier.fillMaxWidth().height(52.dp),
-                                shape = RoundedCornerShape(15.dp),
-                            ) {
-                                Text(
-                                    if (overlayGranted) "Abrir Spotlight"
-                                    else "Permitir ventana flotante"
-                                )
+                        Column(Modifier.widthIn(max = 1100.dp).fillMaxSize()) {
+                            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                                Column(Modifier.weight(1f)) {
+                                    Text("Ajustes",style=MaterialTheme.typography.headlineSmall)
+                                    Text("Spotlight Next",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
+                                }
+                                TextButton(onClick={
+                                    if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
+                                    else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
+                                }){Text(if(overlayGranted)"Abrir Spotlight" else "Permitir ventana")}
                             }
-                            Text(
-                                "${Build.MANUFACTURER} ${Build.MODEL} · Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})",
-                                Modifier.padding(vertical = 12.dp),
-                                fontSize = 12.sp,
-                                color = colors.onSurfaceVariant,
-                            )
-                            SettingsLayout(settingsGroup,{settingsGroup=it}){
+                            Spacer(Modifier.height(20.dp))
+                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f)){
                             CompositionLocalProvider(LocalSettingsGroup provides settingsGroup){
                             Section("Contexto autorizado · Inteligencia") { Text("Elegí documentos, fijá contextos y guardá conversaciones manualmente.");TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","contextos"))}){Text("Gestionar contexto")} }
+                            Section("Permisos opcionales") { SettingsAccessSummary(app,permissionRevision) }
                             Section("Privacidad · Spotlight Glass") { PrivacySettings(app,config,::update) }
                             Section("Invocación · teclado y posición") { InvocationSettings(config,::update) }
                             Section("Búsqueda · prioridades") { SearchTuning(config,::update) }
                             Section("Diagnóstico de Spotlight") { DiagnosticsPanel(app) }
 
-                            if(!config.onboarded)Section("Bienvenido a Spotlight Next"){Text("Abrí la barra desde ajustes rápidos o un acceso en Inicio. Escribí una app, una cuenta o un comando. Tocá ⋯ o Ctrl+K para ver acciones; Tab acepta sugerencias. Los permisos y la IA son opcionales.");TextButton(onClick={update(config.copy(onboarded=true))}){Text("Entendido")}}
+                            if(!config.onboarded)Section("Bienvenido a Spotlight Next"){Text("Abrí la barra desde ajustes rápidos o un acceso en Inicio. Escribí una app, una cuenta o un comando. Tocá ⋯ o Ctrl+K para ver acciones; Tab abre y recorre acciones. Los permisos y la IA son opcionales.");TextButton(onClick={update(config.copy(onboarded=true))}){Text("Entendido")}}
                             Section("Centro de comandos y perfiles") { Text("Packs listos para usar, perfiles manuales y acciones revisables desde la barra.");OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","catálogo"))}){Text("Abrir centro de comandos")} }
                             Section("Tasker · automatización externa") { Text("Descubrí tareas sin copiar enlaces. Tasker necesita su permiso de acceso externo y una confirmación antes de ejecutar.");OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","tasker"))}){Text("Abrir tareas de Tasker")} }
                             Section("Clima y agenda deportiva") { Text("Clima de Open-Meteo y agenda gratuita de TheSportsDB, consultados directamente desde la barra.");Row{OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","clima"))}){Text("Clima")};TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","deportes"))}){Text("Deportes")}} }
                             Section("Extensiones e integraciones") { dev.bautista.spotlight.ui.ExtensionPanel(app,config) }
                             Section("Shizuku · integración avanzada opcional") { dev.bautista.spotlight.ui.AdvancedPanel(app,"shizuku") }
                             Section("Transferir configuración") {
-                                Text("Temas, favoritos, snippets, rutinas, quicklinks y alias. Las claves, historiales, permisos y accesos a archivos se mantienen en cada dispositivo.")
+                                Text("Preferencias, favoritos y alias. Los datos heredados se conservan; las claves, historiales, permisos y accesos a archivos permanecen en cada dispositivo.")
                                 Row{OutlinedButton(onClick={configExport.launch("Spotlight-configuracion.json")}){Text("Exportar")};TextButton(onClick={configImport.launch(arrayOf("application/json","text/plain"))}){Text("Importar")}}
                                 if(transferMessage.isNotBlank())Text(transferMessage)
                                 importPreview?.let{raw->run{Text("Revisar importación");Text(importSummary);Row{Button(onClick={scope.launch{runCatching{val current=app.preferences.config.first();val imported=withContext(Dispatchers.Default){dev.bautista.spotlight.data.ConfigTransfer.decode(raw,current)};app.preferences.update(imported)}.onSuccess{transferMessage="Configuración importada. Revisá las apps disponibles en este dispositivo.";importPreview=null}.onFailure{transferMessage=it.message.orEmpty()}}}){Text("Confirmar importación")};TextButton(onClick={importPreview=null}){Text("Cancelar")}}}}
                             }
                             Section("General · inicio") {
                                 Toggle("Mostrar sugerencias",config.suggestions){update(config.copy(suggestions=it))}
-                                Text("El inicio no muestra recientes. Fijá u ocultá sugerencias desde sus acciones.",fontSize=12.sp,color=colors.onSurfaceVariant)
-                                TextButton(onClick={update(config.copy(hiddenSuggestions=emptySet(),pinnedSuggestions=emptySet()))}){Text("Restablecer sugerencias")}
+                                Text("Sugerencias locales sin relleno: como máximo una app relevante, acciones y continuidad autorizada.",fontSize=12.sp,color=colors.onSurfaceVariant)
+                                ConfirmedSettingsButton("Restablecer sugerencias","Se quitarán las sugerencias fijadas y ocultas. Tus favoritos y guardados se conservan."){update(config.copy(hiddenSuggestions=emptySet(),pinnedSuggestions=emptySet()))}
                             }
                             Section("WhatsApp y notificaciones") {
                                 Text(if(notificationAccess)"Acceso a notificaciones activo. Los mensajes visibles permanecen solo en memoria." else "Acceso a notificaciones desactivado. Podés habilitarlo para leer y responder mensajes disponibles.")
@@ -280,9 +249,11 @@ class MainActivity : ComponentActivity() {
                                         },
                                     )
                             }
-                            Section("Apariencia") { GlassAppearance(config,::update) }
-                            Section("Búsqueda y privacidad") {
+                            Section("Apariencia") { GlassAppearance(config){draft->scope.launch{app.preferences.updateAppearance(draft)}} }
+                            Section("Aprendizaje local") {
                                 Toggle("Aprender del uso · solo en este dispositivo",config.learning){update(config.copy(learning=it))}
+                            }
+                            Section("Contactos autorizados") {
                                 Toggle("Contactos", config.contacts) { enabled ->
                                     if (enabled) {
                                         if (
@@ -302,6 +273,8 @@ class MainActivity : ComponentActivity() {
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
+                            }
+                            Section("Portapapeles temporal") {
                                 Toggle("Historial de portapapeles · optativo", config.clipboard) {
                                     if (!it) app.local.clearClips()
                                     update(config.copy(clipboard = it))
@@ -313,9 +286,9 @@ class MainActivity : ComponentActivity() {
                                 )
                                 Text("Límite · ${config.clipLimit} elementos");Slider(config.clipLimit.toFloat(),{update(config.copy(clipLimit=it.toInt()))},valueRange=5f..50f)
                                 Text("Retención · ${config.clipRetention} minutos");Slider(config.clipRetention.toFloat(),{update(config.copy(clipRetention=it.toInt()))},valueRange=1f..60f)
-                                TextButton(onClick = { app.local.clearClips() }) {
-                                    Text("Vaciar portapapeles de Spotlight")
-                                }
+                                ConfirmedSettingsButton("Vaciar portapapeles de Spotlight","Se borrará únicamente el historial temporal de Spotlight."){app.local.clearClips()}
+                            }
+                            Section("Búsqueda y archivos") {
                                 Toggle("Buscar archivos", config.files) {
                                     update(config.copy(files = it))
                                 }
@@ -367,20 +340,9 @@ class MainActivity : ComponentActivity() {
                                     TextButton(onClick = { folder.launch(null) }) {
                                         Text("Elegir carpeta")
                                     }
-                                    TextButton(
-                                        onClick = {
-                                            config.trees.forEach {
-                                                runCatching {
-                                                    contentResolver.releasePersistableUriPermission(
-                                                        Uri.parse(it),
-                                                        Intent.FLAG_GRANT_READ_URI_PERMISSION,
-                                                    )
-                                                }
-                                            }
-                                            update(config.copy(trees = emptySet()))
-                                        }
-                                    ) {
-                                        Text("Quitar accesos")
+                                    ConfirmedSettingsButton("Quitar accesos","Se revocarán las carpetas autorizadas. No se borrarán archivos.") {
+                                        config.trees.forEach { tree -> runCatching { contentResolver.releasePersistableUriPermission(Uri.parse(tree),Intent.FLAG_GRANT_READ_URI_PERMISSION) } }
+                                        update(config.copy(trees=emptySet()))
                                     }
                                 }
                                 Text(
@@ -388,6 +350,8 @@ class MainActivity : ComponentActivity() {
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
+                            }
+                            Section("Búsqueda web") {
                                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                     listOf("google", "duckduckgo", "bing").forEach { engine ->
                                         FilterChip(
@@ -399,11 +363,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
                                 }
-                                TextButton(
-                                    onClick = { scope.launch { app.preferences.clearHistory() } }
-                                ) {
-                                    Text("Borrar recientes de Spotlight")
-                                }
+
                             }
                             Section("Texto e imágenes de otras apps") {
                                 Text(
@@ -459,12 +419,7 @@ class MainActivity : ComponentActivity() {
                                     ) {
                                         Text("Cancelar")
                                     }
-                                    TextButton(
-                                        onClick = { scope.launch { app.index.clear() } },
-                                        enabled = !status.busy,
-                                    ) {
-                                        Text("Borrar índice")
-                                    }
+                                    ConfirmedSettingsButton("Borrar índice","Elimina el índice local, no tus archivos. Podés reconstruirlo con los accesos autorizados.",enabled=!status.busy){scope.launch{app.index.clear()}}
                                 }
                                 Text(
                                     "Usá kind:pdf, kind:image, kind:folders, kind:email, author:Nombre, modified:2026-10, created:2026 o frases entre comillas. AND / OR / NOT deben estar en mayúsculas. Autor y creación solo se filtran si el documento tiene esos datos. Los cambios de nombre/metadatos se revisan al volver a buscar; para reindexar contenido tocá Actualizar índice.",
@@ -627,7 +582,7 @@ class MainActivity : ComponentActivity() {
                                     color = colors.onSurfaceVariant,
                                 )
                             }
-                            Section("Biblioteca personal · opcional") { dev.bautista.spotlight.ui.PersonalSettings(config, ::update) }
+                            Section("Alias personales") { AliasSettings(config, ::update) }
                             Section("Integraciones automáticas") { dev.bautista.spotlight.ui.IntegrationSettings(config, ::update) }
                             Section("Herramientas incluidas") {
                                 Text(
@@ -640,7 +595,7 @@ class MainActivity : ComponentActivity() {
                                     color = colors.onSurfaceVariant,
                                 )
                                 Text(
-                                    "Dentro de Spotlight: Ctrl/⌘+1…4 abre categorías. Flechas seleccionan; Espacio abre vista rápida; Tab acepta sugerencias; Ctrl/⌘+K abre acciones; Ctrl/⌘+C copia; Ctrl/⌘+R muestra la carpeta; Ctrl/⌘+B busca en la web; Enter abre; Escape cierra. El espacio se conserva al escribir hasta navegar con flechas.",
+                                    "Dentro de Spotlight: Ctrl/⌘+1…4 abre categorías. Flechas navegan al salir de la edición; Espacio abre vista rápida; Tab abre y recorre acciones; Ctrl/⌘+K abre acciones; Ctrl/⌘+C copia; Ctrl/⌘+R muestra la carpeta; Ctrl/⌘+B busca en la web; Enter abre; Escape cierra. El espacio se conserva al escribir hasta navegar con flechas.",
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
@@ -699,7 +654,7 @@ class MainActivity : ComponentActivity() {
                             Spacer(Modifier.height(16.dp))
                             val installedVersion=remember { runCatching { packageManager.getPackageInfo(packageName,0).versionName }.getOrNull().orEmpty() }
                             Text(
-                                "Spotlight Next $installedVersion · Centro de comandos",
+                                "Spotlight Next $installedVersion",
                                 fontSize = 12.sp,
                                 color = colors.onSurfaceVariant,
                             )
@@ -746,21 +701,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Section(title: String, content: @Composable ColumnScope.() -> Unit) {
-    val query=LocalSettingsQuery.current
-    if(query.isBlank() && SettingsGroups.of(title)!=LocalSettingsGroup.current)return
-    if(query.isNotBlank() && !SettingsGroups.matches(title,query))return
-    var expanded by remember(title) { mutableStateOf(!title.startsWith("Centro de comandos") && !title.startsWith("Tasker") && !title.startsWith("Rutinas")) }
-    OutlinedCard(Modifier.fillMaxWidth().padding(top=12.dp),shape=RoundedCornerShape(18.dp),colors=CardDefaults.outlinedCardColors(containerColor=MaterialTheme.colorScheme.surface),border=BorderStroke(1.dp,MaterialTheme.colorScheme.outlineVariant)) {
-        Column(Modifier.padding(16.dp)) {
-            Row(Modifier.fillMaxWidth().clickable { expanded=!expanded },verticalAlignment=Alignment.CenterVertically) {
-                Icon(SettingsGroups.icon(SettingsGroups.of(title)),null,Modifier.size(20.dp),tint=MaterialTheme.colorScheme.primary)
-                Spacer(Modifier.width(12.dp))
-                Text(title,Modifier.weight(1f),style=MaterialTheme.typography.titleSmall)
-                TextButton(onClick={expanded=!expanded}){Text(if(expanded)"Cerrar" else "Ver")}
-            }
-            if(expanded) { Spacer(Modifier.height(12.dp));content() }
-        }
-    }
+    SettingsPreferenceSection(title,content)
 }
 
 @Composable

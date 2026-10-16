@@ -176,6 +176,20 @@ class Preferences(private val context: Context) {
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;ready=true}}
             }
 
+    /** A settings edit must not overwrite habits, privacy, files or concurrent changes. */
+    suspend fun updateAppearance(c: Config) {
+        context.store.edit { p ->
+            p[theme] = c.theme
+            p[animations] = c.animations
+            p[density] = c.density
+            p[accent] = c.accent
+            p[stringPreferencesKey("preset")] = c.preset
+            val extra = runCatching { org.json.JSONObject(p[next20] ?: "{}") }.getOrDefault(org.json.JSONObject())
+            extra.put("windowScale", c.windowScale.takeIf { it.isFinite() && it in 0f..1f } ?: -1f)
+            p[next20] = extra.toString()
+        }
+    }
+
     suspend fun update(c: Config) {
         val previousPrivate=isPrivate;val previousRevision=privacyRevision
         val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode

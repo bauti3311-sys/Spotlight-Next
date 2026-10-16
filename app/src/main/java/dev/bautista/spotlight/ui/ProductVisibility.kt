@@ -5,6 +5,7 @@ import dev.bautista.spotlight.search.Result
 
 /** Retire product entry points, never delete previously saved user data. */
 object ProductVisibility {
+    fun allowedExtension(id:String)=id !in setOf("tasker","catalog","snippets","workflows","focus")
     fun allowed(result:Result):Boolean =
         allowedAction(result.action) &&
             !result.id.startsWith("snippet:") &&
