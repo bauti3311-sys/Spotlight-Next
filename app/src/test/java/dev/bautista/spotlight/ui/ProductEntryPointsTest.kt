@@ -27,8 +27,10 @@ class ProductEntryPointsTest {
         ui.onNodeWithText("pdf de ayer").assertExists()
         ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
         ui.onNodeWithContentDescription("Abrir Ajustes").performClick()
-        ui.onNodeWithTag("window-width-slider").assertExists()
-        ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
+        val settings=org.robolectric.Shadows.shadowOf(ui.activity).nextStartedActivity
+        assertEquals(dev.bautista.spotlight.MainActivity::class.java.name,settings.component!!.className)
+        assertEquals(app.packageName,settings.component!!.packageName)
+        assertEquals("General",settings.getStringExtra("group"))
         ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
     }
     @Test fun catalogAlsoHidesRetiredModesAndKeepsRealAndroidActions() {

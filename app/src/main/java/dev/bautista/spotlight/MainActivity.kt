@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
     private val configExport=registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")){uri->if(uri!=null)lifecycleScope.launch{runCatching{val raw=dev.bautista.spotlight.data.ConfigTransfer.encode(app.preferences.config.first());withContext(Dispatchers.IO){contentResolver.openOutputStream(uri,"wt")?.use{it.write(raw.toByteArray())} ?: error("No se pudo guardar.")}}.onSuccess{transferMessage="Configuración exportada."}.onFailure{transferMessage=it.message ?: "No se pudo exportar."}}}
     private val configImport=registerForActivityResult(ActivityResultContracts.OpenDocument()){uri->if(uri!=null)lifecycleScope.launch{runCatching{val raw=withContext(Dispatchers.IO){contentResolver.openInputStream(uri)?.use{val out=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192);while(true){val n=it.read(buffer);if(n<0)break;require(out.size()+n<=2_000_000){"Archivo demasiado grande."};out.write(buffer,0,n)};out.toString("UTF-8")} ?: error("No se pudo leer.")};val current=app.preferences.config.first();importSummary=withContext(Dispatchers.Default){dev.bautista.spotlight.data.ConfigTransfer.summary(dev.bautista.spotlight.data.ConfigTransfer.decode(raw,current))};importPreview=raw}.onFailure{transferMessage=it.message ?: "No se pudo importar."}}}
     private var permissionRevision by mutableIntStateOf(0)
+    private var requestedSettingsGroup by mutableStateOf<String?>(null)
     private var broadGranted by mutableStateOf(false)
     private var overlayGranted by mutableStateOf(false)
     private var audioUri by mutableStateOf<Uri?>(null)
@@ -89,6 +90,12 @@ class MainActivity : ComponentActivity() {
         app.search.invalidateApps()
     }
 
+    public override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        requestedSettingsGroup=intent.getStringExtra("group")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -101,10 +108,14 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             var endpoint by remember(config.endpoint) { mutableStateOf(config.endpoint) }
             var settingsGroup by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(SettingsGroups.canonical(intent.getStringExtra("group"))) }
+            LaunchedEffect(requestedSettingsGroup) { requestedSettingsGroup?.let { settingsGroup=SettingsGroups.canonical(it);requestedSettingsGroup=null } }
             val notificationAccess by dev.bautista.spotlight.control.Replies.connected.collectAsState()
             var endpointError by remember { mutableStateOf("") }
             fun update(c: dev.bautista.spotlight.data.Config) {
                 scope.launch { app.preferences.update(c) }
+            }
+            fun updateAi(c: dev.bautista.spotlight.data.Config) {
+                scope.launch { app.preferences.updateAi(config,c) }
             }
             SpotlightTheme(config.theme, config) {
                 val colors = MaterialTheme.colorScheme
@@ -603,7 +614,7 @@ class MainActivity : ComponentActivity() {
                             }
                             Section("Rutinas y automatizaciones") {WorkflowSettings(config, ::update)}
                             Section("Inteligencia artificial · opcional") {
-                                AiSettings(config, ::update)
+                                AiSettings(config, ::updateAi)
                                 if(config.aiProvider=="backend") {
                                 Text(
                                     "Escribí «ia tu pregunta» en Spotlight. Las respuestas aparecen en la ventana y la conversación vive solo hasta cerrarla.",
@@ -635,7 +646,7 @@ class MainActivity : ComponentActivity() {
                                                     }
                                                     .getOrDefault(false)
                                         )
-                                            update(config.copy(endpoint = endpoint.trim()))
+                                            updateAi(config.copy(endpoint = endpoint.trim()))
                                         else
                                             endpointError =
                                                 "Usá una URL HTTPS sin credenciales en la dirección."

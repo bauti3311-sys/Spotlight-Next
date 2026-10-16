@@ -9,6 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.data.Config
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable internal fun SettingsOptions(content:@Composable ()->Unit) {
+    FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)){content()}
+}
+
 /** Product settings: technical values remain in storage, not in the main user flow. */
 @Composable fun GlassAppearance(c:Config,update:(Config)->Unit) = GlassAppearance(c,true,update)
 
@@ -20,7 +25,7 @@ import dev.bautista.spotlight.data.Config
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(18.dp)) {
         if(showHeading)Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
         Text("Una ventana a tu medida",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
-        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+        SettingsOptions {
             FilterChip(draft.theme=="auto",{edit(draft.copy(theme="auto"))},label={Text("Sistema")})
             listOf(Triple("glass","dark","Obsidian Glass"),Triple("raycast","dark","Graphite"),Triple("glass","light","macOS Light")).forEach { (preset,theme,label)->
                 FilterChip(draft.preset==preset && draft.theme==theme,{edit(draft.copy(preset=preset,theme=theme))},label={Text(label)})
@@ -28,7 +33,7 @@ import dev.bautista.spotlight.data.Config
         }
         WindowSizeSettings(draft){edit(it)}
         Text("Acento",style=MaterialTheme.typography.titleSmall)
-        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(4.dp)) { listOf("blue" to "Azul","purple" to "Lila","rose" to "Rosa","green" to "Verde","graphite" to "Neutro").forEach { (key,label)->
+        SettingsOptions { listOf("blue" to "Azul","purple" to "Lila","rose" to "Rosa","green" to "Verde","graphite" to "Neutro").forEach { (key,label)->
             FilterChip(draft.accent==key,{edit(draft.copy(accent=key))},label={Text(label)})
         } }
         OverlayDensitySettings(draft,simple=true){edit(it)}

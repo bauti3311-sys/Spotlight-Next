@@ -25,11 +25,13 @@ fun OverlayDensitySettings(c: Config, simple:Boolean=false, update: (Config) -> 
             Text("Espaciado de resultados", style=MaterialTheme.typography.titleSmall)
             if(!simple) Text("La densidad cambia el espacio dentro de las filas. No cambia el ancho de la ventana.", style=MaterialTheme.typography.bodySmall)
             if(c.density=="auto" && !simple) Text("Actual: automático según el tamaño de pantalla.", style=MaterialTheme.typography.bodySmall)
-            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            val choices:@Composable ()->Unit={
                 listOf("compact" to "Compacta", "balanced" to if(simple)"Normal" else "Equilibrada", "spacious" to "Espaciosa").forEach { (key, label) ->
                     FilterChip(c.density==key || (simple && key=="balanced" && c.density=="auto"), { update(c.copy(density=key)) }, label={ Text(label) })
                 }
             }
+            if(simple)SettingsOptions(choices)
+            else Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)){choices()}
         }
     }
 }

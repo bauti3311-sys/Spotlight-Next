@@ -21,7 +21,8 @@ import kotlinx.coroutines.flow.first
 
 internal data class ReviewedStep(val title:String,val call:ToolCall?,val requirement:String)
 internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan):List<ReviewedStep> {
-    val available=ToolExecutor(app).available(c).map { it.id }.toSet()
+    val capabilities=ToolExecutor(app).capabilities(c).associateBy { it.definition.id }
+    val available=capabilities.filterValues { it.status==CapabilityStatus.AVAILABLE }.keys
     return plan.steps.map { step ->
         val title:String
         val call:ToolCall?
@@ -38,9 +39,9 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan):List<
             ready->"Disponible · requiere tu confirmación"
             step is PlanStep.Media->"Necesita acceso a notificaciones y una sesión multimedia que soporte esta acción."
             step is PlanStep.Brightness && step.percent*255/100<20->"El ajuste reversible admite un mínimo de 20/255; elegí un porcentaje mayor."
-            step is PlanStep.Brightness->"Requiere Shizuku conectado, autorización de escritura y extensión Sistema activa."
             step is PlanStep.Open && call==null->"No hay una app única coincidente. Buscá y elegí la aplicación."
-            else->"La extensión necesaria está desactivada."
+            call!=null->capabilities[call.name]?.let{"${it.status.label} · ${it.reason}"} ?: "La herramienta no está disponible."
+            else->"No se pudo comprobar la capacidad necesaria."
         })
     }
 }
@@ -53,7 +54,7 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan):List<
 ) {
     val scope = rememberCoroutineScope()
     val providerName = UniversalIntentEngine.aiProviderLabel(c)
-    var filesAllowed by remember(c) { mutableStateOf(c.files && (app.index.broadAllowed() || c.trees.isNotEmpty())) }
+    var filesAllowed by remember(c) { mutableStateOf(false) }
     var matches by remember(compound) { mutableStateOf<List<Result>>(emptyList()) }
     var chosen by remember(compound) { mutableStateOf<Result?>(null) }
     var excerpt by remember(compound) { mutableStateOf<SectionExcerpt?>(null) }
@@ -62,11 +63,11 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan):List<
     var error by remember { mutableStateOf("") }
 
     LaunchedEffect(compound, c.files, c.trees) {
-        filesAllowed = c.files && (app.index.broadAllowed() || c.trees.isNotEmpty() || runCatching { app.index.hasImports() }.getOrDefault(false))
-        if (!filesAllowed || compound.dateConstraint?.unsupportedDateReason != null) return@LaunchedEffect
         busy = true
         error = ""
         try {
+            filesAllowed = ToolExecutor(app).capabilities(c).any { it.definition.id=="search_files" && it.status==CapabilityStatus.AVAILABLE }
+            if (!filesAllowed || compound.dateConstraint?.unsupportedDateReason != null) return@LaunchedEffect
             app.index.ensure(c)
             val found = app.index.search(compound.fileQuery, c)
             matches = found

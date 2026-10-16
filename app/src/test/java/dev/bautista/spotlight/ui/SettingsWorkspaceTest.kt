@@ -56,6 +56,19 @@ class SettingsWorkspaceTest {
   ui.activityRule.scenario.recreate();ready()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
  }
+ @Test fun newIntentTargetsExistingSettingsActivity(){
+  ready();ui.onNodeWithText("Apariencia").performClick()
+  val activity=ui.activity
+  val original=activity.intent
+  try {
+   ui.runOnIdle{activity.onNewIntent(android.content.Intent(activity,MainActivity::class.java).putExtra("group","Inteligencia"))}
+   ui.onNodeWithText("Modelo").assertExists()
+   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(0)
+  }finally{
+   // ActivityScenario identifies lifecycle events by its original launch Intent filter.
+   ui.runOnIdle{activity.intent=original}
+  }
+ }
  @Test fun darkCapabilitiesReflectUnavailablePermissions(){
   ready();val app=ui.activity.application as SpotlightApp
   runBlocking{val current=app.preferences.config.first();app.preferences.updateAppearance(current.copy(theme="dark",preset="glass"))}
@@ -68,6 +81,7 @@ class SettingsWorkspaceTest {
  @Test @Config(qualifiers="w360dp-h800dp") fun phoneCanChooseAreaAndScrollAllControls(){
   ready();ui.onNodeWithText("Cambiar").performClick();ui.onNodeWithText("Apariencia").performClick()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
+  ui.onNodeWithText("macOS Light").assertIsDisplayed()
   ui.onNodeWithText("Restablecer apariencia").performScrollTo().assertIsDisplayed()
   capture("phone-appearance")
  }

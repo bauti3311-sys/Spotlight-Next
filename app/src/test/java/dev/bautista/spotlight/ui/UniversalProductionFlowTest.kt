@@ -73,6 +73,30 @@ class UniversalProductionFlowTest {
         assertNull(conversion.action)
         assertEquals(0,server.requestCount)
     }
+    @Test fun directPercentageActionUsesObservedRegistryExecution(){
+        val audio=app.getSystemService(android.media.AudioManager::class.java)
+        audio.setStreamVolume(android.media.AudioManager.STREAM_MUSIC,audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC),0)
+        show("volumen al 40%")
+        ui.waitUntil(15000){ui.onAllNodesWithText("Volumen al 40%").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)}
+        ui.waitUntil(15000){ui.onAllNodesWithText("Volumen multimedia observado:",substring=true).fetchSemanticsNodes().isNotEmpty()}
+        assertEquals(audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)*40/100,audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC))
+        assertEquals(0,server.requestCount)
+    }
+    @Test fun disablingMediaAfterReviewBlocksDirectExecution(){
+        val audio=app.getSystemService(android.media.AudioManager::class.java)
+        val original=audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+        audio.setStreamVolume(android.media.AudioManager.STREAM_MUSIC,original,0)
+        show("volumen al 40%")
+        ui.waitUntil(15000){ui.onAllNodesWithText("Volumen al 40%").fetchSemanticsNodes().isNotEmpty()}
+        dev.bautista.spotlight.extensions.ExtensionStore.setEnabled(app,"media",false)
+        try{
+            ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)}
+            ui.waitUntil(15000){ui.onAllNodesWithText("La herramienta no está disponible en este dispositivo.").fetchSemanticsNodes().isNotEmpty()}
+            assertEquals(original,audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC))
+            assertEquals(0,server.requestCount)
+        }finally{dev.bautista.spotlight.extensions.ExtensionStore.setEnabled(app,"media",true)}
+    }
     @Test fun spotifyAndVolumeUseReviewedNativeToolsNotRemoteAi(){
         val pkg="com.spotify.music"
         val application=android.content.pm.ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel="Spotify"}

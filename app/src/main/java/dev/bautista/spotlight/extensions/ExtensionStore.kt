@@ -15,6 +15,7 @@ object ExtensionStore {
         is Action.NewNote,is Action.EditNote,is Action.SaveNote->"notes"
         is Action.Ask->"ai"
         is Action.AudioPanel->"media"
+        is Action.Device->"media"
         is Action.Navigate->when(a.scope.section){"apps"->"apps";"files","files-mode","files-menu"->"files";"contacts"->"contacts";"calendar"->"calendar";"replies"->"whatsapp";else->null}
         else->when(result.category){"Aplicaciones"->"apps";"Archivos"->"files";"Contactos"->"contacts";"Notas"->"notes";"Portapapeles"->"clipboard";else->null}
     }

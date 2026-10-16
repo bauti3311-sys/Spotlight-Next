@@ -20,16 +20,16 @@ import kotlinx.coroutines.*
     var status by remember{mutableStateOf("")};var busy by remember{mutableStateOf(false)};var job by remember{mutableStateOf<Job?>(null)}
     DisposableEffect(Unit){onDispose{job?.cancel()}}
     Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-        listOf("openai" to "OpenAI","gemini" to "Gemini","backend" to "Backend avanzado").forEach{(id,label)->FilterChip(config.aiProvider==id,{update(config.copy(aiProvider=id,aiModel=AiProtocol.defaultModel(id)))},label={Text(label)})}
+        listOf("openai" to "OpenAI","gemini" to "Gemini","backend" to "Backend avanzado").forEach{(id,label)->FilterChip(config.aiProvider==id,{update(config.copy(aiProvider=id,aiModel=AiProtocol.defaultModel(id)))},enabled=!busy,label={Text(label)})}
     }
     if(config.aiProvider!="backend") {
-        OutlinedTextField(key,{key=it},label={Text(if(vault.contains(config.aiProvider))"Reemplazar API key guardada" else "API key")},visualTransformation=PasswordVisualTransformation(),singleLine=true,modifier=Modifier.fillMaxWidth())
-        Row(Modifier.fillMaxWidth()) { Text("Responder preguntas con Enter",Modifier.weight(1f));Switch(config.aiRootConsent,{update(config.copy(aiRootConsent=it))}) }
+        OutlinedTextField(key,{key=it},label={Text(if(vault.contains(config.aiProvider))"Reemplazar API key guardada" else "API key")},enabled=!busy,visualTransformation=PasswordVisualTransformation(),singleLine=true,modifier=Modifier.fillMaxWidth())
+        Row(Modifier.fillMaxWidth()) { Text("Responder preguntas con Enter",Modifier.weight(1f));Switch(config.aiRootConsent,{update(config.copy(aiRootConsent=it))},enabled=!busy) }
         Text("Si lo habilitás, Enter envía preguntas al proveedor configurado. Archivos y contexto personal siempre requieren revisión.",style=MaterialTheme.typography.bodySmall)
-        OutlinedTextField(model,{model=it},label={Text("Modelo")},singleLine=true,modifier=Modifier.fillMaxWidth())
+        OutlinedTextField(model,{model=it},label={Text("Modelo")},enabled=!busy,singleLine=true,modifier=Modifier.fillMaxWidth())
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             Button(enabled=!busy,onClick={busy=true;job=scope.launch{try{require(model.matches(Regex("[A-Za-z0-9._-]{1,100}"))){"Modelo inválido"};if(key.isNotBlank())withContext(Dispatchers.IO){vault.save(config.aiProvider,key)};update(config.copy(aiModel=model));key="";status="Configuración guardada"}catch(e:Exception){status="No se pudo guardar: ${e.message}"}finally{busy=false}}}){Text("Guardar")}
-            ConfirmedSettingsButton("Eliminar clave","Elimina únicamente la credencial del proveedor seleccionado en este dispositivo.",enabled=!busy){job=scope.launch{withContext(Dispatchers.IO){vault.delete(config.aiProvider)};status="Clave eliminada";key=""}}
+            ConfirmedSettingsButton("Eliminar clave","Elimina únicamente la credencial del proveedor seleccionado en este dispositivo.",enabled=!busy){busy=true;job=scope.launch{try{withContext(Dispatchers.IO){vault.delete(config.aiProvider)};status="Clave eliminada";key=""}catch(e:CancellationException){throw e}catch(e:Exception){status="No se pudo eliminar la clave. La operación no se reintenta automáticamente."}finally{busy=false}}}
         }
         if(config.aiProvider=="gemini") {
             TextButton(enabled=!busy && vault.contains("gemini"),onClick={busy=true;status="Consultando modelos…";job=scope.launch{try{ai.availableGeminiModels(config).collect{models=it};status="Elegí un modelo y guardá la configuración."}catch(e:CancellationException){throw e}catch(e:Exception){status=e.message ?: "No se pudo consultar la lista."}finally{busy=false}}}){Text("Consultar modelos disponibles")}

@@ -190,6 +190,19 @@ class Preferences(private val context: Context) {
         }
     }
 
+    /** Persist only the AI fields actually edited, preserving concurrent privacy/history/source changes. */
+    suspend fun updateAi(before:Config,after:Config) {
+        context.store.edit { p ->
+            if(before.aiProvider!=after.aiProvider)p[aiProvider]=after.aiProvider
+            if(before.aiModel!=after.aiModel)p[aiModel]=after.aiModel
+            if(before.endpoint!=after.endpoint)p[endpoint]=after.endpoint
+            if(before.aiRootConsent!=after.aiRootConsent) {
+                val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")}.getOrDefault(org.json.JSONObject())
+                extra.put("aiRootConsent",after.aiRootConsent);p[next20]=extra.toString()
+            }
+        }
+    }
+
     suspend fun update(c: Config) {
         val previousPrivate=isPrivate;val previousRevision=privacyRevision
         val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode

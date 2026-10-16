@@ -38,6 +38,14 @@ class SettingsPersistenceTest {
   val next=AppearanceEdits.merge(current,Config(theme="light",windowScale=.8f))
   assertEquals(current.copy(theme="light",windowScale=.8f),next)
  }
+ @Test fun staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint()=runBlocking {
+  val p=Preferences(RuntimeEnvironment.getApplication());val draft=p.config.first()
+  val current=draft.copy(privateMode=true,trees=setOf("content://still-authorized"),endpoint="https://fixture.invalid",windowScale=.8f,favorites=setOf("keep"))
+  p.update(current)
+  p.updateAi(draft,draft.copy(aiProvider="gemini",aiModel="fixture-reviewed-model",aiRootConsent=!draft.aiRootConsent))
+  val actual=Preferences(RuntimeEnvironment.getApplication()).config.first()
+  assertEquals(current.copy(aiProvider="gemini",aiModel="fixture-reviewed-model",aiRootConsent=!draft.aiRootConsent),actual)
+ }
  @Test fun legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries() {
   assertEquals(7,SettingsGroups.names.distinct().size)
   assertEquals("General",SettingsGroups.canonical("Invocación"))

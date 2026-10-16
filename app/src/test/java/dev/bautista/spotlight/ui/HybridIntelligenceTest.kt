@@ -29,8 +29,8 @@ class HybridIntelligenceTest {
         ui.waitUntil(15000){ui.onAllNodesWithText("Revisar interpretación").fetchSemanticsNodes().isNotEmpty()}
         assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
         ui.onNodeWithText("Revisar interpretación").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Confirmar pasos seleccionados").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Requiere Shizuku",substring=true).assertExists()
+        ui.waitUntil(15000){ui.onAllNodes(hasText("Confirmar pasos seleccionados") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("Conexión pendiente · Shizuku",substring=true).assertExists()
         assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
         ui.runOnIdle{capture091(ui.activity,"hybrid-plan-review")}
         ui.onNodeWithText("Confirmar pasos seleccionados").performClick()

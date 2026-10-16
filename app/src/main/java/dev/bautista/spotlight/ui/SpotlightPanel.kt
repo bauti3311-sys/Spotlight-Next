@@ -388,9 +388,22 @@ fun SpotlightPanel(
                         .onFailure { launch(action.fallback) }
                 }
                 is Action.Device -> {
+                    if(action.command.startsWith("volume:") || action.command !in setOf("volume_up","volume_down","mute","unmute")) {
+                        // Enter/tap is explicit consent for this single action; use the same live gate as plans/AI.
+                        scope.launch {
+                            try {
+                                val call=if(action.command.startsWith("volume:"))dev.bautista.spotlight.ai.ToolCall("set_volume",mapOf("percent" to action.command.substringAfter(':')))
+                                    else dev.bautista.spotlight.ai.ToolCall("control_media",mapOf("command" to action.command))
+                                val result=dev.bautista.spotlight.ai.ToolExecutor(app).execute(call,app.preferences.config.first(),confirmed=true)
+                                error=result.text
+                            }catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo ejecutar esta acción."}
+                        }
+                    } else {
                     runCatching {
+                            check(dev.bautista.spotlight.extensions.ExtensionStore.enabled(app,"media")){"La integración multimedia está desactivada."}
                             val audio =
                                 context.getSystemService(android.media.AudioManager::class.java)
+                            check(!audio.isVolumeFixed){"Android informa un volumen fijo en este dispositivo."}
                             val volume =
                                 mapOf(
                                     "volume_up" to android.media.AudioManager.ADJUST_RAISE,
@@ -398,17 +411,16 @@ fun SpotlightPanel(
                                     "mute" to android.media.AudioManager.ADJUST_MUTE,
                                     "unmute" to android.media.AudioManager.ADJUST_UNMUTE,
                                 )
-                            if(action.command.startsWith("volume:"))audio.setStreamVolume(android.media.AudioManager.STREAM_MUSIC,(audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)*action.command.substringAfter(':').toInt().coerceIn(0,100)/100),android.media.AudioManager.FLAG_SHOW_UI)
-                            else if (action.command in volume)
+                            if (action.command in volume)
                                 audio.adjustStreamVolume(
                                     android.media.AudioManager.STREAM_MUSIC,
                                     volume.getValue(action.command),
                                     android.media.AudioManager.FLAG_SHOW_UI,
                                 )
-                            else dev.bautista.spotlight.control.MediaControl.execute(context,action.command)
-                            error = "Acción ejecutada"
+                            error = "Volumen multimedia observado: ${audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)}/${audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)} · ${if(audio.isStreamMute(android.media.AudioManager.STREAM_MUSIC))"silenciado" else "sin silencio"}."
                         }
-                        .onFailure { error = "La app activa no admite esta acción" }
+                        .onFailure { error = it.message ?: "La app activa no admite esta acción" }
+                    }
                 }
                 is Action.Copy -> copy(action.text)
                 is Action.Launch -> {
@@ -491,7 +503,7 @@ fun SpotlightPanel(
                 Text("Enviar texto a ${config.aiProvider}",style=MaterialTheme.typography.titleMedium)
                 Text("Se enviarán ${ask.prompt.length} caracteres al proveedor elegido.",style=MaterialTheme.typography.bodySmall)
                 SelectionContainer{Text(ask.prompt,Modifier.testTag("ai-review-prompt").heightIn(max=220.dp).verticalScroll(rememberScrollState()),style=MaterialTheme.typography.bodySmall)}
-                if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.update(next)}}}
+                if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.updateAi(config,next)}}}
                 Row{TextButton(enabled=ai.configured(config),onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,AiRequestPolicy.authorize(ask)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
             }}
         }
@@ -802,7 +814,7 @@ fun SpotlightPanel(
                     },
                     optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
-                    onSettings={execute(Result("bar:settings","Apariencia","","Ajustes",0,Action.SystemPanel("preferences:appearance")))},
+                    onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},
                     onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
                 )
                 if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
@@ -983,9 +995,9 @@ fun SpotlightPanel(
                         else if(timerMinutes!=null)TimerForm(timerMinutes!!){back()}
                         else if(deletingNote!=null)Column(Modifier.padding(16.dp)){Text("¿Eliminar esta nota?");Text(deletingNote!!.title.take(160));Row{TextButton(onClick={val id=deletingNote!!.id.removePrefix("note:");scope.launch{app.local.deleteNote(id);back()}}){Text("Eliminar")};TextButton(onClick={back()}){Text("Cancelar")}}}
                         else if(snippetText!=null)snippetEditor()
-                        else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.update(next)}}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
+                        else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.updateAi(config,next)}}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
                         else if(notificationKey!=null)NotificationPreview(notificationKey!!,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{back()})
-                        else if(systemPage!=null) {if(systemPage!!.page=="calendar")CalendarPanel(app,systemPage!!.packageName){action->execute(Result("calendar:action","","","Agenda",0,action))} else if(systemPage!!.page=="saved")SavedPanel(app,config){action->execute(Result("saved:action","","","Guardados",0,action))} else if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->app.scope.launch{runCatching{app.preferences.update(next)}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
+                        else if(systemPage!=null) {if(systemPage!!.page=="calendar")CalendarPanel(app,systemPage!!.packageName){action->execute(Result("calendar:action","","","Agenda",0,action))} else if(systemPage!!.page=="saved")SavedPanel(app,config){action->execute(Result("saved:action","","","Guardados",0,action))} else if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->val page=systemPage!!.page;app.scope.launch{runCatching{when(page){"preferences:ai"->app.preferences.updateAi(config,next);"preferences:appearance"->app.preferences.updateAppearance(next);else->app.preferences.update(next)}}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
                         else if(messageForm!=null)MessageEditor(messageForm!!,{launch(it)},{pending->launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access","contacts").putExtra("query",pending))},{back()})
                         else if(searchForm!=null)SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
                         else if(audioPanel)AudioControl {back()}

@@ -3,6 +3,7 @@ package dev.bautista.spotlight.ai
 import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.data.Config as AppConfig
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.toList
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,5 +32,15 @@ class ToolCapabilityTest {
   val r=ToolExecutor(app).execute(ToolCall("set_volume",mapOf("percent" to "40")),AppConfig(),true)
   assertEquals(ExecutionState.VERIFIED,r.state)
   assertTrue(r.text.contains("${audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)}/${audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)}"))
+ }
+ @Test fun disabledMediaIsNotAdvertisedBySearchOrTools()=runBlocking {
+  dev.bautista.spotlight.extensions.ExtensionStore.setEnabled(app,"media",false)
+  try{
+   val capabilities=ToolExecutor(app).capabilities(AppConfig())
+   assertEquals(CapabilityStatus.DISABLED,capabilities.single{it.definition.id=="set_volume"}.status)
+   val rows=app.search.search("volumen al 40%",AppConfig(files=false)).toList().last()
+   assertFalse(rows.any{it.action is dev.bautista.spotlight.search.Action.Device})
+   assertEquals("extensions:disabled",rows.single().id)
+  }finally{dev.bautista.spotlight.extensions.ExtensionStore.setEnabled(app,"media",true)}
  }
 }

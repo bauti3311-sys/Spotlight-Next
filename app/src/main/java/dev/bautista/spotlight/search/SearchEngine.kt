@@ -357,7 +357,7 @@ class SearchEngine(
                     publish("files",listOf(Result("files:error","No se pudo leer el índice","Reintentar búsqueda o revisar el acceso a archivos","Archivos",100,Action.RestoreQuery(input))))
                 }
             }
-    }.map { rows -> val allowed=rows.filter { !it.id.startsWith("extension:") || dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it) };if(rows.isNotEmpty() && allowed.isEmpty())listOf(Result("extensions:disabled","Extensión desactivada","Activá el módulo para usar esta acción","Comandos",2400,Action.SystemPanel("extensions"))) else allowed }
+    }.map { rows -> val allowed=rows.filter { dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it) };if(rows.isNotEmpty() && allowed.isEmpty())listOf(Result("extensions:disabled","Extensión desactivada","Activá el módulo para usar esta acción","Comandos",2400,Action.SystemPanel("extensions"))) else allowed }
 
     private fun instant(query: String, c: Config): List<Result> {
         val q = query.trim()
