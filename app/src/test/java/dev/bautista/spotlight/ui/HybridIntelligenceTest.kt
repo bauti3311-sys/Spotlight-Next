@@ -34,7 +34,7 @@ class HybridIntelligenceTest {
         assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
         ui.runOnIdle{capture091(ui.activity,"hybrid-plan-review")}
         ui.onNodeWithText("Confirmar pasos seleccionados").performClick()
-        ui.waitUntil(15000){ui.onAllNodesWithText("Volumen multimedia solicitado: 60 %.",substring=true).fetchSemanticsNodes().isNotEmpty()}
+        ui.waitUntil(15000){ui.onAllNodesWithText("Verificado · Volumen multimedia observado:",substring=true).fetchSemanticsNodes().isNotEmpty()}
         assertEquals(audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*60/100,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
         ui.onNodeWithText("Plan revisado").assertIsNotEnabled()
     }

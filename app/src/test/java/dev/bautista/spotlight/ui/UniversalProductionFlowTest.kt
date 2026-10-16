@@ -95,6 +95,8 @@ class UniversalProductionFlowTest {
         ui.waitUntil(15000){audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)==audio.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)*40/100}
         val launch=org.robolectric.Shadows.shadowOf(app).nextStartedActivity
         assertEquals(pkg,launch.component!!.packageName)
+        ui.onNodeWithText("Solicitud enviada · Android recibió la apertura",substring=true).assertExists()
+        ui.onNodeWithText("Verificado · Volumen multimedia observado:",substring=true).assertExists()
         assertEquals(0,server.requestCount)
     }
 

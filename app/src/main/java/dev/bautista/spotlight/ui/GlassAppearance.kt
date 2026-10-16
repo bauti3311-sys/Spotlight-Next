@@ -10,18 +10,18 @@ import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.data.Config
 
 /** Product settings: technical values remain in storage, not in the main user flow. */
-@Composable fun GlassAppearance(c:Config,update:(Config)->Unit) {
+@Composable fun GlassAppearance(c:Config,update:(Config)->Unit) = GlassAppearance(c,true,update)
+
+@Composable fun GlassAppearance(c:Config,showHeading:Boolean,update:(Config)->Unit) {
     var draft by remember { mutableStateOf(c) }
     var dirty by remember { mutableStateOf(false) }
     LaunchedEffect(c) { if(!dirty)draft=c }
     fun edit(next:Config){draft=next;dirty=true}
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(18.dp)) {
-        Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
+        if(showHeading)Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
         Text("Una ventana a tu medida",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
-        Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("auto" to "Sistema","light" to "Claro","dark" to "Oscuro").forEach { (key,label)->
-            FilterChip(draft.theme==key,{edit(draft.copy(theme=key))},label={Text(label)})
-        } }
         Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            FilterChip(draft.theme=="auto",{edit(draft.copy(theme="auto"))},label={Text("Sistema")})
             listOf(Triple("glass","dark","Obsidian Glass"),Triple("raycast","dark","Graphite"),Triple("glass","light","macOS Light")).forEach { (preset,theme,label)->
                 FilterChip(draft.preset==preset && draft.theme==theme,{edit(draft.copy(preset=preset,theme=theme))},label={Text(label)})
             }

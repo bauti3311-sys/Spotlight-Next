@@ -56,9 +56,12 @@ class FileIndexTest {
         }
         assertTrue(index.search("secreto", Config()).isEmpty())
         assertEquals(1, index.search("permitida", Config()).size)
-        assertEquals(
-            1,
-            index.search("kind:pdf", Config(trees = setOf("content://revoked/tree/root"))).size,
-        )
+        val stale=Config(trees=setOf("content://revoked/tree/root"))
+        assertTrue(index.search("kind:pdf",stale).isEmpty())
+        val uri=android.net.Uri.parse("content://revoked/tree/root")
+        context.contentResolver.takePersistableUriPermission(uri,android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        assertEquals(1,index.search("kind:pdf",stale).size)
+        context.contentResolver.releasePersistableUriPermission(uri,android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        assertTrue(index.search("kind:pdf",stale).isEmpty())
     }
 }

@@ -49,6 +49,7 @@ object QueryInterpreter {
         val head=q.substringBefore(' ')
         val kind=when(head){"pdf","pdfs"->"pdf";"foto","fotos","imagen","imagenes"->"image";"video","videos"->"video";"archivo","archivos","documento","documentos"->"document";else->return null}
         var terms=q.substringAfter(' ',"").removePrefix("de ").removePrefix("sobre ")
+        terms=terms.replace(Regex("^(?:acerca de(?:l)?|relacionad[oa]s? con|que (?:hablan?|tratan?) (?:sobre|de|acerca de)|que contienen?)\\s+"),"")
         if(terms.isBlank() && head in setOf("archivo","archivos","documento","documentos") && !norm.startsWith("mostr") && !norm.startsWith("mis "))return null
         // Strip conversational relative clauses around dates ("que abrí ayer", "que descargué hoy", "modificados ayer")
         terms=terms.replace(Regex("\\b(?:que (?:abri|abriste|descargue|vi|guarde|modifique|use|lei)|abiertos?|modificados?|descargados?|recientes?)(?=\\s+(?:ayer|hoy|anteayer|esta semana|la semana pasada|semana pasada|este mes|el mes pasado|mes pasado)\\b)"),"")

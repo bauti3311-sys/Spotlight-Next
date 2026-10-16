@@ -37,7 +37,7 @@ object SettingsGroups {
   title.startsWith("Búsqueda") || title.startsWith("Índice") || title.startsWith("Texto e imágenes")->"Búsqueda y archivos"
   else->"General"
  }
- fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Folder;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Layers;"General"->CommandIcons.Keyboard;"Avanzado"->CommandIcons.Info;else->CommandIcons.Shield}
+ fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Folder;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Layers;"General"->CommandIcons.Settings;"Avanzado"->CommandIcons.Info;else->CommandIcons.Shield}
  fun description(group:String)=when(canonical(group)){
   "General"->"Inicio, sugerencias y formas de abrir Spotlight."
   "Apariencia"->"Materiales, acento y un único control de ancho."
@@ -85,7 +85,7 @@ object SettingsGroups {
  BackHandler(chooser || query.isNotEmpty()){back()}
  CompositionLocalProvider(LocalSettingsQuery provides query) {
   Column(modifier.fillMaxWidth().onPreviewKeyEvent{it.type==KeyEventType.KeyDown && it.key==Key.Escape && back()},verticalArrangement=Arrangement.spacedBy(16.dp)) {
-   OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().testTag("settings-search"),singleLine=true,label={Text("Buscar en todos los ajustes")},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))},trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(12.dp))
+   OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().testTag("settings-search"),singleLine=true,label={Text("Buscar en todos los ajustes",maxLines=1,overflow=TextOverflow.Ellipsis)},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))},trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(12.dp))
    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
     val category:@Composable (String)->Unit={group->
      Row(Modifier.fillMaxWidth().selectable(selected==group,onClick={query="";onSelect(group);chooser=false},role=Role.Tab)
@@ -124,6 +124,7 @@ object SettingsGroups {
  if(!SettingsGroups.visible(title))return
  if(query.isBlank() && SettingsGroups.of(title)!=LocalSettingsGroup.current)return
  if(query.isNotBlank() && !SettingsGroups.matches(title,query))return
+ if(title=="Apariencia") { Column(Modifier.fillMaxWidth().padding(top=12.dp),verticalArrangement=Arrangement.spacedBy(12.dp),content=content);return }
  var expanded by rememberSaveable(title){mutableStateOf(title in setOf("Apariencia","General · inicio","Inteligencia artificial · opcional"))}
  val open=expanded || query.isNotBlank()
  Column(Modifier.fillMaxWidth().padding(vertical=8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {

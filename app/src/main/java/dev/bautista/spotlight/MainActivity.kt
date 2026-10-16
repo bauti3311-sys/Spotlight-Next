@@ -142,6 +142,7 @@ class MainActivity : ComponentActivity() {
                             Section("Tasker · automatización externa") { Text("Descubrí tareas sin copiar enlaces. Tasker necesita su permiso de acceso externo y una confirmación antes de ejecutar.");OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","tasker"))}){Text("Abrir tareas de Tasker")} }
                             Section("Clima y agenda deportiva") { Text("Clima de Open-Meteo y agenda gratuita de TheSportsDB, consultados directamente desde la barra.");Row{OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","clima"))}){Text("Clima")};TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","deportes"))}){Text("Deportes")}} }
                             Section("Extensiones e integraciones") { dev.bautista.spotlight.ui.ExtensionPanel(app,config) }
+                            Section("Integraciones · capacidades disponibles") { CapabilitySettings(app,config,permissionRevision) }
                             Section("Shizuku · integración avanzada opcional") { dev.bautista.spotlight.ui.AdvancedPanel(app,"shizuku") }
                             Section("Transferir configuración") {
                                 Text("Preferencias, favoritos y alias. Los datos heredados se conservan; las claves, historiales, permisos y accesos a archivos permanecen en cada dispositivo.")
@@ -249,7 +250,7 @@ class MainActivity : ComponentActivity() {
                                         },
                                     )
                             }
-                            Section("Apariencia") { GlassAppearance(config){draft->scope.launch{app.preferences.updateAppearance(draft)}} }
+                            Section("Apariencia") { GlassAppearance(config,update={draft->scope.launch{app.preferences.updateAppearance(draft)}},showHeading=false) }
                             Section("Aprendizaje local") {
                                 Toggle("Aprender del uso · solo en este dispositivo",config.learning){update(config.copy(learning=it))}
                             }

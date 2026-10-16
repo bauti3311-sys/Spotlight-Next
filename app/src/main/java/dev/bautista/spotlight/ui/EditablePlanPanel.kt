@@ -12,6 +12,7 @@ import dev.bautista.spotlight.automation.*
 import dev.bautista.spotlight.data.Config
 import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 
 private fun text(step:PlanStep):String=when(step){is PlanStep.Brightness->"brillo al ${step.percent}%";is PlanStep.Volume->"volumen al ${step.percent}%";is PlanStep.Open->"abrir ${step.name}";is PlanStep.RelativeBrightness->"${if(step.delta<0)"bajar" else "subir"} brillo en ${kotlin.math.abs(step.delta)}%";is PlanStep.RelativeVolume->"${if(step.delta<0)"bajar" else "subir"} volumen en ${kotlin.math.abs(step.delta)}%";is PlanStep.Media->when(step.command){"pause"->"pausar música";"play"->"reanudar música";"next"->"siguiente tema";else->"tema anterior"}}
 @Composable fun EditablePlanPanel(app:SpotlightApp,c:Config,raw:String,initial:LocalPlan,onAction:(Action)->Unit) {
@@ -27,7 +28,12 @@ private fun text(step:PlanStep):String=when(step){is PlanStep.Brightness->"brill
             }}
         }
         if(rows.any{it.call==null})TextButton(onClick={onAction(if(steps.mapNotNull{LocalPlan.step(it)}.any{it is PlanStep.Media})Action.Access("notifications") else Action.SystemPanel("shizuku"))}){Text("Revisar permisos y servicios")}
-        Button(enabled=!busy && selected.isNotEmpty() && rows.size==steps.size && status.isEmpty(),onClick={busy=true;editing=-1;val chosen=selected;val review=rows.toList();job=scope.launch{try{review.forEachIndexed{i,row->if(i !in chosen)status=status+(i to "Omitido") else {status=status+(i to "Ejecutando…");try{val result=ToolExecutor(app).execute(row.call!!,c,true);(result.action as? Action.Launch)?.let{app.startActivity(Intent(it.intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))};status=status+(i to "Completado · ${result.text}")}catch(e:CancellationException){status=status+(i to "Interrumpido · revisá el estado del dispositivo");throw e}catch(e:Exception){status=status+(i to "Falló · ${e.message.orEmpty().take(200)}")}}}}finally{busy=false}}}){Text(if(busy)"Ejecutando…" else if(status.isNotEmpty())"Plan revisado" else "Confirmar pasos seleccionados")}
+        Button(enabled=!busy && selected.isNotEmpty() && rows.size==steps.size && status.isEmpty(),onClick={busy=true;editing=-1;val chosen=selected;val review=rows.toList();job=scope.launch{try{
+            PlanExecution(execute={call->ToolExecutor(app).execute(call,app.preferences.config.first(),true)},dispatch={result->
+                val launch=result.action as? Action.Launch ?: error("Esta acción necesita revisión individual antes de continuar.")
+                app.startActivity(Intent(launch.intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            }).run(review.map{it.call},chosen,true).collect{event->status=status+(event.index to event.message)}
+        }catch(e:CancellationException){status=status.mapValues{(_,value)->if(value=="Ejecutando…")"Interrumpido · revisá el estado del dispositivo" else value};throw e}catch(e:Exception){error="No se pudo ejecutar el plan. Revisá los requisitos antes de intentarlo nuevamente."}finally{busy=false}}}){Text(if(busy)"Ejecutando…" else if(status.isNotEmpty())"Plan revisado" else "Confirmar pasos seleccionados")}
         if(busy)TextButton(onClick={job?.cancel()}){Text("Detener pasos pendientes")}
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
         TextButton(enabled=!busy && rows.size==steps.size && selected.isNotEmpty(),onClick={save=!save}){Text("Guardar como comando")}

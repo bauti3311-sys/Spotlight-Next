@@ -54,11 +54,12 @@ fun OverlayAppearancePreview(c: Config, simple:Boolean=false) {
         if(!simple && requested>width) Text("Configurado: $requested dp; limitado al espacio de esta pantalla.", style=MaterialTheme.typography.bodySmall)
         if(!simple) Text("Tamaño real · deslizá horizontalmente si no cabe en Ajustes. Tocá una fila para probar la selección; no ejecuta acciones.", style=MaterialTheme.typography.bodySmall)
         BoxWithConstraints(Modifier.fillMaxWidth().testTag("appearance-preview-viewport")) {
-            val canvasWidth=maxOf(maxWidth, width.dp)
+            val displayWidth=if(simple)minOf(maxWidth,width.dp) else width.dp
+            val canvasWidth=if(simple)maxWidth else maxOf(maxWidth, width.dp)
             Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
                 Box(Modifier.width(canvasWidth), contentAlignment=Alignment.TopCenter) {
                     SpotlightTheme(c.theme, c) {
-                        Column(Modifier.width(width.dp).testTag("appearance-preview-window").heightIn(max=240.dp).glassSurface(c).verticalScroll(rememberScrollState()).padding(16.dp)) {
+                        Column(Modifier.width(displayWidth).testTag("appearance-preview-window").heightIn(max=240.dp).glassSurface(c).verticalScroll(rememberScrollState()).padding(16.dp)) {
                             Text("Buscar en Spotlight", style=MaterialTheme.typography.titleMedium, modifier=Modifier.padding(bottom=8.dp))
                             HorizontalDivider()
                             examples.forEachIndexed { index, result ->

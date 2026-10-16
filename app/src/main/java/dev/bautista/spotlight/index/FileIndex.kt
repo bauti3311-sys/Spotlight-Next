@@ -102,12 +102,11 @@ class FileIndex(
     private fun blockedPath(path: String): Boolean =
         Regex("/Android/(data|obb|sandbox)(/|$)").containsMatchIn(path)
 
-    private fun allowedTrees(c: Config): Set<String> =
-        if (broadAllowed())
-            c.trees
-                .filterNot { Uri.parse(it).authority == "com.android.externalstorage.documents" }
-                .toSet()
-        else c.trees
+    private fun allowedTrees(c: Config): Set<String> {
+        // Config is not proof of authorization: Android can revoke SAF independently.
+        val granted=runCatching { context.contentResolver.persistedUriPermissions.filter{it.isReadPermission}.map{it.uri.toString()}.toSet() }.getOrDefault(emptySet())
+        return c.trees.filter { it in granted && !(broadAllowed() && Uri.parse(it).authority=="com.android.externalstorage.documents") }.toSet()
+    }
 
     suspend fun ensure(c: Config) {
         observe(c.trees + if(broadAllowed())setOf(android.provider.MediaStore.Files.getContentUri("external").toString()) else emptySet())
@@ -593,7 +592,7 @@ class FileIndex(
                                         .toString()
                                 } ?: "fecha no disponible"
                         val preview =
-                            "${if(string("author").isNotBlank()) "Autor: ${string("author")}\n" else ""}Modificado: $date\nTamaño: ${long("size")} bytes\n${body.take(3000)}"
+                            "${if(string("author").isNotBlank()) "Autor: ${string("author")}\n" else ""}Modificado: $date\nTamaño: ${long("size")} bytes\n${DocumentExcerpt.around(body,query.plain)}"
                         val firstMoment =
                             if (kind == "video")
                                 body
