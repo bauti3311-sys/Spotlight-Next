@@ -45,7 +45,7 @@ class HybridSearchTest {
     }
     @Test fun compoundAndContextualQueriesOfferReviewWithoutExecuting()=runBlocking {
         val e=engine()
-        listOf("bajar el brillo al 35% y abrir Spotify","quiero estudiar sin distracciones","explicame este PDF","traducí este texto").forEach { query->
+        listOf("bajar el brillo al 35% y abrir Spotify","quiero estudiar sin distracciones","explicame este PDF","traducí este texto","Buscá el PDF de rehabilitación vestibular y explicame el capítulo 3").forEach { query->
             val rows=e.search(query,AppConfig(files=false)).toList().last()
             assertTrue(rows.any{it.action==Action.SystemPanel("interpret",query) || it.action==Action.SystemPanel("context-ai",query)})
         }
@@ -75,7 +75,7 @@ class HybridSearchTest {
         assertTrue(rows.size<=4)
         val private=HomeSuggestions.results(context,recent.copy(learning=false),false,false)
         assertTrue(private.none{it.subtitle.contains("reciente") || it.subtitle.contains("frecuente") || it.id.startsWith("suggest:action:")})
-        assertTrue(private.any{it.id=="suggest:app:fixture.music" && it.subtitle=="Aplicación instalada"})
+        assertTrue(private.isEmpty())
         val hidden=HomeSuggestions.results(context,recent.copy(hiddenSuggestions=setOf("suggest:app:fixture.music"),pinnedSuggestions=setOf("suggest:commands")),false,false)
         assertTrue(hidden.none{it.id=="suggest:commands"})
         assertTrue(hidden.none{it.id=="suggest:app:fixture.music"})
@@ -84,6 +84,7 @@ class HybridSearchTest {
         val config=AppConfig(files=false,actionRecent=listOf("volumen al 60%","VOLUMEN AL 60%"),pinnedSuggestions=setOf("suggest:commands"))
         val rows=HomeSuggestions.results(context,config,false,false)
         assertEquals(rows.size,rows.distinctBy{it.id}.size)
+        assertEquals(1,rows.count{it.action==Action.Device("volume:60")})
         assertTrue(ResultSections.grouped(rows,expanded=true).any{it.action==Action.Device("volume:60")})
     }
 

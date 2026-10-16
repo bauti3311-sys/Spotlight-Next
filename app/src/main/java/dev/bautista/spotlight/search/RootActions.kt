@@ -10,6 +10,12 @@ object RootActions {
         if(raw.contains('"') && !LocalLanguage.isQuestion(raw))return emptyList()
         val q=LocalLanguage.canonical(raw).removePrefix("¿").removeSuffix("?").trim();val rows=mutableListOf<Result>()
         fun add(id:String,title:String,detail:String,category:String,action:Action,score:Int=3400){rows+=Result("root:$id",title,detail,category,score,action)}
+        UniversalIntentEngine.parseDocumentAiCompound(raw)?.let { docPlan ->
+            val provider=UniversalIntentEngine.aiProviderLabel(c)
+            val sectionText=if(docPlan.sectionTarget.isNotBlank())"Extraer ${docPlan.sectionTarget}" else "Extraer contenido"
+            add("compound-doc-ai","Preparar consulta sobre PDF con $provider","1. Buscar «${docPlan.searchTerms.ifBlank{docPlan.fileKind}}» · 2. $sectionText · 3. Confirmar envío","IA",Action.SystemPanel("interpret",raw),4150)
+            return rows
+        }
         val registeredMessage=dev.bautista.spotlight.next.IntentRouter.route(raw,c.messageApp) is Action.ComposeMessage || ActionCatalog.message(raw,c.messageApp)!=null
         val message=if(registeredMessage)null else Regex("^(?:mandale|enviale|mandar|enviar)(?: un mensaje)?(?: a)? (.+?) que (.+)$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())
         if(message!=null){val target=message.groupValues[1];val text=message.groupValues[2]
@@ -24,10 +30,15 @@ object RootActions {
         }
         LocalPlan.step(raw)?.takeIf{it is PlanStep.RelativeBrightness || it is PlanStep.RelativeVolume || it is PlanStep.Media}?.let{add("plan-single","Revisar acción","Comprobar permisos y confirmar antes de ejecutar","Acciones",Action.SystemPanel("interpret",raw))}
         SportsRequest.parse(raw)?.let{add("sports-agenda","Consultar agenda deportiva","Favoritos y cobertura real del proveedor","Deportes",Action.SystemPanel("sports-native",raw),3900)}
-        if(WeatherRequests.matches(raw))add("weather-question","Consultar pronóstico","Open-Meteo · consulta solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(q.contains("manana"))"tomorrow:" else ""),3900)
+        if(WeatherRequests.matches(raw)) {
+            val city=WeatherRequests.extractLocation(raw)
+            val tomorrow=Regex("\\bma[nñ]ana\\b",RegexOption.IGNORE_CASE).containsMatchIn(raw) || q.contains("manana")
+            val payload=if(tomorrow)"tomorrow:$city" else city
+            add("weather-question",if(tomorrow && city.isNotBlank())"Pronóstico de mañana en $city" else "Consultar pronóstico","Open-Meteo · consulta solo al seleccionar","Clima",Action.SystemPanel("weather-native",payload),3900)
+        }
         if(q.startsWith("clima")) {
             val tomorrow=Regex("\\bma[nñ]ana\\b",RegexOption.IGNORE_CASE).containsMatchIn(raw)
-            val city=Regex("^clima\\s*",RegexOption.IGNORE_CASE).replace(raw.trim().removePrefix("¿").removeSuffix("?"),"").let{Regex("\\b(?:ma[nñ]ana|hoy)\\b",RegexOption.IGNORE_CASE).replace(it,"")}.trim().let{Regex("^en\\s+",RegexOption.IGNORE_CASE).replace(it,"")}
+            val city=WeatherRequests.extractLocation(raw)
             add("weather",if(tomorrow)"Pronóstico de mañana" else "Consultar clima","Open-Meteo · conexión solo al seleccionar","Clima",Action.SystemPanel("weather-native",if(tomorrow)"tomorrow:$city" else city))
         }
         Regex("^¿?(?:c[oó]mo va|resultado de|partido de|c[oó]mo sali[oó]|cu[aá]ndo juega) (.+?)\\??$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())?.let{add("sports","Consultar ${it.groupValues[1]}","Elegir equipo o competición real · datos del proveedor","Deportes",Action.SystemPanel("sports-native",it.groupValues[1]))}
@@ -46,7 +57,10 @@ object RootActions {
         if(q in setOf("contexto","contextos","contextos fijados","elegir documento"))add("context-list","Contexto y documentos","Elegir, fijar o quitar contenido autorizado","Contexto",Action.SystemPanel("context"))
         if(q in setOf("diagnostico","diagnostico de spotlight","diagnosticos"))add("diagnostics","Diagnóstico de Spotlight","Permisos, servicios y tiempos observados sin contenido privado","Sistema",Action.SystemPanel("diagnostics"))
         if(q in setOf("modo privado","privacidad"))add("privacy","Modo privado y datos","Suspender captura y aprendizaje sin borrar lo guardado","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","Privacidad y sistema")))
-        if(LocalLanguage.isQuestion(raw) && rows.isEmpty())add("ai","Responder con IA","Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,!c.aiRootConsent),3800)
+        if(LocalLanguage.isQuestion(raw) && UniversalIntent.recognize(raw) !is UniversalIntent.Information && rows.isEmpty()) {
+            val aiTitle=UniversalIntentEngine.primaryAiTitle(c)
+            add("ai",aiTitle,"Requiere conexión · consulta únicamente al seleccionar","IA",Action.Ask(raw,!c.aiRootConsent),3850)
+        }
         dev.bautista.spotlight.ui.SettingsGroups.names.filter{relevance(q,it)>=650}.forEach{group->add("settings:$group",group,"Abrir esta sección de ajustes de Spotlight","Ajustes",Action.Launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group)),2100)}
         return rows
     }

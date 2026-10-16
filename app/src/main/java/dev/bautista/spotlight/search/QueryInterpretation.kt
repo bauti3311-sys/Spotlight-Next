@@ -5,19 +5,27 @@ import java.time.*
 import java.time.temporal.TemporalAdjusters
 
 enum class QueryIntent { SEARCH, FILES, APPLICATION, ACTION, KNOWLEDGE, CALENDAR, WEATHER, SPORTS }
-data class FileConstraint(val kind:String,val terms:String,val start:Long?=null,val end:Long?=null,val dateField:String="modified",val dateLabel:String="") {
-    val query:String get()=listOf("kind:$kind",terms,if(start!=null)"$dateField-after:$start" else "",if(end!=null)"$dateField-before:$end" else "").filter{it.isNotBlank()}.joinToString(" ")
+data class FileConstraint(val kind:String,val terms:String,val start:Long?=null,val end:Long?=null,val dateField:String="modified",val dateLabel:String="",val unsupportedDateReason:String?=null) {
+    val query:String get()=listOf("kind:$kind",terms,if(start!=null && unsupportedDateReason==null)"$dateField-after:$start" else "",if(end!=null && unsupportedDateReason==null)"$dateField-before:$end" else "").filter{it.isNotBlank()}.joinToString(" ")
 }
 data class QueryInterpretation(val original:String,val text:String,val intent:QueryIntent,val scope:SearchScope?=null,val files:FileConstraint?=null,val question:String?=null,val calendarPeriod:String?=null) {
-    val hints:List<String> get()=files?.let{listOf(when(it.kind){"pdf"->"PDF";"image"->"Imágenes";"video"->"Vídeos";else->"Documentos"},it.dateLabel,"Archivos locales").filter{it.isNotBlank()}} ?: emptyList()
+    val hints:List<String> get()=files?.let{listOf(when(it.kind){"pdf"->"PDF";"image"->"Imágenes";"video"->"Vídeos";else->"Documentos"},it.dateLabel,it.terms,"Archivos locales").filter{it.isNotBlank()}} ?: emptyList()
 }
 
 /** One entry point. Adapters preserve existing commands; date tokens never become file names. */
 object QueryInterpreter {
     fun interpret(raw:String,scope:SearchScope?=null,today:LocalDate=LocalDate.now(),zone:ZoneId=ZoneId.systemDefault()):QueryInterpretation {
-        if(scope!=null)return QueryInterpretation(raw,raw,QueryIntent.SEARCH,scope)
+        if(scope!=null) {
+            if(scope.section in setOf("files-mode","files") && raw.isNotBlank()) {
+                files(raw,today,zone)?.let{return QueryInterpretation(raw,it.query,QueryIntent.FILES,SearchScope("","files",it.kind),it)}
+            }
+            return QueryInterpretation(raw,raw,QueryIntent.SEARCH,scope)
+        }
         SearchModifiers.parse(raw)?.let{return QueryInterpretation(raw,it.query,QueryIntent.SEARCH,it.scope)}
         if(!LocalLanguage.isQuestion(raw) && (raw.contains('"') || Regex("\\b(AND|OR|NOT)\\b").containsMatchIn(raw)))return QueryInterpretation(raw,raw,QueryIntent.SEARCH)
+        if(UniversalIntentEngine.parseDocumentAiCompound(raw,today,zone)!=null || LocalPlan.parse(raw)!=null) {
+            return QueryInterpretation(raw,raw,QueryIntent.ACTION)
+        }
         files(raw,today,zone)?.let{return QueryInterpretation(raw,it.query,QueryIntent.FILES,SearchScope("","files"),it)}
         val q=normalize(raw.trim()).removePrefix("¿").removeSuffix("?")
         if(q in setOf("que tengo manana","mi agenda manana","agenda manana"))return QueryInterpretation(raw,raw,QueryIntent.CALENDAR,calendarPeriod="tomorrow")
@@ -31,14 +39,24 @@ object QueryInterpreter {
     fun files(raw:String,today:LocalDate=LocalDate.now(),zone:ZoneId=ZoneId.systemDefault()):FileConstraint? {
         // Literal/advanced queries retain the original grammar and operators.
         if(raw.contains('"') || raw.contains(':') || Regex("\\b(AND|OR|NOT)\\b").containsMatchIn(raw))return null
-        val q=normalize(raw.trim()).replace(Regex("\\s+")," ").replace(Regex("^(buscar|busca|buscame|mostrame|mostrar)(?: los| las| un| una| el)? "),"")
+        val norm=normalize(raw.trim()).replace(Regex("\\s+")," ")
+        // Do not treat a compound document+AI query as a plain file list.
+        if(Regex("\\s+(?:y|luego|despues)\\s+(?:explic|resum|analiz|traduc|contame|decime)\\w*\\b").containsMatchIn(norm))return null
+        var q=norm.replace(Regex("^(?:buscar|busca|buscame|mostrame|mostrar|muestrame|ver)(?:me)?(?: todos| todas)?(?: mis| los| las| un| una| el| la)? "),"")
+            .replace(Regex("^(?:mis|todos mis|todos los|todas las) "),"")
+        // Normalize compound file nouns like "archivos pdf" or "documentos pdf" -> "pdf"
+        q=q.replace(Regex("^(?:archivos?|documentos?) (pdfs?|imagenes|fotos|videos)\\b"),"$1")
         val head=q.substringBefore(' ')
         val kind=when(head){"pdf","pdfs"->"pdf";"foto","fotos","imagen","imagenes"->"image";"video","videos"->"video";"archivo","archivos","documento","documentos"->"document";else->return null}
-        var terms=q.substringAfter(' ',"").removePrefix("de ")
-        if(terms.isBlank() && head in setOf("archivo","archivos"))return null
+        var terms=q.substringAfter(' ',"").removePrefix("de ").removePrefix("sobre ")
+        if(terms.isBlank() && head in setOf("archivo","archivos","documento","documentos") && !norm.startsWith("mostr") && !norm.startsWith("mis "))return null
+        // Strip conversational relative clauses around dates ("que abrí ayer", "que descargué hoy", "modificados ayer")
+        terms=terms.replace(Regex("\\b(?:que (?:abri|abriste|descargue|vi|guarde|modifique|use|lei)|abiertos?|modificados?|descargados?|recientes?)(?=\\s+(?:ayer|hoy|anteayer|esta semana|la semana pasada|semana pasada|este mes|el mes pasado|mes pasado)\\b)"),"")
+            .replace(Regex("\\s+")," ").trim()
         val periods=linkedMapOf("la semana pasada" to "lastWeek","semana pasada" to "lastWeek","esta semana" to "week","el mes pasado" to "lastMonth","mes pasado" to "lastMonth","este mes" to "month","anteayer" to "twoDays","ayer" to "yesterday","hoy" to "today")
         val date=periods.entries.firstOrNull{Regex("(?<!\\w)"+Regex.escape(it.key)+"(?!\\w)").containsMatchIn(terms)}
-        val dateField=if(kind in setOf("image","video"))"created" else "modified"
+        val opened=Regex("\\b(?:abri|abriste|abiertos?|vi|lei|use)\\b").containsMatchIn(norm)
+        val dateField=if(opened)"opened" else if(kind in setOf("image","video"))"created" else "modified"
         val interval=date?.let { (_,period)->when(period){
             "lastWeek"->today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).minusWeeks(1).let{it to it.plusWeeks(1)}
             "week"->today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).let{it to it.plusWeeks(1)}
@@ -48,7 +66,7 @@ object QueryInterpreter {
         }}
         if(date!=null)terms=terms.replace(date.key,"").trim().removeSuffix(" de").trim()
         if(kind in setOf("image","video") && date==null)terms=terms.split(' ').filter{it !in setOf("en","la","el","las","los","una","un","con","y","de")}.joinToString(" ")
-        return FileConstraint(kind,terms,interval?.first?.atStartOfDay(zone)?.toInstant()?.toEpochMilli(),interval?.second?.atStartOfDay(zone)?.toInstant()?.toEpochMilli(),dateField,date?.key.orEmpty())
+        return FileConstraint(kind,terms,interval?.first?.atStartOfDay(zone)?.toInstant()?.toEpochMilli(),interval?.second?.atStartOfDay(zone)?.toInstant()?.toEpochMilli(),dateField,date?.key.orEmpty(),if(opened && date!=null)"No se filtra por modificación. Seleccioná este resultado para buscar por nombre y tipo sin fecha de apertura." else null)
     }
 }
 

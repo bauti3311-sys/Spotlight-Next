@@ -10,9 +10,12 @@ sealed interface PlanStep {
 }
 data class LocalPlan(val steps:List<PlanStep>) {
  companion object {
+  private val compoundSplit=Regex("(?:\\s*,\\s*|\\s+(?:y|luego|despu[eé]s)\\s+)(?=(?:abrir|abr[ií]|abre|iniciar|bajar|baj[aá]|subir|sub[ií]|ajustar|poner|pon[eé]|cambiar|brillo|volumen|pausar|paus[aá]|reanudar|reproducir|siguiente)\\b)",RegexOption.IGNORE_CASE)
   fun step(raw:String):PlanStep? {
-   Regex("^(?:abrir|iniciar|abr[ií]|abre) (.+)$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())?.let{return PlanStep.Open(normalize(it.groupValues[1]))}
-   val q=LocalLanguage.canonical(raw)
+   val trimmed=raw.trim()
+   if(compoundSplit.containsMatchIn(trimmed) || Regex("\\s+(?:y|luego|despu[eé]s)\\s+(?:borrar|eliminar|formatear|enviar|mandar|explic|resum)\\b",RegexOption.IGNORE_CASE).containsMatchIn(trimmed))return null
+   Regex("^(?:abrir|iniciar|abr[ií]|abre) (.+)$",RegexOption.IGNORE_CASE).matchEntire(trimmed)?.let{return PlanStep.Open(normalize(it.groupValues[1]))}
+   val q=LocalLanguage.canonical(trimmed)
    if(q in setOf("pausar musica","pausar la musica","pausar"))return PlanStep.Media("pause")
    if(q in setOf("reanudar musica","reproducir musica","reanudar"))return PlanStep.Media("play")
    if(q in setOf("siguiente cancion","siguiente tema"))return PlanStep.Media("next")
@@ -25,7 +28,7 @@ data class LocalPlan(val steps:List<PlanStep>) {
   }
   fun parse(raw:String):LocalPlan? {
    if(raw.length>4000)return null
-   val parts=raw.trim().split(Regex("(?:\\s*,\\s*|\\s+(?:y|luego|despu[eé]s)\\s+)(?=(?:abrir|abr[ií]|abre|iniciar|bajar|baj[aá]|subir|sub[ií]|ajustar|poner|pon[eé]|cambiar|brillo|volumen|pausar|paus[aá]|reanudar|reproducir|siguiente)\\b)",RegexOption.IGNORE_CASE))
+   val parts=raw.trim().split(compoundSplit)
    if(parts.size !in 2..6)return null
    return LocalPlan(parts.map{step(it) ?: return null})
   }

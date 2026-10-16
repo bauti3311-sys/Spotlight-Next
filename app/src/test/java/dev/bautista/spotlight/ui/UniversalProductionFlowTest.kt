@@ -1,0 +1,75 @@
+package dev.bautista.spotlight.ui
+
+import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import dev.bautista.spotlight.SpotlightApp
+import dev.bautista.spotlight.ai.*
+import dev.bautista.spotlight.data.Config as AppConfig
+import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.json.JSONObject
+import org.junit.*
+import org.junit.Assert.*
+import org.junit.runner.RunWith
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import java.io.File
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.runBlocking
+
+/** Exercises production SearchEngine -> SpotlightPanel -> DirectAi; HTTP and keys are test fixtures only. */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
+class UniversalProductionFlowTest {
+    @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
+    private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
+    private val server=MockWebServer()
+    @Before fun start(){server.start();server.enqueue(MockResponse().setHeader("Content-Type","text/event-stream").setBody("data: {\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"**Respuesta de prueba**\"}]}}]}\n\n"))}
+    @After fun stop(){server.shutdown()}
+    private fun client()=DirectAi(object:AiCredentials {
+        override fun read(provider:String)="fixture-not-a-real-key"
+        override fun contains(provider:String)=true
+    },OkHttpClient.Builder().addInterceptor{chain->chain.proceed(chain.request().newBuilder().url(server.url("/gemini-fixture")).build())}.build())
+    private fun show(query:String,files:Boolean=false){ui.setContent {SpotlightPanel(app,AppConfig(files=files,animations=false,aiProvider="gemini",aiModel="fixture-model"),{},initialQuery=query,aiClient=client())}}
+    @Test fun typedQuestionDoesNotSendUntilEnterThenStreamsMarkdownInline(){
+        val query="cuántas veces ganó Boca la Libertadores"
+        show(query)
+        ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+        assertEquals(0,server.requestCount)
+        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)}
+        ui.waitUntil(15000){ui.onAllNodesWithText("Respuesta de prueba").fetchSemanticsNodes().isNotEmpty()}
+        val req=server.takeRequest(2,TimeUnit.SECONDS)!!
+        val contents=JSONObject(req.body.readUtf8()).getJSONArray("contents")
+        assertEquals(1,contents.length())
+        assertEquals(query,contents.getJSONObject(0).getJSONArray("parts").getJSONObject(0).getString("text"))
+        assertEquals(1,server.requestCount)
+        ui.onNodeWithText("Copiar respuesta").assertExists()
+    }
+    @Test fun documentCompoundSendsExactlyFrozenReviewedPromptAfterSeparateConsent()=runBlocking {
+        val file=File(app.cacheDir,"rehabilitacion vestibular.pdf")
+        requireNotNull(javaClass.getResourceAsStream("/visual/raycast-fixture.pdf")).use{input->file.outputStream().use{input.copyTo(it)}}
+        app.index.storeTranscript(Uri.fromFile(file).toString(),file.name,"application/pdf","rehabilitacion vestibular")
+        show("Buscá el PDF de rehabilitación vestibular y explicame el capítulo 3",files=true)
+        ui.waitUntil(15000){ui.onAllNodesWithText("Preparar consulta sobre PDF con Gemini").fetchSemanticsNodes().isNotEmpty()}
+        assertEquals(0,server.requestCount)
+        ui.onNodeWithText("Preparar consulta sobre PDF con Gemini").performClick()
+        ui.waitUntil(15000){ui.onAllNodesWithText("Revisar y autorizar envío a Gemini").fetchSemanticsNodes().isNotEmpty()}
+        assertEquals(0,server.requestCount)
+        ui.onNodeWithText("Revisar y autorizar envío a Gemini").performClick()
+        val displayed=ui.onNodeWithTag("ai-review-prompt").fetchSemanticsNode().config[SemanticsProperties.Text].joinToString(""){it.text}
+        assertTrue(displayed.contains("rehabilitacion vestibular.pdf"))
+        assertEquals(0,server.requestCount)
+        ui.onNodeWithText("Enviar",useUnmergedTree=true).performClick()
+        ui.waitUntil(15000){server.requestCount==1}
+        val body=JSONObject(server.takeRequest(2,TimeUnit.SECONDS)!!.body.readUtf8())
+        val messages=body.getJSONArray("contents")
+        assertEquals(1,messages.length())
+        assertEquals(displayed,messages.getJSONObject(0).getJSONArray("parts").getJSONObject(0).getString("text"))
+    }
+}

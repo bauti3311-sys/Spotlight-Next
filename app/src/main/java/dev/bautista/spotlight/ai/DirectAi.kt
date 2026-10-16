@@ -18,7 +18,7 @@ object AiProtocol {
     fun request(c:Config,key:String,messages:List<Pair<String,String>>):Request {
         require(key.isNotBlank() && !key.contains('\n') && !key.contains('\r')) {"Guardá tu API key en Ajustes → Inteligencia artificial."}
         require(c.aiModel.matches(Regex("[A-Za-z0-9._-]{1,100}"))) {"Modelo inválido"}
-        val history=messages.takeLast(12).map{(role,text)->(if(role=="assistant")role else "user") to text.take(24000)}
+        val history=messages.takeLast(12).map{(role,text)->(if(role=="assistant")role else "user") to text.take(dev.bautista.spotlight.search.AiRequestPolicy.MAX_PROMPT_CHARS)}
         val body=if(c.aiProvider=="gemini")JSONObject().put("contents",JSONArray().apply {history.forEach{(role,text)->put(JSONObject().put("role",if(role=="assistant")"model" else "user").put("parts",JSONArray().put(JSONObject().put("text",text))))}}).put("generationConfig",JSONObject().put("maxOutputTokens",4096))
             else JSONObject().put("model",c.aiModel).put("stream",true).put("store",false).put("max_output_tokens",4096).put("input",JSONArray().apply{history.forEach{(role,text)->put(JSONObject().put("role",role).put("content",text))}})
         val url=if(c.aiProvider=="gemini")"https://generativelanguage.googleapis.com/v1beta/models/${c.aiModel}:streamGenerateContent?alt=sse" else "https://api.openai.com/v1/responses"

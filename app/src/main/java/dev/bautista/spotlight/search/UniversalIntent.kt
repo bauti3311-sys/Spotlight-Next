@@ -11,6 +11,7 @@ sealed interface UniversalIntent {
     companion object {
         fun recognize(raw: String): UniversalIntent? {
             if (raw.length > 4000) return null
+            if (LocalPlan.parse(raw) != null || UniversalIntentEngine.parseDocumentAiCompound(raw) != null) return null
             val text = raw.trim().replace(Regex("\\s+"), " ")
             val q = LocalLanguage.canonical(text)
             Regex("^(?:poner |ajustar |cambiar )?(?:el )?(volumen|brillo)(?: al| a)? (-?\\d{1,9})\\s*%?$").matchEntire(q)?.let {
@@ -20,7 +21,12 @@ sealed interface UniversalIntent {
                 // Brightness uses the existing reversible, confirmed Shizuku action.
                 return null
             }
-            Regex("^(?:abrir|iniciar|abr[ií]|abre) (.+)$", RegexOption.IGNORE_CASE).matchEntire(text)?.let { return OpenApp(it.groupValues[1]) }
+            Regex("^(?:abrir|iniciar|abr[ií]|abre) (.+)$", RegexOption.IGNORE_CASE).matchEntire(text)?.let {
+                val target = it.groupValues[1].trim()
+                if (!Regex("\\s+(?:y|luego|despu[eé]s)\\s+", RegexOption.IGNORE_CASE).containsMatchIn(target)) {
+                    return OpenApp(target)
+                }
+            }
             Regex("^(?:buscar|busca|mostrame) (?:fotos|imagenes) de (.+)$").matchEntire(q)?.let {
                 return Photos(SearchQuery.natural("fotos de " + it.groupValues[1]))
             }

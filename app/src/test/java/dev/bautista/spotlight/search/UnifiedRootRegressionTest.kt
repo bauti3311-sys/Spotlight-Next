@@ -38,7 +38,7 @@ class UnifiedRootRegressionTest {
     @Test fun rootKnowledgeConsentIsExplicitAndPlainSearchHasNoAiFiller()=runBlocking {
         val e=engine()
         val pending=e.search("Explicame el VOR",AppConfig(files=false)).toList().last().first().action as Action.Ask
-        assertTrue(pending.sensitive)
+        assertEquals(AiInputOrigin.USER_QUERY,pending.origin);assertFalse(AiRequestPolicy.requiresReview(pending))
         val approved=e.search("Explicame el VOR",AppConfig(files=false,aiRootConsent=true)).toList().last().first().action as Action.Ask
         assertFalse(approved.sensitive)
         assertTrue(e.search("inexistente palabras largas de prueba sin comando",AppConfig(files=false)).toList().last().none{it.action is Action.Ask})

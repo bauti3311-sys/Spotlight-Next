@@ -20,9 +20,12 @@ class HomeSuggestionsTest {
             val info=android.content.pm.ActivityInfo().apply {packageName="fixture.home$i";name="$packageName.Main";nonLocalizedLabel=label;applicationInfo=android.content.pm.ApplicationInfo().apply{packageName="fixture.home$i"}}
             Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(launcher,android.content.pm.ResolveInfo().apply{activityInfo=info})
         }
-        val rows=HomeSuggestions.results(context,AppConfig(learning=false,files=false),false,false)
-        assertEquals(listOf("Chrome","Spotify","WhatsApp"),rows.filter{it.action is Action.Launch}.map{it.title})
-        assertTrue(rows.none{it.subtitle.contains("frecuente") || it.subtitle.contains("reciente")})
+        // Phase 4: without learning, favorites, or active context, Home stays clean (no alphabetical app filler).
+        val cleanRows=HomeSuggestions.results(context,AppConfig(learning=false,files=false),false,false)
+        assertTrue(cleanRows.isEmpty())
+        // With explicit favorites, at most 1 relevant app is suggested on Home.
+        val favoriteRows=HomeSuggestions.results(context,AppConfig(learning=false,files=false,favorites=setOf("fixture.home1/fixture.home1.Main","fixture.home2/fixture.home2.Main")),false,false)
+        assertEquals(listOf("Spotify"),favoriteRows.filter{it.action is Action.Launch}.map{it.title})
+        assertTrue(favoriteRows.none{it.subtitle.contains("frecuente") || it.subtitle.contains("reciente")})
     }
-
 }

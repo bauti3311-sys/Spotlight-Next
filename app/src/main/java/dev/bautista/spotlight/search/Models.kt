@@ -3,6 +3,8 @@ package dev.bautista.spotlight.search
 import android.content.Intent
 import android.graphics.drawable.Drawable
 
+enum class AiInputOrigin { LEGACY, USER_QUERY, PRIVATE_CONTEXT }
+
 sealed interface Action {
     data class SystemPanel(val page:String,val packageName:String=""):Action
     data class EditClipboard(val text:String):Action
@@ -32,7 +34,7 @@ sealed interface Action {
 
     data class SaveNote(val text: String) : Action
 
-    data class Ask(val prompt: String,val sensitive:Boolean=false,val messageTarget:String="") : Action
+    data class Ask(val prompt: String,val sensitive:Boolean=false,val messageTarget:String="",val origin:AiInputOrigin=AiInputOrigin.LEGACY,val reviewed:Boolean=false,val continuation:Boolean=false) : Action
 
     data class Lookup(val type: String, val query: String) : Action
 

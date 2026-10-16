@@ -55,16 +55,42 @@ class SearchEngine(
     }
 
     fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {
+        // Resolve once at the production boundary. This is local and side-effect free.
+        val resolution=if(scope==null && input.isNotBlank())UniversalIntentEngine.resolve(input,c) else null
         val interpretation=QueryInterpreter.interpret(input,scope)
+        if(resolution!=null) {
+            val spec=resolution.presentation
+            when(resolution.primaryIntent) {
+                PrimaryIntentKind.KNOWLEDGE_AI -> {
+                    val question=resolution.entities.firstOrNull{it.type==EntityType.TOPIC_QUERY}?.value ?: input
+                    send(listOf(Result("universal:ai",spec.primaryTitle,spec.primarySubtitle,"IA",4100,AiRequestPolicy.question(question))) + instant(question,c).filter{it.id=="web"})
+                    return@channelFlow
+                }
+                PrimaryIntentKind.COMPOUND_ACTION,PrimaryIntentKind.FOCUS_STUDY -> {
+                    send(listOf(Result("universal:plan",spec.primaryTitle,spec.primarySubtitle,"Comandos",4100,Action.SystemPanel("interpret",input))))
+                    return@channelFlow
+                }
+                PrimaryIntentKind.CONTEXT_AI -> {
+                    send(listOf(Result("universal:context",spec.primaryTitle,spec.primarySubtitle,"IA",4100,Action.SystemPanel(if(normalize(input).contains("estos"))"selection-ai" else "context-ai",input))))
+                    return@channelFlow
+                }
+                else -> Unit // Existing local providers/executors remain the adapters for other intents.
+            }
+        }
+        val constraint=resolution?.fileConstraint ?: interpretation.files
+        if(constraint?.unsupportedDateReason!=null) {
+            send(listOf(Result("files:opened-unavailable","No hay historial de apertura de archivos",constraint.unsupportedDateReason,"Información",4100,Action.RestoreQuery(constraint.query))))
+            return@channelFlow
+        }
         val effectiveScope=interpretation.scope
         val canonical=LocalLanguage.canonical(input)
         val query=interpretation.text
-        val root=effectiveScope==null || effectiveScope.section in setOf("apps","commands","ai","files-mode") && input.isNotBlank()
+        val root=effectiveScope==null || effectiveScope.section in setOf("commands","ai") && input.isNotBlank()
         val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
         searchSources(query,c,effectiveScope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else rows
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else StableResults.unique(rows)
             send(all)
         }
     }.flowOn(Dispatchers.Default)
@@ -74,16 +100,18 @@ class SearchEngine(
         if(scope==null && query.isBlank()) {
             if(!c.suggestions){send(emptyList());return@channelFlow}
             val suggestions=withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty())}
-            val suggestedPackages=suggestions.mapNotNull{(it.action as? Action.Launch)?.intent?.component?.packageName}.toSet()
-            val applications=withContext(Dispatchers.IO){if(!dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"apps"))emptyList() else appList().filter{it.id.substringBefore('/') !in suggestedPackages && it.id.substringBefore('/')!=context.packageName}.sortedBy{normalize(it.label)}.take(2).map{a->Result(a.id,a.label,"Aplicación instalada","Aplicaciones",100,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull())}}
-            send(suggestions+applications)
+            send(suggestions)
             if(c.files && dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"files")) {
+                val now=System.currentTimeMillis()
                 val documents=withContext(Dispatchers.IO){try {index.search("",c,recentDocuments=true).asSequence().filter{item->
+                    if(item.id in c.hiddenSuggestions)return@filter false
+                    val mod=item.modifiedAt ?: 0L
+                    if(mod>0L && now-mod>7L*86_400_000L)return@filter false
                     val uri=(item.action as? Action.Launch)?.intent?.data ?: return@filter false
                     // Check that a still-authorized source can be opened, off the UI thread.
                     runCatching{context.contentResolver.openAssetFileDescriptor(uri,"r")?.use{true} ?: false}.getOrDefault(false)
-                }.take(2).toList()}catch(e:CancellationException){throw e}catch(_:Exception){emptyList()}}
-                if(documents.isNotEmpty())send(suggestions+documents+applications)
+                }.take(1).toList()}catch(e:CancellationException){throw e}catch(_:Exception){emptyList()}}
+                if(documents.isNotEmpty())send((suggestions+documents).distinctBy{it.id})
             }
             return@channelFlow
         }
@@ -94,7 +122,7 @@ class SearchEngine(
             val scoped=when(scope.section) {
                 "apps"->withContext(Dispatchers.IO){appList().filter{scope.kind!="music" || it.category==android.content.pm.ApplicationInfo.CATEGORY_AUDIO || it.id.substringBefore('/') in setOf("com.spotify.music","com.google.android.apps.youtube.music")}.mapNotNull{a->val score=relevance(query,a.label);if(score==0)null else Result(a.id,a.label,if(a.id in c.favorites)"Favorita" else "Abrir aplicación","Aplicaciones",score,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull())}}
                 "commands"->(listOfNotNull(dev.bautista.spotlight.next.IntentRouter.route(input,c.messageApp)?.let{Result("intent:local",dev.bautista.spotlight.next.IntentRouter.title(input,it),"Ver opciones y requisitos antes de ejecutar","Comandos",2600,it)})+dev.bautista.spotlight.next.NativeCatalog.results(query,context)+(if(query.isBlank())dev.bautista.spotlight.extensions.ExtensionRegistry.results("extensiones")+dev.bautista.spotlight.advanced.AdvancedCommands.results("",true)+ActionCatalog.menu("acciones")+dev.bautista.spotlight.automation.Workflows.results("rutinas",c.routines,c.favorites) else dev.bautista.spotlight.extensions.ExtensionRegistry.results(query)+dev.bautista.spotlight.advanced.AdvancedCommands.results(query)+instant(query,c)+dev.bautista.spotlight.personal.PersonalCommands.results(query,c)+dev.bautista.spotlight.automation.Workflows.results(query,c.routines,c.favorites)+ActionCatalog.menu("acciones").filter{relevance(query,it.title)>0})).distinctBy{it.id}.sortedByDescending { if(it.action is Action.NewNote) 3000 else it.score }
-                "ai"->if(query.isBlank())emptyList() else listOf(Result("ai:mode","Preguntar a la IA",query.take(120),"IA",2400,Action.Ask(query.removePrefix("ia "))))
+                "ai"->if(query.isBlank())emptyList() else listOf(Result("ai:mode",UniversalIntentEngine.primaryAiTitle(c),query.take(120),"IA",2400,AiRequestPolicy.question(query.removePrefix("ia "))))
                 "clipboard"->local.clips.value.filter{normalize(it).contains(normalize(query))}.mapIndexed{i,text->Result(LocalStore.clipId(text),text.take(100),if(text in local.clipFavorites.value)"Favorito temporal · copiar" else "Copiar texto capturado","Portapapeles",if(text in local.clipFavorites.value)1400-i else 1000-i,Action.Copy(text),preview=text)}
                 "topic"->integrations.menu(scope.topic,ActionCatalog.packages[scope.topic]?.let{context.packageManager.getLaunchIntentForPackage(it)},ActionCatalog.packages[scope.topic])
                 "files-mode"->if(query.isBlank())ActionCatalog.fileMenu(scope) else if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())){index.ensure(c);index.search(query,c)}else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento","Archivos",2000,Action.Access("files")))
@@ -108,9 +136,15 @@ class SearchEngine(
             }
             send(scoped);return@channelFlow
         }
-        val interpreted=LocalPlan.parse(input)!=null || normalize(input) in setOf("quiero estudiar sin distracciones","explicame este pdf","explica este pdf","traduci este texto","traducir este texto","traduce este texto")
+        val docAiCompound=UniversalIntentEngine.parseDocumentAiCompound(input)
+        val interpreted=docAiCompound!=null || LocalPlan.parse(input)!=null || normalize(input) in setOf("quiero estudiar sin distracciones","estudiar sin distracciones","explicame este pdf","explica este pdf","traduci este texto","traducir este texto","traduce este texto")
         if(interpreted) {
-            send(listOf(Result("smart:plan","Revisar interpretación",if(LocalPlan.parse(input)!=null)"Plan local · comprobar permisos y confirmar cada paso" else "Elegir contexto y revisar acciones disponibles","Comandos",3000,Action.SystemPanel("interpret",input))))
+            val subtitle=when {
+                docAiCompound!=null->"1. Buscar «${docAiCompound.searchTerms.ifBlank{docAiCompound.fileKind}}» · 2. ${if(docAiCompound.sectionTarget.isNotBlank())"Extraer ${docAiCompound.sectionTarget}" else "Extraer texto"} · 3. Confirmar envío"
+                LocalPlan.parse(input)!=null->"Plan local · comprobar permisos y confirmar cada paso"
+                else->"Elegir contexto y revisar acciones disponibles"
+            }
+            send(listOf(Result("smart:plan","Revisar interpretación",subtitle,"Comandos",3000,Action.SystemPanel("interpret",input))))
             return@channelFlow
         }
         if(normalize(input) in setOf("escuchar musica","quiero escuchar musica","reproducir musica")) {
@@ -141,9 +175,10 @@ class SearchEngine(
                     }
                 }
                 is UniversalIntent.Information -> search(intent.query,c).collect { rows ->
-                    val web=instant(intent.query,c).filter { it.id=="web" }.map { it.copy(id="smart:web",score=2000,subtitle="Buscar en la web · requiere conexión") }
-                    val ai=Result("smart:ai","Consultar con IA", "Solo al seleccionar · configuración y consentimiento existentes", "IA",1500,Action.Ask(intent.query,true))
-                    send(ResultRanker.ordered(ResultRanker.rank(intent.query,web+ai,c)+rows.filterNot { it.id=="web" }))
+                    val aiTitle=UniversalIntentEngine.primaryAiTitle(c)
+                    val ai=Result("smart:ai",aiTitle, "Solo al seleccionar · configuración y consentimiento existentes", "IA",2200,Action.Ask(intent.query,true))
+                    val web=instant(intent.query,c).filter { it.id=="web" }.map { it.copy(id="smart:web",score=1800,subtitle="Buscar en la web · requiere conexión") }
+                    send(ResultRanker.ordered(ResultRanker.rank(intent.query,listOf(ai)+web,c)+rows.filterNot { it.id=="web" || it.action is Action.Ask }))
                 }
                 is UniversalIntent.Volume -> send(listOf(Result("smart:volume:${intent.percent}","Volumen al ${intent.percent}%","Acción local · volumen multimedia", "Acciones",2600,Action.Device("volume:${intent.percent}"))))
                 is UniversalIntent.InvalidLevel -> send(listOf(Result("smart:invalid","Usá un porcentaje entre 0 y 100","El ${intent.device} no se modifica con este valor", "Información",2600,Action.RestoreQuery(input))))

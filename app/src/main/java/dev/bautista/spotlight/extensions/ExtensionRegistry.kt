@@ -20,6 +20,7 @@ data class ExtensionSnapshot(val definition:ExtensionDefinition,val availability
 
 /** Internal extensions only: actions remain typed and cannot download code or acquire privileges. */
 object ExtensionRegistry {
+    private val genericVerbStopwords = setOf("buscar","busca","buscame","abrir","abri","abre","ver","mostrar","mostrame","consultar","explorar","preparar","iniciar")
     private fun command(id:String,title:String,action:Action,args:List<CommandArgument> = emptyList())=RegisteredCommand(id,title,action,args)
     private fun topic(id:String,name:String,icon:ExtensionIcon,pkg:String)=ExtensionDefinition(id,name,icon,"Aplicaciones",listOf(command("$id.search","Buscar contenido",Action.ComposeSearch(id,pkg),listOf(CommandArgument("consulta","texto")))),explanation="Búsqueda documentada o respaldo web; sin controlar datos privados de la app.")
     val extensions:List<ExtensionDefinition> = listOf(
@@ -50,14 +51,23 @@ object ExtensionRegistry {
         ExtensionDefinition("system","Dispositivo",ExtensionIcon.SYSTEM,"Sistema",listOf(command("system.info","Información del dispositivo",Action.SystemPanel("device")),command("system.controls","Sistema y controles avanzados",Action.SystemPanel("controls"))),explanation="Diagnóstico público. Los cambios de pantalla requieren conexión ADB, validación y confirmación.",advancedAdapter="reversible-settings"),
         ExtensionDefinition("shizuku","Shizuku",ExtensionIcon.SHIELD,"Sistema",listOf(command("shizuku.setup","Configurar Shizuku",Action.SystemPanel("shizuku"))),explanation="API oficial, autorización explícita y conexión bajo demanda. La búsqueda estándar sigue funcionando.",advancedAdapter="shizuku-manager")
     )
-    fun searchCommands(context:Context,query:String,c:Config):List<Result> = extensions.filter{ExtensionStore.enabled(context,it.id) && (it.id !in setOf("catalog","focus","tasker") || it.id=="tasker" && normalize(query).contains("tasker"))}.flatMap { e ->
-        e.commands.mapNotNull { command ->
-            val match=maxOf(relevance(query,command.title),relevance(query,e.name))
-            if(match<500)return@mapNotNull null
-            val missing=e.requirements.packageName?.let{context.packageManager.getLaunchIntentForPackage(it)==null} ?: false
-            val permission=e.requirements.permissions.firstOrNull{ContextCompat.checkSelfPermission(context,it)!=PackageManager.PERMISSION_GRANTED}
-            val action=when{missing->Action.SystemPanel("extensions");permission==Manifest.permission.READ_CONTACTS->Action.Access("contacts");permission==Manifest.permission.READ_CALENDAR->Action.Access("calendar");else->command.action}
-            Result("registered:"+command.id,command.title,when{missing->"Aplicación no instalada · revisar alternativas";permission!=null->"Permiso pendiente · autorizar al seleccionar";else->e.explanation},e.category,match+300,action)
+    fun searchCommands(context:Context,query:String,c:Config):List<Result> {
+        val normQuery=normalize(query.trim())
+        // Bare action verbs ("buscar", "abrir", "ver") must not dump indistinguishable extension commands.
+        if(normQuery in genericVerbStopwords)return emptyList()
+        return extensions.filter{ExtensionStore.enabled(context,it.id) && it.id !in setOf("catalog","focus","snippets","workflows") && (it.id!="tasker" || normQuery.contains("tasker"))}.flatMap { e ->
+            e.commands.mapNotNull { command ->
+                val displayTitle=if(command.title=="Buscar contenido")"Buscar en ${e.name}" else command.title
+                val match=maxOf(relevance(query,displayTitle),relevance(query,e.name))
+                if(match<500)return@mapNotNull null
+                // If the user typed "buscar <algo>", require that <algo> actually matches the extension or command target.
+                if(normQuery.startsWith("buscar ") && relevance(normQuery.removePrefix("buscar ").trim(),e.name)<500 && relevance(normQuery,displayTitle)<620)return@mapNotNull null
+                val missing=e.requirements.packageName?.let{context.packageManager.getLaunchIntentForPackage(it)==null} ?: false
+                val permission=e.requirements.permissions.firstOrNull{ContextCompat.checkSelfPermission(context,it)!=PackageManager.PERMISSION_GRANTED}
+                val action=when{missing->Action.SystemPanel("extensions");permission==Manifest.permission.READ_CONTACTS->Action.Access("contacts");permission==Manifest.permission.READ_CALENDAR->Action.Access("calendar");else->command.action}
+                val subtitle=when{missing->"Aplicación no instalada · revisar alternativas";permission!=null->"Permiso pendiente · autorizar al seleccionar";command.title=="Buscar contenido"->"${e.name} · ${e.explanation}";else->e.explanation}
+                Result("registered:"+command.id,displayTitle,subtitle,e.category,match+300,action)
+            }
         }
     }
     fun resolve(id:String):RegisteredCommand?=extensions.flatMap{it.commands}.singleOrNull{it.id==id}

@@ -50,16 +50,35 @@ class GeminiHomeCaptureTest {
         fixtures()
         lateinit var focus:androidx.compose.ui.focus.FocusManager
         ui.setContent {focus=LocalFocusManager.current;Box(Modifier.width(width.dp)) {
-            SpotlightPanel(app,AppConfig(files=true,online=false,animations=false,learning=false,suggestions=true,theme=theme,preset=preset),{},"",700f)
+            SpotlightPanel(
+                app,
+                AppConfig(
+                    files=true,
+                    online=false,
+                    animations=false,
+                    learning=true,
+                    suggestions=true,
+                    favorites=setOf("fixture.gemini2/fixture.gemini2.Main"),
+                    actionRecent=listOf("volumen al 40%"),
+                    theme=theme,
+                    preset=preset,
+                ),
+                {},
+                "",
+                700f,
+            )
         }}
-        ui.waitUntil(15000){ui.onAllNodesWithText("Atlas de estudio de prueba.pdf").fetchSemanticsNodes().isNotEmpty()}
-        for(heading in listOf("Sugerencias frecuentes","Archivos recientes","Aplicaciones"))ui.onNodeWithText(heading).assertIsDisplayed()
-        for(label in listOf("Archivos de prueba","Calculadora de prueba","Música de prueba","Navegador de prueba","Notas de prueba","Informe autorizado de prueba.pdf","Atlas de estudio de prueba.pdf"))ui.onNodeWithText(label).assertIsDisplayed()
-        val last=ui.onNodeWithText("Notas de prueba").fetchSemanticsNode().boundsInRoot
-        val footer=ui.onNodeWithText("↵ Abrir aplicación").fetchSemanticsNode().boundsInRoot
+        ui.waitUntil(15000){ui.onAllNodesWithText("Informe autorizado de prueba.pdf").fetchSemanticsNodes().isNotEmpty()}
+        for(heading in listOf("Sugerencias frecuentes","Archivos recientes"))ui.onNodeWithText(heading).assertIsDisplayed()
+        for(label in listOf("Música de prueba","volumen al 40%","Informe autorizado de prueba.pdf"))ui.onNodeWithText(label).assertIsDisplayed()
+        // Alphabetical non-relevant apps must NOT be shown on Home
+        ui.onNodeWithText("Archivos de prueba").assertDoesNotExist()
+        ui.onNodeWithText("Calculadora de prueba").assertDoesNotExist()
+        val last=ui.onNodeWithText("Informe autorizado de prueba.pdf").fetchSemanticsNode().boundsInRoot
+        val footer=ui.onNodeWithText("↵ Ejecutar").fetchSemanticsNode().boundsInRoot
         Assert.assertTrue("The final row must be fully above the footer: last=$last footer=$footer",last.bottom+8f<footer.top)
         ui.onAllNodesWithText("En reproducción").assertCountEquals(0)
-        ui.onNodeWithText("↵ Abrir aplicación").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithText("↵ Ejecutar").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         ui.onNodeWithContentDescription("Divisor ajustable del panel contextual").assertDoesNotExist()
         ui.onNode(hasSetTextAction()).assertIsFocused()
         ui.runOnIdle{focus.clearFocus(force=true)}

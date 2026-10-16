@@ -19,6 +19,20 @@ data class SportsRequest(val entity:String="",val live:Boolean=false,val unsuppo
 object WeatherRequests {
     fun matches(raw:String):Boolean {
         val q=normalize(raw.trim()).removePrefix("¿").removeSuffix("?")
-        return q.startsWith("necesito paraguas") || q.startsWith("a que hora deja de llover") || q.startsWith("va a llover")
+        return q.startsWith("necesito paraguas") || q.startsWith("a que hora deja de llover") || q.startsWith("va a llover") || q.startsWith("llovera")
+    }
+    fun extractLocation(raw:String):String {
+        val clean=raw.trim().removePrefix("¿").removeSuffix("?").trim()
+        Regex("\\ben\\s+([\\p{L}0-9 .,_-]+)$",RegexOption.IGNORE_CASE).find(clean)?.let {
+            return it.groupValues[1].replace(Regex("\\b(?:ma[nñ]ana|hoy)\\b",RegexOption.IGNORE_CASE),"").trim()
+        }
+        if(normalize(clean).startsWith("clima")) {
+            return Regex("^clima\\s*",RegexOption.IGNORE_CASE).replace(clean,"")
+                .let{Regex("\\b(?:ma[nñ]ana|hoy)\\b",RegexOption.IGNORE_CASE).replace(it,"")}
+                .trim()
+                .let{Regex("^en\\s+",RegexOption.IGNORE_CASE).replace(it,"")}
+                .trim()
+        }
+        return ""
     }
 }
