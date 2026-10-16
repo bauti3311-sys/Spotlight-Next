@@ -61,6 +61,17 @@ class SearchEngine(
         if(resolution!=null) {
             val spec=resolution.presentation
             when(resolution.primaryIntent) {
+                PrimaryIntentKind.LOCAL_TOOL -> {
+                    // Question-shaped tools bypass legacy question adapters. Ordinary
+                    // expressions keep the existing provider list and exact-app ranking.
+                    if(LocalLanguage.isQuestion(input)) {
+                        val calculation=resolution.tools==listOf("calculate")
+                        send(listOf(Result(if(calculation)"calc" else "tool:0",spec.primaryTitle,
+                            spec.primarySubtitle,if(calculation)"Calculadora" else "Herramientas",
+                            4100,Action.Copy(spec.primaryTitle))))
+                        return@channelFlow
+                    }
+                }
                 PrimaryIntentKind.KNOWLEDGE_AI -> {
                     val question=resolution.entities.firstOrNull{it.type==EntityType.TOPIC_QUERY}?.value ?: input
                     send(listOf(Result("universal:ai",spec.primaryTitle,spec.primarySubtitle,"IA",4100,AiRequestPolicy.question(question))) + instant(question,c).filter{it.id=="web"}.map{it.copy(id="smart:web")})

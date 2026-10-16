@@ -62,6 +62,17 @@ class UniversalProductionFlowTest {
         ui.waitUntil(15000){clipboard.primaryClip?.getItemAt(0)?.text?.toString()=="7200"}
         assertEquals(0,server.requestCount)
     }
+    @Test fun existingExecutionRegistrySharesNaturalLocalTools()=runBlocking {
+        val executor=ToolExecutor(app)
+        val config=AppConfig(aiProvider="gemini")
+        val calculation=executor.execute(ToolCall("calculate",mapOf("expression" to "¿Cuánto es 15% de 48.000?")),config)
+        assertEquals("7200",calculation.text)
+        assertNull(calculation.action)
+        val conversion=executor.execute(ToolCall("convert_units",mapOf("query" to "¿Cuántos metros son 2 km?")),config)
+        assertTrue(conversion.text.startsWith("2000 metros ·"))
+        assertNull(conversion.action)
+        assertEquals(0,server.requestCount)
+    }
     @Test fun spotifyAndVolumeUseReviewedNativeToolsNotRemoteAi(){
         val pkg="com.spotify.music"
         val application=android.content.pm.ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel="Spotify"}
