@@ -52,6 +52,16 @@ class UniversalProductionFlowTest {
         assertEquals(1,server.requestCount)
         ui.onNodeWithText("Copiar").assertExists()
     }
+    @Test fun naturalCalculatorEnterCopiesLocallyWithoutGeminiRequest(){
+        show("¿Cuánto es 15% de 48.000?")
+        ui.waitUntil(15000){ui.onAllNodesWithText("7200").fetchSemanticsNodes().isNotEmpty()}
+        ui.onAllNodesWithText("Responder con Gemini").assertCountEquals(0)
+        assertEquals(0,server.requestCount)
+        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)}
+        val clipboard=app.getSystemService(android.content.ClipboardManager::class.java)
+        ui.waitUntil(15000){clipboard.primaryClip?.getItemAt(0)?.text?.toString()=="7200"}
+        assertEquals(0,server.requestCount)
+    }
     @Test fun spotifyAndVolumeUseReviewedNativeToolsNotRemoteAi(){
         val pkg="com.spotify.music"
         val application=android.content.pm.ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel="Spotify"}

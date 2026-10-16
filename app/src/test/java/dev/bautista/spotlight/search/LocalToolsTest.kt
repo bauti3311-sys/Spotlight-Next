@@ -14,6 +14,16 @@ class LocalToolsTest {
     }
 
     @Test
+    fun naturalConversionsUseOnlyKnownCompatibleUnits() {
+        assertEquals("2000 metros", LocalTools.convert("¿Cuántos metros son 2 km?")?.title)
+        assertEquals("1536 kib", LocalTools.convert("convertí 1,5 mib a kib")?.title)
+        assertEquals("0 c", LocalTools.convert("¿Cuánto es 32 f en c?")?.title)
+        assertNull(LocalTools.convert("¿Cuántos dólares son 100 pesos?"))
+        assertNull(LocalTools.convert("¿Cuántos kg son 10 metros?"))
+        assertNull(LocalTools.convert("convertí " + "1".repeat(241) + " km a m"))
+    }
+
+    @Test
     fun temperaturesRespectAbsoluteZero() {
         assertEquals("0 c", LocalTools.convert("32 f a c")?.title)
         assertEquals("273.15 k", LocalTools.convert("0 c a k")?.title)

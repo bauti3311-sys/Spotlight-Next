@@ -42,6 +42,13 @@ android {
    versionNameSuffix = "-universal-preview"
    matchingFallbacks += listOf("release")
   }
+  // The previous transient Preview key is unavailable. Keep its installed data intact.
+  create("functionalPreview") {
+   initWith(getByName("universalPreview"))
+   applicationIdSuffix = ".preview.p1"
+   versionNameSuffix = "-p1-preview"
+   matchingFallbacks += listOf("release")
+  }
  }
 }
 dependencies {

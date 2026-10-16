@@ -7,12 +7,20 @@ object Calculator {
     fun evaluate(input: String): String? =
         runCatching {
                 if (input.length > 240) return null
+                // The search bar is Spanish-first: accept short natural requests and
+                // Argentine grouped thousands without affecting ordinary calculations.
                 var s =
                     input
                         .trim()
                         .lowercase()
+                        .trim('¿', '?', ' ', '\t', '\n')
+                        .replace(Regex("^(?:cu[aá]nto es|calcul[aá]|calcular)\\s+"), "")
                         .replace("×", "*")
                         .replace("÷", "/")
+                        // A leading zero denotes a fraction (0.125), never a thousands group.
+                        .replace(Regex("(?<![\\w.])[1-9]\\d{0,2}(?:\\.\\d{3})+(?:,\\d+)?(?![\\w.])")) { match ->
+                            match.value.replace(".", "")
+                        }
                         .replace(",", ".")
                         .replace("√", "sqrt")
                         .replace("π", "pi")

@@ -46,9 +46,15 @@ object LocalTools {
         }
 
     fun convert(query: String): Answer? {
+        if (query.length > 240) return null
+        val spoken = normalize(query.trim()).trim('¿', '?').trim()
+            .replace(Regex("^(?:converti|convertir|convierte|cuanto es)\\s+"), "")
+        val question = Regex("^cuant[oa]s?\\s+([a-z°²³0-9/]+)\\s+son\\s+([+-]?\\d+(?:[.,]\\d+)?)\\s*([a-z°²³0-9/]+)$")
+            .matchEntire(spoken)
+        val expression = question?.let { "${it.groupValues[2]} ${it.groupValues[3]} a ${it.groupValues[1]}" } ?: spoken
         val m =
             Regex("^([+-]?\\d+(?:[.,]\\d+)?)\\s*([a-z°²³0-9/]+)\\s+(?:a|en|to|in)\\s+([a-z°²³0-9/]+)$")
-                .matchEntire(normalize(query.trim())) ?: return null
+                .matchEntire(expression) ?: return null
         val n = m.groupValues[1].replace(',', '.').toDoubleOrNull() ?: return null
         val a = m.groupValues[2].removePrefix("°")
         val b = m.groupValues[3].removePrefix("°")

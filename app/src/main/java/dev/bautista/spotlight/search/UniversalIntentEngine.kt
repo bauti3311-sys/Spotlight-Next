@@ -632,7 +632,31 @@ object UniversalIntentEngine {
             }
         }
 
-        // 11. Informational / Knowledge Question ("¿Cuántas Libertadores ganó Boca?", "cuantas veces gano boca la libertadores")
+        // 11. Prefer deterministic local arithmetic over generic question routing
+        val calculation = Calculator.evaluate(clean)
+        val conversion = if (calculation == null) LocalTools.convert(clean) else null
+        val localAnswer = calculation ?: conversion?.title
+        localAnswer?.let { answer ->
+            return IntentResolution(
+                originalQuery = clean,
+                canonicalQuery = canonical,
+                primaryIntent = PrimaryIntentKind.LOCAL_TOOL,
+                entities = listOf(ExtractedEntity(EntityType.TOPIC_QUERY, clean)),
+                capabilities = emptySet(),
+                tools = listOf(if (calculation != null) "calculate" else "convert_units"),
+                permissions = emptySet(),
+                aiEscalation = RemoteAiEscalation.NONE,
+                requiresConfirmation = false,
+                presentation = BarPresentationSpec(
+                    primaryTitle = answer,
+                    primarySubtitle = conversion?.subtitle ?: "$clean · tocar para copiar",
+                    badgeLabel = if (calculation != null) "Calculadora" else "Conversión",
+                    footerLabel = "Copiar",
+                ),
+            )
+        }
+
+        // 12. Informational / Knowledge Question ("¿Cuántas Libertadores ganó Boca?", "cuantas veces gano boca la libertadores")
         if (LocalLanguage.isQuestion(clean)) {
             return IntentResolution(
                 originalQuery = clean,
@@ -649,27 +673,6 @@ object UniversalIntentEngine {
                     primarySubtitle = "Requiere conexión · consulta únicamente al presionar Enter",
                     badgeLabel = "IA",
                     footerLabel = primaryAiTitle(config),
-                ),
-            )
-        }
-
-        // 12. Local Calculator / Conversions
-        Calculator.evaluate(clean)?.let { answer ->
-            return IntentResolution(
-                originalQuery = clean,
-                canonicalQuery = canonical,
-                primaryIntent = PrimaryIntentKind.LOCAL_TOOL,
-                entities = listOf(ExtractedEntity(EntityType.TOPIC_QUERY, clean)),
-                capabilities = emptySet(),
-                tools = listOf("calculate"),
-                permissions = emptySet(),
-                aiEscalation = RemoteAiEscalation.NONE,
-                requiresConfirmation = false,
-                presentation = BarPresentationSpec(
-                    primaryTitle = answer,
-                    primarySubtitle = "$clean · tocar para copiar",
-                    badgeLabel = "Calculadora",
-                    footerLabel = "Copiar",
                 ),
             )
         }

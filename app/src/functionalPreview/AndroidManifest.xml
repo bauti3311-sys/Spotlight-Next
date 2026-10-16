@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+ <application android:label="Spotlight P1 Preview" tools:replace="android:label">
+  <service android:name="dev.bautista.spotlight.overlay.OverlayService" android:foregroundServiceType="specialUse"/>
+  <activity-alias android:name=".SpotlightSearchShortcut" android:label="Spotlight P1 · Buscar" tools:replace="android:label"/>
+  <service android:name=".overlay.SpotlightTile" android:label="Spotlight P1" tools:replace="android:label"/>
+ </application>
+</manifest>

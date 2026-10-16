@@ -73,6 +73,33 @@ class UniversalIntelligenceArchitectureTest {
     }
 
     @Test
+    fun naturalMathQuestionRemainsOfflineEvenWithGeminiConfigured() = runBlocking {
+        val config = AppConfig(files = false, contacts = false, aiProvider = "gemini")
+        val query = "¿Cuánto es 15% de 48.000?"
+        val resolution = UniversalIntentEngine.resolve(query, config, day, zone)
+        assertEquals(PrimaryIntentKind.LOCAL_TOOL, resolution.primaryIntent)
+        assertEquals(RemoteAiEscalation.NONE, resolution.aiEscalation)
+        assertEquals("7200", resolution.presentation.primaryTitle)
+        val rows = engine().search(query, config).toList().last()
+        assertTrue(rows.any { it.id == "calc" && it.title == "7200" && it.action is Action.Copy })
+        assertFalse(rows.any { it.action is Action.Ask })
+    }
+
+    @Test
+    fun naturalUnitQuestionUsesExistingLocalConversionTool() = runBlocking {
+        val config = AppConfig(files = false, contacts = false, aiProvider = "gemini")
+        val query = "¿Cuántos metros son 2 km?"
+        val resolution = UniversalIntentEngine.resolve(query, config, day, zone)
+        assertEquals(PrimaryIntentKind.LOCAL_TOOL, resolution.primaryIntent)
+        assertEquals(listOf("convert_units"), resolution.tools)
+        assertEquals(RemoteAiEscalation.NONE, resolution.aiEscalation)
+        val rows = engine().search(query, config).toList().last()
+        assertEquals("2000 metros", rows.first().title)
+        assertTrue(rows.first().action is Action.Copy)
+        assertFalse(rows.any { it.action is Action.Ask })
+    }
+
+    @Test
     fun phase2_resolvesAllTenNaturalQueriesWithEntitiesCapabilitiesPermissionsAndConfirmation() {
         val config = AppConfig(aiProvider = "gemini")
 
