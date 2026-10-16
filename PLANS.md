@@ -338,3 +338,6 @@ Rama nueva feat/work-universal-intelligence-20261016 desde3c3c68e. Estética apr
 
 ### Work16/10 — flujos de producción dirigidos correctos
 SearchEngine→SpotlightPanel→DirectAi: Enter explícito, Markdown y PDF con payload igual al prompt autorizado; plan Spotify+volumen verificado con herramientas Android/fixtures. Python30+5 correctas. Preview Universal adicional para coexistir con la Preview anterior cuya clave temporal no sobrevivió. Suite integral/lint/visual todavía pendientes; no declarar estabilidad integral ni proveedor real probado.
+
+### Work16/10 — regresiones previas a la segunda integral
+Primera integral431/10 fallos identificados; no se desactivaron pruebas. Adaptadores de traducción/Pomodoro y orden de ámbitos conservados, prioridad de acciones corregida. Capturas nativas de inicio3temas revisadas, selección/bordes/barra sin rediseño. Dirigidas de notas/modos pasan tras restaurar ranking antes de deduplicación. Segunda integral/lint/APK pendientes.

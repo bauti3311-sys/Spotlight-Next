@@ -348,7 +348,7 @@ fun SpotlightPanel(
                 return
             }
             val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)
-            if(ask!=null && AiRequestPolicy.requiresReview(ask)){clearForms();preview=null;menu=false;pendingAsk=ask;return}
+            if(ask!=null && (AiRequestPolicy.requiresReview(ask) || ask.origin==AiInputOrigin.USER_QUERY && !ai.configured(config))){clearForms();preview=null;menu=false;pendingAsk=ask;return}
             if(query.isNotBlank() && (item.action is Action.Device || item.category=="Aplicaciones" && item.action is Action.Launch)) app.scope.launch { app.preferences.recordAction(query) }
             if(item.action !is Action.Navigate && item.action !is Action.RestoreQuery && item.action !is Action.ReadNotification && (item.action as? Action.ComposeMessage)?.replyKey==null) app.scope.launch { app.preferences.recordSelection(item.id) }
             when (val action = item.action) {

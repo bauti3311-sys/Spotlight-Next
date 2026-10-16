@@ -137,9 +137,9 @@ object HomeSuggestions {
             val usageScore = scoreAppUsage(usageCount, usageTime, nowMs)
 
             val appScore = when {
-                isFavorite -> 600 + (if (recentIndex >= 0) 40 else 0)
-                recentIndex >= 0 -> (540 - recentIndex * 35).coerceAtLeast(MIN_RELEVANCE_SCORE)
-                usageScore >= MIN_RELEVANCE_SCORE -> usageScore
+                isFavorite -> 500 + (if (recentIndex >= 0) 20 else 0)
+                recentIndex >= 0 -> (470 - recentIndex * 35).coerceAtLeast(MIN_RELEVANCE_SCORE)
+                usageScore >= MIN_RELEVANCE_SCORE -> usageScore.coerceAtMost(480)
                 else -> 0 // Strictly exclude alphabetical non-relevant apps
             }
             if (appScore < MIN_RELEVANCE_SCORE) return@mapNotNull null

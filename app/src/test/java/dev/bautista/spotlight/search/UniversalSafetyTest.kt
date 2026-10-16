@@ -37,6 +37,11 @@ class UniversalSafetyTest {
         assertEquals("modified",modified.dateField)
         assertTrue(modified.query.contains("modified-after:"))
     }
+    @Test fun commandsRetainNativeNoteCreation()=runBlocking {
+        val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        val rows=app.search.search("",AppConfig(files=false),SearchScope("","commands")).toList().last()
+        assertTrue(rows.joinToString { it.title },rows.any{it.title=="Crear nota" && it.action is Action.NewNote})
+    }
     @Test fun chapterThreeIsBoundedAndCannotMatchThirty(){
         val text="Capítulo 30\nwrong\nCapítulo 3\ncorrect\nCapítulo 4\nprivate next chapter"
         val found=DocumentSectionLocator.locate(text,"capítulo 3")

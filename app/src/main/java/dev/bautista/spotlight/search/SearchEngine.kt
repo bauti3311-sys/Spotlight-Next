@@ -66,12 +66,19 @@ class SearchEngine(
                     send(listOf(Result("universal:ai",spec.primaryTitle,spec.primarySubtitle,"IA",4100,AiRequestPolicy.question(question))) + instant(question,c).filter{it.id=="web"}.map{it.copy(id="smart:web")})
                     return@channelFlow
                 }
-                PrimaryIntentKind.COMPOUND_ACTION,PrimaryIntentKind.FOCUS_STUDY -> {
+                PrimaryIntentKind.COMPOUND_ACTION -> {
                     send(listOf(Result("universal:plan",spec.primaryTitle,spec.primarySubtitle,"Comandos",4100,Action.SystemPanel("interpret",input))))
                     return@channelFlow
                 }
+                PrimaryIntentKind.FOCUS_STUDY -> {
+                    if(normalize(input) in setOf("quiero estudiar sin distracciones","estudiar sin distracciones")) {
+                        send(listOf(Result("universal:plan",spec.primaryTitle,spec.primarySubtitle,"Comandos",4100,Action.SystemPanel("interpret",input))))
+                        return@channelFlow
+                    }
+                }
                 PrimaryIntentKind.CONTEXT_AI -> {
-                    send(listOf(Result("universal:context",spec.primaryTitle,spec.primarySubtitle,"IA",4100,Action.SystemPanel(if(normalize(input).contains("estos"))"selection-ai" else "context-ai",input))))
+                    val explicitForm=normalize(input) in setOf("explicame este pdf","explica este pdf","traduci este texto","traducir este texto","traduce este texto")
+                    send(listOf(Result("universal:context",if(explicitForm)"Revisar interpretación" else spec.primaryTitle,spec.primarySubtitle,"IA",4100,Action.SystemPanel(if(explicitForm)"interpret" else if(normalize(input).contains("estos"))"selection-ai" else "context-ai",input))))
                     return@channelFlow
                 }
                 else -> Unit // Existing local providers/executors remain the adapters for other intents.
@@ -90,7 +97,7 @@ class SearchEngine(
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
         searchSources(query,c,effectiveScope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else StableResults.unique(rows)
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else StableResults.unique(ResultRanker.rank(query,rows,c))
             send(all)
         }
     }.flowOn(Dispatchers.Default)

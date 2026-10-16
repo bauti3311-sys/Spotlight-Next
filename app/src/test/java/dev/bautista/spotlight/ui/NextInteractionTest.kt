@@ -58,7 +58,7 @@ class NextInteractionTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false,aiProvider="backend",endpoint=""),{},"ia hola",640f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("Preguntar a la IA",substring=true).fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Preguntar a la IA",substring=true).performClick()
+        ui.onNode(hasText("Preguntar a la IA",substring=true) and hasContentDescription("IA")).performClick()
         ui.onNodeWithText("Guardá tu API key",substring=true).assertExists()
     }
 }
