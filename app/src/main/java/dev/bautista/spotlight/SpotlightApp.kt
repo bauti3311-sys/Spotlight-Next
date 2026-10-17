@@ -17,6 +17,7 @@ class SpotlightApp : Application() {
         super.onCreate()
         scope.launch { preferences.config.collectLatest { } }
         contexts.start()
+        scope.launch { dev.bautista.spotlight.index.PdfSnapshotFiles.removeAbandoned(this@SpotlightApp) }
         val filter =
             android.content.IntentFilter().apply {
                 addAction(android.content.Intent.ACTION_PACKAGE_ADDED)

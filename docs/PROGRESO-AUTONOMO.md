@@ -479,3 +479,8 @@ Después de e768a6a, se conectó guardado de intercambios completos y reanudaci�
 ### Conversaciones: gates cerrados — 17/10/2026
 
 Código publicado 0c2f74f: 493 Android/JVM correctas (104 suites, cero fallos/errores/omisiones), tres lint sin errores (10 advertencias/1 informativa por variante), Release/R8 sin firma correcta en 10 min 33 s y 21 comparaciones visuales estrictas correctas en 21 s, sin regrabar referencias. Las 303 entradas compiladas coinciden con Git. Gitleaks sin hallazgos en árbol y 12 commits locales. Las 48 dirigidas forman parte de las 493, no se suman. Evidencia en docs/verification/conversations-20261017/summary.json; docs/CONVERSACIONES-20261017.md describe límites. El handoff actual identifica OCR PDF local acotado como próximo bloque. Sin API real, validación física, Actions, firma histórica, clave P1 nueva ni APK parcial. La matriz40 sigue parcial.
+
+
+### OCR PDF local — 17/10/2026
+
+Implementada extracción PDF unificada con OCR local acotado, trazabilidad por página y fuente, resultados parciales, cancelación segura de recursos ML e índice v2 aditivo. La búsqueda excluye las etiquetas generadas para no crear relevancia falsa. 29 pruebas dirigidas y compileDebugAndroidTestKotlin correctos; OCR real instrumentado compilado, no ejecutado por falta de dispositivo/KVM. Gates completos pendientes. Ver docs/OCR-LOCAL-20261017.md para comandos/límites. No interfaz rediseñada, Actions, clave nueva ni APK parcial.

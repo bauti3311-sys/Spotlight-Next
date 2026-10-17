@@ -14,6 +14,8 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.*
+import java.util.concurrent.Executor
+import java.util.concurrent.atomic.AtomicBoolean
 
 suspend fun <T> Task<T>.awaitResult(): T = suspendCancellableCoroutine { c ->
     addOnSuccessListener { if (c.isActive) c.resume(it) }
@@ -21,10 +23,41 @@ suspend fun <T> Task<T>.awaitResult(): T = suspendCancellableCoroutine { c ->
     addOnCanceledListener { c.cancel() }
 }
 
+/** Cancellation stops waiting, not ML Kit. The completion callback releases its image/lease. */
+internal suspend fun <T> awaitOwnedTask(start:()->Task<T>,release:()->Unit):T = suspendCancellableCoroutine { c ->
+    val once=AtomicBoolean()
+    fun finish(){if(once.compareAndSet(false,true))release()}
+    try {
+        if(!c.isActive){finish();return@suspendCancellableCoroutine}
+        start().addOnCompleteListener(Executor{it.run()}) { task ->
+            finish()
+            if(c.isActive){when {task.isCanceled->c.cancel();task.isSuccessful->c.resume(task.result);else->c.resumeWithException(task.exception ?: IllegalStateException("OCR local no disponible."))}}
+        }
+    }catch(e:Throwable){finish();if(c.isActive)c.resumeWithException(e)}
+}
+
 class MediaAnalysis(private val context: Context) : java.io.Closeable {
-    private val ocr = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-    private val labels =
+    private val ocrClient=lazy {TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)}
+    private val ocr get()=ocrClient.value
+    private val labelsClient=lazy {
         ImageLabeling.getClient(ImageLabelerOptions.Builder().setConfidenceThreshold(.65f).build())
+    }
+    private val labels get()=labelsClient.value
+    private val clientLock=Any()
+    private var pending=0
+    private var closing=false
+    private var clientsClosed=false
+    private fun closeIfIdle(){if(closing && pending==0 && !clientsClosed){clientsClosed=true;if(ocrClient.isInitialized())runCatching{ocr.close()};if(labelsClient.isInitialized())runCatching{labels.close()}}}
+    private fun <T> tracked(start:()->Task<T>):Task<T> {
+        synchronized(clientLock){check(!closing);pending++}
+        val completed=AtomicBoolean()
+        fun finish(){if(completed.compareAndSet(false,true))synchronized(clientLock){pending--;closeIfIdle()}}
+        return try{start().also{it.addOnCompleteListener(Executor{r->r.run()}){finish()}}}
+        catch(e:Throwable){finish();throw e}
+    }
+    /** Takes bitmap ownership, including cancellation before submission. No image labels. */
+    internal suspend fun pdfPage(bitmap:Bitmap,onFinished:()->Unit):String =
+        awaitOwnedTask(start={tracked{ocr.process(InputImage.fromBitmap(bitmap,0))}},release={try{bitmap.recycle()}finally{onFinished()}}).text
     private val spanish =
         mapOf(
             "dog" to "perro perros",
@@ -55,10 +88,10 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
 
     private suspend fun analyze(bitmap: Bitmap, visual: Boolean): String {
         val input = InputImage.fromBitmap(bitmap, 0)
-        val text = ocr.process(input).awaitResult().text.take(16000)
+        val text = tracked{ocr.process(input)}.awaitResult().text.take(16000)
         val tags =
             if (visual)
-                labels.process(input).awaitResult().joinToString(" ") {
+                tracked{labels.process(input)}.awaitResult().joinToString(" ") {
                     it.text + " " + (spanish[it.text.lowercase()] ?: "")
                 }
             else ""
@@ -146,7 +179,6 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
     }
 
     override fun close() {
-        ocr.close()
-        labels.close()
+        synchronized(clientLock){closing=true;closeIfIdle()}
     }
 }

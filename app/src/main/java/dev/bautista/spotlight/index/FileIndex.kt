@@ -5,9 +5,6 @@ import android.database.sqlite.*
 import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
-import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
-import com.tom_roush.pdfbox.pdmodel.PDDocument
-import com.tom_roush.pdfbox.text.PDFTextStripper
 import dev.bautista.spotlight.data.Config
 import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
@@ -64,10 +61,10 @@ class FileIndex(
     @Volatile private var refreshed = 0L
 
     private class Database(context: Context) :
-        SQLiteOpenHelper(context, "search-index.db", null, 1) {
+        SQLiteOpenHelper(context, "search-index.db", null, 2) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(
-                "CREATE TABLE files(uri TEXT PRIMARY KEY,tree TEXT,parent TEXT,name TEXT,mime TEXT,modified INTEGER,size INTEGER,author TEXT,created INTEGER,body TEXT,mode TEXT)"
+                "CREATE TABLE files(uri TEXT PRIMARY KEY,tree TEXT,parent TEXT,name TEXT,mime TEXT,modified INTEGER,size INTEGER,author TEXT,created INTEGER,body TEXT,mode TEXT,extraction TEXT NOT NULL DEFAULT '')"
             )
         }
 
@@ -77,7 +74,9 @@ class FileIndex(
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_created ON files(tree,created)")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_mime ON files(tree,mime)")
         }
-        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+            if(oldVersion<2)db.execSQL("ALTER TABLE files ADD COLUMN extraction TEXT NOT NULL DEFAULT ''")
+        }
     }
 
     private val helper = Database(context).apply { setWriteAheadLoggingEnabled(true) }
@@ -181,6 +180,16 @@ class FileIndex(
             )
         }
 
+    /** Update only an already-authorized row; never turn a revoked SAF cache into an import. */
+    suspend fun cacheExtraction(uri:String,document:ExtractedDocument,c:Config):Boolean=withContext(Dispatchers.IO) {
+        if(!c.files || !c.contentIndex || c.privateMode)return@withContext false
+        val sources=allowedTrees(c)+"__imports__"+if(broadAllowed())setOf("__shared__") else emptySet()
+        val values=ContentValues().apply{put("body",document.text.take(100000));put("extraction",document.metadata())}
+        val updated=helper.writableDatabase.update("files",values,"uri=? AND tree IN ("+sources.joinToString(","){"?"}+")",(listOf(uri)+sources).toTypedArray())>0
+        if(updated)changes.value=changes.value+1
+        updated
+    }
+
     suspend fun refresh(c: Config, analyze: Boolean = true) =
         withContext(Dispatchers.IO) {
             lock.withLock {
@@ -190,12 +199,14 @@ class FileIndex(
                 var limited = false
                 var failed = false
                 var mediaCount = 0
+                var ocrRemaining=12
+                val ocrUntil=android.os.SystemClock.elapsedRealtime()+120000L
+                var contentPartial=false
                 state.value =
                     Status(true, message = "Leyendo archivos compartidos y carpetas autorizadas…")
-                val mode = "${c.contentIndex}:${c.visualIndex}:${c.videoIndex}:office1"
+                val mode = "${c.contentIndex}:${c.visualIndex}:${c.videoIndex}:office1:pdfocr1"
                 val analyzer =
                     if (analyze && (c.visualIndex || c.videoIndex)) MediaAnalysis(context) else null
-                if (analyze && c.contentIndex) PDFBoxResourceLoader.init(context)
                 helper.writableDatabase.beginTransaction()
                 try {
                     val roots =
@@ -261,6 +272,8 @@ class FileIndex(
                                 var author = ""
                                 var created = 0L
                                 var oldMode = ""
+                                var extraction = ""
+                                var extractionPartial=false
                                 helper.readableDatabase
                                     .query(
                                         "files",
@@ -271,6 +284,7 @@ class FileIndex(
                                             "modified",
                                             "size",
                                             "mode",
+                                            "extraction",
                                         ),
                                         "uri=?",
                                         arrayOf(uri),
@@ -288,6 +302,7 @@ class FileIndex(
                                             author = row.getString(1) ?: ""
                                             created = row.getLong(2)
                                             oldMode = row.getString(5) ?: ""
+                                            extraction = row.getString(6) ?: ""
                                         }
                                     }
                                 var storedMode = oldMode
@@ -298,24 +313,13 @@ class FileIndex(
                                                 size <= 8_000_000 &&
                                                 mime == "application/pdf"
                                         ) {
-                                            context.contentResolver
-                                                .openInputStream(contentUri)
-                                                ?.use { stream ->
-                                                    PDDocument.load(stream).use { pdf ->
-                                                        val info = pdf.documentInformation
-                                                        author = info.author ?: ""
-                                                        created =
-                                                            info.creationDate?.timeInMillis ?: 0L
-                                                        body =
-                                                            PDFTextStripper()
-                                                                .apply {
-                                                                    endPage =
-                                                                        minOf(pdf.numberOfPages, 40)
-                                                                }
-                                                                .getText(pdf)
-                                                                .take(100000)
-                                                    }
-                                                }
+                                            val remaining=ocrUntil-android.os.SystemClock.elapsedRealtime()
+                                            val doc=DocumentText.extractDetailed(context,contentUri,mime,PdfTextLimits(
+                                                ocrPages=if(remaining>0)minOf(3,ocrRemaining) else 0,
+                                                characters=100000,totalMillis=if(remaining>0)minOf(45000,remaining) else 45000))
+                                            body=doc.text;author=doc.author;created=doc.created;extraction=doc.metadata()
+                                            ocrRemaining=(ocrRemaining-doc.ocrAttempts).coerceAtLeast(0)
+                                            extractionPartial=doc.partial;contentPartial=contentPartial || doc.partial
                                         } else if (c.contentIndex && size<=8_000_000 && OfficeText.supports(mime,name)) {
                                             val content=DocumentText.extract(context,contentUri,OfficeText.mime(name,mime))
                                             body=content
@@ -383,7 +387,7 @@ class FileIndex(
                                             limited = true
                                         }
                                         storedMode =
-                                            if (mediaCount >= 150 && body.isEmpty()) oldMode
+                                            if (extractionPartial || mediaCount >= 150 && body.isEmpty()) oldMode
                                             else mode
                                     } catch (e: CancellationException) {
                                         throw e
@@ -415,6 +419,7 @@ class FileIndex(
                                         put("created", created)
                                         put("body", body)
                                         put("mode", storedMode)
+                                        put("extraction", extraction)
                                     }
                                 helper.writableDatabase.insertWithOnConflict(
                                     "files",
@@ -496,8 +501,8 @@ class FileIndex(
                         Status(
                             false,
                             count,
-                            "$count entradas${if(limited) " · índice parcial (límites alcanzados)" else ""}${if(failures>0) " · $failures archivos/carpetas sin leer" else ""}",
-                            limited || failed,
+                            "$count entradas${if(contentPartial) " · contenido PDF parcial" else ""}${if(limited) " · índice parcial (límites alcanzados)" else ""}${if(failures>0) " · $failures archivos/carpetas sin leer" else ""}",
+                            limited || failed || contentPartial,
                         )
                 } catch (e: CancellationException) {
                     state.value =
@@ -552,6 +557,7 @@ class FileIndex(
                             )
                                 string("body")
                             else ""
+                        val contentBody=ExtractedDocument.searchableText(string("extraction"),body)
                         val kind =
                             when {
                                 mime == DocumentsContract.Document.MIME_TYPE_DIR -> "folder"
@@ -569,7 +575,7 @@ class FileIndex(
                                     name,
                                     kind,
                                     mime,
-                                    body,
+                                    contentBody,
                                     string("author"),
                                     long("modified"),
                                     long("created"),
@@ -592,7 +598,7 @@ class FileIndex(
                                         .toString()
                                 } ?: "fecha no disponible"
                         val preview =
-                            "${if(string("author").isNotBlank()) "Autor: ${string("author")}\n" else ""}Modificado: $date\nTamaño: ${long("size")} bytes\n${DocumentExcerpt.around(body,query.plain)}"
+                            ExtractedDocument.provenance(string("extraction"),body,query.plain)+"${if(string("author").isNotBlank()) "Autor: ${string("author")}\n" else ""}Modificado: $date\nTamaño: ${long("size")} bytes\n${DocumentExcerpt.around(contentBody,query.plain)}"
                         val firstMoment =
                             if (kind == "video")
                                 body
