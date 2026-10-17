@@ -405,3 +405,8 @@ El OCR real instrumentado no se ejecutó por falta de dispositivo/KVM. Los lími
 ### Continuación funcional: vigencia de extracción manual
 
 Tras f059fa9 se conectó DocumentExtractionRequest a SpotlightPanel: cancelación por contexto, descarte de resultados/errores tardíos y acción contextual de cancelar. Seis nuevos casos; 27 dirigidos más compilación instrumentada correctos. Gate integral del nuevo código pendiente. Ver docs/DOCUMENT-EXTRACTION-LIFECYCLE-20261017.md.
+
+
+### Recuperación y cobertura documental
+
+Recuperado 5bade7a y reserva propia; 516 XML completos sobreviven, final de lint/R8 anterior no comprobable. Regresión real de pérdida de páginas al cachear extracto breve: 5casos/1fallo antes, 35dirigidos/0fallos tras corregir por huella y fragmentos. Instrumentación pendiente por descarga HTTP403 (sondeo posterior al mismo URL oficial200); no se modifica el grafo de dependencias. Próximo: gate integral del nuevo código, referencias visuales y cierre. Ver docs/DOCUMENT-CACHE-COVERAGE-20261017.md.

@@ -185,9 +185,20 @@ class FileIndex(
         if(!c.files || !c.contentIndex || c.privateMode)return@withContext false
         val sources=allowedTrees(c)+"__imports__"+if(broadAllowed())setOf("__shared__") else emptySet()
         val values=ContentValues().apply{put("body",document.text.take(100000));put("extraction",document.metadata())}
-        val updated=helper.writableDatabase.update("files",values,"uri=? AND tree IN ("+sources.joinToString(","){"?"}+")",(listOf(uri)+sources).toTypedArray())>0
-        if(updated)changes.value=changes.value+1
-        updated
+        val selection="uri=? AND tree IN ("+sources.joinToString(","){"?"}+")"
+        val arguments=(listOf(uri)+sources).toTypedArray()
+        val db=helper.writableDatabase
+        db.beginTransaction()
+        val outcome=try {
+            val preserved=db.rawQuery("SELECT body,extraction FROM files WHERE $selection LIMIT 1",arguments).use { row ->
+                row.moveToFirst() && document.coveredByCache(row.getString(1) ?: "",row.getString(0) ?: "")
+            }
+            val updated=!preserved && db.update("files",values,selection,arguments)>0
+            db.setTransactionSuccessful()
+            preserved to updated
+        } finally {db.endTransaction()}
+        if(outcome.second)changes.value=changes.value+1
+        outcome.first || outcome.second
     }
 
     suspend fun refresh(c: Config, analyze: Boolean = true) =

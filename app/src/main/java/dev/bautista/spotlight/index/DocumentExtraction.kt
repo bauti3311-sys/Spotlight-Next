@@ -37,6 +37,32 @@ data class ExtractedDocument(
         .put("pages",pages).put("examined",examined).put("ocrAttempts",ocrAttempts).put("partial",partial).put("extractedAt",extractedAt)
         .put("fragments",JSONArray().apply{fragments.forEach{f->put(JSONObject().put("page",f.page).put("method",f.method).put("start",f.start).put("end",f.end).put("width",f.width).put("height",f.height))}})
         .put("issues",JSONArray().apply{issues.forEach{put(JSONObject().put("code",it.code).put("page",it.page))}}).toString()
+
+    /** A smaller manual excerpt must not erase proven richer coverage of the exact same bytes. */
+    internal fun coveredByCache(metadata:String,body:String):Boolean {
+        if(pages<=0 || !sourceSha256.matches(Regex("[0-9a-f]{64}")) || metadata.isBlank() || metadata.length>30000 || body.length>100000)return false
+        return runCatching {
+            val root=JSONObject(metadata)
+            require(root.getInt("version")==1 && root.getString("sha256")==sourceSha256 && root.getInt("pages")==pages)
+            require(root.getInt("examined") in examined..40)
+            // A newly complete extraction may supersede an old partial one.
+            require(partial || !root.getBoolean("partial"))
+            val entries=root.getJSONArray("fragments");require(entries.length() in 1..40 && fragments.size<=40)
+            val old=(0 until entries.length()).map { i ->
+                val f=entries.getJSONObject(i);val page=f.getInt("page");val method=f.getString("method")
+                val start=f.getInt("start");val end=f.getInt("end")
+                require(page in 1..pages && method in setOf("pdf_text","ocr_local") && start>=0 && end>start && end<=body.length)
+                Triple(page,method,body.substring(start,end))
+            }
+            fragments.all { f ->
+                require(f.page in 1..pages && f.method in setOf("pdf_text","ocr_local") && f.start>=0 && f.end>f.start && f.end<=text.length)
+                val part=text.substring(f.start,f.end)
+                // Length alone would discard corrected OCR. Only an actual matching prefix
+                // from the same page/method demonstrates that no newly recognized text is lost.
+                old.any { it.first==f.page && it.second==f.method && it.third.startsWith(part) }
+            }
+        }.getOrDefault(false)
+    }
     companion object {
         /** Generated page/limit labels are provenance, not words contained in the document. */
         fun searchableText(metadata:String,body:String):String {
