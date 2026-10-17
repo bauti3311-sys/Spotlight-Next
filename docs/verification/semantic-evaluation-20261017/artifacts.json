@@ -1,0 +1,37 @@
+[
+  {
+    "path": "onnx/model_qint8_arm64.onnx",
+    "bytes": 135336307,
+    "sha256": "c78c64bb0446ceb7086d2de24c2f4297e7a909eb457b4f68e5fdb6ab19f285c0"
+  },
+  {
+    "path": "vocab.txt",
+    "bytes": 995526,
+    "sha256": "fe0fda7c425b48c516fc8f160d594c8022a0808447475c1a7c6d6479763f310c"
+  },
+  {
+    "path": "tokenizer.json",
+    "bytes": 1961847,
+    "sha256": "5b4e1a8171c81dfd666ae40265b9530c6e0b3d53923fe8ac493dcc84229adf81"
+  },
+  {
+    "path": "tokenizer_config.json",
+    "bytes": 531,
+    "sha256": "ccdb1ee6fba1d0f4bbc413ca28c3d71deb3ba399191eec498c2328164e50127b"
+  },
+  {
+    "path": "2_Dense/model.safetensors",
+    "bytes": 1575104,
+    "sha256": "0a21b1ce908e772ebf09f93c20ca09524c32706e9918d9c0169a3f0663b191ed"
+  },
+  {
+    "path": "2_Dense/config.json",
+    "bytes": 114,
+    "sha256": "3f8cb931199629aac321339504a3258b5de76b568bf718d724cd921bcd22bd14"
+  },
+  {
+    "path": "1_Pooling/config.json",
+    "bytes": 190,
+    "sha256": "a37f83ada23e7887be6b88f4998927dbeac0038af301553c7cd5461413bf1a56"
+  }
+]

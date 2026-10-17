@@ -1,0 +1,337 @@
+{
+  "model": "sentence-transformers/distiluse-base-multilingual-cased-v2",
+  "revision": "bfe45d0732ca50787611c0fe107ba278c7f3f889",
+  "platform": "Linux x86_64 AMD host, NOT Android ARM64 or Tab A9+",
+  "ort": "1.23.2",
+  "threads": 2,
+  "coldLoadMs": 221.33587899952545,
+  "latencyMs": {
+    "min": 3.536111000357778,
+    "median": 6.649432000358502,
+    "p95": 12.069112750168642
+  },
+  "processMaxRssKiB": 315536,
+  "recallAt1": 1.0,
+  "cases": [
+    {
+      "query": "mareos al caminar y recuperar estabilidad",
+      "expected": "vestibular",
+      "top": "vestibular",
+      "score": 0.5014313459396362,
+      "ranking": [
+        {
+          "id": "vestibular",
+          "score": 0.5014313459396362
+        },
+        {
+          "id": "fractura",
+          "score": 0.2589492201805115
+        },
+        {
+          "id": "diabetes",
+          "score": 0.17614158987998962
+        },
+        {
+          "id": "musica",
+          "score": 0.1447513997554779
+        },
+        {
+          "id": "seguridad",
+          "score": 0.019302688539028168
+        },
+        {
+          "id": "factura",
+          "score": 0.018782272934913635
+        },
+        {
+          "id": "anatomia",
+          "score": -0.04607827961444855
+        },
+        {
+          "id": "receta",
+          "score": -0.07455579936504364
+        }
+      ]
+    },
+    {
+      "query": "cómo mejorar una mano después de romperse un hueso",
+      "expected": "fractura",
+      "top": "fractura",
+      "score": 0.3308858871459961,
+      "ranking": [
+        {
+          "id": "fractura",
+          "score": 0.3308858871459961
+        },
+        {
+          "id": "vestibular",
+          "score": 0.12844084203243256
+        },
+        {
+          "id": "anatomia",
+          "score": 0.08555567264556885
+        },
+        {
+          "id": "receta",
+          "score": 0.028006305918097496
+        },
+        {
+          "id": "diabetes",
+          "score": 0.015871867537498474
+        },
+        {
+          "id": "musica",
+          "score": -0.009177085012197495
+        },
+        {
+          "id": "seguridad",
+          "score": -0.043819159269332886
+        },
+        {
+          "id": "factura",
+          "score": -0.058074675500392914
+        }
+      ]
+    },
+    {
+      "query": "cuánto debo abonar por la vivienda este mes",
+      "expected": "factura",
+      "top": "factura",
+      "score": 0.28718996047973633,
+      "ranking": [
+        {
+          "id": "factura",
+          "score": 0.28718996047973633
+        },
+        {
+          "id": "musica",
+          "score": -0.0037319250404834747
+        },
+        {
+          "id": "diabetes",
+          "score": -0.013753708451986313
+        },
+        {
+          "id": "vestibular",
+          "score": -0.03262556344270706
+        },
+        {
+          "id": "fractura",
+          "score": -0.04055795073509216
+        },
+        {
+          "id": "seguridad",
+          "score": -0.041220277547836304
+        },
+        {
+          "id": "receta",
+          "score": -0.0657818615436554
+        },
+        {
+          "id": "anatomia",
+          "score": -0.06880617141723633
+        }
+      ]
+    },
+    {
+      "query": "preparar pan con levadura al horno",
+      "expected": "receta",
+      "top": "receta",
+      "score": 0.3459323048591614,
+      "ranking": [
+        {
+          "id": "receta",
+          "score": 0.3459323048591614
+        },
+        {
+          "id": "musica",
+          "score": 0.011323254555463791
+        },
+        {
+          "id": "diabetes",
+          "score": -0.016275718808174133
+        },
+        {
+          "id": "seguridad",
+          "score": -0.02211899124085903
+        },
+        {
+          "id": "factura",
+          "score": -0.08109520375728607
+        },
+        {
+          "id": "anatomia",
+          "score": -0.087426096200943
+        },
+        {
+          "id": "vestibular",
+          "score": -0.09687329828739166
+        },
+        {
+          "id": "fractura",
+          "score": -0.16646909713745117
+        }
+      ]
+    },
+    {
+      "query": "detener canciones y bajar el sonido",
+      "expected": "musica",
+      "top": "musica",
+      "score": 0.52042555809021,
+      "ranking": [
+        {
+          "id": "musica",
+          "score": 0.52042555809021
+        },
+        {
+          "id": "vestibular",
+          "score": 0.1687086522579193
+        },
+        {
+          "id": "diabetes",
+          "score": 0.062367599457502365
+        },
+        {
+          "id": "fractura",
+          "score": 0.056189507246017456
+        },
+        {
+          "id": "factura",
+          "score": 0.04638638719916344
+        },
+        {
+          "id": "receta",
+          "score": 0.03271295502781868
+        },
+        {
+          "id": "seguridad",
+          "score": 0.01969265751540661
+        },
+        {
+          "id": "anatomia",
+          "score": -0.0438789501786232
+        }
+      ]
+    },
+    {
+      "query": "cómo llega al cerebro lo que vemos",
+      "expected": "anatomia",
+      "top": "anatomia",
+      "score": 0.49753230810165405,
+      "ranking": [
+        {
+          "id": "anatomia",
+          "score": 0.49753230810165405
+        },
+        {
+          "id": "vestibular",
+          "score": 0.005618605762720108
+        },
+        {
+          "id": "diabetes",
+          "score": -0.0013244934380054474
+        },
+        {
+          "id": "receta",
+          "score": -0.010250077582895756
+        },
+        {
+          "id": "fractura",
+          "score": -0.011905079707503319
+        },
+        {
+          "id": "factura",
+          "score": -0.02026784047484398
+        },
+        {
+          "id": "seguridad",
+          "score": -0.02707762084901333
+        },
+        {
+          "id": "musica",
+          "score": -0.04016466811299324
+        }
+      ]
+    },
+    {
+      "query": "control del azúcar en sangre",
+      "expected": "diabetes",
+      "top": "diabetes",
+      "score": 0.39634329080581665,
+      "ranking": [
+        {
+          "id": "diabetes",
+          "score": 0.39634329080581665
+        },
+        {
+          "id": "anatomia",
+          "score": 0.07955357432365417
+        },
+        {
+          "id": "vestibular",
+          "score": 0.06636042892932892
+        },
+        {
+          "id": "seguridad",
+          "score": 0.023227296769618988
+        },
+        {
+          "id": "factura",
+          "score": 0.011069804430007935
+        },
+        {
+          "id": "musica",
+          "score": 0.004457775503396988
+        },
+        {
+          "id": "receta",
+          "score": -0.027916720137000084
+        },
+        {
+          "id": "fractura",
+          "score": -0.03740078955888748
+        }
+      ]
+    },
+    {
+      "query": "evitar que otros lean mis documentos confidenciales",
+      "expected": "seguridad",
+      "top": "seguridad",
+      "score": 0.3161483407020569,
+      "ranking": [
+        {
+          "id": "seguridad",
+          "score": 0.3161483407020569
+        },
+        {
+          "id": "receta",
+          "score": -0.019478660076856613
+        },
+        {
+          "id": "vestibular",
+          "score": -0.02044273167848587
+        },
+        {
+          "id": "anatomia",
+          "score": -0.031496837735176086
+        },
+        {
+          "id": "factura",
+          "score": -0.0348302461206913
+        },
+        {
+          "id": "musica",
+          "score": -0.048053935170173645
+        },
+        {
+          "id": "diabetes",
+          "score": -0.058554843068122864
+        },
+        {
+          "id": "fractura",
+          "score": -0.13663896918296814
+        }
+      ]
+    }
+  ]
+}
