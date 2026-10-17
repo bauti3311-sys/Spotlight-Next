@@ -1,0 +1,784 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites tests="549" failures="0" errors="0" skipped="0">
+  <testsuite name="dev.bautista.spotlight.access.InvocationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:34" hostname="d5b6f4c2401e" time="2.886">
+    <testcase name="missingOverlayPermissionDoesNotOpenSettingsTask" classname="dev.bautista.spotlight.access.InvocationTest" time="2.285" />
+    <testcase name="trampolineFinishesWithoutLaunchingMainActivity" classname="dev.bautista.spotlight.access.InvocationTest" time="0.56" />
+    <testcase name="physicalShortcutStartsOnlyOverlayAndConsumesRepeat" classname="dev.bautista.spotlight.access.InvocationTest" time="0.04" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.advanced.AdvancedStateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:37" hostname="d5b6f4c2401e" time="0.006">
+    <testcase name="administrativeTargetsAreConservative" classname="dev.bautista.spotlight.advanced.AdvancedStateTest" time="0.001" />
+    <testcase name="absentAndStoppedRemainStandard" classname="dev.bautista.spotlight.advanced.AdvancedStateTest" time="0.0" />
+    <testcase name="disconnectionDoesNotRetainPrivilege" classname="dev.bautista.spotlight.advanced.AdvancedStateTest" time="0.0" />
+    <testcase name="authorizationAndDenialAreDistinct" classname="dev.bautista.spotlight.advanced.AdvancedStateTest" time="0.0" />
+    <testcase name="onlyAuthorizedShellEnablesAdvanced" classname="dev.bautista.spotlight.advanced.AdvancedStateTest" time="0.0" />
+    <testcase name="settingsAreBoundedAndAllowlisted" classname="dev.bautista.spotlight.advanced.AdvancedStateTest" time="0.003" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.advanced.ReversibleSettingsTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:37" hostname="d5b6f4c2401e" time="0.024">
+    <testcase name="binderFailurePreservesRecovery" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.019" />
+    <testcase name="originalSurvivesMultipleChangesAndRestores" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.002" />
+    <testcase name="restoreRequiresExplicitConsent" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.0" />
+    <testcase name="noMutationWithoutConfirmation" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.001" />
+    <testcase name="unavailablePermissionAndInvalidInputsDoNothing" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.001" />
+    <testcase name="cancelledConnectionDoesNotProceed" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.001" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ai.PlanExecutionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:37" hostname="d5b6f4c2401e" time="0.013">
+    <testcase name="missingConfirmationNeverExecutes" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.005" />
+    <testcase name="failureBlocksRemainingSelectedChanges" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.002" />
+    <testcase name="dispatchFailureNeverChangesVolume" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.002" />
+    <testcase name="cancellationNeverStartsTheNextStep" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.001" />
+    <testcase name="skippedStepDoesNotBlockAndObservedStateIsRetained" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.001" />
+    <testcase name="existingSixStepLimitIsPreservedAndLargerPlansAreRejected" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.001" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ai.ToolCapabilityTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:37" hostname="d5b6f4c2401e" time="1.619">
+    <testcase name="volumeReportsTheObservedPlatformLevel" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="1.396" />
+    <testcase name="permissionsAreRecheckedBeforeExecution" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="0.05" />
+    <testcase name="disabledMediaIsNotAdvertisedBySearchOrTools" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="0.107" />
+    <testcase name="staleFolderGrantDoesNotAdvertiseAvailableFileSearch" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="0.065" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ai.ToolProtocolTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:39" hostname="d5b6f4c2401e" time="0.382">
+    <testcase name="geminiStructuredCallsAndThoughtsAreHandled" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.044" />
+    <testcase name="providerProposalsRemainUnexecutedAndNeedAppConfirmation" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.028" />
+    <testcase name="missingPermissionAndDisconnectedAdvancedCapabilitiesCannotExecute" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.028" />
+    <testcase name="requestsUseStrictSchemasAndNeverPutKeysInUrls" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.077" />
+    <testcase name="unknownCommandsAndInjectedAuthorizationAreRejected" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.04" />
+    <testcase name="providerFailureNeverEchoesApiKey" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.137" />
+    <testcase name="incompleteResponsesAndTooManyCallsAreRejected" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.027" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.automation.NativeCommandsTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:39" hostname="d5b6f4c2401e" time="0.442">
+    <testcase name="deletingNativeCommandPreservesLegacyRecordWithSameIdAndUnknownFields" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.144" />
+    <testcase name="onlyMarkedNativePlansBecomeVisibleCommands" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.054" />
+    <testcase name="savedBrightnessRoundTripsExactNativeValues" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.057" />
+    <testcase name="markerCannotPromoteLegacyOrRemoteActions" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.031" />
+    <testcase name="savingAppendsWithoutOverwritingLegacyUnknownDataOrConcurrentPreferences" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.043" />
+    <testcase name="previousMediaStepRemainsEditable" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.032" />
+    <testcase name="reviewPreservesPackageIdentityEvenWhenLabelsAreIdentical" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.04" />
+    <testcase name="fullStorageNeverEvictsPreviousData" classname="dev.bautista.spotlight.automation.NativeCommandsTest" time="0.041" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.automation.WorkflowBranchesTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:40" hostname="d5b6f4c2401e" time="0.221">
+    <testcase name="workflowSerializationPreservesPoliciesAndOldSteps" classname="dev.bautista.spotlight.automation.WorkflowBranchesTest" time="0.025" />
+    <testcase name="invalidBranchesAndUnknownToolsFailBeforeExecution" classname="dev.bautista.spotlight.automation.WorkflowBranchesTest" time="0.042" />
+    <testcase name="nestedInactiveBranchesCannotProduceEffects" classname="dev.bautista.spotlight.automation.WorkflowBranchesTest" time="0.059" />
+    <testcase name="recoverableReadFailureKeepsPreviousOutputAndContinues" classname="dev.bautista.spotlight.automation.WorkflowBranchesTest" time="0.034" />
+    <testcase name="sensitiveFailuresNeverContinueAndExpandedArgumentsAreValidated" classname="dev.bautista.spotlight.automation.WorkflowBranchesTest" time="0.035" />
+    <testcase name="variablesAndBranchesReuseResults" classname="dev.bautista.spotlight.automation.WorkflowBranchesTest" time="0.026" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.control.ActionCatalogTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:40" hostname="d5b6f4c2401e" time="0.424">
+    <testcase name="exactTopicDoesNotStartFileIndexing" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.112" />
+    <testcase name="messageLinksAreGeneratedWithoutConfiguration" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.074" />
+    <testcase name="agendaRangeUsesLocalDaysAcrossDaylightSaving" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.02" />
+    <testcase name="calendarRequestsItsOwnPermission" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.023" />
+    <testcase name="businessRepliesStayInsideSelectedApplication" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.06" />
+    <testcase name="naturalSettingsAndGoogleArePreparedWithoutManualLinks" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.023" />
+    <testcase name="whatsappOffersActionsBeforeFiles" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.019" />
+    <testcase name="naturalMessagePreservesCaseAndPunctuation" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.019" />
+    <testcase name="publicSearchUsesEncodedQueryAndPreferredApp" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.02" />
+    <testcase name="remoteReplyUsesNotificationPendingIntentAndInvalidatesTarget" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.03" />
+    <testcase name="duplicateNamesAndMultipleNumbersRequireSelection" classname="dev.bautista.spotlight.control.ActionCatalogTest" time="0.022" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.control.CommandCenterTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:40" hostname="d5b6f4c2401e" time="0.182">
+    <testcase name="youtubeQueryAndWhatsappMessageAreEncodedWithoutLosingText" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.03" />
+    <testcase name="suggestionsPreserveTypedPrefixAndDoNotCompleteUnrelatedText" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.032" />
+    <testcase name="fiveRecentThenEveryAppAlphabeticallyWithoutLosingDuplicates" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.052" />
+    <testcase name="localDeviceActionsAreNotWebSearches" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.021" />
+    <testcase name="arrowsCrossRecentSectionWithoutShiftingColumns" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.025" />
+    <testcase name="sofascoreHasNativeSearchAndAWorkingSearchFallbackInsteadOfMissingRoute" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.021" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.control.DeviceResourcesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:40" hostname="d5b6f4c2401e" time="0.994">
+    <testcase name="sharedReaderUsesReportedBatteryScaleAndPlugState" classname="dev.bautista.spotlight.control.DeviceResourcesTest" time="0.055" />
+    <testcase name="invalidCapacityIsUnknownAndOlderApiDoesNotFabricateThermalData" classname="dev.bautista.spotlight.control.DeviceResourcesTest" time="0.939" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.control.IntegrationRegistryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:41" hostname="d5b6f4c2401e" time="0.027">
+    <testcase name="appHubUsesCanonicalLauncherIdentityForFavoritesAndRecents" classname="dev.bautista.spotlight.control.IntegrationRegistryTest" time="0.027" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.control.MediaPlaybackTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:41" hostname="d5b6f4c2401e" time="0.028">
+    <testcase name="badgeRequiresActualPlayingState" classname="dev.bautista.spotlight.control.MediaPlaybackTest" time="0.028" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.control.NotificationContentTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.28">
+    <testcase name="inaccessibleMessageIsExplicitAndRemovedWithNotification" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.022" />
+    <testcase name="messagingStyleIncludesMessagesSendersAndGroup" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.055" />
+    <testcase name="sameConversationDoesNotDuplicate" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.023" />
+    <testcase name="summariesAreNotMessages" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.02" />
+    <testcase name="textLinesFallbackDeduplicates" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.018" />
+    <testcase name="canceledReplyFailsClearlyAndInvalidates" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.022" />
+    <testcase name="sameNamedContactsRemainDistinct" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.021" />
+    <testcase name="bigTextFallbackAndBoundedLongContent" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.022" />
+    <testcase name="noRemoteActionCannotSend" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.018" />
+    <testcase name="individualWithoutRemoteInputStillReadable" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.031" />
+    <testcase name="disconnectClearsContentAndAccessState" classname="dev.bautista.spotlight.control.NotificationContentTest" time="0.027" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.ConversationPersistenceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.206">
+    <testcase name="structuredHistorySurvivesRestartWithoutSavingActiveContext" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.042" />
+    <testcase name="invalidOrOversizedTurnsDoNotTouchStorage" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.026" />
+    <testcase name="fullStorageRefusesToEvictAnyConversation" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.026" />
+    <testcase name="deletingOneSavedThreadPreservesOtherAndItsHistory" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.028" />
+    <testcase name="resumeKeepsCompleteRecentExchangesAndNeverGrantsImplicitConsent" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.024" />
+    <testcase name="corruptStructuredRolesStayReadableButCannotBeResumed" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.022" />
+    <testcase name="savingBeforeExplicitStartPreservesLegacyAndUnknownFields" classname="dev.bautista.spotlight.data.ConversationPersistenceTest" time="0.038" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.NextPreferencesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.114">
+    <testcase name="learnedUsageIsNotOverwrittenByAppearanceSnapshotAndCanBeCleared" classname="dev.bautista.spotlight.data.NextPreferencesTest" time="0.066" />
+    <testcase name="newConfigRoundTripsWithoutSecrets" classname="dev.bautista.spotlight.data.NextPreferencesTest" time="0.048" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.OverlayWidthPersistenceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.04">
+    <testcase name="manualMemoryAndHorizontalOverrideSurviveSavingAutomaticAndReopening" classname="dev.bautista.spotlight.data.OverlayWidthPersistenceTest" time="0.04" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.OverlayWidthPolicyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.001">
+    <testcase name="automaticGeneralDoesNotHideOrEraseExistingHorizontalOverride" classname="dev.bautista.spotlight.data.OverlayWidthPolicyTest" time="0.001" />
+    <testcase name="explicitHorizontalWidthStartsFromSavedManualAndGeneralRemainsAutomatic" classname="dev.bautista.spotlight.data.OverlayWidthPolicyTest" time="0.0" />
+    <testcase name="restoringHorizontalInheritanceChangesNeitherGeneralWidthNorPosition" classname="dev.bautista.spotlight.data.OverlayWidthPolicyTest" time="0.0" />
+    <testcase name="manualWidthSurvivesDensityChangesOrientationAndImeWithoutExceedingScreen" classname="dev.bautista.spotlight.data.OverlayWidthPolicyTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.PersonalStorageTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.079">
+    <testcase name="personalSettingsRoundTripPreservesOlderPreferences" classname="dev.bautista.spotlight.data.PersonalStorageTest" time="0.031" />
+    <testcase name="editingPreservesIdentityWithoutDuplicatingNotes" classname="dev.bautista.spotlight.data.PersonalStorageTest" time="0.048" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.SettingsPersistenceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="0.11">
+    <testcase name="appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.039" />
+    <testcase name="visibleAppearanceMergeDoesNotResetUnrelatedPreferences" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.019" />
+    <testcase name="legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.019" />
+    <testcase name="staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.033" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.data.WindowSizePolicyTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:42" hostname="d5b6f4c2401e" time="3.855">
+    <testcase name="persistenceAndPortableBackupsPreserveNewChoiceAndOldData[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="1.052" />
+    <testcase name="persistenceAndPortableBackupsPreserveNewChoiceAndOldData" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="2.662" />
+    <testcase name="legacyWidthsRemainExactUntilUserChangesSlider[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.025" />
+    <testcase name="legacyWidthsRemainExactUntilUserChangesSlider" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.025" />
+    <testcase name="scaleSurvivesImeAndRespectsBothOrientations[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.024" />
+    <testcase name="scaleSurvivesImeAndRespectsBothOrientations" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.021" />
+    <testcase name="oldBackupDoesNotInventNewWidthChoice[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.023" />
+    <testcase name="oldBackupDoesNotInventNewWidthChoice" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.02" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.extensions.ExtensionRegistryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:46" hostname="d5b6f4c2401e" time="0.065">
+    <testcase name="commandsAndExtensionsHaveUniqueIds" classname="dev.bautista.spotlight.extensions.ExtensionRegistryTest" time="0.018" />
+    <testcase name="missingDependenciesAndDisabledProvidersAreExplicit" classname="dev.bautista.spotlight.extensions.ExtensionRegistryTest" time="0.03" />
+    <testcase name="openingRegistryKeepsARealTypedAction" classname="dev.bautista.spotlight.extensions.ExtensionRegistryTest" time="0.017" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.AdaptiveIndexTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:46" hostname="d5b6f4c2401e" time="1.135">
+    <testcase name="concurrentManualExtractionCannotBeOverwrittenByAnOlderRefreshSnapshot" classname="dev.bautista.spotlight.index.AdaptiveIndexTest" time="0.125" />
+    <testcase name="reducedThenPausedThenRecoveredSurvivesIndexRecreationWithoutRepeatingOcr" classname="dev.bautista.spotlight.index.AdaptiveIndexTest" time="0.057" />
+    <testcase name="coldPrivateOrDisabledIndexDoesNotScheduleRefreshOrNotifySearchAgain" classname="dev.bautista.spotlight.index.AdaptiveIndexTest" time="0.82" />
+    <testcase name="revokedAccessPreventsLateCommitAndPrivateRefreshDoesNotReadOrErase" classname="dev.bautista.spotlight.index.AdaptiveIndexTest" time="0.046" />
+    <testcase name="searchAndEnsureRemainAvailableWhileOcrIsSuspendedAndCancellationKeepsOldText" classname="dev.bautista.spotlight.index.AdaptiveIndexTest" time="0.05" />
+    <testcase name="changedFileDeferredKeepsLastKnownTextButClearlyLabelsItStale" classname="dev.bautista.spotlight.index.AdaptiveIndexTest" time="0.036" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.AdaptivePdfOcrTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:47" hostname="d5b6f4c2401e" time="0.14">
+    <testcase name="resumeReusesOnlyAlreadyRecognizedPagesFromIdenticalBytes" classname="dev.bautista.spotlight.index.AdaptivePdfOcrTest" time="0.05" />
+    <testcase name="pressureAfterRenderRecyclesFrameWithoutStartingNativeRecognition" classname="dev.bautista.spotlight.index.AdaptivePdfOcrTest" time="0.025" />
+    <testcase name="changedBytesOrTruncatedOldRecognitionCannotBeReused" classname="dev.bautista.spotlight.index.AdaptivePdfOcrTest" time="0.026" />
+    <testcase name="blockedPagesNeverRenderOrBecomeRecognizedFragments" classname="dev.bautista.spotlight.index.AdaptivePdfOcrTest" time="0.019" />
+    <testcase name="reducedBudgetBoundsAllocationAndLeavesRemainingPagesPending" classname="dev.bautista.spotlight.index.AdaptivePdfOcrTest" time="0.018" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.DocumentCacheCoverageTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:48" hostname="d5b6f4c2401e" time="0.168">
+    <testcase name="changedSourceBytesReplaceOldTextEvenWhenNewExtractionIsPartial" classname="dev.bautista.spotlight.index.DocumentCacheCoverageTest" time="0.042" />
+    <testcase name="broaderExtractionOfSameSourceUpdatesSearchAndProvenance" classname="dev.bautista.spotlight.index.DocumentCacheCoverageTest" time="0.031" />
+    <testcase name="missingOrInvalidOldProvenanceCannotBlockAnAuthorizedRefresh" classname="dev.bautista.spotlight.index.DocumentCacheCoverageTest" time="0.032" />
+    <testcase name="shorterManualExcerptOfSameBytesDoesNotEraseIndexedPages" classname="dev.bautista.spotlight.index.DocumentCacheCoverageTest" time="0.029" />
+    <testcase name="correctedOcrIsNotDiscardedJustBecauseAnOldFragmentWasLonger" classname="dev.bautista.spotlight.index.DocumentCacheCoverageTest" time="0.034" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.DocumentMimeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:48" hostname="d5b6f4c2401e" time="0.046">
+    <testcase name="genericKnownDocumentsUseTheCorrectExtractorWithoutGuessingOtherFormats" classname="dev.bautista.spotlight.index.DocumentMimeTest" time="0.018" />
+    <testcase name="oldGenericPdfRowsReachQuickLookWithCanonicalMimeWithoutReindexing" classname="dev.bautista.spotlight.index.DocumentMimeTest" time="0.028" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.DocumentRetrievalTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:48" hostname="d5b6f4c2401e" time="0.099">
+    <testcase name="excerptsRemainBoundedAndHandleDecomposedAccents" classname="dev.bautista.spotlight.index.DocumentRetrievalTest" time="0.037" />
+    <testcase name="naturalDocumentRequestFindsAuthorizedDeepTextAndRelevantExcerpt" classname="dev.bautista.spotlight.index.DocumentRetrievalTest" time="0.042" />
+    <testcase name="literalQueriesKeepTheirGrammar" classname="dev.bautista.spotlight.index.DocumentRetrievalTest" time="0.02" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.DocumentTextSafetyTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:48" hostname="d5b6f4c2401e" time="0.253">
+    <testcase name="nativePdfUsesActualBoundedSnapshotWithoutStartingOcr" classname="dev.bautista.spotlight.index.DocumentTextSafetyTest" time="0.207" />
+    <testcase name="oversizedAndCorruptPdfFailWithoutKeepingAdmissionOrPrivateSnapshots" classname="dev.bautista.spotlight.index.DocumentTextSafetyTest" time="0.03" />
+    <testcase name="abandonedSnapshotCleanupTouchesOnlyOwnedOldSessionFiles" classname="dev.bautista.spotlight.index.DocumentTextSafetyTest" time="0.016" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.DocumentTextTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:48" hostname="d5b6f4c2401e" time="0.09">
+    <testcase name="unsupportedBinaryIsNotTreatedAsText" classname="dev.bautista.spotlight.index.DocumentTextTest" time="0.018" />
+    <testcase name="extractsTextFromActualPdf" classname="dev.bautista.spotlight.index.DocumentTextTest" time="0.072" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.FileDateIndexTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:48" hostname="d5b6f4c2401e" time="1.349">
+    <testcase name="dateQueryReturnsRealMetadataAndPrunesSqlCandidates" classname="dev.bautista.spotlight.index.FileDateIndexTest" time="1.349" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.FileIndexTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:50" hostname="d5b6f4c2401e" time="0.085">
+    <testcase name="revokedTreeEntriesCannotAppearOrCrowdOutAuthorizedImports" classname="dev.bautista.spotlight.index.FileIndexTest" time="0.047" />
+    <testcase name="importedTranscriptIsSearchableAndSurvivesIndexRecreation" classname="dev.bautista.spotlight.index.FileIndexTest" time="0.037" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.MediaBitmapLifetimeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:50" hostname="d5b6f4c2401e" time="2.076">
+    <testcase name="cancellationWhileLabelsRunDoesNotRecycleInputUntilLabelsComplete" classname="dev.bautista.spotlight.index.MediaBitmapLifetimeTest" time="2.01" />
+    <testcase name="successfulTextAndLabelSequenceReleasesBitmapOnlyAfterTheWholeOperation" classname="dev.bautista.spotlight.index.MediaBitmapLifetimeTest" time="0.022" />
+    <testcase name="invalidImageReturnsNoTextWithoutAllocatingARecognizer" classname="dev.bautista.spotlight.index.MediaBitmapLifetimeTest" time="0.043" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.OcrBudgetTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:52" hostname="d5b6f4c2401e" time="0.002">
+    <testcase name="lowBatteryAndPowerSavingDeferWithoutInventingCapacity" classname="dev.bautista.spotlight.index.OcrBudgetTest" time="0.001" />
+    <testcase name="memoryAndThermalSafetyTakePriorityEvenWhileCharging" classname="dev.bautista.spotlight.index.OcrBudgetTest" time="0.0" />
+    <testcase name="moderatePressureReducesPageImageAndTimeBudgets" classname="dev.bautista.spotlight.index.OcrBudgetTest" time="0.001" />
+    <testcase name="unavailableSignalsDeferButOlderApiWithoutThermalSupportIsHonest" classname="dev.bautista.spotlight.index.OcrBudgetTest" time="0.0" />
+    <testcase name="recoveredStateRestoresNormalBoundedBudget" classname="dev.bautista.spotlight.index.OcrBudgetTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.OfficeTextTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:52" hostname="d5b6f4c2401e" time="0.125">
+    <testcase name="docxAndMetadataAreReadWithoutExecutingContent" classname="dev.bautista.spotlight.index.OfficeTextTest" time="0.028" />
+    <testcase name="xmlEntitiesAndCompressedBombsAreRejected" classname="dev.bautista.spotlight.index.OfficeTextTest" time="0.048" />
+    <testcase name="spreadsheetsResolveSharedStringsAndUseCachedValues" classname="dev.bautista.spotlight.index.OfficeTextTest" time="0.024" />
+    <testcase name="presentationReadsSlidesInNumericOrder" classname="dev.bautista.spotlight.index.OfficeTextTest" time="0.025" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.PdfOcrPipelineTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:52" hostname="d5b6f4c2401e" time="0.233">
+    <testcase name="mixedPagesProduceTraceableSearchableContentAndKeepNativeText" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.052" />
+    <testcase name="pageAndCharacterLimitsNeverPretendTheWholeDocumentWasRead" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.018" />
+    <testcase name="callerCancellationPropagatesAndDoesNotReleaseAnInFlightImageEarly" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.021" />
+    <testcase name="startFailureAndCanceledTaskCleanUpExactlyOnce" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.019" />
+    <testcase name="deadlinesStopSchedulingAndOcrFailuresDoNotInventText" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.019" />
+    <testcase name="dimensionsAreBoundedWithoutIntegerOverflow" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.015" />
+    <testcase name="cacheNeverCreatesAnImportOrBypassesRevocationOrPrivateMode" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.033" />
+    <testcase name="versionOneIndexMigratesWithoutDeletingExistingContent" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.026" />
+    <testcase name="timedOutTaskOwnsItsImageAndAdmissionUntilActualCompletion" classname="dev.bautista.spotlight.index.PdfOcrPipelineTest" time="0.029" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.index.SharedStorageTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:52" hostname="d5b6f4c2401e" time="0.048">
+    <testcase name="sharedFilesWithoutSelectedFoldersRespectRevocationAndDeletion" classname="dev.bautista.spotlight.index.SharedStorageTest" time="0.048" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.next.NativeProviderTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:52" hostname="d5b6f4c2401e" time="0.095">
+    <testcase name="unknownCityDoesNotSilentlyUseDefault" classname="dev.bautista.spotlight.next.NativeProviderTest" time="0.036" />
+    <testcase name="weatherUsesCacheAndPreservesOfflineTimestamp" classname="dev.bautista.spotlight.next.NativeProviderTest" time="0.029" />
+    <testcase name="sportsOnlyUsesDocumentedPublicEndpoint" classname="dev.bautista.spotlight.next.NativeProviderTest" time="0.03" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.next.NextContractsTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:52" hostname="d5b6f4c2401e" time="0.265">
+    <testcase name="weatherIsNativeWithoutNetworkDuringRouting" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.023" />
+    <testcase name="disabledCatalogItemDisappearsFromSearch" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.031" />
+    <testcase name="accentedSpanishCommandsKeepOriginalText" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.021" />
+    <testcase name="missingWeatherDoesNotBecomeZero" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.018" />
+    <testcase name="messageWithoutBodyOpensEditor" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.017" />
+    <testcase name="missingSportsScoreIsNotInvented" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.018" />
+    <testcase name="taskerContractUsesDocumentedParameters" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.02" />
+    <testcase name="genericMessageRespectsDefaultApp" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.015" />
+    <testcase name="messagePreservesBodyAndDestination" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.014" />
+    <testcase name="outOfRangeBrightnessDoesNotExecute" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.014" />
+    <testcase name="profilesAreValidWorkflows" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.015" />
+    <testcase name="catalogHasUniqueIdentifiers" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.014" />
+    <testcase name="taskerRejectsArbitraryPackages" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.015" />
+    <testcase name="pdfSearchIsScoped" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.014" />
+    <testcase name="unrecognizedQueryRemainsOrdinarySearch" classname="dev.bautista.spotlight.next.NextContractsTest" time="0.015" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.overlay.OverlayImeHeightTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:53" hostname="d5b6f4c2401e" time="0.219">
+    <testcase name="tabletPortraitRetainsKeyboardOnRefresh[28]" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.074" />
+    <testcase name="tabletPortraitRetainsKeyboardOnRefresh" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.062" />
+    <testcase name="geometryRefreshRetainsKeyboardUntilInsetsReportItHidden[28]" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.019" />
+    <testcase name="geometryRefreshRetainsKeyboardUntilInsetsReportItHidden" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.028" />
+    <testcase name="tabletLandscapeRetainsKeyboardOnRefresh[28]" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.018" />
+    <testcase name="tabletLandscapeRetainsKeyboardOnRefresh" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.018" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.overlay.OverlayStartupTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:53" hostname="d5b6f4c2401e" time="2.401">
+    <testcase name="transientFocusLossDoesNotStopOverlayService[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.097" />
+    <testcase name="transientFocusLossDoesNotStopOverlayService" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="1.212" />
+    <testcase name="outsideTouchStillStopsOverlayService[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.04" />
+    <testcase name="outsideTouchStillStopsOverlayService" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.043" />
+    <testcase name="windowRootAndComposeChildHaveServiceOwners[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.023" />
+    <testcase name="windowRootAndComposeChildHaveServiceOwners" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.024" />
+    <testcase name="composeCanAttachToAnActualOverlayWindow[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.53" />
+    <testcase name="composeCanAttachToAnActualOverlayWindow" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.432" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.overlay.OverlayViewportTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:55" hostname="d5b6f4c2401e" time="0.144">
+    <testcase name="legacyVisibleFrameDoesNotSubtractKeyboardTwice" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.018" />
+    <testcase name="resizedLegacyOverlayStillDetectsKeyboardWhenLocalInsetIsZero" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.018" />
+    <testcase name="modernVisibleFrameCoversMissingGlobalAndLocalImeInsets" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.018" />
+    <testcase name="modernMetricsSupplyKeyboardEvenWhenOverlayLocalInsetIsZero" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.029" />
+    <testcase name="lowPositionMovesAboveKeyboardInsteadOfInventingAvailableSpace" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.02" />
+    <testcase name="usableFrameExcludesBarsAndCutoutInBothOrientations" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.018" />
+    <testcase name="keyboardCannotChooseHorizontalWidthOnPortraitTablet" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.022" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.overlay.OverlayWidthTransitionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:55" hostname="d5b6f4c2401e" time="0.09">
+    <testcase name="closingCancelsOutstandingUpdates" classname="dev.bautista.spotlight.overlay.OverlayWidthTransitionTest" time="0.056" />
+    <testcase name="geometryRefreshAndReducedMotionApplyImmediately" classname="dev.bautista.spotlight.overlay.OverlayWidthTransitionTest" time="0.017" />
+    <testcase name="replacementStartsAtCurrentWidthAndRejectsStaleFrames" classname="dev.bautista.spotlight.overlay.OverlayWidthTransitionTest" time="0.017" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.personal.PersonalCommandsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:55" hostname="d5b6f4c2401e" time="0.004">
+    <testcase name="snippetsRenderDateAndTimeAndPreserveLiteralSeparators" classname="dev.bautista.spotlight.personal.PersonalCommandsTest" time="0.002" />
+    <testcase name="cyclesAndExcessiveChainsNeverProducePartialExpansion" classname="dev.bautista.spotlight.personal.PersonalCommandsTest" time="0.0" />
+    <testcase name="pinsAndHelpOnlyLoadQueries" classname="dev.bautista.spotlight.personal.PersonalCommandsTest" time="0.002" />
+    <testcase name="aliasesPreserveArgumentsAndExpandNestedTargets" classname="dev.bautista.spotlight.personal.PersonalCommandsTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.productivity.PortableConfigTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:55" hostname="d5b6f4c2401e" time="0.108">
+    <testcase name="focusPauseResumeAndCompletionCountOnlyOnce" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.029" />
+    <testcase name="legacyAutomaticWidthWithoutMemoryImportsAndInvalidWidthValuesStayAtomic" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.016" />
+    <testcase name="automaticAndLargeManualWidthsMustRoundTripWithoutLosingManualMemory" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.015" />
+    <testcase name="portableSettingsRoundTripAndDeviceAccessStaysLocal" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.014" />
+    <testcase name="invalidImportsAreAtomicAndNeverAcceptCredentialsOrPermissionFlags" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.015" />
+    <testcase name="rebootOrMonotonicResetDiscardsSessionAndStatsAreOptIn" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.019" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.AdvancedCalculatorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.002">
+    <testcase name="trigConstantsAndLogarithms" classname="dev.bautista.spotlight.search.AdvancedCalculatorTest" time="0.002" />
+    <testcase name="rejectsInvalidDomainsAndTrailingCode" classname="dev.bautista.spotlight.search.AdvancedCalculatorTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.AiTransportTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.096">
+    <testcase name="multilineSseAndLastUnterminatedEventAreParsed" classname="dev.bautista.spotlight.search.AiTransportTest" time="0.029" />
+    <testcase name="authorizationErrorsNeverEchoSecrets" classname="dev.bautista.spotlight.search.AiTransportTest" time="0.021" />
+    <testcase name="localSearchAndConfigurationDoNotInitializeHttpTransport" classname="dev.bautista.spotlight.search.AiTransportTest" time="0.022" />
+    <testcase name="emptyAndMalformedStreamsFail" classname="dev.bautista.spotlight.search.AiTransportTest" time="0.024" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.AudioProtocolTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.038">
+    <testcase name="transcriptionErrorsAndLimitsAreExplicit" classname="dev.bautista.spotlight.search.AudioProtocolTest" time="0.02" />
+    <testcase name="directAudioKeysUseHeaders" classname="dev.bautista.spotlight.search.AudioProtocolTest" time="0.018" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.AutomaticContextRegressionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.079">
+    <testcase name="automaticCaptureDoesNotReplaceExplicitContext" classname="dev.bautista.spotlight.search.AutomaticContextRegressionTest" time="0.034" />
+    <testcase name="repeatedCapturePreservesIdentityAndExpiry" classname="dev.bautista.spotlight.search.AutomaticContextRegressionTest" time="0.021" />
+    <testcase name="dismissalIsRespectedUntilClipboardActuallyChanges" classname="dev.bautista.spotlight.search.AutomaticContextRegressionTest" time="0.024" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.CalculatorTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.003">
+    <testcase name="searchRelevance" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.001" />
+    <testcase name="rejectsInvalid" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.0" />
+    <testcase name="argentineSpanishQuickCalculations" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.001" />
+    <testcase name="fractionalDecimalsMustNotBecomeGroupedThousands" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.0" />
+    <testcase name="precedence" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.0" />
+    <testcase name="realQueries" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.0" />
+    <testcase name="naturalPrefixDoesNotMakeArbitraryTextExecutable" classname="dev.bautista.spotlight.search.CalculatorTest" time="0.001" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.CalendarWorkspaceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.002">
+    <testcase name="touchingIntervalsAreFreeAndOverlappingIntervalsConflict" classname="dev.bautista.spotlight.search.CalendarWorkspaceTest" time="0.001" />
+    <testcase name="naturalDraftPreservesTitleResolvesWeekdayAndRejectsInvalidClock" classname="dev.bautista.spotlight.search.CalendarWorkspaceTest" time="0.001" />
+    <testcase name="alternativesSkipConflictsKeepDurationAndRespectWindow" classname="dev.bautista.spotlight.search.CalendarWorkspaceTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.DocumentSelectionTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.162">
+    <testcase name="cancellingPreparationDoesNotExtractTheNextDocument" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.036" />
+    <testcase name="selectionOcrAdmissionHasSixPageBudgetAndReportsUnhashedImages" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.022" />
+    <testcase name="twelveLargeDocumentsKeepEveryHeaderAndFooterWithinOneBudget" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.025" />
+    <testcase name="nestedExtractorTimeoutIsAnExplicitFailureRatherThanSilentCancellation" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.021" />
+    <testcase name="pdfExcerptPreservesPageMethodAndPartialCoverageWithoutGeneratedText" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.017" />
+    <testcase name="invalidProvenanceAndPermissionFailureNeverProducePartialDrafts" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.018" />
+    <testcase name="actualTextFilesKeepBothContentsAndExactSourceHashes" classname="dev.bautista.spotlight.search.DocumentSelectionTest" time="0.023" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.FileBufferTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.188">
+    <testcase name="shareUsesAndroidMultipleIntentWithEveryUriAndReadGrant[26]" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.038" />
+    <testcase name="shareUsesAndroidMultipleIntentWithEveryUriAndReadGrant" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.039" />
+    <testcase name="threeFilesStaySelectedAndDuplicateUrisDoNotMultiply[26]" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.031" />
+    <testcase name="threeFilesStaySelectedAndDuplicateUrisDoNotMultiply" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.028" />
+    <testcase name="foldersAppsUnsupportedSchemesAndUnboundedSelectionsAreRejected[26]" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.027" />
+    <testcase name="foldersAppsUnsupportedSchemesAndUnboundedSelectionsAreRejected" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.024" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.GeminiModelsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.072">
+    <testcase name="metadataIsExplicitPaginatedAndNeverContainsPromptOrKeyInUrl" classname="dev.bautista.spotlight.search.GeminiModelsTest" time="0.029" />
+    <testcase name="deniedMetadataDoesNotEchoProviderBodyOrSwitchProvider" classname="dev.bautista.spotlight.search.GeminiModelsTest" time="0.022" />
+    <testcase name="repeatedPaginationFailsInsteadOfLoopingOrPresentingPartialAvailability" classname="dev.bautista.spotlight.search.GeminiModelsTest" time="0.021" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.Glass20CoreTest" tests="24" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:56" hostname="d5b6f4c2401e" time="0.866">
+    <testcase name="spanishWordsAndRelativeActionsStayTyped[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.031" />
+    <testcase name="spanishWordsAndRelativeActionsStayTyped" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.025" />
+    <testcase name="visualExportExcludesUserDataAndRejectsSecrets[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.032" />
+    <testcase name="visualExportExcludesUserDataAndRejectsSecrets" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.019" />
+    <testcase name="automaticContextWaitsForPrivacyPreferences[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.165" />
+    <testcase name="automaticContextWaitsForPrivacyPreferences" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.036" />
+    <testcase name="originalTextAndAccentsSurviveSearch[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.038" />
+    <testcase name="originalTextAndAccentsSurviveSearch" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.028" />
+    <testcase name="temporaryContextExpiresWhilePinnedTextPersists[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.029" />
+    <testcase name="temporaryContextExpiresWhilePinnedTextPersists" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.027" />
+    <testcase name="emptyHomeHasNoFiller[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.028" />
+    <testcase name="emptyHomeHasNoFiller" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.028" />
+    <testcase name="malformedPlansCannotExecute[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.02" />
+    <testcase name="malformedPlansCannotExecute" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.024" />
+    <testcase name="preferenceCommandIsAvailableFromRoot[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.067" />
+    <testcase name="preferenceCommandIsAvailableFromRoot" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.058" />
+    <testcase name="privateModeStopsLearningWithoutDestroyingSavedState[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.042" />
+    <testcase name="privateModeStopsLearningWithoutDestroyingSavedState" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.041" />
+    <testcase name="lateResultsPreserveUserNavigation[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.02" />
+    <testcase name="lateResultsPreserveUserNavigation" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.019" />
+    <testcase name="preciseResultWinsOverHabitAndLargeFileBatch[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.022" />
+    <testcase name="preciseResultWinsOverHabitAndLargeFileBatch" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.02" />
+    <testcase name="sportsNeverIncludesAnotherTeamsEvents[26]" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.027" />
+    <testcase name="sportsNeverIncludesAnotherTeamsEvents" classname="dev.bautista.spotlight.search.Glass20CoreTest" time="0.019" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.HomeSuggestionsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:57" hostname="d5b6f4c2401e" time="0.17">
+    <testcase name="hideAndPinAreAppliedToAvailableCommands" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.021" />
+    <testcase name="freshInstallHasRealLaunchableAppsWithoutLearningOrUsageAccess" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.119" />
+    <testcase name="noHistoryOrUnavailableProvidersLeakIntoHome" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.015" />
+    <testcase name="disabledSuggestionsReturnNothing" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.015" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.HybridSearchTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:57" hostname="d5b6f4c2401e" time="0.201">
+    <testcase name="hybridPresetAndPortableConfigKeepUserChoicesAndPrivateState" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.019" />
+    <testcase name="presentationKeepsSecondExactMatchAboveUnrelatedRowsInTopCategory" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.015" />
+    <testcase name="homePinPrioritySurvivesPresentationAndDuplicateRecentQueriesStaySafe" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.016" />
+    <testcase name="learningControlsRecentSuggestionsAndHiddenPinnedStillApply" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.034" />
+    <testcase name="musicUsesInstalledAudioCategoryAndRealLaunchRatherThanAutoplay" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.036" />
+    <testcase name="noMusicAppOffersSessionControlsWithoutFakeLaunch" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.045" />
+    <testcase name="compoundAndContextualQueriesOfferReviewWithoutExecuting" classname="dev.bautista.spotlight.search.HybridSearchTest" time="0.036" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.LocalPlanTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:57" hostname="d5b6f4c2401e" time="0.004">
+    <testcase name="rejectsUnsupportedOrUnsafeStepsRatherThanExecutingPartialInterpretation" classname="dev.bautista.spotlight.search.LocalPlanTest" time="0.003" />
+    <testcase name="parsesTypedOrderedStepsAndAccents" classname="dev.bautista.spotlight.search.LocalPlanTest" time="0.001" />
+    <testcase name="supportsIndependentVolumeAndBrightnessBoundaries" classname="dev.bautista.spotlight.search.LocalPlanTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.LocalToolsTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:58" hostname="d5b6f4c2401e" time="0.006">
+    <testcase name="naturalConversionsUseOnlyKnownCompatibleUnits" classname="dev.bautista.spotlight.search.LocalToolsTest" time="0.003" />
+    <testcase name="quickLinksRejectCredentialsAndExecutableSchemes" classname="dev.bautista.spotlight.search.LocalToolsTest" time="0.0" />
+    <testcase name="temperaturesRespectAbsoluteZero" classname="dev.bautista.spotlight.search.LocalToolsTest" time="0.002" />
+    <testcase name="convertsCompatibleUnitsAndRejectsDifferentFamilies" classname="dev.bautista.spotlight.search.LocalToolsTest" time="0.0" />
+    <testcase name="clockUsesRealTimeZonesAndDateRollover" classname="dev.bautista.spotlight.search.LocalToolsTest" time="0.0" />
+    <testcase name="datesRejectInvalidCalendarInput" classname="dev.bautista.spotlight.search.LocalToolsTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.Next091ProductivityTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:58" hostname="d5b6f4c2401e" time="0.236">
+    <testcase name="modifiersUseRealScopesAndPermissionFallback" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.027" />
+    <testcase name="commandQueriesDoNotGetMixedWithFiles" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.024" />
+    <testcase name="textOperationsHandleUnicodeAndMultiline" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.019" />
+    <testcase name="clipboardIdentityAndFavoritesStayTemporary" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.02" />
+    <testcase name="workflowConditionStopsBeforeSideEffects" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.019" />
+    <testcase name="workflowPassesUserInputThroughLocalTransforms" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.018" />
+    <testcase name="snippetsAskForFieldsInsteadOfCopyingUnresolvedText" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.019" />
+    <testcase name="localCardsNeverNeedOnlineProvider" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.028" />
+    <testcase name="symbolsAreCopyableDataNotNavigation" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.019" />
+    <testcase name="musicCategoryUsesDeclaredAppMetadata" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.025" />
+    <testcase name="textValidationAndRoundTrips" classname="dev.bautista.spotlight.search.Next091ProductivityTest" time="0.018" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.NextCoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:58" hostname="d5b6f4c2401e" time="0.061">
+    <testcase name="exactMatchSurvivesLearnedFuzzyAndDuplicateSources" classname="dev.bautista.spotlight.search.NextCoreTest" time="0.019" />
+    <testcase name="officialRequestsKeepKeysOutOfUrlsAndLimitHistory" classname="dev.bautista.spotlight.search.NextCoreTest" time="0.018" />
+    <testcase name="streamedDeltasAndIncompleteResponses" classname="dev.bautista.spotlight.search.NextCoreTest" time="0.024" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.NextToolsTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:58" hostname="d5b6f4c2401e" time="0.177">
+    <testcase name="naturalFilesEventsAndCalls" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.026" />
+    <testcase name="workflowStopsAfterFailedStep" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.022" />
+    <testcase name="phoneAndTabletBoundsReserveImeAndStayOnScreen" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.014" />
+    <testcase name="explicitMessagingChannelOverridesDefault" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.022" />
+    <testcase name="presetsPreserveNonVisualData" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.014" />
+    <testcase name="workflowRoundTripsAndPassesData" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.015" />
+    <testcase name="workflowRejectsInvalidSteps" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.018" />
+    <testcase name="areaSpeedAndCubicVolumeRemainOffline" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.025" />
+    <testcase name="workflowCancellationStopsPendingActions" classname="dev.bautista.spotlight.search.NextToolsTest" time="0.018" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.OfflineHttpContractTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:58" hostname="d5b6f4c2401e" time="0.453">
+    <testcase name="sportsMissingScoreAndEmptyFixturesStayHonest" classname="dev.bautista.spotlight.search.OfflineHttpContractTest" time="0.122" />
+    <testcase name="forecastFixtureIsParsedAndCachedWithoutRepeatedRequests" classname="dev.bautista.spotlight.search.OfflineHttpContractTest" time="0.027" />
+    <testcase name="aiStreamsOverRealHttpWithoutContactingAProvider" classname="dev.bautista.spotlight.search.OfflineHttpContractTest" time="0.024" />
+    <testcase name="emptyAiStreamFailsInsteadOfInventingContent" classname="dev.bautista.spotlight.search.OfflineHttpContractTest" time="0.023" />
+    <testcase name="httpTimeoutTerminatesWithoutProviderCalls" classname="dev.bautista.spotlight.search.OfflineHttpContractTest" time="0.23" />
+    <testcase name="authorizationAndQuotaErrorsDoNotExposeResponseSecrets" classname="dev.bautista.spotlight.search.OfflineHttpContractTest" time="0.025" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.OnlineDataTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:58" hostname="d5b6f4c2401e" time="0.079">
+    <testcase name="weatherIncludesHourlyAndDailyDataAndFullPlace" classname="dev.bautista.spotlight.search.OnlineDataTest" time="0.023" />
+    <testcase name="currencyShowsProviderDateAndCalculatedValue" classname="dev.bautista.spotlight.search.OnlineDataTest" time="0.018" />
+    <testcase name="recognizesOnlyCompleteRequests" classname="dev.bautista.spotlight.search.OnlineDataTest" time="0.038" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.QueryInterpretationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.011">
+    <testcase name="knowledgeAndCalendarResolveWithoutRemoteCalls" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.005" />
+    <testcase name="literalOperatorsAndEntityNumbersArePreserved" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.001" />
+    <testcase name="lastWeekPhotoIsCalendarWeekAndUnknownMetadataExcluded" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.003" />
+    <testcase name="timezoneDaySurvivesDstAndDoesNotAssume24Hours" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.001" />
+    <testcase name="yesterdayPdfUsesHalfOpenLocalDatesNotName" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.0" />
+    <testcase name="sqlPreFilterIsParameterizedAndNeverPrunesOrNotBranches" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.001" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.ResultSectionsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.047">
+    <testcase name="naturalYesterdayPhotosUsesDateFilterRatherThanFilename" classname="dev.bautista.spotlight.search.ResultSectionsTest" time="0.017" />
+    <testcase name="manyFilesCannotDisplaceAppAndSectionsAreLimited" classname="dev.bautista.spotlight.search.ResultSectionsTest" time="0.015" />
+    <testcase name="metadataSeparatesSettingsWeatherSportAndMessaging" classname="dev.bautista.spotlight.search.ResultSectionsTest" time="0.015" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.SearchQueryTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.002">
+    <testcase name="phrasesAreContiguousAndSupportQuotedOperators" classname="dev.bautista.spotlight.search.SearchQueryTest" time="0.0" />
+    <testcase name="booleanPrecedenceAndNegation" classname="dev.bautista.spotlight.search.SearchQueryTest" time="0.001" />
+    <testcase name="kindAuthorAndDatesUseRealMetadata" classname="dev.bautista.spotlight.search.SearchQueryTest" time="0.0" />
+    <testcase name="malformedQueriesFailWithoutCrashing" classname="dev.bautista.spotlight.search.SearchQueryTest" time="0.001" />
+    <testcase name="naturalImageDescriptionsMapToTypeAndTerms" classname="dev.bautista.spotlight.search.SearchQueryTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.SpaceRequestsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.0">
+    <testcase name="sportsQueriesPreserveEntityAndUnavailableMmaIsExplicit" classname="dev.bautista.spotlight.search.SpaceRequestsTest" time="0.0" />
+    <testcase name="weatherQuestionsUseForecastAndAutomaticWidthPreservesManualSettings" classname="dev.bautista.spotlight.search.SpaceRequestsTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.UnifiedRootRegressionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.51">
+    <testcase name="installedSpotifyIsFirstInEveryRootSnapshot[26]" classname="dev.bautista.spotlight.search.UnifiedRootRegressionTest" time="0.157" />
+    <testcase name="installedSpotifyIsFirstInEveryRootSnapshot" classname="dev.bautista.spotlight.search.UnifiedRootRegressionTest" time="0.192" />
+    <testcase name="rootKnowledgeConsentIsExplicitAndPlainSearchHasNoAiFiller[26]" classname="dev.bautista.spotlight.search.UnifiedRootRegressionTest" time="0.067" />
+    <testcase name="rootKnowledgeConsentIsExplicitAndPlainSearchHasNoAiFiller" classname="dev.bautista.spotlight.search.UnifiedRootRegressionTest" time="0.048" />
+    <testcase name="dateFilesExplainPermissionInsteadOfSearchingForYesterday[26]" classname="dev.bautista.spotlight.search.UnifiedRootRegressionTest" time="0.024" />
+    <testcase name="dateFilesExplainPermissionInsteadOfSearchingForYesterday" classname="dev.bautista.spotlight.search.UnifiedRootRegressionTest" time="0.022" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.18">
+    <testcase name="phase6_compoundDocumentAndAiPlanExtractsTargetChapterLocally" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.025" />
+    <testcase name="phase4_contextualSuggestionsEnforceMaxOneAppDecayAndZeroAlphabeticalFiller" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.029" />
+    <testcase name="phase5_buscarDoesNotProduceIdenticalBuscarContenidoRowsOrLeakIntoFilesScope" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.017" />
+    <testcase name="naturalUnitQuestionUsesExistingLocalConversionTool" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.023" />
+    <testcase name="phase1And3_bocaLibertadoresQuestionOffersGeminiPrimaryInsteadOfGoogleOnly" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.041" />
+    <testcase name="phase2_resolvesAllTenNaturalQueriesWithEntitiesCapabilitiesPermissionsAndConfirmation" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.025" />
+    <testcase name="naturalMathQuestionRemainsOfflineEvenWithGeminiConfigured" classname="dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest" time="0.02" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.UniversalSafetyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.078">
+    <testcase name="chapterThreeIsBoundedAndCannotMatchThirty" classname="dev.bautista.spotlight.search.UniversalSafetyTest" time="0.022" />
+    <testcase name="openedYesterdayNeverTurnsIntoModificationFilter" classname="dev.bautista.spotlight.search.UniversalSafetyTest" time="0.018" />
+    <testcase name="commandsRetainNativeNoteCreation" classname="dev.bautista.spotlight.search.UniversalSafetyTest" time="0.022" />
+    <testcase name="consentUsesTypedProvenanceNotNewlinesOrRowIdentity" classname="dev.bautista.spotlight.search.UniversalSafetyTest" time="0.016" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.search.UniversalSearchTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:15:59" hostname="d5b6f4c2401e" time="0.35">
+    <testcase name="missingAppReturnsWebFallbackRatherThanFakeLaunch" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.04" />
+    <testcase name="photoDatesUseExistingParser" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.016" />
+    <testcase name="systemSettingsRemainExecutableRatherThanBecomingAppSearch" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.019" />
+    <testcase name="informationCombinesLocalWebAndExplicitAiWithoutRemoteCalls" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.021" />
+    <testcase name="calculatedValueRemainsPrimaryAheadOfWebFallback" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.028" />
+    <testcase name="exactResultsBeatFuzzyFavoritesAndProviderBatchSize" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.022" />
+    <testcase name="engineProducesExecutableVolumeAndBrightnessActions" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.028" />
+    <testcase name="sameIdentityKeepsHighestRelevanceRegardlessOfProviderArrival" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.015" />
+    <testcase name="acceptsSpacingAccentsAndPercentageBoundaries" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.015" />
+    <testcase name="disabledPhotoProviderExplainsAccessInsteadOfInventingMatches" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.021" />
+    <testcase name="exactAndPrefixInstalledAppBeatGenericCommandsRegardlessOfLearning" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.016" />
+    <testcase name="understandsExamplesAndPreservesInformationalText" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.017" />
+    <testcase name="multiwordAppQueriesRequireEveryTokenRatherThanAnUnrelatedSharedWord" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.016" />
+    <testcase name="relevantActionSectionPrecedesUnrelatedAppAndTiesAreStable" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.016" />
+    <testcase name="installedAppLaunchesFromUniversalBarAndKeepsStableIdentity" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.027" />
+    <testcase name="naturalQuestionExamplesOfferOnlyExplicitAiAndContextReview" classname="dev.bautista.spotlight.search.UniversalSearchTest" time="0.033" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ActionHubVisualTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:00" hostname="d5b6f4c2401e" time="12.926">
+    <testcase name="volumeSliderChangesAndroidMultimediaVolume" classname="dev.bautista.spotlight.ui.ActionHubVisualTest" time="1.464" />
+    <testcase name="returningToSameQueryWithinAFrameMustKeepResults" classname="dev.bautista.spotlight.ui.ActionHubVisualTest" time="0.962" />
+    <testcase name="darkHubComposerStaysInsidePanelAndReturns" classname="dev.bautista.spotlight.ui.ActionHubVisualTest" time="0.732" />
+    <testcase name="lightHubOpensTypesBeforeListingFiles" classname="dev.bautista.spotlight.ui.ActionHubVisualTest" time="9.768" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:13" hostname="d5b6f4c2401e" time="0.091">
+    <testcase name="tabCyclesAndEnterRunsOnlyFocusedContextAction" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.091" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.AiMarkdownTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:13" hostname="d5b6f4c2401e" time="0.029">
+    <testcase name="headingsListsAndIncompleteStreamingCodeStayReadable" classname="dev.bautista.spotlight.ui.AiMarkdownTest" time="0.001" />
+    <testcase name="emphasisHasNativeSpansAndDoesNotLoadLinksOrHtml" classname="dev.bautista.spotlight.ui.AiMarkdownTest" time="0.028" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ContentExpansionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:13" hostname="d5b6f4c2401e" time="0.998">
+    <testcase name="manualWidthStaysFixedWhenContentRequestsExpansion" classname="dev.bautista.spotlight.ui.ContentExpansionTest" time="0.423" />
+    <testcase name="resultsExpandAndClearingQueryContractsWithoutChangingPreferences" classname="dev.bautista.spotlight.ui.ContentExpansionTest" time="0.574" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:14" hostname="d5b6f4c2401e" time="0.034">
+    <testcase name="changedSelectionBeforeComposeDisposalDropsBothTextAndError" classname="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" time="0.019" />
+    <testcase name="replacementDropsOldCompletionAndKeepsNewRequestBusy" classname="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" time="0.004" />
+    <testcase name="alreadyDisposedScopeDoesNotLeaveExtractionBusy" classname="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" time="0.002" />
+    <testcase name="currentFailureIsVisibleAndNextExtractionCanSucceed" classname="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" time="0.002" />
+    <testcase name="disposedParentCannotPublishNativeErrorEvenBeforeOwnerDisposal" classname="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" time="0.005" />
+    <testcase name="explicitCancelDropsDelayedNativeFailureAndClearsBusy" classname="dev.bautista.spotlight.ui.DocumentExtractionRequestTest" time="0.001" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.DocumentSelectionFlowTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:14" hostname="d5b6f4c2401e" time="1.509">
+    <testcase name="comparingTwoActualFilesShowsAndSendsExactlyTheReviewedExcerpts" classname="dev.bautista.spotlight.ui.DocumentSelectionFlowTest" time="1.202" />
+    <testcase name="removingDocumentDiscardsLateSelectionPreparation" classname="dev.bautista.spotlight.ui.DocumentSelectionFlowTest" time="0.156" />
+    <testcase name="cancelledSelectionPreparationDiscardsLateText" classname="dev.bautista.spotlight.ui.DocumentSelectionFlowTest" time="0.151" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.GeminiHomeCaptureTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:15" hostname="d5b6f4c2401e" time="0.688">
+    <testcase name="graphiteThreeSectionsFromActualSearch" classname="dev.bautista.spotlight.ui.GeminiHomeCaptureTest" time="0.314" />
+    <testcase name="lightThreeSectionsPortrait" classname="dev.bautista.spotlight.ui.GeminiHomeCaptureTest" time="0.185" />
+    <testcase name="obsidianThreeSectionsFromActualSearch" classname="dev.bautista.spotlight.ui.GeminiHomeCaptureTest" time="0.188" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.GeminiPresentationTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:16" hostname="d5b6f4c2401e" time="0.435">
+    <testcase name="narrowOverlayKeepsSubtitleReadableAndDoesNotAllocateTabletMetadata" classname="dev.bautista.spotlight.ui.GeminiPresentationTest" time="0.047" />
+    <testcase name="referenceSearchBarIs56DpAndAllThreeHeaderActionsRemainAvailable" classname="dev.bautista.spotlight.ui.GeminiPresentationTest" time="0.099" />
+    <testcase name="tabletRowUsesReferenceDensitiesAndInlineSubtitleWithoutSelectionJump" classname="dev.bautista.spotlight.ui.GeminiPresentationTest" time="0.081" />
+    <testcase name="footerExecutesNativeCopyAndOpensActionsWithoutClosingOverlay" classname="dev.bautista.spotlight.ui.GeminiPresentationTest" time="0.207" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Glass20VisualTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:16" hostname="d5b6f4c2401e" time="0.848">
+    <testcase name="sportsWithoutFavoritesHasUsefulOnboarding" classname="dev.bautista.spotlight.ui.Glass20VisualTest" time="0.139" />
+    <testcase name="themeFamiliesRenderRealCalculatorResult" classname="dev.bautista.spotlight.ui.Glass20VisualTest" time="0.307" />
+    <testcase name="quickMenuStaysInWindowAndEscapeKeepsQuery" classname="dev.bautista.spotlight.ui.Glass20VisualTest" time="0.401" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.HybridIntelligenceTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:17" hostname="d5b6f4c2401e" time="1.513">
+    <testcase name="lightHybridHasUnifiedSuggestionsWithoutCategoryCircles" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.119" />
+    <testcase name="phoneHybridSupportsLongPressSecondaryActions" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.219" />
+    <testcase name="darkHybridPreservesTouchActionsAndUsefulStudyChoices" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.216" />
+    <testcase name="compoundResolutionExplainsMissingAppAndMinimumBrightness" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.079" />
+    <testcase name="planReviewHasNoSideEffectsAndUnavailableBrightnessDoesNotBlockVolume" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.314" />
+    <testcase name="configuredBackendReceivesNoRequestWhileTypingOrReviewingContext" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.221" />
+    <testcase name="unconfiguredAiReviewStaysLocalAndOffersSettings" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.208" />
+    <testcase name="translationRequiresUserTextAndReturnsSensitiveReview" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.084" />
+    <testcase name="missingPdfAndTextAskForContextWithoutReadingOrSending" classname="dev.bautista.spotlight.ui.HybridIntelligenceTest" time="0.052" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.KeyboardHintsTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:19" hostname="d5b6f4c2401e" time="0.281">
+    <testcase name="hintsDescribeActualTabAndLayeredEscapeBehavior" classname="dev.bautista.spotlight.ui.KeyboardHintsTest" time="0.281" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.NativeCommandFlowTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:19" hostname="d5b6f4c2401e" time="1.223">
+    <testcase name="savedPanelContainsNativeCommandsAndKeepsLegacyRoutinesHidden" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="0.123" />
+    <testcase name="deletingSavedCommandRequiresConfirmationAndDoesNotExecuteIt" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="0.318" />
+    <testcase name="savingFromEditorCreatesSearchableNativeCommandWithoutExecuting" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="0.284" />
+    <testcase name="searchOpensStoredReviewAndExplicitConfirmationChangesVolume" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="0.353" />
+    <testcase name="reorderingIdenticallyNamedAppsPreservesTheirExactPackages" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="0.143" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:20" hostname="d5b6f4c2401e" time="1.301">
+    <testcase name="localTextCardWorksWithoutInternet" classname="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" time="0.195" />
+    <testcase name="clipboardEditingPreservesTemporaryFavorite" classname="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" time="0.164" />
+    <testcase name="savedNoteLeavesCommandFilterAndAppearsImmediately" classname="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" time="0.471" />
+    <testcase name="snippetHasRequiredFieldsAndCopiesCompletedText" classname="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" time="0.128" />
+    <testcase name="timerShowsUsefulErrorWhenClockIsMissing" classname="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" time="0.205" />
+    <testcase name="longTemplateScrollsToConfirmation" classname="dev.bautista.spotlight.ui.Next091AdvancedVisualTest" time="0.138" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next091NavigationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:22" hostname="d5b6f4c2401e" time="0.497">
+    <testcase name="emptyHomeIsSuggestionsNeverHistory" classname="dev.bautista.spotlight.ui.Next091NavigationTest" time="0.067" />
+    <testcase name="explicitQuerySurvivesModeSwitch" classname="dev.bautista.spotlight.ui.Next091NavigationTest" time="0.119" />
+    <testcase name="filesCommandsAppsAndBackNeverInjectQuery" classname="dev.bautista.spotlight.ui.Next091NavigationTest" time="0.31" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next091SettingsVisualTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:22" hostname="d5b6f4c2401e" time="0.369">
+    <testcase name="groupedSettingsHaveFreshCaptures" classname="dev.bautista.spotlight.ui.Next091SettingsVisualTest" time="0.369" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next091VisualTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:23" hostname="d5b6f4c2401e" time="2.076">
+    <testcase name="whatsappMessageRemainsVisibleWhileReplying" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.376" />
+    <testcase name="allFourThemesHaveFreshHomeCaptures" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.197" />
+    <testcase name="phoneHomeHasTouchSizedModes" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.13" />
+    <testcase name="applicationsGridContainsInstalledFixtureApps" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.281" />
+    <testcase name="landscapeFitsAvailableHeight" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.171" />
+    <testcase name="actionFilterSupportsArrowSelectionAndEnter" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.076" />
+    <testcase name="filesCommandsAndAiModesKeepCleanQueriesAndHaveFreshCaptures" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.501" />
+    <testcase name="contextualActionsAndWebQuickLookHaveFreshCaptures" classname="dev.bautista.spotlight.ui.Next091VisualTest" time="0.344" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next100AdvancedVisualTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:25" hostname="d5b6f4c2401e" time="0.848">
+    <testcase name="absentShizukuShowsHonestState" classname="dev.bautista.spotlight.ui.Next100AdvancedVisualTest" time="0.15" />
+    <testcase name="extensionRegistryFiltersAndKeepsSearchContext" classname="dev.bautista.spotlight.ui.Next100AdvancedVisualTest" time="0.28" />
+    <testcase name="advancedPanelFitsPhone" classname="dev.bautista.spotlight.ui.Next100AdvancedVisualTest" time="0.185" />
+    <testcase name="devicePanelReturnsToOriginalQuery" classname="dev.bautista.spotlight.ui.Next100AdvancedVisualTest" time="0.233" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next100AppearanceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:25" hostname="d5b6f4c2401e" time="0.678">
+    <testcase name="fourPresetsRenderAtFloatingTabletWidth" classname="dev.bautista.spotlight.ui.Next100AppearanceTest" time="0.183" />
+    <testcase name="phoneCategorySelectorPreservesContent" classname="dev.bautista.spotlight.ui.Next100AppearanceTest" time="0.199" />
+    <testcase name="deviceAndShizukuPanelsExposeActualMissingState" classname="dev.bautista.spotlight.ui.Next100AppearanceTest" time="0.135" />
+    <testcase name="tabletSidebarChangesCategory" classname="dev.bautista.spotlight.ui.Next100AppearanceTest" time="0.116" />
+    <testcase name="systemReducedMotionIsRespected" classname="dev.bautista.spotlight.ui.Next100AppearanceTest" time="0.044" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next100SystemVisualTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:26" hostname="d5b6f4c2401e" time="0.183">
+    <testcase name="standardControlsRemainUsableWithoutPrivilege" classname="dev.bautista.spotlight.ui.Next100SystemVisualTest" time="0.067" />
+    <testcase name="appInspectorShowsPublicMetadataWithoutShizuku" classname="dev.bautista.spotlight.ui.Next100SystemVisualTest" time="0.116" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.Next110PanelTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:26" hostname="d5b6f4c2401e" time="0.741">
+    <testcase name="catalogWorksOnPhone" classname="dev.bautista.spotlight.ui.Next110PanelTest" time="0.142" />
+    <testcase name="missingSportsScoreIsVisibleWithoutFakeLiveMinute" classname="dev.bautista.spotlight.ui.Next110PanelTest" time="0.132" />
+    <testcase name="cachedWeatherPanelFitsPhoneWithoutInternet" classname="dev.bautista.spotlight.ui.Next110PanelTest" time="0.081" />
+    <testcase name="catalogReturnsWithoutLosingQuery" classname="dev.bautista.spotlight.ui.Next110PanelTest" time="0.231" />
+    <testcase name="profileRequiresExplicitExecution" classname="dev.bautista.spotlight.ui.Next110PanelTest" time="0.097" />
+    <testcase name="taskerMissingIsHonest" classname="dev.bautista.spotlight.ui.Next110PanelTest" time="0.053" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.NextInteractionTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:27" hostname="d5b6f4c2401e" time="0.599">
+    <testcase name="tabletActionsAreFilterableAndBackKeepsQuery" classname="dev.bautista.spotlight.ui.NextInteractionTest" time="0.222" />
+    <testcase name="unconfiguredAiShowsRealActionableError" classname="dev.bautista.spotlight.ui.NextInteractionTest" time="0.158" />
+    <testcase name="legacyRoutineRetainsReviewButHasNoProductEntryPoint" classname="dev.bautista.spotlight.ui.NextInteractionTest" time="0.055" />
+    <testcase name="phoneKeepsSearchFieldAndCategoriesUsable" classname="dev.bautista.spotlight.ui.NextInteractionTest" time="0.164" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.OverlayActionsImeTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:28" hostname="d5b6f4c2401e" time="0.207">
+    <testcase name="tabReleasesImeSpaceAndKeepsActionHeaderVisible" classname="dev.bautista.spotlight.ui.OverlayActionsImeTest" time="0.207" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:28" hostname="d5b6f4c2401e" time="0.581">
+    <testcase name="widthDraftUpdatesPreviewAndRestoresWithoutSaving" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.112" />
+    <testcase name="legacyAutomaticDensityIsExplainedWithoutChangingPreferences" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.05" />
+    <testcase name="tabletPortraitInheritsAutomaticGeneral" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.082" />
+    <testcase name="phoneLandscapeUsesActualHorizontalOverride" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.056" />
+    <testcase name="tabletUsesHorizontalOverrideAtRealSize" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.089" />
+    <testcase name="phoneClampsManualWidthWithoutPretendingItFits" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.06" />
+    <testcase name="densityChangesRowsButNeverWindowWidthOrSavedDraft" classname="dev.bautista.spotlight.ui.OverlayAppearancePreviewTest" time="0.129" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:29" hostname="d5b6f4c2401e" time="0.246">
+    <testcase name="tabletSpacious" classname="dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest" time="0.044" />
+    <testcase name="phonePortrait" classname="dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest" time="0.046" />
+    <testcase name="phoneLandscape" classname="dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest" time="0.041" />
+    <testcase name="tabletCompact" classname="dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest" time="0.04" />
+    <testcase name="tabletPortrait" classname="dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest" time="0.075" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.OverlayGeometryCaptureTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:29" hostname="d5b6f4c2401e" time="0.215">
+    <testcase name="phonePortrait" classname="dev.bautista.spotlight.ui.OverlayGeometryCaptureTest" time="0.088" />
+    <testcase name="tabletLandscape" classname="dev.bautista.spotlight.ui.OverlayGeometryCaptureTest" time="0.127" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:29" hostname="d5b6f4c2401e" time="0.383">
+    <testcase name="appearanceHasOneWidthControlAndNoTechnicalOverrides" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.057" />
+    <testcase name="phoneExposesOneAccessibleCompactToWideSlider" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.045" />
+    <testcase name="resettingPositionMustNotEraseHorizontalWidth" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.053" />
+    <testcase name="appearanceDraftOnlyAppliesOnRequest" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.082" />
+    <testcase name="landscapeControlRemainsReachableWithoutTechnicalText" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.045" />
+    <testcase name="openingSettingsDoesNotMigrateLegacyGeometryArbitrarily" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.049" />
+    <testcase name="newWidthChoicePreservesPositionSavedDataAndLegacyValues" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.052" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.OverlayWidthVisualSnapshotTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:29" hostname="d5b6f4c2401e" time="0.114">
+    <testcase name="phoneHorizontalOverride" classname="dev.bautista.spotlight.ui.OverlayWidthVisualSnapshotTest" time="0.057" />
+    <testcase name="tabletHorizontalOverride" classname="dev.bautista.spotlight.ui.OverlayWidthVisualSnapshotTest" time="0.057" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.PreviewPresentationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:30" hostname="d5b6f4c2401e" time="0.001">
+    <testcase name="shortNotesStayInListAndLongContentCanExpand" classname="dev.bautista.spotlight.ui.PreviewPresentationTest" time="0.001" />
+    <testcase name="pdfAndDocumentsKeepAutomaticQuickLook" classname="dev.bautista.spotlight.ui.PreviewPresentationTest" time="0.0" />
+    <testcase name="calculatorApplicationAndCommandsNeverDuplicateTheirValue" classname="dev.bautista.spotlight.ui.PreviewPresentationTest" time="0.0" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ProductCheckpointCaptureTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:30" hostname="d5b6f4c2401e" time="0.584">
+    <testcase name="tabletResultsDark" classname="dev.bautista.spotlight.ui.ProductCheckpointCaptureTest" time="0.165" />
+    <testcase name="tabletInspectorLight" classname="dev.bautista.spotlight.ui.ProductCheckpointCaptureTest" time="0.171" />
+    <testcase name="tabletInitialDark" classname="dev.bautista.spotlight.ui.ProductCheckpointCaptureTest" time="0.076" />
+    <testcase name="tabletPortraitLight" classname="dev.bautista.spotlight.ui.ProductCheckpointCaptureTest" time="0.172" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ProductEntryPointsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:30" hostname="d5b6f4c2401e" time="0.739">
+    <testcase name="visibleShortcutsOpenRealSavedAndSettingsWithoutChangingQuery" classname="dev.bautista.spotlight.ui.ProductEntryPointsTest" time="0.358" />
+    <testcase name="retiredCapabilitiesAreHiddenWhileDataAndUsefulActionsRemain" classname="dev.bautista.spotlight.ui.ProductEntryPointsTest" time="0.218" />
+    <testcase name="catalogAlsoHidesRetiredModesAndKeepsRealAndroidActions" classname="dev.bautista.spotlight.ui.ProductEntryPointsTest" time="0.163" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ProductivityNavigationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:31" hostname="d5b6f4c2401e" time="0.44">
+    <testcase name="preferencesOpenInlineWithoutLosingSearch" classname="dev.bautista.spotlight.ui.ProductivityNavigationTest" time="0.218" />
+    <testcase name="focusPanelReturnsToQuery" classname="dev.bautista.spotlight.ui.ProductivityNavigationTest" time="0.222" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:31" hostname="d5b6f4c2401e" time="0.399">
+    <testcase name="phoneCloseTargetDoesNotCloseOverlayOrClearQuery" classname="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" time="0.171" />
+    <testcase name="tabletCloseTargetDoesNotCloseOverlayOrClearQuery" classname="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" time="0.228" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:32" hostname="d5b6f4c2401e" time="1.229">
+    <testcase name="approvedMacosLightPortrait" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.139" />
+    <testcase name="approvedObsidianCalculator" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.135" />
+    <testcase name="approvedObsidianEmptyBar" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.06" />
+    <testcase name="approvedGraphiteCalculator" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.141" />
+    <testcase name="installedApplicationResultsAndSelection" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.276" />
+    <testcase name="pdfInspectorReportsRendererStateAndPreservesLayers" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.315" />
+    <testcase name="calculatorHasOneValueAndActionsUnderDemand" classname="dev.bautista.spotlight.ui.RaycastCompositionCaptureTest" time="0.163" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.RenewalInteractionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:33" hostname="d5b6f4c2401e" time="0.383">
+    <testcase name="preparingMessageRequiresRecipientAndContentReview" classname="dev.bautista.spotlight.ui.RenewalInteractionTest" time="0.118" />
+    <testcase name="expandingSectionAndBackPreservesQuery" classname="dev.bautista.spotlight.ui.RenewalInteractionTest" time="0.265" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.ResultRowGeometryRegressionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:33" hostname="d5b6f4c2401e" time="0.061">
+    <testcase name="selectionKeepsRowHeightAndMetadataColumnStable" classname="dev.bautista.spotlight.ui.ResultRowGeometryRegressionTest" time="0.061" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SearchEditingRegressionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:33" hostname="d5b6f4c2401e" time="0.34">
+    <testcase name="rightArrowDoesNotCompleteOrLeaveEditor" classname="dev.bautista.spotlight.ui.SearchEditingRegressionTest" time="0.138" />
+    <testcase name="homeEndAndShiftRightPreserveNativeEditing" classname="dev.bautista.spotlight.ui.SearchEditingRegressionTest" time="0.102" />
+    <testcase name="shiftArrowsSelectWithoutAcceptingSuggestion" classname="dev.bautista.spotlight.ui.SearchEditingRegressionTest" time="0.1" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SettingsVisualSnapshotTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:34" hostname="d5b6f4c2401e" time="0.407">
+    <testcase name="obsidianTablet" classname="dev.bautista.spotlight.ui.SettingsVisualSnapshotTest" time="0.087" />
+    <testcase name="graphiteTablet" classname="dev.bautista.spotlight.ui.SettingsVisualSnapshotTest" time="0.081" />
+    <testcase name="obsidianPhone" classname="dev.bautista.spotlight.ui.SettingsVisualSnapshotTest" time="0.129" />
+    <testcase name="macosLightTablet" classname="dev.bautista.spotlight.ui.SettingsVisualSnapshotTest" time="0.11" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SettingsWorkspaceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:34" hostname="d5b6f4c2401e" time="0.982">
+    <testcase name="newIntentTargetsExistingSettingsActivity" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.098" />
+    <testcase name="appearanceCategorySurvivesActivityRecreation" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.105" />
+    <testcase name="appearanceHasOneWidthAndResetRequiresConfirmation" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.205" />
+    <testcase name="globalSearchFindsGeminiAndReturnsToCategory" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.142" />
+    <testcase name="tabletHasSevenAreasAndIndependentDetailsPane" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.116" />
+    <testcase name="phoneCanChooseAreaAndScrollAllControls" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.104" />
+    <testcase name="darkCapabilitiesReflectUnavailablePermissions" classname="dev.bautista.spotlight.ui.SettingsWorkspaceTest" time="0.212" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SpotlightBarTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:35" hostname="d5b6f4c2401e" time="1.373">
+    <testcase name="capsuleAcceptsTextAndClearButtonRunsAction" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="0.696" />
+    <testcase name="optionalMenuSelectsExistingScopesAndReturnsToUniversal" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="0.445" />
+    <testcase name="optionsRespectKeyboardBudgetAndReportVisibility" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="0.125" />
+    <testcase name="optionsStayInComposeWindowAndToggleWithoutClearingQuery" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="0.106" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SpotlightPanelLayoutTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:37" hostname="d5b6f4c2401e" time="0.907">
+    <testcase name="gridOpensMultipleRowsAndStopsResizingAcrossFrames" classname="dev.bautista.spotlight.ui.SpotlightPanelLayoutTest" time="0.441" />
+    <testcase name="explicitShortcutAcceptsSuggestionWhileRightArrowOnlyEdits" classname="dev.bautista.spotlight.ui.SpotlightPanelLayoutTest" time="0.234" />
+    <testcase name="newNoteEditorStaysInsideOverlayInsteadOfOpeningADialog" classname="dev.bautista.spotlight.ui.SpotlightPanelLayoutTest" time="0.23" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SpotlightPanelVisualTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:37" hostname="d5b6f4c2401e" time="0.202">
+    <testcase name="darkPinnedPanelLoadsQueryWithoutExecutingAction" classname="dev.bautista.spotlight.ui.SpotlightPanelVisualTest" time="0.202" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.SpotlightVisualTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:38" hostname="d5b6f4c2401e" time="0.209">
+    <testcase name="lightNativeBar" classname="dev.bautista.spotlight.ui.SpotlightVisualTest" time="0.106" />
+    <testcase name="darkNativeBar" classname="dev.bautista.spotlight.ui.SpotlightVisualTest" time="0.102" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.UniversalProductionFlowTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:38" hostname="d5b6f4c2401e" time="2.235">
+    <testcase name="savedThreadSearchReviewSendsExactlyAuthorizedHistory" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.368" />
+    <testcase name="spotifyAndVolumeUseReviewedNativeToolsNotRemoteAi" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.23" />
+    <testcase name="naturalCalculatorEnterCopiesLocallyWithoutGeminiRequest" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.177" />
+    <testcase name="existingExecutionRegistrySharesNaturalLocalTools" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.046" />
+    <testcase name="cancellingSavedThreadReviewDoesNotSendAnything" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.299" />
+    <testcase name="disablingMediaAfterReviewBlocksDirectExecution" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.19" />
+    <testcase name="documentCompoundSendsExactlyFrozenReviewedPromptAfterSeparateConsent" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.296" />
+    <testcase name="directPercentageActionUsesObservedRegistryExecution" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.191" />
+    <testcase name="savingInlineConversationRetainsAllCompletedExchanges" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.259" />
+    <testcase name="typedQuestionDoesNotSendUntilEnterThenStreamsMarkdownInline" classname="dev.bautista.spotlight.ui.UniversalProductionFlowTest" time="0.178" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.VisualSnapshotTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:40" hostname="d5b6f4c2401e" time="0.993">
+    <testcase name="landscapeResults" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.135" />
+    <testcase name="keyboardSelection" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.142" />
+    <testcase name="optionsMenu" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.143" />
+    <testcase name="phoneResults" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.136" />
+    <testcase name="savedContent" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.054" />
+    <testcase name="initialBar" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.055" />
+    <testcase name="contextualPanel" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.121" />
+    <testcase name="pdfPermissionOrMissingFileError" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.041" />
+    <testcase name="preferences" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.046" />
+    <testcase name="calculatorResults" classname="dev.bautista.spotlight.ui.VisualSnapshotTest" time="0.12" />
+  </testsuite>
+  <testsuite name="dev.bautista.spotlight.ui.WorkflowConfirmationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-17T19:16:41" hostname="d5b6f4c2401e" time="0.058">
+    <testcase name="volumeRequiresReviewAndCancelStopsRemainingSteps" classname="dev.bautista.spotlight.ui.WorkflowConfirmationTest" time="0.058" />
+  </testsuite>
+</testsuites>

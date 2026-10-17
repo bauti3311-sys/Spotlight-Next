@@ -1,0 +1,82 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt:15:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt:34:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/control/ReplyService.kt:34:155 'val sender: CharSequence?' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt:198:48 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/control/ActionCatalogTest.kt:28:25 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/control/ActionCatalogTest.kt:118:17 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/control/NotificationContentTest.kt:17:60 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:51:56 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:63:54 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:95:60 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/HomeSuggestionsTest.kt:21:54 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/HybridSearchTest.kt:30:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/HybridSearchTest.kt:31:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/Next091ProductivityTest.kt:33:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/UnifiedRootRegressionTest.kt:29:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/UnifiedRootRegressionTest.kt:30:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/search/UniversalIntelligenceArchitectureTest.kt:199:54 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/ActionHubVisualTest.kt:32:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/GeminiHomeCaptureTest.kt:38:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/NativeCommandFlowTest.kt:77:76 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/Next091VisualTest.kt:50:256 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/Next091VisualTest.kt:65:21 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/OverlayGeometryCaptureTest.kt:51:55 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/RaycastCompositionCaptureTest.kt:57:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/SpotlightPanelLayoutTest.kt:39:18 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:153:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:154:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:155:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateDebugUnitTestConfig UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:testDebugUnitTest
+> Task :app:finalizeTestRoborazziDebug SKIPPED
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:compileDebugAndroidTestAidl NO-SOURCE
+> Task :app:checkDebugAndroidTestAarMetadata UP-TO-DATE
+> Task :app:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :app:mapDebugAndroidTestSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugAndroidTestResources UP-TO-DATE
+> Task :app:mergeDebugAndroidTestResources UP-TO-DATE
+> Task :app:processDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processDebugAndroidTestResources UP-TO-DATE
+> Task :app:compileDebugAndroidTestKotlin
+
+BUILD SUCCESSFUL in 1m 31s
+36 actionable tasks: 6 executed, 30 up-to-date

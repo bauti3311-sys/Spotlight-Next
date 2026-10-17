@@ -1,6 +1,22 @@
 # Continuidad integral · 17/10/2026
 
-## Estado integral verificado: presupuesto adaptativo del OCR
+## Estado integral verificado: selección documental y Gemini
+
+Código Android642b00cadcf0768f1969ad05d289ae9fdea01783, posterior al cierre OCR b1140df, misma rama y propietario. Se consolidó la selección existente: identificadores/fuente/página/método/cobertura y recorte explícito por documento, máximo16000caracteres,6OCRnuevos/60scooperativos; sin take final que oculte el último archivo. Cancelación y propiedad por consulta/conjunto seleccionado reutilizan DocumentExtractionRequest. DirectAi y revisión exacta PRIVATE_CONTEXT existentes, sin envío al escribir ni seleccionar.
+
+**Gates nuevos642b00c:**549 pruebas completas/116suites, cero fallos/errores/omisiones; lint3 sin errores (11advertencias+1informativa cada uno, con avisos GradleDependency sobre versiones sin cambiar); Release/R8 y compileDebugAndroidTestKotlin correctos en10min47s. Verificación estricta21s,21sin cambios y cero referencias grabadas/añadidas/modificadas.323inputs coinciden con Git y no hay fuentes adicionales. Evidencia: verification/document-selection-20261017/summary.json.32dirigidos precedieron el gate, no se suman a549.
+
+Dos TXT reales pasan por extracción → revisión Compose → DirectAi HTTP fixture y payload idéntico a lo revisado, cero solicitudes antes de Enviar; cancelar o quitar chip descarta texto tardío/no HTTP. No proveedor Gemini real ni recorrido de descubrimiento SAF: selección inicial inyectada en el componente existente. Nuevas funciones/pendientes: SELECCION-CONTEXTO-20261017.md. OCR/DeviceResources y la protección de151dfbe permanecen dentro de549.
+
+No dispositivo/KVM; instrumentación solo compilada. No memoria/latencia/OneUI/MLnativo medidos. Release interno sin firma principal29/ARM64/min26/target35/no depurable y alineación16KB correcta, no instalable ni entrega. No clave nueva ni APK parcial. Gitleaks árbol/26commits locales sin hallazgos, no auditoría remota completa. Consulta Actions de esta rama devuelve0ejecuciones; no se inició workflow, modificó presupuesto/main/PR16 ni hizo force. Firma histórica protegida/checks exactos siguen pendientes para la única entrega final APK+ZIP. La matriz40 NO está completa.
+
+### Seguimiento inmediato de memoria/continuidad
+
+ContextStore: reproducir que pinActive/removeContext no esperen carga persistida, el .take(30) silencioso, metadatos desconocidos de contextos y errores de AtomicFile. No perder fijados/conversaciones ni liberar importaciones antes de confirmar borrado. Después comprobar ContextPanel al quitar/cancelar un contexto mientras su lectura sigue en IO: reutilizar DocumentExtractionRequest y descartar revisión tardía, sin nuevo motor o interfaz. Hay escenarios en preparación; no atribuirlos como corregidos/verificados antes de ejecutarlos. Continuar desde el HEAD real y la reserva propia, sin cambiar claves o entregar parciales.
+
+---
+
+## Historial: presupuesto adaptativo del OCR
 
 Código Android f05e82b0c7a53263b2e25d381bb6ce057a75a321, descendiente de151dfbe, en la rama propia feat/work-integral-settings-20261016. Reserva comprobada y renovada por el mismo propietario work-gemini-native-20261014-f914c617 mediante CAS Git Data, sin force. No hay otro escritor autorizado por esta sesión. Consultar HEAD y el registro remoto antes de continuar; el checkpoint no implica tarea en segundo plano.
 

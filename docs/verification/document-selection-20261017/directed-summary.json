@@ -1,0 +1,10 @@
+{
+  "sourceCommit": "642b00cadcf0768f1969ad05d289ae9fdea01783",
+  "totals": {
+    "tests": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": 5
+}
