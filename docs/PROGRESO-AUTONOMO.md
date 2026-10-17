@@ -489,3 +489,12 @@ Implementada extracción PDF unificada con OCR local acotado, trazabilidad por p
 ### Identificación documental y cierre de límites — 17/10/2026
 
 Después de 7e2540d se añadió resolución conservadora de MIME genérico para PDF/TXT/Markdown, reutilizada en índice, rutas Quick Look y contexto autorizado; los tipos explícitos ajenos se conservan. Filas PDF antiguas genéricas se corrigen al consultar y la revisión de índice cambia para no dejar archivos previamente omitidos sin analizar. Ronda MIME: 30 pruebas dirigidas y compilación instrumentada correctas en 1 min 23 s. Después se añadió comprobación del plazo entre lecturas PDF y se avanzó la revisión del índice; la suite completa del estado final está pendiente. No se ejecutó OCR nativo en dispositivo ni Actions.
+
+
+### Recursos multimedia y siguiente validación integral
+
+La revisión 5af8dff pasó 507 pruebas completas, cero fallos/errores/omisiones. Se preservaron los XML y se interrumpió el resto de ese pipeline antes de completarlo para añadir gestión de memoria multimedia: no se declara lint/R8 de aquel pipeline como verde.
+
+MediaAnalysis comparte ahora el propietario de bitmap entre OCR y etiquetado y recicla al terminar realmente todas sus Tasks. Imágenes rotadas y fotogramas escalados liberan intermedios; cancelar no recicla una entrada que ML Kit aún usa. La decodificación inicializa inSampleSize=1 y rechaza dimensiones inválidas. Las salidas existentes de OCR/etiquetas y vídeo se conservan; no se añaden modelos ni proveedores. Ronda final: 25 pruebas dirigidas y compileDebugAndroidTestKotlin correctos en 49 s. El primer intento detectó inferencia genérica en el test; el segundo usaba BitmapFactory simulado que aceptaba bytes inválidos. El fixture pasó a GraphicsMode NATIVE sin debilitar su aserción. No es ejecución del reconocedor ML en un dispositivo.
+
+El flujo PDF no añade código HTTP para enviar documentos; usa el modelo latino ya incluido. No se midió tráfico ni RSS del SDK en un dispositivo real. Se inicia la suite completa del conjunto OCR/MIME/memoria antes del cierre.

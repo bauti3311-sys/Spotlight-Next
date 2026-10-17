@@ -25,12 +25,12 @@ object DocumentText {
         val type=mime ?: context.contentResolver.getType(uri).orEmpty()
         require(type=="application/pdf" || type.startsWith("text/") || type.startsWith("image/") || OfficeText.supports(type)){"La extracción admite PDF, Office, texto e imágenes."}
         val start=SystemClock.elapsedRealtime()
-        var admitted=false;var lease:PdfWorkLease?=null
+        var admitted=false;var lease:OcrWorkLease?=null
         try {
             if(type=="application/pdf") {
                 admitted=PdfTextPipeline.admission.tryAcquire()
                 check(admitted){"La extracción PDF sigue ocupada. Intentá nuevamente cuando termine la tarea local."}
-                lease=PdfWorkLease{PdfTextPipeline.admission.release()}
+                lease=OcrWorkLease{PdfTextPipeline.admission.release()}
             }
             val bytes=read(context,uri,if(type=="application/pdf")start+limits.totalMillis else null)
             val sha=MessageDigest.getInstance("SHA-256").digest(bytes).joinToString(""){"%02x".format(it)}

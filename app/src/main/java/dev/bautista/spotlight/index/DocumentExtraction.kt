@@ -61,7 +61,7 @@ data class ExtractedDocument(
 }
 
 /** A canceled ML task still owns its image. Keep admission closed until it actually finishes. */
-internal class PdfWorkLease(private val release:()->Unit):Closeable {
+internal class OcrWorkLease(private val release:()->Unit):Closeable {
     private var pending=0;private var closing=false;private var released=false
     @Synchronized fun retain():()->Unit {
         check(!closing);pending++
@@ -82,7 +82,7 @@ internal interface PdfPageSource:Closeable {
 
 internal object PdfTextPipeline {
     val admission=Semaphore(1)
-    suspend fun extract(source:PdfPageSource,limits:PdfTextLimits,sha:String,lease:PdfWorkLease,
+    suspend fun extract(source:PdfPageSource,limits:PdfTextLimits,sha:String,lease:OcrWorkLease,
         start:Long=SystemClock.elapsedRealtime(),clock:()->Long={SystemClock.elapsedRealtime()},
         recognizeOwned:suspend(Bitmap,()->Unit)->String):ExtractedDocument {
         val body=StringBuilder();val fragments=mutableListOf<TextFragment>();val issues=mutableListOf<ExtractionIssue>()

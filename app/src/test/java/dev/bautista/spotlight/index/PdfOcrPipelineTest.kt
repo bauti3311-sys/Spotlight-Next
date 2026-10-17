@@ -27,7 +27,7 @@ class PdfOcrPipelineTest {
   override fun close(){}
  }
  private suspend fun extract(source:Pages,limits:PdfTextLimits=PdfTextLimits(),clock:()->Long={0L},recognize:suspend()->String={"Rehabilitación vestibular y equilibrio reconocido"}):ExtractedDocument {
-  val lease=PdfWorkLease{}
+  val lease=OcrWorkLease{}
   return try{PdfTextPipeline.extract(source,limits,"a".repeat(64),lease,start=0,clock=clock){image,done->try{recognize()}finally{image.recycle();done()}}}finally{lease.close()}
  }
  @Before fun clear(){context.deleteDatabase("search-index.db")}
@@ -63,7 +63,7 @@ class PdfOcrPipelineTest {
  }
  @Test fun timedOutTaskOwnsItsImageAndAdmissionUntilActualCompletion()=runBlocking {
   val task=TaskCompletionSource<String>();val source=Pages(listOf(""));var released=0
-  val lease=PdfWorkLease{released++}
+  val lease=OcrWorkLease{released++}
   val doc=PdfTextPipeline.extract(source,PdfTextLimits(pageMillis=10),"fixture",lease,start=0,clock={0}){image,done->awaitOwnedTask({task.task}){image.recycle();done()}}
   lease.close();assertTrue(doc.partial);assertEquals(0,released);assertFalse(source.images.single().isRecycled)
   task.setResult("late text must never be inserted")
@@ -71,7 +71,7 @@ class PdfOcrPipelineTest {
  }
  @Test fun callerCancellationPropagatesAndDoesNotReleaseAnInFlightImageEarly()=runBlocking {
   val task=TaskCompletionSource<String>();val submitted=CompletableDeferred<Unit>();var released=0
-  val source=Pages(listOf(""));val lease=PdfWorkLease{released++}
+  val source=Pages(listOf(""));val lease=OcrWorkLease{released++}
   val job=launch{try{PdfTextPipeline.extract(source,PdfTextLimits(),"fixture",lease){image,done->submitted.complete(Unit);awaitOwnedTask({task.task}){image.recycle();done()}}}finally{lease.close()}}
   submitted.await();job.cancelAndJoin();assertTrue(job.isCancelled);assertEquals(0,released)
   assertFalse(source.images.single().isRecycled);task.setException(IOException("late failure"))

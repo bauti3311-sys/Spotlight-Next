@@ -36,6 +36,12 @@ internal suspend fun <T> awaitOwnedTask(start:()->Task<T>,release:()->Unit):T = 
     }catch(e:Throwable){finish();if(c.isActive)c.resumeWithException(e)}
 }
 
+/** Share bitmap lifetime across sequential OCR/label tasks, including cancellation between them. */
+internal suspend fun <T> withOwnedBitmap(bitmap:Bitmap,action:suspend(OcrWorkLease)->T):T {
+    val owner=OcrWorkLease{if(!bitmap.isRecycled)bitmap.recycle()}
+    return try{action(owner)}finally{owner.close()}
+}
+
 class MediaAnalysis(private val context: Context) : java.io.Closeable {
     private val ocrClient=lazy {TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)}
     private val ocr get()=ocrClient.value
@@ -86,16 +92,11 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
             "screenshot" to "captura pantalla",
         )
 
-    private suspend fun analyze(bitmap: Bitmap, visual: Boolean): String {
-        val input = InputImage.fromBitmap(bitmap, 0)
-        val text = tracked{ocr.process(input)}.awaitResult().text.take(16000)
-        val tags =
-            if (visual)
-                tracked{labels.process(input)}.awaitResult().joinToString(" ") {
-                    it.text + " " + (spanish[it.text.lowercase()] ?: "")
-                }
-            else ""
-        return if (visual) text + "\nEtiquetas aproximadas: " + tags else text
+    private suspend fun analyze(bitmap: Bitmap, visual: Boolean): String = withOwnedBitmap(bitmap) { owner ->
+        val input=InputImage.fromBitmap(bitmap,0)
+        val text=awaitOwnedTask(start={tracked{ocr.process(input)}},release=owner.retain()).text.take(16000)
+        val tags=if(visual)awaitOwnedTask(start={tracked{labels.process(input)}},release=owner.retain()).joinToString(" "){it.text+" "+(spanish[it.text.lowercase()] ?: "")} else ""
+        if(visual)text+"\nEtiquetas aproximadas: "+tags else text
     }
 
     suspend fun image(uri: Uri, visual: Boolean): String {
@@ -103,7 +104,8 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
         context.contentResolver.openInputStream(uri)?.use {
             BitmapFactory.decodeStream(it, null, bounds)
         }
-        val opts = BitmapFactory.Options()
+        if(bounds.outWidth<=0 || bounds.outHeight<=0)return ""
+        val opts = BitmapFactory.Options().apply{inSampleSize=1}
         while (
             bounds.outWidth / opts.inSampleSize > 1600 ||
                 bounds.outHeight / opts.inSampleSize > 1600
@@ -112,15 +114,18 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
             context.contentResolver.openInputStream(uri)?.use {
                 BitmapFactory.decodeStream(it, null, opts)
             } ?: return ""
+        var normalized:Bitmap?=null
+        var transferred=false
         return try {
             withTimeout(30000) {
-                analyze(
-                    ImageMetadata.orient(bitmap, ImageMetadata.read(context, uri).orientation),
-                    visual,
-                )
+                val oriented=ImageMetadata.orient(bitmap,ImageMetadata.read(context,uri).orientation)
+                normalized=oriented
+                if(oriented!==bitmap)bitmap.recycle()
+                transferred=true
+                analyze(oriented,visual)
             }
         } finally {
-            /* managed lifetime: ML Tasks can outlive coroutine cancellation */
+            if(!transferred){normalized?.let{if(!it.isRecycled)it.recycle()};if(!bitmap.isRecycled)bitmap.recycle()}
         }
     }
 
@@ -150,7 +155,7 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
                         )
                 val frame =
                     original?.let {
-                        if (it.width > 1600 || it.height > 1600)
+                        try { if (it.width > 1600 || it.height > 1600)
                             Bitmap.createScaledBitmap(
                                 it,
                                 (it.width * minOf(1600f / it.width, 1600f / it.height))
@@ -161,15 +166,17 @@ class MediaAnalysis(private val context: Context) : java.io.Closeable {
                                     .coerceAtLeast(1),
                                 true,
                             )
-                        else it
+                        else it } catch(e:Throwable){it.recycle();throw e}
                     } ?: continue
+                if(original!==frame && original?.isRecycled==false)original.recycle()
+                var transferred=false
                 try {
                     output
                         .append("[${ms/1000}] ")
-                        .append(withTimeout(30000) { analyze(frame, true) }.replace('\n', ' '))
+                        .append(withTimeout(30000) { transferred=true;analyze(frame, true) }.replace('\n', ' '))
                         .append('\n')
                 } finally {
-                    /* managed lifetime: ML Tasks can outlive coroutine cancellation */
+                    if(!transferred && !frame.isRecycled)frame.recycle()
                 }
             }
             output.toString().take(40000)

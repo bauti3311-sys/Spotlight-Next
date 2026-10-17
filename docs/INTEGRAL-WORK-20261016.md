@@ -60,3 +60,12 @@ Código publicado 0c2f74f: 493 Android/JVM correctas (104 suites, cero fallos/er
 ### OCR PDF local — 17/10/2026
 
 Implementada extracción PDF unificada con OCR local acotado, trazabilidad por página y fuente, resultados parciales, cancelación segura de recursos ML e índice v2 aditivo. La búsqueda excluye las etiquetas generadas para no crear relevancia falsa. 29 pruebas dirigidas y compileDebugAndroidTestKotlin correctos; OCR real instrumentado compilado, no ejecutado por falta de dispositivo/KVM. Gates completos pendientes. Ver docs/OCR-LOCAL-20261017.md para comandos/límites. No interfaz rediseñada, Actions, clave nueva ni APK parcial.
+
+
+### Recursos multimedia y siguiente validación integral
+
+La revisión 5af8dff pasó 507 pruebas completas, cero fallos/errores/omisiones. Se preservaron los XML y se interrumpió el resto de ese pipeline antes de completarlo para añadir gestión de memoria multimedia: no se declara lint/R8 de aquel pipeline como verde.
+
+MediaAnalysis comparte ahora el propietario de bitmap entre OCR y etiquetado y recicla al terminar realmente todas sus Tasks. Imágenes rotadas y fotogramas escalados liberan intermedios; cancelar no recicla una entrada que ML Kit aún usa. La decodificación inicializa inSampleSize=1 y rechaza dimensiones inválidas. Las salidas existentes de OCR/etiquetas y vídeo se conservan; no se añaden modelos ni proveedores. Ronda final: 25 pruebas dirigidas y compileDebugAndroidTestKotlin correctos en 49 s. El primer intento detectó inferencia genérica en el test; el segundo usaba BitmapFactory simulado que aceptaba bytes inválidos. El fixture pasó a GraphicsMode NATIVE sin debilitar su aserción. No es ejecución del reconocedor ML en un dispositivo.
+
+El flujo PDF no añade código HTTP para enviar documentos; usa el modelo latino ya incluido. No se midió tráfico ni RSS del SDK en un dispositivo real. Se inicia la suite completa del conjunto OCR/MIME/memoria antes del cierre.
