@@ -59,3 +59,6 @@ Las 40 decisiones **no están completadas integralmente**. Semántica local medi
 ## Revalidación del checkpoint — 17/10/2026
 
 El código f490963 pasó nuevamente 483 pruebas Android/JVM, tres lint sin errores, Release/R8 sin firma y 21 comparaciones visuales estrictas sin cambios. Esto verifica los recorridos automatizados actuales; no promueve capacidades parciales a completas ni acredita pruebas físicas o de proveedor. La evidencia y las limitaciones están en `verification/integral-20261017/summary.json` y `HANDOFF-INTEGRAL-20261017.md`. No se repitió Python porque no cambió su código; se conservan los 30+5 resultados anteriores. La clave temporal de P1 no sobrevivió: no se generó otra ni se ofrece una actualización incompatible. No se entregó APK parcial.
+
+
+Actualización posterior: 0c2f74f incorpora continuación estructurada de conversaciones con revisión explícita. Pasó 493 Android/JVM, tres lint sin errores, Release/R8 sin firma y 21 comparaciones sin cambios. Evidencia actual en `verification/conversations-20261017/summary.json`. No se convierten los pendientes de proveedor/dispositivo, OCR PDF, semántica, alertas, memoria avanzada o cola persistente en funciones completas. No hay APK parcial.

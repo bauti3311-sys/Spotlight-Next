@@ -1,5 +1,13 @@
 # Continuidad integral · 17/10/2026
 
+## Estado actual para continuar
+
+Último commit con cambios Android: `0c2f74fbefc374ae2842ab0d14f14c40c5d3fa0a`, publicado en la misma rama aislada. El checkpoint posterior contiene únicamente cierre documental/evidencia; obtener su HEAD y la reserva remotos antes de editar, sin volver a d4 ni descartar comandos/Ajustes/conversaciones. Gitleaks sin hallazgos en el árbol y 12 commits disponibles localmente.
+
+Este bloque pasó 493 pruebas Android/JVM, tres lint sin errores, Release/R8 sin firma y 21 comparaciones visuales sin cambios. Evidencia: `verification/conversations-20261017/summary.json`; descripción: `CONVERSACIONES-20261017.md`. La clave P1 sigue ausente; no se creó una sustituta. No ejecutar assembleFunctionalPreview para ofrecerlo como actualización P1 con otra firma. No se entrega una APK parcial y no se declara completada la matriz40.
+
+Siguiente cambio funcional: documentos autorizados, decisión35. Punto concreto: `index/DocumentText.kt` actualmente extrae texto PDF/Office/texto e imágenes, pero un PDF escaneado devuelve un error explícito. Incorporar OCR PDF local acotado reutilizando MediaAnalysis/MLKit y las utilidades PDF existentes, con cancelación, límites de páginas/píxeles/memoria y procedencia; no enviar contenido al proveedor ni sustituir el error por texto inventado. Conservar Quick Look. Añadir pruebas dirigidas y un escenario instrumentado del OCR real; si no hay dispositivo/emulador capaz de ejecutar sus bibliotecas nativas, registrar ese límite y continuar tareas independientes sin declararlo verificado. No confundir esta mejora con embeddings o búsqueda semántica. Mantener las prioridades y pendientes restantes de la matriz.
+
 ## Recuperación comprobada
 
 Se recuperó el árbol Git limpio de `feat/work-integral-settings-20261016` en `f49096313baa3df3b815d89b0babf80634cdd058`; coincide con el HEAD remoto. La reserva `787eaa6dea380665d68332d97e963332c0b39db3` sigue siendo de `work-gemini-native-20261014-f914c617`, con ese mismo checkpoint. No se reclamó ni liberó una reserva ajena. Se conserva el trabajo completo de Ajustes, capacidades, ejecución, documentos y comandos nativos guardados.
@@ -24,6 +32,6 @@ Evidencia versionada en [verification/integral-20261017/summary.json](verificati
 
 Estos resultados cierran los gates locales del código f490963; **no completan las 40 decisiones**. No declarar CI verde, instalación física ni verificación de proveedor. No hubo Actions, cambios de presupuesto, main, PR #16, force-push ni modificación de la estética aprobada de la barra.
 
-## Siguiente bloque funcional
+## Bloque siguiente al primer cierre (ya realizado)
 
-Publicar estos gates y actualizar la reserva con el checkpoint descendiente. La matriz `MATRIZ-40-INTEGRAL-20261016.md` conserva los pendientes reales. Siguiente cambio de producción: continuación estructurada de conversaciones guardadas (decisiones 15/24), reutilizando ContextStore y DirectAi, con revisión explícita de todos los mensajes que se enviarán y sin reinterpretar registros legados de texto como instrucciones autorizadas. Añadir persistencia compatible y un recorrido de producción búsqueda→conversación guardada→revisión→HTTP fixture, comprobando cero envíos al escribir y la igualdad del historial autorizado. No crear un motor IA paralelo ni enviar contexto al escribir. Después seguir con los pendientes documentales y memoria de la matriz; no entregar APKs parciales ni declarar completa la app por cerrar este gate.
+Tras publicar e768a6a se implementó la continuación estructurada de conversaciones guardadas (decisiones 15/24), reutilizando ContextStore y DirectAi. Se añadieron persistencia compatible y recorridos búsqueda→conversación guardada→revisión→HTTP fixture, comprobando cero envíos al escribir y la igualdad del historial autorizado. Código y resultados actuales están al inicio de este documento. La matriz conserva los pendientes reales; no entregar APKs parciales ni declarar completa la app por cerrar estos gates.

@@ -474,3 +474,8 @@ Recuperados f490963 y su reserva propia, sin código pendiente ni reinicio. El e
 ### Continuación estructurada de conversaciones — 17/10/2026
 
 Después de e768a6a, se conectó guardado de intercambios completos y reanudación desde búsqueda con revisión exacta del historial y pregunta antes de enviar. Conserva registros legados, no añade contexto activo ni relee adjuntos, no expulsa conversaciones al llegar al límite y confirma borrados. 48 pruebas dirigidas correctas y Gitleaks sin hallazgos. Ver docs/CONVERSACIONES-20261017.md. Suite completa, lint/R8 y visuales del bloque nuevo pendientes; no aplicar los gates de e768a6a a estos cambios todavía. No APK parcial ni Actions.
+
+
+### Conversaciones: gates cerrados — 17/10/2026
+
+Código publicado 0c2f74f: 493 Android/JVM correctas (104 suites, cero fallos/errores/omisiones), tres lint sin errores (10 advertencias/1 informativa por variante), Release/R8 sin firma correcta en 10 min 33 s y 21 comparaciones visuales estrictas correctas en 21 s, sin regrabar referencias. Las 303 entradas compiladas coinciden con Git. Gitleaks sin hallazgos en árbol y 12 commits locales. Las 48 dirigidas forman parte de las 493, no se suman. Evidencia en docs/verification/conversations-20261017/summary.json; docs/CONVERSACIONES-20261017.md describe límites. El handoff actual identifica OCR PDF local acotado como próximo bloque. Sin API real, validación física, Actions, firma histórica, clave P1 nueva ni APK parcial. La matriz40 sigue parcial.

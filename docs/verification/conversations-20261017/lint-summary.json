@@ -1,0 +1,404 @@
+{
+  "lint-results-debug": {
+    "severity": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "issues": [
+      {
+        "id": "ScopedStorage",
+        "severity": "Warning",
+        "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "11",
+            "column": "33"
+          }
+        ]
+      },
+      {
+        "id": "DiscouragedPrivateApi",
+        "severity": "Warning",
+        "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedUserService.kt",
+            "line": "40",
+            "column": "21"
+          }
+        ]
+      },
+      {
+        "id": "ExifInterface",
+        "severity": "Warning",
+        "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/index/ImageMetadata.kt",
+            "line": "6",
+            "column": "8"
+          }
+        ]
+      },
+      {
+        "id": "RedundantLabel",
+        "severity": "Warning",
+        "message": "Redundant label can be removed",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "23",
+            "column": "49"
+          }
+        ]
+      },
+      {
+        "id": "ChromeOsAbiSupport",
+        "severity": "Warning",
+        "message": "Missing x86_64 ABI support for ChromeOS",
+        "locations": [
+          {
+            "file": "app/build.gradle.kts",
+            "line": "29",
+            "column": "201"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "DataExtractionRules",
+        "severity": "Warning",
+        "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "16",
+            "column": "202"
+          }
+        ]
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Information",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/ui/OverlayAppearancePreview.kt",
+            "line": "48",
+            "column": "32"
+          }
+        ]
+      },
+      {
+        "id": "ViewConstructor",
+        "severity": "Warning",
+        "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/overlay/WindowFocusHost.kt",
+            "line": "8",
+            "column": "16"
+          }
+        ]
+      }
+    ]
+  },
+  "lint-results-functionalPreview": {
+    "severity": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "issues": [
+      {
+        "id": "ScopedStorage",
+        "severity": "Warning",
+        "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "11",
+            "column": "33"
+          }
+        ]
+      },
+      {
+        "id": "DiscouragedPrivateApi",
+        "severity": "Warning",
+        "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedUserService.kt",
+            "line": "40",
+            "column": "21"
+          }
+        ]
+      },
+      {
+        "id": "ExifInterface",
+        "severity": "Warning",
+        "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/index/ImageMetadata.kt",
+            "line": "6",
+            "column": "8"
+          }
+        ]
+      },
+      {
+        "id": "RedundantLabel",
+        "severity": "Warning",
+        "message": "Redundant label can be removed",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "23",
+            "column": "49"
+          }
+        ]
+      },
+      {
+        "id": "ChromeOsAbiSupport",
+        "severity": "Warning",
+        "message": "Missing x86_64 ABI support for ChromeOS",
+        "locations": [
+          {
+            "file": "app/build.gradle.kts",
+            "line": "29",
+            "column": "201"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "DataExtractionRules",
+        "severity": "Warning",
+        "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "16",
+            "column": "202"
+          }
+        ]
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Information",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/ui/OverlayAppearancePreview.kt",
+            "line": "48",
+            "column": "32"
+          }
+        ]
+      },
+      {
+        "id": "ViewConstructor",
+        "severity": "Warning",
+        "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/overlay/WindowFocusHost.kt",
+            "line": "8",
+            "column": "16"
+          }
+        ]
+      }
+    ]
+  },
+  "lint-results-release": {
+    "severity": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "issues": [
+      {
+        "id": "ScopedStorage",
+        "severity": "Warning",
+        "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "11",
+            "column": "33"
+          }
+        ]
+      },
+      {
+        "id": "DiscouragedPrivateApi",
+        "severity": "Warning",
+        "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedUserService.kt",
+            "line": "40",
+            "column": "21"
+          }
+        ]
+      },
+      {
+        "id": "ExifInterface",
+        "severity": "Warning",
+        "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/index/ImageMetadata.kt",
+            "line": "6",
+            "column": "8"
+          }
+        ]
+      },
+      {
+        "id": "RedundantLabel",
+        "severity": "Warning",
+        "message": "Redundant label can be removed",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "23",
+            "column": "49"
+          }
+        ]
+      },
+      {
+        "id": "ChromeOsAbiSupport",
+        "severity": "Warning",
+        "message": "Missing x86_64 ABI support for ChromeOS",
+        "locations": [
+          {
+            "file": "app/build.gradle.kts",
+            "line": "29",
+            "column": "201"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "locations": [
+          {
+            "file": "/tmp/spotlight-p1-cache/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15to18/1.72/32faf4d74dbc333fb3a7a6c80c30417cf888fc7a/bcpkix-jdk15to18-1.72.jar"
+          }
+        ]
+      },
+      {
+        "id": "DataExtractionRules",
+        "severity": "Warning",
+        "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`",
+        "locations": [
+          {
+            "file": "app/src/main/AndroidManifest.xml",
+            "line": "16",
+            "column": "202"
+          }
+        ]
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Information",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/ui/OverlayAppearancePreview.kt",
+            "line": "48",
+            "column": "32"
+          }
+        ]
+      },
+      {
+        "id": "ViewConstructor",
+        "severity": "Warning",
+        "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`",
+        "locations": [
+          {
+            "file": "app/src/main/java/dev/bautista/spotlight/overlay/WindowFocusHost.kt",
+            "line": "8",
+            "column": "16"
+          }
+        ]
+      }
+    ]
+  }
+}

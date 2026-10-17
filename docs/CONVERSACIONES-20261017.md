@@ -14,4 +14,12 @@ Eliminar una conversación requiere confirmación. La conversación original no 
 
 Comando: `:app:testDebugUnitTest --tests '*ConversationPersistenceTest' --tests '*UniversalProductionFlowTest' --tests '*Glass20CoreTest' --tests '*AutomaticContextRegressionTest' --tests '*AiTransportTest'`.
 
-48 pruebas correctas, cero fallos/errores/omisiones, BUILD SUCCESSFUL en 1 min 22 s. Incluye siete casos nuevos de persistencia/roles/límites/privacidad y tres recorridos nuevos del flujo de producción. Android es Robolectric API33; HTTP y claves son fixtures de MockWebServer. No se hicieron consultas reales al proveedor, uso de una clave del usuario ni pruebas físicas. Gitleaks del árbol sin hallazgos; diff --check correcto. Los gates completos de este bloque todavía están pendientes en su primer checkpoint.
+48 pruebas correctas, cero fallos/errores/omisiones, BUILD SUCCESSFUL en 1 min 22 s. Incluye siete casos nuevos de persistencia/roles/límites/privacidad y tres recorridos nuevos del flujo de producción. Android es Robolectric API33; HTTP y claves son fixtures de MockWebServer. No se hicieron consultas reales al proveedor, uso de una clave del usuario ni pruebas físicas. Gitleaks del árbol sin hallazgos; diff --check correcto. Estos fueron los resultados dirigidos del primer checkpoint 0c2f74f.
+
+## Gates completos de 0c2f74f
+
+493 pruebas Android/JVM correctas en 104 suites, cero fallos/errores/omisiones. Las 48 dirigidas están incluidas, no se suman de nuevo. Lint Debug, Release y functionalPreview sin errores, cada variante con las 10 advertencias y una informativa heredadas. Release/R8 sin firma correcta; pipeline completo en 10 min 33 s. Verificación posterior de 21 referencias visuales correcta en 21 s, sin grabar ni cambiar ninguna. Los 303 archivos de entradas compiladas coinciden con Git.
+
+El artefacto interno de R8 conserva paquete principal, versión 2.0.1/código29, ARM64/min26/target35 y ausencia de debuggable; zipalign16KB correcto. Las cadenas de la continuación nueva están presentes en DEX minificado. Está deliberadamente sin firmar y no se entrega para instalar. No se generó una clave nueva de P1 ni se utilizaron secretos históricos.
+
+Evidencia: [verification/conversations-20261017/summary.json](verification/conversations-20261017/summary.json), con comandos, logs, JUnit consolidado, diagnósticos lint, huellas de entradas y resultados visuales. Gitleaks sin hallazgos en árbol y 12 commits locales disponibles. Python no cambió: se conservan las 30+5 pruebas anteriores, sin volver a contarlas como ejecutadas ahora. Las 40 decisiones no están completas; no hubo entrega de APK parcial, Actions ni validación física/de proveedor.
