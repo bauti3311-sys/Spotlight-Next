@@ -419,3 +419,8 @@ Código Android 70e6f69b8a7660ae5eac987cc54450f88a3df4d3: 521 pruebas nuevas com
 La pérdida de cobertura por extracto corto se reprodujo antes (5casos/1fallo) y se corrigió con conservación por huella/página/método/texto, sin impedir cambios de fuente o correcciones OCR. Los35dirigidos pasaron; la descarga HTTP403 de su compilación instrumentada se resolvió en el reintento completo, sin cambiar dependencias. El primer pipeline fallido no se declara verde.
 
 OCR nativo instrumentado y mediciones físicas siguen pendientes: no hay dispositivo/KVM. Los516XML recuperados son históricos, no se suman a521; Python30+5 tampoco se repitió. Sin APK parcial, clave nueva, Actions, main, PR16 o cambios de presupuesto. Próximo bloque exacto: presupuesto OCR adaptativo del índice; ver HANDOFF-INTEGRAL-20261017.md. Las40decisiones permanecen parciales.
+
+
+### OCR adaptativo conectado · continuación de151dfbe
+
+DeviceResources/OcrBudget conectados a índice y pipeline: aplazamiento por recursos, reducción verificable, caché por página/huella y reintento manual sin repetir páginas válidas. Filas transaccionales cortas y ensure asíncrono también paraSAF.31dirigidos y compilación instrumentada correctos; gates completos pendientes en este checkpoint. Ver docs/OCR-ADAPTATIVO-20261017.md.

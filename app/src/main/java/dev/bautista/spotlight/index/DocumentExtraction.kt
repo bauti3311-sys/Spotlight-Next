@@ -37,6 +37,7 @@ data class ExtractedDocument(
         .put("pages",pages).put("examined",examined).put("ocrAttempts",ocrAttempts).put("partial",partial).put("extractedAt",extractedAt)
         .put("fragments",JSONArray().apply{fragments.forEach{f->put(JSONObject().put("page",f.page).put("method",f.method).put("start",f.start).put("end",f.end).put("width",f.width).put("height",f.height))}})
         .put("issues",JSONArray().apply{issues.forEach{put(JSONObject().put("code",it.code).put("page",it.page))}}).toString()
+    val deferrals get()=issues.mapNotNull { it.code.takeIf { code->code.startsWith("ocr_deferred:") }?.substringAfter(':') }.distinct()
 
     /** A smaller manual excerpt must not erase proven richer coverage of the exact same bytes. */
     internal fun coveredByCache(metadata:String,body:String):Boolean {
@@ -64,6 +65,15 @@ data class ExtractedDocument(
         }.getOrDefault(false)
     }
     companion object {
+        fun deferredMetadata(metadata:String,reason:String,stale:Boolean=false):String = runCatching {
+            val root=if(metadata.isBlank())JSONObject() else JSONObject(metadata)
+            root.put("deferred",reason)
+            if(stale)root.put("stale",true)
+            root.toString()
+        }.getOrDefault(JSONObject().put("deferred",reason).put("stale",stale).toString())
+        fun clearDeferral(metadata:String):String=runCatching {
+            JSONObject(metadata).apply{remove("deferred");remove("stale")}.toString()
+        }.getOrDefault(metadata)
         /** Generated page/limit labels are provenance, not words contained in the document. */
         fun searchableText(metadata:String,body:String):String {
             if(metadata.isBlank() || metadata.length>30000)return body
@@ -76,12 +86,16 @@ data class ExtractedDocument(
         fun provenance(metadata:String,body:String,query:String):String {
             if(metadata.isBlank() || metadata.length>30000)return ""
             return runCatching {
-                val root=JSONObject(metadata);if(root.optInt("pages")==0)return@runCatching "";val entries=root.getJSONArray("fragments")
+                val root=JSONObject(metadata)
+                val deferred=if(root.has("deferred"))"OCR aplazado: ${OcrBudget.label(root.getString("deferred"))} · reintentar al mejorar los recursos\n" else ""
+                val stale=if(root.optBoolean("stale"))"Versión anterior indexada; contenido pendiente de actualizar\n" else ""
+                if(root.optInt("pages")==0)return@runCatching stale+deferred
+                val entries=root.getJSONArray("fragments")
                 val words=dev.bautista.spotlight.search.normalize(query).split(Regex("\\s+")).filter{it.isNotBlank()}
                 val parts=(0 until minOf(entries.length(),40)).map{entries.getJSONObject(it)}
                 val matched=parts.firstOrNull{f->val a=f.getInt("start");val b=f.getInt("end");a>=0 && b in a..body.length && words.isNotEmpty() && words.all{dev.bautista.spotlight.search.normalize(body.substring(a,b)).contains(it)}}
                 val detail=matched?.let{(if(it.getString("method")=="ocr_local")"OCR local (revisar)" else "Texto PDF")+" · página ${it.getInt("page")}"} ?: "Extracción local · ${root.getInt("examined")} de ${root.getInt("pages")} páginas examinadas"
-                (if(root.optBoolean("partial"))"Extracción parcial · " else "")+detail+"\n"
+                stale+deferred+(if(root.optBoolean("partial"))"Extracción parcial · " else "")+detail+"\n"
             }.getOrDefault("")
         }
     }
@@ -111,6 +125,7 @@ internal object PdfTextPipeline {
     val admission=Semaphore(1)
     suspend fun extract(source:PdfPageSource,limits:PdfTextLimits,sha:String,lease:OcrWorkLease,
         start:Long=SystemClock.elapsedRealtime(),clock:()->Long={SystemClock.elapsedRealtime()},
+        budget:()->OcrBudgetDecision={OcrBudgetDecision()},previous:CachedPdfText?=null,
         recognizeOwned:suspend(Bitmap,()->Unit)->String):ExtractedDocument {
         val body=StringBuilder();val fragments=mutableListOf<TextFragment>();val issues=mutableListOf<ExtractionIssue>()
         var examined=0;var attempts=0
@@ -126,21 +141,35 @@ internal object PdfTextPipeline {
         for(index in 0 until minOf(source.pages,limits.textPages)) {
             currentCoroutineContext().ensureActive()
             if(clock()-start>=limits.totalMillis){issues+=ExtractionIssue("time_limit",index+1);break}
+            val paused=budget().deferred
+            if(paused!=null) {
+                for(page in index until minOf(source.pages,limits.textPages))issues+=ExtractionIssue("ocr_deferred:${paused.code}",page+1)
+                break
+            }
             val native=try{source.text(index).trim()}catch(e:CancellationException){throw e}catch(_:Exception){issues+=ExtractionIssue("text_error",index+1);""}
             examined++
             if(clock()-start>=limits.totalMillis){add(index+1,"pdf_text",native);issues+=ExtractionIssue("time_limit",index+1);break}
+            val cached=previous?.recognized(index+1,sha,source.pages)
             if(native.count{it.isLetterOrDigit()}>=40) add(index+1,"pdf_text",native)
+            else if(cached!=null)add(index+1,"ocr_local",cached.second,cached.first.width,cached.first.height)
             else if(attempts<limits.ocrPages) {
+                val allowance=budget()
+                val deferred=allowance.deferred ?: OcrDeferral.REDUCED.takeIf { attempts>=allowance.pages }
+                if(deferred!=null){issues+=ExtractionIssue("ocr_deferred:${deferred.code}",index+1);add(index+1,"pdf_text",native);continue}
+                val pageLimits=limits.copy(longEdge=minOf(limits.longEdge,allowance.longEdge),pixels=minOf(limits.pixels,allowance.pixels))
                 attempts++
                 var transferred=false;var bitmap:Bitmap?=null
                 try {
                     currentCoroutineContext().ensureActive()
-                    val image=source.render(index,limits);bitmap=image
-                    require(image.width<=limits.longEdge && image.height<=limits.longEdge && image.width.toLong()*image.height<=limits.pixels && image.config==Bitmap.Config.ARGB_8888){"Imagen OCR fuera del límite."}
+                    val image=source.render(index,pageLimits);bitmap=image
+                    require(image.width<=pageLimits.longEdge && image.height<=pageLimits.longEdge && image.width.toLong()*image.height<=pageLimits.pixels && image.config==Bitmap.Config.ARGB_8888){"Imagen OCR fuera del límite."}
+                    val current=budget()
+                    val paused=current.deferred ?: OcrDeferral.REDUCED.takeIf {attempts>current.pages || image.width>current.longEdge || image.height>current.longEdge || image.width.toLong()*image.height>current.pixels}
+                    if(paused!=null){issues+=ExtractionIssue("ocr_deferred:${paused.code}",index+1);add(index+1,"pdf_text",native);continue}
                     val remaining=limits.totalMillis-(clock()-start)
                     if(remaining<=0){issues+=ExtractionIssue("time_limit",index+1);add(index+1,"pdf_text",native);break}
                     val w=image.width;val h=image.height
-                    val recognized=withTimeoutOrNull(minOf(limits.pageMillis,remaining)) {
+                    val recognized=withTimeoutOrNull(minOf(limits.pageMillis,allowance.pageMillis,current.pageMillis,remaining)) {
                         val finished=lease.retain();transferred=true
                         recognizeOwned(image,finished)
                     }
@@ -156,7 +185,7 @@ internal object PdfTextPipeline {
         }
         if(source.pages>limits.textPages)issues+=ExtractionIssue("page_limit",limits.textPages+1)
         val labels=mapOf("character_limit" to "límite de texto", "time_limit" to "tiempo agotado", "text_error" to "texto PDF no legible", "memory_limit" to "límite de memoria", "ocr_error" to "OCR no disponible en alguna página", "ocr_empty" to "página sin texto reconocido", "ocr_page_limit" to "límite de páginas OCR", "page_limit" to "límite de páginas")
-        val notice=if(issues.isNotEmpty())"[Extracción parcial: ${issues.map{labels[it.code] ?: "página no procesada"}.distinct().joinToString(", ")}. Solo se incluye el contenido obtenido localmente.]\n".take(499) else ""
+        val notice=if(issues.isNotEmpty())"[Extracción parcial: ${issues.map{labels[it.code] ?: if(it.code.startsWith("ocr_deferred:"))"OCR aplazado: ${OcrBudget.label(it.code.substringAfter(':'))}" else "página no procesada"}.distinct().joinToString(", ")}. Solo se incluye el contenido obtenido localmente.]\n".take(499) else ""
         return ExtractedDocument(if(body.isEmpty())"" else notice+body,fragments.map{it.copy(start=it.start+notice.length,end=it.end+notice.length)},issues,source.pages,examined,attempts,sha,source.author,source.created)
     }
 }

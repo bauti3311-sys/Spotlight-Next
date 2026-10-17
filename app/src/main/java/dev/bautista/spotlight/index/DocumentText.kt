@@ -21,7 +21,8 @@ object DocumentText {
         check(result.text.isNotBlank()){"No se encontró texto legible dentro de los límites de extracción local. El PDF puede estar vacío o requerir una revisión por páginas."}
         return result.text
     }
-    suspend fun extractDetailed(context:Context,uri:Uri,mime:String?,limits:PdfTextLimits=PdfTextLimits()):ExtractedDocument=withContext(Dispatchers.IO) {
+    suspend fun extractDetailed(context:Context,uri:Uri,mime:String?,limits:PdfTextLimits=PdfTextLimits(),
+        budget:()->OcrBudgetDecision={OcrBudgetDecision()},previous:CachedPdfText?=null):ExtractedDocument=withContext(Dispatchers.IO) {
         val type=mime ?: context.contentResolver.getType(uri).orEmpty()
         require(type=="application/pdf" || type.startsWith("text/") || type.startsWith("image/") || OfficeText.supports(type)){"La extracción admite PDF, Office, texto e imágenes."}
         val start=SystemClock.elapsedRealtime()
@@ -36,7 +37,7 @@ object DocumentText {
             val sha=MessageDigest.getInstance("SHA-256").digest(bytes).joinToString(""){"%02x".format(it)}
             if(type=="application/pdf") {
                 PdfTextSource.open(context,bytes).use{source->MediaAnalysis(context).use{media->
-                    PdfTextPipeline.extract(source,limits,sha,requireNotNull(lease),start=start,recognizeOwned=media::pdfPage)
+                    PdfTextPipeline.extract(source,limits,sha,requireNotNull(lease),start=start,budget=budget,previous=previous,recognizeOwned=media::pdfPage)
                 }}
             } else {
                 val text=when {

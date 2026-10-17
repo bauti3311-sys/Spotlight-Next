@@ -16,6 +16,8 @@ class FileIndex(
     private val context: Context,
     private val sharedAccess: (() -> Boolean)? = null,
     private val storageRoots: (() -> List<java.io.File>)? = null,
+    private val resourceState: () -> dev.bautista.spotlight.control.DeviceResourceState = {dev.bautista.spotlight.control.DeviceResources.read(context)},
+    private val pdfExtraction: (suspend (Uri,PdfTextLimits,()->OcrBudgetDecision,CachedPdfText?)->ExtractedDocument)? = null,
 ) {
     data class Status(
         val busy: Boolean = false,
@@ -106,6 +108,7 @@ class FileIndex(
         val granted=runCatching { context.contentResolver.persistedUriPermissions.filter{it.isReadPermission}.map{it.uri.toString()}.toSet() }.getOrDefault(emptySet())
         return c.trees.filter { it in granted && !(broadAllowed() && Uri.parse(it).authority=="com.android.externalstorage.documents") }.toSet()
     }
+    private fun sourceAllowed(tree:String,c:Config)=c.files && !c.privateMode && if(tree=="__shared__")broadAllowed() else tree in allowedTrees(c)
 
     suspend fun ensure(c: Config) {
         observe(c.trees + if(broadAllowed())setOf(android.provider.MediaStore.Files.getContentUri("external").toString()) else emptySet())
@@ -114,7 +117,7 @@ class FileIndex(
                 c.trees != lastTrees ||
                 System.currentTimeMillis() - refreshed > 600000
         )
-            if (broadAllowed()) {
+            {
                 synchronized(this) {
                     if (refreshJob?.isActive != true)
                         refreshJob =
@@ -136,7 +139,7 @@ class FileIndex(
                                 changes.value = changes.value + 1
                             }
                 }
-            } else refresh(c, false)
+            }
     }
 
     suspend fun hasImports():Boolean=withContext(Dispatchers.IO){helper.readableDatabase.rawQuery("SELECT 1 FROM files WHERE tree = ? LIMIT 1",arrayOf("__imports__")).use{it.moveToFirst()}}
@@ -190,10 +193,14 @@ class FileIndex(
         val db=helper.writableDatabase
         db.beginTransaction()
         val outcome=try {
+            var cleaned:String?=null
             val preserved=db.rawQuery("SELECT body,extraction FROM files WHERE $selection LIMIT 1",arguments).use { row ->
-                row.moveToFirst() && document.coveredByCache(row.getString(1) ?: "",row.getString(0) ?: "")
+                if(!row.moveToFirst())false else {
+                    val old=row.getString(1) ?: ""
+                    document.coveredByCache(old,row.getString(0) ?: "").also { if(it){val next=ExtractedDocument.clearDeferral(old);if(next!=old)cleaned=next} }
+                }
             }
-            val updated=!preserved && db.update("files",values,selection,arguments)>0
+            val updated=if(preserved)cleaned?.let{db.update("files",ContentValues().apply{put("extraction",it)},selection,arguments)>0} ?: false else db.update("files",values,selection,arguments)>0
             db.setTransactionSuccessful()
             preserved to updated
         } finally {db.endTransaction()}
@@ -203,6 +210,7 @@ class FileIndex(
 
     suspend fun refresh(c: Config, analyze: Boolean = true) =
         withContext(Dispatchers.IO) {
+            if(c.privateMode || !c.files){state.value=Status(message="Indexación desactivada por privacidad o preferencias",truncated=true);return@withContext}
             lock.withLock {
                 val sharedSeen = mutableSetOf<String>()
                 var count = 0
@@ -213,12 +221,12 @@ class FileIndex(
                 var ocrRemaining=12
                 val ocrUntil=android.os.SystemClock.elapsedRealtime()+120000L
                 var contentPartial=false
+                val deferrals=linkedSetOf<String>()
                 state.value =
                     Status(true, message = "Leyendo archivos compartidos y carpetas autorizadas…")
-                val mode = "${c.contentIndex}:${c.visualIndex}:${c.videoIndex}:office1:pdfocr1:mime2"
+                val mode = "${c.contentIndex}:${c.visualIndex}:${c.videoIndex}:office1:pdfocr2:mime2"
                 val analyzer =
                     if (analyze && (c.visualIndex || c.videoIndex)) MediaAnalysis(context) else null
-                helper.writableDatabase.beginTransaction()
                 try {
                     val roots =
                         allowedTrees(c).map {
@@ -247,6 +255,7 @@ class FileIndex(
                             }
                             for (file in children) {
                                 currentCoroutineContext().ensureActive()
+                                check(sourceAllowed(tree,c)){"Permiso de carpeta revocado durante la indexación"}
                                 if (count >= 200000) {
                                     limited = true
                                     return
@@ -285,6 +294,7 @@ class FileIndex(
                                 var oldMode = ""
                                 var extraction = ""
                                 var extractionPartial=false
+                                var sourceUnchanged=false
                                 helper.readableDatabase
                                     .query(
                                         "files",
@@ -304,16 +314,14 @@ class FileIndex(
                                         null,
                                     )
                                     .use { row ->
-                                        if (
-                                            row.moveToFirst() &&
-                                                row.getLong(3) == modified &&
-                                                row.getLong(4) == size
-                                        ) {
+                                        if (row.moveToFirst()) {
+                                            sourceUnchanged=row.getLong(3)==modified && row.getLong(4)==size
                                             body = row.getString(0) ?: ""
                                             author = row.getString(1) ?: ""
                                             created = row.getLong(2)
-                                            oldMode = row.getString(5) ?: ""
+                                            oldMode = if(sourceUnchanged)row.getString(5) ?: "" else ""
                                             extraction = row.getString(6) ?: ""
+                                            if(!sourceUnchanged && body.isNotBlank())extraction=ExtractedDocument.deferredMetadata(extraction,"pending",stale=true)
                                         }
                                     }
                                 var storedMode = oldMode
@@ -324,13 +332,29 @@ class FileIndex(
                                                 size <= 8_000_000 &&
                                                 mime == "application/pdf"
                                         ) {
-                                            val remaining=ocrUntil-android.os.SystemClock.elapsedRealtime()
-                                            val doc=DocumentText.extractDetailed(context,contentUri,mime,PdfTextLimits(
-                                                ocrPages=if(remaining>0)minOf(3,ocrRemaining) else 0,
-                                                characters=100000,totalMillis=if(remaining>0)minOf(45000,remaining) else 45000))
-                                            body=doc.text;author=doc.author;created=doc.created;extraction=doc.metadata()
-                                            ocrRemaining=(ocrRemaining-doc.ocrAttempts).coerceAtLeast(0)
-                                            extractionPartial=doc.partial;contentPartial=contentPartial || doc.partial
+                                            val initial=OcrBudget.evaluate(resourceState())
+                                            if(initial.deferred!=null) {
+                                                val reason=initial.deferred.code
+                                                extraction=ExtractedDocument.deferredMetadata(extraction,reason,!sourceUnchanged && body.isNotBlank())
+                                                extractionPartial=true;contentPartial=true;deferrals+=reason
+                                            } else {
+                                                val remaining=ocrUntil-android.os.SystemClock.elapsedRealtime()
+                                                val limits=PdfTextLimits(ocrPages=if(remaining>0)minOf(3,ocrRemaining) else 0,
+                                                    characters=100000,totalMillis=if(remaining>0)minOf(45000,remaining) else 45000)
+                                                val budget={if(!sourceAllowed(tree,c))OcrBudgetDecision(deferred=OcrDeferral.PERMISSION,pages=0) else OcrBudget.evaluate(resourceState())}
+                                                val previous=CachedPdfText(body,extraction)
+                                                val doc=pdfExtraction?.invoke(contentUri,limits,budget,previous)
+                                                    ?: DocumentText.extractDetailed(context,contentUri,mime,limits,budget,previous)
+                                                currentCoroutineContext().ensureActive()
+                                                if(doc.text.isBlank() && doc.partial && body.isNotBlank())extraction=ExtractedDocument.deferredMetadata(extraction,doc.deferrals.firstOrNull() ?: "pending",!sourceUnchanged)
+                                                else if(!doc.coveredByCache(extraction,body)){body=doc.text;extraction=doc.metadata()}
+                                                else extraction=ExtractedDocument.clearDeferral(extraction)
+                                                author=doc.author;created=doc.created
+                                                ocrRemaining=(ocrRemaining-doc.ocrAttempts).coerceAtLeast(0)
+                                                extractionPartial=doc.partial;contentPartial=contentPartial || doc.partial
+                                                deferrals+=doc.deferrals
+                                                doc.deferrals.firstOrNull()?.let{extraction=ExtractedDocument.deferredMetadata(extraction,it)}
+                                            }
                                         } else if (c.contentIndex && size<=8_000_000 && OfficeText.supports(mime,name)) {
                                             val content=DocumentText.extract(context,contentUri,OfficeText.mime(name,mime))
                                             body=content
@@ -398,7 +422,7 @@ class FileIndex(
                                             limited = true
                                         }
                                         storedMode =
-                                            if (extractionPartial || mediaCount >= 150 && body.isEmpty()) oldMode
+                                            if (extractionPartial || mediaCount >= 150 && body.isEmpty()) "$mode:pending"
                                             else mode
                                     } catch (e: CancellationException) {
                                         throw e
@@ -407,6 +431,8 @@ class FileIndex(
                                         storedMode = oldMode
                                     }
                                 }
+                                currentCoroutineContext().ensureActive()
+                                if(!sourceAllowed(tree,c)){failed=true;failures++;continue}
                                 val values =
                                     ContentValues().apply {
                                         put("uri", uri)
@@ -512,7 +538,7 @@ class FileIndex(
                         Status(
                             false,
                             count,
-                            "$count entradas${if(contentPartial) " · contenido PDF parcial" else ""}${if(limited) " · índice parcial (límites alcanzados)" else ""}${if(failures>0) " · $failures archivos/carpetas sin leer" else ""}",
+                            "$count entradas${if(contentPartial) " · contenido PDF parcial" else ""}${if(deferrals.isNotEmpty())" · OCR aplazado: "+deferrals.joinToString { OcrBudget.label(it) }+"; reintentar al mejorar los recursos" else ""}${if(limited) " · índice parcial (límites alcanzados)" else ""}${if(failures>0) " · $failures archivos/carpetas sin leer" else ""}",
                             limited || failed || contentPartial,
                         )
                 } catch (e: CancellationException) {
@@ -520,10 +546,10 @@ class FileIndex(
                         Status(false, count, "Indexación cancelada; resultados parciales", true)
                     throw e
                 } finally {
-                    // Each complete row is useful even when a long scan is cancelled.
-                    helper.writableDatabase.setTransactionSuccessful()
-                    helper.writableDatabase.endTransaction()
+                    // Completed rows commit independently. Never hold a DB transaction while
+                    // awaiting native OCR or coroutine suspension; readers remain available.
                     analyzer?.close()
+                    changes.value=changes.value+1
                 }
             }
         }

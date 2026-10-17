@@ -25,17 +25,15 @@ import dev.bautista.spotlight.advanced.*
     Column(Modifier.fillMaxWidth().heightIn(max=340.dp).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text(if(page=="device")"Dispositivo" else if(page=="controls")"Sistema y controles" else "Shizuku",style=MaterialTheme.typography.titleMedium)}
         if(page=="device") {
-            val info=remember{ActivityManager.MemoryInfo().also{context.getSystemService(ActivityManager::class.java).getMemoryInfo(it)}}
+            val resources=remember{dev.bautista.spotlight.control.DeviceResources.read(context)}
             val disk=remember{StatFs(Environment.getDataDirectory().path)}
-            val battery=remember{context.registerReceiver(null,IntentFilter(Intent.ACTION_BATTERY_CHANGED))}
             val dm=context.resources.displayMetrics
             InfoField("Modelo","${Build.MANUFACTURER} ${Build.MODEL}",CommandIcons.Display)
             InfoField("Sistema","Android ${Build.VERSION.RELEASE} · API ${Build.VERSION.SDK_INT}",CommandIcons.Info)
-            InfoField("Memoria disponible",android.text.format.Formatter.formatFileSize(context,info.availMem),CommandIcons.Storage)
+            InfoField("Memoria disponible",resources.availableMemory?.let{android.text.format.Formatter.formatFileSize(context,it)} ?: "No disponible",CommandIcons.Storage)
             InfoField("Almacenamiento libre",android.text.format.Formatter.formatFileSize(context,disk.availableBytes),CommandIcons.Folder)
             InfoField("Pantalla","${dm.widthPixels} × ${dm.heightPixels} px · ${dm.densityDpi} dpi",CommandIcons.Display)
-            val level=battery?.getIntExtra(BatteryManager.EXTRA_LEVEL,-1) ?: -1;val scale=battery?.getIntExtra(BatteryManager.EXTRA_SCALE,-1) ?: -1
-            InfoField("Batería",if(level>=0 && scale>0)"${level*100/scale} %" else "No disponible",CommandIcons.Battery)
+            InfoField("Batería",resources.batteryPercent?.let{"$it %"} ?: "No disponible",CommandIcons.Battery)
             Text("Datos obtenidos del dispositivo actual mediante APIs públicas.",style=MaterialTheme.typography.bodySmall)
         } else {
             ConnectionCard(state)
