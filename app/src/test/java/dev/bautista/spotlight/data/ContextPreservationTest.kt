@@ -59,6 +59,36 @@ class ContextPreservationTest {
             assertTrue(owned.exists());assertEquals(before,file.readText())
         }finally{owned.delete()}
     }
+    @Test fun delayedLoadCannotPinPrivateContextThatReplacedTheOriginalSelection()=runBlocking {
+        seed();val before=file.readText()
+        val tasks=java.util.concurrent.LinkedBlockingQueue<Runnable>()
+        val dispatcher=object:CoroutineDispatcher(){override fun dispatch(context:kotlin.coroutines.CoroutineContext,block:Runnable){tasks.add(block)}}
+        fun drain(){while(true){val task=tasks.poll() ?: return;task.run()}}
+        val pausedScope=CoroutineScope(SupervisorJob()+dispatcher)
+        try {
+            val current=ContextStore(context,pausedScope,Preferences(context))
+            current.setText("Primera selección autorizada")
+            val pin=async(start=CoroutineStart.UNDISPATCHED){current.pinActive()}
+            current.setText("Otra selección privada no autorizada para fijar")
+            drain();pin.await()
+            assertEquals(listOf("old-0"),current.pinned.value.map{it.id})
+            assertEquals("Otra selección privada no autorizada para fijar",current.active.value!!.text)
+            assertFalse(current.active.value!!.pinned);assertEquals(before,file.readText())
+        }finally{pausedScope.cancel();drain()}
+    }
+    @Test fun selectingAnotherContextReleasesSupersededTemporaryImportButKeepsPinnedSource()=runBlocking {
+        val directory=File(context.noBackupFilesDir,"context-imports").apply{mkdirs()}
+        val temporary=File(directory,"replaced-temporary.txt").apply{writeText("temporary source")}
+        val pinned=File(directory,"retained-pinned.txt").apply{writeText("pinned source")}
+        try {
+            seed(owned=pinned.path);val current=store();loaded(current)
+            current.setDocument(android.net.Uri.parse("content://selection-fixture/doc/1"),temporary.path)
+            current.select("old-0")
+            withTimeout(5000){while(temporary.exists())delay(10)}
+            assertEquals("old-0",current.active.value!!.id);assertTrue(pinned.exists())
+            current.select("missing");assertTrue(pinned.exists())
+        }finally{temporary.delete();pinned.delete()}
+    }
     @Test fun removalNeverDeletesAFileOutsideManagedContextImports()=runBlocking {
         val outside=File(context.filesDir,"outside-context-fixture.txt").apply{writeText("not owned by context imports")}
         try{seed(owned=outside.path);val current=store();loaded(current);current.removeContext("old-0");assertTrue(outside.exists())}finally{outside.delete()}

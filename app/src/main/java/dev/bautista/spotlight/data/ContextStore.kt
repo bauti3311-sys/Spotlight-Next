@@ -47,7 +47,13 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>=10*60000L)clearActive()}}
     private fun release(item:SharedContext){if(item.ownedFile.isBlank() || item.ownedFile==pinningFile || mutablePinned.value.any{it.ownedFile==item.ownedFile})return;val f=File(item.ownedFile);if(f.parentFile?.canonicalFile==File(context.noBackupFilesDir,"context-imports").canonicalFile)scope.launch{withContext(Dispatchers.IO){f.delete()}}}
     fun clearActive(){expiryJob?.cancel();val item=mutableActive.value;mutableActive.value=null;if(item!=null)release(item)}
-    fun select(id:String){mutableActive.value=mutablePinned.value.firstOrNull{it.id==id}}
+    fun select(id:String){
+        val previous=mutableActive.value
+        val next=mutablePinned.value.firstOrNull{it.id==id}
+        mutableActive.value=next
+        if(previous!=null && previous.id!=next?.id)release(previous)
+        scheduleExpiry()
+    }
     fun setText(text:String,title:String="Texto seleccionado"):SharedContext {
         require(text.isNotBlank() && text.length<=16000)
         return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
@@ -76,9 +82,10 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         }
     }
     suspend fun pinActive() {
+        val requestedId=mutableActive.value?.id
         start();loadJob?.join()
         lock.withLock {
-            val item=mutableActive.value ?: return@withLock
+            val item=mutableActive.value?.takeIf{it.id==requestedId} ?: return@withLock
             val previous=mutablePinned.value
             check(previous.any{it.id==item.id} || previous.size<30){"Ya hay 30 contextos fijados. Eliminá uno antes de fijar otro."}
             val pinnedItem=item.copy(pinned=true)
