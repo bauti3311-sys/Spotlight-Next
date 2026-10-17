@@ -45,6 +45,7 @@ object ResultRanker {
             installed && t.startsWith(q)->5
             installed && (t.contains(q) || words.all{word->t.split(Regex("[^\\p{L}\\p{N}]+")).any{it.startsWith(word)}})->4
             item.category in setOf("Calculadora","Conversión","Herramientas") && item.action is Action.Copy->4
+            item.category=="Archivos" && item.semanticMatch->3
             item.category=="Web"->0
             (item.category in setOf("Archivos","Contactos") || item.category=="Notas" && item.action !is Action.NewNote) && relevance(query,item.title)>=500->3
             item.id.startsWith("root:") || item.id.startsWith("smart:") || item.id=="intent:local" || relevance(query,item.title)>=500->2

@@ -1,5 +1,14 @@
 # Continuidad integral · 17/10/2026
 
+## Checkpoint semántico en progreso
+
+Base be3d002→evaluación c1f7248; misma rama y reserva propia. Implementación real conectada a SearchEngine, modelo optativo, permisos/huellas/cancelación y SQLite v3.36dirigidas correctas/7suites e instrumentación compilada; paridad Kotlin/ONNX nativo Linux16textos y8paráfrasis, NO Android ARM64. Ver SEMANTIC-LOCAL-20261017.md y verification/semantic-evaluation-20261017. Gate integral/R8/lint/visuales aún pendiente. No confundir572históricas con verificaciones actuales. Sin clave nueva, APK parcial, Actions ni cambio de estética.
+
+Siguiente paso exacto: proteger operadores/consultas literales de SearchQuery.natural tras prefijos PDF; añadir regresión fallida y corrección mínima. Luego ejecutar gate completo sobre SHA publicado, preservar evidencia y continuar bloques viables de matriz40. No ejecutar en paralelo otro Gradle ni asumir trabajo en segundo plano al terminar sesión.
+
+---
+
+
 ## Estado integral verificado: conservación ante lectura fallida
 
 Código Android: `f987a0ebe38a244688f168c199b9e799f7b85b1b`, sobre `2de8b52` / `4f429c0`. ContextStore ya no trata JSON ilegible, versión desconocida, listas/identidades/registros no válidos o lectura cancelada como datos vacíos aptos para sobrescribir. Carga ambas colecciones y metadatos antes de publicar, sin descarte/recorte silencioso; bloquea save hasta una lectura válida. AtomicFile puede recuperar su .bak existente. Error y Reintentar lectura están conectados a ContextPanel sin mostrar contenido privado; el reintento lee localmente, no fija/guarda/envía. No reconstruye JSON corrupto ni crea otro respaldo. Ver CONTEXTO-RECUPERACION-20261017.md.

@@ -17,6 +17,8 @@ class FileIndex(
     private val sharedAccess: (() -> Boolean)? = null,
     private val storageRoots: (() -> List<java.io.File>)? = null,
     private val resourceState: () -> dev.bautista.spotlight.control.DeviceResourceState = {dev.bautista.spotlight.control.DeviceResources.read(context)},
+    private val liveConfig:(()->Config?)? = null,
+    private val semanticBackend:dev.bautista.spotlight.semantic.DocumentEmbedder? = null,
     private val pdfExtraction: (suspend (Uri,PdfTextLimits,()->OcrBudgetDecision,CachedPdfText?)->ExtractedDocument)? = null,
 ) {
     data class Status(
@@ -63,7 +65,7 @@ class FileIndex(
     @Volatile private var refreshed = 0L
 
     private class Database(context: Context) :
-        SQLiteOpenHelper(context, "search-index.db", null, 2) {
+        SQLiteOpenHelper(context, "search-index.db", null, 3) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(
                 "CREATE TABLE files(uri TEXT PRIMARY KEY,tree TEXT,parent TEXT,name TEXT,mime TEXT,modified INTEGER,size INTEGER,author TEXT,created INTEGER,body TEXT,mode TEXT,extraction TEXT NOT NULL DEFAULT '')"
@@ -72,6 +74,7 @@ class FileIndex(
 
         override fun onOpen(db:SQLiteDatabase) {
             super.onOpen(db)
+            db.execSQL("CREATE TABLE IF NOT EXISTS semantic_vectors(uri TEXT NOT NULL,model TEXT NOT NULL,fingerprint TEXT NOT NULL,part INTEGER NOT NULL,start INTEGER NOT NULL,end INTEGER NOT NULL,excerpt TEXT NOT NULL,vector BLOB NOT NULL,PRIMARY KEY(uri,model,fingerprint,part))")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_modified ON files(tree,modified DESC)")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_created ON files(tree,created)")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_mime ON files(tree,mime)")
@@ -153,8 +156,10 @@ class FileIndex(
     suspend fun clear() =
         withContext(Dispatchers.IO) {
             refreshJob?.cancelAndJoin()
+            val semantic=semanticJob;cancelSemanticWork();semantic?.cancelAndJoin()
             lock.withLock {
                 helper.writableDatabase.delete("files", null, null)
+                helper.writableDatabase.delete("semantic_vectors",null,null)
                 lastTrees = emptySet()
                 refreshed = 0L
                 state.value = Status(message = "Índice borrado")
@@ -570,6 +575,138 @@ class FileIndex(
                 }
             }
         }
+
+    data class SemanticStatus(val busy:Boolean=false,val fragments:Int=0,val message:String="Búsqueda por significado sin preparar",val partial:Boolean=false)
+    private val semanticMutable=MutableStateFlow(SemanticStatus())
+    val semanticStatus=semanticMutable.asStateFlow()
+    val semanticModel=dev.bautista.spotlight.semantic.SemanticModelStore(context)
+    private val embedding:dev.bautista.spotlight.semantic.DocumentEmbedder=semanticBackend ?: dev.bautista.spotlight.semantic.LocalDocumentEmbedder(semanticModel)
+    private val semanticLock=Mutex()
+    private val semanticEpoch=java.util.concurrent.atomic.AtomicLong()
+    @Volatile private var semanticJob:Job?=null
+    private fun semanticConfig(c:Config)=if(liveConfig!=null)liveConfig.invoke() else c
+    private fun semanticAllowed(c:Config?)=c!=null && c.files && c.contentIndex && c.semanticSearch && !c.privateMode
+    private fun semanticSource(tree:String,c:Config)=semanticAllowed(c) && (tree=="__imports__" || sourceAllowed(tree,c))
+    fun cancelSemanticWork(){semanticEpoch.incrementAndGet();semanticJob?.cancel();embedding.invalidate()}
+    suspend fun clearSemantic()=withContext(Dispatchers.IO) {
+        val job=semanticJob;cancelSemanticWork();job?.cancelAndJoin()
+        helper.writableDatabase.delete("semantic_vectors",null,null)
+        semanticMutable.value=SemanticStatus(message="Índice de significado eliminado; los archivos y el texto original se conservan")
+        changes.value=changes.value+1
+    }
+    suspend fun refreshSemanticStatus()=withContext(Dispatchers.IO){if(!semanticMutable.value.busy){val count=semanticCount();semanticMutable.value=SemanticStatus(fragments=count,message="$count fragmentos locales conservados; requieren fuentes y modelo válidos")}}
+    private fun semanticCount()=helper.readableDatabase.rawQuery("SELECT COUNT(*) FROM semantic_vectors WHERE model=?",arrayOf(dev.bautista.spotlight.semantic.SemanticPolicy.MODEL)).use{it.moveToFirst();it.getInt(0)}
+    private data class SemanticFile(val uri:String,val tree:String,val name:String,val mime:String,val body:String,val extraction:String,val parent:String,val modified:Long,val created:Long,val author:String,val size:Long) {
+        val text by lazy(LazyThreadSafetyMode.NONE){ExtractedDocument.searchableText(extraction,body)}
+        val fingerprint by lazy(LazyThreadSafetyMode.NONE){dev.bautista.spotlight.semantic.SemanticPolicy.hash(name+"\u0000"+mime+"\u0000"+text+"\u0000"+extraction)}
+    }
+    private fun semanticFile(uri:String):SemanticFile?=helper.readableDatabase.query("files",null,"uri=?",arrayOf(uri),null,null,null,"1").use{row->
+        if(!row.moveToFirst())return@use null
+        fun s(k:String)=row.getString(row.getColumnIndexOrThrow(k)) ?: ""
+        fun n(k:String)=row.getLong(row.getColumnIndexOrThrow(k))
+        SemanticFile(s("uri"),s("tree"),s("name"),OfficeText.mime(s("name"),s("mime")) ?: "application/octet-stream",s("body"),s("extraction"),s("parent"),n("modified"),n("created"),s("author"),n("size"))
+    }
+    private fun semanticCached(info:SemanticFile,part:dev.bautista.spotlight.semantic.WordPiece.Fragment)=helper.readableDatabase.rawQuery("SELECT start,end,excerpt,vector FROM semantic_vectors WHERE uri=? AND model=? AND fingerprint=? AND part=?",arrayOf(info.uri,dev.bautista.spotlight.semantic.SemanticPolicy.MODEL,info.fingerprint,part.index.toString())).use{r->r.moveToFirst() && r.getInt(0)==part.start && r.getInt(1)==part.end && r.getString(2)==part.text && dev.bautista.spotlight.semantic.SemanticPolicy.vector(r.getBlob(3))!=null}
+
+    /** Explicit bounded preparation; never called by typing. Completed fragments survive cancellation. */
+    suspend fun buildSemantic(c:Config)=withContext(Dispatchers.IO) {
+        if(!semanticLock.tryLock())return@withContext
+        val epoch=semanticEpoch.get();semanticJob=currentCoroutineContext()[Job]
+        var partial=false;var reason="";val started=android.os.SystemClock.elapsedRealtime()
+        try {
+            check(semanticAllowed(semanticConfig(c))){"Activá archivos, contenido y búsqueda por significado fuera del modo privado."}
+            dev.bautista.spotlight.semantic.SemanticPolicy.deferred(resourceState())?.let{error("Semántica aplazada: $it")}
+            check(embedding.available()){"Instalá primero el modelo local verificado."}
+            semanticMutable.value=SemanticStatus(true,semanticCount(),"Preparando fragmentos locales; sin enviar datos")
+            val config=requireNotNull(semanticConfig(c));val sources=allowedTrees(config)+"__imports__"+if(broadAllowed())setOf("__shared__") else emptySet()
+            val uris=helper.readableDatabase.rawQuery("SELECT uri FROM files WHERE tree IN ("+sources.joinToString(","){"?"}+") ORDER BY modified DESC LIMIT 201",sources.toTypedArray()).use{r->buildList{while(r.moveToNext())add(r.getString(0))}}
+            helper.writableDatabase.delete("semantic_vectors","model<>? OR uri NOT IN (SELECT uri FROM files WHERE tree IN ("+sources.joinToString(","){"?"}+"))",(listOf(dev.bautista.spotlight.semantic.SemanticPolicy.MODEL)+sources).toTypedArray())
+            if(uris.size>200)partial=true
+            for(uri in uris.take(200)) {
+                currentCoroutineContext().ensureActive()
+                if(epoch!=semanticEpoch.get())throw CancellationException()
+                val info=semanticFile(uri) ?: continue
+                val fresh=semanticConfig(c)
+                if(fresh==null || !semanticSource(info.tree,fresh)){partial=true;reason="permisos o preferencias cambiaron";break}
+                if(!info.mime.startsWith("text/") && !OfficeText.supports(info.mime,info.name) && info.mime!="application/pdf")continue
+                val text=info.text
+                if(text.isBlank())continue
+                helper.writableDatabase.delete("semantic_vectors","uri=? AND fingerprint<>?",arrayOf(uri,info.fingerprint))
+                val fragments=embedding.fragments(text.take(100000))
+                partial=partial || fragments.truncated || text.length>100000
+                for(part in fragments.items) {
+                    currentCoroutineContext().ensureActive()
+                    val live=semanticConfig(c)
+                    val deferred=dev.bautista.spotlight.semantic.SemanticPolicy.deferred(resourceState())
+                    if(live==null || !semanticSource(info.tree,live) || epoch!=semanticEpoch.get()){partial=true;reason="permisos o preferencias cambiaron";break}
+                    if(deferred!=null || android.os.SystemClock.elapsedRealtime()-started>60000){partial=true;reason=deferred ?: "límite de 60 segundos";break}
+                    if(semanticCached(info,part))continue
+                    if(semanticCount()>=dev.bautista.spotlight.semantic.SemanticPolicy.MAX_FRAGMENTS){partial=true;reason="límite de 1000 fragmentos";break}
+                    val vector=embedding.embed(part.ids)
+                    currentCoroutineContext().ensureActive()
+                    if(vector==null){partial=true;reason="inferencia ocupada o plazo agotado";break}
+                    val now=semanticFile(uri);val latest=semanticConfig(c)
+                    if(now==null || now.fingerprint!=info.fingerprint || latest==null || !semanticSource(now.tree,latest) || epoch!=semanticEpoch.get()){partial=true;reason="fuente, permiso o contexto cambió";break}
+                    val values=ContentValues().apply{put("uri",uri);put("model",dev.bautista.spotlight.semantic.SemanticPolicy.MODEL);put("fingerprint",info.fingerprint);put("part",part.index);put("start",part.start);put("end",part.end);put("excerpt",part.text);put("vector",dev.bautista.spotlight.semantic.SemanticPolicy.bytes(vector))}
+                    val db=helper.writableDatabase;db.beginTransaction()
+                    try {
+                        currentCoroutineContext().ensureActive()
+                        db.delete("semantic_vectors","uri=? AND (model<>? OR fingerprint<>?)",arrayOf(uri,dev.bautista.spotlight.semantic.SemanticPolicy.MODEL,info.fingerprint))
+                        db.insertWithOnConflict("semantic_vectors",null,values,SQLiteDatabase.CONFLICT_REPLACE)
+                        db.setTransactionSuccessful()
+                    }finally{db.endTransaction()}
+                    semanticMutable.value=SemanticStatus(true,semanticCount(),"${semanticCount()} fragmentos locales preparados",partial)
+                }
+                if(reason.isNotBlank())break
+            }
+            semanticMutable.value=SemanticStatus(false,semanticCount(),"${semanticCount()} fragmentos · "+(if(partial)"cobertura parcial; reanudar con Actualizar" else "preparación completada dentro de los límites")+(if(reason.isNotBlank())" · $reason" else ""),partial)
+        }catch(e:CancellationException){semanticMutable.value=SemanticStatus(false,semanticCount(),"Preparación cancelada; fragmentos completados conservados",true);throw e}
+        catch(e:Exception){semanticMutable.value=SemanticStatus(false,semanticCount(),e.message ?: "No se pudo preparar la búsqueda por significado",true)}
+        catch(e:LinkageError){semanticMutable.value=SemanticStatus(false,semanticCount(),"Motor local no disponible en este dispositivo",true)}
+        finally{semanticJob=null;semanticLock.unlock();changes.value=changes.value+1}
+    }
+
+    /** Returns only still-authorized, byte-matching fragments. Lexical results are published first. */
+    suspend fun semanticSearch(input:String,c:Config,sourceTopic:String=""):List<Result> =withContext(Dispatchers.IO) {
+        val epoch=semanticEpoch.get();val current=semanticConfig(c)
+        if(!semanticAllowed(current))return@withContext emptyList()
+        val parsed=dev.bautista.spotlight.semantic.SemanticPolicy.query(input) ?: return@withContext emptyList()
+        if(dev.bautista.spotlight.semantic.SemanticPolicy.deferred(resourceState())!=null){embedding.invalidate();return@withContext emptyList()}
+        if(semanticCount()==0)return@withContext emptyList()
+        try {
+            if(!embedding.available())return@withContext emptyList()
+            val queryVector=embedding.query(parsed.text) ?: return@withContext emptyList()
+            currentCoroutineContext().ensureActive()
+            val fresh=semanticConfig(c) ?: return@withContext emptyList()
+            if(!semanticAllowed(fresh) || epoch!=semanticEpoch.get())return@withContext emptyList()
+            val sources=allowedTrees(fresh)+"__imports__"+if(broadAllowed())setOf("__shared__") else emptySet()
+            data class Hit(val uri:String,val fingerprint:String,val start:Int,val end:Int,val excerpt:String,val score:Float)
+            val hits=mutableMapOf<String,Hit>();val infoCache=mutableMapOf<String,SemanticFile?>()
+            helper.readableDatabase.rawQuery("SELECT v.uri,v.fingerprint,v.start,v.end,v.excerpt,v.vector FROM semantic_vectors v JOIN files f ON f.uri=v.uri WHERE v.model=? AND f.tree IN ("+sources.joinToString(","){"?"}+") LIMIT 1000",(listOf(dev.bautista.spotlight.semantic.SemanticPolicy.MODEL)+sources).toTypedArray()).use{rows->
+                while(rows.moveToNext()) {
+                    currentCoroutineContext().ensureActive()
+                    val uri=rows.getString(0);val info=infoCache.getOrPut(uri){semanticFile(uri)} ?: continue
+                    if(info.fingerprint!=rows.getString(1) || !parsed.filter.matches(SearchQuery.Document(info.name,"document",info.mime,author=info.author,modified=info.modified,created=info.created)))continue
+                    if(sourceTopic.isNotBlank() && !normalize(Uri.decode(info.uri+" "+info.parent+" "+info.name)).contains(normalize(sourceTopic)))continue
+                    val start=rows.getInt(2);val end=rows.getInt(3);val excerpt=rows.getString(4)
+                    if(start<0 || end<=start || end>info.text.length || info.text.substring(start,end)!=excerpt)continue
+                    val vector=dev.bautista.spotlight.semantic.SemanticPolicy.vector(rows.getBlob(5)) ?: continue
+                    val score=dev.bautista.spotlight.semantic.SemanticPolicy.dot(queryVector,vector)
+                    if(score>=dev.bautista.spotlight.semantic.SemanticPolicy.MIN_SCORE && score>(hits[uri]?.score ?: -1f))hits[uri]=Hit(uri,info.fingerprint,start,end,excerpt,score)
+                }
+            }
+            val best=hits.values.maxOfOrNull{it.score} ?: return@withContext emptyList()
+            hits.values.sortedByDescending{it.score}.filter{it.score>=maxOf(dev.bautista.spotlight.semantic.SemanticPolicy.MIN_SCORE,best-.08f)}.take(8).mapNotNull{hit->
+                currentCoroutineContext().ensureActive()
+                val info=semanticFile(hit.uri) ?: return@mapNotNull null
+                val latest=semanticConfig(c)
+                if(latest==null || !semanticSource(info.tree,latest) || epoch!=semanticEpoch.get() || info.fingerprint!=hit.fingerprint)return@mapNotNull null
+                val uri=Uri.parse(info.uri)
+                val intent=Intent(Intent.ACTION_VIEW).setDataAndType(uri,info.mime).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                Result("file:$uri",info.name,"Por significado · fragmento local aproximado","Archivos",350+(hit.score*40).toInt(),Action.Launch(intent),preview=ExtractedDocument.provenance(info.extraction,info.body,hit.excerpt)+"Fragmento ${hit.start}–${hit.end} del texto indexado; cobertura acotada, no lectura completa.\n"+hit.excerpt,mime=info.mime,parentUri=info.parent.takeIf{it.isNotBlank()},sizeBytes=info.size,modifiedAt=info.modified.takeIf{it>0},semanticMatch=true)
+            }
+        }catch(e:CancellationException){throw e}catch(_:Exception){emptyList()}catch(_:LinkageError){emptyList()}
+    }
 
     suspend fun search(input: String, c: Config, sourceTopic:String="",recentDocuments:Boolean=false): List<Result> =
         withContext(Dispatchers.IO) {

@@ -1,0 +1,8 @@
+Spotlight Next optional local semantic model
+Model: sentence-transformers/distiluse-base-multilingual-cased-v2
+Authors: Sentence Transformers / Nils Reimers and contributors
+Source revision: bfe45d0732ca50787611c0fe107ba278c7f3f889
+License declared by original model repository: Apache License 2.0.
+Model weights are downloaded only after an explicit installation action; they are not bundled in the APK.
+ONNX Runtime Android 1.23.2: MIT (Microsoft Corporation).
+Complete license texts are provided alongside this notice.

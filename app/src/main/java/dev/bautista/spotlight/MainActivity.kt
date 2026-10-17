@@ -439,6 +439,7 @@ class MainActivity : ComponentActivity() {
                                     color = colors.onSurfaceVariant,
                                 )
                             }
+                            Section("Búsqueda por significado · local") { SemanticSettings(app,config) }
                             Section("Audio · transcripción optativa") {
                                 var busy by remember { mutableStateOf(false) }
                                 var transcriptError by remember { mutableStateOf("") }

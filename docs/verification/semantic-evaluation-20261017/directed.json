@@ -1,0 +1,152 @@
+{
+  "baseCommit": "c1f7248f8d038279a94bd1e80571a05cf9bef0b0",
+  "pendingSourceInputs": [
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "dfb5e9abd86599be021fe3ebc8dbbcf50f267dae8de6c45f8fcb69a5a67afd0a"
+    },
+    {
+      "path": "app/proguard-rules.pro",
+      "sha256": "8538de795517db89436ab4b733b689873fae42f24f70a0c2b43330b519bf2968"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/MainActivity.kt",
+      "sha256": "3f7d514c32c4de59eb49fc9d55a771d31d92f96856b204b4aaf684bb4aac5fe9"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/SpotlightApp.kt",
+      "sha256": "0906ea5843e07bfbe56b825f8e4300ee90c0deb3c60915d66cff8011c31988f0"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/Preferences.kt",
+      "sha256": "12da96279c67ba2fd712da1eba26dae197b81c8ae96f6050d6308eacafbdb370"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt",
+      "sha256": "58c76f92d3894b71044f97e1537d1b6b97f82206c6280060a951c3cf4a648faa"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/Models.kt",
+      "sha256": "8a276e269e295da71b65c9342d53393f734b6ab9a27be18685c00df9b94a463b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt",
+      "sha256": "c8b50bd8783068debda9217781818a8533c2646bfaf1b81220ecb63a2bba5e54"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt",
+      "sha256": "c02546811cfa5e5d177125ca136c0e4d4e991263700b5af8b9ecbc7cc8b4d755"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SettingsNavigation.kt",
+      "sha256": "96477089fe9e9cf4e1bb05563173da69fe80272673d257ce2dcc44c7ee1d2b09"
+    },
+    {
+      "path": "app/src/main/assets/licenses/Apache-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "app/src/main/assets/licenses/onnxruntime-MIT.txt",
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+    },
+    {
+      "path": "app/src/main/assets/licenses/semantic-model-NOTICE.txt",
+      "sha256": "571090fef8b938381f8b33b5b85435e0b4cec68accbddd0f85a1588551c2d620"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/DocumentEmbedder.kt",
+      "sha256": "ef43fa175f406ba3027b0e2054abd15f9988bcae2fae23aca52784ecbd23ec30"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/SemanticModel.kt",
+      "sha256": "3ffcbf0eb992c3933b61629322bf851923a5d5b59616477edbbc110a9c55d553"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/SemanticModelStore.kt",
+      "sha256": "19a0f8ef9395c19305cb22f77856c17ab5334de130752ca0f926902fde69b0d5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/SemanticPolicy.kt",
+      "sha256": "373bf77fc06455d1e3f635f87e4d301d479f072a8bc9c8877eaa21de8d6b0285"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/WordPiece.kt",
+      "sha256": "9cc84274ef9d9779e22ee4578139a3413bcf000cf86d732e3c8bfd852d4e182e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SemanticSettings.kt",
+      "sha256": "55d14b7147d4a772bb356a8de601b042700d65784f0ba734a5fcbbe225d7c0c1"
+    },
+    {
+      "path": "app/src/test/java/dev/bautista/spotlight/semantic/SemanticIndexTest.kt",
+      "sha256": "fc32aae29ecdc110e4896110306fb15b0ae27064679703fa331927261b700089"
+    },
+    {
+      "path": "app/src/test/java/dev/bautista/spotlight/semantic/SemanticPolicyTest.kt",
+      "sha256": "2e2d459546f76178da8304a67c09e85a6ddb484ff0604b971c99506c66f15464"
+    },
+    {
+      "path": "app/src/test/java/dev/bautista/spotlight/semantic/SemanticPreferenceTest.kt",
+      "sha256": "f228d1c429e1899b63913d729acae3d139eddffdf52682c78a0159ca6268a85c"
+    },
+    {
+      "path": "app/src/test/java/dev/bautista/spotlight/semantic/SemanticWorkerTest.kt",
+      "sha256": "46f726150ce1853d3b7dbf6572792f745c3178ae7fd923db02893cc0f6753e66"
+    },
+    {
+      "path": "app/src/test/resources/semantic/tokenizer-reference.json",
+      "sha256": "6c57cfc9449ad771b9da33de1dd2bd2965146609deeef37db42d8184afa6a63e"
+    },
+    {
+      "path": "app/src/test/resources/semantic/wordpiece-vocab.json",
+      "sha256": "8ee23ce647fda1c5d5b3d6339db1a0316828d40f9e226caeb3c5978cb4af094b"
+    }
+  ],
+  "totals": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": 9,
+  "buildOutcome": "BUILD SUCCESSFUL",
+  "instrumentation": "compileDebugAndroidTestKotlin only; not executed",
+  "reports": [
+    {
+      "path": "TEST-dev.bautista.spotlight.index.DocumentRetrievalTest.xml",
+      "sha256": "e151264acc61332100a3f5c8923fc67e05c9368b3119a12109c343dcb831f969"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.search.AudioProtocolTest.xml",
+      "sha256": "0cc32141c207087641f0c443b8ff75d3c76ed55a7bebfb4ab2a5cb18c984b86d"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.semantic.SemanticIndexTest.xml",
+      "sha256": "9b59f5198a7b4642cd72c0c57c4d660629e281c3b9569098ffd64646f2172343"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.search.AiTransportTest.xml",
+      "sha256": "3f0bd41bb6795d5f3db2c15b54642523bd4698726b2fdd3606bf3d8db6e0bdf9"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.semantic.SemanticPolicyTest.xml",
+      "sha256": "d3fe1730b0e8a4750d8353dfac4e38406d6369943e279b6b3f49af16fe9d39bb"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.semantic.SemanticPreferenceTest.xml",
+      "sha256": "0eeae9f7430063dd83899780510d02d70d46b5072a3ab236d2ecbd30d58e6a8a"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.ui.UniversalProductionFlowTest.xml",
+      "sha256": "eac52037224fb9d71ef4d27baaf0c8f1e5828ac4ff70be6bc37ea7dd51de6432"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.index.FileIndexTest.xml",
+      "sha256": "4789b35dda7167aa1ce9929b9d7ddda64dfd5dcae7c2c773ad0b44682f714865"
+    },
+    {
+      "path": "TEST-dev.bautista.spotlight.semantic.SemanticWorkerTest.xml",
+      "sha256": "1f962facbd98ae98ba9480cd7b13b879085b8347148bbd3de2e7cc7742aa40c5"
+    }
+  ]
+}

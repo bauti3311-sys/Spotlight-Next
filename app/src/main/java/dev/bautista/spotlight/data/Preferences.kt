@@ -52,6 +52,7 @@ data class Config(
     val aiRootConsent:Boolean=false, val movement:String="liquid_precision",
     val manualWidth:Int=if(width>0)width else 640,
     val windowScale:Float=-1f, // -1 preserves legacy geometry until the user changes the new slider
+    val semanticSearch:Boolean=false,
 
 )
 
@@ -60,6 +61,10 @@ class Preferences(private val context: Context) {
         private set
     @Volatile var isPrivate:Boolean=false
         private set
+    @Volatile var current:Config?=null
+        private set
+    private val semanticFlag=booleanPreferencesKey("semanticSearch")
+    suspend fun updateSemantic(enabled:Boolean){context.store.edit{it[semanticFlag]=enabled}}
     private val next20=stringPreferencesKey("next20")
     @Volatile private var privacyRevision=0L
     private val sequences=stringPreferencesKey("learnedSequences")
@@ -163,7 +168,7 @@ class Preferences(private val context: Context) {
                     p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
                     p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
                     p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "glass"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
-                ).copy(privateMode=p[privateFlag] ?: false,
+                ).copy(privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
                     autoKeyboard=extra.optString("autoKeyboard","adaptive").takeIf{it in setOf("adaptive","always","never")} ?: "adaptive",
                     glassIntensity=extra.optDouble("glassIntensity",.45).toFloat().coerceIn(0f,1f),
                     surfaceTone=extra.optString("surfaceTone","neutral"),borderWidth=extra.optDouble("borderWidth",1.0).toFloat().coerceIn(0f,2f),
@@ -173,7 +178,7 @@ class Preferences(private val context: Context) {
                     sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision"),
                     manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
                     windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f
-                ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;ready=true}}
+                ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
             }
 
     /** A settings edit must not overwrite habits, privacy, files or concurrent changes. */
@@ -254,6 +259,7 @@ class Preferences(private val context: Context) {
             p[shortcut] = c.shortcut
             p[quickLinks] = c.quickLinks
             p[contentIndex] = c.contentIndex
+            p[semanticFlag] = c.semanticSearch
             p[visualIndex] = c.visualIndex
             p[videoIndex] = c.videoIndex
             p[online] = c.online

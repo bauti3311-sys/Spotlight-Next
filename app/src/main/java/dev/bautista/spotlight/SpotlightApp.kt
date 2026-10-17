@@ -49,7 +49,7 @@ class SpotlightApp : Application() {
     val contexts by lazy { dev.bautista.spotlight.data.ContextStore(this,scope,preferences) }
     val diagnostics by lazy { dev.bautista.spotlight.overlay.Diagnostics(this) }
     val local by lazy { dev.bautista.spotlight.data.LocalStore(preferences, scope) }
-    val index by lazy { dev.bautista.spotlight.index.FileIndex(this) }
+    val index by lazy { dev.bautista.spotlight.index.FileIndex(this,liveConfig={preferences.current?.let{it.copy(privateMode=it.privateMode || preferences.isPrivate)}}) }
     val online by lazy { dev.bautista.spotlight.search.OnlineTools() }
     val search by lazy { SearchEngine(this, preferences, local, index) }
 }

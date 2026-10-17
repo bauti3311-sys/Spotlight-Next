@@ -1,0 +1,13 @@
+{
+  "productionClasses": true,
+  "platform": "Linux x86_64 host Java17, NOT Android ARM64",
+  "samples": 16,
+  "elapsedMs": 551.884874,
+  "maxAbsoluteComponentErrorVsPython": 5.1585960392230845e-08,
+  "tolerance": 1e-05,
+  "tokenIdsMatchOfficialReference": true,
+  "syntheticSpanishRecallAt1": 1.0,
+  "cases": 8,
+  "maxChildRssKiB": 332164,
+  "limitation": "Host native ONNX and production Kotlin, NOT Android ARM64 performance or broad retrieval quality."
+}

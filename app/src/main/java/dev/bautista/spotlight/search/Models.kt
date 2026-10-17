@@ -55,6 +55,7 @@ data class Result(
     val positionMs: Long? = null,
     val sizeBytes:Long?=null, val modifiedAt:Long?=null,
     val matchClass:Int=0,
+    val semanticMatch:Boolean=false,
 )
 
 fun normalize(s: String): String =

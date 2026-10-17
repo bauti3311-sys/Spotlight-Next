@@ -467,3 +467,6 @@ Código Android `f987a0e`, sobre `2de8b52`: lectura validada de ContextStore, co
 Verificación nueva: 572 pruebas / 121 suites, cero fallos, tres lint sin errores, Release/R8 y compilación instrumentada correctos (BUILD SUCCESSFUL in 11m 19s); 21 comparaciones estrictas intactas. Las 328 entradas compiladas coinciden con Git. Los 40 dirigidos no se suman. Evidencia: `docs/verification/context-recovery-20261017/summary.json`.
 
 Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release interno sin firma, no instalable ni entregado; ninguna clave de firma nueva, APK parcial, Actions, main/PR16 o presupuesto modificado. Matriz 40 aún parcial. Detalle, regresiones y próximo bloque semántico local: `docs/HANDOFF-INTEGRAL-20261017.md` y `docs/CONTEXTO-RECUPERACION-20261017.md`.
+
+
+17/10/2026 · continuación be3d002: modelo real evaluado c1f7248; integración semántica optativa nativa y36dirigidas correctas, paridad Kotlin/ONNX vs Python. Gate completo pendiente; ver docs/SEMANTIC-LOCAL-20261017.md. Siguiente: preservar operadores documentales y cerrar gates exactos. No APK parcial ni nueva firma.

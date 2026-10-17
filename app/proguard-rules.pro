@@ -6,3 +6,6 @@
 
 -keep class dev.bautista.spotlight.advanced.AdvancedUserService { *; }
 -keep class dev.bautista.spotlight.advanced.IAdvancedService** { *; }
+
+# ONNX Runtime JNI uses these names, per official Android/R8 guidance.
+-keep class ai.onnxruntime.** { *; }

@@ -136,6 +136,18 @@ class SearchEngine(
         if(scope?.section == "results") {
             search(input,c).collect { send(it.filter { item -> scope.topic=="Todo" || ResultSections.category(item) == scope.topic }) };return@channelFlow
         }
+        if(scope!=null && scope.section in setOf("files","files-mode") && query.isNotBlank()) {
+            if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())) {
+                index.ensure(c)
+                val fileQuery=if(scope.section=="files")ActionCatalog.fileQuery(scope,query) else query
+                val topic=if(scope.section=="files")scope.topic else ""
+                val lexical=index.search(fileQuery,c,topic)
+                send(lexical)
+                val semantic=index.semanticSearch(fileQuery,c,topic)
+                if(semantic.isNotEmpty())send(StableResults.unique(lexical+semantic))
+            } else send(listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento","Archivos",2000,Action.Access("files"))))
+            return@channelFlow
+        }
         if(scope!=null) {
             val scoped=when(scope.section) {
                 "apps"->withContext(Dispatchers.IO){appList().filter{scope.kind!="music" || it.category==android.content.pm.ApplicationInfo.CATEGORY_AUDIO || it.id.substringBefore('/') in setOf("com.spotify.music","com.google.android.apps.youtube.music")}.mapNotNull{a->val score=relevance(query,a.label);if(score==0)null else Result(a.id,a.label,if(a.id in c.favorites)"Favorita" else "Abrir aplicación","Aplicaciones",score,Action.Launch(a.intent),runCatching{context.packageManager.getActivityIcon(a.intent)}.getOrNull())}}
@@ -352,7 +364,10 @@ class SearchEngine(
             launch(Dispatchers.IO) {
                 try {
                     index.ensure(c)
-                    publish("files", index.search(query,c))
+                    val lexical=index.search(query,c)
+                    publish("files",lexical)
+                    val semantic=index.semanticSearch(query,c)
+                    if(semantic.isNotEmpty())publish("files",StableResults.unique(lexical+semantic))
                 } catch(e:CancellationException) {throw e} catch(e:Exception) {
                     publish("files",listOf(Result("files:error","No se pudo leer el índice","Reintentar búsqueda o revisar el acceso a archivos","Archivos",100,Action.RestoreQuery(input))))
                 }
