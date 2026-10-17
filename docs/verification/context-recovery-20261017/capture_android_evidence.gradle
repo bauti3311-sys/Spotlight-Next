@@ -1,0 +1,38 @@
+// Read-only evidence capture outside the source/build tree. Does not change task actions.
+import groovy.json.JsonOutput
+
+def destination = new File(System.getProperty('spotlight.evidence.dir'))
+destination.mkdirs()
+gradle.taskGraph.afterTask { task, state ->
+    if (task.project.path == ':app') {
+        def build = task.project.layout.buildDirectory.get().asFile
+        if (task.name == 'testDebugUnitTest') {
+            task.project.copy {
+                from new File(build, 'test-results/testDebugUnitTest')
+                include 'TEST-*.xml'
+                into new File(destination, 'test-results')
+            }
+        }
+        if (task.name in ['lintDebug', 'lintRelease', 'lintFunctionalPreview']) {
+            task.project.copy {
+                from new File(build, 'reports')
+                include 'lint-results-*.xml'
+                into new File(destination, 'lint')
+            }
+        }
+        if (task.name == 'verifyRoborazziDebug') {
+            task.project.copy {
+                from new File(build, 'test-results/roborazzi')
+                include 'results-summary.json'
+                into new File(destination, 'visual')
+            }
+        }
+        if (task.name in ['testDebugUnitTest', 'lintDebug', 'lintRelease', 'lintFunctionalPreview',
+                           'assembleRelease', 'compileDebugAndroidTestKotlin', 'verifyRoborazziDebug']) {
+            new File(destination, 'tasks.jsonl').append(JsonOutput.toJson([
+                task: task.path, failed: state.failure != null,
+                skipped: state.skipped, upToDate: state.upToDate
+            ]) + '\n')
+        }
+    }
+}

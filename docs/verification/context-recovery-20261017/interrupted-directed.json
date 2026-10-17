@@ -1,0 +1,5 @@
+{
+  "outcome": "Interrupted exit130; no completed JUnit result claimed",
+  "reason": "Paused-dispatcher test fixture assumed synchronous initial load; moving file IO to Dispatchers.IO requires pumping continuation tasks until the pin job completes. Fixture updated with a5000ms bound, preserving all ownership/data assertions. UI fixture also uses AtomicBoolean and does not assume waitForIdle awaits IO.",
+  "originalLogSha256": "c3e4b209b24e79ad88d0a3e3ced6913adcc4fb1b23ea6d2d6f65a35bbffa9595"
+}

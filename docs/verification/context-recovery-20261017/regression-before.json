@@ -1,0 +1,16 @@
+{
+  "baseCommit": "2de8b521b409753e3f97e8a010f87c2f4b628414",
+  "productionSourceCommit": "4f429c0120aacf78c6568f209c747c8d4c10068b",
+  "totals": {
+    "tests": 4,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "expectedFailures": true,
+  "productionInput": {
+    "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+    "sha256": "33061e06d43cc0b6238c88062fa75453415cc7a6d8ea37ba47fba778d67e9443"
+  },
+  "testSha256": "4de3ab4503dd53ee9988106c4a3d989495cfead37abe0847c9474030fbd14373"
+}

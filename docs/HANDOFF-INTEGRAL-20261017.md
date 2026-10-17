@@ -1,6 +1,22 @@
 # Continuidad integral · 17/10/2026
 
-## Estado integral verificado: conservación de contextos
+## Estado integral verificado: conservación ante lectura fallida
+
+Código Android: `f987a0ebe38a244688f168c199b9e799f7b85b1b`, sobre `2de8b52` / `4f429c0`. ContextStore ya no trata JSON ilegible, versión desconocida, listas/identidades/registros no válidos o lectura cancelada como datos vacíos aptos para sobrescribir. Carga ambas colecciones y metadatos antes de publicar, sin descarte/recorte silencioso; bloquea save hasta una lectura válida. AtomicFile puede recuperar su .bak existente. Error y Reintentar lectura están conectados a ContextPanel sin mostrar contenido privado; el reintento lee localmente, no fija/guarda/envía. No reconstruye JSON corrupto ni crea otro respaldo. Ver CONTEXTO-RECUPERACION-20261017.md.
+
+**Verificación nueva de f987a0e:** 572 pruebas completas / 121 suites, cero fallos/errores/omisiones; tres lint sin errores (recuentos exactos en verification/context-recovery-20261017/lint-summary.json). Release/R8 y compileDebugAndroidTestKotlin correctos (BUILD SUCCESSFUL in 11m 19s); 21 comparaciones estrictas intactas, cero grabadas/añadidas/modificadas (BUILD SUCCESSFUL in 22s). 328 entradas coinciden con Git, sin fuentes adicionales. Evidencia: verification/context-recovery-20261017/summary.json. 40 pruebas dirigidas / 7 suites precedieron los gates; sus cinco archivos modificados coinciden con el código publicado. No se suman rondas. Python 30+5 histórico preservado, no repetido porque no cambió.
+
+Antes de corregir fallaron 4 casos esperados sobre producción `4f429c0` / documentación `2de8b52`, identificados por hashes. La primera ronda dirigida se interrumpió por fixture de dispatcher pausado que asumía carga sin cambio de hilo: ahora bombea continuaciones con límite de 5000 ms y conserva todas las aserciones. El componente Compose usa ContextStore/archivos reales del sandbox; no es prueba de arranque físico ni permisos Android reales. C1 sigue siendo ajuste exclusivo del JVM de tests por el crash previo, sin cambiar verificaciones/código de la app/Gradle-R8 ni usarlo para medir rendimiento. El aviso de caché JIT llena no omitió casos; todos los 572 terminaron.
+
+No dispositivo/KVM: instrumentación compilada, NO ejecutada; no One UI/ML nativo ni medidas RAM/batería/latencia. Release interno principal con código 29 / ARM64 / minSdk 26 / targetSdk 35/no depurable, zipalign 16 KB correcto, SIN FIRMA y no instalable/entregado. No se creó clave de firma ni se entregó APK parcial. Gitleaks árbol / 31 commits locales sin hallazgos antes del cierre; no historial remoto completo. Consulta de ejecuciones de esta rama: 0 (registro exacto en evidencia), sin consultar facturación/minutos de la cuenta. No Actions, cambios de presupuesto/retención/workflows/main/PR16, merge ni force. La firma única final sigue condicionada al procedimiento histórico/checks del SHA exacto. La matriz de las 40 decisiones permanece parcial.
+
+### Siguiente bloque funcional exacto
+
+Decisiones 6/13/35: recuperación semántica local optativa sobre el índice documental existente. Antes de introducir un modelo, releer FileIndex, DocumentRetrieval y límites/huellas de DocumentText; identificar modelo real, licencia redistribuible, tamaño y motor Android compatibles con min26/ARM64, y acotar memoria/cancelación/versionado del índice. Conservar FTS/ranking léxico como respuesta inmediata/offline y no llamarlo embeddings. Evaluar corpus sintético reproducible sin subir documentos ni descargar modelos silenciosamente dentro de la app. Las medidas A9+/proveedor y elección definitiva siguen pendientes: no afirmar semántica implementada hasta integrar y verificar el recorrido real. Conservar los bloques cerrados OCR adaptativo, selección Gemini y contextos, Obsidian/Quick Look/Ajustes/conversaciones/acciones. Antes de editar, consultar HEAD y reserva propia; el checkpoint no implica ejecución en segundo plano.
+
+---
+
+## Historial: conservación de contextos
 
 Código4f429c0120aacf78c6568f209c747c8d4c10068b, sobre47f3384 y el cierre documental a34098e. ContextStore espera carga antes de modificar, conserva fijados/conversaciones/campos desconocidos, rechaza el31sin expulsar y publica cambios solo tras AtomicFile exitoso. Fijar queda ligado al contexto solicitado antes de esperar carga; cambiar selección retira importaciones temporales sustituidas sin borrar fuentes fijadas. ContextPanel cancela/desestima lectura tardía al quitar/cambiar/cancelar antes de preparar PRIVATE_CONTEXT; no envío automático ni nuevo motor/interfaz.
 

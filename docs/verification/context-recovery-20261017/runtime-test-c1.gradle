@@ -1,0 +1,7 @@
+// Host JVM workaround only: C2 crashed in Robolectric SQLiteDatabase JIT compilation.
+// All tests and assertions remain enabled. No Android source/build setting changes.
+allprojects {
+    tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
+        jvmArgs '-XX:TieredStopAtLevel=1'
+    }
+}

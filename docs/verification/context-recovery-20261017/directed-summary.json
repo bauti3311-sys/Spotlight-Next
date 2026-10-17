@@ -1,0 +1,33 @@
+{
+  "sourceState": "Pending recovery code over2de8b52",
+  "totals": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": 7,
+  "changedInputs": [
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+      "sha256": "ee1bfb0e5933f2cee5185209197654afcf5bb0e3e424320dcf7af222f38754c6"
+    },
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/ui/ContextPanel.kt",
+      "sha256": "9ccba9a13a28f340c7970c7201b138287658e7fd9ab5c8688977326f0096f423"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/data/ContextPreservationTest.kt",
+      "sha256": "95846df76df5ade42758b589c36d168e71d700e4dbf721bb7d0ca40284f05fdb"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/data/ContextRecoveryTest.kt",
+      "sha256": "61bdb1e98b5e82c76f8e660f22d7066a60b01c056bbeb1cf51490b62d67b4bdb"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/ui/ContextStorageStatusFlowTest.kt",
+      "sha256": "eef6117b2d87cf9b56f25a7dcb2c774ccfa265201184a1f118d23262dba261ce"
+    }
+  ],
+  "publishedSource": "f987a0ebe38a244688f168c199b9e799f7b85b1b"
+}

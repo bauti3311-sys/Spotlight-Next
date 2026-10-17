@@ -458,3 +458,12 @@ No hay dispositivo ni KVM (comprobados de nuevo): instrumentación compilada, NO
 ### Siguiente bloque funcional exacto
 
 Decisiones7/18: comprobar que JSON ilegible, versión desconocida o registros no válidos no se confundan con almacenamiento vacío y se sobrescriban al fijar/guardar/borrar. Hay cuatro escenarios preparados fuera del árbol; aún no compilados ni corregidos. Reproducir primero contra4f429c0 y proteger lectura/escritura conservando bytes, errores visibles y reintento explícito. No reparar eliminando datos, no añadir memoria automática o envío remoto. Después continuar pendientes viables de matriz40; embeddings/grounding/proveedor/dispositivo no quedan acreditados por estas pruebas. Consultar HEAD y reserva propia antes de editar; el checkpoint no es ejecución en segundo plano.
+
+
+## Lectura recuperable · cierre f987a0e · 17/10/2026
+
+Código Android `f987a0e`, sobre `2de8b52`: lectura validada de ContextStore, conservación de bytes y bloqueo de escritura ante error/formato desconocido; reintento local explícito en el componente de estado de ContextPanel. Sin reset de datos, envío remoto o cambio visual normal.
+
+Verificación nueva: 572 pruebas / 121 suites, cero fallos, tres lint sin errores, Release/R8 y compilación instrumentada correctos (BUILD SUCCESSFUL in 11m 19s); 21 comparaciones estrictas intactas. Las 328 entradas compiladas coinciden con Git. Los 40 dirigidos no se suman. Evidencia: `docs/verification/context-recovery-20261017/summary.json`.
+
+Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release interno sin firma, no instalable ni entregado; ninguna clave de firma nueva, APK parcial, Actions, main/PR16 o presupuesto modificado. Matriz 40 aún parcial. Detalle, regresiones y próximo bloque semántico local: `docs/HANDOFF-INTEGRAL-20261017.md` y `docs/CONTEXTO-RECUPERACION-20261017.md`.
