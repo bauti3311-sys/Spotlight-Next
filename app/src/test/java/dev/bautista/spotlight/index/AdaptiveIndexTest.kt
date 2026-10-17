@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import dev.bautista.spotlight.control.DeviceResourceState
 import dev.bautista.spotlight.data.Config as AppConfig
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import org.junit.*
 import org.junit.Assert.*
 import org.junit.runner.RunWith
@@ -46,6 +47,17 @@ class AdaptiveIndexTest {
                 } finally{image.recycle();done()}
             }}finally{lease.close()}
         })
+    }
+    @Test fun coldPrivateOrDisabledIndexDoesNotScheduleRefreshOrNotifySearchAgain()=runBlocking {
+        for (c in listOf(config.copy(privateMode=true),config.copy(files=false))) {
+            val h=Harness();val index=h.index();val before=index.revision.value
+            try {
+                index.ensure(c)
+                val changed=withTimeoutOrNull(400){index.revision.first{it>before}}
+                assertNull("No refresh notification when indexing is not authorized",changed)
+                assertEquals(0,h.calls)
+            }finally{index.cancelRefresh()}
+        }
     }
     @Test fun reducedThenPausedThenRecoveredSurvivesIndexRecreationWithoutRepeatingOcr()=runBlocking {
         val h=Harness();var index=h.index()

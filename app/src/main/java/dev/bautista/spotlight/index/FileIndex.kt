@@ -111,6 +111,8 @@ class FileIndex(
     private fun sourceAllowed(tree:String,c:Config)=c.files && !c.privateMode && if(tree=="__shared__")broadAllowed() else tree in allowedTrees(c)
 
     suspend fun ensure(c: Config) {
+        // A refused refresh must not trigger a revision -> search -> refresh loop.
+        if(c.privateMode || !c.files)return
         observe(c.trees + if(broadAllowed())setOf(android.provider.MediaStore.Files.getContentUri("external").toString()) else emptySet())
         if (
             broadAllowed() != lastBroad ||
