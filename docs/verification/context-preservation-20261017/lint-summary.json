@@ -1,0 +1,416 @@
+{
+  "lint-results-debug": {
+    "counts": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "issues": [
+      {
+        "id": "ScopedStorage",
+        "severity": "Warning",
+        "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE",
+        "category": "Correctness",
+        "priority": "8",
+        "summary": "Affected by scoped storage",
+        "explanation": "Scoped storage is enforced on Android 10+ (or Android 11+ if using `requestLegacyExternalStorage`). In particular, `WRITE_EXTERNAL_STORAGE` will no longer provide write access to all files; it will provide the equivalent of `READ_EXTERNAL_STORAGE` instead.\n\nAs of Android 13, if you need to query or interact with MediaStore or media files on the shared storage, you should be using instead one or more new storage permissions:\n* `android.permission.READ_MEDIA_IMAGES`\n* `android.permission.READ_MEDIA_VIDEO`\n* `android.permission.READ_MEDIA_AUDIO`\n\nand then add `maxSdkVersion=\"33\"` to the older permission. See the developer guide for how to do this: https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions\n\nThe `MANAGE_EXTERNAL_STORAGE` permission can be used to manage all files, but it is rarely necessary and most apps on Google Play are not allowed to use it. Most apps should instead migrate to use scoped storage. To modify or delete files, apps should request write access from the user as described at https://goo.gle/android-mediastore-createwriterequest.\n\nTo learn more, read these resources: Play policy: https://goo.gle/policy-storage-help Allowable use cases: https://goo.gle/policy-storage-usecases",
+        "url": "https://goo.gle/android-storage-usecases",
+        "urls": "https://goo.gle/android-storage-usecases",
+        "errorLine1": " <uses-permission android:name=\"android.permission.MANAGE_EXTERNAL_STORAGE\"/>",
+        "errorLine2": "                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "DiscouragedPrivateApi",
+        "severity": "Warning",
+        "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases",
+        "category": "Correctness",
+        "priority": "6",
+        "summary": "Using Discouraged Private API",
+        "explanation": "Usage of restricted non-SDK interface may throw an exception at runtime. Accessing non-SDK methods or fields through reflection has a high likelihood to break your app between versions, and is being restricted to facilitate future app compatibility.",
+        "url": "https://developer.android.com/preview/restrictions-non-sdk-interfaces",
+        "urls": "https://developer.android.com/preview/restrictions-non-sdk-interfaces",
+        "errorLine1": "        val manager=Class.forName(\"android.app.ActivityManager\").getDeclaredMethod(\"getService\").invoke(null)",
+        "errorLine2": "                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ExifInterface",
+        "severity": "Warning",
+        "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead",
+        "category": "Correctness",
+        "priority": "6",
+        "summary": "Using `android.media.ExifInterface`",
+        "explanation": "The `android.media.ExifInterface` implementation has some known security bugs in older versions of Android. There is a new implementation available of this library in the support library, which is preferable.",
+        "errorLine1": "import android.media.ExifInterface",
+        "errorLine2": "       ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "RedundantLabel",
+        "severity": "Warning",
+        "message": "Redundant label can be removed",
+        "category": "Correctness",
+        "priority": "5",
+        "summary": "Redundant label on activity",
+        "explanation": "When an activity does not have a label attribute, it will use the one from the application tag. Since the application has already specified the same label, the label on this activity can be omitted.",
+        "errorLine1": "  <activity android:name=\".ProcessTextActivity\" android:label=\"Spotlight Next\" android:exported=\"true\">",
+        "errorLine2": "                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ChromeOsAbiSupport",
+        "severity": "Warning",
+        "message": "Missing x86_64 ABI support for ChromeOS",
+        "category": "Correctness:Chrome OS",
+        "priority": "4",
+        "summary": "Missing ABI Support for ChromeOS",
+        "explanation": "To properly support ChromeOS, your Android application should have an x86 and/or x86_64 binary as part of the build configuration. To fix the issue, ensure your files are properly optimized for ARM; the binary translator will then ensure compatibility with x86. Alternatively, add an `abiSplit` for x86 within your `build.gradle` file and create the required x86 dependencies.",
+        "url": "https://developer.android.com/ndk/guides/abis",
+        "urls": "https://developer.android.com/ndk/guides/abis",
+        "errorLine1": " buildTypes { getByName(\"debug\") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName(\"projectPrivate\") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += \"arm64-v8a\" }; proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\") }",
+        "errorLine2": "                                                                                                                                                                                                        ~~~~~~~~~~~"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "DataExtractionRules",
+        "severity": "Warning",
+        "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`",
+        "category": "Security",
+        "priority": "3",
+        "summary": "Missing data extraction rules",
+        "explanation": "Before Android 12, the attributes `android:allowBackup` and `android:fullBackupContent` were used to configure all forms of backup, including cloud backups, device-to-device transfers and adb backup.\n\nIn Android 12 and higher, these attributes have been deprecated and will only apply to cloud backups. You should instead use the attribute `android:dataExtractionRules`, specifying an `@xml` resource that configures which files to back up, for cloud backups and for device-to-device transfers, separately. If your `minSdkVersion` supports older versions, you'll still want to specify an `android:fullBackupContent` resource if the default behavior is not right for your app.",
+        "url": "https://developer.android.com/about/versions/12/backup-restore#xml-changes",
+        "urls": "https://developer.android.com/about/versions/12/backup-restore#xml-changes,https://goo.gle/DataExtractionRules",
+        "errorLine1": " <application android:name=\".SpotlightApp\" android:label=\"Spotlight Next\" android:icon=\"@drawable/ic_spotlight\" android:theme=\"@style/AppTheme\" android:allowBackup=\"false\" android:dataExtractionRules=\"@xml/data_extraction_rules\" android:usesCleartextTraffic=\"false\" android:supportsRtl=\"true\">",
+        "errorLine2": "                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Information",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`",
+        "category": "Performance",
+        "priority": "3",
+        "summary": "`State<T>` will autobox values assigned to this state. Use a specialized state type instead.",
+        "explanation": "Calling `mutableStateOf<T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information.",
+        "errorLine1": "    var selected by remember { mutableStateOf(0) }",
+        "errorLine2": "                               ~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ViewConstructor",
+        "severity": "Warning",
+        "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`",
+        "category": "Usability",
+        "priority": "3",
+        "summary": "Missing View constructors for XML inflation",
+        "explanation": "Some layout tools (such as the Android layout editor) need to find a constructor with one of the following signatures:\n* `View(Context context)`\n* `View(Context context, AttributeSet attrs)`\n* `View(Context context, AttributeSet attrs, int defStyle)`\n\nIf your custom view needs to perform initialization which does not apply when used in a layout editor, you can surround the given code with a check to see if `View#isInEditMode()` is false, since that method will return `false` at runtime but true within a user interface editor.",
+        "errorLine1": "internal class WindowFocusHost(",
+        "errorLine2": "               ~~~~~~~~~~~~~~~"
+      }
+    ],
+    "originalXmlSha256": "3b0cbed8bea23098bc4b2d2d86828a2891c9ac6704cc7b205e7eed6bd9340266"
+  },
+  "lint-results-functionalPreview": {
+    "counts": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "issues": [
+      {
+        "id": "ScopedStorage",
+        "severity": "Warning",
+        "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE",
+        "category": "Correctness",
+        "priority": "8",
+        "summary": "Affected by scoped storage",
+        "explanation": "Scoped storage is enforced on Android 10+ (or Android 11+ if using `requestLegacyExternalStorage`). In particular, `WRITE_EXTERNAL_STORAGE` will no longer provide write access to all files; it will provide the equivalent of `READ_EXTERNAL_STORAGE` instead.\n\nAs of Android 13, if you need to query or interact with MediaStore or media files on the shared storage, you should be using instead one or more new storage permissions:\n* `android.permission.READ_MEDIA_IMAGES`\n* `android.permission.READ_MEDIA_VIDEO`\n* `android.permission.READ_MEDIA_AUDIO`\n\nand then add `maxSdkVersion=\"33\"` to the older permission. See the developer guide for how to do this: https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions\n\nThe `MANAGE_EXTERNAL_STORAGE` permission can be used to manage all files, but it is rarely necessary and most apps on Google Play are not allowed to use it. Most apps should instead migrate to use scoped storage. To modify or delete files, apps should request write access from the user as described at https://goo.gle/android-mediastore-createwriterequest.\n\nTo learn more, read these resources: Play policy: https://goo.gle/policy-storage-help Allowable use cases: https://goo.gle/policy-storage-usecases",
+        "url": "https://goo.gle/android-storage-usecases",
+        "urls": "https://goo.gle/android-storage-usecases",
+        "errorLine1": " <uses-permission android:name=\"android.permission.MANAGE_EXTERNAL_STORAGE\"/>",
+        "errorLine2": "                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "DiscouragedPrivateApi",
+        "severity": "Warning",
+        "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases",
+        "category": "Correctness",
+        "priority": "6",
+        "summary": "Using Discouraged Private API",
+        "explanation": "Usage of restricted non-SDK interface may throw an exception at runtime. Accessing non-SDK methods or fields through reflection has a high likelihood to break your app between versions, and is being restricted to facilitate future app compatibility.",
+        "url": "https://developer.android.com/preview/restrictions-non-sdk-interfaces",
+        "urls": "https://developer.android.com/preview/restrictions-non-sdk-interfaces",
+        "errorLine1": "        val manager=Class.forName(\"android.app.ActivityManager\").getDeclaredMethod(\"getService\").invoke(null)",
+        "errorLine2": "                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ExifInterface",
+        "severity": "Warning",
+        "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead",
+        "category": "Correctness",
+        "priority": "6",
+        "summary": "Using `android.media.ExifInterface`",
+        "explanation": "The `android.media.ExifInterface` implementation has some known security bugs in older versions of Android. There is a new implementation available of this library in the support library, which is preferable.",
+        "errorLine1": "import android.media.ExifInterface",
+        "errorLine2": "       ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "RedundantLabel",
+        "severity": "Warning",
+        "message": "Redundant label can be removed",
+        "category": "Correctness",
+        "priority": "5",
+        "summary": "Redundant label on activity",
+        "explanation": "When an activity does not have a label attribute, it will use the one from the application tag. Since the application has already specified the same label, the label on this activity can be omitted.",
+        "errorLine1": "  <activity android:name=\".ProcessTextActivity\" android:label=\"Spotlight Next\" android:exported=\"true\">",
+        "errorLine2": "                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ChromeOsAbiSupport",
+        "severity": "Warning",
+        "message": "Missing x86_64 ABI support for ChromeOS",
+        "category": "Correctness:Chrome OS",
+        "priority": "4",
+        "summary": "Missing ABI Support for ChromeOS",
+        "explanation": "To properly support ChromeOS, your Android application should have an x86 and/or x86_64 binary as part of the build configuration. To fix the issue, ensure your files are properly optimized for ARM; the binary translator will then ensure compatibility with x86. Alternatively, add an `abiSplit` for x86 within your `build.gradle` file and create the required x86 dependencies.",
+        "url": "https://developer.android.com/ndk/guides/abis",
+        "urls": "https://developer.android.com/ndk/guides/abis",
+        "errorLine1": " buildTypes { getByName(\"debug\") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName(\"projectPrivate\") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += \"arm64-v8a\" }; proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\") }",
+        "errorLine2": "                                                                                                                                                                                                        ~~~~~~~~~~~"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "DataExtractionRules",
+        "severity": "Warning",
+        "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`",
+        "category": "Security",
+        "priority": "3",
+        "summary": "Missing data extraction rules",
+        "explanation": "Before Android 12, the attributes `android:allowBackup` and `android:fullBackupContent` were used to configure all forms of backup, including cloud backups, device-to-device transfers and adb backup.\n\nIn Android 12 and higher, these attributes have been deprecated and will only apply to cloud backups. You should instead use the attribute `android:dataExtractionRules`, specifying an `@xml` resource that configures which files to back up, for cloud backups and for device-to-device transfers, separately. If your `minSdkVersion` supports older versions, you'll still want to specify an `android:fullBackupContent` resource if the default behavior is not right for your app.",
+        "url": "https://developer.android.com/about/versions/12/backup-restore#xml-changes",
+        "urls": "https://developer.android.com/about/versions/12/backup-restore#xml-changes,https://goo.gle/DataExtractionRules",
+        "errorLine1": " <application android:name=\".SpotlightApp\" android:label=\"Spotlight Next\" android:icon=\"@drawable/ic_spotlight\" android:theme=\"@style/AppTheme\" android:allowBackup=\"false\" android:dataExtractionRules=\"@xml/data_extraction_rules\" android:usesCleartextTraffic=\"false\" android:supportsRtl=\"true\">",
+        "errorLine2": "                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Information",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`",
+        "category": "Performance",
+        "priority": "3",
+        "summary": "`State<T>` will autobox values assigned to this state. Use a specialized state type instead.",
+        "explanation": "Calling `mutableStateOf<T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information.",
+        "errorLine1": "    var selected by remember { mutableStateOf(0) }",
+        "errorLine2": "                               ~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ViewConstructor",
+        "severity": "Warning",
+        "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`",
+        "category": "Usability",
+        "priority": "3",
+        "summary": "Missing View constructors for XML inflation",
+        "explanation": "Some layout tools (such as the Android layout editor) need to find a constructor with one of the following signatures:\n* `View(Context context)`\n* `View(Context context, AttributeSet attrs)`\n* `View(Context context, AttributeSet attrs, int defStyle)`\n\nIf your custom view needs to perform initialization which does not apply when used in a layout editor, you can surround the given code with a check to see if `View#isInEditMode()` is false, since that method will return `false` at runtime but true within a user interface editor.",
+        "errorLine1": "internal class WindowFocusHost(",
+        "errorLine2": "               ~~~~~~~~~~~~~~~"
+      }
+    ],
+    "originalXmlSha256": "3b0cbed8bea23098bc4b2d2d86828a2891c9ac6704cc7b205e7eed6bd9340266"
+  },
+  "lint-results-release": {
+    "counts": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "issues": [
+      {
+        "id": "ScopedStorage",
+        "severity": "Warning",
+        "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE",
+        "category": "Correctness",
+        "priority": "8",
+        "summary": "Affected by scoped storage",
+        "explanation": "Scoped storage is enforced on Android 10+ (or Android 11+ if using `requestLegacyExternalStorage`). In particular, `WRITE_EXTERNAL_STORAGE` will no longer provide write access to all files; it will provide the equivalent of `READ_EXTERNAL_STORAGE` instead.\n\nAs of Android 13, if you need to query or interact with MediaStore or media files on the shared storage, you should be using instead one or more new storage permissions:\n* `android.permission.READ_MEDIA_IMAGES`\n* `android.permission.READ_MEDIA_VIDEO`\n* `android.permission.READ_MEDIA_AUDIO`\n\nand then add `maxSdkVersion=\"33\"` to the older permission. See the developer guide for how to do this: https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions\n\nThe `MANAGE_EXTERNAL_STORAGE` permission can be used to manage all files, but it is rarely necessary and most apps on Google Play are not allowed to use it. Most apps should instead migrate to use scoped storage. To modify or delete files, apps should request write access from the user as described at https://goo.gle/android-mediastore-createwriterequest.\n\nTo learn more, read these resources: Play policy: https://goo.gle/policy-storage-help Allowable use cases: https://goo.gle/policy-storage-usecases",
+        "url": "https://goo.gle/android-storage-usecases",
+        "urls": "https://goo.gle/android-storage-usecases",
+        "errorLine1": " <uses-permission android:name=\"android.permission.MANAGE_EXTERNAL_STORAGE\"/>",
+        "errorLine2": "                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "DiscouragedPrivateApi",
+        "severity": "Warning",
+        "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases",
+        "category": "Correctness",
+        "priority": "6",
+        "summary": "Using Discouraged Private API",
+        "explanation": "Usage of restricted non-SDK interface may throw an exception at runtime. Accessing non-SDK methods or fields through reflection has a high likelihood to break your app between versions, and is being restricted to facilitate future app compatibility.",
+        "url": "https://developer.android.com/preview/restrictions-non-sdk-interfaces",
+        "urls": "https://developer.android.com/preview/restrictions-non-sdk-interfaces",
+        "errorLine1": "        val manager=Class.forName(\"android.app.ActivityManager\").getDeclaredMethod(\"getService\").invoke(null)",
+        "errorLine2": "                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ExifInterface",
+        "severity": "Warning",
+        "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead",
+        "category": "Correctness",
+        "priority": "6",
+        "summary": "Using `android.media.ExifInterface`",
+        "explanation": "The `android.media.ExifInterface` implementation has some known security bugs in older versions of Android. There is a new implementation available of this library in the support library, which is preferable.",
+        "errorLine1": "import android.media.ExifInterface",
+        "errorLine2": "       ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "RedundantLabel",
+        "severity": "Warning",
+        "message": "Redundant label can be removed",
+        "category": "Correctness",
+        "priority": "5",
+        "summary": "Redundant label on activity",
+        "explanation": "When an activity does not have a label attribute, it will use the one from the application tag. Since the application has already specified the same label, the label on this activity can be omitted.",
+        "errorLine1": "  <activity android:name=\".ProcessTextActivity\" android:label=\"Spotlight Next\" android:exported=\"true\">",
+        "errorLine2": "                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ChromeOsAbiSupport",
+        "severity": "Warning",
+        "message": "Missing x86_64 ABI support for ChromeOS",
+        "category": "Correctness:Chrome OS",
+        "priority": "4",
+        "summary": "Missing ABI Support for ChromeOS",
+        "explanation": "To properly support ChromeOS, your Android application should have an x86 and/or x86_64 binary as part of the build configuration. To fix the issue, ensure your files are properly optimized for ARM; the binary translator will then ensure compatibility with x86. Alternatively, add an `abiSplit` for x86 within your `build.gradle` file and create the required x86 dependencies.",
+        "url": "https://developer.android.com/ndk/guides/abis",
+        "urls": "https://developer.android.com/ndk/guides/abis",
+        "errorLine1": " buildTypes { getByName(\"debug\") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName(\"projectPrivate\") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += \"arm64-v8a\" }; proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\") }",
+        "errorLine2": "                                                                                                                                                                                                        ~~~~~~~~~~~"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "TrustAllX509TrustManager",
+        "severity": "Warning",
+        "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers",
+        "category": "Security",
+        "priority": "6",
+        "summary": "Insecure TLS/SSL trust manager",
+        "explanation": "This check looks for X509TrustManager implementations whose `checkServerTrusted` or `checkClientTrusted` methods do nothing (thus trusting any certificate chain) which could result in insecure network traffic caused by trusting arbitrary TLS/SSL certificates presented by peers.",
+        "url": "https://goo.gle/TrustAllX509TrustManager",
+        "urls": "https://goo.gle/TrustAllX509TrustManager"
+      },
+      {
+        "id": "DataExtractionRules",
+        "severity": "Warning",
+        "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`",
+        "category": "Security",
+        "priority": "3",
+        "summary": "Missing data extraction rules",
+        "explanation": "Before Android 12, the attributes `android:allowBackup` and `android:fullBackupContent` were used to configure all forms of backup, including cloud backups, device-to-device transfers and adb backup.\n\nIn Android 12 and higher, these attributes have been deprecated and will only apply to cloud backups. You should instead use the attribute `android:dataExtractionRules`, specifying an `@xml` resource that configures which files to back up, for cloud backups and for device-to-device transfers, separately. If your `minSdkVersion` supports older versions, you'll still want to specify an `android:fullBackupContent` resource if the default behavior is not right for your app.",
+        "url": "https://developer.android.com/about/versions/12/backup-restore#xml-changes",
+        "urls": "https://developer.android.com/about/versions/12/backup-restore#xml-changes,https://goo.gle/DataExtractionRules",
+        "errorLine1": " <application android:name=\".SpotlightApp\" android:label=\"Spotlight Next\" android:icon=\"@drawable/ic_spotlight\" android:theme=\"@style/AppTheme\" android:allowBackup=\"false\" android:dataExtractionRules=\"@xml/data_extraction_rules\" android:usesCleartextTraffic=\"false\" android:supportsRtl=\"true\">",
+        "errorLine2": "                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Information",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`",
+        "category": "Performance",
+        "priority": "3",
+        "summary": "`State<T>` will autobox values assigned to this state. Use a specialized state type instead.",
+        "explanation": "Calling `mutableStateOf<T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information.",
+        "errorLine1": "    var selected by remember { mutableStateOf(0) }",
+        "errorLine2": "                               ~~~~~~~~~~~~~~"
+      },
+      {
+        "id": "ViewConstructor",
+        "severity": "Warning",
+        "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`",
+        "category": "Usability",
+        "priority": "3",
+        "summary": "Missing View constructors for XML inflation",
+        "explanation": "Some layout tools (such as the Android layout editor) need to find a constructor with one of the following signatures:\n* `View(Context context)`\n* `View(Context context, AttributeSet attrs)`\n* `View(Context context, AttributeSet attrs, int defStyle)`\n\nIf your custom view needs to perform initialization which does not apply when used in a layout editor, you can surround the given code with a check to see if `View#isInEditMode()` is false, since that method will return `false` at runtime but true within a user interface editor.",
+        "errorLine1": "internal class WindowFocusHost(",
+        "errorLine2": "               ~~~~~~~~~~~~~~~"
+      }
+    ],
+    "originalXmlSha256": "3b0cbed8bea23098bc4b2d2d86828a2891c9ac6704cc7b205e7eed6bd9340266"
+  }
+}

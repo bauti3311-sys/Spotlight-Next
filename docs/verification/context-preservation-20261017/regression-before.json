@@ -1,0 +1,34 @@
+{
+  "baseCommit": "642b00cadcf0768f1969ad05d289ae9fdea01783",
+  "sourceState": "Unchanged production642b00c plus three test files; documentation may differ.",
+  "totals": {
+    "tests": 8,
+    "failures": 7,
+    "errors": 0,
+    "skipped": 0
+  },
+  "expectedFailures": true,
+  "inputs": [
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+      "sha256": "5297367756b0500a80579655eef5e852bcf291e10cc1256def0fc3e9f6ac2298"
+    },
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/ui/ContextPanel.kt",
+      "sha256": "9953a7f7a88b16c43cde6838aa401a6269e7a185e396f0186b9aec9fa587919e"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/data/ContextPreservationTest.kt",
+      "sha256": "46f03b89d12f19a07718c2bf15d71215508efd29141e5846be974105c6eb0e2a"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/ui/ContextCapacityFlowTest.kt",
+      "sha256": "cb952600340b02d3f76e8a18e87b137ab6d127fbf41f3c3bedf55d0ed8e7db1d"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/ui/ContextExtractionFlowTest.kt",
+      "sha256": "b85665869569ab12e92e900015002095de34ab83752835872707e7ffe1d4a60d"
+    }
+  ],
+  "productionInputsMatchBase": true
+}

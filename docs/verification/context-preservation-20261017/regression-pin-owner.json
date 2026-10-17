@@ -1,0 +1,21 @@
+{
+  "baseCommit": "47f3384226fd7f4d6ff2d67671ad0f2388b36116",
+  "sourceState": "Production47f3384 plus select-import cleanup, before requested-pin ownership guard; one new regression method",
+  "totals": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "expectedFailures": true,
+  "inputs": [
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+      "sha256": "1ff8e380ff01cd62f16c9d1ef0ff538ffcd42a0b2a71839077b80109ab00c785"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/data/ContextPreservationTest.kt",
+      "sha256": "321a2e14f4ebd516c5836fde08c0cb9724635c2eb2de28e922676f4c57c680c8"
+    }
+  ]
+}

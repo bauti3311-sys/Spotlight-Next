@@ -1,0 +1,80 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007faf80c88ab0, pid=333, tid=351
+#
+# JRE version: OpenJDK Runtime Environment Microsoft-11926113 (17.0.16+8) (build 17.0.16+8-LTS)
+# Java VM: OpenJDK 64-Bit Server VM Microsoft-11926113 (17.0.16+8-LTS, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, linux-amd64)
+# Problematic frame:
+# V  [libjvm.so+0xc01ab0]  Node::uncast(bool) const+0x0
+#
+# Core dump will be written. Default location: core.333 (may not exist)
+#
+# If you would like to submit a bug report, please visit:
+#   https://github.com/microsoft/openjdk/issues
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=33337 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=33337 -Djava.awt.headless=true -Djava.library.path=/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib:/tmp/spotlight-p1-build/app/src/testDebug/jniLibs:/tmp/spotlight-p1-build/app/src/test/jniLibs -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dorg.gradle.internal.worker.tmpdir=/tmp/spotlight-p1-build/app/build/tmp/testDebugUnitTest/work -Drobolectric.dependency.repo.url=https://repo.maven.apache.org/maven2 --add-opens=java.base/java.io=ALL-UNNAMED -Xmx512m -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 1'
+
+Host: AMD EPYC 9V74 80-Core Processor, 9 cores, 9G, Ubuntu 24.04.3 LTS
+Time: Sat Oct 17 19:06:56 2026 -03 elapsed time: 36.580015 seconds (0d 0h 0m 36s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007faf7812bc30):  JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=351, stack(0x00007faf7c7c2000,0x00007faf7c8c2000)]
+
+
+Current CompileTask:
+C2:  36580 12399   !   4       android.database.sqlite.SQLiteDatabase::$$robo$$android_database_sqlite_SQLiteDatabase$insertWithOnConflict (320 bytes)
+
+Stack: [0x00007faf7c7c2000,0x00007faf7c8c2000],  sp=0x00007faf7c8bba78,  free space=998k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0xc01ab0]  Node::uncast(bool) const+0x0
+V  [libjvm.so+0x452ea8]  InlineTree::ok_to_inline(ciMethod*, JVMState*, ciCallProfile&, bool&)+0x168
+V  [libjvm.so+0x69b740]  Compile::call_generator(ciMethod*, int, bool, JVMState*, bool, float, ciKlass*, bool)+0x8a0
+V  [libjvm.so+0x51966a]  CallGenerator::for_method_handle_inline(JVMState*, ciMethod*, ciMethod*, bool, bool&)+0x13a
+V  [libjvm.so+0x51a0b4]  CallGenerator::for_method_handle_call(JVMState*, ciMethod*, ciMethod*, bool)+0x24
+V  [libjvm.so+0x69b7f9]  Compile::call_generator(ciMethod*, int, bool, JVMState*, bool, float, ciKlass*, bool)+0x959
+V  [libjvm.so+0x69c0ae]  Parse::do_call()+0x18e
+V  [libjvm.so+0xc5da4e]  Parse::do_one_block()+0x1ce
+V  [libjvm.so+0xc5dea5]  Parse::do_all_blocks()+0xe5
+V  [libjvm.so+0xc61234]  Parse::Parse(JVMState*, ciMethod*, float)+0x774
+V  [libjvm.so+0x5155fb]  ParseGenerator::generate(JVMState*)+0x8b
+V  [libjvm.so+0x69c108]  Parse::do_call()+0x1e8
+V  [libjvm.so+0xc5da4e]  Parse::do_one_block()+0x1ce
+V  [libjvm.so+0xc5dea5]  Parse::do_all_blocks()+0xe5
+V  [libjvm.so+0xc61234]  Parse::Parse(JVMState*, ciMethod*, float)+0x774
+V  [libjvm.so+0x5155fb]  ParseGenerator::generate(JVMState*)+0x8b
+V  [libjvm.so+0x69c108]  Parse::do_call()+0x1e8
+V  [libjvm.so+0xc5da4e]  Parse::do_one_block()+0x1ce
+V  [libjvm.so+0xc5dea5]  Parse::do_all_blocks()+0xe5
+V  [libjvm.so+0xc61234]  Parse::Parse(JVMState*, ciMethod*, float)+0x774
+V  [libjvm.so+0x5155fb]  ParseGenerator::generate(JVMState*)+0x8b
+V  [libjvm.so+0x69c108]  Parse::do_call()+0x1e8
+V  [libjvm.so+0xc5da4e]  Parse::do_one_block()+0x1ce
+V  [libjvm.so+0xc5dea5]  Parse::do_all_blocks()+0xe5
+V  [libjvm.so+0xc61234]  Parse::Parse(JVMState*, ciMethod*, float)+0x774
+V  [libjvm.so+0x5155fb]  ParseGenerator::generate(JVMState*)+0x8b
+V  [libjvm.so+0x518449]  CallGenerator::do_late_inline_helper()+0x709
+V  [libjvm.so+0x5d19b5]  Compile::inline_incrementally_one()+0x2a5
+V  [libjvm.so+0x5d1cc8]  Compile::inline_incrementally(PhaseIterGVN&)+0x268
+V  [libjvm.so+0x5d2c64]  Compile::Optimize()+0x354
+V  [libjvm.so+0x5d4f29]  Compile::Compile(ciEnv*, ciMethod*, int, bool, bool, bool, bool, bool, bool, bool, DirectiveSet*)+0xe69
+V  [libjvm.so+0x514289]  C2Compiler::compile_method(ciEnv*, ciMethod*, int, bool, DirectiveSet*)+0x139
+V  [libjvm.so+0x5de033]  CompileBroker::invoke_compiler_on_method(CompileTask*)+0xeb3
+V  [libjvm.so+0x5defb8]  CompileBroker::compiler_thread_loop()+0x718
+V  [libjvm.so+0xe7862e]  JavaThread::thread_main_inner()+0x1ae
+V  [libjvm.so+0xe7bf1a]  Thread::call_run()+0xaa
+V  [libjvm.so+0xc36353]  thread_native_entry(Thread*)+0xe3
+C  [libc.so.6+0x9caa4]
+
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x000000000000002c
+
+Registers:
+RAX=0x00000000000000f5, RBX=0x000055a7311a5430, RCX=0x0000000000000001, RDX=0x0000000000000004
+RSP=0x00007faf7c8bba78, RBP=0x00007faf7c8bbad0, RSI=0x0000000000000000, RDI=0x0000000000000000
+R8 =0x00007faee416b570, R9 =0x0000000000000002, R10=0x00007fae8c18bf80, R11=0x0000000000000000
+R12=0x0000000000000000, R13=0x00007fae20f50bf0, R14=0x00007faee416b570, R15=0x0000000000000001

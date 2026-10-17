@@ -1,0 +1,16 @@
+{
+  "sourceCommit": "47f3384226fd7f4d6ff2d67671ad0f2388b36116",
+  "sourceState": "Unchanged production47f3384 plus one added regression method",
+  "totals": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "expectedFailures": true,
+  "productionInput": {
+    "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+    "sha256": "45f4a89dcaf6a668293b24fa95f24183d198634a29ca6c00c46d00b9d70661cc"
+  },
+  "testSha256": "328aebfa640cb3f91aa29f928b66a8b42c695d8b04941f706cf1be92978659d7"
+}

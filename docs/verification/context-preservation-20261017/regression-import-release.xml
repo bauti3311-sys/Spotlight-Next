@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="dev.bautista.spotlight.data.ContextPreservationTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2026-10-17T19:36:40" hostname="d5b6f4c2401e" time="7.057">
+  <testcase name="selectingAnotherContextReleasesSupersededTemporaryImportButKeepsPinnedSource" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="7.057">
+    <failure message="kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 5000 ms" type="kotlinx.coroutines.TimeoutCancellationException">kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 5000 ms
+	at _COROUTINE._BOUNDARY._(CoroutineDebugging.kt:42)
+	at dev.bautista.spotlight.data.ContextPreservationTest$selectingAnotherContextReleasesSupersededTemporaryImportButKeepsPinnedSource$1$1.invokeSuspend(ContextPreservationTest.kt:70)
+	at dev.bautista.spotlight.data.ContextPreservationTest$selectingAnotherContextReleasesSupersededTemporaryImportButKeepsPinnedSource$1.invokeSuspend(ContextPreservationTest.kt:70)
+Caused by: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 5000 ms
+	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:188)
+	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:156)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:505)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:105)
+	at java.base@17.0.16/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+</testsuite>

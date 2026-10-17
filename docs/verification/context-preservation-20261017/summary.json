@@ -1,0 +1,718 @@
+{
+  "sourceCommit": "4f429c0120aacf78c6568f209c747c8d4c10068b",
+  "dateUtc": "2026-10-17",
+  "android": {
+    "sourceCommit": "4f429c0120aacf78c6568f209c747c8d4c10068b",
+    "totals": {
+      "tests": 562,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suites": 119
+  },
+  "originalJunitSha256": [
+    {
+      "file": "TEST-dev.bautista.spotlight.access.InvocationTest.xml",
+      "sha256": "1062a78f5ad5723ae92ed71e716b7b094ce35f3ceabbc6a9189b5a21aa2eb853"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.advanced.AdvancedStateTest.xml",
+      "sha256": "cb5675c82117b4439ffc00b0950a39385844ae214e9fa3bb36a40a21f66c03d4"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.advanced.ReversibleSettingsTest.xml",
+      "sha256": "9398403d0dc2d2a03641a9ffd7bd21487e1d170f021ebe2f8cbfd75eb7e9031e"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml",
+      "sha256": "c9b6a1500e43f85468dc4af81ab35c58cab6f8201e6a7c48b4023e603462577f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ai.ToolCapabilityTest.xml",
+      "sha256": "959e48848081904708c33ca10c75102f3ffd988fa6b7c1690c674ef0d4f4bbe6"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ai.ToolProtocolTest.xml",
+      "sha256": "aac327056ae429ff1af19fbf0c55a8d17d63c50a00e0ba0a7976ce0d77c561bb"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.automation.NativeCommandsTest.xml",
+      "sha256": "e0584e044863c42682e8c95e67e1b0680599787004b8c4dca69d025595c13a96"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.automation.WorkflowBranchesTest.xml",
+      "sha256": "63f27d35fcac1f883c79689e72b4963d607a4db0ddc839c6c523a5f866698fe8"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.control.ActionCatalogTest.xml",
+      "sha256": "25e7912bab2f7145b69d9338335f5b6b4917f0d21a46b45c511ad5fdc423e045"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.control.CommandCenterTest.xml",
+      "sha256": "2bba7f462a5728dac6bf31ebd224447cfe2c8529bb825512aea0bcb6632d98bc"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.control.DeviceResourcesTest.xml",
+      "sha256": "3c782b0c0a8bf9fb1801c3a1c3201b50baa2f7b59c6784fd2bd69687f3ccf6bb"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.control.IntegrationRegistryTest.xml",
+      "sha256": "dd9cb867873f085dba97008bb158622aa86afa09009d3058eb45e3a6f04efa7a"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.control.MediaPlaybackTest.xml",
+      "sha256": "62925887001a59cab884701382a7e9fe6597c26c4dfe0d711dc10ade59366b3e"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.control.NotificationContentTest.xml",
+      "sha256": "9344c425604a62bf0147adc75272e5a487e453f7bf3760a1404688c50b8e9ece"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.ContextPreservationTest.xml",
+      "sha256": "f5bda28911b7b24135e6ab5d7b79bba3eb64b45b4ca4671f7745e1260f35dfd8"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.ConversationPersistenceTest.xml",
+      "sha256": "23224310ba717a239f526d98ac7d4f17fde71747ae6ab95c79a6e0715d54b36d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.NextPreferencesTest.xml",
+      "sha256": "1bf5e9e07128c1c38224a7b807211e3205a0de49fa0ca01fc2c080a46744345d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.OverlayWidthPersistenceTest.xml",
+      "sha256": "0f924aca1f344d75ad4013a7da898621c5e6f6a8f9a1a00e8e620d1ea0634181"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.OverlayWidthPolicyTest.xml",
+      "sha256": "b249de3941c33b1def792276c9b19aac78ad1e5c14470edbc85d1b3deabc1874"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.PersonalStorageTest.xml",
+      "sha256": "89c300ed078e0314dd709a90487ce6aa0a397d03047927e35dcc51ad6d281b97"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.SettingsPersistenceTest.xml",
+      "sha256": "88648ae3ec5a850873737c7962d9183ee09d4bde89051625e72d57d232ad24d0"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.data.WindowSizePolicyTest.xml",
+      "sha256": "584d9672458f74f90a8f8f3178b9accaeda67113d5c3a33dde2c316475ccb56f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.extensions.ExtensionRegistryTest.xml",
+      "sha256": "ef7f73aba195ea5015f3b43546e3909a2f7801f8e0551dd86c0f9bdb95fea997"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.AdaptiveIndexTest.xml",
+      "sha256": "696b34cc0daa9a1d57e3009eb4cb5fcdca2715b09187de703485f654fd39c00b"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.AdaptivePdfOcrTest.xml",
+      "sha256": "7a52a1df8d655e0a21cbc432c365fd9ac1fbd3cb5632e67df44b166d728a1bb6"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.DocumentCacheCoverageTest.xml",
+      "sha256": "268c5f02f62841d5940839f9150fcfb3cb477f0251cff94d221a59a2766f0332"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.DocumentMimeTest.xml",
+      "sha256": "17534d4a0602e7a5464114a3712a9be47de75bea24047d44d683bb5cd6384d6d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.DocumentRetrievalTest.xml",
+      "sha256": "ababa4f0f8076911c50a172e3cd1b0ba7e7fb86b6c4adb80e2a80ec4e3a17660"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.DocumentTextSafetyTest.xml",
+      "sha256": "9f7b29eee0a60d9252ce824c03e3d4ef499a5c4dba0d95fb24b96521b5256b34"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.DocumentTextTest.xml",
+      "sha256": "4bd204b9ed48a43bb3ccb42d6d6920ecc6bf9c7eb08b15bb4c8b614fea3207aa"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.FileDateIndexTest.xml",
+      "sha256": "5e4c24f5b59720d6810736fb2c44ef772480911e017c78538e467a97d4b7e06a"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.FileIndexTest.xml",
+      "sha256": "e4301d64931949c53d069c29843f23dabea290699b1c3324c287daced1b98343"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.MediaBitmapLifetimeTest.xml",
+      "sha256": "fd5ef1ceaed7c61296fc7c4da4caae19d53fb48d198e6e270c8be3e1989dc4f4"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.OcrBudgetTest.xml",
+      "sha256": "5fe4876962077cb291390097d269961722c52f3964be0b923da5b34f4abbed7f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.OfficeTextTest.xml",
+      "sha256": "c83ec41dadb81c795670ed97ad599d02112bd391566d9f47743c3e2ffe4d3d06"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.PdfOcrPipelineTest.xml",
+      "sha256": "a58039e5e2f6da3c48a4a95d894f50035ede54312326e9fa8831220543a992f0"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.index.SharedStorageTest.xml",
+      "sha256": "94f0e66084feeed0fbc8558a41cbd43a0b3a1c0e40187f0df4f204842df2f8f6"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.next.NativeProviderTest.xml",
+      "sha256": "3a32047dc6bbe02702183e308fb469ce60709688442417c229aa8ab3e3d1df0e"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.next.NextContractsTest.xml",
+      "sha256": "a4b6ff67158ca116a91bf37f8b836cdb5ec0f04acf1fb6141f4806dcedcb8dc8"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "sha256": "76321dea2b8c04e9c195605a2dc1c71cc943159b3681119554f72d3c9eea3d5f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.overlay.OverlayStartupTest.xml",
+      "sha256": "92c80a99e612589e0c47998c6ec457e886723e516f0dab26fe9aba3b9380beb4"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "sha256": "50b2440353ada68f6b6754a0ce46da4618a4acbc832580d25c88a4cd84f16011"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.overlay.OverlayWidthTransitionTest.xml",
+      "sha256": "d106d570c76728c26f20e1dfd153a538813633d670651087e835b1adda25d4a7"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.personal.PersonalCommandsTest.xml",
+      "sha256": "2805eeb6adffde4b974678d5fee6564a6a6037b7262f19c88de784f33b244924"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml",
+      "sha256": "2ea6e7e1284355c5c502081e4509b8be91348ee1f51b99db6a55ac1e04b1469b"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.AdvancedCalculatorTest.xml",
+      "sha256": "7fdbe79d80acc9d41cb623acc9c8b3efae78de2b780ab16267640503bf360d86"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.AiTransportTest.xml",
+      "sha256": "c0f2dcb831dfea2262967dc8b0eb6261d6668216a45bc0f312ebb40c73d1de14"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.AudioProtocolTest.xml",
+      "sha256": "461c13dd3fefd8a3aeb51c6a3ae77ff840ea4733046f1334433dfad3785783cc"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.AutomaticContextRegressionTest.xml",
+      "sha256": "546a4495008bf3bfaab267c01df734d5b5963b1d4dcdbcec49f264690529b937"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.CalculatorTest.xml",
+      "sha256": "755a8a58c352afec0668a1299c6388a05c954fdc3aa08334590ed70e833f7277"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.CalendarWorkspaceTest.xml",
+      "sha256": "3ac127edc69605170eb0daa77fc0b328145b8f54d4d93de106c6466e052ff0a3"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.DocumentSelectionTest.xml",
+      "sha256": "170db0d4b23b826a0680ee16f49c550160eee468521d3861c06ecef08f659f69"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.FileBufferTest.xml",
+      "sha256": "cc6192ee1d648666557fdbe38adf92f72b7c6162892069263987bf599716b6c6"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.GeminiModelsTest.xml",
+      "sha256": "0757838420006f7d20d31a2ebdbf9e901d3c4ad857d2975b496a4eae9ac90455"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.Glass20CoreTest.xml",
+      "sha256": "56854594cb2a121b03fd4850e6f0f31bfa71059f57637b768a1a71d04ec7dba0"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.HomeSuggestionsTest.xml",
+      "sha256": "8407dc5e909f23f07c133ac8115abb070d9d94f6481495f8c05c8fe14d608905"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.HybridSearchTest.xml",
+      "sha256": "894673d62891979526aea666bac7114c7ad9f2897a8a4a9971ca13d5fb97ef1e"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.LocalPlanTest.xml",
+      "sha256": "0df7dfdec51511a2e6351ab9263b96be71cfbb0e1d090e70aab3779e455ec64d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.LocalToolsTest.xml",
+      "sha256": "7abeb06cb13a21f8986b50108a21bf486eecc29f608228a111dbea004ba1ccfe"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.Next091ProductivityTest.xml",
+      "sha256": "118b5dd9a42bd58652714e85442779bd4f055c0eabc15bf6ce2d4c07db34b95d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.NextCoreTest.xml",
+      "sha256": "d221b1ee3d2dd8497424bd743986de2d8e19e173806c9cd86de031fac7b6b06d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.NextToolsTest.xml",
+      "sha256": "75b6f1ae28f4f95243b1ef943b143c266586a0bd165ff47bcddb8f5229fa259f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.OfflineHttpContractTest.xml",
+      "sha256": "21d35bc99087cebaa68babb9cf4110ff3c9142d06e8b18ec04a4f399fc3df966"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.OnlineDataTest.xml",
+      "sha256": "2cf30d7593055c4b55fbabfdc807fd890c28f6ce02867e581a1b957aafacfc41"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.QueryInterpretationTest.xml",
+      "sha256": "b521557f11d6913f0bef3b0e89e904d4b948037537778f765ae0eed9d2a0650c"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.ResultSectionsTest.xml",
+      "sha256": "389ea9ae0fd3f372f180119202a2d0610782421e926f0d02ae9edf0cab76d89a"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.SearchQueryTest.xml",
+      "sha256": "eeea4b8831e09be65ae762161d81b59f3fbfd8f3d5fa11ffbcd88c501b1bfc2c"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.SpaceRequestsTest.xml",
+      "sha256": "6ebfa1b6f516e1d61afad44e69fc6a618000692170f0b5b79649224ad8360e80"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.UnifiedRootRegressionTest.xml",
+      "sha256": "378b8137952734d9976861e52b04c946a9419a92cdc5b6e424ad83a7521b0af4"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.UniversalIntelligenceArchitectureTest.xml",
+      "sha256": "1c83d9c36b26ba47f13dbb1c78811a83919e04450eaa236d5539445f19c93de8"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.UniversalSafetyTest.xml",
+      "sha256": "9bd148a4ad941edfff53a9a13e1656288c894e458203c8933c362490ac7fcc33"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.search.UniversalSearchTest.xml",
+      "sha256": "9ef895c4c1e4742ee97c3849126be130d0fddc9a240112c61d6b8c2814ffcd95"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ActionHubVisualTest.xml",
+      "sha256": "2334455700a8d193c29b1ecc2af5eeb701472bd90be9bb69be12bbdcf21438a5"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "sha256": "9e798fd31a54d55ff0dfe697e3748bd90ead780d2cbae18eaa1c853a3a0185d5"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.AiMarkdownTest.xml",
+      "sha256": "989927b9deb768d1592603fa57f0abd8c8661ce559f8003f266e0aede70c0cc0"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ContentExpansionTest.xml",
+      "sha256": "fbc149293fe8a8146bbe8692e65e1d44f19c0534c5f3b5ad8274d963f36b32ba"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ContextCapacityFlowTest.xml",
+      "sha256": "9b091a511c1348732d76834ecc613b545cbbe5d20472eedefd4d6c88df7a3f63"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ContextExtractionFlowTest.xml",
+      "sha256": "53b31523beda9ce8b5c85fca041a80f542ccdf5babde1f509a7807c1ce7423ea"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.DocumentExtractionRequestTest.xml",
+      "sha256": "3e212656c42530d073ede60dd1fe9a4837fa289e8c5a7d56c1e814ad8fddab42"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.DocumentSelectionFlowTest.xml",
+      "sha256": "32f0d43d96e273fb3fdfa35e024a23b463dd8376481719a2c725bf71c7fd4a9c"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.GeminiHomeCaptureTest.xml",
+      "sha256": "69da0920d614494eb03369c32d77cfffdb4089adc5663c7d77aa188b7cdd0f68"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.GeminiPresentationTest.xml",
+      "sha256": "1c14c7643723447f3369a2a3a05dcbe35c82dc0f654cb9c8ca19ebe6030b556c"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Glass20VisualTest.xml",
+      "sha256": "e3e615ce238563a574c8d153aa1b427990d296832f9d27f849561f21932d79f3"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.HybridIntelligenceTest.xml",
+      "sha256": "07fe72fa188fd9adbab61e456f31b5e57acc4492ae87ef7c5fc20e13eac441ce"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.KeyboardHintsTest.xml",
+      "sha256": "ee509c2e75c760d3823078eb79bc38d9915d9773e1c4b03d53e89a18f6092ed3"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml",
+      "sha256": "96e0ece92376407c7c9b646bc83e267c333f3e9231e6fa48b801fd7963abb4bb"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next091AdvancedVisualTest.xml",
+      "sha256": "6d744fbeccdf2c795319f887468b67aa763db50b7c9b9275729c06140300c129"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next091NavigationTest.xml",
+      "sha256": "6ce094752f4180f8fc34cda55adb04dd68fc31b471cc7b536442a5913b81e7b2"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next091SettingsVisualTest.xml",
+      "sha256": "8783e788420b7576b6d61100975f845b0c04ee5b106331b1b319a97430588e5d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next091VisualTest.xml",
+      "sha256": "3a68014a0aacd3f3433957e9d33baafee8277566e6d1624caf6f2816506dec47"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next100AdvancedVisualTest.xml",
+      "sha256": "2e09a4f346bdeb34327230684094dee6f60b24976cb481aa52d57b14c0b5bc3d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next100AppearanceTest.xml",
+      "sha256": "35514be4ef54716c1fe07ab0efca9ffb74f6df957e12fd2232466372307b509f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next100SystemVisualTest.xml",
+      "sha256": "1b482508f40466e64cffd4b85db0905631f6a5039a7d7a3da100a16d8a9673e5"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.Next110PanelTest.xml",
+      "sha256": "d836c421d879d88ec846365a6cc69d9e1ab76e3fb942240f8b270470074506b0"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.NextInteractionTest.xml",
+      "sha256": "9c92b467e130d6126d31d99ee067b8aa1573bd29627898e1ed79b3a3b16bd2e2"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.OverlayActionsImeTest.xml",
+      "sha256": "c0af1ea91fcc7294032cc4c7cdb5ec1e1ee72d5076474ff1377c7e52c74f6f48"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.OverlayAppearancePreviewTest.xml",
+      "sha256": "77cbbee1f44a4d115387bc7a03c4ba61c3f9670fdad0c906a085c3d59b0ed0da"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.OverlayAppearanceVisualSnapshotTest.xml",
+      "sha256": "7b687194df53f53097c66486c940f7bedae41403c5bf8656ab6cf795e27d669a"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.OverlayGeometryCaptureTest.xml",
+      "sha256": "3aa41ab1419f77b8461b05dbccbcd5b662b4e3a952df58513b2c1a3983369826"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.OverlayWidthSettingsTest.xml",
+      "sha256": "44edb9e20a170f3e59d494e3304b24c6d3eef9f218c0122e61d4a5ae8fff9d2d"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.OverlayWidthVisualSnapshotTest.xml",
+      "sha256": "7292198843b52e774d64fed02f271e31c8691718f69a05e8f16e8b930abe7f24"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.PreviewPresentationTest.xml",
+      "sha256": "c9669f87e2ad546e46ce51ff4330c51b03fc34801898b3bc14fdb1eb1bb81926"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ProductCheckpointCaptureTest.xml",
+      "sha256": "b63c46390d7eff9399cf9ff1c786045d07b487b8b633fb6e35f8b261c1f39a77"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ProductEntryPointsTest.xml",
+      "sha256": "e1f0c99fe347dc20ba2cac4d982f2a22b65abd785e32e8f6730b081f47752194"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ProductivityNavigationTest.xml",
+      "sha256": "a8b78cd18106669f9e3dde469d3bc64b0083cea7737d29721a4632a56806bd0f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.QuickLookTouchTargetTest.xml",
+      "sha256": "45a0c7c2d64a223c1f450f6fb31f04d95ad3cd6a280ef9ea0c9c5925b7d02b70"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.RaycastCompositionCaptureTest.xml",
+      "sha256": "dc2e70d5720b2ca4df44629d27b49ddfcca03d7646cbc1d944e49599bc3ed0a3"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.RenewalInteractionTest.xml",
+      "sha256": "cd5aeb5859c63cd9f26f2093b95ecdf85ba8a74d1db0ca6513cf0bf879056d39"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ResultRowGeometryRegressionTest.xml",
+      "sha256": "2aecffe20ea91d6cdb2cb66c144600a313eba9f11700a9d6e3629ffb616c5466"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SearchEditingRegressionTest.xml",
+      "sha256": "2ca557c6c830f4d5a9d26cf3d0f0f6d2ceb19546a684a5f4b37d108534422e0f"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SettingsVisualSnapshotTest.xml",
+      "sha256": "aba0c0ce4bb4eb5101b43bf5fd6856186f985c62a73c716c58d05d9432ff0208"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SettingsWorkspaceTest.xml",
+      "sha256": "1c0245327003556e48c987a411092fe3e8a90aaf20a0bbc8ad4754c46169a000"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SpotlightBarTest.xml",
+      "sha256": "81c3227d48ecac048bdf74ada35f4c8aac5ee4ea88fcbc953006cc1b9d865b57"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SpotlightPanelLayoutTest.xml",
+      "sha256": "5f5353e5db3eab1858a54a6fff89c3e2f81fe19c66ffc5694e20ea9415bf6d7a"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SpotlightPanelVisualTest.xml",
+      "sha256": "8716efdbf53af571ea91b375ffaefe645de413be206ba6b93f1964926ad55eae"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.SpotlightVisualTest.xml",
+      "sha256": "6233a7e1efcd3c614dab6dad08d164530df040a450ebe5946503c4170021aad8"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.UniversalProductionFlowTest.xml",
+      "sha256": "8f1d09dd3e12c1f7b283df1e5d81bf11aed57c010863d011183ddceadf1e6afb"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.VisualSnapshotTest.xml",
+      "sha256": "59e699100fbb616e45af706a28a8d277c844632f72a6662664c28fb67d2e8806"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.WorkflowConfirmationTest.xml",
+      "sha256": "3d29f1ecafb25b982836e437158f00ca8950781f1dff20718fb892065dfc5886"
+    }
+  ],
+  "sourceInputsMatched": 326,
+  "lint": {
+    "lint-results-debug": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "lint-results-functionalPreview": {
+      "Warning": 10,
+      "Information": 1
+    },
+    "lint-results-release": {
+      "Warning": 10,
+      "Information": 1
+    }
+  },
+  "visual": {
+    "total": 21,
+    "recorded": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": 21
+  },
+  "build": "BUILD SUCCESSFUL in 12m 37s",
+  "visualBuild": "BUILD SUCCESSFUL in 21s",
+  "commands": [
+    ":app:testDebugUnitTest :app:lintDebug :app:lintRelease :app:lintFunctionalPreview :app:assembleRelease :app:compileDebugAndroidTestKotlin",
+    ":app:verifyRoborazziDebug --tests '*VisualSnapshotTest'",
+    "Both use read-only capture-evidence.gradle and explicit runtime-test-c1.gradle host workaround; separate visual folder",
+    "gitleaks dir . --redact --no-banner; bash .codex/scripts/check-secrets.sh",
+    "aapt dump badging; zipalign -c -P 16 -v 4; apksigner verify --verbose --print-certs (unsigned Release)"
+  ],
+  "directed": "36 tests/7 suites and instrumented Kotlin passed in1m30s in the recovered run. No immutable compiled-input manifest survived that directed run. The fresh full562 gate separately matches326 inputs to4f429c0; rounds are not added.",
+  "regression": "8 tests on unchanged642b00c production plus test fixtures;7 expected failures: cold mutations lost pins/chats, eviction at30, unknown pin fields, pin/removal IO error state, stale context read. Outside-managed-file deletion defense already passed. Two subsequent single-case red runs reproduced retained temporary imports on selection change and a later private context pinned during delayed initial loading; both are covered by the final suite.",
+  "originalRegressionJunitSha256": [
+    {
+      "file": "TEST-dev.bautista.spotlight.data.ContextPreservationTest.xml",
+      "sha256": "8babc61176902310c61290424c596c685c66a17a5cc407a6995ddf2387e73f66"
+    },
+    {
+      "file": "TEST-dev.bautista.spotlight.ui.ContextExtractionFlowTest.xml",
+      "sha256": "09f1d63a7ae39870d36a02effb1e1bbb6e310a54d4914ac1aaafe0cfa8f5f327"
+    }
+  ],
+  "privacy": "ContextPanel reads an actual test content provider through ContextStore/DocumentText, cancels after Quitar or explicit Cancelar, then late provider IO finishes without preparing any Ask action. Current text prepares PRIVATE_CONTEXT requiring review. No real user content, Gemini credentials or provider traffic.",
+  "limitations": [
+    "No device/KVM; native instrumented tests compiled only, not executed. No One UI/native OCR/performance claim.",
+    "Existing21 strict Roborazzi references unchanged; no baseline update. Capacity/lifecycle behavior also exercised through Compose.",
+    "Pinned-context mutations finish the small local atomic disk commit and state publication together once started; cancellation is not an undo of that explicit save/delete. Imported file release stays limited to managed directory and waits for successful removal.",
+    "Errors signaled by AtomicFile are covered with a blocked .new fixture. Not a disk-failure/OS-crash fault injection on hardware. No generalized corrupted-file recovery or high-level entity memory added.",
+    "Matrix40 remains partial: local embeddings, richer memory, grounding, persistent background tasks and real-provider/device validation remain.",
+    "Release/R8 internal artifact unsigned, principal29 unchanged, not installable or delivered. No new key, Actions, partial APK, budget/main/PR16/force changes."
+  ],
+  "security": "No findings in tree and29 available local commits before evidence; not full remote history.",
+  "python": "30+5 historical preserved results, not rerun because source unchanged.",
+  "originalConsoleLogs": [
+    {
+      "file": "android-gates.log",
+      "sha256": "9c2201cde5cb0fe495548e7cb00cc30aa0ee33b0e706ced4581296c0b7ae075e"
+    },
+    {
+      "file": "visual.log",
+      "sha256": "1bd8afb284098174b2d7c97c96a2c68e775bc4509dc02864c1ae8d407abdf424"
+    },
+    {
+      "file": "directed.log",
+      "sha256": "d34070a055aefadac44deb1393cd761f253c9b75ed4a43257d445cf50f83d8ac"
+    },
+    {
+      "file": "secrets-local-history.log",
+      "sha256": "093e982c1e82fb3aa133d5b5afc681f51d507d6a27015d71a8084e948f78be81"
+    },
+    {
+      "file": "secrets-working-tree.log",
+      "sha256": "131ade83244a9c708831a8322a6825b3ad4b5f29693a9ba156cc92ed6d46e089"
+    },
+    {
+      "file": "regression-before.log",
+      "sha256": "999f27e8f54682ef6e2461e32d5f3bd815cbde9f8d8c4064977961932a8ff63c"
+    }
+  ],
+  "logNormalization": "Trailing console whitespace removed; raw hashes retained. Consolidated JUnit omits properties/duplicated console and retains cases/statuses.",
+  "followupRegressions": {
+    "import-release": {
+      "sourceCommit": "47f3384226fd7f4d6ff2d67671ad0f2388b36116",
+      "sourceState": "Unchanged production47f3384 plus one added regression method",
+      "totals": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "expectedFailures": true,
+      "productionInput": {
+        "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+        "sha256": "45f4a89dcaf6a668293b24fa95f24183d198634a29ca6c00c46d00b9d70661cc"
+      },
+      "testSha256": "328aebfa640cb3f91aa29f928b66a8b42c695d8b04941f706cf1be92978659d7"
+    },
+    "pin-owner": {
+      "baseCommit": "47f3384226fd7f4d6ff2d67671ad0f2388b36116",
+      "sourceState": "Production47f3384 plus select-import cleanup, before requested-pin ownership guard; one new regression method",
+      "totals": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "expectedFailures": true,
+      "inputs": [
+        {
+          "file": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+          "sha256": "1ff8e380ff01cd62f16c9d1ef0ff538ffcd42a0b2a71839077b80109ab00c785"
+        },
+        {
+          "file": "app/src/test/java/dev/bautista/spotlight/data/ContextPreservationTest.kt",
+          "sha256": "321a2e14f4ebd516c5836fde08c0cb9724635c2eb2de28e922676f4c57c680c8"
+        }
+      ]
+    }
+  },
+  "hostJvm": {
+    "sourceCommit": "4f429c0120aacf78c6568f209c747c8d4c10068b",
+    "outcome": "Incomplete: forked test JVM crashed with exit134, no successful test suite result",
+    "build": "BUILD FAILED in6m48s",
+    "vm": "Microsoft OpenJDK17.0.16+8",
+    "thread": "C2 CompilerThread0",
+    "frame": "libjvm.so Node::uncast(bool)",
+    "compileTask": "Robolectric SQLiteDatabase insertWithOnConflict",
+    "rawCrashSha256": "8fb116ea38ce239d042d37f278dfb4fe1060f33a80e4f37c77eb13aad458dd72",
+    "rawBuildSha256": "c3b0684b2ab68d4906760d1b2e069c135f69d72db5f913cc9cd24e07b6a9f34b",
+    "retry": "Same published sources and assertions; additional local init script limits only forked Test JVM to C1 (-XX:TieredStopAtLevel=1). Gradle/R8 are unaffected. No repository build/workflow edits."
+  },
+  "evidence": [
+    {
+      "file": "android-gates.log",
+      "sha256": "f91be13da3c86b1598801f222e5216e3ce9b0408a3f85f4f93166f668d95ab8d"
+    },
+    {
+      "file": "capture-evidence.gradle",
+      "sha256": "6ea2625e4cd3836b704e3664273523bcd7323a4fcae7f84c10f86526f9ee5b11"
+    },
+    {
+      "file": "compiled-inputs.json",
+      "sha256": "df96114a177de96197591fb92625e5da1587a094aea724ad7ad97a3825b9a646"
+    },
+    {
+      "file": "directed-summary.json",
+      "sha256": "0402a65a6be3f0c51da3323f1c9b86de06ab5eb64d72840a4e5a329762f35983"
+    },
+    {
+      "file": "directed.log",
+      "sha256": "c594139fc04e4405209b42c2dda920dc65f9eb74fd01a519e9c9142e698cdc41"
+    },
+    {
+      "file": "first-attempt-crash-excerpt.log",
+      "sha256": "64015218206d15028b97cb6f331eecf6069bd4dfa50d020bfecd1426e37dd183"
+    },
+    {
+      "file": "first-attempt-summary.json",
+      "sha256": "1e5843527b43ccc0a388c3328f9cb938b0e212b2f601bf96a11a9d8de311e11a"
+    },
+    {
+      "file": "junit-android.xml",
+      "sha256": "7aff889c1c61913c0deb1aceac074697c483c6416a1209e65f01cfaac6bfc84f"
+    },
+    {
+      "file": "lint-summary.json",
+      "sha256": "7769faff2ab00df13594d22cacfacbaa801c8fecf036e7d7bf0a49a491720343"
+    },
+    {
+      "file": "regression-before.json",
+      "sha256": "64ff6877881b7bea04a93aee835ac0395beec2551a4f1215f0bd726a29c7aeb2"
+    },
+    {
+      "file": "regression-before.log",
+      "sha256": "3e82b4c5c175f3403346622cf060f05dcb5c33e7b7defe09f049af690d345fc8"
+    },
+    {
+      "file": "regression-before.xml",
+      "sha256": "451f3bd3c9b6254f9b6921e0c11dee44b4edbfab02e741302f7e837dce4cd2a2"
+    },
+    {
+      "file": "regression-import-release.json",
+      "sha256": "bc3bdf92c289c3ce07408035960baa47dd6d1a8f555d22f606b46df00e5dad67"
+    },
+    {
+      "file": "regression-import-release.xml",
+      "sha256": "d8c200d727ebdebcbe98b41d2602dfddd0ed99616d120f20103a7510b37f3d79"
+    },
+    {
+      "file": "regression-pin-owner.json",
+      "sha256": "7e4d5516a143df3967b1da9eaf4c674d2e72ee0be971a92f4aa26023ce160f36"
+    },
+    {
+      "file": "regression-pin-owner.xml",
+      "sha256": "ed3eaab17a7f674f1057c31bc9f7d033c2d39cbba96434b863b428522633d516"
+    },
+    {
+      "file": "release-unsigned.json",
+      "sha256": "0a274c5f933ae46381be591df86f6466973ad6706167415d22626e4842d2c75c"
+    },
+    {
+      "file": "runtime-test-c1.gradle",
+      "sha256": "ec4aaed9d702f73d3cff50e55e8493468c78eca8fbb82af447362beebb9c5e71"
+    },
+    {
+      "file": "secrets-local-history.log",
+      "sha256": "093e982c1e82fb3aa133d5b5afc681f51d507d6a27015d71a8084e948f78be81"
+    },
+    {
+      "file": "secrets-working-tree.log",
+      "sha256": "131ade83244a9c708831a8322a6825b3ad4b5f29693a9ba156cc92ed6d46e089"
+    },
+    {
+      "file": "tasks.json",
+      "sha256": "edff5bc70d16b2e4bc731f771cfed07840205f9e7d5c987ba1a9725254a99ccb"
+    },
+    {
+      "file": "visual-results.json",
+      "sha256": "1dd1a59c13e5a7cfd5118a1b02904c761ad6d1d80cae5663980f5c7ab5a190e9"
+    },
+    {
+      "file": "visual.log",
+      "sha256": "9577ebaa3719a725d8d89f6e76d1eecdbd4c5c3d23b792346564199692f59fb6"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "4f429c0120aacf78c6568f209c747c8d4c10068b",
+  "outcome": "Incomplete: forked test JVM crashed with exit134, no successful test suite result",
+  "build": "BUILD FAILED in6m48s",
+  "vm": "Microsoft OpenJDK17.0.16+8",
+  "thread": "C2 CompilerThread0",
+  "frame": "libjvm.so Node::uncast(bool)",
+  "compileTask": "Robolectric SQLiteDatabase insertWithOnConflict",
+  "rawCrashSha256": "8fb116ea38ce239d042d37f278dfb4fe1060f33a80e4f37c77eb13aad458dd72",
+  "rawBuildSha256": "c3b0684b2ab68d4906760d1b2e069c135f69d72db5f913cc9cd24e07b6a9f34b",
+  "retry": "Same published sources and assertions; additional local init script limits only forked Test JVM to C1 (-XX:TieredStopAtLevel=1). Gradle/R8 are unaffected. No repository build/workflow edits."
+}

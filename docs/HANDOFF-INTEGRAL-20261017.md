@@ -1,6 +1,24 @@
 # Continuidad integral · 17/10/2026
 
-## Estado integral verificado: selección documental y Gemini
+## Estado integral verificado: conservación de contextos
+
+Código4f429c0120aacf78c6568f209c747c8d4c10068b, sobre47f3384 y el cierre documental a34098e. ContextStore espera carga antes de modificar, conserva fijados/conversaciones/campos desconocidos, rechaza el31sin expulsar y publica cambios solo tras AtomicFile exitoso. Fijar queda ligado al contexto solicitado antes de esperar carga; cambiar selección retira importaciones temporales sustituidas sin borrar fuentes fijadas. ContextPanel cancela/desestima lectura tardía al quitar/cambiar/cancelar antes de preparar PRIVATE_CONTEXT; no envío automático ni nuevo motor/interfaz.
+
+**Gates nuevos4f429c0:**562pruebas completas/119suites, cero fallos/errores/omisiones; lint Debug/Release/FunctionalPreview sin errores, recuentos exactos en verification/context-preservation-20261017/lint-summary.json. Release/R8 y compileDebugAndroidTestKotlin correctos (BUILD SUCCESSFUL in 12m 37s). Verificación visual estricta posterior:21sin cambios, cero grabadas/añadidas/modificadas (BUILD SUCCESSFUL in 21s).326entradas compiladas coinciden con Git y no hay fuentes adicionales. Evidencia: verification/context-preservation-20261017/summary.json. Los36dirigidos recuperados no se suman a562; no sobrevivió su manifiesto de entradas. El pipeline de47f3384 se interrumpió después de560/lintDebug para corregir dos seguimientos; no se declara completo.
+
+El primer intento nuevo falló en6min48s por SIGSEGV interno de C2/OpenJDK17.0.16 al compilar SQLiteDatabase instrumentado por Robolectric; no fue una suite aprobada. Se conserva extracto/hash del crash. El reintento usa el init local runtime-test-c1.gradle: únicamente los JVM de Test se limitan a C1 (-XX:TieredStopAtLevel=1), sin omitir pruebas/aserciones ni cambiar código/workflows; Gradle/R8 no cambian. No es una medición de rendimiento.
+
+Siete fallos esperados en8casos contra642b00c y dos regresiones individuales posteriores constan con hashes/casos. Fijados/conversaciones usan archivos reales del sandbox JVM; AtomicFile falla mediante ruta .new bloqueada, no fallo físico de disco. Compose recorre capacidad y lecturas de proveedor fixture por DocumentText; no emite Ask tardío. PRIVATE_CONTEXT vigente sigue exigiendo revisión exacta. Ver CONTEXTO-CONSERVACION-20261017.md.
+
+No hay dispositivo ni KVM (comprobados de nuevo): instrumentación compilada, NO ejecutada; sin reconocimiento ML nativo, One UI o medidas físicas. Release interno sin firma principal29/ARM64/min26/target35/no depurable y zipalign16KB correcto; no instalable ni entregado. Sin clave nueva, APK parcial, Actions, cambios main/PR16/presupuesto o force. Gitleaks árbol/29commits locales sin hallazgos antes del cierre, no historial remoto completo. Python30+5 histórico, no repetido. La matriz40 permanece parcial y la firma final exige el procedimiento histórico/checks del SHA exacto.
+
+### Siguiente bloque funcional exacto
+
+Decisiones7/18: comprobar que JSON ilegible, versión desconocida o registros no válidos no se confundan con almacenamiento vacío y se sobrescriban al fijar/guardar/borrar. Hay cuatro escenarios preparados fuera del árbol; aún no compilados ni corregidos. Reproducir primero contra4f429c0 y proteger lectura/escritura conservando bytes, errores visibles y reintento explícito. No reparar eliminando datos, no añadir memoria automática o envío remoto. Después continuar pendientes viables de matriz40; embeddings/grounding/proveedor/dispositivo no quedan acreditados por estas pruebas. Consultar HEAD y reserva propia antes de editar; el checkpoint no es ejecución en segundo plano.
+
+---
+
+## Historial: selección documental y Gemini
 
 Código Android642b00cadcf0768f1969ad05d289ae9fdea01783, posterior al cierre OCR b1140df, misma rama y propietario. Se consolidó la selección existente: identificadores/fuente/página/método/cobertura y recorte explícito por documento, máximo16000caracteres,6OCRnuevos/60scooperativos; sin take final que oculte el último archivo. Cancelación y propiedad por consulta/conjunto seleccionado reutilizan DocumentExtractionRequest. DirectAi y revisión exacta PRIVATE_CONTEXT existentes, sin envío al escribir ni seleccionar.
 

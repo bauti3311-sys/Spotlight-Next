@@ -1,0 +1,10 @@
+{
+  "sourceState": "Recovered run preceding checkpoint4f429c0; no immutable compiled-input manifest survived",
+  "suites": 7,
+  "totals": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}
