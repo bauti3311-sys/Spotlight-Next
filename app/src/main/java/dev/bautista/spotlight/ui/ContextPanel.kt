@@ -19,7 +19,12 @@ import kotlinx.coroutines.*
 }
 @Composable fun ContextPanel(app:SpotlightApp,c:Config,page:String,payload:String,onAction:(Action)->Unit) {
     val scope=rememberCoroutineScope();val current by app.contexts.active.collectAsState();val pinned by app.contexts.pinned.collectAsState();val chats by app.contexts.conversations.collectAsState()
-    var text by remember{mutableStateOf("")};var error by remember{mutableStateOf("")};var busy by remember{mutableStateOf(false)}
+    var text by remember{mutableStateOf("")};var error by remember{mutableStateOf("")}
+    val extraction=remember{DocumentExtractionRequest()};val busy=extraction.running
+    val contextKey=listOf(current?.id,page,payload)
+    val latestKey by rememberUpdatedState(contextKey)
+    val latestAction by rememberUpdatedState(onAction)
+    DisposableEffect(contextKey){onDispose{extraction.cancel()}}
     var followUp by remember(page,payload){mutableStateOf("")}
     LaunchedEffect(page,payload){if(page=="context" && payload.isNotBlank())app.contexts.select(payload)}
     Column(Modifier.fillMaxWidth().heightIn(max=400.dp).verticalScroll(rememberScrollState()).padding(18.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -44,8 +49,18 @@ import kotlinx.coroutines.*
         current?.let{item->
             Text(item.title,style=MaterialTheme.typography.titleSmall)
             if(item.text.isNotBlank())SelectionContainer{Text(item.text.take(2000))}
-            Row{TextButton(onClick={scope.launch{app.contexts.pinActive()}}){Text(if(item.pinned)"Contexto fijado" else "Fijar")};TextButton(onClick={app.contexts.clearActive()}){Text("Quitar")}}
-            TextButton(enabled=!busy,onClick={busy=true;scope.launch{try{val content=app.contexts.text(item);val target=Regex("(?:preparar|mandar|enviar).*?para (.+)$",RegexOption.IGNORE_CASE).find(payload)?.groupValues?.get(1).orEmpty();onAction(Action.Ask((if(payload.isBlank())"Resumí este contenido" else payload)+"\n\n"+content,true,target))}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."}finally{busy=false}}}){Text("Revisar envío a IA")}
+            Row{TextButton(onClick={scope.launch{try{app.contexts.pinActive();error=""}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo fijar el contexto."}}}){Text(if(item.pinned)"Contexto fijado" else "Fijar")};TextButton(onClick={app.contexts.clearActive()}){Text("Quitar")}}
+            TextButton(onClick={
+                if(busy)extraction.cancel() else {
+                    error="";val owner=contextKey
+                    extraction.start(scope,isCurrent={app.contexts.active.value?.id==item.id && latestKey==owner},extract={
+                        try{app.contexts.text(item)}catch(e:TimeoutCancellationException){currentCoroutineContext().ensureActive();throw IllegalStateException("La extracción local agotó su tiempo. Probá con un documento más pequeño.",e)}
+                    },publish={content->
+                        val target=Regex("(?:preparar|mandar|enviar).*?para (.+)$",RegexOption.IGNORE_CASE).find(payload)?.groupValues?.get(1).orEmpty()
+                        latestAction(Action.Ask((if(payload.isBlank())"Resumí este contenido" else payload)+"\n\n"+content,true,target,origin=AiInputOrigin.PRIVATE_CONTEXT))
+                    },failure={error=it.message ?: "No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."})
+                }
+            }){Text(if(busy)"Cancelar preparación" else "Revisar envío a IA")}
         }
         TextButton(onClick={onAction(Action.Launch(Intent(app,dev.bautista.spotlight.ContextPickerActivity::class.java).putExtra("query",payload)))}){Text("Elegir documento con Android")}
         OutlinedTextField(text,{text=it.take(16000)},label={Text("Texto o enlace")},modifier=Modifier.fillMaxWidth(),minLines=2)
@@ -56,7 +71,7 @@ import kotlinx.coroutines.*
             else manager.primaryClip?.getItemAt(0)?.text?.toString()?.take(16000)?.takeIf{it.isNotBlank()}?.let{app.contexts.setText(it,"Portapapeles solicitado")}
         }){Text("Leer portapapeles ahora")}
         if(pinned.isNotEmpty())Text("Contextos fijados",style=MaterialTheme.typography.titleSmall)
-        pinned.forEach{item->Row{TextButton(onClick={app.contexts.select(item.id)},modifier=Modifier.weight(1f)){Text(item.title)};TextButton(onClick={scope.launch{app.contexts.removeContext(item.id)}}){Text("Eliminar")}}}
+        pinned.forEach{item->Row{TextButton(onClick={app.contexts.select(item.id)},modifier=Modifier.weight(1f)){Text(item.title)};TextButton(onClick={scope.launch{try{app.contexts.removeContext(item.id);error=""}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo eliminar el contexto. Se conservaron los datos guardados."}}}){Text("Eliminar")}}}
         if(chats.isNotEmpty())Text("Conversaciones guardadas",style=MaterialTheme.typography.titleSmall)
         chats.forEach{chat->Row{TextButton(onClick={onAction(Action.SystemPanel("conversation",chat.id))},modifier=Modifier.weight(1f)){Text(chat.title)};ConfirmedSettingsButton("Eliminar","Se borrará esta conversación guardada localmente."){scope.launch{try{app.contexts.deleteConversation(chat.id)}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo eliminar la conversación."}}}}}
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)

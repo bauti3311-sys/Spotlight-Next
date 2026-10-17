@@ -23,6 +23,8 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private var loadJob:Job?=null
     private var original=JSONObject()
     private val conversationRecords=mutableMapOf<String,JSONObject>()
+    private val contextRecords=mutableMapOf<String,JSONObject>()
+    @Volatile private var pinningFile=""
     private var expiryJob:Job?=null
     // Process-local deduplication: never persist clipboard text just to remember an event.
     private var lastAutomaticFingerprint:String?=null
@@ -38,12 +40,12 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         val j=runCatching{JSONObject(file.readFully().toString(Charsets.UTF_8))}.getOrNull() ?: return@withLock
         original=j
         val a=j.optJSONArray("contexts") ?: JSONArray()
-        mutablePinned.value=(0 until minOf(a.length(),30)).mapNotNull {i->runCatching{val x=a.getJSONObject(i);SharedContext(x.getString("id"),x.getString("title"),x.getString("kind"),x.optString("text").take(16000),x.optString("uri"),x.optString("mime"),x.getLong("created"),true,x.optString("ownedFile"))}.getOrNull()}
+        mutablePinned.value=(0 until minOf(a.length(),30)).mapNotNull {i->runCatching{val x=a.getJSONObject(i);SharedContext(x.getString("id"),x.getString("title"),x.getString("kind"),x.optString("text").take(16000),x.optString("uri"),x.optString("mime"),x.getLong("created"),true,x.optString("ownedFile")).also{contextRecords[it.id]=x}}.getOrNull()}
         val b=j.optJSONArray("conversations") ?: JSONArray()
         mutableConversations.value=(0 until minOf(b.length(),30)).mapNotNull{i->runCatching{val x=b.getJSONObject(i);val text=x.getString("text").take(48000);val id=x.getString("id");conversationRecords[id]=x;SavedConversation(id,x.getString("title"),text,x.getLong("created"),ConversationHistory.decode(x.optJSONArray("turns"),text))}.getOrNull()}
     }}}
     fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>=10*60000L)clearActive()}}
-    private fun release(item:SharedContext){if(item.ownedFile.isBlank() || mutablePinned.value.any{it.ownedFile==item.ownedFile})return;val f=File(item.ownedFile);if(f.parentFile?.canonicalFile==File(context.noBackupFilesDir,"context-imports").canonicalFile)scope.launch{withContext(Dispatchers.IO){f.delete()}}}
+    private fun release(item:SharedContext){if(item.ownedFile.isBlank() || item.ownedFile==pinningFile || mutablePinned.value.any{it.ownedFile==item.ownedFile})return;val f=File(item.ownedFile);if(f.parentFile?.canonicalFile==File(context.noBackupFilesDir,"context-imports").canonicalFile)scope.launch{withContext(Dispatchers.IO){f.delete()}}}
     fun clearActive(){expiryJob?.cancel();val item=mutableActive.value;mutableActive.value=null;if(item!=null)release(item)}
     fun select(id:String){mutableActive.value=mutablePinned.value.firstOrNull{it.id==id}}
     fun setText(text:String,title:String="Texto seleccionado"):SharedContext {
@@ -73,13 +75,46 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
             dev.bautista.spotlight.index.DocumentText.extract(context,Uri.parse(item.uri),dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime)).take(24000).ifBlank{error("No se pudo obtener texto compatible de este archivo.")}
         }
     }
-    suspend fun pinActive()=lock.withLock {
-        val item=mutableActive.value ?: return@withLock
-        val pinnedItem=item.copy(pinned=true)
-        mutablePinned.value=(listOf(pinnedItem)+mutablePinned.value.filterNot{it.id==item.id}).take(30)
-        mutableActive.value=pinnedItem;save()
+    suspend fun pinActive() {
+        start();loadJob?.join()
+        lock.withLock {
+            val item=mutableActive.value ?: return@withLock
+            val previous=mutablePinned.value
+            check(previous.any{it.id==item.id} || previous.size<30){"Ya hay 30 contextos fijados. Eliminá uno antes de fijar otro."}
+            val pinnedItem=item.copy(pinned=true)
+            val next=listOf(pinnedItem)+previous.filterNot{it.id==item.id}
+            currentCoroutineContext().ensureActive()
+            // Once the atomic disk commit begins, finish disk + in-memory publication together.
+            // A changing active context must not release a private imported file being pinned.
+            withContext(NonCancellable) {
+                pinningFile=item.ownedFile
+                try {
+                    save(next)
+                    mutablePinned.value=next
+                    if(mutableActive.value?.id==item.id){mutableActive.value=pinnedItem;scheduleExpiry()}
+                } finally {
+                    pinningFile=""
+                    if(mutableActive.value?.ownedFile!=item.ownedFile)release(item)
+                }
+            }
+        }
     }
-    suspend fun removeContext(id:String)=lock.withLock {val removed=mutablePinned.value.firstOrNull{it.id==id};mutablePinned.value=mutablePinned.value.filterNot{it.id==id};if(mutableActive.value?.id==id)clearActive() else if(removed!=null)release(removed);save()}
+    suspend fun removeContext(id:String) {
+        start();loadJob?.join()
+        lock.withLock {
+            val previous=mutablePinned.value
+            val removed=previous.firstOrNull{it.id==id} ?: return@withLock
+            val next=previous.filterNot{it.id==id}
+            currentCoroutineContext().ensureActive()
+            withContext(NonCancellable) {
+                // Keep old pins/resources visible until persistence succeeds. No rollback delete.
+                save(next)
+                mutablePinned.value=next
+                contextRecords.remove(id)
+                if(mutableActive.value?.id==id)clearActive() else release(removed)
+            }
+        }
+    }
     suspend fun saveConversation(prompt:String,answer:String)=saveConversation(listOf("user" to prompt,"assistant" to answer))
     suspend fun saveConversation(turns:List<Pair<String,String>>) {
         val frozen=turns.map{it.first to it.second}
@@ -101,9 +136,9 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
             try{save();conversationRecords.remove(id)}catch(e:Exception){mutableConversations.value=previous;throw e}
         }
     }
-    private suspend fun save()=withContext(Dispatchers.IO) {
+    private suspend fun save(contexts:List<SharedContext> = mutablePinned.value)=withContext(Dispatchers.IO) {
         val root=JSONObject(original.toString()).put("version",1)
-        root.put("contexts",JSONArray().apply{mutablePinned.value.forEach{put(JSONObject().put("id",it.id).put("title",it.title).put("kind",it.kind).put("text",it.text).put("uri",it.uri).put("mime",it.mime).put("created",it.created).put("ownedFile",it.ownedFile))}})
+        root.put("contexts",JSONArray().apply{contexts.forEach{put(JSONObject(contextRecords[it.id]?.toString() ?: "{}").put("id",it.id).put("title",it.title).put("kind",it.kind).put("text",it.text).put("uri",it.uri).put("mime",it.mime).put("created",it.created).put("ownedFile",it.ownedFile))}})
         root.put("conversations",JSONArray().apply{mutableConversations.value.forEach{item->put(JSONObject(conversationRecords[item.id]?.toString() ?: "{}").put("id",item.id).put("title",item.title).put("text",item.text).put("created",item.created).apply{if(item.turns.isNotEmpty())put("turns",ConversationHistory.encode(item.turns))})}})
         val out=file.startWrite();try{out.write(root.toString().toByteArray());file.finishWrite(out)}catch(e:Exception){file.failWrite(out);throw e}
     }
