@@ -62,6 +62,52 @@ class UniversalProductionFlowTest {
         ui.waitUntil(15000){clipboard.primaryClip?.getItemAt(0)?.text?.toString()=="7200"}
         assertEquals(0,server.requestCount)
     }
+    private fun openSavedThread():List<Pair<String,String>> {
+        val history=listOf("user" to "Mi glosario vestibular","assistant" to "Definición anterior autorizada","user" to "Detallá la compensación","assistant" to "Respuesta previa guardada")
+        runBlocking{app.contexts.saveConversation(history)}
+        show("conversaciones")
+        ui.waitUntil(15000){ui.onAllNodesWithText("Mi glosario vestibular").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("Mi glosario vestibular").performClick()
+        ui.onNode(hasSetTextAction() and hasText("Nueva pregunta")).performScrollTo().performTextInput("Dame otro ejemplo concreto")
+        assertEquals(0,server.requestCount)
+        ui.onNodeWithText("Revisar continuación").performScrollTo().performClick()
+        ui.waitUntil(15000){ui.onAllNodesWithTag("ai-review-prompt",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
+        val displayed=ui.onNodeWithTag("ai-review-prompt",useUnmergedTree=true).fetchSemanticsNode().config[SemanticsProperties.Text].joinToString(""){it.text}
+        history.forEach{assertTrue(displayed.contains(it.second))};assertTrue(displayed.contains("Dame otro ejemplo concreto"))
+        assertEquals(0,server.requestCount)
+        return history
+    }
+    @Test fun savedThreadSearchReviewSendsExactlyAuthorizedHistory(){
+        val history=openSavedThread()
+        ui.onNodeWithText("Enviar",useUnmergedTree=true).performClick()
+        ui.waitUntil(15000){server.requestCount==1}
+        val messages=JSONObject(server.takeRequest(2,TimeUnit.SECONDS)!!.body.readUtf8()).getJSONArray("contents")
+        val expected=history+listOf("user" to "Dame otro ejemplo concreto")
+        assertEquals(expected.size,messages.length())
+        expected.forEachIndexed{i,(role,text)->
+            assertEquals(if(role=="assistant")"model" else "user",messages.getJSONObject(i).getString("role"))
+            assertEquals(text,messages.getJSONObject(i).getJSONArray("parts").getJSONObject(0).getString("text"))
+        }
+    }
+    @Test fun cancellingSavedThreadReviewDoesNotSendAnything(){
+        openSavedThread();ui.onNodeWithText("Cancelar").performClick();ui.waitForIdle()
+        assertEquals(0,server.requestCount);assertEquals(1,app.contexts.conversations.value.size)
+    }
+    @Test fun savingInlineConversationRetainsAllCompletedExchanges(){
+        server.enqueue(MockResponse().setHeader("Content-Type","text/event-stream").setBody("data: {\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"Segunda respuesta de prueba\"}]}}]}\n\n"))
+        show("Explicame la compensación vestibular")
+        ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Enter)}
+        ui.waitUntil(15000){ui.onAllNodes(hasText("Guardar conversación") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+        ui.onNode(hasSetTextAction() and hasText("Continuar conversación")).performTextInput("Dame un ejemplo")
+        ui.onNodeWithText("Enviar").performClick()
+        ui.waitUntil(15000){ui.onAllNodesWithText("Segunda respuesta de prueba").fetchSemanticsNodes().isNotEmpty() && ui.onAllNodes(hasText("Guardar conversación") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("Guardar conversación").performScrollTo().performClick()
+        ui.waitUntil(15000){app.contexts.conversations.value.isNotEmpty()}
+        val saved=app.contexts.conversations.value.single()
+        assertEquals(listOf("user" to "Explicame la compensación vestibular","assistant" to "**Respuesta de prueba**","user" to "Dame un ejemplo","assistant" to "Segunda respuesta de prueba"),saved.turns)
+        assertEquals(2,server.requestCount)
+    }
     @Test fun existingExecutionRegistrySharesNaturalLocalTools()=runBlocking {
         val executor=ToolExecutor(app)
         val config=AppConfig(aiProvider="gemini")

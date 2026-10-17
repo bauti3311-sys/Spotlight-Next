@@ -469,3 +469,8 @@ Pase previo a los últimos handlers:461Android/JVM,35Python,lint3variantes0error
 ### Reanudación integral — 17/10/2026
 
 Recuperados f490963 y su reserva propia, sin código pendiente ni reinicio. El entorno temporal y la clave P1 se perdieron. Revalidación nueva: 483 Android/JVM correctas, tres lint sin errores (10 advertencias y 1 informativa cada uno), Release/R8 sin firma correcta y 21 comparaciones visuales estrictas sin cambios. Los 301 archivos de entradas compiladas coinciden con Git. Gitleaks sin hallazgos en árbol y 10 commits locales. Evidencia en docs/verification/integral-20261017/summary.json; continuidad y siguiente bloque funcional exacto en docs/HANDOFF-INTEGRAL-20261017.md. Sin Actions, credenciales históricas, nueva clave P1, APK parcial ni afirmación de completar las 40 decisiones. La barra Obsidian Glass y Quick Look conservan sus referencias.
+
+
+### Continuación estructurada de conversaciones — 17/10/2026
+
+Después de e768a6a, se conectó guardado de intercambios completos y reanudación desde búsqueda con revisión exacta del historial y pregunta antes de enviar. Conserva registros legados, no añade contexto activo ni relee adjuntos, no expulsa conversaciones al llegar al límite y confirma borrados. 48 pruebas dirigidas correctas y Gitleaks sin hallazgos. Ver docs/CONVERSACIONES-20261017.md. Suite completa, lint/R8 y visuales del bloque nuevo pendientes; no aplicar los gates de e768a6a a estos cambios todavía. No APK parcial ni Actions.

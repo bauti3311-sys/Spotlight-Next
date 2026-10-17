@@ -13,13 +13,16 @@ import org.json.*
 import java.io.File
 
 data class SharedContext(val id:String,val title:String,val kind:String,val text:String="",val uri:String="",val mime:String="",val created:Long=System.currentTimeMillis(),val pinned:Boolean=false,val ownedFile:String="")
-data class SavedConversation(val id:String,val title:String,val text:String,val created:Long)
+data class SavedConversation(val id:String,val title:String,val text:String,val created:Long,val turns:List<Pair<String,String>> = emptyList())
 
 /** Explicit Android inputs only. Temporary context expires; saved items never enter diagnostics. */
 class ContextStore(private val context:Context,private val scope:CoroutineScope,private val preferences:Preferences) {
     private val file=AtomicFile(File(context.noBackupFilesDir,"spotlight-context-v1.json"))
     private val lock=Mutex()
     private var started=false
+    private var loadJob:Job?=null
+    private var original=JSONObject()
+    private val conversationRecords=mutableMapOf<String,JSONObject>()
     private var expiryJob:Job?=null
     // Process-local deduplication: never persist clipboard text just to remember an event.
     private var lastAutomaticFingerprint:String?=null
@@ -31,12 +34,13 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     val pinned=mutablePinned.asStateFlow()
     private val mutableConversations=MutableStateFlow<List<SavedConversation>>(emptyList())
     val conversations=mutableConversations.asStateFlow()
-    fun start(){if(started)return;started=true;scope.launch {lock.withLock{
+    fun start(){if(started)return;started=true;loadJob=scope.launch {lock.withLock{
         val j=runCatching{JSONObject(file.readFully().toString(Charsets.UTF_8))}.getOrNull() ?: return@withLock
+        original=j
         val a=j.optJSONArray("contexts") ?: JSONArray()
         mutablePinned.value=(0 until minOf(a.length(),30)).mapNotNull {i->runCatching{val x=a.getJSONObject(i);SharedContext(x.getString("id"),x.getString("title"),x.getString("kind"),x.optString("text").take(16000),x.optString("uri"),x.optString("mime"),x.getLong("created"),true,x.optString("ownedFile"))}.getOrNull()}
         val b=j.optJSONArray("conversations") ?: JSONArray()
-        mutableConversations.value=(0 until minOf(b.length(),30)).mapNotNull{i->runCatching{val x=b.getJSONObject(i);SavedConversation(x.getString("id"),x.getString("title"),x.getString("text").take(48000),x.getLong("created"))}.getOrNull()}
+        mutableConversations.value=(0 until minOf(b.length(),30)).mapNotNull{i->runCatching{val x=b.getJSONObject(i);val text=x.getString("text").take(48000);val id=x.getString("id");conversationRecords[id]=x;SavedConversation(id,x.getString("title"),text,x.getLong("created"),ConversationHistory.decode(x.optJSONArray("turns"),text))}.getOrNull()}
     }}}
     fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>=10*60000L)clearActive()}}
     private fun release(item:SharedContext){if(item.ownedFile.isBlank() || mutablePinned.value.any{it.ownedFile==item.ownedFile})return;val f=File(item.ownedFile);if(f.parentFile?.canonicalFile==File(context.noBackupFilesDir,"context-imports").canonicalFile)scope.launch{withContext(Dispatchers.IO){f.delete()}}}
@@ -75,16 +79,31 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         mutableActive.value=pinnedItem;save()
     }
     suspend fun removeContext(id:String)=lock.withLock {val removed=mutablePinned.value.firstOrNull{it.id==id};mutablePinned.value=mutablePinned.value.filterNot{it.id==id};if(mutableActive.value?.id==id)clearActive() else if(removed!=null)release(removed);save()}
-    suspend fun saveConversation(prompt:String,answer:String)=lock.withLock {
-        require(answer.isNotBlank())
-        val item=SavedConversation(java.util.UUID.randomUUID().toString(),prompt.take(100).ifBlank{"Conversación guardada"},("Usuario: $prompt\n\nSpotlight: $answer").take(48000),System.currentTimeMillis())
-        mutableConversations.value=(listOf(item)+mutableConversations.value).take(30);save()
+    suspend fun saveConversation(prompt:String,answer:String)=saveConversation(listOf("user" to prompt,"assistant" to answer))
+    suspend fun saveConversation(turns:List<Pair<String,String>>) {
+        val frozen=turns.map{it.first to it.second}
+        require(ConversationHistory.valid(frozen)){"Guardá entre uno y seis intercambios completos, con hasta 48.000 caracteres."}
+        start();loadJob?.join()
+        lock.withLock {
+            check(mutableConversations.value.size<30){"Ya hay 30 conversaciones guardadas. Eliminá una antes de guardar otra."}
+            val item=SavedConversation(java.util.UUID.randomUUID().toString(),frozen.first().second.take(100),ConversationHistory.render(frozen),System.currentTimeMillis(),frozen)
+            val previous=mutableConversations.value
+            mutableConversations.value=listOf(item)+previous
+            try{save()}catch(e:Exception){mutableConversations.value=previous;throw e}
+        }
     }
-    suspend fun deleteConversation(id:String)=lock.withLock {mutableConversations.value=mutableConversations.value.filterNot{it.id==id};save()}
+    suspend fun deleteConversation(id:String) {
+        start();loadJob?.join()
+        lock.withLock {
+            val previous=mutableConversations.value
+            mutableConversations.value=previous.filterNot{it.id==id}
+            try{save();conversationRecords.remove(id)}catch(e:Exception){mutableConversations.value=previous;throw e}
+        }
+    }
     private suspend fun save()=withContext(Dispatchers.IO) {
-        val root=JSONObject().put("version",1)
+        val root=JSONObject(original.toString()).put("version",1)
         root.put("contexts",JSONArray().apply{mutablePinned.value.forEach{put(JSONObject().put("id",it.id).put("title",it.title).put("kind",it.kind).put("text",it.text).put("uri",it.uri).put("mime",it.mime).put("created",it.created).put("ownedFile",it.ownedFile))}})
-        root.put("conversations",JSONArray().apply{mutableConversations.value.forEach{put(JSONObject().put("id",it.id).put("title",it.title).put("text",it.text).put("created",it.created))}})
+        root.put("conversations",JSONArray().apply{mutableConversations.value.forEach{item->put(JSONObject(conversationRecords[item.id]?.toString() ?: "{}").put("id",item.id).put("title",item.title).put("text",item.text).put("created",item.created).apply{if(item.turns.isNotEmpty())put("turns",ConversationHistory.encode(item.turns))})}})
         val out=file.startWrite();try{out.write(root.toString().toByteArray());file.finishWrite(out)}catch(e:Exception){file.failWrite(out);throw e}
     }
     fun results(query:String):List<Result> {

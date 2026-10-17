@@ -34,7 +34,7 @@ sealed interface Action {
 
     data class SaveNote(val text: String) : Action
 
-    data class Ask(val prompt: String,val sensitive:Boolean=false,val messageTarget:String="",val origin:AiInputOrigin=AiInputOrigin.LEGACY,val reviewed:Boolean=false,val continuation:Boolean=false) : Action
+    data class Ask(val prompt: String,val sensitive:Boolean=false,val messageTarget:String="",val origin:AiInputOrigin=AiInputOrigin.LEGACY,val reviewed:Boolean=false,val continuation:Boolean=false,val priorMessages:List<Pair<String,String>> = emptyList()) : Action
 
     data class Lookup(val type: String, val query: String) : Action
 

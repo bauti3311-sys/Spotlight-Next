@@ -45,3 +45,8 @@ Se conservan paquetes exactos al reordenar pasos aunque las apps tengan igual no
 Recuperados HEAD limpio y reserva propia; no había cambios Android sin publicar. El entorno temporal y la clave P1 se perdieron; no se generó una clave sustituta. La revalidación nueva de f490963 pasó483Android/JVM (103suites, cero fallos/errores/omisiones), tres lint sin errores (10advertencias/1info cada uno), Release/R8 sin firma en17m47s. Verificación estricta de21referencias: todas sin cambios, cero regrabadas,22s.301entradas compiladas coinciden con Git. Gitleaks sin hallazgos en árbol y10commits locales disponibles. Python30+5 conserva evidencia previa, no se repitió sin cambios de código.
 
 La Release de comprobación es2.0.1/código29,paquete principal intacto,ARM64,min26/target35,no depurable,zipalign16KB correcto; está deliberadamente sin firmar y no se entrega. No hubo Actions/proveedores reales/dispositivo físico. Evidencia versionada en `verification/integral-20261017/summary.json`; recuperación y siguiente paso exacto en `HANDOFF-INTEGRAL-20261017.md`. Las40decisiones siguen parciales según matriz; no hay APK parcial ni declaración de entrega final.
+
+
+### Continuación estructurada de conversaciones — 17/10/2026
+
+Después de e768a6a, se conectó guardado de intercambios completos y reanudación desde búsqueda con revisión exacta del historial y pregunta antes de enviar. Conserva registros legados, no añade contexto activo ni relee adjuntos, no expulsa conversaciones al llegar al límite y confirma borrados. 48 pruebas dirigidas correctas y Gitleaks sin hallazgos. Ver docs/CONVERSACIONES-20261017.md. Suite completa, lint/R8 y visuales del bloque nuevo pendientes; no aplicar los gates de e768a6a a estos cambios todavía. No APK parcial ni Actions.

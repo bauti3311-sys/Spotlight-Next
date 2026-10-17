@@ -126,6 +126,8 @@ fun SpotlightPanel(
         var aiMessageTarget by remember {mutableStateOf("")}
         var aiText by remember { mutableStateOf("") }
         var aiLoading by remember { mutableStateOf(false) }
+        var aiSaving by remember { mutableStateOf(false) }
+        var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
         val conversation = remember { mutableListOf<Pair<String, String>>() }
         val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
@@ -461,6 +463,8 @@ fun SpotlightPanel(
                         aiJob?.cancel()
                         aiText = ""
                         if(!request.continuation)conversation.clear()
+                        if(request.priorMessages.isNotEmpty()){conversation.clear();conversation.addAll(request.priorMessages)}
+                        aiSaveStatus=""
                         aiMessageTarget=request.messageTarget
                         aiLoading = true
                         aiJob =
@@ -468,7 +472,7 @@ fun SpotlightPanel(
                                 try {
                                     ai.answer(
                                             config,
-                                            conversation.toList() + listOf("user" to request.prompt),
+                                            conversation.takeLast(10) + listOf("user" to request.prompt),
                                         )
                                         .collect { aiText += it }
                                     conversation.add("user" to request.prompt)
@@ -501,8 +505,8 @@ fun SpotlightPanel(
         val aiReview:@Composable ()->Unit = {
             pendingAsk?.let{ask->Column(Modifier.fillMaxWidth().padding(16.dp)){
                 Text("Enviar texto a ${config.aiProvider}",style=MaterialTheme.typography.titleMedium)
-                Text("Se enviarán ${ask.prompt.length} caracteres al proveedor elegido.",style=MaterialTheme.typography.bodySmall)
-                SelectionContainer{Text(ask.prompt,Modifier.testTag("ai-review-prompt").heightIn(max=220.dp).verticalScroll(rememberScrollState()),style=MaterialTheme.typography.bodySmall)}
+                Text("Se enviarán ${ask.prompt.length+ask.priorMessages.sumOf{it.second.length}} caracteres de contenido en ${ask.priorMessages.size+1} mensajes al proveedor elegido.",style=MaterialTheme.typography.bodySmall)
+                SelectionContainer{Text(AiRequestPolicy.reviewText(ask),Modifier.testTag("ai-review-prompt").heightIn(max=220.dp).verticalScroll(rememberScrollState()),style=MaterialTheme.typography.bodySmall)}
                 if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.updateAi(config,next)}}}
                 Row{TextButton(enabled=ai.configured(config),onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,AiRequestPolicy.authorize(ask)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
             }}
@@ -1053,7 +1057,7 @@ fun SpotlightPanel(
                                 TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }
                                 if(aiMessageTarget.isNotBlank() && aiText.isNotBlank() && !aiLoading)TextButton(onClick={execute(Result("ai:message","Preparar mensaje","","Comunicación",0,Action.ComposeMessage(config.messageApp,aiMessageTarget,aiText)))}){Text("Preparar mensaje para $aiMessageTarget")}
                                 Row {
-                                    TextButton(enabled=aiText.isNotBlank() && !aiLoading,onClick={scope.launch{app.contexts.saveConversation(conversation.lastOrNull{it.first=="user"}?.second.orEmpty(),aiText)}}){Text("Guardar conversación")}
+                                    TextButton(enabled=aiText.isNotBlank() && !aiLoading && !aiSaving && conversation.lastOrNull()==("assistant" to aiText),onClick={val frozen=conversation.toList();aiSaving=true;scope.launch{try{app.contexts.saveConversation(frozen);aiSaveStatus="Conversación guardada localmente."}catch(e:CancellationException){throw e}catch(e:Exception){aiSaveStatus=e.message ?: "No se pudo guardar la conversación."}finally{aiSaving=false}}}){Text("Guardar conversación")}
                                     TextButton(onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
                                     TextButton(onClick = { copy(aiText) }) { Text("Copiar") }
                                     TextButton(
@@ -1065,6 +1069,7 @@ fun SpotlightPanel(
                                         Text(if (aiLoading) "Detener" else "Nueva conversación")
                                     }
                                 }
+                                if(aiSaveStatus.isNotBlank())Text(aiSaveStatus,style=MaterialTheme.typography.bodySmall)
                             }
                         else if (category == "Apps")
                             LazyVerticalGrid(

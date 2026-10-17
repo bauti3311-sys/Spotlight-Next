@@ -20,6 +20,7 @@ import kotlinx.coroutines.*
 @Composable fun ContextPanel(app:SpotlightApp,c:Config,page:String,payload:String,onAction:(Action)->Unit) {
     val scope=rememberCoroutineScope();val current by app.contexts.active.collectAsState();val pinned by app.contexts.pinned.collectAsState();val chats by app.contexts.conversations.collectAsState()
     var text by remember{mutableStateOf("")};var error by remember{mutableStateOf("")};var busy by remember{mutableStateOf(false)}
+    var followUp by remember(page,payload){mutableStateOf("")}
     LaunchedEffect(page,payload){if(page=="context" && payload.isNotBlank())app.contexts.select(payload)}
     Column(Modifier.fillMaxWidth().heightIn(max=400.dp).verticalScroll(rememberScrollState()).padding(18.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         if(page=="diagnostics") {DiagnosticsPanel(app);return@Column}
@@ -28,7 +29,14 @@ import kotlinx.coroutines.*
             if(chat==null)Text("Esta conversación ya no está guardada.") else {
                 Text(chat.title,style=MaterialTheme.typography.titleMedium);SelectionContainer{Text(chat.text)}
                 TextButton(onClick={app.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("Conversación",chat.text))}){Text("Copiar")}
-                TextButton(onClick={scope.launch{app.contexts.deleteConversation(chat.id)}}){Text("Eliminar conversación")}
+                val history=ConversationHistory.forResume(chat.turns)
+                if(history.isNotEmpty()) {
+                    Text("Podés continuar con los últimos ${history.size/2} intercambios guardados. Revisarás todos los mensajes antes de enviarlos; no se vuelven a leer adjuntos.",style=MaterialTheme.typography.bodySmall)
+                    OutlinedTextField(followUp,{followUp=it.take(AiRequestPolicy.MAX_PROMPT_CHARS)},label={Text("Nueva pregunta")},modifier=Modifier.fillMaxWidth())
+                    TextButton(enabled=followUp.isNotBlank(),onClick={onAction(Action.Ask(followUp,origin=AiInputOrigin.PRIVATE_CONTEXT,priorMessages=history))}){Text("Revisar continuación")}
+                } else Text("Este registro conserva el texto de la conversación. Podés copiarlo; no se reconstruirá automáticamente su historial.",style=MaterialTheme.typography.bodySmall)
+                ConfirmedSettingsButton("Eliminar conversación","Se borrará esta conversación guardada localmente."){scope.launch{try{app.contexts.deleteConversation(chat.id)}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo eliminar la conversación."}}}
+                if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
             };return@Column
         }
         Text(if(page=="context-ai")"Revisar contexto para IA" else "Contexto autorizado",style=MaterialTheme.typography.titleMedium)
@@ -50,7 +58,7 @@ import kotlinx.coroutines.*
         if(pinned.isNotEmpty())Text("Contextos fijados",style=MaterialTheme.typography.titleSmall)
         pinned.forEach{item->Row{TextButton(onClick={app.contexts.select(item.id)},modifier=Modifier.weight(1f)){Text(item.title)};TextButton(onClick={scope.launch{app.contexts.removeContext(item.id)}}){Text("Eliminar")}}}
         if(chats.isNotEmpty())Text("Conversaciones guardadas",style=MaterialTheme.typography.titleSmall)
-        chats.forEach{chat->Row{TextButton(onClick={onAction(Action.SystemPanel("conversation",chat.id))},modifier=Modifier.weight(1f)){Text(chat.title)};TextButton(onClick={scope.launch{app.contexts.deleteConversation(chat.id)}}){Text("Eliminar")}}}
+        chats.forEach{chat->Row{TextButton(onClick={onAction(Action.SystemPanel("conversation",chat.id))},modifier=Modifier.weight(1f)){Text(chat.title)};ConfirmedSettingsButton("Eliminar","Se borrará esta conversación guardada localmente."){scope.launch{try{app.contexts.deleteConversation(chat.id)}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudo eliminar la conversación."}}}}}
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth());if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
     }
 }
