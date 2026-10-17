@@ -99,6 +99,11 @@ fun SpotlightPanel(
         var bufferBusy by remember{mutableStateOf(false)}
         var menu by remember { mutableStateOf(false) }
         var advancedActions by remember { mutableStateOf(false) }
+        val documentExtraction = remember { DocumentExtractionRequest() }
+        fun extractionContext() = listOf(query, category, searchScope, selected, preview?.id, menu, searchGeneration)
+        // Dispose on navigation as well as overlay destruction. The callback also checks live
+        // state, closing the gap before Compose runs disposal after a selection/query change.
+        DisposableEffect(extractionContext()) { onDispose { documentExtraction.cancel() } }
         // Hold width across loading/result replacement; typing must not pulse the window.
         val expandForContent = query.isNotBlank() || menu || preview != null || showAi ||
             systemPage?.page in setOf("calendar", "sports-native", "weather-native")
@@ -936,7 +941,24 @@ fun SpotlightPanel(
                                     if(item.category=="Aplicaciones")add("Permisos y componentes públicos","Consulta local · administración opcional con Shizuku",CommandIcons.Shield){execute(item.copy(action=Action.SystemPanel("app",item.id.substringBefore('/'))))}
                                     if(item.category=="Aplicaciones")add("Información de la app","Permisos y almacenamiento",CommandIcons.Info){launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+item.id.substringBefore('/'))))}
                                     if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add(if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
-                                    if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add("Extraer texto","PDF, Office, imagen o texto · procesamiento local",CommandIcons.FindInPage){scope.launch{try{val extracted=dev.bautista.spotlight.index.DocumentText.extractDetailed(context,item.action.intent.data!!,dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime));check(extracted.text.isNotBlank()){"No se encontró texto legible dentro de los límites locales."};app.index.cacheExtraction(item.action.intent.data!!.toString(),extracted,app.preferences.config.first());preview=item.copy(preview=extracted.text);menu=true}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo extraer texto"}}}
+                                    if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add(
+                                        if(documentExtraction.running)"Cancelar extracción" else "Extraer texto",
+                                        if(documentExtraction.running)"Procesamiento local en curso" else "PDF, Office, imagen o texto · procesamiento local",
+                                        CommandIcons.FindInPage,
+                                    ) {
+                                        if(documentExtraction.running)documentExtraction.cancel()
+                                        else {
+                                            val owner=extractionContext()
+                                            documentExtraction.start(scope, { extractionContext()==owner }, {
+                                                val uri=item.action.intent.data!!
+                                                val extracted=dev.bautista.spotlight.index.DocumentText.extractDetailed(context,uri,dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime))
+                                                currentCoroutineContext().ensureActive()
+                                                check(extracted.text.isNotBlank()){"No se encontró texto legible dentro de los límites locales."}
+                                                app.index.cacheExtraction(uri.toString(),extracted,app.preferences.config.first())
+                                                extracted
+                                            }, { extracted -> preview=item.copy(preview=extracted.text);menu=true }, { e -> error=e.message ?: "No se pudo extraer texto" })
+                                        }
+                                    }
                                     if(item.category=="Portapapeles") {val clip=item.preview ?: (item.action as? Action.Copy)?.text.orEmpty();add("Editar texto","Modificar el historial temporal",CommandIcons.EditNote){execute(item.copy(action=Action.EditClipboard(clip)))};add(if(clip in clipFavorites)"Quitar favorito temporal" else "Favorito temporal","Se elimina al caducar o cerrar el proceso",CommandIcons.Star){app.local.toggleClipFavorite(clip);preview=null;menu=false}}
                                     if(item.category=="Portapapeles")add("Eliminar del historial","Eliminar solo de Spotlight",CommandIcons.Delete){app.local.deleteClip(item.preview ?: (item.action as? Action.Copy)?.text.orEmpty());preview=null}
                                     val text=item.preview ?: (item.action as? Action.Copy)?.text

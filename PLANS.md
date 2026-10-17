@@ -400,3 +400,8 @@ El código e119a73 pasó 510 pruebas completas sin fallos/errores/omisiones. Ese
 Código Android: `dae3a8952a45e2ff835a14e7a32fe0fb1f564cca`. Pipeline final completo: 510 pruebas en108suites, cero fallos/errores/omisiones, tres lint sin errores (10 advertencias+1 informativa heredadas cada uno), Release/R8 sin firma y compilación instrumentada correctas en11min. Comparación estricta posterior:21sin cambios, cero grabadas/añadidas/modificadas, en20s. Los310archivos compilados coinciden conGit. Evidencia: `docs/verification/ocr-20261017/summary.json` (desde docs: `verification/ocr-20261017/summary.json`).
 
 El OCR real instrumentado no se ejecutó por falta de dispositivo/KVM. Los límites de tiempo son cooperativos y la memoria nativa no se midió. Gitleaks: sin hallazgos en árbol y17commits locales disponibles antes del cierre; no es auditoría del historial remoto completo. Ninguna clave nueva, APK parcial, Actions o modificación de main/PR16. Próximo bloque: vigencia/cancelación de extracción manual al cambiar consulta o selección, con pruebas de finalización tardía; detalles en HANDOFF-INTEGRAL-20261017.md.
+
+
+### Continuación funcional: vigencia de extracción manual
+
+Tras f059fa9 se conectó DocumentExtractionRequest a SpotlightPanel: cancelación por contexto, descarte de resultados/errores tardíos y acción contextual de cancelar. Seis nuevos casos; 27 dirigidos más compilación instrumentada correctos. Gate integral del nuevo código pendiente. Ver docs/DOCUMENT-EXTRACTION-LIFECYCLE-20261017.md.

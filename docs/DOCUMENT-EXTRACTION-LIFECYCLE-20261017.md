@@ -1,0 +1,11 @@
+# Vigencia de extracción manual · 17/10/2026
+
+Continuación de f059fa9, sin cambiar Obsidian ni Quick Look. Diagnóstico sobre el flujo de producción: Extraer texto lanzaba una coroutine sin identidad ligada a la consulta/selección, de modo que una lectura tardía podía sustituir el preview y reabrir acciones del documento anterior. No se afirma reproducción física en One UI.
+
+DocumentExtractionRequest es el propietario de un Job por solicitud en el hilo UI. Cancela la anterior al sustituirla, compara generación y contexto vivo antes de publicar texto o errores, y comprueba cancelación incluso si una tarea nativa termina con un error tardío. SpotlightPanel lo conecta mediante DisposableEffect a consulta, sección, selección, preview, menú y generación de búsqueda; destruir el overlay también dispone el propietario. Se conserva el contrato Enter/Tab/ShiftTab/Escape. El mismo control contextual permite Cancelar extracción mientras trabaja, sin añadir controles redundantes ni cambiar geometría.
+
+DocumentText mantiene la propiedad nativa independiente: cancelar la espera no recicla prematuramente bitmaps que ML Kit todavía usa. Se comprueba cancelación antes de guardar el texto en el índice; cacheExtraction conserva sus verificaciones actuales de permisos y preferencias. No se envía nada a IA.
+
+Seis pruebas del propietario: reemplazo y finalización fuera de orden; cambio de selección antes de disposición; cancelación explícita y error nativo tardío; error actual y recuperación; destrucción del scope padre antes de disponer el propietario; inicio sobre un scope ya destruido. Ronda dirigida final: 27 casos correctos, cero fallos/errores/omisiones, incluidos flujo SearchEngine→SpotlightPanel→IA fixture, OCR y contratos de teclado; compilación instrumentada correcta, en 1 min 32 s. Las rondas anteriores de 23/26 casos sobre cuatro/cinco tests del propietario también pasaron, pero no sustituye esta ronda final. Suite completa/lint/R8/visuales del conjunto todavía pendientes en este checkpoint.
+
+No se ejecutó OCR instrumentado ni una prueba física de navegación/cancelación en tablet. No hay APK parcial, firma nueva, Actions, main o PR16 modificados. El cierre OCR de f059fa9 conserva sus 510 resultados y 21 referencias anteriores; no se atribuyen automáticamente a este código posterior.
