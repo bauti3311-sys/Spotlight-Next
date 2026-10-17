@@ -40,7 +40,7 @@ Base: d4e369406e5d1190924ad5f8e775dea85d7e0679. Continuación en `feat/work-inte
 | 32 | Comunicaciones · parcial | Notificaciones autorizadas, RemoteInput cuando existe, borradores revisados y selector Android. | No historial privado de WhatsApp ni envío garantizado; depende de notificación/app receptora. |
 | 33 | Web verificable · parcial | Búsqueda web, Wikimedia y tarjetas con fuentes/fechas existentes; consultas explícitas. | No grounding universal Gemini ni cruce automático web+archivos; cobertura/proveedor real pendiente. |
 | 34 | Controles · parcial mejorado | Volumen con lectura posterior/min–max Android; brillo Shizuku reversible verificado, paneles reales. | DND/políticas del dispositivo pueden impedir cambios; no terminal/root genéricos. |
-| 35 | Archivos/OCR · parcial reforzado | OCR PDF local acotado con PDFBox/PdfRenderer/ML Kit, fragmentos por página y huella, índice v2 aditivo y búsqueda sin etiquetas artificiales. Cancelación/timeout retienen recursos nativos hasta completar. Quick Look intacto. 29 dirigidas correctas; instrumentación compilada. | OCR nativo pendiente de ejecución en Android real. Por defecto 3 páginas OCR/40 de texto/8 MB; resultados parciales explícitos. Sin embeddings, OCR universal ni límite duro de tiempo/RSS. Ver OCR-LOCAL-20261017.md. |
+| 35 | Archivos/OCR · parcial reforzado | OCR PDF local acotado con PDFBox/PdfRenderer/ML Kit, fragmentos por página y huella, índice v2 aditivo y búsqueda sin etiquetas artificiales. Cancelación/timeout retienen recursos nativos hasta completar. Quick Look intacto. 510 pruebas integrales correctas, lint3/R8 y21visuales sin cambios sobre dae3a895; instrumentación compilada, no ejecutada. | OCR nativo pendiente de ejecución en Android real. Por defecto 3 páginas OCR/40 de texto/8 MB; resultados parciales explícitos. Sin embeddings, OCR universal ni límite duro de tiempo/RSS. Ver OCR-LOCAL-20261017.md. |
 | 36 | Organización · parcial | Contactos, agenda autorizada y borrador de evento mediante Android; panel calendario existente. | No motor general de recordatorios contextuales enlazados a documentos/planes. |
 | 37 | Respuestas instantáneas · implementado, cobertura ampliable | Calculadora natural/conversiones locales compartidas por búsqueda/herramientas, copia; tasas con fecha del proveedor. | Sin tasas offline inventadas; divisas dependen de cobertura real. |
 | 38 | Música · parcial reforzado | MediaSession autorizada y acciones soportadas; Spotify por Intent, planes con volumen. Estado real «En reproducción» según sesión. | Solicitud transportControls no acredita reproducción; sin proveedor musical universal/preferido completo. |
@@ -53,7 +53,7 @@ Siete áreas con navegación fija en tablet y selector en teléfono; búsqueda g
 
 ## No afirmado como terminado
 
-Las 40 decisiones **no están completadas integralmente**. Semántica local medida, OCR PDF escaneado, alertas, memoria avanzada, cola persistente segura, grounding web universal y reanudación estructurada de conversaciones requieren etapas adicionales. La ausencia de dispositivo y de credenciales impide verificar integraciones reales; las pruebas con fixtures se identifican como tales. No se contrataron servicios, no se ejecutó Actions y no se tocaron firma histórica, main o PR16.
+Las 40 decisiones **no están completadas integralmente**. Semántica local medida, ejecución instrumentada del OCR PDF escaneado, alertas, memoria avanzada, cola persistente segura y grounding web universal requieren etapas adicionales. Conversaciones estructuradas y OCR local tienen recorridos conectados; no acreditan proveedor ni dispositivo real. La ausencia de dispositivo y de credenciales impide verificar integraciones reales; las pruebas con fixtures se identifican como tales. No se contrataron servicios, no se ejecutó Actions y no se tocaron firma histórica, main o PR16.
 
 
 ## Revalidación del checkpoint — 17/10/2026
@@ -62,3 +62,6 @@ El código f490963 pasó nuevamente 483 pruebas Android/JVM, tres lint sin error
 
 
 Actualización posterior: 0c2f74f incorpora continuación estructurada de conversaciones con revisión explícita. Pasó 493 Android/JVM, tres lint sin errores, Release/R8 sin firma y 21 comparaciones sin cambios. Evidencia actual en `verification/conversations-20261017/summary.json`. No se convierten los pendientes de proveedor/dispositivo, OCR PDF, semántica, alertas, memoria avanzada o cola persistente en funciones completas. No hay APK parcial.
+
+
+Actualización OCR: dae3a895 cierra 510 Android/JVM, tres lint sin errores, Release/R8 sin firma, instrumentación compilada y21comparaciones sin cambios. Evidencia en `verification/ocr-20261017/summary.json`. Decisiones13/35 reforzadas con límites, trazabilidad y recursos; reconocimiento nativo y mediciones pendientes. Se conserva revisión de contexto exacto PDF+IA. Sin APK parcial ni clave nueva.

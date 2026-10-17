@@ -1,6 +1,26 @@
 # Continuidad integral · 17/10/2026
 
-## Estado actual para continuar
+## Estado actual: OCR integrado y gates cerrados
+
+Último código Android publicado: `dae3a8952a45e2ff835a14e7a32fe0fb1f564cca`, descendiente de c107654 sin perder Ajustes, conversaciones ni comandos. El checkpoint posterior contiene cierre y evidencia. Continuar en `feat/work-integral-settings-20261016`; comprobar HEAD y reserva remotos antes de editar. La reserva propia es de `work-gemini-native-20261014-f914c617`; no asumir que este documento acredita una sesión ejecutándose.
+
+OCR PDF local conectado a DocumentText y FileIndex: texto nativo primero; hasta 3 páginas OCR/40 nativas/8 MB, imágenes acotadas y una extracción admitida; SHA y fragmentos por página/método, límites y errores parciales visibles. El índice migra de v1 a v2 aditivamente, conserva permisos y no convierte un permiso SAF revocado en importación. MIME genérico PDF/TXT/Markdown se normaliza sin sobreescribir tipos explícitos. Quick Look y Obsidian intactos.
+
+Bloques posteriores del mismo conjunto: propiedad de bitmaps en OCR/etiquetado/vídeo hasta que las Tasks nativas terminan, y conservación de cobertura parcial al preparar capítulos PDF para IA. El prompt exacto revisado incluye la cobertura; no hay envío al escribir. Los plazos son cooperativos: no hay preempción dura de bibliotecas nativas ni afirmación de RSS medido.
+
+**Verificación nueva sobre dae3a895:** 510 pruebas completas en 108 suites, cero fallos/errores/omisiones; lint Debug/Release/FunctionalPreview sin errores (10 advertencias y 1 informativa heredadas cada uno); Release/R8 y compileDebugAndroidTestKotlin correctos en 11 min. Verificación estricta posterior en 20 s: 21 referencias sin cambios, ninguna añadida/regrabada/modificada. Los 310 archivos de código/configuración/tests/referencias compilados coinciden con Git. Evidencia completa en `verification/ocr-20261017/summary.json` y descripción en `OCR-LOCAL-20261017.md`.
+
+PdfOcrDeviceTest compila, pero NO se ejecutó: adb sin dispositivos y sin KVM. Debe probar PdfRenderer y ML Kit reales en un emulador limpio o instalación de prueba autorizada, sin desinstalar/reemplazar la principal. Las pruebas JVM usan fixtures; no prueban reconocimiento ML nativo, memoria ni One UI. No se repitieron los 30+5 tests Python porque su código no cambió. Rondas dirigidas y pipelines interrumpidos se distinguen del gate final en el informe.
+
+No hay APK parcial. Release sin firma se usó solo para comprobar R8, paquete principal 2.0.1/código29/ARM64/min26/target35, zipalign16KB; apksigner confirma ausencia de firma. **No generar ninguna clave incompatible ni cambiar automáticamente de paquete para resolver la pérdida de P1.** La clave P1 está ausente; la entrega final requiere el mecanismo de firma autorizado y sus condiciones. La instrucción más reciente del usuario prevalece sobre alternativas antiguas de este documento. No hubo Actions, cambio de presupuesto, main, force-push ni modificación del PR16.
+
+### Próximo paso funcional exacto
+
+Vincular la extracción manual de texto de SpotlightPanel a un Job identificado por consulta/selección: cancelar al cambiar de resultado o consulta y al cerrar la vista, y descartar resultados tardíos que reabran el menú/preview anterior. El scope de composición ya cancela al destruir el overlay; falta el guard de vigencia de cada extracción manual. Añadir prueba de cancelación y finalización fuera de orden conservando el contrato de teclado y la geometría aprobada. No reconstruir cancelación del índice: el botón actual ya cancela indexJob y FileIndex.cancelRefresh. Después continuar los pendientes independientes de la matriz, sin presentar OCR nativo/semántica/las40decisiones como completos.
+
+---
+
+## Historial: estado al iniciar OCR
 
 Último commit con cambios Android: `0c2f74fbefc374ae2842ab0d14f14c40c5d3fa0a`, publicado en la misma rama aislada. El checkpoint posterior contiene únicamente cierre documental/evidencia; obtener su HEAD y la reserva remotos antes de editar, sin volver a d4 ni descartar comandos/Ajustes/conversaciones. Gitleaks sin hallazgos en el árbol y 12 commits disponibles localmente.
 
@@ -18,7 +38,7 @@ Sobrevivieron los informes de 461 y 470 pruebas completas y las 38 dirigidas del
 
 El entorno temporal, SDK, caché Gradle y clave local de P1 se perdieron. Se restauraron Gradle 8.10.2 y Microsoft JDK 17.0.16 con comprobación SHA256, SDK/Build Tools 35 y dependencias. La ejecución usa una copia de código fuera de la raíz sincronizada, como en la sesión anterior.
 
-**No existe la clave local que firmó P1.** No generar otra clave para presentar una actualización del paquete `dev.bautista.spotlight.next.preview.p1`. Su APK anterior y su certificado público permanecen disponibles; no permiten reconstruir la clave privada. Una futura entrega necesita recuperar esa clave mediante un mecanismo autorizado o usar un paquete independiente nuevo, conservando P1 instalada. No se tocaron credenciales históricas ni la aplicación principal. No se entrega una APK parcial.
+**No existe la clave local que firmó P1.** No generar otra clave para presentar una actualización del paquete `dev.bautista.spotlight.next.preview.p1`. Su APK anterior y su certificado público permanecen disponibles; no permiten reconstruir la clave privada. Una futura entrega necesita recuperar esa clave mediante un mecanismo autorizado o completar el firmado histórico protegido; no generar otra clave incompatible. No se tocaron credenciales históricas ni la aplicación principal. No se entrega una APK parcial.
 
 ## Verificación de esta reanudación
 

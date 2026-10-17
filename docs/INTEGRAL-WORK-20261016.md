@@ -69,3 +69,10 @@ La revisión 5af8dff pasó 507 pruebas completas, cero fallos/errores/omisiones.
 MediaAnalysis comparte ahora el propietario de bitmap entre OCR y etiquetado y recicla al terminar realmente todas sus Tasks. Imágenes rotadas y fotogramas escalados liberan intermedios; cancelar no recicla una entrada que ML Kit aún usa. La decodificación inicializa inSampleSize=1 y rechaza dimensiones inválidas. Las salidas existentes de OCR/etiquetas y vídeo se conservan; no se añaden modelos ni proveedores. Ronda final: 25 pruebas dirigidas y compileDebugAndroidTestKotlin correctos en 49 s. El primer intento detectó inferencia genérica en el test; el segundo usaba BitmapFactory simulado que aceptaba bytes inválidos. El fixture pasó a GraphicsMode NATIVE sin debilitar su aserción. No es ejecución del reconocedor ML en un dispositivo.
 
 El flujo PDF no añade código HTTP para enviar documentos; usa el modelo latino ya incluido. No se midió tráfico ni RSS del SDK en un dispositivo real. Se inicia la suite completa del conjunto OCR/MIME/memoria antes del cierre.
+
+
+## Cierre verificado OCR · 17/10/2026
+
+Código Android: `dae3a8952a45e2ff835a14e7a32fe0fb1f564cca`. Pipeline final completo: 510 pruebas en108suites, cero fallos/errores/omisiones, tres lint sin errores (10 advertencias+1 informativa heredadas cada uno), Release/R8 sin firma y compilación instrumentada correctas en11min. Comparación estricta posterior:21sin cambios, cero grabadas/añadidas/modificadas, en20s. Los310archivos compilados coinciden conGit. Evidencia: `docs/verification/ocr-20261017/summary.json` (desde docs: `verification/ocr-20261017/summary.json`).
+
+El OCR real instrumentado no se ejecutó por falta de dispositivo/KVM. Los límites de tiempo son cooperativos y la memoria nativa no se midió. Gitleaks: sin hallazgos en árbol y17commits locales disponibles antes del cierre; no es auditoría del historial remoto completo. Ninguna clave nueva, APK parcial, Actions o modificación de main/PR16. Próximo bloque: vigencia/cancelación de extracción manual al cambiar consulta o selección, con pruebas de finalización tardía; detalles en HANDOFF-INTEGRAL-20261017.md.

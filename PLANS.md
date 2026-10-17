@@ -393,3 +393,10 @@ El flujo PDF no añade código HTTP para enviar documentos; usa el modelo latino
 ### Cobertura conservada al preparar IA documental
 
 El código e119a73 pasó 510 pruebas completas sin fallos/errores/omisiones. Ese pipeline se interrumpió antes de completar lint/R8 al detectar que seleccionar un capítulo podía omitir el aviso inicial de OCR parcial. PdfAiCompoundPanel ahora usa extractDetailed y conserva la cobertura tipada en la vista y dentro del prompt exacto revisado/enviado, incluso después de localizar una sección. Aclara los límites de texto nativo y OCR, sin leer más archivos ni enviar automáticamente. 22 pruebas dirigidas y compilación instrumentada correctas en 1 min 26 s, incluidas igualdad de payload y cobertura. Gates finales del conjunto pendientes; no se considera verde un pipeline interrumpido.
+
+
+## Cierre verificado OCR · 17/10/2026
+
+Código Android: `dae3a8952a45e2ff835a14e7a32fe0fb1f564cca`. Pipeline final completo: 510 pruebas en108suites, cero fallos/errores/omisiones, tres lint sin errores (10 advertencias+1 informativa heredadas cada uno), Release/R8 sin firma y compilación instrumentada correctas en11min. Comparación estricta posterior:21sin cambios, cero grabadas/añadidas/modificadas, en20s. Los310archivos compilados coinciden conGit. Evidencia: `docs/verification/ocr-20261017/summary.json` (desde docs: `verification/ocr-20261017/summary.json`).
+
+El OCR real instrumentado no se ejecutó por falta de dispositivo/KVM. Los límites de tiempo son cooperativos y la memoria nativa no se midió. Gitleaks: sin hallazgos en árbol y17commits locales disponibles antes del cierre; no es auditoría del historial remoto completo. Ninguna clave nueva, APK parcial, Actions o modificación de main/PR16. Próximo bloque: vigencia/cancelación de extracción manual al cambiar consulta o selección, con pruebas de finalización tardía; detalles en HANDOFF-INTEGRAL-20261017.md.
