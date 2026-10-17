@@ -7,7 +7,18 @@ import java.util.zip.ZipInputStream
 data class OfficeContent(val text:String,val author:String="",val created:Long=0)
 object OfficeText {
  val types=setOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.openxmlformats-officedocument.presentationml.presentation")
- fun mime(name:String,fallback:String?)=when(name.substringAfterLast('.').lowercase()){ "docx"->"application/vnd.openxmlformats-officedocument.wordprocessingml.document";"xlsx"->"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";"pptx"->"application/vnd.openxmlformats-officedocument.presentationml.presentation";else->fallback}
+ /** Preserve explicit provider types; fill generic document MIME from a recognized extension. */
+ fun mime(name:String,fallback:String?):String? {
+  val generic=fallback.isNullOrBlank() || fallback.lowercase(java.util.Locale.ROOT) in setOf("application/octet-stream","binary/octet-stream")
+  return when(name.substringAfterLast('.').lowercase(java.util.Locale.ROOT)) {
+   "docx"->"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+   "xlsx"->"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+   "pptx"->"application/vnd.openxmlformats-officedocument.presentationml.presentation"
+   "pdf"->if(generic)"application/pdf" else fallback
+   "txt","md","markdown"->if(generic)"text/plain" else fallback
+   else->fallback
+  }
+ }
  fun supports(mime:String?,name:String="")=mime in types || name.substringAfterLast('.').lowercase() in setOf("docx","xlsx","pptx")
  private fun parse(bytes:ByteArray,onToken:(XmlPullParser,Int)->Unit){val p=Xml.newPullParser();p.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,true);p.setFeature(XmlPullParser.FEATURE_PROCESS_DOCDECL,false);p.setInput(ByteArrayInputStream(bytes),null);var depth=0;var tokens=0;while(true){val event=p.nextToken();require(++tokens<300000){"XML demasiado complejo."};require(event!=XmlPullParser.DOCDECL){"El documento contiene declaraciones XML no compatibles."};if(event==XmlPullParser.END_DOCUMENT)break;if(event==XmlPullParser.START_TAG){depth++;require(depth<=80)};onToken(p,event);if(event==XmlPullParser.END_TAG)depth--}}
  private fun text(bytes:ByteArray,names:Set<String>):String {val out=StringBuilder();var selected=0;parse(bytes){p,e->if(e==XmlPullParser.START_TAG && p.name in names)selected++;if(e==XmlPullParser.TEXT && selected>0 && out.length<24000)out.append(p.text.take(24000-out.length));if(e==XmlPullParser.END_TAG){if(p.name in names)selected--;if(p.name in setOf("p","row","si"))out.append('\n')}};return out.toString().take(24000).trim()}

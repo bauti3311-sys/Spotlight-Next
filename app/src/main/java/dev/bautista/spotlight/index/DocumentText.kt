@@ -8,10 +8,10 @@ import java.security.MessageDigest
 
 object DocumentText {
     private const val MAX_BYTES=8_000_000
-    private suspend fun read(context:Context,uri:Uri):ByteArray {
+    private suspend fun read(context:Context,uri:Uri,deadline:Long?=null):ByteArray {
         return context.contentResolver.openInputStream(uri)?.use{input->
             val out=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192)
-            while(true){currentCoroutineContext().ensureActive();val n=input.read(buffer);if(n<0)break
+            while(true){currentCoroutineContext().ensureActive();check(deadline==null || SystemClock.elapsedRealtime()<deadline){"La extracción local agotó su tiempo de lectura."};val n=input.read(buffer);if(n<0)break
                 require(out.size()+n<=MAX_BYTES){"El documento supera 8 MB para extracción rápida."};out.write(buffer,0,n)}
             out.toByteArray()
         } ?: error("No se pudo leer el archivo. Revisá el permiso.")
@@ -32,7 +32,7 @@ object DocumentText {
                 check(admitted){"La extracción PDF sigue ocupada. Intentá nuevamente cuando termine la tarea local."}
                 lease=PdfWorkLease{PdfTextPipeline.admission.release()}
             }
-            val bytes=read(context,uri)
+            val bytes=read(context,uri,if(type=="application/pdf")start+limits.totalMillis else null)
             val sha=MessageDigest.getInstance("SHA-256").digest(bytes).joinToString(""){"%02x".format(it)}
             if(type=="application/pdf") {
                 PdfTextSource.open(context,bytes).use{source->MediaAnalysis(context).use{media->

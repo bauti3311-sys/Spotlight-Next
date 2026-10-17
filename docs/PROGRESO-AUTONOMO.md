@@ -484,3 +484,8 @@ Código publicado 0c2f74f: 493 Android/JVM correctas (104 suites, cero fallos/er
 ### OCR PDF local — 17/10/2026
 
 Implementada extracción PDF unificada con OCR local acotado, trazabilidad por página y fuente, resultados parciales, cancelación segura de recursos ML e índice v2 aditivo. La búsqueda excluye las etiquetas generadas para no crear relevancia falsa. 29 pruebas dirigidas y compileDebugAndroidTestKotlin correctos; OCR real instrumentado compilado, no ejecutado por falta de dispositivo/KVM. Gates completos pendientes. Ver docs/OCR-LOCAL-20261017.md para comandos/límites. No interfaz rediseñada, Actions, clave nueva ni APK parcial.
+
+
+### Identificación documental y cierre de límites — 17/10/2026
+
+Después de 7e2540d se añadió resolución conservadora de MIME genérico para PDF/TXT/Markdown, reutilizada en índice, rutas Quick Look y contexto autorizado; los tipos explícitos ajenos se conservan. Filas PDF antiguas genéricas se corrigen al consultar y la revisión de índice cambia para no dejar archivos previamente omitidos sin analizar. Ronda MIME: 30 pruebas dirigidas y compilación instrumentada correctas en 1 min 23 s. Después se añadió comprobación del plazo entre lecturas PDF y se avanzó la revisión del índice; la suite completa del estado final está pendiente. No se ejecutó OCR nativo en dispositivo ni Actions.

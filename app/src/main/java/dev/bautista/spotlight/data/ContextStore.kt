@@ -62,14 +62,15 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     }
     suspend fun setDocument(uri:Uri,ownedFile:String=""):SharedContext=withContext(Dispatchers.IO) {
         require(uri.scheme=="content")
-        val mime=context.contentResolver.getType(uri).orEmpty()
+        val suppliedMime=context.contentResolver.getType(uri).orEmpty()
         val title=runCatching{context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME),null,null,null)?.use{if(it.moveToFirst())it.getString(0) else null}}.getOrNull() ?: "Documento autorizado"
+        val mime=dev.bautista.spotlight.index.OfficeText.mime(title,suppliedMime).orEmpty()
         SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
     }
     suspend fun text(item:SharedContext):String=withContext(Dispatchers.IO) {
         if(item.text.isNotBlank())item.text else {
             require(item.uri.startsWith("content://")){"Elegí nuevamente el documento."}
-            dev.bautista.spotlight.index.DocumentText.extract(context,Uri.parse(item.uri),item.mime).take(24000).ifBlank{error("No se pudo obtener texto compatible de este archivo.")}
+            dev.bautista.spotlight.index.DocumentText.extract(context,Uri.parse(item.uri),dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime)).take(24000).ifBlank{error("No se pudo obtener texto compatible de este archivo.")}
         }
     }
     suspend fun pinActive()=lock.withLock {

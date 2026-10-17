@@ -204,7 +204,7 @@ class FileIndex(
                 var contentPartial=false
                 state.value =
                     Status(true, message = "Leyendo archivos compartidos y carpetas autorizadas…")
-                val mode = "${c.contentIndex}:${c.visualIndex}:${c.videoIndex}:office1:pdfocr1"
+                val mode = "${c.contentIndex}:${c.visualIndex}:${c.videoIndex}:office1:pdfocr1:mime2"
                 val analyzer =
                     if (analyze && (c.visualIndex || c.videoIndex)) MediaAnalysis(context) else null
                 helper.writableDatabase.beginTransaction()
@@ -265,7 +265,7 @@ class FileIndex(
                                 count++
                                 val mime =
                                     if (file.isDirectory) DocumentsContract.Document.MIME_TYPE_DIR
-                                    else file.type ?: "application/octet-stream"
+                                    else OfficeText.mime(name,file.type) ?: "application/octet-stream"
                                 val modified = file.lastModified()
                                 val size = file.length()
                                 var body = ""
@@ -546,8 +546,8 @@ class FileIndex(
                     while (row.moveToNext()) {
                         ensureActive()
                         if(sourceTopic.isNotBlank() && !dev.bautista.spotlight.search.normalize(Uri.decode(string("uri")+" "+string("parent")+" "+string("name"))).contains(dev.bautista.spotlight.search.normalize(sourceTopic)))continue
-                        val mime = string("mime")
                         val name = string("name")
+                        val mime = OfficeText.mime(name,string("mime")) ?: "application/octet-stream"
                         val body =
                             if (
                                 c.contentIndex ||
