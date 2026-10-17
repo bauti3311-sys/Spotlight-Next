@@ -1,0 +1,6 @@
+{
+  "productionCommit": "059505290b3dc93924a07bdd82b420b76b9b5fda",
+  "file": "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt",
+  "sha256": "322501b02708d2c600c5822b73f436d58c2603e87847c8a2c957991644335f6f",
+  "addedRegressionTest": "AdaptiveIndexTest.concurrentManualExtractionCannotBeOverwrittenByAnOlderRefreshSnapshot"
+}

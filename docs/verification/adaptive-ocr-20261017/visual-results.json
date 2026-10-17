@@ -1,0 +1,137 @@
+{
+  "summary": {
+    "total": 21,
+    "recorded": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": 21
+  },
+  "results": [
+    {
+      "golden_file_path": "app/src/test/snapshots/settings-tablet-light.png",
+      "timestamp": 6544376734877,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/appearance-tablet-compact.png",
+      "timestamp": 6542165142222,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-context-panel.png",
+      "timestamp": 6546062598388,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/width-tablet-active-override.png",
+      "timestamp": 6542509109558,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/landscape-results.png",
+      "timestamp": 6544958572623,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/settings-tablet-obsidian.png",
+      "timestamp": 6543438341550,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-results.png",
+      "timestamp": 6546446140605,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-selection.png",
+      "timestamp": 6545187867928,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/settings-tablet-graphite.png",
+      "timestamp": 6543751591849,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/appearance-tablet-spacious.png",
+      "timestamp": 6541448228407,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-pdf-error.png",
+      "timestamp": 6546142508041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-options.png",
+      "timestamp": 6545435380492,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/width-phone-active-override.png",
+      "timestamp": 6542424713972,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-preferences.png",
+      "timestamp": 6546241658721,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/settings-phone-obsidian.png",
+      "timestamp": 6544102900439,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/appearance-phone-horizontal.png",
+      "timestamp": 6542041813746,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/phone-results.png",
+      "timestamp": 6545614893609,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/appearance-tablet-vertical.png",
+      "timestamp": 6542286086194,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-initial.png",
+      "timestamp": 6545824715134,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/appearance-phone-vertical.png",
+      "timestamp": 6541912947792,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "app/src/test/snapshots/tablet-saved.png",
+      "timestamp": 6545725033672,
+      "context_data": {},
+      "type": "unchanged"
+    }
+  ]
+}

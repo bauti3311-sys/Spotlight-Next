@@ -1,6 +1,26 @@
 # Continuidad integral · 17/10/2026
 
-## Estado actual: extracción manual y cobertura documental cerradas
+## Estado integral verificado: presupuesto adaptativo del OCR
+
+Código Android f05e82b0c7a53263b2e25d381bb6ce057a75a321, descendiente de151dfbe, en la rama propia feat/work-integral-settings-20261016. Reserva comprobada y renovada por el mismo propietario work-gemini-native-20261014-f914c617 mediante CAS Git Data, sin force. No hay otro escritor autorizado por esta sesión. Consultar HEAD y el registro remoto antes de continuar; el checkpoint no implica tarea en segundo plano.
+
+DeviceResources reutiliza lecturas reales de batería/memoria y añade ahorro/estado térmico. FileIndex/PdfTextPipeline aplazan o reducen el OCR PDF, vuelven a comprobar antes de admitir cada trabajo y conservan texto/páginas pendientes con motivo explícito. Recuperación manual con la acción existente, persistida en SQLite y caché OCR validada por SHA/versión/página/recorte. No worker automático nuevo. Se retiraron transacciones largas que esperaban OCR; consultas y metadatos no bloquean la búsqueda. Una extracción manual más nueva no puede ser sobrescrita por el snapshot antiguo del refresh. El índice privado/deshabilitado no agenda un bucle de refresco.
+
+**Gates nuevos f05e82b:**539 pruebas completas/114suites, cero fallos/errores/omisiones; lint Debug/Release/FunctionalPreview sin errores; Release/R8 y compileDebugAndroidTestKotlin correctos en11min21s. Comparación estricta posterior21s:21sin cambios, cero grabadas/añadidas/modificadas.320entradas compiladas coinciden con Git y no hay fuentes adicionales en app/src. Evidencia: verification/adaptive-ocr-20261017/summary.json. Debug y FunctionalPreview tienen11advertencias+1informativa, Release10+1: las adicionales son avisos GradleDependency sobre dependencias sin cambiar, conservados con mensaje exacto. No se actualizaron versiones para ocultar avisos.
+
+Regresiones reproducidas antes de corregir: escritura manual perdida contra0595052 y notificación repetida del índice frío privado contra c8a02fc. Rondas dirigidas32 y24correctas; no se suman a539. La ronda c8a pasó538 y tres lint, pero su proceso se perdió antes del cierre R8/instrumentación; no se declara pipeline verde de aquella ronda. La anterior059 pasó537 y se interrumpió deliberadamente para reproducir la carrera. Python30+5 es histórico, no repetido.
+
+**Límites:**instrumentación compilada, NO ejecutada. adb sin dispositivo y sin KVM; no prueba ML nativa/One UI ni medidas RSS/latencia/batería. Política adaptativa solo para índice PDF; límites manuales y multimedia anteriores conservados. Plazos cooperativos, no preempción nativa. Reanudación explícita, no worker persistente. Descripción y umbrales: ADAPTIVE-OCR-20261017.md. Matrix40 aún parcial, sin embeddings ni capacidades inventadas.
+
+Release interno: principal dev.bautista.spotlight.next,2.0.1/código29,ARM64,min26/target35,no depurable,zipalign16KB correcto. Apksigner confirma que está SIN FIRMA; no es instalable ni entrega. No se creó ninguna clave. Histórica protegida/checks exactos siguen condicionando la única APK final; P1 no recuperó su clave. Sin Actions, presupuesto, main, PR16, merges, force-push ni APK parcial. Gitleaks sin hallazgos en árbol y24commits locales disponibles antes del cierre; no historial remoto completo.
+
+### Bloque siguiente en preparación
+
+Decisión25, revisión conjunta Gemini de archivos seleccionados. Reutilizar FileBuffer, DocumentText.extractDetailed, DocumentExtractionRequest y DirectAi/AiRequestPolicy: no motor nuevo. Corregir recorte silencioso de varios archivos, conservar identificadores D1…D12/página/método/SHA y avisos de alcance, presupuesto acotado, cancelación explícita y guard de selección/consulta para descartar contenido tardío. El prompt exacto debe seguir revisándose antes de enviar. Los cambios de este bloque deben diferenciar pruebas dirigidas de gates completos y dejar la misma geometría de Obsidian. No entregar APK parcial ni llamar semántica a búsqueda léxica.
+
+---
+
+## Historial: extracción manual y cobertura documental cerradas
 
 Último código Android: `70e6f69b8a7660ae5eac987cc54450f88a3df4d3`, sobre 5bade7a y c107654, en `feat/work-integral-settings-20261016`. El checkpoint posterior agrega únicamente evidencia y continuidad. Comprobar HEAD y reserva remotos antes de editar. Propietario de la reserva de esta continuación: `work-gemini-native-20261014-f914c617`; el registro de checkpoint no significa que haya una ejecución de fondo activa. No modificar reservas ajenas.
 
