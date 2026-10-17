@@ -79,17 +79,20 @@ object SettingsGroups {
 }
 
 /** Bounded preference workspace: the category rail stays still while details scroll. */
-@Composable fun SettingsLayout(selected:String,onSelect:(String)->Unit,modifier:Modifier=Modifier,content:@Composable ()->Unit) {
+@Composable fun SettingsLayout(selected:String,onSelect:(String)->Unit,modifier:Modifier=Modifier,overview:(@Composable (()->Unit)->Unit)?=null,content:@Composable ()->Unit) {
  var query by rememberSaveable{mutableStateOf("")};var chooser by rememberSaveable{mutableStateOf(false)}
+ var generalDetails by rememberSaveable{mutableStateOf(false)}
+ var showAdvanced by rememberSaveable{mutableStateOf(false)}
+ val visibleGroups=SettingsGroups.names.filter{it!="Avanzado" || showAdvanced || selected=="Avanzado"}
  val holder=rememberSaveableStateHolder()
- fun back():Boolean=when{chooser->{chooser=false;true};query.isNotEmpty()->{query="";true};else->false}
- BackHandler(chooser || query.isNotEmpty()){back()}
+ fun back():Boolean=when{chooser->{chooser=false;true};query.isNotEmpty()->{query="";true};generalDetails->{generalDetails=false;true};else->false}
+ BackHandler(chooser || query.isNotEmpty() || generalDetails){back()}
  CompositionLocalProvider(LocalSettingsQuery provides query) {
   Column(modifier.fillMaxWidth().onPreviewKeyEvent{it.type==KeyEventType.KeyDown && it.key==Key.Escape && back()},verticalArrangement=Arrangement.spacedBy(16.dp)) {
    OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().testTag("settings-search"),singleLine=true,label={Text("Buscar en todos los ajustes",maxLines=1,overflow=TextOverflow.Ellipsis)},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))},trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(12.dp))
    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
     val category:@Composable (String)->Unit={group->
-     Row(Modifier.fillMaxWidth().selectable(selected==group,onClick={query="";onSelect(group);chooser=false},role=Role.Tab)
+     Row(Modifier.fillMaxWidth().selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=false},role=Role.Tab)
       .background(if(selected==group)MaterialTheme.colorScheme.onSurface.copy(alpha=.08f) else androidx.compose.ui.graphics.Color.Transparent,RoundedCornerShape(9.dp))
       .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically){
        Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant)
@@ -99,19 +102,19 @@ object SettingsGroups {
     val detail:@Composable ()->Unit={
      holder.SaveableStateProvider(if(query.isBlank())selected else "search") {
       Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).testTag("settings-details"),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-       Text(if(query.isBlank())SettingsGroups.canonical(selected) else "Resultados de ajustes",style=MaterialTheme.typography.titleLarge)
-       Text(if(query.isBlank())SettingsGroups.description(selected) else "Se muestran controles de todas las áreas que coinciden con tu búsqueda.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-       content();Spacer(Modifier.height(24.dp))
+       Text(if(query.isNotBlank())"Resultados de ajustes" else if(selected=="General" && overview!=null && !generalDetails)"Inicio" else SettingsGroups.canonical(selected),style=MaterialTheme.typography.titleLarge)
+       Text(if(query.isNotBlank())"Se muestran controles de todas las áreas que coinciden con tu búsqueda." else if(selected=="General" && overview!=null && !generalDetails)"Configurá Spotlight para vos." else SettingsGroups.description(selected),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+       if(selected=="General" && query.isBlank() && overview!=null && !generalDetails)overview{generalDetails=true} else content();Spacer(Modifier.height(24.dp))
       }
      }
     }
     if(maxWidth>=760.dp)Row(Modifier.fillMaxSize(),horizontalArrangement=Arrangement.spacedBy(28.dp)) {
-     Column(Modifier.width(218.dp).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(4.dp)) {SettingsGroups.names.forEach{category(it)}}
+     Column(Modifier.width(218.dp).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(4.dp)) {visibleGroups.forEach{category(it)};TextButton(onClick={showAdvanced=!showAdvanced}){Text(if(showAdvanced)"Menos opciones" else "Más opciones")}}
      Box(Modifier.weight(1f).fillMaxHeight()){detail()}
     } else Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
      Box {
       OutlinedButton(onClick={chooser=true},modifier=Modifier.fillMaxWidth(),shape=RoundedCornerShape(10.dp)) {Icon(SettingsGroups.icon(selected),null,Modifier.size(18.dp));Spacer(Modifier.width(12.dp));Text(SettingsGroups.canonical(selected),Modifier.weight(1f));Text("Cambiar")}
-      DropdownMenu(chooser,{chooser=false},modifier=Modifier.heightIn(max=400.dp)){SettingsGroups.names.forEach{group->DropdownMenuItem(text={Text(group)},leadingIcon={Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp))},onClick={query="";onSelect(group);chooser=false})}}
+      DropdownMenu(chooser,{chooser=false},modifier=Modifier.heightIn(max=400.dp)){visibleGroups.forEach{group->DropdownMenuItem(text={Text(group)},leadingIcon={Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp))},onClick={query="";onSelect(group);chooser=false;generalDetails=false})};DropdownMenuItem(text={Text(if(showAdvanced)"Menos opciones" else "Más opciones")},onClick={showAdvanced=!showAdvanced})}
      }
      Box(Modifier.weight(1f).fillMaxWidth()){detail()}
     }

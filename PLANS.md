@@ -472,3 +472,6 @@ Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release in
 17/10/2026 · continuación be3d002: modelo real evaluado c1f7248; integración semántica optativa nativa y36dirigidas correctas, paridad Kotlin/ONNX vs Python. Gate completo pendiente; ver docs/SEMANTIC-LOCAL-20261017.md. Siguiente: preservar operadores documentales y cerrar gates exactos. No APK parcial ni nueva firma.
 
 17/10/2026 · checkpoint semántico8c307e4 publicado; regresión operadores PDF reproducida3/4y corregida, ronda dirigida correcta (ver operators-regression.json). Gate integral del siguiente SHA pendiente. JNI smoke instrumentado preparado, no ejecutado.
+
+
+17/10/2026 · prioridad urgente nueva: usuario autoriza Review independiente (.next.review) firmada con clave exclusiva, antes de terminar40. Inicio Ajustes+centro/permisos/guía implementados, pruebas/capturas/assembleReview en curso. No afirmar APK hasta verificar; ver docs/AJUSTES-REVIEW-20261017.md y handoff inicial.

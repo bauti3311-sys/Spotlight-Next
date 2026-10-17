@@ -112,6 +112,10 @@ class PdfOcrPipelineTest {
    db.execSQL("INSERT INTO files(uri,tree,name,mime,modified,body) VALUES('content://legacy/1','__imports__','conservado.pdf','application/pdf',0,'contenido anterior conservado')");db.version=1
   }
   val row=FileIndex(context).search("conservado",AppConfig(contentIndex=true)).single();assertEquals("conservado.pdf",row.title)
-  context.openOrCreateDatabase("search-index.db",0,null).use{db->assertEquals(2,db.version);db.rawQuery("SELECT extraction FROM files",null).use{assertTrue(it.moveToFirst());assertEquals("",it.getString(0))}}
+  context.openOrCreateDatabase("search-index.db",0,null).use{db->
+   assertEquals(3,db.version)
+   db.rawQuery("SELECT extraction,body FROM files",null).use{assertTrue(it.moveToFirst());assertEquals("",it.getString(0));assertEquals("contenido anterior conservado",it.getString(1));assertFalse(it.moveToNext())}
+   db.rawQuery("SELECT COUNT(*) FROM semantic_vectors",null).use{assertTrue(it.moveToFirst());assertEquals(0,it.getInt(0))}
+  }
  }
 }

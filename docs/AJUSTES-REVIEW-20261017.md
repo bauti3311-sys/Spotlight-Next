@@ -1,0 +1,9 @@
+# Ajustes Review · entrega excepcional autorizada
+
+17/10/2026: el usuario cambió prioridad por cuota12% y autorizó Preview independiente antes de cerrar las40decisiones. Se conserva código previo completo, sin reinicio. No es una entrega final ni actualización principal/P1.
+
+Inicio: superficie discreta, estado local, acceso directo a Gemini/apariencia/documentos/integraciones/privacidad, controles generales en vista secundaria y avanzado oculto inicialmente. Centro: ventana, carpetas, contactos, notificaciones/música, agenda, teclado, ubicación, Gemini y Shizuku con estado observado y descripción simple. Clave guardada NO se declara conexión validada. No se solicita acceso al entrar ni seleccionar funciones. La guía permite elegir, revisar y omitir; Configurar abre solo el permiso/área elegida, jamás una concesión en bloque. Se reutilizan PermissionActivity, picker de carpetas, AiSettings y capacidades existentes. La búsqueda global sigue disponible y persistencia anterior se conserva.
+
+Review usa paquete dev.bautista.spotlight.next.review, versión29, ARM64/min26/target35, R8. Certificado exclusivo de prueba autorizado; sin acceso a secretos históricos/P1. No puede reemplazar aquellos paquetes ni importar automáticamente sus datos o permisos. Gemini requiere clave/modelo y uso explícito; OCR es acotado; semántica exige instalación voluntaria138MB/preparación/recursos suficientes y no mide calidad/rendimiento de A9+. Las demás limitaciones de matriz40 permanecen.
+
+Pruebas y capturas están EN CURSO, no se declaran aprobadas antes de resultados. Capturas se generarán desde MainActivity/Compose/Robolectric native graphics, no mockups ni experiencia física One UI. Primer gatebde64e3:597casos,1fallo en aserción histórica de migraciónv2; corregida a v3 y fortalecida, sin quitar pruebas. No se suman rondas dirigidas a suites históricas. Sin Actions ni cambio de presupuesto.

@@ -14,6 +14,7 @@ import dev.bautista.spotlight.data.Config
 import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import org.json.*
 
 data class ToolExecution(val text:String,val action:Action?=null,val state:ExecutionState=if(action==null)ExecutionState.COMPLETED else ExecutionState.PREPARED)
@@ -24,7 +25,7 @@ class ToolAudit(context:Context) {
     fun summary():String=runCatching{val a=JSONArray(prefs.getString("events","[]"));(0 until a.length()).joinToString("\n"){val j=a.getJSONObject(it);"${j.getLong("time")} · ${j.getString("tool")} · ${j.getString("status")}"}}.getOrDefault("")
     fun clear(){prefs.edit().remove("events").apply()}
 }
-class ToolExecutor(private val app:SpotlightApp) {
+class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchEngine=app.search) {
     suspend fun capabilities(c:Config):List<ToolCapability> = withContext(Dispatchers.IO) {
         val imported=app.index.hasImports()
         ToolRegistry.definitions
@@ -59,7 +60,18 @@ class ToolExecutor(private val app:SpotlightApp) {
                 is ToolRequest.Convert->ToolExecution(LocalTools.convert(request.query)?.let{"${it.title} · ${it.subtitle}"} ?: error("Conversión no compatible."))
                 is ToolRequest.Transform->ToolExecution(TextTools.transform(request.operation,request.text))
                 is ToolRequest.CreateNote->{app.local.saveNote(request.text);ToolExecution("Nota guardada en este dispositivo.")}
-                is ToolRequest.Search->{val result=when(request.kind){"apps"->app.search.search(request.query,c,SearchScope("","apps")).first();"files"->{app.index.ensure(c);app.index.search(request.query,c)};else->People.find(app,request.query).map{person->Result("contact:${person.id}:${person.address}",person.name,person.address,"Contactos",0,Action.Copy(person.address))}};ToolExecution(result.take(15).joinToString("\n"){"${it.title} · ${it.subtitle}"}.ifBlank{"No se encontraron coincidencias."})}
+                is ToolRequest.Search -> {
+                    val rows=when(request.kind) {
+                        "apps"->searchEngine.search(request.query,c,SearchScope("","apps")).first()
+                        "files"->searchEngine.search(request.query,c,SearchScope("","files-mode")).last()
+                        else->People.find(app,request.query).map{person->Result("contact:${person.id}:${person.address}",person.name,person.address,"Contactos",0,Action.Copy(person.address))}
+                    }
+                    // No excerpts or previews become tool output. Unsupported constraints
+                    // remain explicit instead of silently searching a different date field.
+                    val notice=if(request.kind=="files")rows.firstOrNull{it.id in setOf("files:opened-unavailable","files:access")} else null
+                    val matches=if(request.kind=="files")rows.filter{it.id.startsWith("file:") && it.action is Action.Launch} else rows
+                    ToolExecution(notice?.let{"${it.title} · ${it.subtitle}"} ?: matches.take(15).joinToString("\n"){"${it.title} · ${it.subtitle}"}.ifBlank{"No se encontraron coincidencias."})
+                }
                 is ToolRequest.Calendar->ToolExecution(Agenda.search(app,"",request.period).take(15).joinToString("\n"){"${it.title} · ${it.subtitle}"}.ifBlank{"Sin eventos en ese período."})
                 is ToolRequest.InspectApp->{val d=AppInspector.inspect(app,request.packageName);ToolExecution("${d.label} · ${d.packageName}\nVersión ${d.version}\n${d.permissions.size} permisos declarados · ${d.components.size} componentes públicos",Action.SystemPanel("app",request.packageName))}
                 is ToolRequest.SettingRead->ToolExecution("${request.key}: ${app.advancedBackend.read(request.key)}")

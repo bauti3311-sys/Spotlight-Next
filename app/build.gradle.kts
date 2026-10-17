@@ -49,6 +49,15 @@ android {
    versionNameSuffix = "-p1-preview"
    matchingFallbacks += listOf("release")
   }
+  // Independent review explicitly authorized on 17/10. Does not reuse lost P1 identity.
+  create("review") {
+   initWith(getByName("release"))
+   applicationIdSuffix = ".review"
+   versionNameSuffix = "-review"
+   signingConfig = null // signed externally with the dedicated Review key, never historical secrets
+   matchingFallbacks += listOf("release")
+  }
+
  }
 }
 dependencies {

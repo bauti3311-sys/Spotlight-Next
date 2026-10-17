@@ -139,7 +139,19 @@ class MainActivity : ComponentActivity() {
                                 }){Text(if(overlayGranted)"Abrir Spotlight" else "Permitir ventana")}
                             }
                             Spacer(Modifier.height(20.dp))
-                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f)){
+                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),overview={details->
+                                SettingsHome(app,config,permissionRevision,{settingsGroup=it},{feature->
+                                    when(feature) {
+                                        "overlay"->startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
+                                        "files"->if(config.files)folder.launch(null) else{settingsGroup="Búsqueda y archivos"}
+                                        "contacts"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","contacts").putExtra("reopen",false))
+                                        "calendar"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","calendar").putExtra("reopen",false))
+                                        "location"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","location").putExtra("reopen",false))
+                                        "notifications"->startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                                        "keyboard"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                                    }
+                                },details)
+                            }){
                             CompositionLocalProvider(LocalSettingsGroup provides settingsGroup){
                             Section("Contexto autorizado · Inteligencia") { Text("Elegí documentos, fijá contextos y guardá conversaciones manualmente.");TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","contextos"))}){Text("Gestionar contexto")} }
                             Section("Permisos opcionales") { SettingsAccessSummary(app,permissionRevision) }

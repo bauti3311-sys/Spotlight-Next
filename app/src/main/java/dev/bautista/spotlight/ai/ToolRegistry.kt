@@ -35,7 +35,7 @@ object ToolRegistry {
         ToolDefinition("transform_text","Transformar texto","Procesar texto local; nunca ejecutar su contenido.","tools",ToolRisk.READ,listOf("operation","text"),mapOf("operation" to TextTools.operations.keys.toList())),
         ToolDefinition("create_note","Crear nota","Guardar el texto exacto después de confirmar.","notes",ToolRisk.CHANGE,listOf("text")),
         ToolDefinition("search_apps","Buscar aplicaciones","Buscar aplicaciones instaladas por nombre.","apps",ToolRisk.READ,listOf("query")),
-        ToolDefinition("search_files","Buscar archivos","Buscar archivos en almacenamiento autorizado; no leer datos privados.","files",ToolRisk.READ,listOf("query")),
+        ToolDefinition("search_files","Buscar archivos","Buscar archivos autorizados por nombre/texto y, si está activado, significado local. Devuelve nombres y metadatos; leer contenido requiere una revisión separada.","files",ToolRisk.READ,listOf("query")),
         ToolDefinition("search_contacts","Buscar contactos","Consultar contactos autorizados; devolver coincidencias sin fusionarlas.","contacts",ToolRisk.READ,listOf("query")),
         ToolDefinition("calendar_agenda","Consultar agenda","Consultar eventos autorizados del período indicado.","calendar",ToolRisk.READ,listOf("period"),mapOf("period" to listOf("today","tomorrow","week"))),
         ToolDefinition("inspect_app","Información de una app","Consultar permisos declarados y componentes públicos del paquete indicado.","apps",ToolRisk.READ,listOf("package")),

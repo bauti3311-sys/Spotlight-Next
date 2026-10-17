@@ -22,7 +22,7 @@ class SettingsWorkspaceTest {
  private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()}}
  private fun capture(name:String){ui.waitForIdle();ui.onRoot().captureRoboImage("build/settings-integral/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
  @Test fun tabletHasSevenAreasAndIndependentDetailsPane(){
-  ready();ui.onNodeWithText("Avanzado").assertExists();ui.onNodeWithText("Integraciones").performClick()
+  ready();ui.onNodeWithText("Avanzado").assertDoesNotExist();ui.onNodeWithText("Más opciones").performClick();ui.onNodeWithText("Avanzado").assertExists();ui.onNodeWithText("Integraciones").performClick()
   val rail=ui.onNodeWithText("Avanzado").fetchSemanticsNode().boundsInRoot
   ui.onNodeWithText("Shizuku · integración avanzada opcional").performScrollTo()
   Assert.assertEquals(rail,ui.onNodeWithText("Avanzado").fetchSemanticsNode().boundsInRoot)

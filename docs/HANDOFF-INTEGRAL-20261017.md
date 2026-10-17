@@ -1,3 +1,15 @@
+# Prioridad urgente Review · 17/10/2026
+
+La instrucción más reciente autoriza EXCEPCIONALMENTE una APK Review antes del cierre40, paquete independiente `dev.bautista.spotlight.next.review`, con certificado nuevo exclusivo Review. No es actualización de principal/P1; sus datos se mantienen y Review empieza vacía. No usar firma histórica ni reutilizar P1. Clave Review privada fuera de Git; preservar copia privada para futuras actualizaciones, no regenerar al mismo identificador.
+
+HEAD remoto base bde64e3 y reserva17ce5c9 propios comprobados. Se conservan semántica8c307e4 y operadoresbde64e3. Trabajo pendiente integrado: search_files reutiliza SearchEngine y solo devuelve metadatos; aviso fecha apertura no disponible; test migraciónOCR ahora exige v3 + conservación exacta + tabla semántica vacía. Primer gate integral sobrebde64e3 corrió597/126con UNfallo: aserción histórica de versión2; no se considera gate aprobado ni se ejecutaron sus lint/R8 posteriores. Corrección y nuevos escenarios están pendientes de gate dirigido.
+
+Nueva prioridad implementada en código: inicio compacto de Ajustes, accesos, centro real de funciones/permisos y guía elegida por el usuario con confirmación individual; no solicitud al visitar ni seleccionar casillas. Avanzado tras Más opciones; ajustes existentes/datos conservados. Solo Ajustes cambia de composición; barra/inspector/Quick Look intactos. VarianteReview hereda Release/R8 ARM64, se compila sin firma y luego se firma fuera del repo con clave exclusiva autorizada.
+
+**Estado de entrega: todavía no hay APK Review verificada.** Próximo paso exacto: terminar pruebas dirigidas SettingsReviewCaptureTest/SettingsWorkspaceTest/persistencia/permisos/OCR/semántica/herramientas, revisar capturas Compose reales. Corregir solo bloqueos; publicar fuente, ejecutar assembleReview y lintReview si recursos permiten sobre SHA exacto. Firmar/alinear/verificar paquete29/min26/ARM64/no debug con keyReview, exportar APK y git archive del mismo SHA. Guardar archivos descargables y evidencia, sin Actions/main/PR16/gasto. No repetir suite40 completa por prioridad urgente. Ver AJUSTES-REVIEW-20261017.md.
+
+---
+
 # Continuidad integral · 17/10/2026
 
 ## Checkpoint semántico en progreso
