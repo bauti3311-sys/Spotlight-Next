@@ -216,6 +216,18 @@ private constructor(private val root: Node, val problem: String?, val plain: Str
         }
 
         fun natural(input: String): String {
+            // Preserve the user's grammar. Normalizing a natural prefix must never
+            // turn NOT/OR into literal words or let OR escape the requested type.
+            val advanced=input.any{it=='"' || it=='(' || it==')' || it==':'} || Regex("""\b(?:AND|OR|NOT)\b""").containsMatchIn(input)
+            if(advanced) {
+                val prefix=Regex("""^(?:buscar\s+)?(pdfs?|archivos?|documentos?|fotos?|im[aá]genes?|v[ií]deos?)\s+(?:de\s+)?(.+)$""",RegexOption.IGNORE_CASE).matchEntire(input.trim())
+                if(prefix!=null) {
+                    val head=normalize(prefix.groupValues[1])
+                    val kind=when {head.startsWith("pdf")->"pdf";head.startsWith("foto") || head.startsWith("imagen")->"image";head.startsWith("video")->"video";else->"document"}
+                    return "kind:$kind (${prefix.groupValues[2]})"
+                }
+                return input
+            }
             QueryInterpreter.files(input)?.let{return it.query}
             var s = normalize(input.trim()).removePrefix("buscar ")
             if(s.startsWith("pdf ")){val rest=s.removePrefix("pdf ").removePrefix("de ");return "kind:pdf "+if(rest in setOf("ayer","hoy"))"modified:$rest" else rest}

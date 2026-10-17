@@ -2,9 +2,9 @@
 
 ## Checkpoint semántico en progreso
 
-Base be3d002→evaluación c1f7248; misma rama y reserva propia. Implementación real conectada a SearchEngine, modelo optativo, permisos/huellas/cancelación y SQLite v3.36dirigidas correctas/7suites e instrumentación compilada; paridad Kotlin/ONNX nativo Linux16textos y8paráfrasis, NO Android ARM64. Ver SEMANTIC-LOCAL-20261017.md y verification/semantic-evaluation-20261017. Gate integral/R8/lint/visuales aún pendiente. No confundir572históricas con verificaciones actuales. Sin clave nueva, APK parcial, Actions ni cambio de estética.
+Base be3d002→evaluación c1f7248→semántica8c307e4; misma rama y reserva propia. Implementación real conectada a SearchEngine, modelo optativo, permisos/huellas/cancelación y SQLite v3.36dirigidas correctas/7suites e instrumentación compilada; paridad Kotlin/ONNX nativo Linux16textos y8paráfrasis, NO Android ARM64. Ver SEMANTIC-LOCAL-20261017.md y verification/semantic-evaluation-20261017. Gate integral/R8/lint/visuales aún pendiente. No confundir572históricas con verificaciones actuales. Sin clave nueva, APK parcial, Actions ni cambio de estética.
 
-Siguiente paso exacto: proteger operadores/consultas literales de SearchQuery.natural tras prefijos PDF; añadir regresión fallida y corrección mínima. Luego ejecutar gate completo sobre SHA publicado, preservar evidencia y continuar bloques viables de matriz40. No ejecutar en paralelo otro Gradle ni asumir trabajo en segundo plano al terminar sesión.
+Operadores documentales reproducidos:3fallos/4casos contra8c307e4; corregidos sin rebajar aserciones. Prefijos conservan NOT/AND/OR/comillas/filtros y agrupan OR bajo el tipo. Nueva ronda dirigida correcta registrada en verification/semantic-evaluation-20261017/operators-regression.json. Se añade JNI smoke instrumentado con Identity explícito (no semántica ni calidad), aún sin ejecutar. Siguiente paso exacto: ejecutar gate completo sobre SHA publicado, preservar evidencia y continuar bloques viables de matriz40. No ejecutar en paralelo otro Gradle ni asumir trabajo en segundo plano al terminar sesión.
 
 ---
 

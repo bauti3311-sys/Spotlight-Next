@@ -1,0 +1,27 @@
+{
+  "productionBase": "8c307e411a873c809153c7f9deb7acb094556516",
+  "before": {
+    "name": "dev.bautista.spotlight.search.AdvancedDocumentQueryTest",
+    "tests": "4",
+    "skipped": "0",
+    "failures": "3",
+    "errors": "0",
+    "timestamp": "2026-10-17T23:20:36",
+    "hostname": "35d535b62f53",
+    "time": "0.038"
+  },
+  "reproducedFailures": [
+    "explicitGrammarAndMalformedExpressionsAreNeverRepairedSilently",
+    "naturalPdfPrefixKeepsNegationInsteadOfSearchingTheWordNot",
+    "naturalTypeConstrainsBothBranchesOfOr"
+  ],
+  "beforeJUnitSha256": "6f0521cb3ce47fabd0a43db1ae2629dd880a87d802221d29b6dca94327a15d67",
+  "after": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": 8,
+  "instrumentation": "new JNI test not executed; compile pending full gate"
+}

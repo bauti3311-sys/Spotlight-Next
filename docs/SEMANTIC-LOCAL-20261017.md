@@ -22,6 +22,8 @@ Separadamente se ejecutaron las clases Kotlin de producción con ONNX nativo en 
 
 **Pendiente:** gate completo Android/JVM, tres lint, Release/R8 y21comparaciones estrictas sobre checkpoint exacto. Instrumentación nativa/latencia/RAM/batería y calidad corpus real requieren entorno Android; compilar no equivale a ejecutar. Firma histórica/final sigue protegida; no nueva clave, APK parcial ni Actions. Las40decisiones siguen parciales.
 
-## Siguiente bloque
+## Bloque posterior: operadores documentales
 
-Proteger consultas documentales avanzadas: SearchQuery.natural puede normalizar NOT/AND/OR tras prefijos PDF y alterar su sentido. Reproducir con prueba contra este código, corregir mínimamente y mantener consultas literales/filtros sin expansión semántica. Después gates completos del conjunto y continuidad de herramientas documentales/contexto autorizado, sin otro motor Gemini ni envío al escribir.
+Contra8c307e4 se reprodujeron3fallos/4casos: NOT convertido en palabra, OR perdido y expresión incompleta aceptada. SearchQuery.natural conserva gramática original tras prefijos de tipo, agrupa la expresión bajo ese tipo y mantiene errores en vez de repararlos silenciosamente. Ronda dirigida posterior correcta; recuentos exactos en operators-regression.json. No expansión semántica de estas consultas.
+
+Se preparó SemanticRuntimeDeviceTest: grafo Identity de131bytes codificado base64, fixture explícito para empaquetado/JNI/propiedad de tensores. No es un modelo semántico, no acredita su calidad y todavía NO se ejecutó. Gate completo/R8/lint/visuales sobre siguiente SHA sigue pendiente.
