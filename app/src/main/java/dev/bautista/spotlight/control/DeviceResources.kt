@@ -28,7 +28,7 @@ object DeviceResources {
         val power=runCatching{context.getSystemService(PowerManager::class.java)}.getOrNull()
         return DeviceResourceState(
             batteryPercent=if(level>=0 && scale>0 && level<=scale)(level.toLong()*100/scale).toInt() else null,
-            charging=if(plugged>=0)plugged!=0 || status==BatteryManager.BATTERY_STATUS_FULL else null,
+            charging=if(plugged>=0)plugged!=0 else if(status==BatteryManager.BATTERY_STATUS_CHARGING)true else null,
             powerSave=runCatching { requireNotNull(power).isPowerSaveMode }.getOrNull(),
             availableMemory=memory?.availMem?.takeIf { it>=0 }, memoryThreshold=memory?.threshold?.takeIf { it>=0 }, lowMemory=memory?.lowMemory,
             thermalStatus=if(Build.VERSION.SDK_INT>=29)runCatching { requireNotNull(power).currentThermalStatus }.getOrNull() else null,

@@ -99,4 +99,22 @@ class AdaptiveIndexTest {
         assertTrue(result.preview!!.contains("Versión anterior indexada"))
         assertTrue(result.preview!!.contains("presión de memoria"));assertEquals(1,h.calls)
     }
+    @Test fun concurrentManualExtractionCannotBeOverwrittenByAnOlderRefreshSnapshot()=runBlocking {
+        val h=Harness();val index=h.index();index.refresh(config)
+        val row=index.search("Vestibularconservado",config).single()
+        val uri=(row.action as dev.bautista.spotlight.search.Action.Launch).intent.data!!.toString()
+        h.state=healthy;h.hold=true
+        val job=launch(Dispatchers.Default){index.refresh(config)}
+        withTimeout(5000){h.started.await()}
+        try {
+            val first="Vestibularconservado primera página";val second="Actualizacionmanualconcurrente segunda página"
+            val text=first+"\n"+second
+            val sha=MessageDigest.getInstance("SHA-256").digest(java.io.File(root,"adaptativo.pdf").readBytes()).joinToString(""){"%02x".format(it)}
+            val manual=ExtractedDocument(text,listOf(TextFragment(1,"ocr_local",0,first.length),TextFragment(2,"ocr_local",first.length+1,text.length)),emptyList(),2,2,2,sha)
+            withTimeout(2000){assertTrue(index.cacheExtraction(uri,manual,config))}
+            h.released.complete(Unit);job.join()
+            assertEquals(1,index.search("Actualizacionmanualconcurrente",config).size)
+            assertEquals(1,index.search("Vestibularconservado",config).size)
+        }finally{h.released.complete(Unit);job.cancelAndJoin()}
+    }
 }

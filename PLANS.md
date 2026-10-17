@@ -424,3 +424,8 @@ OCR nativo instrumentado y mediciones físicas siguen pendientes: no hay disposi
 ### OCR adaptativo conectado · continuación de151dfbe
 
 DeviceResources/OcrBudget conectados a índice y pipeline: aplazamiento por recursos, reducción verificable, caché por página/huella y reintento manual sin repetir páginas válidas. Filas transaccionales cortas y ensure asíncrono también paraSAF.31dirigidos y compilación instrumentada correctos; gates completos pendientes en este checkpoint. Ver docs/OCR-ADAPTATIVO-20261017.md.
+
+
+## Conservación ante escrituras concurrentes
+
+0595052 pasó537pruebas completas, cero fallos/errores/omisiones; ese pipeline se detuvo antes de completar lint/R8 para comprobar una carrera real. La regresión añadida sobre su copia congelada falló (1caso/1fallo): la actualización del índice sobrescribía una mejora manual guardada durante la espera de OCR. La confirmación de cada fila ahora relee la caché dentro de una transacción corta y conserva cualquier resultado que haya cambiado desde la lectura inicial, manteniendo la fila pendiente para reintentar desde la versión nueva. Sin suspensiones ni código nativo dentro de la transacción. Ronda posterior32dirigidos correctos y compilación instrumentada en1min23s. Antes del gate completo se precisó además que estado FULL no equivale a conectado si EXTRA_PLUGGED informa0, y se añadió esa condición al test del lector. El gate final debe verificar ese último matiz. No se suman537+32 ni se declara verde el pipeline interrumpido.

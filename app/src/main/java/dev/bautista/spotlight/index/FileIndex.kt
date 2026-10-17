@@ -295,6 +295,8 @@ class FileIndex(
                                 var extraction = ""
                                 var extractionPartial=false
                                 var sourceUnchanged=false
+                                var initialBody=""
+                                var initialExtraction=""
                                 helper.readableDatabase
                                     .query(
                                         "files",
@@ -321,6 +323,7 @@ class FileIndex(
                                             created = row.getLong(2)
                                             oldMode = if(sourceUnchanged)row.getString(5) ?: "" else ""
                                             extraction = row.getString(6) ?: ""
+                                            initialBody=body;initialExtraction=extraction
                                             if(!sourceUnchanged && body.isNotBlank())extraction=ExtractedDocument.deferredMetadata(extraction,"pending",stale=true)
                                         }
                                     }
@@ -458,12 +461,24 @@ class FileIndex(
                                         put("mode", storedMode)
                                         put("extraction", extraction)
                                     }
-                                helper.writableDatabase.insertWithOnConflict(
-                                    "files",
-                                    null,
-                                    values,
-                                    SQLiteDatabase.CONFLICT_REPLACE,
-                                )
+                                val db=helper.writableDatabase
+                                db.beginTransaction()
+                                try {
+                                    db.rawQuery("SELECT body,extraction,author,created FROM files WHERE uri=?",arrayOf(uri)).use { live ->
+                                        if(live.moveToFirst() && ((live.getString(0) ?: "")!=initialBody || (live.getString(1) ?: "")!=initialExtraction)) {
+                                            // A manual extraction completed while this refresh suspended.
+                                            // Preserve that committed result; retry from its newer snapshot.
+                                            values.put("body",live.getString(0) ?: "")
+                                            values.put("extraction",live.getString(1) ?: "")
+                                            values.put("author",live.getString(2) ?: "")
+                                            values.put("created",live.getLong(3))
+                                            values.put("mode","$mode:pending")
+                                            if(mime=="application/pdf")contentPartial=true
+                                        }
+                                    }
+                                    db.insertWithOnConflict("files",null,values,SQLiteDatabase.CONFLICT_REPLACE)
+                                    db.setTransactionSuccessful()
+                                } finally {db.endTransaction()}
                                 state.value =
                                     Status(true, count, "$count entradas · $name", limited)
                                 if (file.isDirectory) walk(file, depth + 1)

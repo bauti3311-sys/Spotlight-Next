@@ -17,7 +17,8 @@ class DeviceResourcesTest {
     @Test fun sharedReaderUsesReportedBatteryScaleAndPlugState() {
         val context=RuntimeEnvironment.getApplication()
         context.sendStickyBroadcast(Intent(Intent.ACTION_BATTERY_CHANGED).putExtra(BatteryManager.EXTRA_LEVEL,1)
-            .putExtra(BatteryManager.EXTRA_SCALE,4).putExtra(BatteryManager.EXTRA_PLUGGED,0))
+            .putExtra(BatteryManager.EXTRA_SCALE,4).putExtra(BatteryManager.EXTRA_PLUGGED,0)
+            .putExtra(BatteryManager.EXTRA_STATUS,BatteryManager.BATTERY_STATUS_FULL))
         val state=DeviceResources.read(context)
         assertEquals(25,state.batteryPercent);assertEquals(false,state.charging);assertTrue(state.thermalSupported)
     }
