@@ -1,0 +1,18 @@
+{
+  "productionCommit": "5bade7a7c50296064e54524d180d5f2e250d2ed6",
+  "addedRegressionTest": "DocumentCacheCoverageTest",
+  "inputs": [
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/index/DocumentExtraction.kt",
+      "sha256": "99079d8cfb450bcf08a64724cab2be68c93e642132cd730f672ee5492b00a512"
+    },
+    {
+      "file": "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt",
+      "sha256": "069c64f94ee6b72169b585cf7f42afea0933f10c55934ff2d89311e2d402cd31"
+    },
+    {
+      "file": "app/src/test/java/dev/bautista/spotlight/index/DocumentCacheCoverageTest.kt",
+      "sha256": "c631208c44af32ceba40d4a4b3faff396efe0c30d34e65764c3bbeac65aaddc7"
+    }
+  ]
+}

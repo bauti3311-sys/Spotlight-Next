@@ -1,6 +1,29 @@
 # Continuidad integral · 17/10/2026
 
-## Estado actual: OCR integrado y gates cerrados
+## Estado actual: extracción manual y cobertura documental cerradas
+
+Último código Android: `70e6f69b8a7660ae5eac987cc54450f88a3df4d3`, sobre 5bade7a y c107654, en `feat/work-integral-settings-20261016`. El checkpoint posterior agrega únicamente evidencia y continuidad. Comprobar HEAD y reserva remotos antes de editar. Propietario de la reserva de esta continuación: `work-gemini-native-20261014-f914c617`; el registro de checkpoint no significa que haya una ejecución de fondo activa. No modificar reservas ajenas.
+
+Se conservó todo el OCR local y se cerraron sus dos seguimientos: propietario de extracción manual ligado a consulta/selección/cierre, con cancelación explícita y descarte de texto/errores tardíos; y protección del índice para que un extracto corto no elimine cobertura más rica del mismo PDF. Esta última exige SHA256 y fragmentos por página/método idénticos o contenidos; no usa solo longitud. Una fuente distinta o una corrección OCR sí se actualiza. Comprobación y actualización son transaccionales y siguen respetando permisos/modo privado. No es fusión semántica ni una nueva arquitectura.
+
+**Verificación nueva sobre 70e6f69:** 521 pruebas completas, 110 suites, cero fallos/errores/omisiones. Lint Debug/Release/FunctionalPreview: cero errores, cada uno con las 10 advertencias y 1 informativa heredadas. Release/R8 y compileDebugAndroidTestKotlin correctos; pipeline completo en 11 min 45 s. Comparación estricta posterior en 21 s: 21 sin cambios, cero añadidas/grabadas/modificadas. Los 313 archivos compilados de código/configuración/tests/referencias coinciden con Git. Evidencia versionada: `verification/ocr-coverage-20261017/summary.json`.
+
+Se reprodujo antes de corregir la pérdida del índice: 5 casos, un fallo esperado en la palabra de la última página. Tras corregir pasaron 35 dirigidos; ese primer pipeline falló después al descargar dependencias AndroidTest con HTTP403. El mismo URL oficial respondió200 al sondear y el reintento completo posterior pasó, sin cambiar versiones/repositorios/controles. No atribuir verde al primer intento. Los 516 resultados de 5bade7a sobrevivieron al corte; el final de aquel pipeline no sobrevivió. Los 521 actuales son una ejecución nueva, no una suma de rondas históricas. Python30+5 se conserva como resultado anterior, no se repitió porque su código no cambió.
+
+El runtime temporal volvió a perderse; el árbol Git estaba limpio y coincidía con el remoto. La reserva propia se comprobó por Git Data porque `autonomy_lock.py status` no pudo autenticar ls-remote. Se conserva CAS por SHA y avance normal, sin force. Los nuevos logs se guardan desde el inicio fuera de /tmp, y un init script de observación copia JUnit/lint/visuales al finalizar cada tarea, sin cambiar acciones o aserciones del build. Esto permite recuperar los resultados aunque vuelva a perderse el SDK temporal.
+
+**Límites reales:** PdfOcrDeviceTest compiló, NO se ejecutó. adb no muestra dispositivos y no hay KVM. Robolectric/fixtures no acreditan reconocimiento ML nativo, One UI, foco físico ni medidas de memoria/batería/latencia. Los tiempos OCR son cooperativos, sin preempción dura de código nativo. Se mantienen límites por defecto de 3 páginas OCR/40 nativas/8MB, procedencia y avisos parciales. No hay embeddings ni OCR universal.
+
+Release se verificó únicamente como archivo sin firma: principal `dev.bautista.spotlight.next`, 2.0.1/código29, ARM64, min26/target35, no depurable, zipalign16KB correcto; apksigner confirma ausencia de firma. **No es una entrega instalable.** No se creó clave nueva; P1 sigue sin su clave y no se debe reemplazar por una incompatible. La entrega única final requiere firma histórica autorizada, checks requeridos sobre el SHA exacto y APK/ZIP coincidentes. No se entregaron APKs parciales ni se ejecutó Actions, cambió presupuesto, main, PR16 o workflows.
+
+### Siguiente bloque funcional exacto
+
+Decisión35: presupuesto adaptativo del OCR del índice ante ahorro de energía, batería baja, presión de memoria o estado térmico crítico, conservando búsqueda inmediata y texto ya indexado. Primero buscar y reutilizar los adaptadores de estado del dispositivo existentes; no duplicarlos. Separar política comprobable de lectura Android; comprobar antes de admitir cada nueva página/tarea, comunicar por qué se difiere el OCR y no marcar como analizado lo omitido. Mantener extracción manual explícita y sus límites, cancelación y propiedad nativa, sin crear workers en paralelo ni cambiar Obsidian/Quick Look/Ajustes. Añadir pruebas de presupuesto/recuperación y conservación del índice; probar APIs reales en entorno autorizado cuando exista. Después continuar los pendientes independientes de la matriz40, que todavía NO está completa.
+
+---
+
+
+## Historial: primer cierre OCR
 
 Último código Android publicado: `dae3a8952a45e2ff835a14e7a32fe0fb1f564cca`, descendiente de c107654 sin perder Ajustes, conversaciones ni comandos. El checkpoint posterior contiene cierre y evidencia. Continuar en `feat/work-integral-settings-20261016`; comprobar HEAD y reserva remotos antes de editar. La reserva propia es de `work-gemini-native-20261014-f914c617`; no asumir que este documento acredita una sesión ejecutándose.
 

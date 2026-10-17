@@ -1,0 +1,15 @@
+{
+  "productionCommit": "5bade7a7c50296064e54524d180d5f2e250d2ed6",
+  "totals": {
+    "tests": 5,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "case": "shorterManualExcerptOfSameBytesDoesNotEraseIndexedPages",
+      "message": "java.lang.AssertionError: expected:<1> but was:<0>"
+    }
+  ]
+}

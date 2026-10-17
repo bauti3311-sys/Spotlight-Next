@@ -510,3 +510,12 @@ El código e119a73 pasó 510 pruebas completas sin fallos/errores/omisiones. Ese
 Código Android: `dae3a8952a45e2ff835a14e7a32fe0fb1f564cca`. Pipeline final completo: 510 pruebas en108suites, cero fallos/errores/omisiones, tres lint sin errores (10 advertencias+1 informativa heredadas cada uno), Release/R8 sin firma y compilación instrumentada correctas en11min. Comparación estricta posterior:21sin cambios, cero grabadas/añadidas/modificadas, en20s. Los310archivos compilados coinciden conGit. Evidencia: `docs/verification/ocr-20261017/summary.json` (desde docs: `verification/ocr-20261017/summary.json`).
 
 El OCR real instrumentado no se ejecutó por falta de dispositivo/KVM. Los límites de tiempo son cooperativos y la memoria nativa no se midió. Gitleaks: sin hallazgos en árbol y17commits locales disponibles antes del cierre; no es auditoría del historial remoto completo. Ninguna clave nueva, APK parcial, Actions o modificación de main/PR16. Próximo bloque: vigencia/cancelación de extracción manual al cambiar consulta o selección, con pruebas de finalización tardía; detalles en HANDOFF-INTEGRAL-20261017.md.
+
+
+## Cierre actual · cobertura y cancelación documental
+
+Código Android 70e6f69b8a7660ae5eac987cc54450f88a3df4d3: 521 pruebas nuevas completas en110suites, cero fallos/errores/omisiones, tres lint sin errores (10advertencias+1informativa heredadas cada uno), Release/R8 y compilación instrumentada correctos en11min45s. Verificación estricta posterior:21referencias sin cambios en21s; ninguna añadida/grabada/modificada. Se cotejaron313archivos de entrada contraGit. Evidencia: docs/verification/ocr-coverage-20261017/summary.json.
+
+La pérdida de cobertura por extracto corto se reprodujo antes (5casos/1fallo) y se corrigió con conservación por huella/página/método/texto, sin impedir cambios de fuente o correcciones OCR. Los35dirigidos pasaron; la descarga HTTP403 de su compilación instrumentada se resolvió en el reintento completo, sin cambiar dependencias. El primer pipeline fallido no se declara verde.
+
+OCR nativo instrumentado y mediciones físicas siguen pendientes: no hay dispositivo/KVM. Los516XML recuperados son históricos, no se suman a521; Python30+5 tampoco se repitió. Sin APK parcial, clave nueva, Actions, main, PR16 o cambios de presupuesto. Próximo bloque exacto: presupuesto OCR adaptativo del índice; ver HANDOFF-INTEGRAL-20261017.md. Las40decisiones permanecen parciales.

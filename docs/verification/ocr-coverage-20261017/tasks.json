@@ -1,0 +1,54 @@
+{
+  "core": [
+    {
+      "task": ":app:testDebugUnitTest",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    },
+    {
+      "task": ":app:lintDebug",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    },
+    {
+      "task": ":app:lintRelease",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    },
+    {
+      "task": ":app:lintFunctionalPreview",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    },
+    {
+      "task": ":app:assembleRelease",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    },
+    {
+      "task": ":app:compileDebugAndroidTestKotlin",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    }
+  ],
+  "visual": [
+    {
+      "task": ":app:testDebugUnitTest",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    },
+    {
+      "task": ":app:verifyRoborazziDebug",
+      "failed": false,
+      "skipped": false,
+      "upToDate": false
+    }
+  ]
+}
