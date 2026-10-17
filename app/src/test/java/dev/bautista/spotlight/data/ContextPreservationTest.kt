@@ -70,7 +70,7 @@ class ContextPreservationTest {
             current.setText("Primera selección autorizada")
             val pin=async(start=CoroutineStart.UNDISPATCHED){current.pinActive()}
             current.setText("Otra selección privada no autorizada para fijar")
-            drain();pin.await()
+            withTimeout(5000){while(!pin.isCompleted){drain();delay(10)}};pin.await()
             assertEquals(listOf("old-0"),current.pinned.value.map{it.id})
             assertEquals("Otra selección privada no autorizada para fijar",current.active.value!!.text)
             assertFalse(current.active.value!!.pinned);assertEquals(before,file.readText())

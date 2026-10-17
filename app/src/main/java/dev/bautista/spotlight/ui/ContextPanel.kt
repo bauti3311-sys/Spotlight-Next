@@ -17,6 +17,16 @@ import kotlinx.coroutines.*
 @Composable fun ContextChip(app:SpotlightApp,item:SharedContext,onAction:(Action)->Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal=18.dp),verticalAlignment=Alignment.CenterVertically){Icon(CommandIcons.Description,null,Modifier.size(16.dp));TextButton(onClick={onAction(Action.SystemPanel("context"))},modifier=Modifier.weight(1f)){Text("Contexto: ${item.title}",maxLines=1)};IconButton(onClick={app.contexts.clearActive()}){Icon(CommandIcons.Close,"Quitar contexto",Modifier.size(18.dp))}}
 }
+/** Persistent data remains untouched when loading fails; retry is an explicit local action. */
+@Composable internal fun ContextStorageStatus(store:ContextStore,onRecovered:()->Unit={}) {
+    val issue by store.storageIssue.collectAsState()
+    val scope=rememberCoroutineScope()
+    val latestRecovered by rememberUpdatedState(onRecovered)
+    issue?.let{message->
+        Text(message,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.error)
+        TextButton(onClick={scope.launch{store.retryStorage();if(store.storageIssue.value==null)latestRecovered()}}){Text("Reintentar lectura")}
+    }
+}
 @Composable fun ContextPanel(app:SpotlightApp,c:Config,page:String,payload:String,onAction:(Action)->Unit) {
     val scope=rememberCoroutineScope();val current by app.contexts.active.collectAsState();val pinned by app.contexts.pinned.collectAsState();val chats by app.contexts.conversations.collectAsState()
     var text by remember{mutableStateOf("")};var error by remember{mutableStateOf("")}
@@ -29,6 +39,7 @@ import kotlinx.coroutines.*
     LaunchedEffect(page,payload){if(page=="context" && payload.isNotBlank())app.contexts.select(payload)}
     Column(Modifier.fillMaxWidth().heightIn(max=400.dp).verticalScroll(rememberScrollState()).padding(18.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         if(page=="diagnostics") {DiagnosticsPanel(app);return@Column}
+        ContextStorageStatus(app.contexts){error=""}
         if(page=="conversation") {
             val chat=chats.firstOrNull{it.id==payload}
             if(chat==null)Text("Esta conversación ya no está guardada.") else {
