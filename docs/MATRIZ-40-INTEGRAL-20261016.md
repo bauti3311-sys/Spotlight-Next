@@ -54,3 +54,8 @@ Siete áreas con navegación fija en tablet y selector en teléfono; búsqueda g
 ## No afirmado como terminado
 
 Las 40 decisiones **no están completadas integralmente**. Semántica local medida, OCR PDF escaneado, alertas, memoria avanzada, cola persistente segura, grounding web universal y reanudación estructurada de conversaciones requieren etapas adicionales. La ausencia de dispositivo y de credenciales impide verificar integraciones reales; las pruebas con fixtures se identifican como tales. No se contrataron servicios, no se ejecutó Actions y no se tocaron firma histórica, main o PR16.
+
+
+## Revalidación del checkpoint — 17/10/2026
+
+El código f490963 pasó nuevamente 483 pruebas Android/JVM, tres lint sin errores, Release/R8 sin firma y 21 comparaciones visuales estrictas sin cambios. Esto verifica los recorridos automatizados actuales; no promueve capacidades parciales a completas ni acredita pruebas físicas o de proveedor. La evidencia y las limitaciones están en `verification/integral-20261017/summary.json` y `HANDOFF-INTEGRAL-20261017.md`. No se repitió Python porque no cambió su código; se conservan los 30+5 resultados anteriores. La clave temporal de P1 no sobrevivió: no se generó otra ni se ofrece una actualización incompatible. No se entregó APK parcial.

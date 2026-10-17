@@ -1,7 +1,7 @@
 {
   "source": "103be38dbeebfcf689ae8637d368be8e60e3a5fe",
   "platform": "Robolectric API33, native graphics; not physical OneUI",
-  "scope": "Only Settings and its simple preview. Existing other 16 baselines untouched; strict verification pending.",
+  "scope": "Only Settings and its simple preview. Existing other 16 baselines untouched.",
   "manualReview": "Labels fully visible in phone; single width; independent rail; no permanent inspector. Four new MainActivity references and one authorized Appearance update.",
   "references": [
     {
@@ -34,5 +34,14 @@
       "newSha256": "86f00601fd00a57d2b4cfd639dcf392b07ab22c894a4cf1331ba2e30fd4ea118",
       "changedPixels": 34344
     }
-  ]
+  ],
+  "strictVerification": {
+    "sourceCommit": "f49096313baa3df3b815d89b0babf80634cdd058",
+    "dateUtc": "2026-10-17",
+    "total": 21,
+    "unchanged": 21,
+    "changed": 0,
+    "recorded": 0,
+    "evidence": "../../verification/integral-20261017/visual-results.json"
+  }
 }

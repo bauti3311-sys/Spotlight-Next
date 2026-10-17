@@ -1,0 +1,17 @@
+{
+  "purpose": "Local R8/build verification only; unsigned; not a user delivery",
+  "sourceCommit": "f49096313baa3df3b815d89b0babf80634cdd058",
+  "package": "dev.bautista.spotlight.next",
+  "versionCode": 29,
+  "versionName": "2.0.1",
+  "minSdk": 26,
+  "targetSdk": 35,
+  "abis": [
+    "arm64-v8a"
+  ],
+  "debuggable": false,
+  "signed": false,
+  "zipalign16k": true,
+  "bytes": 53489824,
+  "sha256": "1812f550f2f790d1005e8de779bfc6041dec796aa3f14202152c240d4b855328"
+}
