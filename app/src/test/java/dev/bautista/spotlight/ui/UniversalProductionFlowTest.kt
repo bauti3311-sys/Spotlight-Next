@@ -184,6 +184,7 @@ class UniversalProductionFlowTest {
         ui.waitUntil(15000){ui.onAllNodesWithTag("ai-review-prompt",useUnmergedTree=true).fetchSemanticsNodes().isNotEmpty()}
         val displayed=ui.onNodeWithTag("ai-review-prompt",useUnmergedTree=true).fetchSemanticsNode().config[SemanticsProperties.Text].joinToString(""){it.text}
         assertTrue(displayed.contains("rehabilitacion vestibular.pdf"))
+        assertTrue("Coverage must survive section selection into the exact reviewed payload",displayed.contains("Extracción local"))
         assertEquals(0,server.requestCount)
         ui.onNodeWithText("Enviar",useUnmergedTree=true).performClick()
         ui.waitUntil(15000){server.requestCount==1}

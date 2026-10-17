@@ -32,6 +32,7 @@ data class ExtractedDocument(
     val author:String="",val created:Long=0,val extractedAt:Long=System.currentTimeMillis(),
 ) {
     val partial get()=issues.isNotEmpty()
+    val coverage get()=if(pages==0)"Extracción local acotada a ${text.length} caracteres; no se presupone contenido fuera del extracto." else "Extracción local ${if(partial)"parcial" else "acotada"}: $examined de $pages páginas examinadas; ${fragments.count{it.method=="ocr_local"}} páginas con texto OCR. El OCR puede contener errores; no se presupone contenido fuera de este extracto."
     fun metadata():String=JSONObject().put("version",1).put("sha256",sourceSha256)
         .put("pages",pages).put("examined",examined).put("ocrAttempts",ocrAttempts).put("partial",partial).put("extractedAt",extractedAt)
         .put("fragments",JSONArray().apply{fragments.forEach{f->put(JSONObject().put("page",f.page).put("method",f.method).put("start",f.start).put("end",f.end).put("width",f.width).put("height",f.height))}})

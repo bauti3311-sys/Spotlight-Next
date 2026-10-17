@@ -51,6 +51,7 @@ class PdfOcrPipelineTest {
   assertEquals(2,source.rendered);assertTrue(doc.partial)
   assertTrue(doc.issues.any{it.code=="ocr_page_limit"});assertTrue(doc.issues.any{it.code=="page_limit"})
   assertEquals(listOf(1,2),doc.fragments.map{it.page})
+  assertTrue(doc.coverage.contains("parcial"));assertTrue(doc.coverage.contains("2 páginas con texto OCR"))
   val long=extract(Pages(listOf("")),PdfTextLimits(characters=1000)){"Texto largo ".repeat(500)}
   assertTrue(long.text.length<=1000);assertTrue(long.issues.any{it.code=="character_limit"});assertTrue(long.text.contains("Extracción parcial"))
  }
