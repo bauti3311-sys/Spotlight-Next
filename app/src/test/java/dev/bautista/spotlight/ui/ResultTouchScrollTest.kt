@@ -91,4 +91,38 @@ class ResultTouchScrollTest {
         ui.onNodeWithTag("result:pdf:0").performClick()
         ui.runOnIdle { assertEquals("pdf:0",selectedId);assertEquals(1,selections);assertEquals(1,opens);assertEquals(0,details) }
     }
+
+    @Test fun repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything() {
+        show()
+        repeat(12) {
+            ui.onNodeWithTag("documents").performTouchInput {
+                swipe(Offset(center.x,190.dp.toPx()),Offset(center.x,30.dp.toPx()),80)
+            }
+            ui.waitForIdle()
+        }
+        ui.onNodeWithTag("result:pdf:17").assertIsDisplayed()
+        ui.runOnIdle {
+            assertFalse("The expanded list must reach its actual end",scroll.canScrollForward)
+            assertNull(selectedId)
+            assertEquals(0,selections);assertEquals(0,opens);assertEquals(0,details)
+        }
+    }
+
+    @Test fun fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument() {
+        show()
+        ui.mainClock.autoAdvance=false
+        ui.onNodeWithTag("documents").performTouchInput {
+            swipe(Offset(center.x,190.dp.toPx()),Offset(center.x,30.dp.toPx()),80)
+        }
+        ui.mainClock.advanceTimeBy(32)
+        val afterRelease=ui.runOnIdle { scroll.firstVisibleItemIndex*10000+scroll.firstVisibleItemScrollOffset }
+        ui.mainClock.advanceTimeBy(160)
+        ui.runOnIdle {
+            val later=scroll.firstVisibleItemIndex*10000+scroll.firstVisibleItemScrollOffset
+            assertTrue("A fast gesture must preserve native fling after pointer release",later>afterRelease)
+            assertNull(selectedId)
+            assertEquals(0,selections);assertEquals(0,opens);assertEquals(0,details)
+        }
+        ui.mainClock.autoAdvance=true
+    }
 }
