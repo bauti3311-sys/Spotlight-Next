@@ -47,6 +47,7 @@ fun SpotlightBar(
     optionsOpen:Boolean?=null,
     onSearchFocus:()->Unit={},
     onSearchFocusChanged:(Boolean)->Unit={},
+    onAutocompleteAvailabilityChanged:(Boolean)->Unit={},
     quickMenu:(@Composable ()->Unit)?=null,
     onSaved:(()->Unit)?=null,
     onSettings:(()->Unit)?=null,
@@ -55,7 +56,11 @@ fun SpotlightBar(
     var editorValue by remember { mutableStateOf(TextFieldValue(query,TextRange(query.length))) }
     // Selection belongs to the editor. External completion/restoration places the caret at the end.
     val visibleValue=if(editorValue.text==query)editorValue else TextFieldValue(query,TextRange(query.length))
-    SideEffect { if(editorValue!=visibleValue)editorValue=visibleValue }
+    SideEffect {
+        if(editorValue!=visibleValue)editorValue=visibleValue
+        onAutocompleteAvailabilityChanged(suggestion!=null && visibleValue.selection.collapsed &&
+            visibleValue.selection.end==visibleValue.text.length && visibleValue.composition==null)
+    }
     var localOptions by remember { mutableStateOf(false) }
     val options=optionsOpen ?: localOptions
     fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}

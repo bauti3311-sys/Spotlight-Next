@@ -1,0 +1,739 @@
+{
+  "sourceBase": "226c8b1eafccec88fb6df8296871ae41db8fc055",
+  "files": 183,
+  "mismatches": [],
+  "inputs": [
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "4a03339fbae7e5ac6d7448e64b28f1c2c05efe5d5f79ceabe88f899765a51bab"
+    },
+    {
+      "path": "app/proguard-rules.pro",
+      "sha256": "8538de795517db89436ab4b733b689873fae42f24f70a0c2b43330b519bf2968"
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "sha256": "40c7148381b8d0fa221982cd462926dc3119eac1c987b8c1ad60c5e3cd9cdabf"
+    },
+    {
+      "path": "app/src/main/aidl/dev/bautista/spotlight/advanced/IAdvancedService.aidl",
+      "sha256": "9fa8c332096edab5c1b50b18efe1bacadd389ffb0320feeb4d22f154a00e9731"
+    },
+    {
+      "path": "app/src/main/assets/Lucide-LICENSE.txt",
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    {
+      "path": "app/src/main/assets/licenses/Apache-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "app/src/main/assets/licenses/Hugeicons-MIT.txt",
+      "sha256": "d2139326e0f5d5be447a117699ca7be73e9f9b4711eaa8d76bea60bf4177d4fb"
+    },
+    {
+      "path": "app/src/main/assets/licenses/Phosphor-MIT.txt",
+      "sha256": "6e5137e8f51cc955fc8e0861f89e7430b8b33d6d2e13d9c9ac8a7ed935b8b8d4"
+    },
+    {
+      "path": "app/src/main/assets/licenses/onnxruntime-MIT.txt",
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+    },
+    {
+      "path": "app/src/main/assets/licenses/semantic-model-NOTICE.txt",
+      "sha256": "571090fef8b938381f8b33b5b85435e0b4cec68accbddd0f85a1588551c2d620"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ContextPickerActivity.kt",
+      "sha256": "371ad06c8331889aa388efc80d42f8965ca1ec213d7f0cb3abe60286643c5a5e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt",
+      "sha256": "07bc13558572e6e7306a1e9d10aadd2c167b4e4f640272ce4d007aa04e1676a5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/MainActivity.kt",
+      "sha256": "091e1bca39a4c196292ac23e269b1f5c4426c340dfaf3f98a9420bba0e394d12"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/PermissionActivity.kt",
+      "sha256": "9af829f0a18861bfc8f4520bc0ab8522db4a885de3ac6be6be4f2649eb9c64d4"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ProcessTextActivity.kt",
+      "sha256": "6c54f89c4840b61f3d5b60ad8e015e301a7f4652800f0d84cb0f66135b975e4d"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ShareContextActivity.kt",
+      "sha256": "02ab3db8e698da32dd0ce43a7ece3fb8530823a93a1472c2266ee2c5c5dcff8b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/SpotlightApp.kt",
+      "sha256": "0906ea5843e07bfbe56b825f8e4300ee90c0deb3c60915d66cff8011c31988f0"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/VoiceActivity.kt",
+      "sha256": "524ca127f3526b533f91841a1223b4d5b482aefdf5d1b25d8ce9fa1fd6e5e5fb"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/access/ShortcutService.kt",
+      "sha256": "8f352407146c87df880e748444d79becf21447c7e269cec6e8751549ad0ab4f9"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedBroker.kt",
+      "sha256": "c78a6a6c792a0473361ed257be8c976bf3714910dddc5f32fe92fe03ecce6f63"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedCommands.kt",
+      "sha256": "96e5d05b950fca753a0951fbe678972c6fa440ec984bb60e04dd29033824d517"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedState.kt",
+      "sha256": "32d8e7db64446aec37cce0bec45d9ecfd8579bd10a4313359cab25ddd700b0a2"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/advanced/AdvancedUserService.kt",
+      "sha256": "19127579dd69395185bece82584c77a4455a4ef7fe2f90285f899aa1ffb29157"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/advanced/AppInspector.kt",
+      "sha256": "3f3b90608c6bbd8cfe1eb0aab1bc09bb3a4de5ede2fefdb7aa3ecb7cf6f53686"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/advanced/ShizukuManager.kt",
+      "sha256": "553ea96afc35d219b03c7fb574454b69b8a730753329209ae3147cdd8e550134"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/AiClient.kt",
+      "sha256": "a3398ffe334a506d6f9fe8fab8975c06e98e4d66476df5964e8e8aee6472e810"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/AudioClient.kt",
+      "sha256": "eae3ebd52457197d76bac6735ab37f44b2b0198c8772ef0f7101ea71a943702f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/AudioProtocol.kt",
+      "sha256": "1cd0b3ecc31da6968c2e9ab61c1384174c31814799f8bb18937b72e84a74514d"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/CredentialVault.kt",
+      "sha256": "92cb8c00cc470d23f007218753302b075e1a31e58423367da0ee1c3c00fa7b41"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/DirectAi.kt",
+      "sha256": "c54fc469252191eca3ba105c85c2619cb0167a7156ebd76667ac6235276a6b86"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/PlanExecution.kt",
+      "sha256": "ebd0dca0da40082f9cca00578ba044f4d69b53217e978dd791c9b8392510fcd2"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/ToolAgent.kt",
+      "sha256": "c6e5b21cc78ef284cd13499b8382e20201e754e5f10c6847dc2dd80851f58273"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/ToolCapability.kt",
+      "sha256": "e4948a9f12ad324fe17bc8f36c5f480ae4b5e7315eb3ec132ed71a1ee90138b1"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/ToolExecutor.kt",
+      "sha256": "0cc29403f904bdd92a0f02f8a8e747b70e145e49b6fa5e069124951731baa9f4"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ai/ToolRegistry.kt",
+      "sha256": "f210f3469814103ad5e3735e600011aa6f8e07fb7e8ef122852109dc5c1c8ba5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/automation/NativeCommands.kt",
+      "sha256": "db46038b56a1704500c91b8dc222ea8cc23ff16bc05fa36351087a90de05fe21"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/automation/Workflows.kt",
+      "sha256": "59dbf7774e193057012e0ea8d106523ec45407784a11915f997a4270078a837e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/ActionCatalog.kt",
+      "sha256": "cd5a060b83730d8f672b5719ea389492b8fbd05a1ffa5c11695c7655f4b8292d"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/Agenda.kt",
+      "sha256": "e2470dba6b43f2b226a0558a2e11f6f1049ab821d5a48a78946a4fbe655066da"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/CalendarWorkspace.kt",
+      "sha256": "32a4c842076c3203f8a1edfa7423b839874aaf875a012c0434806aa9e8005022"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/CommandCenter.kt",
+      "sha256": "ef284505da844031eefffe1217138a5655c6d5788e84e69fd6b347a39eb80028"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/DeviceResources.kt",
+      "sha256": "4d5011a56f5a33584e8d84c1bcfef149a3252df0bc87e80e3cda79abec45af70"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/IntegrationRegistry.kt",
+      "sha256": "3de10dbdc53b9ec0bb6592828c2d1a347d16d7213fbdb8e472ec8f092be2c12d"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/MediaControl.kt",
+      "sha256": "2af8e74ef31d15e1f71fef6d2966cefe042b91a9affd3243c962f7880e87cebf"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/NaturalIntents.kt",
+      "sha256": "adbecd12c435325156ef56ff4935ad58245bb59a76b48a20bc6b984d84b5c3c9"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/People.kt",
+      "sha256": "8274d8bbc16af5815d85d6bb73e904c36fcea73153a3528354726bbab1a32c8f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/ReplyService.kt",
+      "sha256": "d5f08e4b07842b4b7e46103f3278ef65fbfb84a96d3f531080a82a27da403d26"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/ConfigTransfer.kt",
+      "sha256": "552a412bead34a6a27f97dc38fa36f89fa7327aa43edcd89d67d79eda455ee5b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/ContextStore.kt",
+      "sha256": "ee1bfb0e5933f2cee5185209197654afcf5bb0e3e424320dcf7af222f38754c6"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/ConversationHistory.kt",
+      "sha256": "4f48419c497b55cc38437981373a6b02611b59f0790fe8bc8013b01fcd8feea6"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/DocumentSelectionText.kt",
+      "sha256": "ca0e568a9dec64a30b817c6878ffbad5ce77dee4bb000bcb6c8f5cc1638c6d20"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/FileBuffer.kt",
+      "sha256": "1aad3d44980c3cde55e58e4352dc542eb715414236a37b6a07d2f0cf0c1a5f74"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/LocalStore.kt",
+      "sha256": "4f491c419a78d754d35358c87b72d1550534b6649ef05e70084bbbb91f9019a3"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/OverlayWidthPolicy.kt",
+      "sha256": "607fa55de8201a7f34f11ce3ce66ff92a20e61cd65526123d088c253531f44c0"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/Preferences.kt",
+      "sha256": "12da96279c67ba2fd712da1eba26dae197b81c8ae96f6050d6308eacafbdb370"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/ThemeTransfer.kt",
+      "sha256": "e7ff265378123a201eabf975f5bc7e2ed7787437f9cbbc141d3433d1c590001c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/data/WindowSizePolicy.kt",
+      "sha256": "2838a80c8d3f8ccb4b2fe202e5e82105d0d5f27e3e53d52c438aa312de575fe5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/extensions/ExtensionRegistry.kt",
+      "sha256": "33c030a56eafd22424a275cb3faa6d0da5f5152739b7451b97e708ca8e080ea2"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/extensions/ExtensionStore.kt",
+      "sha256": "dc4e44394530012d405bc92dba2d5f589762716acdbbd5f39c535a43e1ebd5a1"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/DocumentExcerpt.kt",
+      "sha256": "b966906d0da33f60874940d322534cae0cde7403d02676a779a0868845c66550"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/DocumentExtraction.kt",
+      "sha256": "2f6eac0c5c165e1da425b3397f01f4fee9f1d9100023fc065e633ba08858fd9d"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/DocumentText.kt",
+      "sha256": "f5576c5bf6e466882db819d426d90881405482d61c5cdc6642f4d6a5c57e7b61"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt",
+      "sha256": "58c76f92d3894b71044f97e1537d1b6b97f82206c6280060a951c3cf4a648faa"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/ImageMetadata.kt",
+      "sha256": "8ab4217957a560b1478b67a6a9a6c8a92008859b14a7569166019af83dbe1198"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/MediaAnalysis.kt",
+      "sha256": "20a588b55d21c71124fab859c0a525005a3a9984a9a7f1c988e2734c5065c691"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/OcrBudget.kt",
+      "sha256": "a8480b2ea7f408ab70c06e9b70c0b50e25e7e46a368ed8477020e26904ea678c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/OfficeText.kt",
+      "sha256": "021602a9090c67e5d773355c2ea605debf756540c832e7c87ad735b359b94da8"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/index/PdfTextSource.kt",
+      "sha256": "85172f2d54a3866d152d456e98098f78e0d69487f617475d39ffb75e6794e5b4"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/next/IntentRouter.kt",
+      "sha256": "56bff15300d3543b35a0ecb90d3a4ef0576c97b900563be213a397f6b4f1e27f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/next/NativeCatalog.kt",
+      "sha256": "49110f2d42d4897fe70b8c8713013a57687882bc6cad3997ad364754f8c684ca"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/next/NativeProviders.kt",
+      "sha256": "a25c6bb736f4395611022122ace099e5188c5525af254e7f24bd963c50e2b83c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/next/SportsFavorites.kt",
+      "sha256": "89942ff870ab0945d03894f34092cc45be012e9026da6f7ee061f0c0c2bb594b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/next/TaskerAdapter.kt",
+      "sha256": "2e7cdcb98f341b4e601aadc26a2d21f12cabdae710086ddac9ae1707137b31b0"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/AdaptiveLayout.kt",
+      "sha256": "320a2c6efa2aab0cf075d0d39f7c51505163309e856fb5a536d6342b70d996ad"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/Diagnostics.kt",
+      "sha256": "8a595de6a7e51d1fb27a6765522069c8bd7ad99c4423d82468b17cce815bef7b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt",
+      "sha256": "bc303fc2c3aa985e646bbaf78050c306dc67adaa18146c406b0c42006853078e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/OverlayViewport.kt",
+      "sha256": "6e28252805a23af7a5959c94bb97db7f7dfcb50ea0ce5447d3e9ba1d5aa6f142"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/OverlayWidthTransition.kt",
+      "sha256": "6f660601e1cc41fca97ff56583745cabac3b4c4a0f2c2e409f1fa072e8beb26c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/SpotlightTile.kt",
+      "sha256": "284f0537df49a4751f463324d874c5c9f250696388d34f2c40b3533bf6618b0d"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/overlay/WindowFocusHost.kt",
+      "sha256": "557d11a1d6ed40eb369b58cf4df0113a28bbfdc7f66234767ca386c2a6f3dd9e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/personal/PersonalCommands.kt",
+      "sha256": "3a110f7cdd0c8c0c772c8e6a9e55eed549a0382bd7271bf21f38be5b6b80928a"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/productivity/FocusSession.kt",
+      "sha256": "3de5bf17918ee3ea3864f8533bbe399f5ac90fb5f5a8eadb613567db244f4a66"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/AiRequestPolicy.kt",
+      "sha256": "343e3c4d36f62b9cd3aef8bd9918081b89536f207e21e6c20eb415e79689090f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/Calculator.kt",
+      "sha256": "97fc10f582c030900f8a91063cef3c80bd89bed56a39aa30c4cac5fcb5e94b74"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/CompactResults.kt",
+      "sha256": "044f016c4e6f69d221813577415f487db5052d3ab32bcdd00e57fb14a8263036"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt",
+      "sha256": "a749ead249fa8c51e91af92ba80c26836df050f1ca82580b35eb91b477fcf625"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/LocalLanguage.kt",
+      "sha256": "b00b65b3d440337bdb077cc7a944d9caca614667080bc97700fe29e71071bd40"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/LocalPlan.kt",
+      "sha256": "3e03a737cf8be8bcf0e84554739f55965be448b3420cd26ceda8121d88667e3c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/LocalTools.kt",
+      "sha256": "ffcf7890e9ca102a47911fb78478284db9ae3f5d67e6f87645a81e10320116e0"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/Models.kt",
+      "sha256": "8a276e269e295da71b65c9342d53393f734b6ab9a27be18685c00df9b94a463b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/OnlineTools.kt",
+      "sha256": "b7ad335c4fff7a90a573c4078504fb1a124ca574477eac6a6ba265811a7a7fd8"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/QueryInterpretation.kt",
+      "sha256": "4f7720d0ef68ba4448d1514164355b9fb2c2fbda693f2c4b2f3fce7c59996c10"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt",
+      "sha256": "c8b50bd8783068debda9217781818a8533c2646bfaf1b81220ecb63a2bba5e54"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/ResultSections.kt",
+      "sha256": "f1ba6e932f9ed8ca020b7d15718f96fdbafd3f45fd67b829a5d163bf9e0141b2"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/RootActions.kt",
+      "sha256": "1de4dadffe77cbb527cf6a74c4a43d7a7538289b2cea915ae35da3c4d5a2a5c9"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt",
+      "sha256": "c02546811cfa5e5d177125ca136c0e4d4e991263700b5af8b9ecbc7cc8b4d755"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/SearchModifiers.kt",
+      "sha256": "7269418a71f359355047bb9af5873d4ab99bc9b4a1215a9c2c8ac1a6ce6f64ab"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/SearchQuery.kt",
+      "sha256": "502f828895ce5a58c8904ef1b0881712a46541112460c8d838c7d5bd6951cff7"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/SpaceRequests.kt",
+      "sha256": "1882d061b423a1016faabee73d4e7e010f744461116e6f93497276b98b9b17a2"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/TextTools.kt",
+      "sha256": "9db5f4c0cf8113bad1a2cadf9dc323b50a2b48c7c6c63ce61ac9dfc69216bf62"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/UniversalIntent.kt",
+      "sha256": "e3796b69414b6257583af7b25033149864d3229cc17f5dfbb0597133ccbe2514"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/search/UniversalIntentEngine.kt",
+      "sha256": "db3b0a4f18cf348c649939d38caf999b2555261f47218847293daa618ff90578"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/DocumentEmbedder.kt",
+      "sha256": "ef43fa175f406ba3027b0e2054abd15f9988bcae2fae23aca52784ecbd23ec30"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/SemanticModel.kt",
+      "sha256": "3ffcbf0eb992c3933b61629322bf851923a5d5b59616477edbbc110a9c55d553"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/SemanticModelStore.kt",
+      "sha256": "19a0f8ef9395c19305cb22f77856c17ab5334de130752ca0f926902fde69b0d5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/SemanticPolicy.kt",
+      "sha256": "373bf77fc06455d1e3f635f87e4d301d479f072a8bc9c8877eaa21de8d6b0285"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/semantic/WordPiece.kt",
+      "sha256": "9cc84274ef9d9779e22ee4578139a3413bcf000cf86d732e3c8bfd852d4e182e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ActionPanelView.kt",
+      "sha256": "af9bf4f18f316a9dfc882fa36e66b6d29ec70f8b07ecb4f5d447c5355641d768"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AdvancedControls.kt",
+      "sha256": "a18bedf76395015c74c3400bbd4db021d034e3c28b1ed604218f80229099691e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AdvancedPanel.kt",
+      "sha256": "6e4fb6aa222f93ebea947a104e9486c07c722165de7e3a9a46071ddc171d4725"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AiMarkdown.kt",
+      "sha256": "7d82d1b169c0ad626cb2f6db34ee6a17bec0c63953c704cbc71d4825feaeb7f6"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AiSettings.kt",
+      "sha256": "8963ec54eebf0d4c134174045a3cc3b8f4763e15dfce1d1c103e1852150e524e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AiToolPanel.kt",
+      "sha256": "37bf7fd43c1fff450c6302f69ecb504b21c89debe5817373e0f7bc36d2225374"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AliasSettings.kt",
+      "sha256": "1d1151e2b0d312cb72633f59f428d3e28638843a9885844399b4e0f0ea91e9c1"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AppearancePresets.kt",
+      "sha256": "b6f57806b93ec91771f33b060fee2d96bc1e40068111a2b2bd70485b4776bf89"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AppearanceSettings.kt",
+      "sha256": "16f380b62f47342817500eab903c93715176bd12fc296ee2bf634cc25ea5d073"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/AudioPreview.kt",
+      "sha256": "db5d7965929444fa9766a427b36d9c219a4a5a94dd774803c4c44bd0cd911e74"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/CalendarGrid.kt",
+      "sha256": "8e7648332eb8e9605a1bd4641c7018353c34c286c8ffca130eec8e5f94727125"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/CalendarPanel.kt",
+      "sha256": "eb5a3933f2589fba734fc51a974d557f857ca1032bd51084c14a0c28c2d173ed"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/CapabilitySettings.kt",
+      "sha256": "f16bc6c57ce51c28372e2d89b732fbf559c59720b51d7ee962048ee8fb2a9197"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/CommandForms.kt",
+      "sha256": "66dd15bb89f772e26d3f477d8c10e90701b35c4ef014188f11b526879a43cad6"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/CommandIcons.kt",
+      "sha256": "7fc6ea9fd5cc69e63414056d57167afac9d92621e5715dbd8d842a8e6041be0c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ContextPanel.kt",
+      "sha256": "9ccba9a13a28f340c7970c7201b138287658e7fd9ab5c8688977326f0096f423"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ContextSplitPanel.kt",
+      "sha256": "8703f418d63920b2d267376f8cd99c30580c977e22e62c3f3d654d689ad53bfa"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/DocumentExtractionRequest.kt",
+      "sha256": "ff4029d108d5e28bfba19b36e1c866fd0242969a39caa26c80a1c429c53e5a1e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/EditablePlanPanel.kt",
+      "sha256": "42a598485b4ce23eeec233a6c5b29696c11057ebd1d3507b746fea26fd527be2"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ExtensionPanel.kt",
+      "sha256": "70cde74cf059f8bdd69144a72eff7ac769e2ada28b9ac0b5f00ab86a3db0c72c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/FileBufferTray.kt",
+      "sha256": "2fc60a901c3eb315bb2192ada776c0bcee1017f6b0bceb086b9b509ccfd3e54c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/FilePreview.kt",
+      "sha256": "f74988d50556eb35223577009238c1813753e4cdeb6f33b1fa69410f8ae4b81c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassAppearance.kt",
+      "sha256": "c6c27f7cc823dc84c3369b2edcb4ff1be2037feb9c8a547fd74c89692d742552"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassContextFooter.kt",
+      "sha256": "300a1a484f31c56b998943f1ae855de96b11859993d8bd497ee3351a03a122f4"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassQuickMenu.kt",
+      "sha256": "cab8f3bed1f3c121e0a1852915f6654b941498b20e95b45c814c04d4d3b3aa1f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassSettings.kt",
+      "sha256": "185a74e60f5525b40f19f345d86d0a766a6be667f183422525c84950c87ffbc3"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassTokens.kt",
+      "sha256": "d7e3961ff238ab2c693348de6fc2823ab5265de5964eed577308de2490ddcd8b"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/HugeIcons.kt",
+      "sha256": "ca4e3f1e4d2d9c61e98439491c81d8f2d9d8af45e51f3ca1794e52fb3ab13282"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/InterpretationPanel.kt",
+      "sha256": "aa947e34967ef54397508c55d69523d0bcc45e642ec4ca07a2ed1d0d0caf93bf"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/LocalToolForms.kt",
+      "sha256": "76862a3dfa87b13f1cb3a8204d4961d9c9457b549201499e2b43dde3eca8fe69"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/Motion.kt",
+      "sha256": "72d80acfaee1d74458875d6f1b494d000f00966f4f6d1c7a70dfc4e74bd92a3c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/NativeBrightnessReview.kt",
+      "sha256": "75d75ef0a13aa58b64ee988fc817b38b01ba33bfe404e0ccdb733f7a9f078a28"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/NextPanel.kt",
+      "sha256": "465e24111488e2e835b05d7d8c905231ee24f3ae4adc86151d2280535620c1a5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/NotificationPreview.kt",
+      "sha256": "64f6feb00c18441a1ceef746d7da752955ee336174092447ae61a1a5f2cd1f33"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/OverlayAppearancePreview.kt",
+      "sha256": "dd0d7d1532216c37358cd235595bc4a52ef1c5b750c9673aa6fd8efd264b2869"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/OverlayWidthSettings.kt",
+      "sha256": "5c48955171aa771baf3ce9e06313c57bab29d291ff72d0ed18c6970112b7d975"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/PanelChrome.kt",
+      "sha256": "053eb17b14ca5d80e343b2b86be7e53783df06c13d66e4d62deb79d617bb1c29"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/PdfQuickLook.kt",
+      "sha256": "bd1fd16192be3659e40ea762d2cb7ece98082bc1d3b7eb93db6606af58edf63a"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/PersonalSettings.kt",
+      "sha256": "91b1fd01cfeacc102f5c06a316cf6f40237bdb23f6b44511c87a11a60448aa9e"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/PhosphorIcons.kt",
+      "sha256": "125eb3b2a50aee622b45ab2f93b64869430d74331d7724a7e642676090fbdbd6"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/PreferencePanel.kt",
+      "sha256": "69d5595b218564f2fa7fe1738f5143287fee923acfde009c4b49f155877cfe81"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/PreviewPresentation.kt",
+      "sha256": "1e2d442d93d7a798de8bd84728743971a56a73f15a9548d156c2dfe99d04b729"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ProductVisibility.kt",
+      "sha256": "8eff40e29f9e16632088d27f2f948a56fd7e69f7e2f1482b4f60a417648cce8a"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ProductivityPanel.kt",
+      "sha256": "d32ab9835e8b5cbbbd2e048ec57f1b8837bf78e0847ca5c59fde678e1791de67"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/QuickLookMetadata.kt",
+      "sha256": "6cd2535cfd83608c405c122ffb19c02c7e740c71964adb37ae071ff2f73623a1"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SavedCommandPanel.kt",
+      "sha256": "2115b4f45da5420222b57d613fb93054823009749c8a36daa0c02b2b45316a80"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SavedPanel.kt",
+      "sha256": "26483bb17d32fe811a5bca2d0ef31f07ac06ea09d94d3dc84543a9c1732c83fc"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SectionHeading.kt",
+      "sha256": "0c0bed3c0c741f878cb01e0d2b5db3f2069e259fab42e25babdbe312ec2bdd11"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SemanticSettings.kt",
+      "sha256": "55d14b7147d4a772bb356a8de601b042700d65784f0ba734a5fcbbe225d7c0c1"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SettingsAccessSummary.kt",
+      "sha256": "ff5c419f014390a98732e717ac8ae82a8de9df9108bbce1fd41773c457ae7dbe"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SettingsHome.kt",
+      "sha256": "5d8c8fd91895a0f7c656e8dcbc76568acb7d2d222d126d92541fca4a48ada4da"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SettingsNavigation.kt",
+      "sha256": "94eb480683094672e74cce73824e03d6f5866763a9daa899a78e6d24b86e9720"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SettingsSafety.kt",
+      "sha256": "7dcee97fe65566c16050d0fd99ec5b3e67c22299f233b3c1acf9591db4e5b679"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SportsAgendaPanel.kt",
+      "sha256": "9b463e9474aeff932d6edb365ac0b9043b92a4d6f0250c90961304ef39b6bd9f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SportsFavoritesPanel.kt",
+      "sha256": "45b50ae7f882d6d3ed81295d9c172c9dfb0581c7c46a073076e4e1854f38b2d5"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt",
+      "sha256": "4734c4b046badc256a1879a63356ef15da0723c8fb84a0d49419f378208f85c4"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+      "sha256": "9db81d2ff908b749b7d843fb0804e3db1818826a6cef3c6778de7b3ab7835d02"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt",
+      "sha256": "56f3cf14c19f4d72939adfc6db03692e437be4c6181b56185af5c08ebaa21904"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/Theme.kt",
+      "sha256": "f5806f91c4d05e5e115da1f5c81c0240b63ec029f4ed2ca09f58556d39b94076"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/VideoPreview.kt",
+      "sha256": "acb1ab8c0b8b60e55ba9b82b38634ac3f08349b44086290e2d021dd56589c417"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/WeatherChart.kt",
+      "sha256": "763f2841fe7212971472a2f7416cdb0f164b659c5a2ed4b14ba3453b97f1fb21"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/WindowSizeSettings.kt",
+      "sha256": "f8bcb6da8ea35d4e34548c846e3aa62f09ab56e65c81cfd672b472dab6350607"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/WorkflowRunner.kt",
+      "sha256": "d27a430e822bfed438353af6062adb219717b5201d7b105f64e315bc9cae743f"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/WorkflowSettings.kt",
+      "sha256": "ce515aa43aa9ab7e4329c808816be28bada4a995130f0df1a316a7ab04abfd99"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_spotlight.xml",
+      "sha256": "5d440e869b6f5208d70f78d78a96bdc86d24ca44fb5da0d87436c33ee00701b9"
+    },
+    {
+      "path": "app/src/main/res/font/inter.ttf",
+      "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031"
+    },
+    {
+      "path": "app/src/main/res/values/strings.xml",
+      "sha256": "dc71bc2789e469af286782aa4dd826119b44c587d9c7a2423f247163450d0f34"
+    },
+    {
+      "path": "app/src/main/res/values/styles.xml",
+      "sha256": "e9c1f437edef7f5541a19c13b0c13aeb81fb705f5568b139fe87c48757deb697"
+    },
+    {
+      "path": "app/src/main/res/xml/data_extraction_rules.xml",
+      "sha256": "722b8f43af82fd7c8a7d2841897a0c9fcbeac8ba26e0f42b8cfc2b1b844c1270"
+    },
+    {
+      "path": "app/src/main/res/xml/shared_paths.xml",
+      "sha256": "c17ba32076412c16bed199e1bcf6570a34e80f1d9751d603e8f0b6ff155b790e"
+    },
+    {
+      "path": "app/src/main/res/xml/shortcut_service.xml",
+      "sha256": "e81fcade69942e41ce1b6b6419effa798edf12b49d91c3cf7cb51527743f9478"
+    },
+    {
+      "path": "build.gradle.kts",
+      "sha256": "40a285d0125979139eaebb09263cc503b5773ad3db0ab88ff51534f42935da6a"
+    },
+    {
+      "path": "gradle.properties",
+      "sha256": "fa078c27c9e4bde28a029d673875b028884505efa436b68cf60e1ac0be5b679b"
+    },
+    {
+      "path": "release.properties",
+      "sha256": "27d97e5ae8b499c14271adac9a5f2e6e38bf86a2428a6e36385b5ae89d6f9419"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "sha256": "7e119927a58806553767f82a0fb1e8e518a97e7ee023798141ae72deb828697c"
+    },
+    {
+      "path": "app/src/review/AndroidManifest.xml",
+      "sha256": "264c4dc75516ad1e6a05c6f29896732ddcf31e945d24a619e3a4ad0ec152b61b"
+    }
+  ]
+}

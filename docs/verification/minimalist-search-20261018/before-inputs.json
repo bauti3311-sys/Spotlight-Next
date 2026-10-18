@@ -1,0 +1,22 @@
+{
+  "productionSource": "751b2a14a77156b00d9a39d56f1f077a32b5defb",
+  "replacedInputs": [
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+      "sha256": "e928e0723d35c5dafc62ccc909b10df7c47c15bb8a6e9d133583c4df78da9e77"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt",
+      "sha256": "40b1581cd58fc08cbde606c461295f6785933e6ebac21c9098b8cb228ba33743"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt",
+      "sha256": "707b4a0f73f36c5e23e9fc9790a0dc87a9e1ebe21638f19c7639612aa9561962"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassTokens.kt",
+      "sha256": "bfa98a6080adcce6d24ef86c15c5e68e8f5faa4b2d2b1033def1665d8278dce1"
+    }
+  ],
+  "harness": "MinimalistBeforeCaptureTest: same installed fixtures/query/dark glass/760dp"
+}

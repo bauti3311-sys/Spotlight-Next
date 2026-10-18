@@ -38,13 +38,13 @@ object GlassTokens {
     fun selectionDuration(c:Config)=when(c.movement){"precise"->55;"liquid_immersive"->125;else->90}
     fun opacity(c:Config)=if(c.preset in setOf("raycast","pure","graphite","hybrid"))1f else c.opacity.coerceIn(.90f,1f)
 }
-@Composable fun Modifier.glassSurface(c:Config):Modifier {
+@Composable fun Modifier.glassSurface(c:Config, legibleBackdrop:Boolean=false):Modifier {
     val colors=MaterialTheme.colorScheme
     val shape=RoundedCornerShape(GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
     val referenceMaterial=c.preset in setOf("glass","macos","raycast","graphite")
     val material=if(referenceMaterial)GlassTokens.windowColors(c,dark).map {
-        it.copy(alpha=(it.alpha*(c.opacity/.96f)).coerceIn(.82f,1f))
+        it.copy(alpha=(it.alpha*(c.opacity/.96f)).coerceIn(if(legibleBackdrop).96f else .82f,1f))
     } else listOf(colors.surface.copy(alpha=GlassTokens.opacity(c)),colors.surface.copy(alpha=GlassTokens.opacity(c)))
     return shadow(34.dp,shape,clip=false,
             ambientColor=Color.Black.copy(alpha=.35f),spotColor=Color.Black.copy(alpha=.60f))

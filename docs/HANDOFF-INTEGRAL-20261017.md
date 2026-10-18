@@ -1,3 +1,15 @@
+# Continuidad18/10 · búsqueda minimalista
+
+Base226c8b1, propietario work-gemini-native-20261014-f914c617 comprobados por GitHub Git Data; status CLI no obtiene autenticación. Reserva propia renovada por SHA esperado, sin force ni cambios de main/PR16/Actions.
+
+Bloque aprobado implementado: hasta3resultados elegibles, expansión reversible sin reiniciar búsqueda, selección/foco preservados, Tab contextual seguro y Ctrl+M, sin autocompletado sobre app exacta; filas sin etiquetas repetidas, geometría estable y material de resultados más legible. Ajustes aprobados, inspector/QuickLook, datos, firma/identidades y motores se conservan. Ver BUSQUEDA-MINIMALISTA-20261018.md.
+
+72casos dirigidos únicos aprobados en rondas,183entradas de producción coinciden con snapshot, árbol gitleaks0; capturas Compose antes/después/Graphite/Light independientes de baselines. No suite integral/lint/R8 nuevos todavía; no tabletADB/KVM/proveedor real. Evidencia verification/minimalist-search-20261018. El documento de entrega751 y su firma Review recuperable siguen vigentes; no se ha entregado una APK nueva.
+
+Siguiente paso exacto: checkpoint seguro del bloque; continuar decisiones4/13con cancelación de planes que reciben un resultado tardío del ejecutor antes de despachar una acción Android. Reproducir con prueba dirigida antes de corregir; luego gate Android completo/lint/Review sin firma si corresponde, comparaciones de componentes intactos y checkpoint. No tratar este punto como cierre40ni iniciar tareas en segundo plano al finalizar sesión.
+
+---
+
 # Entrega Review recuperada y verificada
 
 APK instalable y ZIP fuente corresponden exactamente a `751b2a14a77156b00d9a39d56f1f077a32b5defb`. Paquete independiente `dev.bautista.spotlight.next.review`, 2.0.1-review/código29, ARM64/min26/target35/no depurable; firma Review recuperada del respaldo privado original y zipalign16KB verificados. No se usaron claves principal/P1 ni se desinstaló ninguna app.

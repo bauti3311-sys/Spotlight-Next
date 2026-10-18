@@ -65,6 +65,8 @@ object CommandCenter {
 
     fun complete(query: String, results: List<Result>): String? {
         if (query.isBlank()) return null
+        // An exact app/document is already complete; never ghost a longer sibling over it.
+        if (results.any { it.category in setOf("Aplicaciones", "Archivos") && normalize(it.title)==normalize(query.trim()) }) return null
         val candidates =
             results
                 .filter { it.category == "Aplicaciones" || it.category == "Archivos" }

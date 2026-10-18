@@ -1,5 +1,7 @@
 package dev.bautista.spotlight.ui
 
+import androidx.compose.ui.platform.testTag
+
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.animateFloatAsState
@@ -88,6 +90,7 @@ fun ResultRow(
     playing:Boolean=false,
 ) {
     val colors = MaterialTheme.colorScheme
+    val usefulSubtitle = dev.bautista.spotlight.search.CompactResults.subtitle(result)
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
@@ -100,7 +103,7 @@ fun ResultRow(
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(inline)GlassTokens.rowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+        Modifier.fillMaxWidth().testTag("result:${result.id}").pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(inline)GlassTokens.rowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
             .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
@@ -116,9 +119,9 @@ fun ResultRow(
         Spacer(Modifier.width(12.dp))
         if(inline) Row(Modifier.weight(1f),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
             Text(result.title,Modifier.weight(1f,fill=false),color=ink,
-                fontWeight=if(selected)FontWeight.Medium else FontWeight.Normal,
+                fontWeight=FontWeight.Normal,
                 fontSize=GlassTokens.rowText(appearance)*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-            if(result.subtitle.isNotBlank()) Text(result.subtitle,Modifier.weight(1f),color=colors.onSurfaceVariant,
+            if(usefulSubtitle.isNotBlank()) Text(usefulSubtitle,Modifier.weight(1f),color=colors.onSurfaceVariant,
                 fontSize=GlassTokens.secondaryText*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
         } else {
         Column(Modifier.weight(1f)) {
@@ -130,8 +133,8 @@ fun ResultRow(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                result.subtitle,
+            if(usefulSubtitle.isNotBlank()) Text(
+                usefulSubtitle,
                 color = colors.onSurfaceVariant,
                 fontSize = GlassTokens.secondaryText*LocalAppearance.current.textScale,
                 maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
@@ -142,10 +145,6 @@ fun ResultRow(
         if(playing) Text("En reproducción",Modifier.padding(start=6.dp).clip(RoundedCornerShape(5.dp))
             .background(Color(0x2222C58B)).border(1.dp,Color(0x3322C58B),RoundedCornerShape(5.dp)).padding(horizontal=8.dp,vertical=3.dp),
             color=if(dark)Color(0xFF8ED9BC) else Color(0xFF16684D),fontSize=10.sp,maxLines=1)
-        if(inline)Text(
-            if(result.id.startsWith("smart:") || result.id=="intent:local")"Intención" else when {result.category=="Aplicaciones" || result.id.startsWith("suggest:app:")->"Aplicación";result.mime=="application/pdf"->"Archivo PDF";else->result.category},
-            modifier=Modifier.padding(horizontal=8.dp).width(90.dp),
-            color=colors.onSurfaceVariant,fontSize=GlassTokens.metadataText,letterSpacing=0.sp,textAlign=TextAlign.End,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {

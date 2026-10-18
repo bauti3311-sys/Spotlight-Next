@@ -21,7 +21,7 @@ import org.robolectric.annotation.GraphicsMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ResultRowGeometryRegressionTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
-    @Test fun selectionKeepsRowHeightAndMetadataColumnStable() {
+    @Test fun selectionKeepsRowAndUsefulTextGeometryStable() {
         var selected by mutableStateOf(true)
         var density by mutableStateOf("balanced")
         val a=Result("row-a","Primera","Descripción","Calculadora",0,Action.Copy("4"))
@@ -35,10 +35,24 @@ class ResultRowGeometryRegressionTest {
             val first=ui.onNodeWithTag("first-row").fetchSemanticsNode().boundsInRoot
             val second=ui.onNodeWithTag("second-row").fetchSemanticsNode().boundsInRoot
             Assert.assertEquals("Selection must not change row height in $value",first.height,second.height,.01f)
-            val metadata=ui.onAllNodesWithText("Calculadora",useUnmergedTree=true).fetchSemanticsNodes()
+            ui.onNodeWithText("Primera").assertIsDisplayed()
+            ui.onNodeWithText("Segunda").assertIsDisplayed()
+            ui.onAllNodesWithText("Calculadora",useUnmergedTree=true).assertCountEquals(0)
+            val metadata=ui.onAllNodesWithText("Descripción",useUnmergedTree=true).fetchSemanticsNodes()
             Assert.assertEquals(2,metadata.size)
-            Assert.assertEquals("Metadata has one right edge in $value",metadata[0].boundsInRoot.right,metadata[1].boundsInRoot.right,.01f)
+            // Secondary text flows after each title; the removed category column is no
+            // longer the alignment anchor. App/title anchors and selection stay fixed.
+            val titleA=ui.onNodeWithText("Primera",useUnmergedTree=true).fetchSemanticsNode().boundsInRoot
+            val titleB=ui.onNodeWithText("Segunda",useUnmergedTree=true).fetchSemanticsNode().boundsInRoot
+            Assert.assertEquals("Title anchors align in $value",titleA.left,titleB.left,.01f)
+            Assert.assertTrue(metadata[0].boundsInRoot.left>titleA.right)
+            Assert.assertTrue(metadata[1].boundsInRoot.left>titleB.right)
+            Assert.assertTrue(metadata[0].boundsInRoot.right<=first.right)
+            Assert.assertTrue(metadata[1].boundsInRoot.right<=second.right)
+            val subtitleLeft=metadata[0].boundsInRoot.left
             ui.runOnIdle{selected=!selected}
+            Assert.assertEquals("Selection must not shift text in $value",subtitleLeft,
+                ui.onAllNodesWithText("Descripción",useUnmergedTree=true).fetchSemanticsNodes()[0].boundsInRoot.left,.01f)
             Assert.assertEquals(first.height,ui.onNodeWithTag("first-row").fetchSemanticsNode().boundsInRoot.height,.01f)
         }
     }

@@ -84,6 +84,9 @@ fun SpotlightPanel(
         fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
         var category by remember { mutableStateOf("Todo") }
         var searchOptions by remember { mutableStateOf(false) }
+        var moreResults by remember(query, category, searchScope) { mutableStateOf(false) }
+        var collapsedSelection by remember(query, category, searchScope) { mutableStateOf<String?>(null) }
+        var canAutocomplete by remember { mutableStateOf(false) }
         val resultsState=remember { mutableStateOf(emptyList<Result>()) }
         var results by resultsState
         var searchGeneration by remember { mutableIntStateOf(0) }
@@ -202,9 +205,15 @@ fun SpotlightPanel(
             val filtered=filterResults(items).filter(ProductVisibility::allowed)
             return if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps" && query.isBlank())
                 dev.bautista.spotlight.control.CommandCenter.orderedApps(filtered, recentAppIds)
-            else if(query.isNotBlank() && searchScope==null && category=="Todo")ResultSections.unified(filtered)
-            else if(query.isBlank() && searchScope==null && category=="Todo")ResultSections.home(filtered)
+            else if(searchScope==null && category=="Todo")CompactResults.select(query,filtered,config,navigating || preview!=null).visible(moreResults,collapsedSelection)
             else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
+        }
+        fun toggleMoreResults() {
+            val id=present(results).getOrNull(selected)?.id
+            moreResults=!moreResults
+            collapsedSelection=if(moreResults)null else id
+            selected=present(results).indexOfFirst{it.id==id}.coerceAtLeast(0)
+            focus.requestFocus()
         }
         val displayed=present(results)
         if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("presented-raw-${results.size}-state-${System.identityHashCode(resultsState)}-snapshot-${androidx.compose.runtime.snapshots.Snapshot.current.id}",searchScope?.section,searchGeneration,displayed.size)
@@ -613,7 +622,7 @@ fun SpotlightPanel(
                             target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
                         )
                 } else {
-                    if (motionEnabled) listState.animateScrollToItem(target)
+                    if (motionEnabled && !navigating) listState.animateScrollToItem(target)
                     else listState.scrollToItem(target)
                 }
             }
@@ -651,7 +660,7 @@ fun SpotlightPanel(
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()
-                    .glassSurface(config)
+                    .glassSurface(config,legibleBackdrop=true)
                     .onPreviewKeyEvent { event ->
                     if(event.type==KeyEventType.KeyDown)pointerSelecting=false
                     if (event.type != KeyEventType.KeyDown) false
@@ -684,6 +693,9 @@ fun SpotlightPanel(
                             navigating=true
                         }
                         true
+                    } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.M && searchScope==null && category=="Todo") {
+                        toggleMoreResults()
+                        true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.F) {
                         selectedResult?.let { toggleFavorite(it) }
                         true
@@ -713,13 +725,16 @@ fun SpotlightPanel(
                                 else if(menu){menu=false;if(!richPreview)preview=null;focus.requestFocus()}
                                 else if(expandedPreview){expandedPreview=false;focus.requestFocus()}
                                 else if (preview != null) {preview=null;focus.requestFocus()}
+                                else if(moreResults){toggleMoreResults()}
                                 else if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || history.isNotEmpty())back()
                                 else if (noteEditor) noteEditor = false
                                 else onClose()
                                 true
                             }
                             Key.Tab -> {
-                                if (selectedResult != null) {
+                                if (searchFocused && canAutocomplete && suggestion!=null && !event.isShiftPressed) {
+                                    acceptSuggestion()
+                                } else if (selectedResult != null) {
                                     // Hide while the query still owns its native input connection.
                                     hideKeyboardForActions()
                                     preview = selectedResult
@@ -823,6 +838,7 @@ fun SpotlightPanel(
                     optionsOpen=searchOptions,
                     onSearchFocus={app.diagnostics.markInteractive()},
                     onSearchFocusChanged={searchFocused=it},
+                    onAutocompleteAvailabilityChanged={canAutocomplete=it},
                     quickMenu={
                         GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}.onFailure{error="No se pudo guardar la preferencia. Reintentá."}}},
                             {launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))},
@@ -851,7 +867,7 @@ fun SpotlightPanel(
                                                 if (richPreview && !widePreview) resultLimit * .45f
                                                 else minOf(resultLimit,if(query.isBlank() && searchScope==null && category=="Todo")
                                                     (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size + (visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp
-                                                else (visibleResults.size*70+visibleResults.map{ResultSections.category(it)}.distinct().size*30+12).dp)
+                                                else (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size+40.dp)
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
@@ -1223,6 +1239,15 @@ fun SpotlightPanel(
                                 fontSize = 10.sp,
                                 color = colors.onSurfaceVariant,
                             )
+                        if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
+                            val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
+                            if(full.all.size>full.initial.size || moreResults) TextButton(
+                                onClick={toggleMoreResults()},modifier=Modifier.align(Alignment.End).height(32.dp).testTag("results-expand"),
+                                contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp)) {
+                                Text(if(moreResults)"Ver menos resultados" else "Ver más resultados",fontSize=11.sp)
+                                Text("  Ctrl+M",fontSize=10.sp,color=colors.onSurfaceVariant)
+                            }
+                        }
                         HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
                         if(systemPage!=null || messageForm!=null || searchForm!=null || menu)
                             Text(if(menu)"↵ ejecutar acción   esc volver a resultados" else "Tab siguiente campo   esc volver",
@@ -1239,7 +1264,8 @@ fun SpotlightPanel(
                                 else->"Ejecutar"
                             },
                             onExecute={selectedResult?.let{execute(it)}},
-                            onActions={hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true})
+                            onActions={hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true},
+                            autocomplete=canAutocomplete && searchFocused && suggestion!=null)
                     }
                 }
             }

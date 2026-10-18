@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 
 /** Gemini's contextual capsule, retaining the native Enter/Tab contract and touch targets. */
-@Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit) {
+@Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit,autocomplete:Boolean=false) {
     val colors=MaterialTheme.colorScheme
     val dark=colors.surface.luminance()<.5f
     val graphite=LocalAppearance.current.preset in setOf("raycast","graphite")
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.*
     BoxWithConstraints(Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(base.copy(alpha=0f),base)))) {
         val showHints=maxWidth>=520.dp
         Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=12.dp,vertical=1.dp),verticalAlignment=Alignment.CenterVertically) {
-            if(showHints && suggestion) Text("Ctrl+Space completar",fontSize=11.sp,color=colors.onSurfaceVariant)
+            if(showHints && suggestion) Text(if(autocomplete)"Tab completar" else "Ctrl+Space completar",fontSize=11.sp,color=colors.onSurfaceVariant)
             Spacer(Modifier.weight(1f))
             // The visible capsule is 32 dp; the native buttons retain 48 dp hit areas.
             if(enabled) Box {
@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.*
                 }
                 Box(Modifier.width(1.dp).height(12.dp).background(colors.onSurface.copy(alpha=.10f)))
                 TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=12.dp),modifier=Modifier.heightIn(min=48.dp)) {
-                    Text("Tab acciones",fontSize=12.sp,color=colors.onSurfaceVariant)
+                    Text(if(autocomplete)"Ctrl+K acciones" else "Tab acciones",fontSize=12.sp,color=colors.onSurfaceVariant)
                 }
                 }
             }

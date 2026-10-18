@@ -3,7 +3,7 @@
 Leé `docs/RENOVACION-APROBADA.md` para el contrato funcional y `docs/CODEX-ENTORNO-APROBADO.md` para la infraestructura aprobada. Usá `PLANS.md` para continuidad y `docs/ROADMAP-AUTONOMA-SPOTLIGHT-NEXT.md` como orden de hitos verificables y política de reanudación; nunca asumir que el reset de créditos dispara tareas.
 
 - Kotlin y Jetpack Compose nativos. Priorizar funcionamiento verificable; no agregar pantallas/modos redundantes ni dependencias en bloque.
-- Enter desde resultados ejecuta la acción principal. Tab abre y recorre acciones, Shift+Tab retrocede; Enter en acciones ejecuta la enfocada. Escape cierra acciones antes de vistas secundarias y del overlay.
+- Enter desde resultados ejecuta la acción principal. Aprobación18/10: Tab autocompleta solo con sugerencia, foco en búsqueda, cursor al final, sin selección ni composición; en los demás casos abre acciones. Ctrl+Space conserva autocompletado explícito. Tab/Shift+Tab dentro de acciones recorre/retrocede; Enter ejecuta la enfocada. Ctrl+M amplía/contrae resultados conservando identidad y foco. Escape cierra acciones antes de vistas secundarias y del overlay.
 - Seleccionar un PDF muestra Quick Look local automáticamente; abrirlo externamente requiere una acción explícita. Conservar selección y recursos al cambiar de documento.
 - Ninguna IA remota por pulsación. Confirmar uso externo de contenido sensible. No inventar datos, permisos o integraciones.
 - Conservar datos/preferencias, `dev.bautista.spotlight.next` y firma histórica. No sustituir release por debug ni generar una nueva clave.

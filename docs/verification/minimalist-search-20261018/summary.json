@@ -1,0 +1,379 @@
+{
+  "base": "226c8b1eafccec88fb6df8296871ae41db8fc055",
+  "uniqueDirectedCases": 72,
+  "approvedAcrossRounds": true,
+  "completeSuiteExecuted": false,
+  "cases": [
+    {
+      "suite": "dev.bautista.spotlight.ui.SearchEditingRegressionTest",
+      "case": "rightArrowDoesNotCompleteOrLeaveEditor",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SearchEditingRegressionTest",
+      "case": "homeEndAndShiftRightPreserveNativeEditing",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SearchEditingRegressionTest",
+      "case": "shiftArrowsSelectWithoutAcceptingSuggestion",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "hideAndPinAreAppliedToAvailableCommands",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "freshInstallHasRealLaunchableAppsWithoutLearningOrUsageAccess",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "noHistoryOrUnavailableProvidersLeakIntoHome",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "disabledSuggestionsReturnNothing",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "tabletLightCapture",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "rightArrowAtTextBoundaryNeverFocusesMicrophoneAndTabCompletes",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "compactExpansionAndCollapseKeepQueryFocusAndSelectedIdentity",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "tabletGraphiteCapture",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "escapeCollapsesExpandedResultsBeforeClosingSearch",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "tabletCaptureAndCompactHeight",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "case": "tabWithCaretInsideQueryKeepsNativeTextAndOpensActions",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "initialNeverExceedsThreeAndExpansionRetainsEveryDistinctAction",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "explicitDictionaryAndTextCommandsRemainAvailableInitially",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "exactApplicationNeverAutocompletesIntoLongerSibling",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "recognizedBrightnessMusicAndQuestionActionsStayEligible",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "navigationKeepsExistingOrderWhenLateProvidersArrive",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "contentAndSemanticDocumentHitsDoNotRequireTitleOverlap",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "spanishWordsAndRelativeActionsStayTyped[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "spanishWordsAndRelativeActionsStayTyped",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "visualExportExcludesUserDataAndRejectsSecrets[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "visualExportExcludesUserDataAndRejectsSecrets",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "automaticContextWaitsForPrivacyPreferences[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "automaticContextWaitsForPrivacyPreferences",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "originalTextAndAccentsSurviveSearch[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "originalTextAndAccentsSurviveSearch",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "temporaryContextExpiresWhilePinnedTextPersists[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "temporaryContextExpiresWhilePinnedTextPersists",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "emptyHomeHasNoFiller[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "emptyHomeHasNoFiller",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "malformedPlansCannotExecute[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "malformedPlansCannotExecute",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "preferenceCommandIsAvailableFromRoot[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "preferenceCommandIsAvailableFromRoot",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "privateModeStopsLearningWithoutDestroyingSavedState[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "privateModeStopsLearningWithoutDestroyingSavedState",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "lateResultsPreserveUserNavigation[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "lateResultsPreserveUserNavigation",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "preciseResultWinsOverHabitAndLargeFileBatch[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "preciseResultWinsOverHabitAndLargeFileBatch",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "sportsNeverIncludesAnotherTeamsEvents[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.Glass20CoreTest",
+      "case": "sportsNeverIncludesAnotherTeamsEvents",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SpotlightPanelLayoutTest",
+      "case": "gridOpensMultipleRowsAndStopsResizingAcrossFrames",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SpotlightPanelLayoutTest",
+      "case": "explicitShortcutAcceptsSuggestionWhileRightArrowOnlyEdits",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SpotlightPanelLayoutTest",
+      "case": "newNoteEditorStaysInsideOverlayInsteadOfOpeningADialog",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "savedThreadSearchReviewSendsExactlyAuthorizedHistory",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "spotifyAndVolumeUseReviewedNativeToolsNotRemoteAi",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "naturalCalculatorEnterCopiesLocallyWithoutGeminiRequest",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "existingExecutionRegistrySharesNaturalLocalTools",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "cancellingSavedThreadReviewDoesNotSendAnything",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "disablingMediaAfterReviewBlocksDirectExecution",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "documentCompoundSendsExactlyFrozenReviewedPromptAfterSeparateConsent",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "directPercentageActionUsesObservedRegistryExecution",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "savingInlineConversationRetainsAllCompletedExchanges",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+      "case": "typedQuestionDoesNotSendUntilEnterThenStreamsMarkdownInline",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.ResultRowGeometryRegressionTest",
+      "case": "selectionKeepsRowAndUsefulTextGeometryStable",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactProductionTest",
+      "case": "pdfPermissionRequirementRemainsVisibleWithNoStorageGrant",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactProductionTest",
+      "case": "naturalActionsAndExplicitAiComeFromProductionWithoutExecuting",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.CompactProductionTest",
+      "case": "everyWhatsAppSnapshotKeepsExactAppWithoutAutomaticDefinitions",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "tabCyclesAndEnterRunsOnlyFocusedContextAction",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.UnifiedRootRegressionTest",
+      "case": "installedSpotifyIsFirstInEveryRootSnapshot[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.UnifiedRootRegressionTest",
+      "case": "installedSpotifyIsFirstInEveryRootSnapshot",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.UnifiedRootRegressionTest",
+      "case": "rootKnowledgeConsentIsExplicitAndPlainSearchHasNoAiFiller[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.UnifiedRootRegressionTest",
+      "case": "rootKnowledgeConsentIsExplicitAndPlainSearchHasNoAiFiller",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.UnifiedRootRegressionTest",
+      "case": "dateFilesExplainPermissionInsteadOfSearchingForYesterday[26]",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.search.UnifiedRootRegressionTest",
+      "case": "dateFilesExplainPermissionInsteadOfSearchingForYesterday",
+      "passed": true
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SpotlightPanelVisualTest",
+      "case": "darkPinnedPanelLoadsQueryWithoutExecutingAction",
+      "passed": true
+    }
+  ],
+  "rounds": [
+    "initial:7 eligibility passed, 2 UI waits failed because editor Chrome was mistaken for a result",
+    "compilation retry:invalid getOrElse extension import removed; no tests executed",
+    "68 directed:1 obsolete metadata alignment expectation after approved removal; revised geometry asserts title anchors, actual secondary text, stable selection and absent category labels",
+    "72 directed:1 geometry selector compared merged row rather than unmerged Text",
+    "geometry retry:1 passed, every geometry assertion retained"
+  ],
+  "device": "No adb devices; no /dev/kvm; Robolectric API33 native graphics and regression API26/35, not OneUI",
+  "beforeCapture": "751b2a1 UI sources restored into external harness; four originals by Git blob, new policy unused by old panel; same query, installed fixtures, dark Glass,760dp",
+  "buildAndLint": "Pending after this directed checkpoint; no APK delivered",
+  "actionsTriggered": false
+}

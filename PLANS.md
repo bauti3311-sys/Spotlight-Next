@@ -478,3 +478,7 @@ Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release in
 
 
 Entrega urgente cerrada: APK Review de751b2a1 compilada/firma Review recuperada/zipalign16KB verificados, ZIP mismoSHA,67casos únicos dirigidos y lintReview0errores. Capturas Compose de inicio/centro/guía/Gemini. Sin cambios productivos en esta recuperación, sin Actions/main/PR16. Evaluación física siguiente; ver docs/ENTREGA-REVIEW-751b2a1.md y handoff inicial.
+
+## 18/10 · búsqueda minimalista aprobada
+
+Base226c8b1→bloque CompactResults/expansión/Tab seguro/legibilidad;72casos únicos dirigidos correctos en rondas,183entradas de producción coincidentes. Capturas antes/después separadas y gitleaks0. Gating integral/lint/R8 aún pendiente; no APK nueva/Actions/main ni validación OneUI. Ver BUSQUEDA-MINIMALISTA-20261018.md y evidencia. Continuar cancelación segura de planes (4/13) con test rojo antes de ampliar capacidades.
