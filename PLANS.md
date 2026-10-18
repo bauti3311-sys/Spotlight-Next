@@ -475,3 +475,6 @@ Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release in
 
 
 17/10/2026 · prioridad urgente nueva: usuario autoriza Review independiente (.next.review) firmada con clave exclusiva, antes de terminar40. Inicio Ajustes+centro/permisos/guía implementados, pruebas/capturas/assembleReview en curso. No afirmar APK hasta verificar; ver docs/AJUSTES-REVIEW-20261017.md y handoff inicial.
+
+
+Entrega urgente cerrada: APK Review de751b2a1 compilada/firma Review recuperada/zipalign16KB verificados, ZIP mismoSHA,67casos únicos dirigidos y lintReview0errores. Capturas Compose de inicio/centro/guía/Gemini. Sin cambios productivos en esta recuperación, sin Actions/main/PR16. Evaluación física siguiente; ver docs/ENTREGA-REVIEW-751b2a1.md y handoff inicial.

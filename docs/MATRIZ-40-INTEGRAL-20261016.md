@@ -77,3 +77,6 @@ Contextos4f429c0: verificación nueva562/119, tres lint sin errores, Release/R8 
 
 
 Lectura recuperablef987a0e:572/121 nuevas, lint3 sin errores, Release/R8/instrumentación compilada y21estrictas sin cambios;328inputs exactos.40dirigidos no se suman. Bytes conservados ante formato/versión/registro/cancelación y .bak recuperado por AtomicFile; no reparación automática ni reset. Matriz parcial, fuente/detalle/gates en HANDOFF-INTEGRAL-20261017.md y CONTEXTO-RECUPERACION-20261017.md.
+
+
+Entrega Review excepcional751b2a1: inicio compacto de Ajustes, centro de funciones/permisos y guía explícita; APK independiente firmada con clave Review recuperada y fuente del mismo SHA.67casos únicos dirigidos aprobados, lintReview0errores/10avisos/1informativa, R8/zipalign16KB/firma v2-v3 correctos. No suite integral nueva ni cierre40; proveedor/modelo real, instalación/OneUI/OCR/ARM64 nativo medidos siguen pendientes. Evidencia y límites en ENTREGA-REVIEW-751b2a1.md.

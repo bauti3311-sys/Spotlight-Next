@@ -1,3 +1,15 @@
+# Entrega Review recuperada y verificada
+
+APK instalable y ZIP fuente corresponden exactamente a `751b2a14a77156b00d9a39d56f1f077a32b5defb`. Paquete independiente `dev.bautista.spotlight.next.review`, 2.0.1-review/código29, ARM64/min26/target35/no depurable; firma Review recuperada del respaldo privado original y zipalign16KB verificados. No se usaron claves principal/P1 ni se desinstaló ninguna app.
+
+Recuperación del entorno: árbol Git completo reconstruido y comprobado por SHA; checkout antiguo con cambios pendientes conservado sin sobrescribir. Nuevo checkout review-recovery-751b2a1,182entradas de producción coinciden con la copia compilada. assembleReview/R8 correcto en7m49s.67casos únicos dirigidos aprobados en rondas; un fallo inicial fue exclusivamente el selector de captura ante ventana+diálogo, corregido sin quitar aserciones. lintReview0errores/10advertencias/1informativa. Capturas reales MainActivity/Compose/Robolectric, incluidas guía y Gemini, sin cambiar el producto ni sus referencias. No OneUI/dispositivo/KVM ni proveedor real; no suite integral nueva ni Python repetido. Ver ENTREGA-REVIEW-751b2a1.md y verification/review-delivery-751b2a1.
+
+APK Spotlight-Next-Review-751b2a1.apk y ZIP Spotlight-Next-source-751b2a1.zip guardados para descarga privada; capturas e informe adjuntos en la conversación. La clave Review está recuperable en Spotlight-Review-signing-private-backup.zip privado: recuperar mediante skill de archivos antes de firmar una futura actualización; nunca crear otro certificado para ese mismo paquete ni subir credenciales a Git.
+
+Siguiente paso: evaluación física de esta Review; no iniciar nuevas funciones antes de entregar los archivos. Después continuar matriz40 desde este código conservando pendientes reales. Gemini requiere clave/modelo disponible (modelo por defecto no validado contra proveedor), semántica descarga138MB/opt-in/preparación, OCR/recursos acotados e integraciones permisos/servicios reales. Las40decisiones siguen parciales. No Actions/main/PR16/force/presupuestos. Este cierre documental no cambia código del APK ni supone una sesión en segundo plano.
+
+---
+
 # Prioridad urgente Review · 17/10/2026
 
 La instrucción más reciente autoriza EXCEPCIONALMENTE una APK Review antes del cierre40, paquete independiente `dev.bautista.spotlight.next.review`, con certificado nuevo exclusivo Review. No es actualización de principal/P1; sus datos se mantienen y Review empieza vacía. No usar firma histórica ni reutilizar P1. Clave Review privada fuera de Git; preservar copia privada para futuras actualizaciones, no regenerar al mismo identificador.

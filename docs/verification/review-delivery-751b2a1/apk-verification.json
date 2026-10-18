@@ -1,0 +1,48 @@
+{
+  "sourceCommit": "751b2a14a77156b00d9a39d56f1f077a32b5defb",
+  "package": "dev.bautista.spotlight.next.review",
+  "versionCode": 29,
+  "versionName": "2.0.1-review",
+  "minSdk": 26,
+  "targetSdk": 35,
+  "abi": [
+    "arm64-v8a"
+  ],
+  "debuggable": false,
+  "dedicatedReviewCertificateSha256": "a5ca9c2479da8149a1f6c43936bce2a4639f724e988d20a9ae224291c55c5f14",
+  "historicalOrP1KeyUsed": false,
+  "independentOfPrincipalAndP1": true,
+  "physicalInstallation": "Not executed; no Android device attached",
+  "files": [
+    {
+      "name": "Spotlight-Next-Review-751b2a1.apk",
+      "bytes": 73201820,
+      "sha256": "c38e034cf5275bed19f5c3f68456392dd642e581603a0a02647c066c993a19e3"
+    },
+    {
+      "name": "Spotlight-Next-source-751b2a1.zip",
+      "bytes": 6796611,
+      "sha256": "6d3907b7e04a59353c11b90523809bf896e115eb7a2c0e29aa8df4f7396283b0"
+    }
+  ],
+  "verification": {
+    "badging": {
+      "exitCode": 0,
+      "output": "package: name='dev.bautista.spotlight.next.review' versionCode='29' versionName='2.0.1-review' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'\nsdkVersion:'26'\ntargetSdkVersion:'35'\nuses-permission: name='android.permission.SYSTEM_ALERT_WINDOW'\nuses-permission: name='android.permission.FOREGROUND_SERVICE'\nuses-permission: name='android.permission.FOREGROUND_SERVICE_SPECIAL_USE'\nuses-permission: name='android.permission.POST_NOTIFICATIONS'\nuses-permission: name='android.permission.READ_CONTACTS'\nuses-permission: name='android.permission.READ_CALENDAR'\nuses-permission: name='android.permission.WRITE_SETTINGS'\nuses-permission: name='android.permission.WRITE_CALENDAR'\nuses-permission: name='android.permission.ACCESS_COARSE_LOCATION'\nuses-permission: name='android.permission.INTERNET'\nuses-permission: name='net.dinglisch.android.tasker.PERMISSION_RUN_TASKS'\nuses-permission: name='com.android.alarm.permission.SET_ALARM'\nuses-permission: name='android.permission.MANAGE_EXTERNAL_STORAGE'\nuses-permission: name='android.permission.PACKAGE_USAGE_STATS'\nuses-permission: name='android.permission.MODIFY_AUDIO_SETTINGS'\nuses-permission: name='android.permission.ACCESS_NETWORK_STATE'\nuses-permission: name='dev.bautista.spotlight.next.review.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'\nuses-permission: name='moe.shizuku.manager.permission.API_V23'\napplication-label:'Spotlight Next Review'\napplication-label-af:'Spotlight Next Review'\napplication-label-am:'Spotlight Next Review'\napplication-label-ar:'Spotlight Next Review'\napplication-label-as:'Spotlight Next Review'\napplication-label-az:'Spotlight Next Review'\napplication-label-be:'Spotlight Next Review'\napplication-label-bg:'Spotlight Next Review'\napplication-label-bn:'Spotlight Next Review'\napplication-label-bs:'Spotlight Next Review'\napplication-label-ca:'Spotlight Next Review'\napplication-label-cs:'Spotlight Next Review'\napplication-label-da:'Spotlight Next Review'\napplication-label-de:'Spotlight Next Review'\napplication-label-el:'Spotlight Next Review'\napplication-label-en-AU:'Spotlight Next Review'\napplication-label-en-CA:'Spotlight Next Review'\napplication-label-en-GB:'Spotlight Next Review'\napplication-label-en-IN:'Spotlight Next Review'\napplication-label-en-XC:'Spotlight Next Review'\napplication-label-es:'Spotlight Next Review'\napplication-label-es-US:'Spotlight Next Review'\napplication-label-et:'Spotlight Next Review'\napplication-label-eu:'Spotlight Next Review'\napplication-label-fa:'Spotlight Next Review'\napplication-label-fi:'Spotlight Next Review'\napplication-label-fr:'Spotlight Next Review'\napplication-label-fr-CA:'Spotlight Next Review'\napplication-label-gl:'Spotlight Next Review'\napplication-label-gu:'Spotlight Next Review'\napplication-label-hi:'Spotlight Next Review'\napplication-label-hr:'Spotlight Next Review'\napplication-label-hu:'Spotlight Next Review'\napplication-label-hy:'Spotlight Next Review'\napplication-label-in:'Spotlight Next Review'\napplication-label-is:'Spotlight Next Review'\napplication-label-it:'Spotlight Next Review'\napplication-label-iw:'Spotlight Next Review'\napplication-label-ja:'Spotlight Next Review'\napplication-label-ka:'Spotlight Next Review'\napplication-label-kk:'Spotlight Next Review'\napplication-label-km:'Spotlight Next Review'\napplication-label-kn:'Spotlight Next Review'\napplication-label-ko:'Spotlight Next Review'\napplication-label-ky:'Spotlight Next Review'\napplication-label-lo:'Spotlight Next Review'\napplication-label-lt:'Spotlight Next Review'\napplication-label-lv:'Spotlight Next Review'\napplication-label-mk:'Spotlight Next Review'\napplication-label-ml:'Spotlight Next Review'\napplication-label-mn:'Spotlight Next Review'\napplication-label-mr:'Spotlight Next Review'\napplication-label-ms:'Spotlight Next Review'\napplication-label-my:'Spotlight Next Review'\napplication-label-nb:'Spotlight Next Review'\napplication-label-ne:'Spotlight Next Review'\napplication-label-nl:'Spotlight Next Review'\napplication-label-or:'Spotlight Next Review'\napplication-label-pa:'Spotlight Next Review'\napplication-label-pl:'Spotlight Next Review'\napplication-label-pt:'Spotlight Next Review'\napplication-label-pt-BR:'Spotlight Next Review'\napplication-label-pt-PT:'Spotlight Next Review'\napplication-label-ro:'Spotlight Next Review'\napplication-label-ru:'Spotlight Next Review'\napplication-label-si:'Spotlight Next Review'\napplication-label-sk:'Spotlight Next Review'\napplication-label-sl:'Spotlight Next Review'\napplication-label-sq:'Spotlight Next Review'\napplication-label-sr:'Spotlight Next Review'\napplication-label-sr-Latn:'Spotlight Next Review'\napplication-label-sv:'Spotlight Next Review'\napplication-label-sw:'Spotlight Next Review'\napplication-label-ta:'Spotlight Next Review'\napplication-label-te:'Spotlight Next Review'\napplication-label-th:'Spotlight Next Review'\napplication-label-tl:'Spotlight Next Review'\napplication-label-tr:'Spotlight Next Review'\napplication-label-uk:'Spotlight Next Review'\napplication-label-ur:'Spotlight Next Review'\napplication-label-uz:'Spotlight Next Review'\napplication-label-vi:'Spotlight Next Review'\napplication-label-zh-CN:'Spotlight Next Review'\napplication-label-zh-HK:'Spotlight Next Review'\napplication-label-zh-TW:'Spotlight Next Review'\napplication-label-zu:'Spotlight Next Review'\napplication-icon-120:'res/R5.xml'\napplication-icon-160:'res/R5.xml'\napplication-icon-240:'res/R5.xml'\napplication-icon-320:'res/R5.xml'\napplication-icon-480:'res/R5.xml'\napplication-icon-640:'res/R5.xml'\napplication-icon-65534:'res/R5.xml'\napplication: label='Spotlight Next Review' icon='res/R5.xml'\nlaunchable-activity: name='dev.bautista.spotlight.MainActivity'  label='' icon=''\nfeature-group: label=''\n  uses-feature: name='android.hardware.faketouch'\n  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'\n  uses-feature: name='android.hardware.location'\n  uses-implied-feature: name='android.hardware.location' reason='requested android.permission.ACCESS_COARSE_LOCATION permission'\nprovides-component:'accessibility'\nprovides-component:'notification-listener'\nmain\nother-activities\nother-receivers\nother-services\nsupports-screens: 'small' 'normal' 'large' 'xlarge'\nsupports-any-density: 'true'\nlocales: '--_--' 'af' 'am' 'ar' 'as' 'az' 'be' 'bg' 'bn' 'bs' 'ca' 'cs' 'da' 'de' 'el' 'en-AU' 'en-CA' 'en-GB' 'en-IN' 'en-XC' 'es' 'es-US' 'et' 'eu' 'fa' 'fi' 'fr' 'fr-CA' 'gl' 'gu' 'hi' 'hr' 'hu' 'hy' 'in' 'is' 'it' 'iw' 'ja' 'ka' 'kk' 'km' 'kn' 'ko' 'ky' 'lo' 'lt' 'lv' 'mk' 'ml' 'mn' 'mr' 'ms' 'my' 'nb' 'ne' 'nl' 'or' 'pa' 'pl' 'pt' 'pt-BR' 'pt-PT' 'ro' 'ru' 'si' 'sk' 'sl' 'sq' 'sr' 'sr-Latn' 'sv' 'sw' 'ta' 'te' 'th' 'tl' 'tr' 'uk' 'ur' 'uz' 'vi' 'zh-CN' 'zh-HK' 'zh-TW' 'zu'\ndensities: '120' '160' '240' '320' '480' '640' '65534'\nnative-code: 'arm64-v8a'\n"
+    },
+    "signature": {
+      "exitCode": 0,
+      "output": "Verifies\nVerified using v1 scheme (JAR signing): false\nVerified using v2 scheme (APK Signature Scheme v2): true\nVerified using v3 scheme (APK Signature Scheme v3): true\nVerified using v3.1 scheme (APK Signature Scheme v3.1): false\nVerified using v4 scheme (APK Signature Scheme v4): false\nVerified for SourceStamp: false\nNumber of signers: 1\nSigner #1 certificate DN: CN=Spotlight Next Review, O=Private Android Review\nSigner #1 certificate SHA-256 digest: a5ca9c2479da8149a1f6c43936bce2a4639f724e988d20a9ae224291c55c5f14\nSigner #1 certificate SHA-1 digest: 3d179461c3e5cb9e48b3852e990078394aed0aa4\nSigner #1 certificate MD5 digest: ca0c6c3577da10140d970c5968921664\nSigner #1 key algorithm: RSA\nSigner #1 key size (bits): 3072\n"
+    },
+    "alignment": {
+      "exitCode": 0,
+      "output": "72335816 res/zw.9.png (OK)\n72337372 res/zz.png (OK)\n72338308 resources.arsc (OK)\n73086474 META-INF/SPOTLIGH.SF (OK - compressed)\n73114987 META-INF/SPOTLIGH.RSA (OK - compressed)\n73116516 META-INF/MANIFEST.MF (OK - compressed)\nVerification succesful\n"
+    }
+  },
+  "targetedTests": 67,
+  "lintReview": {
+    "Warning": 10,
+    "Information": 1
+  },
+  "publicOutputNote": "Redundant public-key fingerprint lines omitted in Git copy to avoid generic API detector false positives; certificate SHA256 and scheme verification retained. Original public apksigner output is in the private delivery evidence."
+}

@@ -1,0 +1,442 @@
+{
+  "sourceCommit": "751b2a14a77156b00d9a39d56f1f077a32b5defb",
+  "uniqueCases": 67,
+  "finalFailures": 0,
+  "finalErrors": 0,
+  "finalSkipped": 0,
+  "rounds": [
+    {
+      "round": "directed",
+      "tests": 67,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "round": "dialog-retry",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "round": "gemini-capture",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "cases": [
+    {
+      "class": "dev.bautista.spotlight.ai.ToolDocumentSearchTest",
+      "name": "explicitFileToolUsesUniversalLocalSemanticsAndReturnsNoExcerpt",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ai.ToolDocumentSearchTest",
+      "name": "disabledFilesCannotExecuteEvenIfTheIndexContainsMatches",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ai.ToolDocumentSearchTest",
+      "name": "unsupportedOpeningDateIsReportedInsteadOfSubstitutingModificationDate",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ai.ToolDocumentSearchTest",
+      "name": "defaultProductionWiringRetainsLexicalSearchAndNeverExpandsLiteralQueries",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.OverlayWidthPersistenceTest",
+      "name": "manualMemoryAndHorizontalOverrideSurviveSavingAutomaticAndReopening",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.OverlayWidthPolicyTest",
+      "name": "automaticGeneralDoesNotHideOrEraseExistingHorizontalOverride",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.OverlayWidthPolicyTest",
+      "name": "explicitHorizontalWidthStartsFromSavedManualAndGeneralRemainsAutomatic",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.OverlayWidthPolicyTest",
+      "name": "restoringHorizontalInheritanceChangesNeitherGeneralWidthNorPosition",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.OverlayWidthPolicyTest",
+      "name": "manualWidthSurvivesDensityChangesOrientationAndImeWithoutExceedingScreen",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.SettingsPersistenceTest",
+      "name": "appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.SettingsPersistenceTest",
+      "name": "visibleAppearanceMergeDoesNotResetUnrelatedPreferences",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.SettingsPersistenceTest",
+      "name": "legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.data.SettingsPersistenceTest",
+      "name": "staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "mixedPagesProduceTraceableSearchableContentAndKeepNativeText",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "pageAndCharacterLimitsNeverPretendTheWholeDocumentWasRead",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "callerCancellationPropagatesAndDoesNotReleaseAnInFlightImageEarly",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "startFailureAndCanceledTaskCleanUpExactlyOnce",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "deadlinesStopSchedulingAndOcrFailuresDoNotInventText",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "dimensionsAreBoundedWithoutIntegerOverflow",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "cacheNeverCreatesAnImportOrBypassesRevocationOrPrivateMode",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "versionOneIndexMigratesWithoutDeletingExistingContent",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.index.PdfOcrPipelineTest",
+      "name": "timedOutTaskOwnsItsImageAndAdmissionUntilActualCompletion",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.overlay.OverlayWidthTransitionTest",
+      "name": "closingCancelsOutstandingUpdates",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.overlay.OverlayWidthTransitionTest",
+      "name": "geometryRefreshAndReducedMotionApplyImmediately",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.overlay.OverlayWidthTransitionTest",
+      "name": "replacementStartsAtCurrentWidthAndRejectsStaleFrames",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "cancelledPreparationCannotPublishAFragmentAndCanResume",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "searchEnginePublishesLexicalBeforeDelayedSemanticAndRanksExactAppsAboveIt",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "versionTwoMigrationAddsVectorsWithoutResettingTheTextIndex",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "clearRemovesOnlyDerivedVectorsAndKeepsTheTextualIndex",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "rebuiltIndexResumesCachedFragmentsAndNeverReturnsStaleText",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "semanticRetrievesWithoutLiteralOverlapAndKeepsNativeFileAction",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "literalQueriesAndExplicitTypeFiltersCannotBeRelaxed",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "privacyAndResourceChangesDuringInferenceDiscardThePendingWrite",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "revokedSafGrantDuringInferenceCannotPublishOrReturnAFragment",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticIndexTest",
+      "name": "changingSourceWhileInferenceRunsDiscardsTheOldFragmentAndKeepsNewText",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPolicyTest",
+      "name": "fragmentOffsetsStayInOriginalTextAndCoverageIsExplicitlyLimited",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPolicyTest",
+      "name": "corruptVectorsAreRefusedAndSerializationIsNormalized",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPolicyTest",
+      "name": "devicePressureAndUnknownStateNeverAdmitEmbedding",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPolicyTest",
+      "name": "semanticNeverRelaxesLiteralBooleanOrUnknownFilters",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPolicyTest",
+      "name": "casedWordPieceMatchesRealHuggingFaceTokensForSpanishCorpus",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPolicyTest",
+      "name": "controlsAndSurrogatesCannotProduceInvalidOffsets",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPreferenceTest",
+      "name": "existingPreferencesDoNotOptInAndPartialUpdatesPreserveConsent",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticPreferenceTest",
+      "name": "absentOrPartialModelDoesNotDownloadOrBecomeReady",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticWorkerTest",
+      "name": "cancellingQueuedRequestDoesNotCancelTheDifferentActiveOwner",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticWorkerTest",
+      "name": "nativeCancellationBindingNeverSurvivesDetach",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.semantic.SemanticWorkerTest",
+      "name": "cancelledNativeOwnerRetainsResourcesUntilItFinishesAndCannotPublishLate",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "appearanceHasOneWidthControlAndNoTechnicalOverrides",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "phoneExposesOneAccessibleCompactToWideSlider",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "resettingPositionMustNotEraseHorizontalWidth",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "appearanceDraftOnlyAppliesOnRequest",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "landscapeControlRemainsReachableWithoutTechnicalText",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "openingSettingsDoesNotMigrateLegacyGeometryArbitrarily",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "name": "newWidthChoicePreservesPositionSavedDataAndLegacyValues",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthVisualSnapshotTest",
+      "name": "phoneHorizontalOverride",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthVisualSnapshotTest",
+      "name": "tabletHorizontalOverride",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsReviewCaptureTest",
+      "name": "homeIsCompactAndDoesNotRequestPermissions",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsReviewCaptureTest",
+      "name": "phoneHomeAndLightThemeRemainUsable",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsReviewCaptureTest",
+      "name": "shortcutsNavigateWithoutChangingPreferences",
+      "status": "passed",
+      "lastRound": "gemini-capture"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsReviewCaptureTest",
+      "name": "functionCenterShowsRealUnconfiguredStatesAndCanReturn",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsReviewCaptureTest",
+      "name": "guideRequiresSelectionAndExplicitActionForEachPermission",
+      "status": "passed",
+      "lastRound": "dialog-retry"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "newIntentTargetsExistingSettingsActivity",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "appearanceCategorySurvivesActivityRecreation",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "appearanceHasOneWidthAndResetRequiresConfirmation",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "globalSearchFindsGeminiAndReturnsToCategory",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "tabletHasSevenAreasAndIndependentDetailsPane",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "phoneCanChooseAreaAndScrollAllControls",
+      "status": "passed",
+      "lastRound": "directed"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "name": "darkCapabilitiesReflectUnavailablePermissions",
+      "status": "passed",
+      "lastRound": "directed"
+    }
+  ],
+  "lintReview": {
+    "Warning": 10,
+    "Information": 1
+  },
+  "instrumentationExecuted": false,
+  "visuals": "Actual MainActivity/Jetpack Compose via Robolectric native graphics. Not physical One UI. Guide is actual dialog crop.",
+  "captureHarness": "External snapshot adds captures only; no production code or original assertions removed. Both real windows require a dialog selector.",
+  "fullSuite": "Not rerun; historical 572/597 are not current passes."
+}

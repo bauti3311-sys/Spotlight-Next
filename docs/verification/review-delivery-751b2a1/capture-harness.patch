@@ -1,0 +1,20 @@
+--- original/app/src/test/java/dev/bautista/spotlight/ui/SettingsReviewCaptureTest.kt
++++ capture-harness/app/src/test/java/dev/bautista/spotlight/ui/SettingsReviewCaptureTest.kt
+@@ -36,7 +36,7 @@
+   ui.onNodeWithTag("guided-setup-start").performScrollTo().assertIsNotEnabled()
+   ui.onNodeWithTag("feature-select-contacts").performScrollTo().performClick()
+   ui.onNodeWithTag("guided-setup-start").performScrollTo().performClick()
+-  ui.onNodeWithText("1 de 1 · Contactos").assertExists()
++  ui.onNodeWithText("1 de 1 · Contactos").assertExists();ui.onNode(isDialog()).captureRoboImage("build/review-settings/tablet-guided-setup.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
+   ui.onNodeWithText("Configurar",useUnmergedTree=true).performClick()
+   val intent=Shadows.shadowOf(ui.activity).nextStartedActivity
+@@ -55,7 +55,7 @@
+  @Test fun shortcutsNavigateWithoutChangingPreferences(){
+   ready();val app=ui.activity.application as SpotlightApp;val before=runBlocking{app.preferences.config.first()}
+   ui.onNodeWithText("Conectar Gemini").performClick();ui.onNodeWithText("Modelo").assertExists()
+-  assertEquals(before,runBlocking{app.preferences.config.first()})
++  assertEquals(before,runBlocking{app.preferences.config.first()});ui.onNodeWithText("Gemini").performClick();ui.waitUntil(5000){app.preferences.current?.aiProvider=="gemini"};ui.onNodeWithText("Gemini").assertIsSelected();capture("tablet-gemini-settings")
+  }
+  @Test @Config(qualifiers="w360dp-h800dp") fun phoneHomeAndLightThemeRemainUsable(){
+   ready();val app=ui.activity.application as SpotlightApp
