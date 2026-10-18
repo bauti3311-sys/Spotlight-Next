@@ -6,9 +6,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.ui.input.pointer.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.interaction.*
@@ -103,13 +100,16 @@ fun ResultRow(
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().testTag("result:${result.id}").pointerInput(result.id){awaitEachGesture{awaitFirstDown(requireUnconsumed=false,pass=PointerEventPass.Initial);onInteraction()}}.heightIn(min=if(inline)GlassTokens.rowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onDetails();true}) }
+        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.rowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
             .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
             .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=amount*if(dark).14f else .10f),RoundedCornerShape(GlassTokens.rowRadius))
 
-            .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,onClick=onOpen,onLongClick=onDetails)
+            // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
+            // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
+            .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,
+                onClick={onInteraction();onOpen()},onLongClick={onInteraction();onDetails()})
             .padding(start = 12.dp, end = 8.dp, top = pad.dp, bottom = pad.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -148,7 +148,7 @@ fun ResultRow(
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
-        if(selected || hovered) IconButton(onClick = onDetails, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
+        if(selected || hovered) IconButton(onClick = {onInteraction();onDetails()}, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
             Icon(
                 CommandIcons.Chevron,
                 "Operaciones del resultado",
