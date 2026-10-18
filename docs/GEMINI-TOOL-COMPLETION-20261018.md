@@ -1,7 +1,9 @@
 # Gemini: propuestas completas antes de ofrecer herramientas
 
 Base: `1d84fc11e292ccefa739cbf52490aeb1b944f3d8`.
-Estado: checkpoint de tres pruebas nuevas SIN VERIFICAR; producción todavía sin cambios.
+Estado: fallo reproducido sobre 043ff24 (10 pruebas, 3 fallos, 0 errores/omisiones); corrección implementada, todavía SIN VERIFICAR. XML RED preservado en verification/gemini-completion-20261018.
+
+Fallos observados: LANGUAGE aceptado como propuesta completa; prompt SAFETY aceptado pese a bloqueo; llamada marcada thought ofrecida como acción. Corrección: exigir STOP en generateContent no streaming, rechazar bloqueos de prompt y excluir partes thought completas. Se conserva el streaming independiente de DirectAi.
 
 Se comprueba que el parser de propuestas no acepte estados de finalización incompletos/desconocidos, bloqueos de prompt aunque incluyan candidato y llamadas marcadas como pensamiento. Una respuesta STOP normal debe conservar las herramientas disponibles. Son fixtures locales, sin solicitudes ni gastos de proveedor.
 

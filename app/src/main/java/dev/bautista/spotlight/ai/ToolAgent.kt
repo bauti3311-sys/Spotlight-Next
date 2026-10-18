@@ -30,10 +30,18 @@ object ToolProtocol {
         val calls=mutableListOf<ToolCall>();val words=StringBuilder()
         fun add(name:String,args:JSONObject){check(calls.size<6){"Demasiadas herramientas propuestas."};val call=ToolCall(name,ToolRegistry.parseArguments(args));require(name in available){"La herramienta no está disponible."};ToolRegistry.decode(call);calls+=call}
         if(provider=="gemini"){
+            val blockReason=root.optJSONObject("promptFeedback")?.optString("blockReason").orEmpty()
+            check(blockReason.isEmpty() || blockReason=="BLOCK_REASON_UNSPECIFIED"){"El proveedor bloqueó la consulta."}
             val candidate=root.optJSONArray("candidates")?.optJSONObject(0) ?: error("El proveedor no devolvió una propuesta.")
-            check(candidate.optString("finishReason") !in setOf("MAX_TOKENS","SAFETY","RECITATION","MALFORMED_FUNCTION_CALL","UNEXPECTED_TOOL_CALL")){"La propuesta quedó incompleta o bloqueada."}
+            // generateContent is non-streaming: only a completed candidate can offer actions.
+            check(candidate.optString("finishReason")=="STOP"){"La propuesta quedó incompleta o bloqueada."}
             val parts=candidate.optJSONObject("content")?.optJSONArray("parts") ?: error("Propuesta vacía.")
-            for(i in 0 until parts.length()){val p=parts.getJSONObject(i);p.optJSONObject("functionCall")?.let{add(it.getString("name"),it.optJSONObject("args") ?: JSONObject())};if(p.has("text") && !p.optBoolean("thought"))words.append(p.getString("text"))}
+            for(i in 0 until parts.length()){
+                val p=parts.getJSONObject(i)
+                if(p.optBoolean("thought"))continue
+                p.optJSONObject("functionCall")?.let{add(it.getString("name"),it.optJSONObject("args") ?: JSONObject())}
+                if(p.has("text"))words.append(p.getString("text"))
+            }
         }else {
             check(root.optString("status") !in setOf("incomplete","failed")){"La propuesta quedó incompleta."}
             val output=root.optJSONArray("output") ?: error("Propuesta vacía.")

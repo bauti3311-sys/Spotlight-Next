@@ -1,0 +1,21 @@
+{
+  "source_commit": "1d84fc11e292ccefa739cbf52490aeb1b944f3d8",
+  "task": ":app:lintDebug",
+  "result": "BUILD SUCCESSFUL",
+  "duration": "3m 27s",
+  "issues_by_severity": {
+    "Warning": 10,
+    "Information": 1
+  },
+  "issue_ids": {
+    "ScopedStorage": 1,
+    "DiscouragedPrivateApi": 1,
+    "ExifInterface": 1,
+    "RedundantLabel": 1,
+    "ChromeOsAbiSupport": 1,
+    "TrustAllX509TrustManager": 3,
+    "DataExtractionRules": 1,
+    "AutoboxingStateCreation": 1,
+    "ViewConstructor": 1
+  }
+}

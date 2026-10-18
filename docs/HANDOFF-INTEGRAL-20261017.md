@@ -1,6 +1,6 @@
 #18/10 · Corrección táctil PDF verificada con pruebas dirigidas
 
-Código2391891:17/17casos,4suites,0fallos/errores/omisiones. Fallo anterior reproducido2/2por selección prematura; combinedClickable arbitra toque/arrastre antes de seleccionar. Inercia y final de lista comprobados; QuickLook/teclado/búsqueda minimalista conservados. Evidencia XML en verification/pdf-touch-20261018; detalle en PDF-TOUCH-20261018.md. Lint pendiente, no suite integral nueva, APK, instrumentación ni validación OneUI. Reserva work-recovery-20261018-cd7b8fe1285c transferida por autorización explícita. Consultar remoto/reserva al retomar.
+Código2391891:17/17casos,4suites,0fallos/errores/omisiones. Fallo anterior reproducido2/2por selección prematura; combinedClickable arbitra toque/arrastre antes de seleccionar. Inercia y final de lista comprobados; QuickLook/teclado/búsqueda minimalista conservados. Evidencia XML en verification/pdf-touch-20261018; detalle en PDF-TOUCH-20261018.md. Lint Debug aprobado: 0 errores, 10 advertencias, 1 informativa. Sin suite integral nueva, APK, instrumentación ni validación OneUI. Reserva work-recovery-20261018-cd7b8fe1285c transferida por autorización explícita. Consultar remoto/reserva al retomar.
 
 ---
 
