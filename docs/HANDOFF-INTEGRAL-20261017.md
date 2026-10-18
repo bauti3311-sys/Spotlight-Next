@@ -1,3 +1,9 @@
+# Gate18/10 ·629casos, un fixture asíncrono corregido
+
+Código2533b58ejecutó629casos completos:628correctos y1fallo en SettingsReviewCaptureTest.guideRequiresSelectionAndExplicitActionForEachPermission. No se considera gate verde. El test observaba Configurar selección mientras la lista de capacidades seguía cargando enIO; ahora espera feature-select-contacts con el límite existente15s, conservando selección/consentimiento y todas las aserciones. No cambia Ajustes ni producción. Repetir gate integral/lintReview/assembleReview/compileDebugAndroidTestKotlin antes de firmar/entregar Review30. Preservar los checkpoints anteriores; ningún proveedor/Actions/main/clave nueva.
+
+---
+
 # Recuperación18/10 · cancelación y regresiones antes de nueva Review
 
 Continuación de d7f692e; PlanExecution descarta resultados tardíos después de cancelación (test rojo1despacho→verde0,7casos del coordinador correctos). La primera suite completa minimalista626/6NOaprobada permitió corregir notificaciones explícitas, IA heredada y navegación expandida. Ronda42:41correctos; IA restante luego corregida y pasó con11de elegibilidad. Nuevas regresiones /apps,/contacts aún requieren gate final. No sumar estas rondas a una suite completa verde.

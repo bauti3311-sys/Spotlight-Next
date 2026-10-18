@@ -34,6 +34,8 @@ class SettingsReviewCaptureTest {
  @Test fun guideRequiresSelectionAndExplicitActionForEachPermission(){
   ready();ui.onNodeWithTag("open-function-center").performClick()
   ui.onNodeWithTag("guided-setup-start").performScrollTo().assertIsNotEnabled()
+  // The guide button exists while the real capability states are still loading on IO.
+  ui.waitUntil(15000){ui.onAllNodesWithTag("feature-select-contacts").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithTag("feature-select-contacts").performScrollTo().performClick()
   ui.onNodeWithTag("guided-setup-start").performScrollTo().performClick()
   ui.onNodeWithText("1 de 1 · Contactos").assertExists()
