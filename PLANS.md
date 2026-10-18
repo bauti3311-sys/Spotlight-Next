@@ -486,3 +486,8 @@ Base226c8b1→bloque CompactResults/expansión/Tab seguro/legibilidad;72casos ú
 ## 18/10 · cancelación y consolidación antes de Review30
 
 PlanExecution rojo1despacho tras cancelar→verde0;7dirigidas correctas. Primera suite626/6fallida no es gate aprobado. Correcciones de IA explícita/notificaciones/restauración de expansión; secundarias se exploran con Ver más según nuevo contrato. Fullgate/lint/R8/Review30pendientes. Ver CANCELACION-PLANES-20261018.md; no Actions ni nueva firma. Checkpoint de recuperación antes de gate largo.
+
+
+##18/10 · Gesto PDF
+
+Corrección2391891verificada:17casos/4suites/0fallos, con siete gestos incluyendo inercia y final de lista. Reproducción previa2fallos esperados por selección durante down/drag. Evidencia docs/verification/pdf-touch-20261018 y PDF-TOUCH-20261018.md. Lint dirigido pendiente; sin afirmar física/ML/proveedor/suite integral ni nueva APK. Próximo: cerrar lint y continuar herramientas Gemini (rechazo de propuestas no finalizadas/bloqueadas) sobre ToolProtocol existente, con pruebas de contrato.

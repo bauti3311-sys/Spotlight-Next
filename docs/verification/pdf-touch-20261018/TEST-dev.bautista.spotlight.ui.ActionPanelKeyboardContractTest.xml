@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-18T22:45:57" hostname="25e065f670cf" time="27.947">
+  <properties/>
+  <testcase name="tabCyclesAndEnterRunsOnlyFocusedContextAction" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="27.947"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

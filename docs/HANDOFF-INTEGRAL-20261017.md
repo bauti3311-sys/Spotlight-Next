@@ -1,3 +1,9 @@
+#18/10 · Corrección táctil PDF verificada con pruebas dirigidas
+
+Código2391891:17/17casos,4suites,0fallos/errores/omisiones. Fallo anterior reproducido2/2por selección prematura; combinedClickable arbitra toque/arrastre antes de seleccionar. Inercia y final de lista comprobados; QuickLook/teclado/búsqueda minimalista conservados. Evidencia XML en verification/pdf-touch-20261018; detalle en PDF-TOUCH-20261018.md. Lint pendiente, no suite integral nueva, APK, instrumentación ni validación OneUI. Reserva work-recovery-20261018-cd7b8fe1285c transferida por autorización explícita. Consultar remoto/reserva al retomar.
+
+---
+
 # Entrega Review30 verificada · 18/10/2026
 
 Código y ZIP exactos82369b7ae4d94809a7f4754322d7b61cde449637. Se recuperó el HEAD remoto y la reserva propia; no se retrocedió a751b2a1. XML recuperados confirman629casos/131suites con0fallos/errores/omisiones y lintReview0errores/10advertencias/1informativa del mismo SHA. No se repitieron en esta recuperación. La compilación temporal anterior había terminado pero el APK se perdió; se restauraron JDK/SDK/Gradle y se ejecutó solo :app:assembleReview: BUILD SUCCESSFUL in7m35s,47tareas ejecutadas.183entradas de producción idénticas al SHA. Firma v2/v3 y zipalign16KB correctos; Review30/min26/target35/ARM64/no debug/certificado Review751 conservado. Principal29/P1/firmas históricas intactas. Ver ENTREGA-REVIEW30-82369b7.md y verification/review30-82369b7.

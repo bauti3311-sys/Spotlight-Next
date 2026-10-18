@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ResultTouchScrollTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-18T22:46:28" hostname="25e065f670cf" time="0.438">
+  <properties/>
+  <testcase name="accessibilityClickKeepsTheSameSelectionAndPrimaryContract" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.057"/>
+  <testcase name="completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.046"/>
+  <testcase name="draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.079"/>
+  <testcase name="touchDownAndCancelledGestureDoNotSelectOrOpenPdf" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.041"/>
+  <testcase name="longPressShowsActionsWithoutInvokingPrimaryCallback" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.05"/>
+  <testcase name="repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.108"/>
+  <testcase name="fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument" classname="dev.bautista.spotlight.ui.ResultTouchScrollTest" time="0.057"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
