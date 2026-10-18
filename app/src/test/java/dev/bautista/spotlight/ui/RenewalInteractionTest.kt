@@ -32,7 +32,7 @@ class RenewalInteractionTest {
         ui.waitUntil(15000) { ui.onAllNodesWithText("Activar sonido").fetchSemanticsNodes().isNotEmpty() }
         ui.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Silenciar"))
         ui.onNodeWithText("Silenciar").assertExists()
-        ui.onNodeWithText("Volver").performClick()
+        ui.onNodeWithTag("results-expand").performClick()
         ui.onNodeWithText("sonido").assertExists()
         ui.waitUntil(15000) { ui.onAllNodesWithText("Ver más",substring=true).fetchSemanticsNodes().isNotEmpty() }
         ui.runOnIdle {

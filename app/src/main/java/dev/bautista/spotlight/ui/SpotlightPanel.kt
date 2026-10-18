@@ -83,17 +83,21 @@ fun SpotlightPanel(
         val replyConnected by Replies.connected.collectAsState()
         fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
         var category by remember { mutableStateOf("Todo") }
+        data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int,
+            val expanded: Boolean, val retainedId: String?)
+        var restoringLocation by remember { mutableStateOf<Location?>(null) }
+        val restoredLocation=restoringLocation?.takeIf{it.query==query && it.category==category && it.scope==searchScope}
         var searchOptions by remember { mutableStateOf(false) }
-        var moreResults by remember(query, category, searchScope) { mutableStateOf(false) }
-        var collapsedSelection by remember(query, category, searchScope) { mutableStateOf<String?>(null) }
+        var moreResults by remember(query, category, searchScope) { mutableStateOf(restoredLocation?.expanded ?: false) }
+        var collapsedSelection by remember(query, category, searchScope) { mutableStateOf(restoredLocation?.retainedId) }
+        SideEffect { restoringLocation=null }
         var canAutocomplete by remember { mutableStateOf(false) }
         val resultsState=remember { mutableStateOf(emptyList<Result>()) }
         var results by resultsState
         var searchGeneration by remember { mutableIntStateOf(0) }
         var selected by remember { mutableIntStateOf(0) }
-        data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int)
         val history = remember { mutableStateListOf<Location>() }
-        fun push() { history.add(Location(query,category,searchScope,selected)) }
+        fun push() { history.add(Location(query,category,searchScope,selected,moreResults,collapsedSelection)) }
         var navigating by remember { mutableStateOf(false) }
         var pointerSelecting by remember { mutableStateOf(false) }
         var preview by remember { mutableStateOf<Result?>(null) }
@@ -163,6 +167,7 @@ fun SpotlightPanel(
             clearForms();preview=null;menu=false;noteEditor=false;selected=0;navigating=false;cardJob?.cancel();card=null
             if(history.isNotEmpty()) {
                 val previous=history.removeAt(history.lastIndex)
+                restoringLocation=previous
                 query=previous.query;category=previous.category;searchScope=previous.scope;selected=previous.selected
             } else {searchScope=null;category="Todo"}
             runCatching{focus.requestFocus()}

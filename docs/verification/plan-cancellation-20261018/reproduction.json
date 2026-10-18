@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "d7f692e6d06f1170297995ad6357bf458e4a20b0",
+  "sourceFile": "app/src/main/java/dev/bautista/spotlight/ai/PlanExecution.kt",
+  "sourceSha256": "ebd0dca0da40082f9cca00578ba044f4d69b53217e978dd791c9b8392510fcd2",
+  "test": "lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep",
+  "expected": "0 dispatches after cancellation",
+  "observed": "1 dispatch after cancellation",
+  "redXml": [
+    {
+      "name": "TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml",
+      "sha256": "abe4768aec07ecef0b3ef3404ce3c15135ae59a118d21696efdce33bdab3ce76"
+    }
+  ]
+}

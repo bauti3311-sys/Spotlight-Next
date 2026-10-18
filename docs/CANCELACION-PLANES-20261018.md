@@ -1,0 +1,11 @@
+# Cancelación segura y continuidad de búsqueda · 18/10
+
+Decisiones4/13: PlanExecution comprobaba cancelación al comenzar cada paso, pero aceptaba el resultado de un ejecutor que retornase después de cancelarse. Reproducción sobre d7f692e: se esperaba0despachos y ocurrió1. El test cancela su Job dentro del adaptador y devuelve una acción preparada; no emplea proveedores, claves ni ejecución Android real. Se registra SHA del origen y XML en verification/plan-cancellation-20261018.
+
+Corrección: ensureActive inmediatamente después de execute y antes de dispatch. Los7casos del coordinador pasan en la ronda dirigida, incluido el nuevo: descarta la acción tardía y no inicia el paso siguiente. No revierte cambios completados ni garantiza detener una llamada nativa no cooperativa que ya estuviera ejecutándose. No se sustituyen ToolRegistry, permisos ni confirmaciones.
+
+La primera suite completa del bloque minimalista ejecutó626casos y falló6: se conserva ese resultado como NO aprobado y sus gates posteriores no corrieron. Se corrigieron notificaciones reales pedidas explícitamente, IA heredada `ia hola` y restauración de expansión al volver de subvista. Las pruebas secundarias ahora usan Ver más/menos según el contrato aprobado sin eliminar ninguna capacidad/aserción de acceso. La ronda42aprobó41; el caso restante de IA luego pasó junto con11casos de elegibilidad. Se añaden URLs/proveedores explícitos, carpetas solicitadas y términos de /apps y /contacts, sin relajar el filtrado del ruido genérico. Estos últimos cambios requieren el gate final.
+
+Review prepara código30 (solo varianteReview, producción29intacta), conserva paquete/certificado originalReview y no usa principal/P1. Compilación/R8/lint/APK verificada siguen pendientes en este checkpoint de recuperación. No presentar la salida sin firma como instalable. Fuente y APK se vincularán al mismo SHA publicado tras comprobar entradas; firma externa con clave Review ya recuperada.
+
+Siguiente paso exacto: ejecutar suite completa sin filtros, lintReview, assembleReview y compileDebugAndroidTestKotlin en un solo Gradle. Corregir sin desactivar checks si aparece una regresión. Verificar snapshots intactos fuera de resultados, firma/alineación/paquete30ARM64, archivar fuente exacta, entregar Review y evidencia. No hay tablet/ADB/KVM ni llamada al proveedor real; no Actions/main/PR16/force.

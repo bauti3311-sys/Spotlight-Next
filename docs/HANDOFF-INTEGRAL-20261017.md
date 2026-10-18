@@ -1,3 +1,11 @@
+# Recuperación18/10 · cancelación y regresiones antes de nueva Review
+
+Continuación de d7f692e; PlanExecution descarta resultados tardíos después de cancelación (test rojo1despacho→verde0,7casos del coordinador correctos). La primera suite completa minimalista626/6NOaprobada permitió corregir notificaciones explícitas, IA heredada y navegación expandida. Ronda42:41correctos; IA restante luego corregida y pasó con11de elegibilidad. Nuevas regresiones /apps,/contacts aún requieren gate final. No sumar estas rondas a una suite completa verde.
+
+Ver CANCELACION-PLANES-20261018.md y verification/plan-cancellation-20261018. VarianteReview preparada con código30, paquete/certificado anterior; principal29/P1intactas. Siguiente paso exacto: fulltest +lintReview +assembleReview +compileDebugAndroidTestKotlin local, comparar componentes intactos, firmar/verificar con Review recuperada, fuente del mismo SHA y entrega descargable. Todavía no hay APK nueva verificada ni gate integral correcto. Sin Actions/dispositivo/KVM/proveedor real/main/force. Preservar el checkpoint publicado antes de ese gate largo.
+
+---
+
 # Continuidad18/10 · búsqueda minimalista
 
 Base226c8b1, propietario work-gemini-native-20261014-f914c617 comprobados por GitHub Git Data; status CLI no obtiene autenticación. Reserva propia renovada por SHA esperado, sin force ni cambios de main/PR16/Actions.

@@ -482,3 +482,7 @@ Entrega urgente cerrada: APK Review de751b2a1 compilada/firma Review recuperada/
 ## 18/10 · búsqueda minimalista aprobada
 
 Base226c8b1→bloque CompactResults/expansión/Tab seguro/legibilidad;72casos únicos dirigidos correctos en rondas,183entradas de producción coincidentes. Capturas antes/después separadas y gitleaks0. Gating integral/lint/R8 aún pendiente; no APK nueva/Actions/main ni validación OneUI. Ver BUSQUEDA-MINIMALISTA-20261018.md y evidencia. Continuar cancelación segura de planes (4/13) con test rojo antes de ampliar capacidades.
+
+## 18/10 · cancelación y consolidación antes de Review30
+
+PlanExecution rojo1despacho tras cancelar→verde0;7dirigidas correctas. Primera suite626/6fallida no es gate aprobado. Correcciones de IA explícita/notificaciones/restauración de expansión; secundarias se exploran con Ver más según nuevo contrato. Fullgate/lint/R8/Review30pendientes. Ver CANCELACION-PLANES-20261018.md; no Actions ni nueva firma. Checkpoint de recuperación antes de gate largo.

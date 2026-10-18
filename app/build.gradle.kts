@@ -60,6 +60,12 @@ android {
 
  }
 }
+// Review updates keep their original certificate and advance independently of production.
+androidComponents {
+ onVariants(selector().withBuildType("review")) { variant ->
+  variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
+ }
+}
 dependencies {
  implementation("com.microsoft.onnxruntime:onnxruntime-android:1.23.2")
  androidTestImplementation("androidx.test.ext:junit:1.2.1")

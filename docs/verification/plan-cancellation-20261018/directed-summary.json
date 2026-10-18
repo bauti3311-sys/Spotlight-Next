@@ -1,0 +1,10 @@
+{
+  "planCases": 7,
+  "failures": 0,
+  "errors": 0,
+  "suite": "dev.bautista.spotlight.ai.PlanExecutionTest",
+  "newRegression": "lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep",
+  "fullGate": "Initial626/6 failed; corrections in progress, not a successful gate",
+  "uiRegressionRound": "42 total,41 passed; legacy ia hola subsequently passed in isolated retry with11 eligibility cases",
+  "pending": "Final full Android gate/lint/Review and new scoped app/contact tests"
+}

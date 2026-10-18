@@ -24,6 +24,9 @@ class PlanExecution(private val execute:suspend(ToolCall)->ToolExecution,
    emit(PlanEvent(i,StepState.RUNNING,"Ejecutando…"))
    val event=try {
     val result=execute(requireNotNull(calls[i]){"La capacidad dejó de estar disponible."})
+    // A native/provider adapter can return after cancellation. Discard that result
+    // before dispatching an Android action; cancellation is never a new authorization.
+    currentCoroutineContext().ensureActive()
     if(result.action!=null)dispatch(result)
     val state=if(result.action!=null)StepState.REQUESTED else StepState.valueOf(result.state.name)
     val prefix=when(state){StepState.VERIFIED->"Verificado";StepState.REQUESTED->"Solicitud enviada";StepState.PREPARED->"Preparado";else->"Completado"}

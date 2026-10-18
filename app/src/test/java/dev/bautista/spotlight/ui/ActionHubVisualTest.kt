@@ -51,6 +51,8 @@ class ActionHubVisualTest {
         // Changing only the cursor must preserve the current results.
         ui.onNode(hasSetTextAction()).performTextInputSelection(androidx.compose.ui.text.TextRange(0))
         ui.onNodeWithText("Enviar mensaje").assertExists()
+        // Generic file exploration is intentionally secondary in the new compact view.
+        ui.onNodeWithTag("results-expand").performClick()
         ui.onNodeWithText("Buscar archivos").performClick()
         awaitText("Documentos PDF")
         ui.onNodeWithText("Activar búsqueda de archivos").assertDoesNotExist()
@@ -83,6 +85,7 @@ class ActionHubVisualTest {
         }
         ui.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("whatsapp")))
         awaitText("Enviar mensaje")
+        ui.onNodeWithTag("results-expand").performClick()
         ui.onNodeWithText("Buscar archivos").assertExists()
     }
     @Test fun volumeSliderChangesAndroidMultimediaVolume(){

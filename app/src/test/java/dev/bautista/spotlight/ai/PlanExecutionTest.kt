@@ -40,4 +40,20 @@ class PlanExecutionTest {
   assertEquals(6,count)
   assertTrue(runCatching{runner.run(six+calls.last(),setOf(0),true).toList()}.isFailure);assertEquals(6,count)
  }
+ @Test fun lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep()=runBlocking {
+  val owner=Job()
+  val executed=mutableListOf<String>()
+  var dispatched=0
+  val runner=PlanExecution({
+   executed+=it.name
+   // Simulate a native/provider boundary returning despite a cancellation already requested.
+   owner.cancel(CancellationException("fixture cancellation before late result"))
+   ToolExecution("late prepared result",dev.bautista.spotlight.search.Action.SystemPanel("device"))
+  },{dispatched++})
+  val error=runCatching{withContext(owner){runner.run(calls,setOf(0,1),true).toList()}}.exceptionOrNull()
+  assertTrue(error is CancellationException)
+  assertEquals("Cancellation must block dispatch of the late action",0,dispatched)
+  assertEquals(listOf("open_app"),executed)
+ }
+
 }
