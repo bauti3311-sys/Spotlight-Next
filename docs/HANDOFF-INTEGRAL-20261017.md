@@ -1,3 +1,13 @@
+# Entrega Review30 verificada · 18/10/2026
+
+Código y ZIP exactos82369b7ae4d94809a7f4754322d7b61cde449637. Se recuperó el HEAD remoto y la reserva propia; no se retrocedió a751b2a1. XML recuperados confirman629casos/131suites con0fallos/errores/omisiones y lintReview0errores/10advertencias/1informativa del mismo SHA. No se repitieron en esta recuperación. La compilación temporal anterior había terminado pero el APK se perdió; se restauraron JDK/SDK/Gradle y se ejecutó solo :app:assembleReview: BUILD SUCCESSFUL in7m35s,47tareas ejecutadas.183entradas de producción idénticas al SHA. Firma v2/v3 y zipalign16KB correctos; Review30/min26/target35/ARM64/no debug/certificado Review751 conservado. Principal29/P1/firmas históricas intactas. Ver ENTREGA-REVIEW30-82369b7.md y verification/review30-82369b7.
+
+APK Spotlight-Next-Review-30-82369b7.apk SHA256 8f865b42a27db36d02d0a96659b9b3285e13a0f8a455b0fc19d869adcecd793e. Fuente Spotlight-Next-source-82369b7.zip SHA256 dba2181e49b6afae08e1f77be7642bb922e583471da634ad17f345c4d6855e89. Capturas reales de Ajustes recuperadas751 (producción sin cambios); se adjuntan con las del bloque minimalista. La clave Review existente sigue fuera de Git y respaldada privadamente; no generar otra para futuras actualizaciones.
+
+Instrumentación NO ejecutada: no dispositivo/KVM; intento anterior offline no pudo resolver junit1.2.1/runner1.6.2 y su pipeline terminó fallido después de assembleReview. Ninguna afirmación de CI/proveedor/OneUI verde. Gemini requiere clave/modelo; semántica opt-in138MB/preparación; capacidades Android con permisos reales. Las40decisiones siguen parciales. Sin Actions/main/PR16/force/presupuestos/nuevas funciones. Siguiente paso: entregar los archivos y recibir evaluación física del usuario; no hay tareas en segundo plano.
+
+---
+
 # Gate18/10 ·629casos, un fixture asíncrono corregido
 
 Código2533b58ejecutó629casos completos:628correctos y1fallo en SettingsReviewCaptureTest.guideRequiresSelectionAndExplicitActionForEachPermission. No se considera gate verde. El test observaba Configurar selección mientras la lista de capacidades seguía cargando enIO; ahora espera feature-select-contacts con el límite existente15s, conservando selección/consentimiento y todas las aserciones. No cambia Ajustes ni producción. Repetir gate integral/lintReview/assembleReview/compileDebugAndroidTestKotlin antes de firmar/entregar Review30. Preservar los checkpoints anteriores; ningún proveedor/Actions/main/clave nueva.

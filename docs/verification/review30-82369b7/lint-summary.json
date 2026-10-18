@@ -1,0 +1,64 @@
+{
+  "sourceCommit": "82369b7ae4d94809a7f4754322d7b61cde449637",
+  "counts": {
+    "Warning": 10,
+    "Information": 1
+  },
+  "issues": [
+    {
+      "id": "ScopedStorage",
+      "severity": "Warning",
+      "message": "The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE"
+    },
+    {
+      "id": "DiscouragedPrivateApi",
+      "severity": "Warning",
+      "message": "Reflective access to getService, which is not part of the public SDK and therefore likely to change in future Android releases"
+    },
+    {
+      "id": "ExifInterface",
+      "severity": "Warning",
+      "message": "Avoid using `android.media.ExifInterface`; use `androidx.exifinterface.media.ExifInterface` instead"
+    },
+    {
+      "id": "RedundantLabel",
+      "severity": "Warning",
+      "message": "Redundant label can be removed"
+    },
+    {
+      "id": "ChromeOsAbiSupport",
+      "severity": "Warning",
+      "message": "Missing x86_64 ABI support for ChromeOS"
+    },
+    {
+      "id": "TrustAllX509TrustManager",
+      "severity": "Warning",
+      "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers"
+    },
+    {
+      "id": "TrustAllX509TrustManager",
+      "severity": "Warning",
+      "message": "`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers"
+    },
+    {
+      "id": "TrustAllX509TrustManager",
+      "severity": "Warning",
+      "message": "`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers"
+    },
+    {
+      "id": "DataExtractionRules",
+      "severity": "Warning",
+      "message": "The attribute `android:dataExtractionRules` only applies for Android 12 and higher; since `minSdkVersion` is API 26 you should also set `android:fullBackupContent`"
+    },
+    {
+      "id": "AutoboxingStateCreation",
+      "severity": "Information",
+      "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+    },
+    {
+      "id": "ViewConstructor",
+      "severity": "Warning",
+      "message": "Custom view `WindowFocusHost` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`"
+    }
+  ]
+}

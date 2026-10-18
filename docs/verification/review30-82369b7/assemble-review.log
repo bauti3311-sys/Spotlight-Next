@@ -1,0 +1,77 @@
+
+Welcome to Gradle 8.10.2!
+
+Here are the highlights of this release:
+ - Support for Java 23
+ - Faster configuration cache
+ - Better configuration cache reports
+
+For more details see https://docs.gradle.org/8.10.2/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:buildKotlinToolingMetadata
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReviewBuild UP-TO-DATE
+> Task :app:compileReviewAidl
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkReviewAarMetadata
+> Task :app:generateReviewResValues
+> Task :app:mapReviewSourceSetPaths
+> Task :app:generateReviewResources
+> Task :app:mergeReviewResources
+> Task :app:packageReviewResources
+> Task :app:parseReviewLocalResources
+> Task :app:createReviewCompatibleScreenManifests
+> Task :app:extractDeepLinksReview
+> Task :app:processReviewMainManifest
+> Task :app:processReviewManifest
+> Task :app:processReviewManifestForPackage
+> Task :app:processReviewResources
+> Task :app:compileReviewKotlin
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt:15:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt:34:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/control/ReplyService.kt:34:155 'val sender: CharSequence?' is deprecated. Deprecated in Java.
+w: file:///tmp/spotlight-p1-build/app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt:198:48 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+
+> Task :app:javaPreCompileReview
+> Task :app:compileReviewJavaWithJavac
+> Task :app:extractProguardFiles
+> Task :app:generateReviewLintVitalReportModel
+> Task :app:lintVitalAnalyzeReview
+> Task :app:lintVitalReportReview
+> Task :app:lintVitalReview
+> Task :app:mergeReviewJniLibFolders
+> Task :app:mergeReviewNativeLibs
+
+> Task :app:stripReviewDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so, liblanguage_id_l2c_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libonnxruntime.so, libonnxruntime4j_jni.so, libtranslate_jni.so.
+
+> Task :app:extractReviewNativeSymbolTables
+> Task :app:mergeReviewNativeDebugMetadata NO-SOURCE
+> Task :app:checkReviewDuplicateClasses
+> Task :app:mergeReviewArtProfile
+> Task :app:expandReviewArtProfileWildcards
+> Task :app:mergeReviewGeneratedProguardFiles
+> Task :app:processReviewJavaRes
+> Task :app:mergeReviewJavaResource
+> Task :app:mergeReviewStartupProfile
+> Task :app:minifyReviewWithR8
+> Task :app:compileReviewArtProfile
+> Task :app:mergeReviewShaders
+> Task :app:compileReviewShaders NO-SOURCE
+> Task :app:generateReviewAssets UP-TO-DATE
+> Task :app:mergeReviewAssets
+> Task :app:compressReviewAssets
+> Task :app:extractReviewVersionControlInfo
+> Task :app:optimizeReviewResources
+> Task :app:collectReviewDependencies
+> Task :app:sdkReviewDependencyData
+> Task :app:writeReviewAppMetadata
+> Task :app:writeReviewSigningConfigVersions
+> Task :app:packageReview
+> Task :app:createReviewApkListingFileRedirect
+> Task :app:assembleReview
+
+BUILD SUCCESSFUL in 7m 35s
+47 actionable tasks: 47 executed
