@@ -36,7 +36,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
             !dev.bautista.spotlight.extensions.ExtensionStore.enabled(app,d.extension) -> {status=CapabilityStatus.DISABLED;reason="Activá la integración correspondiente en Ajustes."}
             d.advanced && !app.shizuku.state.value.available -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="Shizuku debe estar conectado y autorizado."}
             d.id=="write_display_setting" && app.shizuku.writeCapability.value!=true -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Falta autorización de escritura verificada con Shizuku."}
-            d.id=="control_media" && !listOf("play","pause","next","previous").any{MediaControl.available(app,it)} -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="No hay sesión multimedia compatible y autorizada."}
+            d.id=="control_media" && !listOf("play","pause","next","previous").any{MediaControl.available(app,it)} -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="No hay un único reproductor compatible y autorizado. Revisá cuál está activo."}
             d.id=="search_contacts" && !c.contacts -> {status=CapabilityStatus.DISABLED;reason="La búsqueda de contactos está desactivada."}
             d.id=="search_contacts" && !People.allowed(app) -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Android no concedió acceso a contactos."}
             d.id=="calendar_agenda" && ContextCompat.checkSelfPermission(app,Manifest.permission.READ_CALENDAR)!=PackageManager.PERMISSION_GRANTED -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Android no concedió acceso al calendario."}
