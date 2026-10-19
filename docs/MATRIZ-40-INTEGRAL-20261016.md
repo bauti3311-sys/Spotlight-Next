@@ -87,3 +87,7 @@ Entrega Review excepcional751b2a1: inicio compacto de Ajustes, centro de funcion
 
 
 18/10 · Gesto PDF2391891:17casos dirigidos/4suites/0fallos, incluyendo7gestos, expansión, teclado y cierre QuickLook. Selección prematura reproducida antes y corregida sin rediseño. Decisiones9/10/29/35 reforzadas, no cierre integral ni validación física. Se corrige la fila26desactualizada para reflejar el Tab ya aprobado/implementado; no se presenta como funcionalidad nueva. Evidencia verification/pdf-touch-20261018.
+
+## 18/10 · Propuestas Gemini completas
+
+Decisiones 4, 16, 18 y 20: se mantiene estado parcial. ToolProtocol exige finalización STOP, rechaza prompt bloqueado y descarta partes thought antes de ofrecer herramientas. Tres fallos reproducidos, 21 pruebas dirigidas aprobadas (protocolo, planes, capacidades); código df97608. Ver GEMINI-TOOL-COMPLETION-20261018.md. Sin proveedor real, nuevas autorizaciones ni ejecución automática.

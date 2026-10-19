@@ -1,0 +1,28 @@
+{
+  "source_commit": "df97608f97fd5721d8af1d2adb2f45ea61d36fe1",
+  "result": "BUILD SUCCESSFUL",
+  "duration": "1m 17s",
+  "suites": [
+    {
+      "name": "dev.bautista.spotlight.ai.PlanExecutionTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ai.ToolCapabilityTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ai.ToolProtocolTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ]
+}
