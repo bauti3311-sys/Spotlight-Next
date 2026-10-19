@@ -19,3 +19,5 @@ Referencias oficiales consultadas: https://ai.google.dev/api/generate-content (c
 Fixtures locales, sin solicitudes, claves ni gastos de proveedor. No acredita Gemini real, permisos físicos ni One UI. Las decisiones 4, 16, 18 y 20 siguen parciales; este bloque mejora manejo de respuestas y propuestas, no completa esas capacidades. PDF mantiene sus 17 pruebas aprobadas y lint Debug sin errores. No se generó APK, no se ejecutó Actions y no se modificaron firmas, UI o main.
 
 19/10: XML recuperados y revisados tras el corte de cuota. El resultado del lint posterior no sobrevivió en /tmp; no se declara aprobado y se repetirá al restaurar el entorno.
+
+19/10 cierre: lintDebug completado sobre 8ae0908, sin errores; 10 advertencias y 1 informativa. Evidencia en lint-summary.json. Las 21 pruebas recuperadas y este lint cierran la verificación dirigida de Gemini; proveedor y One UI continúan pendientes.
