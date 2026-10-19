@@ -8,6 +8,7 @@ import dev.bautista.spotlight.ai.*
 import dev.bautista.spotlight.data.Config as AppConfig
 import dev.bautista.spotlight.search.Action
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.last
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +30,7 @@ class AndroidCapabilityTest {
             assertTrue(raw,runCatching{ToolRegistry.decode(ToolCall("prepare_dial",mapOf("number" to raw)))}.isFailure)
         }
         val intent=People.dialIntent("+54 (9) 11-1234-5678")
-        assertEquals(Intent.ACTION_DIAL,intent.action);assertEquals("tel:$number",intent.data.toString())
+        assertEquals(Intent.ACTION_DIAL,intent.action);assertEquals("tel",intent.data!!.scheme);assertEquals(number,intent.data!!.schemeSpecificPart)
     }
     @Test fun unavailableDialerIsNotAdvertisedAndCannotExecute()=runBlocking {
         val executor=ToolExecutor(app)
@@ -47,8 +48,9 @@ class AndroidCapabilityTest {
     }
     @Test fun explicitNumberUsesLocalSearchWithoutContactsPermission()=runBlocking {
         installDialer();assertFalse(People.allowed(app))
-        val row=NaturalIntents.calls(app,number).single()
-        assertEquals("tel:$number",(row.action as Action.Launch).intent.data.toString())
+        val row=app.search.search("llamar a $number",AppConfig(files=false)).last().single()
+        val uri=(row.action as Action.Launch).intent.data!!
+        assertEquals("tel",uri.scheme);assertEquals(number,uri.schemeSpecificPart)
         assertNull(shadowOf(app).nextStartedActivity)
     }
     @Test fun missingDialerOffersCopyRatherThanFalseLaunch()=runBlocking {
@@ -63,5 +65,11 @@ class AndroidCapabilityTest {
     @Test fun diagnosticRunsLocallyWithoutExternalAction()=runBlocking {
         val result=ToolExecutor(app).execute(ToolCall("appfunctions_status",emptyMap()),AppConfig())
         assertTrue(result.text.contains("requiere Android 16"));assertNull(result.action)
+    }
+    @Test fun appFunctionsDiagnosticIsAvailableInUniversalSearch()=runBlocking {
+        val row=app.search.search("appfunctions",AppConfig(files=false)).last().single()
+        assertEquals("tool:appfunctions_status",row.id)
+        assertTrue(row.action is Action.Copy)
+        assertTrue(row.preview.orEmpty().contains("requiere Android 16"))
     }
 }

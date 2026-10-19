@@ -235,6 +235,12 @@ class SearchEngine(
         val localTools=TextTools.results(query)+SymbolTools.results(query)
         if(localTools.isNotEmpty()){send(localTools);return@channelFlow}
         val normalized=normalize(query)
+        if(normalized in setOf("appfunctions","compatibilidad appfunctions")) {
+            val definition=dev.bautista.spotlight.ai.ToolRegistry.definition("appfunctions_status")!!
+            val status=AppFunctionsSupport.inspect(context)
+            send(listOf(Result("tool:${definition.id}",definition.title,status,"Sistema",2400,Action.Copy(status),preview=status)))
+            return@channelFlow
+        }
         val replyMatch=Regex("^responder(?: a)? (.+)$").matchEntire(normalized)
         if(normalized in setOf("mensajes","mensajes pendientes","mostrar mensajes pendientes","notificaciones de whatsapp","notificaciones","responder el ultimo mensaje visible de whatsapp") || replyMatch!=null){
             if(!Replies.connected.value)send(listOf(Result("reply:access","Permitir leer notificaciones","Acceso especial de Android · opcional","Acciones",2400,Action.Access("notifications"))))

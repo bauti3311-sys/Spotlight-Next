@@ -1,0 +1,34 @@
+{
+  "source_commit": "095ba5972d1cd94385bc6e6f6fe48317515ba056",
+  "suites": [
+    {
+      "name": "dev.bautista.spotlight.search.NextToolsTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.control.AndroidCapabilityTest",
+      "tests": "7",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ai.ToolProtocolTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ai.ToolCapabilityTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "diagnosis": "Dos expectativas de fixture comparaban URI codificada con texto sin codificar: Uri.fromParts codifica + como %2B. Se corrigen aserciones a esquema tel y n\u00famero exacto decodificado, conservando validaci\u00f3n estricta. No fue fallo de producci\u00f3n."
+}
