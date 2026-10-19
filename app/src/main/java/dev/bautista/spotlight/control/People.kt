@@ -13,6 +13,13 @@ import kotlinx.coroutines.*
 
 data class Person(val id:Long,val name:String,val address:String)
 object People {
+    fun dialIntent(raw:String):Intent {
+        require(raw.length<=50 && raw.matches(Regex("[+0-9 ()-]+"))){"Ingresá un número telefónico, sin códigos especiales."}
+        val number=raw.filter{it=='+' || it in '0'..'9'}
+        require(number.matches(Regex("\\+?[0-9]{3,15}"))){"Número telefónico inválido."}
+        return Intent(Intent.ACTION_DIAL,Uri.fromParts("tel",number,null))
+    }
+    fun canDial(context:Context)=dialIntent("123").resolveActivity(context.packageManager)!=null
     fun uniqueExact(choices:List<Person>,query:String):Person?=choices.filter{dev.bautista.spotlight.search.normalize(it.name)==dev.bautista.spotlight.search.normalize(query)}.singleOrNull()
     fun allowed(context:Context)=ContextCompat.checkSelfPermission(context,Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED
     suspend fun find(context:Context,query:String,email:Boolean=false):List<Person> = withContext(Dispatchers.IO) {

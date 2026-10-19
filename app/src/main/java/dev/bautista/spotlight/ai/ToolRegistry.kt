@@ -23,10 +23,12 @@ sealed interface ToolRequest {
     data class PrepareMessage(val name:String,val text:String,val channel:String):ToolRequest
     data class Workflow(val id:String):ToolRequest
     data class OpenApp(val packageName:String):ToolRequest
+    data class PrepareDial(val number:String):ToolRequest
     data class Volume(val percent:Int):ToolRequest
     data class Media(val command:String):ToolRequest
     data object Device:ToolRequest
     data object Diagnostics:ToolRequest
+    data object AppFunctionsStatus:ToolRequest
 }
 object ToolRegistry {
     val definitions=listOf(
@@ -45,6 +47,8 @@ object ToolRegistry {
         ToolDefinition("set_volume","Ajustar volumen","Cambiar volumen multimedia al porcentaje indicado tras confirmar.","media",ToolRisk.CHANGE,listOf("percent")),
         ToolDefinition("control_media","Controlar reproducción","Controlar una sesión multimedia autorizada.","media",ToolRisk.CHANGE,listOf("command"),mapOf("command" to listOf("play","pause","next","previous"))),
         ToolDefinition("device_info","Información del dispositivo","Consultar fabricante, modelo y versión de Android.","system",ToolRisk.READ,emptyList()),
+        ToolDefinition("appfunctions_status","Compatibilidad AppFunctions","Consultar servicio y autorización local. No descubre ni ejecuta funciones de otras apps.","system",ToolRisk.READ,emptyList()),
+        ToolDefinition("prepare_dial","Preparar llamada","Preparar un número elegido por el usuario en el marcador. No inicia la llamada; no inventar números ni elegir entre contactos ambiguos.","contacts",ToolRisk.PREPARE,listOf("number")),
         ToolDefinition("shizuku_diagnostics","Diagnóstico de Shizuku","Consultar estado real de conexión y autorización; no solicitar permisos.","shizuku",ToolRisk.READ,emptyList()),
         ToolDefinition("read_display_setting","Consultar ajuste de pantalla","Leer únicamente los ajustes de pantalla registrados mediante ADB.","system",ToolRisk.READ,listOf("key"),mapOf("key" to AdvancedPolicy.settingKeys.toList()),advanced=true),
         ToolDefinition("write_display_setting","Preparar ajuste de pantalla","Preparar cambio reversible; exige confirmación de la app. Brillo 20–255, timeout 30000–1800000, rotación 0/1.","system",ToolRisk.CHANGE,listOf("key","value"),mapOf("key" to AdvancedPolicy.settingKeys.toList()),advanced=true)
@@ -70,9 +74,11 @@ object ToolRegistry {
             "prepare_message"->ToolRequest.PrepareMessage(text("name"),value("text"),value("channel"))
             "run_workflow"->ToolRequest.Workflow(text("id").also{require(it.length<=100)})
             "open_app"->ToolRequest.OpenApp(packageName())
+            "prepare_dial"->ToolRequest.PrepareDial(text("number").also{dev.bautista.spotlight.control.People.dialIntent(it)})
             "set_volume"->ToolRequest.Volume(text("percent").toIntOrNull()?.also{require(it in 0..100)} ?: error("Porcentaje inválido."))
             "control_media"->ToolRequest.Media(value("command"))
             "device_info"->ToolRequest.Device
+            "appfunctions_status"->ToolRequest.AppFunctionsStatus
             "shizuku_diagnostics"->ToolRequest.Diagnostics
             else->error("Herramienta no implementada.")
         }

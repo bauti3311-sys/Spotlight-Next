@@ -38,6 +38,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
             d.id=="write_display_setting" && app.shizuku.writeCapability.value!=true -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Falta autorización de escritura verificada con Shizuku."}
             d.id=="control_media" && !listOf("play","pause","next","previous").any{MediaControl.available(app,it)} -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="No hay un único reproductor compatible y autorizado. Revisá cuál está activo."}
             d.id=="search_contacts" && !c.contacts -> {status=CapabilityStatus.DISABLED;reason="La búsqueda de contactos está desactivada."}
+            d.id=="prepare_dial" && !People.canDial(app) -> {status=CapabilityStatus.UNSUPPORTED;reason="No hay una aplicación compatible con el marcador telefónico."}
             d.id=="search_contacts" && !People.allowed(app) -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Android no concedió acceso a contactos."}
             d.id=="calendar_agenda" && ContextCompat.checkSelfPermission(app,Manifest.permission.READ_CALENDAR)!=PackageManager.PERMISSION_GRANTED -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Android no concedió acceso al calendario."}
             d.id=="search_files" && !c.files -> {status=CapabilityStatus.DISABLED;reason="La búsqueda de archivos está desactivada."}
@@ -79,6 +80,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                 is ToolRequest.PrepareMessage->ToolExecution("Borrador preparado. Elegí el destinatario y revisá el envío.",Action.ComposeMessage(request.channel,request.name,request.text))
                 is ToolRequest.Workflow->{check(Workflows.parse(c.routines).any{it.id==request.id}){"La rutina no existe."};ToolExecution("Rutina preparada para revisión.",Action.WorkflowRun(request.id))}
                 is ToolRequest.OpenApp->{val intent=app.packageManager.getLaunchIntentForPackage(request.packageName) ?: error("La aplicación no está instalada.");ToolExecution("Aplicación disponible para abrir.",Action.Launch(intent))}
+                is ToolRequest.PrepareDial->{val intent=People.dialIntent(request.number);check(intent.resolveActivity(app.packageManager)!=null){"El marcador ya no está disponible."};ToolExecution("Número preparado. Revisalo en Teléfono y confirmá allí la llamada.",Action.Launch(intent))}
                 is ToolRequest.Volume->{
                     val audio=app.getSystemService(AudioManager::class.java)
                     check(!audio.isVolumeFixed){"Android no permite cambiar el volumen en este dispositivo."}
@@ -93,6 +95,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                 }
                 is ToolRequest.Media->ToolExecution(MediaControl.execute(app,request.command),state=ExecutionState.REQUESTED)
                 ToolRequest.Device->ToolExecution("${Build.MANUFACTURER} ${Build.MODEL}\nAndroid ${Build.VERSION.RELEASE} · API ${Build.VERSION.SDK_INT}",Action.SystemPanel("device"))
+                ToolRequest.AppFunctionsStatus->ToolExecution(AppFunctionsSupport.inspect(app))
                 ToolRequest.Diagnostics->{val state=app.shizuku.state.value;ToolExecution("${state.status.label}\n${state.privilege}\nAPI de servicio ${state.version ?: "—"}",Action.SystemPanel("shizuku"))}
             }}}
             app.toolAudit.record(call.name,execution.state.name.lowercase());return execution
