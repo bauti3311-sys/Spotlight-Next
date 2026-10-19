@@ -91,3 +91,9 @@ Entrega Review excepcional751b2a1: inicio compacto de Ajustes, centro de funcion
 ## 18/10 · Propuestas Gemini completas
 
 Decisiones 4, 16, 18 y 20: se mantiene estado parcial. ToolProtocol exige finalización STOP, rechaza prompt bloqueado y descarta partes thought antes de ofrecer herramientas. Tres fallos reproducidos, 21 pruebas dirigidas aprobadas (protocolo, planes, capacidades); código df97608. Ver GEMINI-TOOL-COMPLETION-20261018.md. Sin proveedor real, nuevas autorizaciones ni ejecución automática.
+
+## 19/10 · Gemini y destino multimedia
+
+Gemini b8e213e: 21 pruebas verificadas y lintDebug sin errores. Multimedia 4c72b3f: evita elegir la primera sesión arbitrariamente; prioriza única compatible reproduciendo, o única compatible pausada. Ambigüedad impide enviar; consulta dinámica en cada acción. 4 fallos previos reproducidos; 28 pruebas dirigidas correctas incluyendo protocolo Gemini/planes/capacidades. Decisiones 16, 20, 27 y 38 siguen parciales: falta selector explícito de reproductor y validación real. Detalle en MEDIA-TARGET-20261019.md.
+
+Lint Debug de multimedia aprobado: 0 errores, 10 advertencias y 1 informativa; evidencia preservada junto a las 28 pruebas.

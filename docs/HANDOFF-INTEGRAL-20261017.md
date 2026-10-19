@@ -1,3 +1,11 @@
+# 19/10 · Gemini verificado y selección multimedia
+
+Gemini cerrado en b8e213e: 21 pruebas y lintDebug 0 errores/10 advertencias/1 informativa. Se recuperaron XML y se repitió únicamente el lint cuyo resultado se había perdido. Código multimedia 4c72b3f: 4 fallos reproducidos antes de corregir, 28 pruebas dirigidas aprobadas después, lint Debug aprobado con 0 errores/10 advertencias/1 informativa. Evidencia en GEMINI-TOOL-COMPLETION-20261018.md y MEDIA-TARGET-20261019.md. Reserva work-recovery-20261018-cd7b8fe1285c, comprobar remoto antes de retomar.
+
+PDF conserva 17 pruebas y lint sin errores; validación física pendiente. No se generó APK ni Actions; firmas, interfaz y main intactos. Matriz parcial. Próximo bloque viable: revisión contextual de herramientas y selección explícita de destinos sin duplicar el editor/motor existente.
+
+---
+
 # 18/10 · Continuidad Gemini y PDF
 
 Gemini código df97608: rechazo de propuestas incompletas/bloqueadas y partes thought; 3 fallos reproducidos antes de corregir, 21/21 pruebas dirigidas aprobadas después. Evidencia y comandos en GEMINI-TOOL-COMPLETION-20261018.md. Lint posterior pendiente. Sin proveedor real ni APK nueva. Reserva propia work-recovery-20261018-cd7b8fe1285c; consultar SHA remoto y reserva antes de retomar. Mantener las 40 decisiones parciales según matriz.

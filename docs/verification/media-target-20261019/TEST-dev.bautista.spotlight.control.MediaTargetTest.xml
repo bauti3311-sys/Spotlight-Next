@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.MediaTargetTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-19T10:31:28" hostname="f3ab83312ef3" time="1.998">
+  <properties/>
+  <testcase name="activePlaybackWinsOverFirstPausedSession" classname="dev.bautista.spotlight.control.MediaTargetTest" time="1.847"/>
+  <testcase name="executionRefreshesSessionsAfterAvailabilityCheck" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.031"/>
+  <testcase name="singlePausedPlayerStillSupportsResume" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.025"/>
+  <testcase name="simultaneousPlayersNeverReceiveAnArbitraryCommand" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.029"/>
+  <testcase name="unsupportedCommandsNeverDispatch" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.041"/>
+  <testcase name="severalPausedPlayersAreAmbiguous" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

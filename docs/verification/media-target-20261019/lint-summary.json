@@ -1,0 +1,10 @@
+{
+  "source_commit": "4c72b3f92ab3a3dc4cab6bfe9eaf5480d538a69a",
+  "task": ":app:lintDebug",
+  "result": "BUILD SUCCESSFUL",
+  "duration": "2m 31s",
+  "issues_by_severity": {
+    "Warning": 10,
+    "Information": 1
+  }
+}

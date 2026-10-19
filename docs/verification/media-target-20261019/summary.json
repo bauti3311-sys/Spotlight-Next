@@ -1,0 +1,42 @@
+{
+  "source_commit": "4c72b3f92ab3a3dc4cab6bfe9eaf5480d538a69a",
+  "result": "BUILD SUCCESSFUL",
+  "duration": "1m 20s",
+  "suites": [
+    {
+      "name": "dev.bautista.spotlight.ai.PlanExecutionTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ai.ToolCapabilityTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ai.ToolProtocolTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.control.MediaPlaybackTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.control.MediaTargetTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ]
+}
