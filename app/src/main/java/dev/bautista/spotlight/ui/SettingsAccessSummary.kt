@@ -44,7 +44,15 @@ internal fun accessRows(app:SpotlightApp,c:Config):List<PermissionRow> {
     }
     val broad=app.index.broadAllowed()
     val fileAllowed=folders>0 || broad
-    val shizuku=app.shizuku.state.value.available
+    val shizukuStatus=app.shizuku.state.value
+    val shizuku=shizukuStatus.available && shizukuStatus.authorized
+    val usage=runCatching {
+        val manager=app.getSystemService(android.app.AppOpsManager::class.java)
+        manager?.checkOpNoThrow(
+            android.app.AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),app.packageName
+        )==android.app.AppOpsManager.MODE_ALLOWED
+    }.getOrDefault(false)
     return listOf(
         PermissionRow("overlay","Ventana flotante","Mostrar Spotlight sobre otras aplicaciones.",
             Settings.canDrawOverlays(app),if(Settings.canDrawOverlays(app))"Concedido" else "Sin conceder",CommandIcons.Display),
@@ -61,17 +69,13 @@ internal fun accessRows(app:SpotlightApp,c:Config):List<PermissionRow> {
         PermissionRow("keyboard","Atajo de teclado","Servicio independiente para invocar la barra con teclado físico.",
             keyboard,if(keyboard)"Habilitado" else "Opcional",CommandIcons.Keyboard),
         PermissionRow("phone_use","Control de aplicaciones","Servicio optativo para acciones sobre otras apps con confirmación.",
-            phoneUse,if(phoneUse)"Habilitado" else "Sin conceder",CommandIcons.Apps),
+            phoneUse,if(!phoneUse)"Sin conceder" else if(dev.bautista.spotlight.agent.PhoneUseService.connected())"Habilitado y conectado" else "Habilitado · esperando conexión",CommandIcons.Apps),
         PermissionRow("shizuku","Shizuku","Funciones avanzadas de Android sin root, cuando el servicio está disponible.",
-            shizuku,if(shizuku)"Conectado" else "Opcional · sin conexión",CommandIcons.Settings),
+            shizuku,if(shizuku)"Conectado y autorizado" else if(shizukuStatus.available)"Disponible · falta autorización" else "Opcional · sin conexión",CommandIcons.Settings),
         PermissionRow("storage_broad","Almacenamiento ampliado","Acceso especial a archivos compartidos; opcional si usás carpetas elegidas.",
             broad,if(broad)"Concedido" else "Opcional",CommandIcons.Folder),
         PermissionRow("usage","Actividad de aplicaciones","Ordenar por uso real; sin acceso se conservan los recientes de Spotlight.",
-            (app.getSystemService(android.app.AppOpsManager::class.java)?.let{manager->
-                manager.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(),app.packageName)==android.app.AppOpsManager.MODE_ALLOWED
-            }==true),if(app.getSystemService(android.app.AppOpsManager::class.java)?.let{manager->
-                manager.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(),app.packageName)==android.app.AppOpsManager.MODE_ALLOWED
-            }==true)"Concedido" else "Opcional",CommandIcons.Apps),
+            usage,if(usage)"Concedido" else "Opcional",CommandIcons.Apps),
         *(if(Build.VERSION.SDK_INT>=33)arrayOf(
             PermissionRow("post_notifications","Avisos de Spotlight","Notificaciones del propio servicio de Spotlight.",
                 granted(Manifest.permission.POST_NOTIFICATIONS),if(granted(Manifest.permission.POST_NOTIFICATIONS))"Concedido" else "Sin conceder",CommandIcons.ChatBubbleOutline)
