@@ -656,8 +656,18 @@ fun SpotlightPanel(
                             24f))
                     .dp
             val actionSheetWidth=if(maxWidth<560.dp)maxWidth else minOf(360.dp,maxWidth)
+            // Compact Raycast inspector: only show it on wide overlays when a
+            // real app is selected or when the user explicitly requests actions.
+            // Never reserve an empty pane on narrow screens.
+            val liveAppInspector=selectedResult?.takeIf {
+                config.adaptive && maxWidth>=650.dp && preview==null && !menu &&
+                !searchOptions && !showAi && systemPage==null && !noteEditor &&
+                category in setOf("Todo","Apps") && it.category=="Aplicaciones"
+            }
+            val inspectorItem=preview ?: liveAppInspector
             val richPreview=PreviewPresentation.needsInspector(preview)
-            val widePreview=config.adaptive && maxWidth>=600.dp && richPreview
+            val widePreview=config.adaptive && maxWidth>=600.dp &&
+                (richPreview || menu && preview!=null || liveAppInspector!=null)
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
             val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
@@ -905,32 +915,37 @@ fun SpotlightPanel(
                             }
                 }
                 val details:@Composable ()->Unit = {
-                        preview?.let { item ->
+                        inspectorItem?.let { item ->
                             if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
-                                if(richPreview) {
+                                if(richPreview || item.category=="Aplicaciones" || menu) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    ResultIcon(item,Modifier.size(GlassTokens.glyph),colors.onSurfaceVariant);Spacer(Modifier.width(12.dp))
-                                    Text(
-                                        item.title,
-                                        Modifier.weight(1f),
-                                        fontSize = if(item.category=="Calculadora")32.sp else 17.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                    )
-                                    IconButton(
-                                        onClick = {
-                                            preview = null
-                                            menu = false
-                                        },
-                                        modifier = Modifier.size(GlassTokens.hit),
-                                    ) {
-                                        Icon(
-                                            CommandIcons.Close,
-                                            "Cerrar vista rápida",
-                                            Modifier.size(17.dp),
+                                    ResultIcon(item,Modifier.size(if(item.category=="Aplicaciones")40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+                                    Spacer(Modifier.width(12.dp))
+                                    Column(Modifier.weight(1f)) {
+                                        Text(
+                                            item.title,
+                                            fontSize = if(item.category=="Calculadora")26.sp else 16.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                        Text(
+                                            if(item.category=="Aplicaciones")"Aplicación instalada" else item.category,
+                                            style=MaterialTheme.typography.labelSmall,
+                                            color=colors.onSurfaceVariant
                                         )
                                     }
+                                    if(preview!=null)IconButton(
+                                        onClick = { preview = null; menu = false },
+                                        modifier = Modifier.size(GlassTokens.hit),
+                                    ) {
+                                        Icon(CommandIcons.Close,"Cerrar inspector",Modifier.size(17.dp))
+                                    }
+                                }
+                                if(item.category=="Aplicaciones") {
+                                    val pkg=(item.action as? Action.Launch)?.intent?.component?.packageName
+                                    if(pkg!=null && pkg in playingPackages)
+                                        Text("En reproducción",style=MaterialTheme.typography.labelSmall,color=colors.primary)
                                 }
                                 if (
                                     item.category == "Archivos" &&
@@ -951,6 +966,21 @@ fun SpotlightPanel(
                                     )
                                 }
                                 QuickLookMetadata(item)
+                                }
+                                if(liveAppInspector!=null && !menu) {
+                                    HorizontalDivider(color=colors.onSurface.copy(alpha=.07f))
+                                    Text("ACCIONES RÁPIDAS",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
+                                    TextButton(onClick={execute(item)}) {
+                                        Icon(CommandIcons.Chevron,null,Modifier.size(16.dp))
+                                        Spacer(Modifier.width(8.dp))
+                                        Text("Abrir aplicación")
+                                    }
+                                    TextButton(onClick={preview=item;menu=true;navigating=true;hideKeyboardForActions()}) {
+                                        Icon(CommandIcons.Bolt,null,Modifier.size(16.dp))
+                                        Spacer(Modifier.width(8.dp))
+                                        Text("Ver acciones contextuales")
+                                    }
+                                    Text("Ctrl+K · Más acciones",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                 }
                                 if(menu) {
                                     val actions=mutableListOf<ContextAction>()
@@ -1236,7 +1266,7 @@ fun SpotlightPanel(
                                 fontSize = 13.sp,
                                 color = colors.onSurfaceVariant,
                             )
-                        if(richPreview && !expandedPreview && (!widePreview || category=="Apps"))details()
+                        if(richPreview && !expandedPreview && !widePreview)details()
                         if (category == "Archivos" && (indexStatus.truncated || indexStatus.busy))
                             Text(
                                 indexStatus.message,
