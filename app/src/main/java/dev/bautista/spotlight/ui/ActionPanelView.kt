@@ -58,7 +58,15 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
             var previous=""
             visible.forEachIndexed{i,action->
                 val group=if(all.firstOrNull()==action)"Principal" else action.group
-                if(group!=previous){if(previous.isNotBlank())Spacer(Modifier.height(6.dp));previous=group}
+                if(group!=previous){
+                    if(previous.isNotBlank())Spacer(Modifier.height(8.dp))
+                    Text(group.uppercase(),
+                        Modifier.padding(start=12.dp,top=5.dp,bottom=5.dp),
+                        style=MaterialTheme.typography.labelSmall,
+                        color=MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize=10.sp,letterSpacing=1.sp)
+                    previous=group
+                }
                 val bring=remember(action.title){BringIntoViewRequester()}
                 LaunchedEffect(selected,filterFocused){if(!filterFocused && selected==i)bring.bringIntoView()}
                 Surface(color=if(!filterFocused && i==selected)GlassTokens.selection() else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
