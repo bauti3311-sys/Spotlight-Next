@@ -61,3 +61,11 @@ UI **nativa en Kotlin/Jetpack Compose**. Contrato: diseño Obsidian Glass de ref
 - Workflow manual `build-apk.yml` entrega APK de instalación paralela, **ZIP fuente del mismo SHA**, certificado/debug, hash SHA256 y registro de identidad; retención de **3 días**. **NO** fue ejecutado, no hay APK Raycast Preview nueva ni evidencia física.
 - **37/37 inspecciones estructurales remotas**: referencias de menú, panel, permisos, MediaSession, privacidad de firma y flujo manual presentes. Son invariantes de código, **no** compilación, tests de UI ni validación física.
 - Verificar el HEAD de la rama antes de compilar: el snapshot `5b7d4188dd20085933184e3a160197c9cf42a852` del handoff matinal quedó superado por estos commits.
+
+## Corrección del caso real del inicio «Sugerencias» (20/10)
+- `HomeSuggestions.results()` clasifica la única app sugerida como `category="Sugerencias"` y `id="suggest:app:PACKAGE"`, no como `Aplicaciones`. El inspector inicial de P1.2 solo reconocía la última categoría: en el inicio, **Spotify sugerido no mostraba inspector**.
+- `PreviewPresentation.isApplication(result)` centraliza la identificación de una aplicación por su categoría o por **identificador de sugerencia + acción real `Action.Launch`**, evitando clasificar arbitrariamente una sugerencia de texto como app.
+- `SpotlightPanel` usa esa clasificación al mostrar el lateral, seleccionar resultados táctiles, mostrar el encabezado y construir acciones contextuales.
+- Las acciones de información y permisos obtienen el paquete desde el `Intent.component.packageName` de la aplicación, no desde la cadena `suggest:app:...`; así no se abren ajustes de un paquete inexistente.
+- `QuickLookMetadata` consulta la versión local utilizando también el paquete correcto. Un APK de prueba debe verificar este recorrido real en la Tab A9+.
+- `PreviewPresentationContractTest` comprueba con `Result` y `Action.Launch` reales los casos de app sugerida, resultado convencional y sugerencia falsa. Se agregó al validador dirigido; **todavía no se ejecutó con Gradle**.
