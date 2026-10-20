@@ -130,6 +130,7 @@ class MainActivity : ComponentActivity() {
                     "contacts","calendar","location"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access",access).putExtra("reopen",false))
                     "notifications"->startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
                     "post_notifications"->if(Build.VERSION.SDK_INT>=33)notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    "usage"->startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                     "keyboard","phone_use"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
                     "shizuku"->settingsGroup="Integraciones"
                 }
@@ -195,8 +196,7 @@ class MainActivity : ComponentActivity() {
                             }
                             Section("WhatsApp y notificaciones") {
                                 Text(if(notificationAccess)"Acceso a notificaciones activo. Los mensajes visibles permanecen solo en memoria." else "Acceso a notificaciones desactivado. Podés habilitarlo para leer y responder mensajes disponibles.")
-                                OutlinedButton(onClick={startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","contacts").putExtra("reopen",false))}){Text("Permitir contactos")}
-                                OutlinedButton(onClick={startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))}){Text("WhatsApp · acceso a notificaciones")}
+                                TextButton(onClick={settingsGroup="Permisos y accesos"}){Text("Gestionar contactos y notificaciones →")}
                                 Text("Android separa contactos, calendario, archivos y notificaciones. Las respuestas directas funcionan con mensajes que tengan una notificación compatible; una conversación nueva se prepara y se envía desde WhatsApp.",fontSize=12.sp,color=colors.onSurfaceVariant)
                             }
                             Section("Acceso rápido") {
@@ -214,15 +214,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 if (Build.VERSION.SDK_INT >= 33)
-                                    TextButton(
-                                        onClick = {
-                                            notificationPermission.launch(
-                                                Manifest.permission.POST_NOTIFICATIONS
-                                            )
-                                        }
-                                    ) {
-                                        Text("Permitir notificación para cerrar")
-                                    }
+                                    TextButton(onClick={settingsGroup="Permisos y accesos"}) {Text("Configurar avisos de Spotlight →")}
                                 Text(
                                     "El atajo global requiere teclado físico y activar el servicio optativo de Accesibilidad. Su disponibilidad depende de One UI y de otros servicios de accesibilidad.",
                                     fontSize = 12.sp,
@@ -315,45 +307,8 @@ class MainActivity : ComponentActivity() {
                                     else "Acceso amplio: pendiente de permiso",
                                     fontSize = 12.sp,
                                 )
-                                TextButton(
-                                    onClick = {
-                                        if (Build.VERSION.SDK_INT >= 30)
-                                            runCatching {
-                                                    startActivity(
-                                                        Intent(
-                                                            Settings
-                                                                .ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                                                            Uri.parse("package:$packageName"),
-                                                        )
-                                                    )
-                                                }
-                                                .onFailure {
-                                                    startActivity(
-                                                        Intent(
-                                                            Settings
-                                                                .ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-                                                        )
-                                                    )
-                                                }
-                                    }
-                                ) {
-                                    Text("Acceso a todo el almacenamiento compartido")
-                                }
-                                Text(
-                                    "Incluye documentos, descargas, fotos y SD. Activá el permiso y actualizá el índice. Android protege los datos privados de otras apps.",
-                                    fontSize = 12.sp,
-                                )
-                                TextButton(
-                                    onClick = {
-                                        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                                    }
-                                ) {
-                                    Text("Permitir recientes de todo el dispositivo")
-                                }
-                                Text(
-                                    "Sin acceso de uso se muestran las últimas apps abiertas desde Spotlight; con acceso se usa la actividad del dispositivo.",
-                                    fontSize = 12.sp,
-                                )
+                                Text("El acceso a carpetas, almacenamiento ampliado y uso de apps se gestiona en Permisos y accesos.",fontSize=12.sp,color=colors.onSurfaceVariant)
+                                TextButton(onClick={settingsGroup="Permisos y accesos"}){Text("Abrir permisos de archivos y actividad →")}
                                 Row {
                                     TextButton(onClick = { folder.launch(null) }) {
                                         Text("Elegir carpeta")
