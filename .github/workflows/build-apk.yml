@@ -64,14 +64,19 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 "$apk"
           grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview'" delivery/package.txt
           git rev-parse HEAD > delivery/SOURCE_SHA.txt
-          (cd delivery && sha256sum Spotlight-Next-Raycast-Preview.apk > SHA256SUMS)
+          # The matching source ZIP is generated from exactly this checked-out SHA.
+          # Git archive excludes untracked SDK caches, signing keys and local credentials.
+          git archive --format=zip --prefix="Spotlight-Next-Raycast-Preview-source/" \
+            --output=delivery/Spotlight-Next-Raycast-Preview-source.zip HEAD
+          unzip -t delivery/Spotlight-Next-Raycast-Preview-source.zip >/dev/null
+          (cd delivery && sha256sum Spotlight-Next-Raycast-Preview.apk Spotlight-Next-Raycast-Preview-source.zip > SHA256SUMS)
           {
             echo '### Spotlight Next · Raycast Preview'
             echo 'Build independiente y firmado con certificado Android Debug; NO actualiza el APK principal.'
             echo 'Si ya tenés instalada otra copia Raycast Preview con otra firma, no la sobrescribas para conservar sus datos.'
             echo "Código fuente: $(cat delivery/SOURCE_SHA.txt)"
             echo 'No se ejecutaron pruebas instrumentadas en tablet.'
-            echo 'El archivo se encuentra dentro del ZIP de GitHub Artifacts.'
+            echo 'APK, ZIP fuente del mismo SHA, hashes y certificado dentro del artefacto privado.'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload ONLY verified preview APK
