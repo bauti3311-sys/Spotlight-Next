@@ -66,6 +66,7 @@ object SettingsGroups {
    title=="Apariencia"->"tema glass graphite macos claro oscuro ancho color acento animaciones movimiento densidad"
    title.startsWith("Inteligencia")->"gemini openai ia modelo clave api proveedor conexion"
    title.startsWith("Shizuku")->"shizuku adb brillo permisos servicio"
+   title=="Permisos y accesos"->"superposición ventana flotante overlay contactos llamadas notificaciones whatsapp archivos carpetas almacenamiento calendario ubicación accesibilidad control aplicaciones phone use atajo teclado shizuku adb autorizacion servicio avisos uso actividad"
    title.startsWith("Búsqueda por significado")->"semantica embeddings documentos modelo local significado fragmentos"
    title.startsWith("Índice")->"ocr pdf contenido reconocimiento indexacion cancelar"
    title.startsWith("Invocación") || title.startsWith("Teclado")->"atajo teclado foco posicion gesto"
