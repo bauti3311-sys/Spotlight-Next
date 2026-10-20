@@ -64,10 +64,18 @@ internal fun accessRows(app:SpotlightApp,c:Config):List<PermissionRow> {
             phoneUse,if(phoneUse)"Habilitado" else "Sin conceder",CommandIcons.Apps),
         PermissionRow("shizuku","Shizuku","Funciones avanzadas de Android sin root, cuando el servicio está disponible.",
             shizuku,if(shizuku)"Conectado" else "Opcional · sin conexión",CommandIcons.Settings),
-        *if(Build.VERSION.SDK_INT>=33)arrayOf(
+        PermissionRow("storage_broad","Almacenamiento ampliado","Acceso especial a archivos compartidos; opcional si usás carpetas elegidas.",
+            broad,if(broad)"Concedido" else "Opcional",CommandIcons.Folder),
+        PermissionRow("usage","Actividad de aplicaciones","Ordenar por uso real; sin acceso se conservan los recientes de Spotlight.",
+            (app.getSystemService(android.app.AppOpsManager::class.java)?.let{manager->
+                manager.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(),app.packageName)==android.app.AppOpsManager.MODE_ALLOWED
+            }==true),if(app.getSystemService(android.app.AppOpsManager::class.java)?.let{manager->
+                manager.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(),app.packageName)==android.app.AppOpsManager.MODE_ALLOWED
+            }==true)"Concedido" else "Opcional",CommandIcons.Apps),
+        *(if(Build.VERSION.SDK_INT>=33)arrayOf(
             PermissionRow("post_notifications","Avisos de Spotlight","Notificaciones del propio servicio de Spotlight.",
                 granted(Manifest.permission.POST_NOTIFICATIONS),if(granted(Manifest.permission.POST_NOTIFICATIONS))"Concedido" else "Sin conceder",CommandIcons.ChatBubbleOutline)
-        )else emptyArray()
+        )else emptyArray())
     )
 }
 
