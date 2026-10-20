@@ -644,7 +644,16 @@ fun SpotlightPanel(
             val visibleResults=present(resultsState.value)
             val selectedResult=visibleResults.getOrNull(selected.coerceIn(0,(visibleResults.size-1).coerceAtLeast(0)))
             LaunchedEffect(selectedResult?.id,navigating,menu) {
-                if(!menu && navigating && selectedResult?.category=="Archivos" && selectedResult.mime!=DocumentsContract.Document.MIME_TYPE_DIR)preview=selectedResult
+                if(!menu && navigating) {
+                    if(selectedResult?.category=="Archivos" &&
+                        selectedResult.mime!=DocumentsContract.Document.MIME_TYPE_DIR) {
+                        preview=selectedResult
+                    } else if(preview?.id!=selectedResult?.id) {
+                        // Switching from a PDF to another row must not leave
+                        // the former file's inspector in the new selection.
+                        preview=null
+                    }
+                }
             }
             if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("pane-raw-${resultsState.value.size}",searchScope?.section,searchGeneration,visibleResults.size)
             val compact = maxWidth < 560.dp
@@ -872,6 +881,19 @@ fun SpotlightPanel(
                     onCancel={bufferExtraction.cancel()})
                 if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
                 val expanded = showAi || systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && visibleResults.isNotEmpty())
+                fun selectApplication(item:Result,index:Int) {
+                    selected=index
+                    navigating=true
+                    pointerSelecting=true
+                    hideKeyboardForActions()
+                    if(!config.adaptive || maxWidth<600.dp) {
+                        preview=item
+                        menu=true
+                    } else {
+                        preview=null
+                        menu=false
+                    }
+                }
                 val resultList:@Composable ()->Unit = {
                             LazyColumn(
                                 state = listState,
@@ -898,12 +920,8 @@ fun SpotlightPanel(
                                             selected = i
                                             if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
                                             else if(item.category=="Aplicaciones") {
-                                                // Touch selects first, like Raycast: show context without
-                                                // accidentally launching an app during list exploration.
-                                                // Enter on the keyboard remains the direct launch action.
-                                                navigating=true;pointerSelecting=true;keyboard?.hide()
-                                                if(!config.adaptive || maxWidth<600.dp){preview=item;menu=true}
-                                                else {preview=null;menu=false}
+                                                // Touch selects/inspects; Enter remains the primary action.
+                                                selectApplication(item,i)
                                             }
                                             else execute(item)
                                         },
@@ -1244,8 +1262,9 @@ fun SpotlightPanel(
                                                 )
                                                 .combinedClickable(
                                                     onClick = {
-                                                        selected = i
-                                                        execute(item)
+                                                        // Match list interaction: never launch on touch
+                                                        // while browsing the application grid.
+                                                        selectApplication(item,i)
                                                     },
                                                     onLongClick = {
                                                         selected = i
