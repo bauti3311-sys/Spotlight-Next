@@ -39,3 +39,13 @@ UI **nativa en Kotlin/Jetpack Compose**. Contrato: diseño Obsidian Glass de ref
 1. Ejecutar compilación Android/JUnit/lint en entorno que tenga SDK; corregir cualquier error.
 2. Validar anchura, accesibilidad y scroll en Galaxy Tab A9+ y Moto G86 con teclado y tacto.
 3. Entregar APK de revisión independiente y capturas comparativas; no tocar el canal release ni los secretos/keystore.
+
+## Consolidación / control de calidad (20/10)
+- **Corregido el ancho por defecto:** `Config.width=640dp` y `SpotlightPanel` resta 32dp de márgenes, por lo que `maxWidth>=650dp` impedía ver el inspector aunque la tablet fuera grande. Nuevo umbral `>=600dp`, de modo que el panel lateral es alcanzable con la configuración existente sin cambiar tus preferencias.
+- Compilado y ejecutado `AdaptiveLayout.kt` junto a `OverlayWidthPolicy.kt` y `WindowSizePolicy.kt` de la copia fuente aportada, con un stub únicamente de Config, mediante `kotlinc`: **3/3 escenarios** (tablet vertical/horizontal con ventana de 640dp; teléfono vertical sin lateral) correctos. La geometría aún requiere verificación física.
+- Se modificó el toque táctil de una aplicación: selección e inspector contextual en tablet; menú de acciones en teléfono. El teclado conserva Enter para abrir directamente. Así se evita abrir apps accidentalmente al explorar.
+- Se centralizó también **revocar carpetas**, el acceso del teclado por Accesibilidad y la **configuración de Shizuku** en Permisos y accesos. Los paneles de búsqueda e invocación mantienen sus ajustes funcionales, pero redirigen a la sección única para conceder o revocar permisos.
+- `MediaTargetTest` amplía casos para comprobar que un control multimedia no actúe sobre otra app, ni sobre varias sesiones ambiguas; **tests escritos, no ejecutados con Gradle**.
+- **20/20 comprobaciones de invariantes estructurales** sobre los archivos remotos, sin errores detectados en esos invariantes. No son una suite JUnit.
+- Entorno de trabajo revisado: JDK y compilador Kotlin disponibles; **Android SDK/Gradle cache ausentes** y red externa de la terminal no disponible, por lo que no puede compilarse una APK nueva en esta ejecución. `scripts/validate-raycast-sidebar.sh` permite compilar/probar sin disparar Actions cuando haya SDK.
+- No se lanzó CI, no se gastaron minutos de Actions, y no se cambió `main`, la reserva de Work ni claves de firma.
