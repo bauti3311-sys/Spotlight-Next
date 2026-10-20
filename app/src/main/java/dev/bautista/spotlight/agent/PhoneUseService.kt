@@ -6,6 +6,9 @@ import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import java.util.ArrayDeque
 
@@ -34,11 +37,23 @@ class PhoneUseService : AccessibilityService() {
                 val service = active ?: error("La conexión con Accesibilidad no está disponible.")
                 service.operate(expectedPackage, selector, text)
             }
+
+        /**
+         * Execute only the user-approved list. Inspect each target before acting and
+         * verify the postcondition before attempting the next step.
+         */
+        suspend fun sequence(expectedPackage: String, json: String): String =
+            withContext(Dispatchers.Main.immediate) {
+                val steps = PhoneUseSequencePolicy.parse(json)
+                val service = active ?: error("La conexión con Accesibilidad no está disponible.")
+                service.runSequence(expectedPackage, steps)
+            }
     }
 
     private var observedPackage = ""
     private var observedSelectors: Set<String> = emptySet()
     private var observedAt = 0L
+    private var sequenceRunning = false
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -142,6 +157,62 @@ class PhoneUseService : AccessibilityService() {
             if (choices.isEmpty()) append("\nSin controles accesibles.")
             else choices.forEach { append("\n").append(it) }
             append("\nCoincidencias ambiguas no se ejecutarán.")
+        }
+    }
+
+    private fun visibleMatches(expectedPackage: String, rawSelector: String): List<AccessibilityNodeInfo> {
+        val selector = PhoneUsePolicy.parseSelector(rawSelector)
+        val (pkg, root) = currentRoot()
+        check(PhoneUsePolicy.allowPackage(pkg, expectedPackage, applicationContext.packageName)) {
+            "La app activa cambió durante la verificación."
+        }
+        return nodes(root).filter { node ->
+            node.packageName?.toString() == pkg && node.isVisibleToUser && !node.isPassword &&
+                when (selector) {
+                    is PhoneUsePolicy.Selector.Id -> node.viewIdResourceName == selector.value
+                    is PhoneUsePolicy.Selector.Label -> node.text?.toString() == selector.value
+                    is PhoneUsePolicy.Selector.Description -> node.contentDescription?.toString() == selector.value
+                }
+        }
+    }
+
+    private suspend fun runSequence(packageName: String, steps: List<PhoneUseStep>): String {
+        check(!sequenceRunning) { "Ya hay una secuencia activa." }
+        sequenceRunning = true
+        try {
+            steps.forEachIndexed { index, step ->
+                currentCoroutineContext().ensureActive()
+                check(active === this) { "Se desconectó el control de aplicaciones." }
+                observe()
+                check(observedPackage == packageName && step.selector in observedSelectors) {
+                    "Paso ${index+1}: control no identificado; se interrumpió la secuencia."
+                }
+                if (step.operation == "tap") {
+                    check(visibleMatches(packageName, step.expected!!).isEmpty()) {
+                        "Paso ${index+1}: el resultado esperado ya estaba visible. Revisá el estado antes de continuar."
+                    }
+                }
+                // Never replay a click or text edit, even if verification times out.
+                operate(packageName, step.selector, step.text)
+                var verified = false
+                repeat(6) {
+                    currentCoroutineContext().ensureActive()
+                    delay(250)
+                    val matches = visibleMatches(packageName,
+                        if (step.operation == "tap") step.expected!! else step.selector)
+                    verified = matches.size == 1 &&
+                        (step.operation == "tap" || matches.single().text?.toString() == step.text)
+                    if (verified) return@repeat
+                }
+                check(verified) {
+                    "Paso ${index+1}: Android aceptó la acción, pero no se comprobó el resultado. " +
+                        "Se detuvo el resto; no reintentes automáticamente."
+                }
+            }
+            return "${steps.size} pasos comprobados sobre $packageName."
+        } finally {
+            sequenceRunning = false
+            clearObservation()
         }
     }
 
