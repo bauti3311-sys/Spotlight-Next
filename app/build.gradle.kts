@@ -27,6 +27,15 @@ android {
   }
  }
  buildTypes { getByName("debug") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += "arm64-v8a" }; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") }
+  // Disposable Raycast UI preview. Distinct application ID, uses Android debug signing
+  // and never replaces the historically signed package or its existing previews.
+  create("raycastPreview") {
+   initWith(getByName("debug"))
+   applicationIdSuffix = ".raycastpreview"
+   versionNameSuffix = "-raycast-preview"
+   signingConfig = signingConfigs.getByName("debug")
+   matchingFallbacks += listOf("debug")
+  }
   // Independent, release-optimized preview. Never an update of the historically signed app.
   create("preview") {
    initWith(getByName("release"))
