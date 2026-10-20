@@ -21,7 +21,7 @@ class RaycastSettingsNavigationTest {
         assertEquals("Atajos",SettingsGroups.of("Teclado físico · acceso global optativo"))
         assertEquals("Atajos",SettingsGroups.of("Acceso rápido"))
         assertEquals("Integraciones",SettingsGroups.of("Integraciones · capacidades disponibles"))
-        assertEquals("Integraciones",SettingsGroups.of("Shizuku · integración avanzada opcional"))
+        assertEquals("Permisos y accesos",SettingsGroups.of("Shizuku · integración avanzada opcional"))
     }
 
     @Test fun retainsAppAndDocumentPreferences() {
