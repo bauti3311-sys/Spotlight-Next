@@ -37,6 +37,9 @@ class PreviewPresentationContractTest {
             "Sugerencias",300,Action.Copy("texto"))
         assertFalse(PreviewPresentation.isApplication(note))
         assertFalse(PreviewPresentation.isApplication(forged))
+        val mislabeled=Result("com.example.note","No es launcher","Texto",
+            "Aplicaciones",200,Action.Copy("texto"))
+        assertFalse(PreviewPresentation.isApplication(mislabeled))
         assertFalse(PreviewPresentation.isApplication(null))
     }
 }
