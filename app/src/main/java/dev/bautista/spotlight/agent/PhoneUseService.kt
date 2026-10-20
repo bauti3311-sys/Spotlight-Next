@@ -72,12 +72,27 @@ class PhoneUseService : AccessibilityService() {
     }
 
     private fun currentRoot(): Pair<String, AccessibilityNodeInfo> {
-        val root = rootInActiveWindow ?: error("Android no expone controles accesibles en la ventana activa.")
-        val pkg = root.packageName?.toString().orEmpty()
-        check(PhoneUsePolicy.allowObservation(pkg, applicationContext.packageName)) {
-            "La ventana activa no permite automatización. Cerrá Spotlight o abrí una app autorizada."
+        val activeRoot = rootInActiveWindow
+        val activePackage = activeRoot?.packageName?.toString().orEmpty()
+        val hostPackage = applicationContext.packageName
+        if (activeRoot != null && PhoneUsePolicy.allowObservation(activePackage, hostPackage)) {
+            return activePackage to activeRoot
         }
-        return pkg to root
+        // Do not inspect an app behind a privileged system window (e.g. a permission dialog).
+        if (activeRoot != null && activePackage != hostPackage) {
+            error("La ventana activa no permite automatización.")
+        }
+        // Spotlight's own overlay may be focused; only fall back when exactly one
+        // external APPLICATION window is accessible. Split-screen ambiguity fails closed.
+        val candidates = windows.orEmpty()
+            .filter { it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION }
+            .mapNotNull { it.root }
+            .map { it.packageName?.toString().orEmpty() to it }
+            .filter { PhoneUsePolicy.allowObservation(it.first, hostPackage) }
+        check(candidates.size == 1) {
+            "No se pudo identificar una única app externa detrás de Spotlight. Abrí la app y reintentá."
+        }
+        return candidates.single()
     }
 
     private fun nodes(root: AccessibilityNodeInfo): List<AccessibilityNodeInfo> {
