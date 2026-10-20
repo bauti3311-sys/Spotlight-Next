@@ -21,30 +21,32 @@ val LocalSettingsQuery=staticCompositionLocalOf{""}
 
 /** Presentation catalog only. Legacy keys and stored user content are never removed. */
 object SettingsGroups {
- val names=listOf("General","Apariencia","Inteligencia artificial","Búsqueda y archivos","Integraciones","Permisos y privacidad","Avanzado")
+ val names=listOf("General","Apariencia","Integraciones","Inteligencia artificial","Búsqueda y archivos","Atajos","Permisos y accesos","Avanzado")
  private val retired=listOf("Tasker", "Rutinas", "Centro de comandos", "Biblioteca personal")
  fun visible(title:String)=retired.none{title.startsWith(it)}
  fun canonical(group:String?):String=when(group){
-  "Invocación"->"General";"Inteligencia"->"Inteligencia artificial";"Búsqueda"->"Búsqueda y archivos";"Privacidad y sistema"->"Permisos y privacidad"
+  "Invocación"->"Atajos";"Inteligencia"->"Inteligencia artificial";"Búsqueda"->"Búsqueda y archivos";"Privacidad y sistema"->"Permisos y accesos";"Permisos y privacidad"->"Permisos y accesos"
   else->group?.takeIf{it in names} ?: "General"
  }
  fun of(title:String)=when {
   title=="Apariencia"->"Apariencia"
   title.startsWith("Inteligencia") || title.startsWith("Audio") || title.startsWith("Contexto")->"Inteligencia artificial"
-  title.startsWith("Privacidad") || title.startsWith("Portapapeles") || title.startsWith("Permisos")->"Permisos y privacidad"
+  title.startsWith("Privacidad") || title.startsWith("Portapapeles") || title.startsWith("Permisos") || title.startsWith("Contactos autorizados")->"Permisos y accesos"
+  title.startsWith("Invocación") || title.startsWith("Teclado") || title=="Acceso rápido"->"Atajos"
   title.startsWith("Diagnóstico") || title.startsWith("Transferir") || title.startsWith("Alias") || title=="Búsqueda · prioridades"->"Avanzado"
   title.startsWith("Extensiones") || title.startsWith("Integraciones") || title.startsWith("WhatsApp") || title.startsWith("Contactos") || title.startsWith("Clima") || title.startsWith("Shizuku") || title.startsWith("Tarjetas")->"Integraciones"
   title.startsWith("Búsqueda") || title.startsWith("Índice") || title.startsWith("Texto e imágenes")->"Búsqueda y archivos"
   else->"General"
  }
- fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Folder;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Layers;"General"->CommandIcons.Settings;"Avanzado"->CommandIcons.Info;else->CommandIcons.Shield}
+ fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Folder;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Layers;"Atajos"->CommandIcons.Keyboard;"General"->CommandIcons.Settings;"Avanzado"->CommandIcons.Info;else->CommandIcons.Shield}
  fun description(group:String)=when(canonical(group)){
   "General"->"Inicio, sugerencias y formas de abrir Spotlight."
   "Apariencia"->"Materiales, acento y un único control de ancho."
   "Inteligencia artificial"->"Proveedor, credenciales y contexto bajo tu control."
   "Búsqueda y archivos"->"Fuentes autorizadas, índice y reconocimiento local."
   "Integraciones"->"Aplicaciones, conexiones y herramientas disponibles."
-  "Permisos y privacidad"->"Accesos opcionales y datos que permanecen en el dispositivo."
+  "Atajos"->"Atajos globales, teclado físico e invocación de la barra."
+  "Permisos y accesos"->"Todos los permisos Android y servicios especiales en un único lugar."
   else->"Alias, prioridades, respaldo y diagnóstico."
  }
  fun summary(title:String)=when {
@@ -129,7 +131,7 @@ object SettingsGroups {
  if(query.isBlank() && SettingsGroups.of(title)!=LocalSettingsGroup.current)return
  if(query.isNotBlank() && !SettingsGroups.matches(title,query))return
  if(title=="Apariencia") { Column(Modifier.fillMaxWidth().padding(top=12.dp),verticalArrangement=Arrangement.spacedBy(12.dp),content=content);return }
- var expanded by rememberSaveable(title){mutableStateOf(title in setOf("Apariencia","General · inicio","Inteligencia artificial · opcional"))}
+ var expanded by rememberSaveable(title){mutableStateOf(title in setOf("Apariencia","General · inicio","Inteligencia artificial · opcional","Permisos y accesos"))}
  val open=expanded || query.isNotBlank()
  Column(Modifier.fillMaxWidth().padding(vertical=8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
   Row(Modifier.fillMaxWidth().heightIn(min=56.dp).clickable(role=Role.Button,onClickLabel=if(open)"Contraer sección" else "Expandir sección"){expanded=!expanded}
