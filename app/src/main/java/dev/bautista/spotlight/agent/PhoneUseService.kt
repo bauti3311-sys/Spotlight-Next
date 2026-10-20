@@ -23,11 +23,13 @@ class PhoneUseService : AccessibilityService() {
 
         suspend fun inspect(): String = withContext(Dispatchers.Main.immediate) {
             val service = active ?: error("Activá Spotlight · control de aplicaciones en Accesibilidad.")
+            check(!service.sequenceRunning) { "Ya hay una secuencia en ejecución." }
             service.observe()
         }
 
         suspend fun tap(expectedPackage: String, selector: String): String = withContext(Dispatchers.Main.immediate) {
             val service = active ?: error("La conexión con Accesibilidad no está disponible.")
+            check(!service.sequenceRunning) { "Ya hay una secuencia en ejecución." }
             service.operate(expectedPackage, selector, null)
         }
 
@@ -35,6 +37,7 @@ class PhoneUseService : AccessibilityService() {
             withContext(Dispatchers.Main.immediate) {
                 require(PhoneUsePolicy.allowText(text)) { "Texto vacío o demasiado largo." }
                 val service = active ?: error("La conexión con Accesibilidad no está disponible.")
+                check(!service.sequenceRunning) { "Ya hay una secuencia en ejecución." }
                 service.operate(expectedPackage, selector, text)
             }
 
