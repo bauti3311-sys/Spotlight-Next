@@ -111,6 +111,7 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(requestedSettingsGroup) { requestedSettingsGroup?.let { settingsGroup=SettingsGroups.canonical(it);requestedSettingsGroup=null } }
             val notificationAccess by dev.bautista.spotlight.control.Replies.connected.collectAsState()
             var endpointError by remember { mutableStateOf("") }
+            var showShizukuAccess by remember { mutableStateOf(false) }
             fun update(c: dev.bautista.spotlight.data.Config) {
                 scope.launch { app.preferences.update(c) }
             }
@@ -132,7 +133,7 @@ class MainActivity : ComponentActivity() {
                     "post_notifications"->if(Build.VERSION.SDK_INT>=33)notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
                     "usage"->startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                     "keyboard","phone_use"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                    "shizuku"->settingsGroup="Integraciones"
+                    "shizuku"->{settingsGroup="Permisos y accesos";showShizukuAccess=true}
                 }
             }
             SpotlightTheme(config.theme, config) {
@@ -175,6 +176,10 @@ class MainActivity : ComponentActivity() {
                                     }
                                     update(config.copy(trees=emptySet()))
                                 }
+                                if(showShizukuAccess) {
+                                    TextButton(onClick={showShizukuAccess=false}){Text("Ocultar configuración de Shizuku")}
+                                    dev.bautista.spotlight.ui.AdvancedPanel(app,"shizuku")
+                                }
                                 Toggle("Buscar contactos dentro de Spotlight",config.contacts){enabled->
                                     if(!enabled)update(config.copy(contacts=false))
                                     else if(checkSelfPermission(Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED)
@@ -193,7 +198,6 @@ class MainActivity : ComponentActivity() {
                             Section("Clima y agenda deportiva") { Text("Clima de Open-Meteo y agenda gratuita de TheSportsDB, consultados directamente desde la barra.");Row{OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","clima"))}){Text("Clima")};TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","deportes"))}){Text("Deportes")}} }
                             Section("Extensiones e integraciones") { dev.bautista.spotlight.ui.ExtensionPanel(app,config) }
                             Section("Integraciones · capacidades disponibles") { CapabilitySettings(app,config,permissionRevision) }
-                            Section("Shizuku · integración avanzada opcional") { dev.bautista.spotlight.ui.AdvancedPanel(app,"shizuku") }
                             Section("Transferir configuración") {
                                 Text("Preferencias, favoritos y alias. Los datos heredados se conservan; las claves, historiales, permisos y accesos a archivos permanecen en cada dispositivo.")
                                 Row{OutlinedButton(onClick={configExport.launch("Spotlight-configuracion.json")}){Text("Exportar")};TextButton(onClick={configImport.launch(arrayOf("application/json","text/plain"))}){Text("Importar")}}
