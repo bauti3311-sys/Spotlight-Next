@@ -164,6 +164,17 @@ class MainActivity : ComponentActivity() {
                             Section("Contexto autorizado · Inteligencia") { Text("Elegí documentos, fijá contextos y guardá conversaciones manualmente.");TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","contextos"))}){Text("Gestionar contexto")} }
                             Section("Permisos y accesos") {
                                 SettingsAccessSummary(app,config,permissionRevision){access->configureAccess(access)}
+                                if(config.trees.isNotEmpty()) ConfirmedSettingsButton(
+                                    "Revocar acceso a carpetas",
+                                    "Se revocarán las carpetas autorizadas en Spotlight. No se borrarán archivos."
+                                ) {
+                                    config.trees.forEach { tree ->
+                                        runCatching { contentResolver.releasePersistableUriPermission(
+                                            Uri.parse(tree),Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                        ) }
+                                    }
+                                    update(config.copy(trees=emptySet()))
+                                }
                                 Toggle("Buscar contactos dentro de Spotlight",config.contacts){enabled->
                                     if(!enabled)update(config.copy(contacts=false))
                                     else if(checkSelfPermission(Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED)
@@ -309,14 +320,8 @@ class MainActivity : ComponentActivity() {
                                 )
                                 Text("El acceso a carpetas, almacenamiento ampliado y uso de apps se gestiona en Permisos y accesos.",fontSize=12.sp,color=colors.onSurfaceVariant)
                                 TextButton(onClick={settingsGroup="Permisos y accesos"}){Text("Abrir permisos de archivos y actividad →")}
-                                Row {
-                                    TextButton(onClick = { folder.launch(null) }) {
-                                        Text("Elegir carpeta")
-                                    }
-                                    ConfirmedSettingsButton("Quitar accesos","Se revocarán las carpetas autorizadas. No se borrarán archivos.") {
-                                        config.trees.forEach { tree -> runCatching { contentResolver.releasePersistableUriPermission(Uri.parse(tree),Intent.FLAG_GRANT_READ_URI_PERMISSION) } }
-                                        update(config.copy(trees=emptySet()))
-                                    }
+                                TextButton(onClick={settingsGroup="Permisos y accesos"}) {
+                                    Text("Gestionar acceso a carpetas →")
                                 }
                                 Text(
                                     "${config.trees.size} carpetas autorizadas. Índice de hasta 200.000 entradas y 64 niveles; se avisa si queda parcial.",
