@@ -20,20 +20,18 @@ if [[ "${SPOTLIGHT_OFFLINE:-0}" == "1" ]]; then
   args+=(--offline)
 fi
 
-echo "1/3 Compile debug Kotlin for the current branch"
-./gradlew :app:compileDebugKotlin "${args[@]}"
+echo "1/3 Compile Raycast Preview Kotlin and merge its Android resources"
+./gradlew :app:assembleRaycastPreview "${args[@]}"
 
 echo "2/3 Run focused Robolectric/JUnit regressions"
-./gradlew :app:testDebugUnitTest "${args[@]}" \
+./gradlew :app:testRaycastPreviewUnitTest "${args[@]}" \
   --tests 'dev.bautista.spotlight.ui.RaycastSettingsNavigationTest' \
+  --tests 'dev.bautista.spotlight.ui.RaycastQuickMenuComposeTest' \
+  --tests 'dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest' \
   --tests 'dev.bautista.spotlight.control.MediaTargetTest'
 
 echo "3/3 Lint debug resources and source"
-./gradlew :app:lintDebug "${args[@]}"
+./gradlew :app:lintRaycastPreview "${args[@]}"
 
-if [[ "${SPOTLIGHT_BUILD_PREVIEW:-0}" == "1" ]]; then
-  echo "Build independent functional-preview APK (NOT an update to installed production)."
-  ./gradlew :app:assembleFunctionalPreview "${args[@]}"
-  echo "Find the APK under app/build/outputs/apk/functionalPreview/."
-fi
+echo "Preview APK: app/build/outputs/apk/raycastPreview/app-raycastPreview.apk"
 echo "Targeted validation completed. Physical One UI touch/keyboard testing still required."
