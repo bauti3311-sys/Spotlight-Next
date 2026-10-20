@@ -19,6 +19,25 @@ import org.robolectric.annotation.GraphicsMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ActionPanelKeyboardContractTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
+    @Test fun actionGroupsHaveVisibleHeadingsWithoutExecutingItems() {
+        var action=""
+        val focus=FocusRequester()
+        ui.setContent {
+            SpotlightTheme("dark") {
+                ActionPanelView(listOf(
+                    ContextAction("Abrir","Principal",CommandIcons.Chevron,{action="open"}),
+                    ContextAction("Añadir favorita","Ordenar",CommandIcons.Star,{action="favorite"}),
+                    ContextAction("Información de la app","Sistema",CommandIcons.Info,{action="system"}),
+                    ContextAction("Copiar texto","Texto",CommandIcons.ContentCopy,{action="copy"})
+                ),focus)
+            }
+        }
+        ui.onNodeWithText("PRINCIPAL").assertExists()
+        ui.onNodeWithText("ORGANIZAR").assertExists()
+        ui.onNodeWithText("TEXTO").assertExists()
+        ui.runOnIdle { assertEquals("",action) }
+    }
+
     @Test fun tabCyclesAndEnterRunsOnlyFocusedContextAction(){
         var action=""
         val focus=FocusRequester()
