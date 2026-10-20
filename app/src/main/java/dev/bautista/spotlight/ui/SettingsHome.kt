@@ -98,7 +98,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
      Text("Tu espacio, a tu manera.",style=MaterialTheme.typography.headlineMedium)
      Text("Una búsqueda. Solo las funciones que elegís.",style=MaterialTheme.typography.bodyMedium,color=colors.onSurfaceVariant)
      Text(if(failed)"Estado no disponible" else if(features.isEmpty())"Comprobando configuración…" else "${features.count{it.ready}} accesos habilitados · IA bajo tu control",style=MaterialTheme.typography.labelMedium,color=colors.onSurfaceVariant)
-     FilledTonalButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){Icon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Funciones y permisos")}
+     FilledTonalButton(onClick={onNavigate("Permisos y accesos")},modifier=Modifier.testTag("open-function-center")){Icon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Permisos y accesos")}
     }
    }
    Text("A TU ALCANCE",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
@@ -108,7 +108,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
    }
    HomeDestination("Búsqueda y documentos","Carpetas, texto, OCR y significado local",CommandIcons.Folder){onNavigate("Búsqueda y archivos")}
    HomeDestination("Conectar tus apps","Mensajes, música y control del dispositivo",CommandIcons.Layers){onNavigate("Integraciones")}
-   HomeDestination("Privacidad","Tus datos y el contexto que compartís",CommandIcons.Shield){onNavigate("Permisos y privacidad")}
+   HomeDestination("Permisos y accesos","Todos los accesos Android reunidos y bajo tu control",CommandIcons.Shield){onNavigate("Permisos y accesos")}
    TextButton(onClick=onDetails){Text("Opciones de inicio y teclado")}
   }
  }
