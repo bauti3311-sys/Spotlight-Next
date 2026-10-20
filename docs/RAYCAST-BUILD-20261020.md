@@ -7,3 +7,6 @@ Entorno restaurado: Temurin17.0.20.1+1, Gradle8.10.2, SDK35/build-tools35.0.0. D
 Primera ejecución real: `:app:compileRaycastPreviewKotlin`, fallo Kotlin en SpotlightPanel.kt:889 (maxWidth, receptor implícito oculto). Corrección mínima: capturar disponibilidad de ancho en BoxWithConstraints y usarla en selección de apps. Sin cambios de umbral, Quick Look ni diseño. **Checkpoint parcial: corrección aún no verificada.**
 
 Pendientes: recompilar, pruebas dirigidas de UI/Phone Use/herramientas/multimedia/PDF, lint, assembleRaycastPreview, verificar APK y ZIP del mismo SHA. ADB sin dispositivos; /dev/kvm ausente. Validación física One UI pendiente.
+
+## Primera ronda dirigida
+Kotlin/Java y código de tests compilados. 65 casos/14 suites: 44 correctos, 21 fallidos. Veinte fallos por actividad ComponentActivity no declarada para raycastPreview; un fallo por JSONArray Android ejecutado como JVM sin Robolectric. Corrección de configuración: ui-test-manifest en la variante debug independiente y runner Robolectric SDK33 para PhoneUseSequencePolicyTest. Versiones y aserciones intactas. Validador ampliado a las 14 suites solicitadas. Checkpoint parcial, reejecución pendiente.

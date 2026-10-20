@@ -29,7 +29,16 @@ echo "2/3 Run focused Robolectric/JUnit regressions"
   --tests 'dev.bautista.spotlight.ui.RaycastQuickMenuComposeTest' \
   --tests 'dev.bautista.spotlight.ui.PreviewPresentationContractTest' \
   --tests 'dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest' \
-  --tests 'dev.bautista.spotlight.control.MediaTargetTest'
+  --tests 'dev.bautista.spotlight.control.MediaTargetTest' \
+  --tests 'dev.bautista.spotlight.control.MediaPlaybackTest' \
+  --tests 'dev.bautista.spotlight.control.AndroidCapabilityTest' \
+  --tests 'dev.bautista.spotlight.agent.PhoneUsePolicyTest' \
+  --tests 'dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest' \
+  --tests 'dev.bautista.spotlight.ai.ToolProtocolTest' \
+  --tests 'dev.bautista.spotlight.ai.ToolCapabilityTest' \
+  --tests 'dev.bautista.spotlight.ui.ResultTouchScrollTest' \
+  --tests 'dev.bautista.spotlight.ui.QuickLookTouchTargetTest' \
+  --tests 'dev.bautista.spotlight.ui.MinimalistSearchFlowTest'
 
 echo "3/3 Lint debug resources and source"
 ./gradlew :app:lintRaycastPreview "${args[@]}"
