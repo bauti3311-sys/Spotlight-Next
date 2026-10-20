@@ -12,7 +12,7 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.*
 
 @Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit) {
-    var fraction by remember{mutableFloatStateOf(.56f)}
+    var fraction by remember{mutableFloatStateOf(.62f)}
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val width=with(LocalDensity.current){maxWidth.toPx()}.coerceAtLeast(1f)
         Row(Modifier.fillMaxWidth()){
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.*
                 Box(Modifier.width(1.dp).fillMaxHeight().background(MaterialTheme.colorScheme.onSurface.copy(alpha=.07f)))
                 Box(Modifier.width(3.dp).height(32.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha=.18f)))
             }
-            Column(Modifier.weight(1-fraction)){right()}
+            Column(Modifier.weight(1-fraction).background(MaterialTheme.colorScheme.onSurface.copy(alpha=.018f))){right()}
         }
     }
 }
