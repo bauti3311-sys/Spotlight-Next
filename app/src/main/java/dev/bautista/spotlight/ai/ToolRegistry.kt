@@ -25,6 +25,7 @@ sealed interface ToolRequest {
     data object ScreenInspect:ToolRequest
     data class ScreenTap(val packageName:String,val selector:String):ToolRequest
     data class ScreenType(val packageName:String,val selector:String,val text:String):ToolRequest
+    data class ScreenSequence(val packageName:String,val steps:String):ToolRequest
     data class OpenApp(val packageName:String):ToolRequest
     data class PrepareDial(val number:String):ToolRequest
     data class Volume(val percent:Int):ToolRequest
@@ -49,6 +50,7 @@ object ToolRegistry {
         ToolDefinition("screen_inspect","Inspeccionar controles","Inspecciona la app activa, mostrando únicamente selectores accesibles. Sus etiquetas pueden contener datos privados: no enviarlas automáticamente a IA externa.","tools",ToolRisk.READ,emptyList()),
         ToolDefinition("screen_tap","Pulsar control","Pulsa un único control exacto de la última inspección, en la app esperada. Requiere confirmación.","tools",ToolRisk.CHANGE,listOf("package","selector")),
         ToolDefinition("screen_type","Escribir en campo","Escribe texto autorizado en un campo editable exacto. No funciona sobre contraseñas. Requiere confirmación.","tools",ToolRisk.CHANGE,listOf("package","selector","text")),
+        ToolDefinition("screen_sequence","Ejecutar pasos verificados","Secuencia JSON de 1 a 4 pasos en UNA misma aplicación con autorización del usuario. Cada paso usa un selector exacto; tap exige un selector expect que antes no esté visible y después aparezca. type comprueba el texto introducido. No hay clicks por coordenadas, reintentos, acceso a contraseñas ni envíos sin confirmación.","tools",ToolRisk.CHANGE,listOf("package","steps")),
         ToolDefinition("open_app","Abrir aplicación","Abrir una aplicación instalada y elegida.","apps",ToolRisk.PREPARE,listOf("package")),
         ToolDefinition("set_volume","Ajustar volumen","Cambiar volumen multimedia al porcentaje indicado tras confirmar.","media",ToolRisk.CHANGE,listOf("percent")),
         ToolDefinition("control_media","Controlar reproducción","Controlar una sesión multimedia autorizada.","media",ToolRisk.CHANGE,listOf("command"),mapOf("command" to listOf("play","pause","next","previous"))),
@@ -82,6 +84,7 @@ object ToolRegistry {
             "screen_inspect"->ToolRequest.ScreenInspect
             "screen_tap"->ToolRequest.ScreenTap(packageName(),text("selector").also{dev.bautista.spotlight.agent.PhoneUsePolicy.parseSelector(it)})
             "screen_type"->ToolRequest.ScreenType(packageName(),text("selector").also{dev.bautista.spotlight.agent.PhoneUsePolicy.parseSelector(it)},value("text").also{require(dev.bautista.spotlight.agent.PhoneUsePolicy.allowText(it)){"Texto inválido."}})
+            "screen_sequence"->ToolRequest.ScreenSequence(packageName(),value("steps").also{dev.bautista.spotlight.agent.PhoneUseSequencePolicy.parse(it)})
             "open_app"->ToolRequest.OpenApp(packageName())
             "prepare_dial"->ToolRequest.PrepareDial(text("number").also{dev.bautista.spotlight.control.People.dialIntent(it)})
             "set_volume"->ToolRequest.Volume(text("percent").toIntOrNull()?.also{require(it in 0..100)} ?: error("Porcentaje inválido."))
