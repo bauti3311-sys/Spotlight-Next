@@ -29,5 +29,9 @@ class RaycastSettingsNavigationTest {
         assertEquals("Búsqueda y archivos",SettingsGroups.of("Búsqueda y archivos"))
         assertEquals("Inteligencia artificial",SettingsGroups.of("Inteligencia artificial · opcional"))
         assertTrue(SettingsGroups.matches("Permisos y accesos","permisos"))
+        listOf("shizuku","notificaciones","accesibilidad","archivos","uso","ubicación","contactos").forEach { q ->
+            assertTrue("Expected unified permissions to match $q",
+                SettingsGroups.matches("Permisos y accesos",q))
+        }
     }
 }
