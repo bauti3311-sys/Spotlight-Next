@@ -24,6 +24,16 @@ class PhoneUsePolicyTest {
         }
     }
 
+    @Test fun overlayRedrawDoesNotInvalidateExternalObservation() {
+        val host = "dev.bautista.spotlight.next"
+        val observed = "com.whatsapp"
+        assertFalse(PhoneUsePolicy.invalidateObservation(host, host, observed))
+        assertTrue(PhoneUsePolicy.invalidateObservation(observed, host, observed))
+        assertTrue(PhoneUsePolicy.invalidateObservation("com.android.systemui", host, observed))
+        assertTrue(PhoneUsePolicy.invalidateObservation(null, host, observed))
+        assertFalse(PhoneUsePolicy.invalidateObservation(observed, host, ""))
+    }
+
     @Test fun textLengthAndLabelsAreBounded() {
         assertTrue(PhoneUsePolicy.allowText("Llego a las 9"))
         assertFalse(PhoneUsePolicy.allowText(""))
