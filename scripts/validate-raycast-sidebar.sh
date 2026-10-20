@@ -27,6 +27,7 @@ echo "2/3 Run focused Robolectric/JUnit regressions"
 ./gradlew :app:testRaycastPreviewUnitTest "${args[@]}" \
   --tests 'dev.bautista.spotlight.ui.RaycastSettingsNavigationTest' \
   --tests 'dev.bautista.spotlight.ui.RaycastQuickMenuComposeTest' \
+  --tests 'dev.bautista.spotlight.ui.PreviewPresentationContractTest' \
   --tests 'dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest' \
   --tests 'dev.bautista.spotlight.control.MediaTargetTest'
 
