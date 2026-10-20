@@ -856,7 +856,7 @@ fun SpotlightPanel(
                     onAutocompleteAvailabilityChanged={canAutocomplete=it},
                     quickMenu={
                         GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}.onFailure{error="No se pudo guardar la preferencia. Reintentá."}}},
-                            {launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))},
+                            {group->searchOptions=false;launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group))},
                             {mode->searchOptions=false;selectMode(mode)})
                     },
                     optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
