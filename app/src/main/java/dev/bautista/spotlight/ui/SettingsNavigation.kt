@@ -32,7 +32,7 @@ object SettingsGroups {
  fun of(title:String)=when {
   title=="Apariencia"->"Apariencia"
   title.startsWith("Inteligencia") || title.startsWith("Audio") || title.startsWith("Contexto")->"Inteligencia artificial"
-  title.startsWith("Privacidad") || title.startsWith("Portapapeles") || title.startsWith("Permisos") || title.startsWith("Contactos autorizados")->"Permisos y accesos"
+  title.startsWith("Privacidad") || title.startsWith("Portapapeles") || title.startsWith("Permisos") || title.startsWith("Contactos autorizados") || title.startsWith("Shizuku")->"Permisos y accesos"
   title.startsWith("Invocación") || title.startsWith("Teclado") || title=="Acceso rápido"->"Atajos"
   title.startsWith("Diagnóstico") || title.startsWith("Transferir") || title.startsWith("Alias") || title=="Búsqueda · prioridades"->"Avanzado"
   title.startsWith("Extensiones") || title.startsWith("Integraciones") || title.startsWith("WhatsApp") || title.startsWith("Contactos") || title.startsWith("Clima") || title.startsWith("Shizuku") || title.startsWith("Tarjetas")->"Integraciones"
