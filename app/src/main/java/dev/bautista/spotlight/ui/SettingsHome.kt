@@ -2,6 +2,7 @@ package dev.bautista.spotlight.ui
 
 import android.Manifest
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
@@ -39,6 +40,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
  val notifications=listeners.any{ComponentName.unflattenFromString(it)==ComponentName(app,dev.bautista.spotlight.control.ReplyService::class.java)}
  val services=Settings.Secure.getString(app.contentResolver,Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES).orEmpty().split(':')
  val keyboard=services.any{ComponentName.unflattenFromString(it)==ComponentName(app,dev.bautista.spotlight.access.ShortcutService::class.java)}
+ val phoneUse=services.any{ComponentName.unflattenFromString(it)==ComponentName(app,dev.bautista.spotlight.agent.PhoneUseService::class.java)}
  val key=CredentialVault(app).contains("gemini")
  listOf(
   SettingsFeature("overlay","Ventana flotante","Abrí Spotlight sobre otras apps. Android te pide este acceso por separado.",if(overlay)"Permitido" else "Necesita autorización",overlay,CommandIcons.Display),
@@ -47,6 +49,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
   SettingsFeature("contacts","Contactos","Encontrá personas y prepará mensajes; no se envían automáticamente.",if(!c.contacts)"Desactivado en Spotlight" else if(contacts)"Permitido" else "Necesita autorización",contacts && c.contacts,CommandIcons.Person),
   SettingsFeature("notifications","Mensajes y música","Accedé a mensajes y controles que expongan las notificaciones compatibles.",if(notifications)if(Replies.connected.value)"Acceso y servicio activos" else "Acceso concedido · servicio desconectado" else "Opcional · sin acceso",notifications,CommandIcons.ChatBubbleOutline),
   SettingsFeature("calendar","Tu agenda","Consultá eventos. Crear o cambiar eventos se revisa por separado.",if(calendar)"Lectura permitida" else "Opcional · sin acceso",calendar,CommandIcons.Event),
+  SettingsFeature("phone_use","Control de aplicaciones","Permití que Spotlight identifique y accione controles accesibles de otras apps solo cuando iniciás y confirmás una tarea. Se puede desactivar en cualquier momento.",if(phoneUse)"Servicio habilitado" else "Opcional · sin configurar",phoneUse,CommandIcons.Settings),
   SettingsFeature("keyboard","Atajos de teclado","Configurá el servicio de accesibilidad para invocar Spotlight con el teclado.",if(keyboard)"Servicio habilitado" else "Opcional · sin configurar",keyboard,CommandIcons.Keyboard),
   SettingsFeature("location","Clima cerca tuyo","Compartí ubicación aproximada con Android cuando elijas usarla.",if(location)"Ubicación aproximada permitida" else "Opcional · podés buscar por ciudad",location,CommandIcons.Cloud),
   SettingsFeature("shizuku","Control avanzado","Conectá Shizuku si necesitás acciones adicionales. No requiere root.",if(app.shizuku.state.value.available)"Servicio disponible" else "Opcional · sin conexión",app.shizuku.state.value.available,CommandIcons.Settings),
@@ -66,7 +69,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
  LaunchedEffect(c,revision,connection,notificationConnection) {failed=false;try{features=settingsFeatures(app,c)}catch(e:kotlinx.coroutines.CancellationException){throw e}catch(_:Exception){failed=true}}
  BackHandler(center && step<0 && pending==null){center=false}
  val colors=MaterialTheme.colorScheme
- fun configure(id:String){when(id){"gemini"->{center=false;onNavigate("Inteligencia artificial")};"shizuku"->{center=false;onNavigate("Integraciones")};else->onRequest(id)}}
+ fun configure(id:String){when(id){"phone_use"->{app.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))};"gemini"->{center=false;onNavigate("Inteligencia artificial")};"shizuku"->{center=false;onNavigate("Integraciones")};else->onRequest(id)}}
  Column(Modifier.fillMaxWidth().testTag(if(center)"settings-function-center" else "settings-home"),verticalArrangement=Arrangement.spacedBy(20.dp)) {
   if(center) {
    TextButton(onClick={center=false}){Text("Volver al inicio")}
@@ -111,7 +114,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
  }
  val current=if(step>=0)queue.getOrNull(step) else pending
  val feature=features.firstOrNull{it.id==current}
- if(feature!=null)AlertDialog(onDismissRequest={step=-1;pending=null},title={Text(if(step>=0)"${step+1} de ${queue.size} · ${feature.title}" else feature.title)},text={Column(verticalArrangement=Arrangement.spacedBy(12.dp)){Text(feature.detail);Text(feature.status,style=MaterialTheme.typography.bodySmall);Text("Se abrirá la configuración correspondiente. Nada se autoriza automáticamente.",style=MaterialTheme.typography.bodySmall)}},confirmButton={TextButton(onClick={configure(feature.id);if(feature.id in setOf("gemini","shizuku")){step=-1;pending=null}}){Text("Configurar")}},dismissButton={TextButton(onClick={if(step>=0 && step+1<queue.size)step++ else{step=-1;pending=null}}){Text(if(step>=0)if(step+1<queue.size)"Siguiente / omitir" else "Finalizar" else "Cancelar")}})
+ if(feature!=null)AlertDialog(onDismissRequest={step=-1;pending=null},title={Text(if(step>=0)"${step+1} de ${queue.size} · ${feature.title}" else feature.title)},text={Column(verticalArrangement=Arrangement.spacedBy(12.dp)){Text(feature.detail);Text(feature.status,style=MaterialTheme.typography.bodySmall);Text("Se abrirá la configuración correspondiente. Nada se autoriza automáticamente.",style=MaterialTheme.typography.bodySmall)}},confirmButton={TextButton(onClick={configure(feature.id);if(feature.id in setOf("gemini","shizuku","phone_use")){step=-1;pending=null}}){Text("Configurar")}},dismissButton={TextButton(onClick={if(step>=0 && step+1<queue.size)step++ else{step=-1;pending=null}}){Text(if(step>=0)if(step+1<queue.size)"Siguiente / omitir" else "Finalizar" else "Cancelar")}})
 }
 @Composable private fun HomeShortcut(title:String,detail:String,icon:ImageVector,modifier:Modifier=Modifier,onClick:()->Unit) {
  val colors=MaterialTheme.colorScheme

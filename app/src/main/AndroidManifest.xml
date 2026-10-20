@@ -32,6 +32,11 @@
   <activity-alias android:name=".SpotlightSearchShortcut" android:targetActivity=".InvokeActivity" android:label="Spotlight · Buscar" android:icon="@drawable/ic_spotlight" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
   <service android:name=".overlay.OverlayService" android:exported="false" android:foregroundServiceType="specialUse"><property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User-invoked floating universal search; service stops when overlay closes"/></service>
   <service android:name=".overlay.SpotlightTile" android:label="Spotlight Next" android:icon="@drawable/ic_spotlight" android:exported="true" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"><intent-filter><action android:name="android.service.quicksettings.action.QS_TILE"/></intent-filter></service>
+  <!-- Optional app-control service, separate from the keyboard shortcut. -->
+  <service android:name=".agent.PhoneUseService" android:label="Spotlight · control de aplicaciones" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true">
+   <intent-filter><action android:name="android.accessibilityservice.AccessibilityService"/></intent-filter>
+   <meta-data android:name="android.accessibilityservice" android:resource="@xml/phone_use_service"/>
+  </service>
   <service android:name=".access.ShortcutService" android:label="Spotlight Next · atajo de teclado" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true">
    <intent-filter><action android:name="android.accessibilityservice.AccessibilityService"/></intent-filter>
    <meta-data android:name="android.accessibilityservice" android:resource="@xml/shortcut_service"/>
