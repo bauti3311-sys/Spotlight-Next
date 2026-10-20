@@ -657,6 +657,7 @@ fun SpotlightPanel(
             }
             if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("pane-raw-${resultsState.value.size}",searchScope?.section,searchGeneration,visibleResults.size)
             val compact = maxWidth < 560.dp
+            val inspectorWidthAvailable = maxWidth >= 600.dp
             // WindowManager WRAP_CONTENT bounds change after every layout. Never
             // use this Box's previous height as the next result pane's limit.
             val viewport =
@@ -886,7 +887,7 @@ fun SpotlightPanel(
                     navigating=true
                     pointerSelecting=true
                     hideKeyboardForActions()
-                    if(!config.adaptive || maxWidth<600.dp) {
+                    if(!config.adaptive || !inspectorWidthAvailable) {
                         preview=item
                         menu=true
                     } else {
