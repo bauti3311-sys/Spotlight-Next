@@ -195,14 +195,14 @@ class PhoneUseService : AccessibilityService() {
                 // Never replay a click or text edit, even if verification times out.
                 operate(packageName, step.selector, step.text)
                 var verified = false
-                repeat(6) {
+                for (attempt in 1..6) {
                     currentCoroutineContext().ensureActive()
                     delay(250)
                     val matches = visibleMatches(packageName,
                         if (step.operation == "tap") step.expected!! else step.selector)
                     verified = matches.size == 1 &&
                         (step.operation == "tap" || matches.single().text?.toString() == step.text)
-                    if (verified) return@repeat
+                    if (verified) break
                 }
                 check(verified) {
                     "Paso ${index+1}: Android aceptó la acción, pero no se comprobó el resultado. " +
