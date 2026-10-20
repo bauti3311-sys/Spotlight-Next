@@ -46,9 +46,12 @@ class PhoneUseService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        // Invalidate on window/content changes; a previously chosen control can move.
-        observedAt = 0L
-        observedSelectors = emptySet()
+        // The overlay redraws when showing tool results or confirming actions.
+        // Those updates must not erase a fresh observation of a DIFFERENT app.
+        // Any event outside Spotlight invalidates selectors. Unknown packages fail closed.
+        if (PhoneUsePolicy.invalidateObservation(event?.packageName?.toString(), applicationContext.packageName, observedPackage)) {
+            clearObservation()
+        }
     }
 
     override fun onInterrupt() = Unit
