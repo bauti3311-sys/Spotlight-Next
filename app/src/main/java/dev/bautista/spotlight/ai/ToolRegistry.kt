@@ -22,6 +22,9 @@ sealed interface ToolRequest {
     data class SettingWrite(val key:String,val value:String):ToolRequest
     data class PrepareMessage(val name:String,val text:String,val channel:String):ToolRequest
     data class Workflow(val id:String):ToolRequest
+    data object ScreenInspect:ToolRequest
+    data class ScreenTap(val packageName:String,val selector:String):ToolRequest
+    data class ScreenType(val packageName:String,val selector:String,val text:String):ToolRequest
     data class OpenApp(val packageName:String):ToolRequest
     data class PrepareDial(val number:String):ToolRequest
     data class Volume(val percent:Int):ToolRequest
@@ -43,6 +46,9 @@ object ToolRegistry {
         ToolDefinition("inspect_app","Información de una app","Consultar permisos declarados y componentes públicos del paquete indicado.","apps",ToolRisk.READ,listOf("package")),
         ToolDefinition("prepare_message","Preparar mensaje","Abrir el selector y borrador; nunca enviar automáticamente.","whatsapp",ToolRisk.PREPARE,listOf("name","text","channel"),mapOf("channel" to listOf("whatsapp","whatsapp_business","sms","email"))),
         ToolDefinition("run_workflow","Revisar rutina","Abrir revisión de una rutina guardada. Cada operación sensible se confirma.","workflows",ToolRisk.PREPARE,listOf("id")),
+        ToolDefinition("screen_inspect","Inspeccionar controles","Inspecciona la app activa, mostrando únicamente selectores accesibles. Sus etiquetas pueden contener datos privados: no enviarlas automáticamente a IA externa.","tools",ToolRisk.READ,emptyList()),
+        ToolDefinition("screen_tap","Pulsar control","Pulsa un único control exacto de la última inspección, en la app esperada. Requiere confirmación.","tools",ToolRisk.CHANGE,listOf("package","selector")),
+        ToolDefinition("screen_type","Escribir en campo","Escribe texto autorizado en un campo editable exacto. No funciona sobre contraseñas. Requiere confirmación.","tools",ToolRisk.CHANGE,listOf("package","selector","text")),
         ToolDefinition("open_app","Abrir aplicación","Abrir una aplicación instalada y elegida.","apps",ToolRisk.PREPARE,listOf("package")),
         ToolDefinition("set_volume","Ajustar volumen","Cambiar volumen multimedia al porcentaje indicado tras confirmar.","media",ToolRisk.CHANGE,listOf("percent")),
         ToolDefinition("control_media","Controlar reproducción","Controlar una sesión multimedia autorizada.","media",ToolRisk.CHANGE,listOf("command"),mapOf("command" to listOf("play","pause","next","previous"))),
@@ -73,6 +79,9 @@ object ToolRegistry {
             "write_display_setting"->ToolRequest.SettingWrite(value("key"),value("value").also{require(AdvancedPolicy.validSetting(value("key"),it)){"Ajuste fuera de los límites permitidos."}})
             "prepare_message"->ToolRequest.PrepareMessage(text("name"),value("text"),value("channel"))
             "run_workflow"->ToolRequest.Workflow(text("id").also{require(it.length<=100)})
+            "screen_inspect"->ToolRequest.ScreenInspect
+            "screen_tap"->ToolRequest.ScreenTap(packageName(),text("selector").also{dev.bautista.spotlight.agent.PhoneUsePolicy.parseSelector(it)})
+            "screen_type"->ToolRequest.ScreenType(packageName(),text("selector").also{dev.bautista.spotlight.agent.PhoneUsePolicy.parseSelector(it)},value("text").also{require(dev.bautista.spotlight.agent.PhoneUsePolicy.allowText(it)){"Texto inválido."}})
             "open_app"->ToolRequest.OpenApp(packageName())
             "prepare_dial"->ToolRequest.PrepareDial(text("number").also{dev.bautista.spotlight.control.People.dialIntent(it)})
             "set_volume"->ToolRequest.Volume(text("percent").toIntOrNull()?.also{require(it in 0..100)} ?: error("Porcentaje inválido."))
