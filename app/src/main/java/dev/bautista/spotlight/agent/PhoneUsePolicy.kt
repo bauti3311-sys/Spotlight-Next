@@ -38,6 +38,10 @@ internal object PhoneUsePolicy {
         }
     }
 
+    /** Ignore changes to Spotlight's overlay, but expire selectors on every external change. */
+    fun invalidateObservation(eventPackage: String?, hostPackage: String, observedPackage: String): Boolean =
+        observedPackage.isNotBlank() && (eventPackage == null || eventPackage != hostPackage)
+
     fun allowText(value: String): Boolean = value.isNotBlank() && value.length <= 1600 && '\u0000' !in value
 
     fun compactLabel(value: CharSequence?): String? = value?.toString()?.trim()?.takeIf { it.isNotBlank() }
