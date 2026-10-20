@@ -13,6 +13,7 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.search.normalize
 
@@ -95,10 +96,11 @@ object SettingsGroups {
    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
     val category:@Composable (String)->Unit={group->
      Row(Modifier.fillMaxWidth().selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=false},role=Role.Tab)
-      .background(if(selected==group)MaterialTheme.colorScheme.onSurface.copy(alpha=.08f) else androidx.compose.ui.graphics.Color.Transparent,RoundedCornerShape(9.dp))
+      .background(if(selected==group)MaterialTheme.colorScheme.primary.copy(alpha=.11f) else androidx.compose.ui.graphics.Color.Transparent,RoundedCornerShape(9.dp))
       .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically){
-       Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant)
-       Spacer(Modifier.width(12.dp));Text(group,Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium,maxLines=2,overflow=TextOverflow.Ellipsis)
+       Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp),tint=if(selected==group)MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+       Spacer(Modifier.width(12.dp));Text(group,Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium,
+           fontWeight=if(selected==group)FontWeight.SemiBold else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
      }
     }
     val detail:@Composable ()->Unit={
@@ -110,9 +112,20 @@ object SettingsGroups {
       }
      }
     }
-    if(maxWidth>=760.dp)Row(Modifier.fillMaxSize(),horizontalArrangement=Arrangement.spacedBy(28.dp)) {
-     Column(Modifier.width(218.dp).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(4.dp)) {visibleGroups.forEach{category(it)};TextButton(onClick={showAdvanced=!showAdvanced}){Text(if(showAdvanced)"Menos opciones" else "Más opciones")}}
-     Box(Modifier.weight(1f).fillMaxHeight()){detail()}
+    if(maxWidth>=760.dp)Row(Modifier.fillMaxSize(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+     Surface(shape=RoundedCornerShape(16.dp),color=MaterialTheme.colorScheme.onSurface.copy(alpha=.035f)) {
+      Column(Modifier.width(216.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(10.dp),
+          verticalArrangement=Arrangement.spacedBy(4.dp)) {
+       Text("SPOTLIGHT NEXT",Modifier.padding(horizontal=12.dp,vertical=14.dp),
+           style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+       visibleGroups.forEach{category(it)}
+       TextButton(onClick={showAdvanced=!showAdvanced}){Text(if(showAdvanced)"Menos opciones" else "Más opciones")}
+      }
+     }
+     Surface(modifier=Modifier.weight(1f).fillMaxHeight(),shape=RoundedCornerShape(16.dp),
+         color=MaterialTheme.colorScheme.onSurface.copy(alpha=.022f)) {
+      Box(Modifier.fillMaxSize().padding(18.dp)){detail()}
+     }
     } else Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
      Box {
       OutlinedButton(onClick={chooser=true},modifier=Modifier.fillMaxWidth(),shape=RoundedCornerShape(10.dp)) {Icon(SettingsGroups.icon(selected),null,Modifier.size(18.dp));Spacer(Modifier.width(12.dp));Text(SettingsGroups.canonical(selected),Modifier.weight(1f));Text("Cambiar")}
