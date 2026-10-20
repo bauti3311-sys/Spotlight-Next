@@ -1211,6 +1211,10 @@ fun SpotlightPanel(
                                 }
                                 if(aiSaveStatus.isNotBlank())Text(aiSaveStatus,style=MaterialTheme.typography.bodySmall)
                             }
+                        else if(category=="Apps" && widePreview)
+                            // Raycast uses a compact list alongside its detail panel.
+                            // Keep the legacy grid only for narrow/phone layouts.
+                            ContextSplitPanel(minOf(resultLimit,400.dp),{resultList()},{details()})
                         else if (category == "Apps")
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(columns),
