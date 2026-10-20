@@ -11,10 +11,9 @@ object PreviewPresentation {
      * uses suggest:app:PACKAGE; it must get the same native inspector as an
      * application in search results, never an inert/imaginary inspector.
      */
-    fun isApplication(result:Result?):Boolean = result!=null && (
-        result.category=="Aplicaciones" ||
-        result.id.startsWith("suggest:app:") && result.action is Action.Launch
-    )
+    fun isApplication(result:Result?):Boolean = result!=null &&
+        result.action is Action.Launch &&
+        (result.category=="Aplicaciones" || result.id.startsWith("suggest:app:"))
 
     fun needsInspector(result:Result?):Boolean = result!=null && (
         result.category=="Archivos" && result.mime!=DocumentsContract.Document.MIME_TYPE_DIR ||
