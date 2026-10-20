@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import dev.bautista.spotlight.agent.PhoneUseService
 import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.advanced.AppInspector
 import dev.bautista.spotlight.automation.Workflows
@@ -37,6 +38,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
             d.advanced && !app.shizuku.state.value.available -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="Shizuku debe estar conectado y autorizado."}
             d.id=="write_display_setting" && app.shizuku.writeCapability.value!=true -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Falta autorización de escritura verificada con Shizuku."}
             d.id=="control_media" && !listOf("play","pause","next","previous").any{MediaControl.available(app,it)} -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="No hay un único reproductor compatible y autorizado. Revisá cuál está activo."}
+            d.id in setOf("screen_inspect","screen_tap","screen_type") && !PhoneUseService.connected() -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Activá Spotlight · control de aplicaciones en Accesibilidad."}
             d.id=="search_contacts" && !c.contacts -> {status=CapabilityStatus.DISABLED;reason="La búsqueda de contactos está desactivada."}
             d.id=="prepare_dial" && !People.canDial(app) -> {status=CapabilityStatus.UNSUPPORTED;reason="No hay una aplicación compatible con el marcador telefónico."}
             d.id=="search_contacts" && !People.allowed(app) -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Android no concedió acceso a contactos."}
@@ -79,6 +81,9 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                 is ToolRequest.SettingWrite->{app.reversibleSettings.apply(request.key,request.value,confirmed);ToolExecution("Cambio verificado. El valor anterior quedó guardado para restaurarlo.",state=ExecutionState.VERIFIED)}
                 is ToolRequest.PrepareMessage->ToolExecution("Borrador preparado. Elegí el destinatario y revisá el envío.",Action.ComposeMessage(request.channel,request.name,request.text))
                 is ToolRequest.Workflow->{check(Workflows.parse(c.routines).any{it.id==request.id}){"La rutina no existe."};ToolExecution("Rutina preparada para revisión.",Action.WorkflowRun(request.id))}
+                ToolRequest.ScreenInspect->ToolExecution(PhoneUseService.inspect())
+                is ToolRequest.ScreenTap->ToolExecution(PhoneUseService.tap(request.packageName,request.selector),state=ExecutionState.REQUESTED)
+                is ToolRequest.ScreenType->ToolExecution(PhoneUseService.type(request.packageName,request.selector,request.text),state=ExecutionState.REQUESTED)
                 is ToolRequest.OpenApp->{val intent=app.packageManager.getLaunchIntentForPackage(request.packageName) ?: error("La aplicación no está instalada.");ToolExecution("Aplicación disponible para abrir.",Action.Launch(intent))}
                 is ToolRequest.PrepareDial->{val intent=People.dialIntent(request.number);check(intent.resolveActivity(app.packageManager)!=null){"El marcador ya no está disponible."};ToolExecution("Número preparado. Revisalo en Teléfono y confirmá allí la llamada.",Action.Launch(intent))}
                 is ToolRequest.Volume->{
