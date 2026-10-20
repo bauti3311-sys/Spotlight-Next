@@ -35,7 +35,7 @@ object SettingsGroups {
   title.startsWith("Privacidad") || title.startsWith("Portapapeles") || title.startsWith("Permisos") || title.startsWith("Contactos autorizados") || title.startsWith("Shizuku")->"Permisos y accesos"
   title.startsWith("Invocación") || title.startsWith("Teclado") || title=="Acceso rápido"->"Atajos"
   title.startsWith("Diagnóstico") || title.startsWith("Transferir") || title.startsWith("Alias") || title=="Búsqueda · prioridades"->"Avanzado"
-  title.startsWith("Extensiones") || title.startsWith("Integraciones") || title.startsWith("WhatsApp") || title.startsWith("Contactos") || title.startsWith("Clima") || title.startsWith("Shizuku") || title.startsWith("Tarjetas")->"Integraciones"
+  title.startsWith("Extensiones") || title.startsWith("Integraciones") || title.startsWith("WhatsApp") || title.startsWith("Contactos") || title.startsWith("Clima") || title.startsWith("Tarjetas")->"Integraciones"
   title.startsWith("Búsqueda") || title.startsWith("Índice") || title.startsWith("Texto e imágenes")->"Búsqueda y archivos"
   else->"General"
  }
