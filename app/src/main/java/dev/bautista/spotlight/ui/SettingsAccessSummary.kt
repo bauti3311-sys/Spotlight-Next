@@ -11,6 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -105,8 +107,10 @@ internal fun accessRows(app:SpotlightApp,c:Config):List<PermissionRow> {
                         Text(row.explanation,style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
                         Text(row.status,style=MaterialTheme.typography.labelSmall,color=if(row.allowed)colors.primary else colors.onSurfaceVariant)
                     }
-                    TextButton(onClick={onConfigure(row.id)}){
-                        Text(if(row.allowed)"Gestionar" else "Configurar",style=MaterialTheme.typography.labelSmall)
+                    val action=if(row.allowed)"Gestionar" else "Configurar"
+                    TextButton(onClick={onConfigure(row.id)},
+                        modifier=Modifier.semantics { contentDescription="$action ${row.label}" }){
+                        Text(action,style=MaterialTheme.typography.labelSmall)
                     }
                 }
                 if(index<entries.lastIndex)HorizontalDivider(color=colors.onSurface.copy(alpha=.055f))
