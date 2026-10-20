@@ -917,6 +917,23 @@ fun SpotlightPanel(
                 val details:@Composable ()->Unit = {
                         inspectorItem?.let { item ->
                             if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
+                                val appPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
+                                val mediaCommands by produceState(initialValue=emptyList<String>(),appPackage,playingPackages) {
+                                    value=if(appPackage!=null) withContext(Dispatchers.IO) {
+                                        val primary=if(appPackage in playingPackages)"pause" else "play"
+                                        listOf(primary,"next","previous").filter { MediaControl.availableForPackage(app,appPackage,it) }
+                                    } else emptyList()
+                                }
+                                fun sendMediaCommand(command:String) {
+                                    val target=appPackage ?: return
+                                    scope.launch {
+                                        try {
+                                            withContext(Dispatchers.IO) { MediaControl.executeForPackage(app,target,command) }
+                                            app.toolAudit.record("control_media","requested")
+                                        } catch(e:CancellationException) { throw e }
+                                        catch(e:Exception) { error=e.message ?: "El reproductor no aceptó la acción." }
+                                    }
+                                }
                                 if(richPreview || item.category=="Aplicaciones" || menu) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     ResultIcon(item,Modifier.size(if(item.category=="Aplicaciones")40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
@@ -966,6 +983,11 @@ fun SpotlightPanel(
                                     )
                                 }
                                 QuickLookMetadata(item)
+                                if(appPackage!=null) {
+                                    SelectionContainer {
+                                        Text("Paquete · $appPackage",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+                                    }
+                                }
                                 }
                                 if(liveAppInspector!=null && !menu) {
                                     HorizontalDivider(color=colors.onSurface.copy(alpha=.07f))
@@ -974,6 +996,13 @@ fun SpotlightPanel(
                                         Icon(CommandIcons.Chevron,null,Modifier.size(16.dp))
                                         Spacer(Modifier.width(8.dp))
                                         Text("Abrir aplicación")
+                                    }
+                                    mediaCommands.forEach{command->
+                                        TextButton(onClick={sendMediaCommand(command)}) {
+                                            Icon(CommandIcons.Bolt,null,Modifier.size(16.dp))
+                                            Spacer(Modifier.width(8.dp))
+                                            Text(when(command){"pause"->"Pausar reproducción";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"})
+                                        }
                                     }
                                     TextButton(onClick={preview=item;menu=true;navigating=true;hideKeyboardForActions()}) {
                                         Icon(CommandIcons.Bolt,null,Modifier.size(16.dp))
@@ -991,6 +1020,10 @@ fun SpotlightPanel(
                                         add("Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
                                     }
                                     if(item.category=="Aplicaciones")add("Acciones de ${item.title}","Capacidades públicas disponibles",CommandIcons.Apps){execute(Result("app:actions",item.title,"","Acciones",0,Action.RestoreQuery(item.title)))}
+                                    mediaCommands.forEach{command->
+                                        add(when(command){"pause"->"Pausar";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
+                                            "MediaSession autorizada de la aplicación seleccionada",CommandIcons.Bolt){sendMediaCommand(command)}
+                                    }
                                     if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add(if(favoriteId(item) in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
                                     if(item.action !is Action.Copy)add("Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
                                     if(query.isNotBlank())add(if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
