@@ -36,7 +36,7 @@ import dev.bautista.spotlight.data.Config
                 val label=when(mode){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->mode}
                 IconButton(onClick={onFilter(mode)},modifier=Modifier.size(40.dp).semantics{
                     contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl/⌘+$i"
-                }) {Icon(icon,label,Modifier.size(18.dp),tint=colors.onSurfaceVariant)}
+                }) {Icon(icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)}
             }
         }
         HorizontalDivider(color=colors.onSurface.copy(alpha=.07f))
