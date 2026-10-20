@@ -897,6 +897,14 @@ fun SpotlightPanel(
                                         {
                                             selected = i
                                             if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
+                                            else if(item.category=="Aplicaciones") {
+                                                // Touch selects first, like Raycast: show context without
+                                                // accidentally launching an app during list exploration.
+                                                // Enter on the keyboard remains the direct launch action.
+                                                navigating=true;pointerSelecting=true;keyboard?.hide()
+                                                if(!config.adaptive || maxWidth<650.dp){preview=item;menu=true}
+                                                else {preview=null;menu=false}
+                                            }
                                             else execute(item)
                                         },
                                         {
