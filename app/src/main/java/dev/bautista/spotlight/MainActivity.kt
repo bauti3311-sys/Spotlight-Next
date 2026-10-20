@@ -257,39 +257,9 @@ class MainActivity : ComponentActivity() {
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
-                                var disclose by remember { mutableStateOf(false) }
-                                OutlinedButton(onClick = { disclose = true }) {
-                                    Text("Configurar acceso de teclado")
+                                OutlinedButton(onClick={settingsGroup="Permisos y accesos"}) {
+                                    Text("Configurar servicio de teclado en Permisos →")
                                 }
-                                if (disclose)
-                                    AlertDialog(
-                                        onDismissRequest = { disclose = false },
-                                        title = { Text("Acceso de teclado optativo") },
-                                        text = {
-                                            Text(
-                                                "El servicio recibe eventos del teclado para detectar tu atajo. No registra teclas ni recupera contenido de otras apps. Podés desactivarlo en Ajustes → Accesibilidad."
-                                            )
-                                        },
-                                        confirmButton = {
-                                            TextButton(
-                                                onClick = {
-                                                    disclose = false
-                                                    startActivity(
-                                                        Intent(
-                                                            Settings.ACTION_ACCESSIBILITY_SETTINGS
-                                                        )
-                                                    )
-                                                }
-                                            ) {
-                                                Text("Abrir ajustes")
-                                            }
-                                        },
-                                        dismissButton = {
-                                            TextButton(onClick = { disclose = false }) {
-                                                Text("Cancelar")
-                                            }
-                                        },
-                                    )
                             }
                             Section("Apariencia") { GlassAppearance(config,update={draft->scope.launch{app.preferences.updateAppearance(draft)}},showHeading=false) }
                             Section("Aprendizaje local") {
