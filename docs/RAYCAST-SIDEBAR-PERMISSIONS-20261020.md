@@ -4,7 +4,7 @@
 UI **nativa en Kotlin/Jetpack Compose**. Contrato: diseño Obsidian Glass de referencia, sin WebView/React, sin pantallas rígidas para la IA, sin nuevas autorizaciones automáticas.
 
 ### Inspector contextual en el launcher
-- `SpotlightPanel` revela el inspector a la derecha **solo** en un overlay adaptable con al menos 650 dp y una app real seleccionada; al cambiar la selección se actualizan los detalles.
+- `SpotlightPanel` revela el inspector a la derecha **solo** en un overlay adaptable con al menos 600 dp y una app real seleccionada; al cambiar la selección se actualizan los detalles.
 - En pantallas menores conserva la lista y usa la hoja contextual existente. No deja columna derecha vacía.
 - Mostrar icono instalado, título, subtítulo, identificador de paquete y versión local disponible; sin inventar duración, tamaño ni reproducción.
 - Enter abre la app. «Ver acciones contextuales» abre el ActionPanel existente. PDF y Quick Look conservan su comportamiento anterior.
@@ -49,3 +49,15 @@ UI **nativa en Kotlin/Jetpack Compose**. Contrato: diseño Obsidian Glass de ref
 - **20/20 comprobaciones de invariantes estructurales** sobre los archivos remotos, sin errores detectados en esos invariantes. No son una suite JUnit.
 - Entorno de trabajo revisado: JDK y compilador Kotlin disponibles; **Android SDK/Gradle cache ausentes** y red externa de la terminal no disponible, por lo que no puede compilarse una APK nueva en esta ejecución. `scripts/validate-raycast-sidebar.sh` permite compilar/probar sin disparar Actions cuando haya SDK.
 - No se lanzó CI, no se gastaron minutos de Actions, y no se cambió `main`, la reserva de Work ni claves de firma.
+
+## Consolidación de la sesión nocturna (20/10)
+- El inspector **sí** se presenta en búsqueda de aplicaciones en tablet: `category=="Apps" && widePreview` usa lista compacta + `ContextSplitPanel`. La cuadrícula heredada se conserva en ventanas pequeñas; no hay inspector derecho vacío.
+- `selectApplication()` concentra el gesto de selección de lista y cuadrícula. Tocar **no ejecuta** una app; Enter mantiene la acción principal. Al pasar de Quick Look PDF a otra selección se elimina el inspector anterior, evitando datos visuales obsoletos.
+- `ActionPanelView` ahora **muestra** encabezados de grupos Principal, Texto, Organizar, Sistema y Gestión según haya opciones en cada uno; la navegación Tab/Shift+Tab/Enter permanece sin cambios.
+- `GlassQuickMenu`: se eliminaron descripciones accesibles duplicadas en iconos cuyo botón ya anuncia un nombre completo. `SettingsAccessSummary`: cada botón anuncia su permiso concreto y distingue el acceso habilitado de un servicio conectado/autorizado; Shizuku requiere `available && authorized`.
+- Buscar «shizuku», «notificaciones», «accesibilidad», «archivos», «uso», «ubicación» o «contactos» ahora encuentra **Permisos y accesos**. Los enlaces antiguos de Shizuku también apuntan a la sección única.
+- Pruebas nuevas: `RaycastQuickMenuComposeTest` ejercita rutas reales, tema y filtros; `RaycastSettingsNavigationTest` cubre alias y navegación de permisos; `ActionPanelKeyboardContractTest` comprueba encabezados sin ejecuciones implícitas. **Escritas, no ejecutadas con Gradle**.
+- `scripts/validate-raycast-sidebar.sh` compila y verifica ahora exactamente **raycastPreview**, usa tests Robolectric dirigidos y `:app:lintRaycastPreview`. Necesita Android SDK/API35 en el entorno ejecutor.
+- Workflow manual `build-apk.yml` entrega APK de instalación paralela, **ZIP fuente del mismo SHA**, certificado/debug, hash SHA256 y registro de identidad; retención de **3 días**. **NO** fue ejecutado, no hay APK Raycast Preview nueva ni evidencia física.
+- **37/37 inspecciones estructurales remotas**: referencias de menú, panel, permisos, MediaSession, privacidad de firma y flujo manual presentes. Son invariantes de código, **no** compilación, tests de UI ni validación física.
+- Verificar el HEAD de la rama antes de compilar: el snapshot `5b7d4188dd20085933184e3a160197c9cf42a852` del handoff matinal quedó superado por estos commits.
