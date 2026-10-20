@@ -117,6 +117,23 @@ class MainActivity : ComponentActivity() {
             fun updateAi(c: dev.bautista.spotlight.data.Config) {
                 scope.launch { app.preferences.updateAi(config,c) }
             }
+            // One route for all Android access requests. Never pretend a special
+            // permission was granted by toggling local Compose state.
+            fun configureAccess(access:String) {
+                when(access) {
+                    "overlay"->startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
+                    "files"->folder.launch(null)
+                    "storage_broad"->if(Build.VERSION.SDK_INT>=30) {
+                        runCatching{startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,Uri.parse("package:$packageName")))}
+                            .onFailure{startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))}
+                    } else settingsGroup="Búsqueda y archivos"
+                    "contacts","calendar","location"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access",access).putExtra("reopen",false))
+                    "notifications"->startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                    "post_notifications"->if(Build.VERSION.SDK_INT>=33)notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    "keyboard","phone_use"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                    "shizuku"->settingsGroup="Integraciones"
+                }
+            }
             SpotlightTheme(config.theme, config) {
                 val colors = MaterialTheme.colorScheme
                 Surface(Modifier.fillMaxSize(), color = colors.background) {
@@ -140,21 +157,19 @@ class MainActivity : ComponentActivity() {
                             }
                             Spacer(Modifier.height(20.dp))
                             SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),overview={details->
-                                SettingsHome(app,config,permissionRevision,{settingsGroup=it},{feature->
-                                    when(feature) {
-                                        "overlay"->startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
-                                        "files"->if(config.files)folder.launch(null) else{settingsGroup="Búsqueda y archivos"}
-                                        "contacts"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","contacts").putExtra("reopen",false))
-                                        "calendar"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","calendar").putExtra("reopen",false))
-                                        "location"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","location").putExtra("reopen",false))
-                                        "notifications"->startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-                                        "keyboard"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                                    }
-                                },details)
+                                SettingsHome(app,config,permissionRevision,{settingsGroup=it},{access->configureAccess(access)},details)
                             }){
                             CompositionLocalProvider(LocalSettingsGroup provides settingsGroup){
                             Section("Contexto autorizado · Inteligencia") { Text("Elegí documentos, fijá contextos y guardá conversaciones manualmente.");TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","contextos"))}){Text("Gestionar contexto")} }
-                            Section("Permisos opcionales") { SettingsAccessSummary(app,permissionRevision) }
+                            Section("Permisos y accesos") {
+                                SettingsAccessSummary(app,config,permissionRevision){access->configureAccess(access)}
+                                Toggle("Buscar contactos dentro de Spotlight",config.contacts){enabled->
+                                    if(!enabled)update(config.copy(contacts=false))
+                                    else if(checkSelfPermission(Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED)
+                                        update(config.copy(contacts=true))
+                                    else contactPermission.launch(Manifest.permission.READ_CONTACTS)
+                                }
+                            }
                             Section("Privacidad · Spotlight Glass") { PrivacySettings(app,config,::update) }
                             Section("Invocación · teclado y posición") { InvocationSettings(config,::update) }
                             Section("Búsqueda · prioridades") { SearchTuning(config,::update) }
@@ -276,27 +291,6 @@ class MainActivity : ComponentActivity() {
                             Section("Apariencia") { GlassAppearance(config,update={draft->scope.launch{app.preferences.updateAppearance(draft)}},showHeading=false) }
                             Section("Aprendizaje local") {
                                 Toggle("Aprender del uso · solo en este dispositivo",config.learning){update(config.copy(learning=it))}
-                            }
-                            Section("Contactos autorizados") {
-                                Toggle("Contactos", config.contacts) { enabled ->
-                                    if (enabled) {
-                                        if (
-                                            checkSelfPermission(
-                                                Manifest.permission.READ_CONTACTS
-                                            ) == PackageManager.PERMISSION_GRANTED
-                                        )
-                                            update(config.copy(contacts = true))
-                                        else
-                                            contactPermission.launch(
-                                                Manifest.permission.READ_CONTACTS
-                                            )
-                                    } else update(config.copy(contacts = false))
-                                }
-                                Text(
-                                    "Los contactos se consultan en el dispositivo. WhatsApp requiere un número con código de país (+54…). El mensaje se prepara para que lo envíes vos.",
-                                    fontSize = 12.sp,
-                                    color = colors.onSurfaceVariant,
-                                )
                             }
                             Section("Portapapeles temporal") {
                                 Toggle("Historial de portapapeles · optativo", config.clipboard) {
