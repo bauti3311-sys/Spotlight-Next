@@ -660,7 +660,7 @@ fun SpotlightPanel(
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
             val liveAppInspector=selectedResult?.takeIf {
-                config.adaptive && maxWidth>=650.dp && preview==null && !menu &&
+                config.adaptive && maxWidth>=600.dp && preview==null && !menu &&
                 !searchOptions && !showAi && systemPage==null && !noteEditor &&
                 category in setOf("Todo","Apps") && it.category=="Aplicaciones"
             }
@@ -902,7 +902,7 @@ fun SpotlightPanel(
                                                 // accidentally launching an app during list exploration.
                                                 // Enter on the keyboard remains the direct launch action.
                                                 navigating=true;pointerSelecting=true;keyboard?.hide()
-                                                if(!config.adaptive || maxWidth<650.dp){preview=item;menu=true}
+                                                if(!config.adaptive || maxWidth<600.dp){preview=item;menu=true}
                                                 else {preview=null;menu=false}
                                             }
                                             else execute(item)
