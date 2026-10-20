@@ -84,11 +84,14 @@ class PhoneUseService : AccessibilityService() {
         }
         // Spotlight's own overlay may be focused; only fall back when exactly one
         // external APPLICATION window is accessible. Split-screen ambiguity fails closed.
-        val candidates = windows.orEmpty()
+        val appWindows = windows.orEmpty()
             .filter { it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION }
             .mapNotNull { it.root }
             .map { it.packageName?.toString().orEmpty() to it }
-            .filter { PhoneUsePolicy.allowObservation(it.first, hostPackage) }
+        check(appWindows.none { (pkg, _) ->
+            pkg.isNotBlank() && pkg != hostPackage && !PhoneUsePolicy.allowObservation(pkg, hostPackage)
+        }) { "Hay una ventana protegida activa; no se inspeccionará otra app detrás." }
+        val candidates = appWindows.filter { PhoneUsePolicy.allowObservation(it.first, hostPackage) }
         check(candidates.size == 1) {
             "No se pudo identificar una única app externa detrás de Spotlight. Abrí la app y reintentá."
         }
