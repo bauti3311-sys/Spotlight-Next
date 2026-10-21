@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.CommandCenterTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-21T21:08:57" hostname="3f4aaaec44b7" time="6.048">
+  <properties/>
+  <testcase name="youtubeQueryAndWhatsappMessageAreEncodedWithoutLosingText" classname="dev.bautista.spotlight.control.CommandCenterTest" time="5.81"/>
+  <testcase name="suggestionsPreserveTypedPrefixAndDoNotCompleteUnrelatedText" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.044"/>
+  <testcase name="fiveRecentThenEveryAppAlphabeticallyWithoutLosingDuplicates" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.069"/>
+  <testcase name="localDeviceActionsAreNotWebSearches" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.044"/>
+  <testcase name="arrowsCrossRecentSectionWithoutShiftingColumns" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.037"/>
+  <testcase name="sofascoreHasNativeSearchAndAWorkingSearchFallbackInsteadOfMissingRoute" classname="dev.bautista.spotlight.control.CommandCenterTest" time="0.044"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
