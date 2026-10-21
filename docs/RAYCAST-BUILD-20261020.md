@@ -38,3 +38,14 @@ La primera invocación local de recuperación falló antes de compilar por --tes
 Seguimiento64b2d13:64/65, altura compacta y acciones desplazables correctas. El límite genérico del panel recortaba el pie de ActionPanel en tablet (QuickLookTouchTargetTest). Corrección acotada: scroll/límite solo para inspector automático de apps; menú explícito y Quick Look recuperan su medición previa. Ninguna aserción modificada o eliminada. Gate pendiente de reejecución.
 
 Gate58eef8e:65/65casos,0fallos/errores/omitidas; altura, menú y Quick Look correctos. Lint se detuvo con ProduceStateDoesNotAssignValue en carga MediaSession del inspector; diez advertencias y una informativa. No se generó APK en este gate. Se conserva reporte completo. Cambio mínimo: estado remember(appPackage,playingPackages) y LaunchedEffect con los mismos identificadores; reinicio al cambiar app y cancelación de consulta antigua, sin supresión de lint ni cambios de permisos/controles. Verificación del nuevo checkpoint pendiente.
+
+## Entrega Raycast Preview verificada
+Fuente APK y ZIP: `a2ef09010a066da88fb2433a246ad4919df1b991`. Gate local BUILD SUCCESSFUL in5m35s:65casos/14suites,0fallos/errores/omitidas; lint0errores/10advertencias/1informativa; assembleRaycastPreview correcto. Paquete dev.bautista.spotlight.next.raycastpreview, versionCode29, versionName2.0.1-raycast-preview. Firma Android Debug propia de la variante independiente; certificado y hashes en final/verification.json. zipalign16KB y368entradas de compilación verificadas. ZIP git archive mismoSHA, probado y sin keystores/credenciales/cachés.
+
+Se conservaron PR17/18, ramas anteriores, main y firmas históricas. Sin Actions/cuotaCI. Validación física OneUI, instalación, MediaSession/aplicaciones reales y proveedorGemini **no ejecutados**; fixtures Compose/Robolectric no los sustituyen. Las40decisiones siguen parciales.
+
+Correcciones cerradas: receptor maxWidth; configuración tests Preview/PhoneUse; altura compacta con inspector automático y acciones desplazables; carga de controles MediaSession con efecto cancelable por paquete. Pruebas y controles conservados. Evidencia completa en docs/verification/raycast-preview-20261020/final.
+
+APK y ZIP generados en Raycast-Preview-delivery para entrega directa. El intento de guardado persistente falló antes de transferir archivos: hosted apps tools/list HTTP403. No declarar copia persistente. Respaldo de firma Raycast generado por separado en directorio privado local, nunca en Git ni ZIP fuente; persistencia externa pendiente del servicio.
+
+Siguiente acción: instalar Preview independiente en TabA9+, probar sugerencias Spotify/WhatsApp, inspector, permisos, desplazamientoPDF y teclado. Conservar este APK como base; no repetir suites completas sin cambio o fallo.

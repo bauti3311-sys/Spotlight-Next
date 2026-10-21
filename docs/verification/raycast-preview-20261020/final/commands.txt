@@ -1,0 +1,5 @@
+JDK17.0.20.1+1, SDK35/build-tools35.0.0, Gradle8.10.2. Build copia temporal exacta.
+:app:testRaycastPreviewUnitTest (14 filtros de scripts/validate-raycast-sidebar.sh), :app:lintRaycastPreview, :app:assembleRaycastPreview.
+--no-daemon --max-workers=1 --console=plain -Pkotlin.compiler.execution.strategy=in-process -Pkotlin.incremental=false. Test JVM -XX:TieredStopAtLevel=1 (init local documentado por crash C2 anterior). No tests omitidos.
+apksigner verify --verbose --print-certs; aapt dump badging; zipalign -c -P 16 4.
+git archive del mismo SHA. Comprobación de368 entradas de build frente a Git. Sin Actions; sin dispositivo/KVM.

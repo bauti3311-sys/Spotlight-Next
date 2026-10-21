@@ -557,3 +557,7 @@ Código Android `f987a0e`, sobre `2de8b52`: lectura validada de ContextStore, co
 Verificación nueva: 572 pruebas / 121 suites, cero fallos, tres lint sin errores, Release/R8 y compilación instrumentada correctos (BUILD SUCCESSFUL in 11m 19s); 21 comparaciones estrictas intactas. Las 328 entradas compiladas coinciden con Git. Los 40 dirigidos no se suman. Evidencia: `docs/verification/context-recovery-20261017/summary.json`.
 
 Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release interno sin firma, no instalable ni entregado; ninguna clave de firma nueva, APK parcial, Actions, main/PR16 o presupuesto modificado. Matriz 40 aún parcial. Detalle, regresiones y próximo bloque semántico local: `docs/HANDOFF-INTEGRAL-20261017.md` y `docs/CONTEXTO-RECUPERACION-20261017.md`.
+
+
+### Raycast Preview — checkpoint de entrega20/10
+Fuente a2ef090:65/65dirigidas,lint0errores/10advertencias/1informativa y APK independiente verificados localmente. Inspector compacto corregido, QuickLook/teclado/MediaSession conservados. Evidencia y hashes: docs/RAYCAST-BUILD-20261020.md y docs/verification/raycast-preview-20261020/final. Decisiones9/10/18/20/34/35 conservan alcance parcial: sin instalación OneUI, servicios/proveedor reales ni validación integral. Sin CI/main/merges. Prioridad siguiente: prueba física de esta entrega.

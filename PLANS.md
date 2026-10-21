@@ -499,3 +499,7 @@ PDF: 17/17 pruebas y lintDebug 0 errores/10 advertencias/1 informativa sobre 1d8
 ## 19/10 · Continuación recuperada y multimedia
 
 HEAD inicial df97608 y reserva propia 515323b confirmados. XML de 21 pruebas recuperados/publicados en 8ae0908; runtime /tmp perdido, restaurado con mismas versiones. LintDebug completado (0 errores/10 advertencias/1 informativa), cierre Gemini b8e213e. Multimedia: tests parciales a527a7c, reproducción 4 fallos/6 casos, corrección 4c72b3f y 28/28 verificaciones dirigidas aprobadas. XML preservados, lint posterior aprobado: 0 errores/10 advertencias/1 informativa. Sin APK, suite integral, Actions, proveedor/dispositivo real. Mantener UI y firmas; continuar matriz con bloques terminables.
+
+
+### Raycast Preview — checkpoint de entrega20/10
+Fuente a2ef090:65/65dirigidas,lint0errores/10advertencias/1informativa y APK independiente verificados localmente. Inspector compacto corregido, QuickLook/teclado/MediaSession conservados. Evidencia y hashes: docs/RAYCAST-BUILD-20261020.md y docs/verification/raycast-preview-20261020/final. Decisiones9/10/18/20/34/35 conservan alcance parcial: sin instalación OneUI, servicios/proveedor reales ni validación integral. Sin CI/main/merges. Prioridad siguiente: prueba física de esta entrega.

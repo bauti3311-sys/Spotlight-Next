@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.MediaTargetTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-21T00:14:45" hostname="da76f105392b" time="0.18">
+  <properties/>
+  <testcase name="activePlaybackWinsOverFirstPausedSession" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.037"/>
+  <testcase name="executionRefreshesSessionsAfterAvailabilityCheck" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.017"/>
+  <testcase name="singlePausedPlayerStillSupportsResume" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.02"/>
+  <testcase name="contextualCommandRejectsUnsupportedActionEvenIfPlayerExists" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.02"/>
+  <testcase name="simultaneousPlayersNeverReceiveAnArbitraryCommand" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.018"/>
+  <testcase name="contextualCommandNeverControlsUnrelatedPlayer" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.017"/>
+  <testcase name="contextualCommandRejectsTwoSessionsFromSameApp" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.018"/>
+  <testcase name="unsupportedCommandsNeverDispatch" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.016"/>
+  <testcase name="severalPausedPlayersAreAmbiguous" classname="dev.bautista.spotlight.control.MediaTargetTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

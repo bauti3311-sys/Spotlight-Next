@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.agent.PhoneUsePolicyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-21T00:14:40" hostname="da76f105392b" time="0.025">
+  <properties/>
+  <testcase name="validatesRealAppAndBlocksPrivilegedWindows" classname="dev.bautista.spotlight.agent.PhoneUsePolicyTest" time="0.017"/>
+  <testcase name="onlyExactTypedSelectorsAreAccepted" classname="dev.bautista.spotlight.agent.PhoneUsePolicyTest" time="0.005"/>
+  <testcase name="overlayRedrawDoesNotInvalidateExternalObservation" classname="dev.bautista.spotlight.agent.PhoneUsePolicyTest" time="0.0"/>
+  <testcase name="textLengthAndLabelsAreBounded" classname="dev.bautista.spotlight.agent.PhoneUsePolicyTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
