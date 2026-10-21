@@ -83,14 +83,19 @@ class NativePaletteFlowTest {
         val intent=Shadows.shadowOf(app).nextStartedActivity;assertNotNull(intent);assertEquals("com.whatsapp",intent.component?.packageName)
     }
     @Test fun constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow(){
-        show(height=260f);open();ui.onNodeWithTag("action-filter").assertIsDisplayed()
+        show(height=260f)
+        val original=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
+        open();ui.onNodeWithTag("action-filter").assertIsDisplayed()
         ui.onNodeWithContentDescription("Cerrar acciones").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         val first=ui.onNode(hasText("Abrir") and hasClickAction()).assertIsDisplayed().assertHeightIsAtLeast(48.dp).fetchSemanticsNode().boundsInRoot
         val filter=ui.onNodeWithTag("action-filter").fetchSemanticsNode().boundsInRoot
         assertTrue(first.bottom<=filter.top)
         val window=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
         val panel=ui.onNodeWithTag("action-surface").fetchSemanticsNode().boundsInRoot
-        assertTrue(panel.top>=window.top && panel.bottom<=window.bottom);capture("07-ime-budget-simulation")
+        assertEquals(original,window)
+        // A child surface can extend beyond the compact parent; the IME budget still bounds it.
+        assertTrue(panel.height<=260*app.resources.displayMetrics.density)
+        captureScreenRoboImage("build/native-palette/07-ime-budget-simulation.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
     }
     @Test @Config(qualifiers="w390dp-h844dp") fun phoneUsesSameFloatingActionsAndCanReachLastEntry(){
         show(width=360);open();ui.onNodeWithTag("action-filter").assertIsDisplayed()

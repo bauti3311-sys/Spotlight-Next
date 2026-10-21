@@ -74,4 +74,27 @@ class SmartSearchAcceptanceTest {
         assertEquals(listOf("a","b","c"),StableResults.merge(listOf(a,b),listOf(c,b,a),true).map{it.id})
         assertEquals(listOf("b","c"),StableResults.merge(listOf(a,b),listOf(c,b),true).map{it.id})
     }
+    @Test fun absentAppsAndEmptyQueriesDoNotInventExecutions() {
+        val missing=rows("Spotify")
+        assertTrue(missing.none{it.category=="Aplicaciones"})
+        val unknown=rows("zqvxyz")
+        assertTrue(CompactResults.select("zqvxyz",unknown,config).initial.isEmpty())
+        assertTrue(unknown.none{it.action is Action.Device || it.action is Action.Ask})
+    }
+    @Test fun volumePrefixesDoNotDisplaceAnInstalledApplicationPrefix() {
+        install("volcano.fixture","Volcano")
+        val all=rows("vol")
+        assertEquals("Volcano",CompactResults.select("vol",all,config).initial.first().title)
+        assertTrue(all.any{it.action is Action.Device && it.action.command in setOf("volume_up","volume_down")})
+    }
+    @Test fun explicitOpenSpotifyResolvesLocallyAndNeverAsAnAiProposal() {
+        install("com.spotify.music","Spotify")
+        val initial=CompactResults.select("abrir Spotify",rows("abrir Spotify"),config).initial
+        val primary=initial.first().action as Action.Launch
+        assertEquals("com.spotify.music",primary.intent.component?.packageName)
+    }
+    @Test fun deniedContactsNeverBecomeAuthorizedResults() {
+        Shadows.shadowOf(app).denyPermissions(android.Manifest.permission.READ_CONTACTS)
+        assertTrue(rows("Juan",config.copy(contacts=true)).none{it.category=="Contactos" && it.action !is Action.Access})
+    }
 }

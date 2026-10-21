@@ -701,7 +701,7 @@ fun SpotlightPanel(
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && ((config.clipboardShortcut=="ctrl_shift_v" && event.isShiftPressed && event.key==Key.V) || (config.clipboardShortcut=="ctrl_p" && !event.isShiftPressed && event.key==Key.P))) {selectMode("Portapapeles",true);true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.K) {
-                        selectedResult?.let {
+                        present(resultsState.value).getOrNull(selected)?.let {
                             preview=it
                             menu=!menu
                             navigating=true
@@ -746,12 +746,13 @@ fun SpotlightPanel(
                                 true
                             }
                             Key.Tab -> {
+                                val liveSelection=present(resultsState.value).getOrNull(selected)
                                 if (searchFocused && canAutocomplete && suggestion!=null && !event.isShiftPressed) {
                                     acceptSuggestion()
-                                } else if (selectedResult != null) {
+                                } else if (liveSelection != null) {
                                     // Hide while the query still owns its native input connection.
                                     hideKeyboardForActions()
-                                    preview = selectedResult
+                                    preview = liveSelection
                                     menu = true
                                     navigating = true
                                 }

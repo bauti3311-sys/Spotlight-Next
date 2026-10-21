@@ -31,16 +31,18 @@ internal class ActionPopupHost(
     private val params=WindowManager.LayoutParams().apply {
         type=WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL
         token=anchor.applicationWindowToken
-        flags=WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+        flags=WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH or
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         format=PixelFormat.TRANSLUCENT
         gravity=Gravity.TOP or Gravity.START
         height=WindowManager.LayoutParams.WRAP_CONTENT
         softInputMode=WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED
         title="Spotlight · Acciones"
+        if(Build.VERSION.SDK_INT>=30)setFitInsetsTypes(0) // Safe frame is applied explicitly, once.
     }
+    init { isFocusable=true;isFocusableInTouchMode=true }
     private val layoutListener=ViewTreeObserver.OnGlobalLayoutListener { reposition() }
-    private var backDispatcher:OnBackInvokedDispatcher?=null
-    private var backCallback:OnBackInvokedCallback?=null
+    private var unregisterBack:(()->Unit)?=null
 
     @Composable override fun Content() { body?.invoke() }
 
@@ -107,18 +109,25 @@ internal class ActionPopupHost(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if(Build.VERSION.SDK_INT>=33) {
-            backCallback=OnBackInvokedCallback {back()}
-            backDispatcher=findOnBackInvokedDispatcher()
-            backCallback?.let {backDispatcher?.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT,it)}
+            unregisterBack=Api33.register(this,back)
         }
     }
 
     fun close() {
-        if(Build.VERSION.SDK_INT>=33)backCallback?.let{backDispatcher?.unregisterOnBackInvokedCallback(it)}
-        backCallback=null;backDispatcher=null
+        unregisterBack?.invoke();unregisterBack=null
         if(anchor.viewTreeObserver.isAlive)anchor.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
         if(attached){attached=false;manager.removeViewImmediate(this)}
         disposeComposition()
+    }
+
+    private object Api33 {
+        @androidx.annotation.RequiresApi(33)
+        fun register(view:View,back:()->Unit):()->Unit {
+            val dispatcher=view.findOnBackInvokedDispatcher()
+            val callback=OnBackInvokedCallback{back()}
+            dispatcher?.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT,callback)
+            return {dispatcher?.unregisterOnBackInvokedCallback(callback);Unit}
+        }
     }
 }
 
