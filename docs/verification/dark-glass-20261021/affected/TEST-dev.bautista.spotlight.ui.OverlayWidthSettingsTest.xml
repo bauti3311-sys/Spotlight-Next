@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-21T23:31:36" hostname="1869f135b6a6" time="0.349">
+  <properties/>
+  <testcase name="appearanceHasOneWidthControlAndNoTechnicalOverrides" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.066"/>
+  <testcase name="phoneExposesOneAccessibleCompactToWideSlider" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.047"/>
+  <testcase name="resettingPositionMustNotEraseHorizontalWidth" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.051"/>
+  <testcase name="appearanceDraftOnlyAppliesOnRequest" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.053"/>
+  <testcase name="landscapeControlRemainsReachableWithoutTechnicalText" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.04"/>
+  <testcase name="openingSettingsDoesNotMigrateLegacyGeometryArbitrarily" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.045"/>
+  <testcase name="newWidthChoicePreservesPositionSavedDataAndLegacyValues" classname="dev.bautista.spotlight.ui.OverlayWidthSettingsTest" time="0.046"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

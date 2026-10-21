@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -42,7 +43,7 @@ object SettingsGroups {
   else->"General"
  }
  fun label(group:String)=when(canonical(group)){"Búsqueda y archivos"->"Búsqueda";"Permisos y accesos"->"Permisos";"Inteligencia artificial"->"IA";else->canonical(group)}
- fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Folder;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Layers;"Atajos"->CommandIcons.Keyboard;"General"->CommandIcons.Settings;"Avanzado"->CommandIcons.Info;else->CommandIcons.Shield}
+ fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Search;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Apps;"Atajos"->CommandIcons.Keyboard;"General"->HugeIcons.Settings;"Avanzado"->CommandIcons.Sliders;else->CommandIcons.Shield}
  fun description(group:String)=when(canonical(group)){
   "General"->"Inicio, sugerencias y formas de abrir Spotlight."
   "Apariencia"->"Raycast Dark Glass, opacidad y tamaño de la ventana."
@@ -165,7 +166,7 @@ object SettingsGroups {
   Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClickLabel=if(open)"Contraer sección" else "Expandir sección"){expanded=!expanded}
    .semantics{stateDescription=if(open)"Expandida" else "Contraída"},verticalAlignment=Alignment.CenterVertically){
    Text(title,Modifier.weight(1f),fontSize=13.sp,fontWeight=FontWeight.SemiBold)
-   Icon(if(open)CommandIcons.Chevron else CommandIcons.Chevron,null,Modifier.size(14.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant)
+   Icon(CommandIcons.Chevron,null,Modifier.size(14.dp).rotate(if(open)90f else 0f),tint=MaterialTheme.colorScheme.onSurfaceVariant)
   }
   if(open)SettingsGroupSurface{content()}
  }

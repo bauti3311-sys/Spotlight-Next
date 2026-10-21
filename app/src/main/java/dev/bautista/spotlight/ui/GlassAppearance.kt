@@ -1,6 +1,10 @@
 package dev.bautista.spotlight.ui
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
@@ -29,12 +33,7 @@ import kotlin.math.roundToInt
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(18.dp)) {
         if(showHeading)Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
         Text("Raycast Dark Glass",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
-        SettingsOptions {
-            FilterChip(draft.theme=="auto",{edit(draft.copy(theme="auto"))},label={Text("Sistema")})
-            listOf(Triple("glass","dark","Raycast Dark Glass"),Triple("raycast","dark","Graphite"),Triple("glass","light","macOS Light")).forEach { (preset,theme,label)->
-                FilterChip(draft.preset==preset && draft.theme==theme,{edit(draft.copy(preset=preset,theme=theme))},label={Text(label)})
-            }
-        }
+        GlassThemeChoices(draft){edit(it)}
         SettingsGroupSurface {
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
@@ -47,7 +46,7 @@ import kotlin.math.roundToInt
                 draft=draft.copy(opacity=value)
                 // Only this persisted field is immediate; other draft edits still require Apply.
                 update(AppearanceEdits.merge(c,c.copy(opacity=value)))
-            },Modifier.testTag("surface-opacity-slider").semantics{contentDescription="Opacidad de superficie"},valueRange=GlassTokens.minimumOpacity..1f)
+            },Modifier.testTag("surface-opacity-slider").semantics{contentDescription="Opacidad de superficie";stateDescription="${(GlassTokens.opacity(draft)*100).roundToInt()}%"},valueRange=GlassTokens.minimumOpacity..1f)
             TextButton(onClick={draft=draft.copy(opacity=GlassTokens.defaultOpacity);update(AppearanceEdits.merge(c,c.copy(opacity=GlassTokens.defaultOpacity)))}){Text("Restablecer opacidad · 80%")}
             var preview by remember{mutableStateOf(false)}
             TextButton(onClick={preview=!preview}){Text(if(preview)"Ocultar vista previa" else "Vista previa en vivo")}
@@ -68,4 +67,31 @@ import kotlin.math.roundToInt
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { Button(onClick={update(AppearanceEdits.merge(c,draft));dirty=false}){Text("Aplicar apariencia")};TextButton(onClick={draft=c;dirty=false}){Text("Descartar cambios")} }
         ConfirmedSettingsButton("Restablecer apariencia","Restablece tema, opacidad, acento, densidad, movimiento y ancho. Tus datos y otras preferencias se conservan.") { edit(AppearanceEdits.merge(c,Config(windowScale=.5f))) }
     }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable private fun GlassThemeChoices(c:Config,edit:(Config)->Unit) {
+ val colors=MaterialTheme.colorScheme
+ Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+  Text("Estilo y contraste",Modifier.weight(1f),style=MaterialTheme.typography.titleSmall)
+  FilterChip(c.theme=="auto",{edit(c.copy(theme="auto"))},label={Text("Sistema")})
+ }
+ BoxWithConstraints(Modifier.fillMaxWidth()) {
+  val width=if(maxWidth>=560.dp)(maxWidth-16.dp)/3 else (maxWidth-8.dp)/2
+  FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+   listOf(Triple("glass","dark","Raycast Dark Glass"),Triple("raycast","dark","Graphite"),Triple("glass","light","macOS Light")).forEach{(preset,theme,label)->
+    val active=c.preset==preset && c.theme==theme
+    Surface(onClick={edit(c.copy(preset=preset,theme=theme))},modifier=Modifier.width(width).heightIn(min=76.dp).semantics{selected=active},
+     shape=RoundedCornerShape(10.dp),color=colors.onSurface.copy(alpha=.025f),border=BorderStroke(1.dp,if(active)colors.primary else colors.onSurface.copy(alpha=.10f))) {
+     Row(Modifier.padding(10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
+      Box(Modifier.size(30.dp).background(Brush.linearGradient(if(theme=="light")listOf(Color.White,Color(0xFFD9DFED)) else listOf(Color(0xFF383C50),Color(0xFF14161E))),RoundedCornerShape(7.dp)).border(1.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(7.dp)))
+      Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
+       Text(label,fontWeight=FontWeight.Medium,style=MaterialTheme.typography.bodySmall)
+       Text(if(theme=="light")"Claro" else if(preset=="raycast")"Grafito" else "Translúcido",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
+      }
+     }
+    }
+   }
+  }
+ }
 }

@@ -1035,7 +1035,7 @@ fun SpotlightPanel(
                                         actions.removeAll(copyChoices.toSet())
                                         actions+=ContextAction("Copiar…","Elegir formato",CommandIcons.ContentCopy,{},id="copy.formats",group=ContextActionGroup.Text,children=copyChoices)
                                     }
-                                    ActionPanelView(actions,actionFocus,onClose={menu=false;if(!richPreview)preview=null;focus.requestFocus()})
+                                    ActionPanelView(actions,actionFocus,onClose={menu=false;if(!richPreview)preview=null;focus.requestFocus()},contextResult=item)
                                 }
                             }
                         }

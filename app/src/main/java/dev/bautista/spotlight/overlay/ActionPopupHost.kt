@@ -63,7 +63,7 @@ internal class ActionPopupHost(
         if(changed && attached)manager.updateViewLayout(this,params)
     }
 
-    private fun horizontalOutset()=if(anchorBounds.width()>=600*resources.displayMetrics.density)(96*resources.displayMetrics.density).toInt() else 0
+    private fun horizontalOutset()=if(anchorBounds.width()>=600*resources.displayMetrics.density)minOf(144*resources.displayMetrics.density,anchorBounds.width()*.18f).toInt() else 0
 
     private fun updateSafeBounds() {
         anchor.getWindowVisibleDisplayFrame(bounds)

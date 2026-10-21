@@ -39,7 +39,7 @@ data class ContextAction(
 private data class ActionMenuFrame(val id:String,val filter:String,val selectedId:String?)
 
 @OptIn(ExperimentalFoundationApi::class)
-@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null) {
+@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null,contextResult:dev.bautista.spotlight.search.Result?=null) {
     val path=remember {mutableStateListOf<ActionMenuFrame>()}
     var filter by remember {mutableStateOf("")}
     var selectedId by remember {mutableStateOf<String?>(null)}
@@ -114,7 +114,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 textStyle=TextStyle(fontFamily=Inter,fontSize=13.sp,color=colors.onSurface),
                 modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
                 decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
-                    if(filter.isBlank())Text("Buscar acciones…",fontSize=12.sp,color=colors.onSurfaceVariant)
+                    if(filter.isBlank())Text(contextResult?.let{"Buscar acciones de ${it.title}…"} ?: "Buscar acciones…",fontSize=12.sp,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
                     field()
                 }})
             IconButton(onClick={onClose?.invoke()},modifier=Modifier.size(48.dp)){Icon(CommandIcons.Close,"Cerrar acciones",Modifier.size(17.dp))}
@@ -142,7 +142,8 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                     .clickable(enabled=action.state.executable){selectedId=action.identity;activate(action)}
                     .bringIntoViewRequester(bring).padding(horizontal=10.dp,vertical=6.dp),
                     verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
-                    Icon(action.icon,null,Modifier.size(17.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else colors.onSurfaceVariant)
+                    if(i==0 && path.isEmpty() && action==all.firstOrNull() && contextResult!=null)ResultIcon(contextResult,Modifier.size(28.dp),colors.onSurfaceVariant)
+                    else Icon(action.icon,null,Modifier.size(17.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else colors.onSurfaceVariant)
                     Column(Modifier.weight(1f)) {
                         Text(action.title,fontSize=13.sp,fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
                             maxLines=1,overflow=TextOverflow.Ellipsis)

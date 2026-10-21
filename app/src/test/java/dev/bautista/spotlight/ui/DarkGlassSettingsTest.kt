@@ -38,6 +38,10 @@ class DarkGlassSettingsTest {
   ui.onNodeWithText("Cambiar").performClick();ui.onNodeWithText("Apariencia").performClick();capture("phone-appearance")
   ui.onNodeWithText("Restablecer apariencia").performScrollTo().assertIsDisplayed()
   ui.onNodeWithText("Cambiar").performClick();ui.onNodeWithText("Permisos y accesos").performClick();capture("phone-permissions")
+  listOf("Búsqueda y archivos","Integraciones","Inteligencia artificial","Atajos","Avanzado").forEachIndexed{i,group->
+   ui.onNodeWithText("Cambiar").performClick();ui.onNodeWithText(group).performClick();capture("phone-area-${i+1}")
+   ui.onNodeWithTag("settings-details").assertExists()
+  }
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
  }
  @Test fun opacityIsImmediatePersistentAndSurvivesActivityRecreation(){

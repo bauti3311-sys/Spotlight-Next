@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.*
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -27,6 +28,8 @@ import org.robolectric.annotation.GraphicsMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class FloatingSearchFlowTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
+    private var fixtureBackdrop by mutableStateOf(Color(0xFF303136))
+    private var fixtureOpacity by mutableFloatStateOf(.80f)
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
     private fun capture(name:String) {
@@ -42,10 +45,10 @@ class FloatingSearchFlowTest {
             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=activity})
         }
         app.search.invalidateApps()
-        ui.setContent{Box(Modifier.fillMaxSize().background(Color(0xFF303136))) {
+        ui.setContent{Box(Modifier.fillMaxSize().background(fixtureBackdrop)) {
             Box(Modifier.width(width.dp).align(Alignment.TopCenter).padding(top=80.dp)) {
                 SpotlightPanel(app,AppConfig(theme="dark",preset="glass",files=false,animations=false,learning=false,
-                    favorites=setOf("com.spotify.music/Main")),{},availableHeightDp=height)
+                    favorites=setOf("com.spotify.music/Main"),opacity=fixtureOpacity),{},availableHeightDp=height)
             }
         }}
         ui.waitUntil(15000){ui.onAllNodesWithTag("result:suggest:app:com.spotify.music").fetchSemanticsNodes().isNotEmpty()}
@@ -76,6 +79,20 @@ class FloatingSearchFlowTest {
         assertEquals(bounds,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
         assertNull(Shadows.shadowOf(app).peekNextStartedActivity())
         repeat(2){open();ui.onNodeWithContentDescription("Cerrar acciones").performClick();search().assertIsFocused().assertTextEquals("spot")}
+    }
+    @Test fun realPaletteSurfacesOnControlledLightAndDarkBackdrops() {
+        show()
+        search().performTextInput("spot")
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:com.spotify.music/Main").fetchSemanticsNodes().isNotEmpty()}
+        for((name,color) in listOf("light" to Color.White,"dark" to Color(0xFF101218)))for(alpha in listOf(.70f,.80f,1f)) {
+            ui.runOnIdle{fixtureBackdrop=color;fixtureOpacity=alpha}
+            ui.onNodeWithTag("result:com.spotify.music/Main").assertIsDisplayed().assertIsSelected()
+            capture("contrast-$name-${(alpha*100).toInt()}")
+        }
+        ui.runOnIdle{fixtureOpacity=.80f;fixtureBackdrop=Color(0xFFE5D8D0)}
+        open();capture("contrast-actions-light")
+        ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
+        search().assertTextEquals("spot").assertIsFocused()
     }
     @Test fun tabletScenesPreserveSearchSelectionAndPaletteGeometry(){scenes("tablet")}
     @Test @Config(qualifiers="w390dp-h844dp") fun phoneScenesPreserveSearchSelectionAndPaletteGeometry(){scenes("phone",360,640f)}
