@@ -109,3 +109,6 @@ Fuente fc7f885,101pruebas dirigidas,lint0errores/11advertencias/1informativa,APK
 
 ### Fidelidad visual A/B — cierre del código20/10
 Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0errores/11advertencias/1informativa y assembleRaycastPreview correctos. Capturas nativas comparadas contra B adjunta; barra inset, filas apiladas/tipo alineado, inspector jerárquico y rail azul de Ajustes. Preview31/ARM64/certificado885838aa conservado. Documentación final y capturas se incluyen en checkpoint posterior con las mismas entradas compilables; APK/ZIP exactos se verifican al entregarlos. Sin CI/main/dependencias nuevas.9/10/18/20/34/35 siguen parciales; OneUI/servicios reales/rendimiento físico pendientes. Ver docs/VISUAL-FIDELITY-20261020.md.
+
+### Native Palette21/10 — verificación local
+Decisiones9/10/18/26/29/35 siguen parciales. Fuente61a6339:123casos únicos correctos en rondas dirigidas (122+1); lista de una columna, Actions flotante por demanda, filtro independiente, selección por ID, submenús/retorno y controles48dp; regresiones de arrastre/cancelación, teclado, herramientas y multimedia conservadas. Lint/APK aún en ejecución al registrar; OneUI/IME/servicios y rendimiento físicos no verificados. No se declara cierre de las40decisiones ni integración nueva.
