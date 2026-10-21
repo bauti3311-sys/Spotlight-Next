@@ -106,14 +106,28 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 }
             }
         }) {
+        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(10.dp)).border(1.dp,colors.onSurface.copy(alpha=.12f),RoundedCornerShape(10.dp)),verticalAlignment=Alignment.CenterVertically) {
+            if(path.isNotEmpty())IconButton(onClick={back()},modifier=Modifier.size(48.dp)) {
+                Icon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
+            } else Icon(CommandIcons.Search,null,Modifier.padding(start=8.dp,end=10.dp).size(17.dp),tint=colors.onSurfaceVariant)
+            BasicTextField(filter,{filter=it.take(120)},singleLine=true,
+                textStyle=TextStyle(fontFamily=Inter,fontSize=13.sp,color=colors.onSurface),
+                modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
+                decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
+                    if(filter.isBlank())Text("Buscar acciones…",fontSize=12.sp,color=colors.onSurfaceVariant)
+                    field()
+                }})
+            IconButton(onClick={onClose?.invoke()},modifier=Modifier.size(48.dp)){Icon(CommandIcons.Close,"Cerrar acciones",Modifier.size(17.dp))}
+        }
+        Spacer(Modifier.height(8.dp))
         Column(Modifier.fillMaxWidth().weight(1f,fill=false).verticalScroll(rememberScrollState())) {
             var previous:ContextActionGroup?=null
             visible.forEachIndexed { i,action ->
                 val group=if(i==0 && action==all.firstOrNull())ContextActionGroup.Primary else action.group
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=6.dp),color=colors.onSurface.copy(alpha=.08f))
-                    Text(group.label.uppercase(),Modifier.padding(start=10.dp,top=4.dp,bottom=4.dp),
-                        fontSize=10.sp,lineHeight=12.sp,color=colors.onSurfaceVariant,letterSpacing=.6.sp)
+                    Text(group.label,Modifier.padding(start=10.dp,top=4.dp,bottom=4.dp),
+                        fontSize=10.sp,lineHeight=12.sp,color=colors.onSurfaceVariant,letterSpacing=0.sp)
                     previous=group
                 }
                 val active=action.identity==currentId
@@ -132,28 +146,16 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                     Column(Modifier.weight(1f)) {
                         Text(action.title,fontSize=13.sp,fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
                             maxLines=1,overflow=TextOverflow.Ellipsis)
-                        if(action.state!=ContextActionState.Available)Text(action.state.label,fontSize=11.sp,color=colors.onSurfaceVariant)
+                        val detail=if(action.state!=ContextActionState.Available)action.state.label else action.description.takeIf{it.isNotBlank() && it!=action.group.label && it!="Principal"}.orEmpty()
+                        if(detail.isNotBlank())Text(detail,fontSize=11.sp,lineHeight=14.sp,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
                     }
                     val key=action.shortcut.ifBlank { if(action==all.firstOrNull())"Enter" else "" }
                     if(action.children.isNotEmpty())Icon(CommandIcons.Chevron,null,Modifier.size(16.dp),tint=colors.onSurfaceVariant)
-                    else if(key.isNotEmpty())Text(key,fontSize=11.sp,color=colors.onSurfaceVariant)
+                    else if(key.isNotEmpty())GlassKeycap(key)
                 }
             }
             if(visible.isEmpty())Text("No hay acciones con ese nombre.",Modifier.padding(10.dp),fontSize=12.sp,color=colors.onSurfaceVariant)
         }
-        HorizontalDivider(color=colors.onSurface.copy(alpha=.08f))
-        Row(Modifier.fillMaxWidth().heightIn(min=48.dp),verticalAlignment=Alignment.CenterVertically) {
-            if(path.isNotEmpty())IconButton(onClick={back()},modifier=Modifier.size(48.dp)) {
-                Icon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
-            } else Icon(CommandIcons.Search,null,Modifier.padding(start=8.dp,end=10.dp).size(17.dp),tint=colors.onSurfaceVariant)
-            BasicTextField(filter,{filter=it.take(120)},singleLine=true,
-                textStyle=TextStyle(fontFamily=Inter,fontSize=13.sp,color=colors.onSurface),
-                modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
-                decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
-                    if(filter.isBlank())Text("Buscar acciones…",fontSize=12.sp,color=colors.onSurfaceVariant)
-                    field()
-                }})
-            IconButton(onClick={onClose?.invoke()},modifier=Modifier.size(48.dp)){Icon(CommandIcons.Close,"Cerrar acciones",Modifier.size(17.dp))}
-        }
+
     }
 }

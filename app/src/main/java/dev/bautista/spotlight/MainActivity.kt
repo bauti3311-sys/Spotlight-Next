@@ -98,6 +98,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Public wallpaper-backed activity. No screen capture or wallpaper read permission.
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER)
+        window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        if(Build.VERSION.SDK_INT>=34)window.attributes=window.attributes.apply{setWallpaperTouchEventsEnabled(false)}
         setContent {
             val loadedConfig by app.preferences.config.collectAsState(initial=null)
             if(loadedConfig==null) {
@@ -138,27 +142,19 @@ class MainActivity : ComponentActivity() {
             }
             SpotlightTheme(config.theme, config) {
                 val colors = MaterialTheme.colorScheme
-                Surface(Modifier.fillMaxSize(), color = colors.background) {
+                Surface(Modifier.fillMaxSize(), color = androidx.compose.ui.graphics.Color.Transparent) {
                     Column(
                         Modifier.fillMaxSize()
                             .statusBarsPadding()
                             .navigationBarsPadding()
-                            .padding(horizontal = 20.dp, vertical = 16.dp),
+                            .padding(horizontal = 12.dp, vertical = 12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Column(Modifier.widthIn(max = 1100.dp).fillMaxSize()) {
-                            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    Text("Spotlight Next",style=MaterialTheme.typography.headlineSmall)
-                                    Text("Tu barra de búsqueda y acciones, siempre a mano.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
-                                }
-                                TextButton(onClick={
-                                    if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
-                                    else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
-                                }){Text(if(overlayGranted)"Abrir Spotlight" else "Permitir ventana")}
-                            }
-                            Spacer(Modifier.height(20.dp))
-                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),overview={details->
+                        Column(Modifier.widthIn(max = 1100.dp).fillMaxSize().glassSurface(config)) {
+                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),onInvoke={
+                                if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
+                                else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
+                            },overview={details->
                                 SettingsHome(app,config,permissionRevision,{settingsGroup=it},{access->configureAccess(access)},details)
                             }){
                             CompositionLocalProvider(LocalSettingsGroup provides settingsGroup){
@@ -659,8 +655,8 @@ private fun Section(title: String, content: @Composable ColumnScope.() -> Unit) 
 
 @Composable
 private fun Toggle(title: String, value: Boolean, onChange: (Boolean) -> Unit) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Text(title, Modifier.weight(1f))
+    Row(Modifier.fillMaxWidth().heightIn(min=48.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(title, Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium)
         Switch(value, onChange)
     }
 }

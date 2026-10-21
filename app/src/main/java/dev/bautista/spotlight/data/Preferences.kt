@@ -9,7 +9,7 @@ private val Context.store by preferencesDataStore("spotlight")
 
 data class Config(
     val theme: String = "auto",
-    val opacity: Float = .96f,
+    val opacity: Float = .80f,
     val width: Int = 640,
     val position: Float = .16f,
     val contacts: Boolean = false,
@@ -134,7 +134,7 @@ class Preferences(private val context: Context) {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")} .getOrDefault(org.json.JSONObject())
                 Config(
                     p[theme] ?: "auto",
-                    p[opacity] ?: .96f,
+                    p[opacity] ?: .80f,
                     p[width] ?: 0,
                     p[position] ?: .16f,
                     p[contacts] ?: false,
@@ -185,6 +185,7 @@ class Preferences(private val context: Context) {
     suspend fun updateAppearance(c: Config) {
         context.store.edit { p ->
             p[theme] = c.theme
+            p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .80f
             p[animations] = c.animations
             p[density] = c.density
             p[accent] = c.accent

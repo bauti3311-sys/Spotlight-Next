@@ -9,12 +9,18 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.sp
 import dev.bautista.spotlight.R
 import dev.bautista.spotlight.data.Config
 import androidx.compose.runtime.staticCompositionLocalOf
 
 val Inter=FontFamily(Font(R.font.inter))
-private val BaseTypography=Typography()
+private val BaseTypography=Typography(
+    bodyLarge=androidx.compose.ui.text.TextStyle(fontSize=14.sp,lineHeight=20.sp),
+    bodyMedium=androidx.compose.ui.text.TextStyle(fontSize=13.sp,lineHeight=18.sp),
+    bodySmall=androidx.compose.ui.text.TextStyle(fontSize=12.sp,lineHeight=17.sp),
+    titleSmall=androidx.compose.ui.text.TextStyle(fontSize=13.sp,lineHeight=18.sp,fontWeight=androidx.compose.ui.text.font.FontWeight.SemiBold),
+)
 private val SpotlightTypography=Typography(
     displayLarge=BaseTypography.displayLarge.copy(fontFamily=Inter),
     displayMedium=BaseTypography.displayMedium.copy(fontFamily=Inter),
@@ -58,7 +64,7 @@ val LocalAppearance = staticCompositionLocalOf { Config() }
 @Composable
 fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme), content: @Composable () -> Unit) {
     val dark = theme == "dark" || (theme == "auto" && isSystemInDarkTheme())
-    val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFA1A1AA else 0xFF566172; "purple" -> if(dark)0xFFA855F7 else 0xFF7250CC; "rose" -> if(dark)0xFFF43F5E else 0xFFBF3A62; "green" -> if(dark)0xFF10B981 else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF7275E8 else 0xFF5356BA })
+    val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFA1A1AA else 0xFF566172; "purple" -> if(dark)0xFFA855F7 else 0xFF7250CC; "rose" -> if(dark)0xFFF43F5E else 0xFFBF3A62; "green" -> if(dark)0xFF10B981 else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF0A84FF else 0xFF007AFF })
     val base=if(dark) Dark else Light
     val palette = when(config.preset){
         "pure"->base.copy(background=if(dark)Color(0xFF111111) else Color.White,surface=if(dark)Color(0xFF171717) else Color.White,onSurface=if(dark)Color.White else Color(0xFF111111))
@@ -86,7 +92,7 @@ labelLarge=SpotlightTypography.labelLarge.copy(fontFamily=font,fontSize=Spotligh
 labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=SpotlightTypography.labelMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
 labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)))
     val tone=when(config.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->palette.surface}
-    val toned=palette.copy(surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
+    val toned=palette.copy(onSurfaceVariant=if(dark && GlassTokens.opacity(config)<.80f)Color(0xFFE3E5ED) else palette.onSurfaceVariant,surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
     MaterialTheme(colorScheme = toned, typography=typography) {
         val motion=rememberMotionAllowed(config.animations)
         CompositionLocalProvider(LocalMotion provides motion,LocalAppearance provides config, LocalContentColor provides MaterialTheme.colorScheme.onSurface, content=content)

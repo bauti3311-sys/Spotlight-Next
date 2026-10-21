@@ -99,7 +99,7 @@ fun ResultRow(
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
+        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else 60.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
             .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
@@ -114,14 +114,14 @@ fun ResultRow(
     ) {
         // Native application artwork keeps its own identity. Utility glyphs have
         // one stroke treatment and no tinted tile or selection stripe.
-        ResultIcon(result,Modifier.size(if(result.icon!=null)32.dp else if(result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+        ResultIcon(result,Modifier.size(if(result.icon!=null)36.dp else if(result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
             Text(result.title,color=ink,fontWeight=FontWeight.Medium,
                 fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
                 letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(usefulSubtitle.isNotBlank()) Text(usefulSubtitle,color=colors.onSurfaceVariant,
-                fontSize=11.sp*appearance.textScale,lineHeight=13.sp*appearance.textScale,
+                fontSize=12.sp*appearance.textScale,lineHeight=15.sp*appearance.textScale,
                 letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
         }
         if(inline) Text(if(PreviewPresentation.isApplication(result))"Aplicación" else when(result.category){

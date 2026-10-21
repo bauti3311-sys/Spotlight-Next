@@ -134,7 +134,7 @@ fun SpotlightBar(
             )
             if (suggestion != null)
                 Text(
-                    "⌃Space",
+                    "Ctrl+Space",
                     fontSize = 10.sp,
                     color = colors.onSurfaceVariant,
                     modifier =
@@ -152,9 +152,7 @@ fun SpotlightBar(
     BoxWithConstraints(Modifier.fillMaxWidth()) {
     val showSaved=maxWidth>=480.dp
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
-        Row(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=4.dp)
-            .border(.5.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(12.dp))
-            .background(colors.onSurface.copy(alpha=.018f),RoundedCornerShape(12.dp)), verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=4.dp), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
             Row(Modifier.padding(end=8.dp),verticalAlignment=Alignment.CenterVertically) {
                 onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }

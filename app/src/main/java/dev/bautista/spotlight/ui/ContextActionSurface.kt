@@ -60,7 +60,7 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
                         Surface(Modifier.fillMaxWidth().heightIn(max=(maxHeight-16.dp).coerceAtLeast(0.dp))
                             .shadow(12.dp,RoundedCornerShape(14.dp),clip=false).testTag("action-surface"),
                             shape=RoundedCornerShape(14.dp),
-                            color=if(dark)GlassTokens.actionSurface else MaterialTheme.colorScheme.surfaceContainerHigh,
+                            color=GlassTokens.actionColor(LocalAppearance.current,dark),
                             border=BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.09f))) {currentContent()}
                     }
                 }
