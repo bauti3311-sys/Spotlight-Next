@@ -122,7 +122,8 @@ class NativePaletteFlowTest {
         // Compose text replacement explicitly requests editor focus; selection must still keep its ID.
         val editor=ui.onNodeWithTag("action-filter")
         editor.performTextClearance()
-        editor.assertIsFocused().assertTextEquals("")
+        editor.assertIsFocused()
+        editor.assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("")))
         ui.onNode(hasText("Compartir B") and isSelected()).assertExists().assertIsNotEnabled()
         editor.performKeyInput{pressKey(Key.Enter)}
         assertEquals(0,called)
