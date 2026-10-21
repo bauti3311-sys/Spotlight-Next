@@ -48,3 +48,9 @@ Se publica este checkpoint de evidencia y se vuelve a invocar únicamente assemb
 ### Límites y revisión física siguiente
 La composición se revisó contra B; no es equivalencia píxel a píxel ni blur del compositor. El mínimo de opacidad legible es deliberadamente alto para no mostrar texto nítido de otra ventana. Los iconos de apps se cargan realmente de PackageManager, aunque los fixtures de laboratorio usan el icono Android por defecto. No se inventan desarrollador/tamaño/permisos ni acciones que falten en Android. El inspector se desplaza cuando no cabe; anchos intermedios mantienen formato compacto.
 En TabA9+ probar inicio/WhatsApp/Spotify reales, cambio de selección, información de app, permisos, pulsación prolongada, arrastrePDF, Enter/Tab/Escape/Ctrl+M, IME y rotación. No hay dispositivo conectado ni KVM; no instalación, mediciones deRAM/batería/jank ni proveedorGemini/servicios externos reales acreditados aquí. Las40decisiones permanecen parciales.
+
+## Entrega exacta verificada
+APK y ZIP fuente corresponden a264273936028b9fa333d684e3a1d2cd2d8c333cb. Assemble del checkpoint de evidencia: BUILD SUCCESSFUL in10s,37tareas up-to-date, mismas373entradas de app verificadas contra Git, sin archivos de compilación adicionales.112pruebas y lint pertenecen a f56f665 con esas mismas entradas compilables. ZIP creado por git archive de2642739, integridad correcta y sin claves/cachés/credenciales.
+APK:Spotlight-Next-Raycast-Preview-2642739.apk,86.506.916bytes, SHA2569070e33f30373b602c5efe44e97e81021b0f1290fd601eb3a73ec75dd1027e0a.
+Fuente:Spotlight-Next-source-2642739.zip,7.863.697bytes,SHA25647656de025a45d3d6e7b72824da15fde0c5356f84e3035630a082a52c1dcd25f.
+Package/firma/versionCode31/ARM64/apksigner/zipalign16KB verificados. Instalar sobre Preview anterior es compatible estáticamente; la instalación y conservación real de datos en OneUI no se probaron aquí. Los checkpoints posteriores a2642739 solo registran entrega y no cambian el código del APK.
