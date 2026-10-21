@@ -41,3 +41,11 @@ Cinco fallos analizados: CompactResults y MinimalistSearch aún esperaban comple
 Revisión visual real detectó demasiado espacio en encabezados y acciones de Sistema fuera del primer viewport. Se fija lineHeight12sp en los encabezados10sp y máximo560dp para el menú, siempre acotado al frame/IME; filas siguen48dp y paleta no cambia. Se exige también Información de la app visible en tablet. No se agrandan superficies base ni se eliminan acciones.
 
 Los5casos fallidos y suites afectadas se repetirán; no la batería integral. Las65aprobadas iniciales se preservan como evidencia de su SHA, sin confundirlas con las posteriores. Tests y APK nuevos siguen pendientes al guardar.
+
+## Cierre dirigido — código6af47a0
+
+Reintento de las seis suites afectadas:48casos/0fallos/0errores/0omisiones, BUILD SUCCESSFUL in1m48s,5tareas ejecutadas/23reutilizadas. XML y log en affected-final. Gradle conserva XML de suites no seleccionadas: se separaron expresamente los23casos anteriores para no contarlos como una ejecución nueva. Consolidación71casos únicos en rondas:23de corrected-first y48de affected-final; no batería completa nueva. Producción de las cinco suites conservadas sin cambios funcionales en su contrato; fuente precisa y límites quedan explícitos.
+
+Capturas finales reales de pantalla completa, condiciones equivalentes: tablet1280×800dp y teléfono390×844dp, API33/Robolectric, oscuro, Spotify fixture favorita, consulta spot, selección conservada. Siete acciones de la app visibles simultáneamente en tablet sin scroll; filtro, submenú y paleta base sin cambio de límites verificados. No son capturas OneUI ni iconos reales de Spotify: fixture usa icono genérico; producción conserva PackageManager.
+
+Lint y assembleRaycastPreview son el siguiente paso inmediato; no añadir funciones. Se mantiene certificado885838aa/paquete independiente, versión prevista33. Física pendiente: token/ventanas en OneUI, encaminamiento de toque exterior por InputDispatcher real, IME/rotación reales, teclado físico y PDF renderer. Los tests de host comprueban subtipo/token/flags/posición/Back/cierre; no simulan la política real de entrada Android.

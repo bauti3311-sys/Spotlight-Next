@@ -525,3 +525,9 @@ Native Palette61a6339:lintRaycastPreview aprobado realmente (0errores/12adverten
 
 ### Native Palette — entrega local verificada21/10
 Fuente APK/ZIP61a63399aeef4e57bc4e285899c7b2fd2085cb26;123casos únicos correctos en rondas122+1, lint0errores/12avisos/1informativa y assembleRaycastPreview correcto.375inputs exactos, paquete independiente/Preview32/ARM64, certificado885838aa y zipalign16KB comprobados; fuente Git del mismo SHA, sin secretos. Evidencia/hashes y límites en RAYCAST-NATIVE-PALETTE-20261021.md. Documentación posterior no cambia producción. Proceso Gradle terminado; no continuar rediseño/funciones antes de entregar estos archivos y revisión física. OneUI/IME/PDF/servicios y rendimiento reales pendientes. Sin CI/main/force/nueva firma.
+
+### ActionPanel superpuesto y búsqueda inteligente ·21/10
+
+Código6af47a0: paleta visual compacta conservada, acciones en hijo acotado unido al token del overlay, toque exterior no modal y navegación/filtro/submenús restaurables. Ranking léxico coherente entre motor/presentación, alias y typo elegibles, Tab solo con candidato vivo no ambiguo, Enter sobre selección actual, sin autoscroll por llegada de proveedores. Home conserva una app y señales locales; no WhatsApp sin contenido, permisos documentales reales y sin afirmar reproducción por recencia. Business fuera de alcance.
+
+Reproducción nueva8casos/5fallos de búsqueda y3casos/1fallo de menú; corrección71casos únicos aprobados en rondas23+48, no ejecución completa nueva. Diez escenas antes/después API33/Robolectric. Lint/APK33 pendientes al guardar. Firma885838aa recuperada y comprobada, principal/Review intactas; sin CI/main/force. Ver FLOATING-ACTIONS-SMART-SEARCH-20261021.md. Próximo: lint/assemble/identidad/ZIP exacto y entrega, sin nuevas funciones.

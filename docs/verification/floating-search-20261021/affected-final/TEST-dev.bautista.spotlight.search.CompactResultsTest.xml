@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.CompactResultsTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-21T21:16:01" hostname="3f4aaaec44b7" time="2.729">
+  <properties/>
+  <testcase name="explicitUrlProviderAndFolderRequestsAreNotTreatedAsGenericFallbacks" classname="dev.bautista.spotlight.search.CompactResultsTest" time="2.329"/>
+  <testcase name="initialNeverExceedsThreeAndExpansionRetainsEveryDistinctAction" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.06"/>
+  <testcase name="explicitDictionaryAndTextCommandsRemainAvailableInitially" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.046"/>
+  <testcase name="exactApplicationNeverAutocompletesIntoLongerSibling" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.034"/>
+  <testcase name="recognizedBrightnessMusicAndQuestionActionsStayEligible" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.045"/>
+  <testcase name="navigationKeepsExistingOrderWhenLateProvidersArrive" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.026"/>
+  <testcase name="duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.032"/>
+  <testcase name="exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.04"/>
+  <testcase name="explicitAiNotificationsAndAndroidCommandsSurviveDifferentLabels" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.03"/>
+  <testcase name="whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.031"/>
+  <testcase name="contentAndSemanticDocumentHitsDoNotRequireTitleOverlap" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.029"/>
+  <testcase name="explicitAppAndContactScopesUseTheirParsedSearchTerms" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.027"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
