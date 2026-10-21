@@ -52,6 +52,7 @@ class OverlayDesignReviewTest {
         show()
         ui.onNodeWithTag("results-pane").assertWidthIsAtLeast(400.dp)
         ui.onNodeWithTag("context-inspector").assertWidthIsAtLeast(280.dp)
+        ui.onNodeWithTag("result:fixture.chrome2/Main").assertIsDisplayed().assertHeightIsEqualTo(48.dp)
         ui.onNodeWithTag("result:fixture.chrome1/Main").assertIsDisplayed().performClick()
         ui.onNodeWithTag("inspector-title").assertTextEquals("Chrome 1")
         ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed().assertHasClickAction()

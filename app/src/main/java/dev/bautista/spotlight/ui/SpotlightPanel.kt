@@ -686,8 +686,8 @@ fun SpotlightPanel(
             val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
             val resultListHeight = minOf(resultLimit,
                 (if(compact)56.dp else GlassTokens.resultRowHeight(config))*visibleResults.size +
-                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 48.dp)
-            val splitPanelHeight = if(liveAppInspector!=null)resultListHeight else minOf(resultLimit,400.dp)
+                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 16.dp)
+            val splitPanelHeight = if(liveAppInspector!=null)maxOf(resultListHeight,minOf(resultLimit,128.dp)) else minOf(resultLimit,400.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()
@@ -914,7 +914,6 @@ fun SpotlightPanel(
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
-                                    if(query.isNotBlank() && searchScope==null && category=="Todo" && i==0)Text("Mejor coincidencia",Modifier.padding(horizontal=12.dp,vertical=8.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
                                     if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section,first=i==0 && homeLayout)
                                     ResultRow(

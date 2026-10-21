@@ -2,6 +2,7 @@ package dev.bautista.spotlight.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,8 @@ import dev.bautista.spotlight.search.Result
                     style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-        Button(onClick = onOpen, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("inspector-primary-action")) {
+        Button(onClick = onOpen, shape = RoundedCornerShape(10.dp),
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("inspector-primary-action")) {
             Icon(CommandIcons.Chevron, null, Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
             Text("Abrir aplicación")

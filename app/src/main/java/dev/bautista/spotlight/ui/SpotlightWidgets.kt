@@ -92,7 +92,8 @@ fun ResultRow(
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-    val inline=maxWidth>=400.dp
+    // The 400dp results pane includes list insets; use the actual row's remaining width.
+    val inline=maxWidth>=360.dp
     val appearance=LocalAppearance.current
     val pad=if(inline)when(appearance.density){"compact"->2;"spacious"->6;else->4} else when(appearance.density){"compact"->4;"spacious"->10;else->6}
     val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")

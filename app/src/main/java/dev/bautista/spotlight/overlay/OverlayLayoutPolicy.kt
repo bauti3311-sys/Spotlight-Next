@@ -19,6 +19,8 @@ object OverlayLayoutPolicy {
         if (usable < minimumResults + minimumInspector || availableHeightDp < 240f * scale) {
             return Layout(if (contentWidthDp < 600f) Mode.Compact else Mode.Intermediate, .62f, .62f)
         }
-        return Layout(Mode.Expanded, minimumResults / usable, 1f - minimumInspector / usable)
+        val minFraction = minimumResults / usable
+        // At the exact breakpoint, Float rounding must not invert an otherwise valid range.
+        return Layout(Mode.Expanded, minFraction, maxOf(minFraction, 1f - minimumInspector / usable))
     }
 }
