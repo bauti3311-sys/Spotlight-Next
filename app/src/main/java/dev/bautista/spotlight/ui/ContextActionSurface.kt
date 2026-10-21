@@ -17,9 +17,11 @@ import androidx.compose.ui.unit.dp
 @Composable internal fun BoxScope.ContextActionSurface(onDismiss:()->Unit,content:@Composable ()->Unit) {
     BoxWithConstraints(Modifier.matchParentSize().zIndex(2f)) {
         Box(Modifier.matchParentSize().pointerInput(onDismiss){detectTapGestures{onDismiss()}})
-        val available=(maxHeight-64.dp).coerceAtLeast(0.dp)
+        // Short palettes can overlap the footer; keep a usable action row and filter without resizing.
+        val bottomInset=if(maxHeight>=240.dp)52.dp else 8.dp
+        val available=(maxHeight-bottomInset-8.dp).coerceAtLeast(0.dp)
         val dark=MaterialTheme.colorScheme.surface.luminance()<.5f
-        if(available>0.dp) Surface(Modifier.align(Alignment.BottomEnd).padding(end=8.dp,bottom=52.dp)
+        if(available>0.dp) Surface(Modifier.align(Alignment.BottomEnd).padding(end=8.dp,bottom=bottomInset)
             .width(minOf(390.dp,(maxWidth-16.dp).coerceAtLeast(0.dp)))
             .height(minOf(GlassTokens.actionPanelMaxHeight,available))
             .shadow(18.dp,RoundedCornerShape(15.dp),clip=false)

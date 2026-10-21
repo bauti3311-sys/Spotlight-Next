@@ -45,12 +45,12 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
     var selectedId by remember {mutableStateOf<String?>(null)}
     var filterFocused by remember {mutableStateOf(false)}
     val filterFocus=remember {FocusRequester()}
-    val level=path.fold(actions) { choices,frame -> choices.firstOrNull{it.identity==frame.id}?.children.orEmpty() }
-    val all=level.distinctBy{it.identity}.let { it.take(1)+it.drop(1).sortedBy{a->a.group.ordinal} }
+    fun orderedLevel()=path.fold(actions) { choices,frame -> choices.firstOrNull{it.identity==frame.id}?.children.orEmpty() }
+        .distinctBy{it.identity}.let { it.take(1)+it.drop(1).sortedBy{a->a.group.ordinal} }
+    val all=orderedLevel()
     fun matches(a:ContextAction):Boolean = normalize(a.title+" "+a.description+" "+a.state.label+" "+a.children.joinToString(" "){it.title}).contains(normalize(filter))
     val visible=all.filter{matches(it)}
     val currentId=selectedId?.takeIf{key->visible.any{it.identity==key}} ?: visible.firstOrNull()?.identity
-    val index=visible.indexOfFirst{it.identity==currentId}.coerceAtLeast(0)
     val requests=remember(visible.map{it.identity}) { visible.mapIndexed { i,a->a.identity to if(i==0)focus else FocusRequester() }.toMap() }
     fun back() {
         if(path.isNotEmpty()) { val frame=path.removeAt(path.lastIndex);filter=frame.filter;selectedId=frame.selectedId;filterFocused=false }
@@ -61,7 +61,17 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
         if(action.children.isNotEmpty()) {path+=ActionMenuFrame(action.identity,filter,action.identity);filter="";selectedId=null;filterFocused=false}
         else action.perform()
     }
-    fun move(delta:Int) {filterFocused=false;if(visible.isNotEmpty())selectedId=visible[Math.floorMod(index+delta,visible.size)].identity}
+    // Key events can arrive in the same frame: resolve live filter/path/ID, not captured indices.
+    fun visibleNow()=orderedLevel().filter{matches(it)}
+    fun currentAction()=visibleNow().let { choices -> choices.firstOrNull{it.identity==selectedId} ?: choices.firstOrNull() }
+    fun move(delta:Int) {
+        filterFocused=false
+        val choices=visibleNow()
+        if(choices.isNotEmpty()) {
+            val index=choices.indexOfFirst{it.identity==selectedId}.coerceAtLeast(0)
+            selectedId=choices[Math.floorMod(index+delta,choices.size)].identity
+        }
+    }
     LaunchedEffect(currentId,filterFocused,path.map{it.id},visible.map{it.identity}) {
         if(!filterFocused) {
             withFrameNanos { }
@@ -80,15 +90,10 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 Key.Tab->{move(if(e.isShiftPressed)-1 else 1);true}
                 Key.DirectionDown->{move(1);true}
                 Key.DirectionUp->{move(-1);true}
-                Key.Enter,Key.NumPadEnter->{activate(visible.firstOrNull{it.identity==currentId});true}
+                Key.Enter,Key.NumPadEnter->{activate(currentAction());true}
                 else->false
             }
         }) {
-        if(path.isNotEmpty()) Row(Modifier.fillMaxWidth().heightIn(min=48.dp),verticalAlignment=Alignment.CenterVertically) {
-            IconButton(onClick={back()}){Icon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(18.dp))}
-            Text(path.last().let { f -> actions.firstOrNull{it.identity==f.id}?.title ?: "Submenú" },
-                style=MaterialTheme.typography.labelMedium,maxLines=1,overflow=TextOverflow.Ellipsis)
-        }
         Column(Modifier.fillMaxWidth().weight(1f,fill=true).verticalScroll(rememberScrollState())) {
             var previous:ContextActionGroup?=null
             visible.forEachIndexed { i,action ->
@@ -126,15 +131,17 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
         }
         HorizontalDivider(color=colors.onSurface.copy(alpha=.08f))
         Row(Modifier.fillMaxWidth().heightIn(min=48.dp),verticalAlignment=Alignment.CenterVertically) {
-            Icon(CommandIcons.Search,null,Modifier.padding(start=8.dp,end=10.dp).size(17.dp),tint=colors.onSurfaceVariant)
+            if(path.isNotEmpty())IconButton(onClick={back()},modifier=Modifier.size(48.dp)) {
+                Icon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
+            } else Icon(CommandIcons.Search,null,Modifier.padding(start=8.dp,end=10.dp).size(17.dp),tint=colors.onSurfaceVariant)
             BasicTextField(filter,{filter=it.take(120)},singleLine=true,
                 textStyle=TextStyle(fontFamily=Inter,fontSize=13.sp,color=colors.onSurface),
-                modifier=Modifier.weight(1f).heightIn(min=44.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
+                modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
                 decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
                     if(filter.isBlank())Text("Buscar acciones…",fontSize=12.sp,color=colors.onSurfaceVariant)
                     field()
                 }})
-            IconButton(onClick={back()}){Icon(CommandIcons.Close,if(path.isEmpty())"Cerrar acciones" else "Volver al menú anterior",Modifier.size(17.dp))}
+            IconButton(onClick={onClose?.invoke()},modifier=Modifier.size(48.dp)){Icon(CommandIcons.Close,"Cerrar acciones",Modifier.size(17.dp))}
         }
     }
 }

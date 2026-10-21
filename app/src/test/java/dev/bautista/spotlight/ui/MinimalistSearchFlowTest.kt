@@ -40,43 +40,44 @@ class MinimalistSearchFlowTest {
         ui.waitUntil(15000){ui.onAllNodesWithTag("result:fixture.chrome0/Main").fetchSemanticsNodes().isNotEmpty()}
     }
     private fun rows()=ui.onAllNodes(SemanticsMatcher("result row"){it.config.getOrElse(SemanticsProperties.TestTag){""}.startsWith("result:")})
+    private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
     @Test fun compactExpansionAndCollapseKeepQueryFocusAndSelectedIdentity(){
         show()
         rows().assertCountEquals(3)
-        ui.onNode(hasSetTextAction()).assertTextEquals("Chrome").assertIsFocused()
+        search().assertTextEquals("Chrome").assertIsFocused()
         ui.onNodeWithTag("results-expand").performClick()
         ui.waitUntil(15000){rows().fetchSemanticsNodes().size>=6}
-        ui.onNode(hasSetTextAction()).assertTextEquals("Chrome").assertIsFocused()
-        repeat(4){ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.DirectionDown)}}
+        search().assertTextEquals("Chrome").assertIsFocused()
+        repeat(4){search().performKeyInput{pressKey(Key.DirectionDown)}}
         val selected=rows().fetchSemanticsNodes().single{it.config.getOrElse(SemanticsProperties.Selected){false}}.config[SemanticsProperties.TestTag]
-        ui.onNode(hasSetTextAction()).performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.M);keyUp(Key.CtrlLeft)}
+        search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.M);keyUp(Key.CtrlLeft)}
         rows().assertCountEquals(3)
         assertEquals(selected,rows().fetchSemanticsNodes().single{it.config.getOrElse(SemanticsProperties.Selected){false}}.config[SemanticsProperties.TestTag])
-        ui.onNode(hasSetTextAction()).assertIsFocused().assertTextEquals("Chrome")
+        search().assertIsFocused().assertTextEquals("Chrome")
     }
     @Test fun rightArrowAtTextBoundaryNeverFocusesMicrophoneAndTabCompletes(){
         show("Chro")
-        ui.onNode(hasSetTextAction()).performClick().performKeyInput{repeat(12){pressKey(Key.DirectionRight)}}
-        ui.onNode(hasSetTextAction()).assertIsFocused().assertTextEquals("Chro")
-        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Tab)}
-        ui.onNode(hasSetTextAction()).assertIsFocused().assertTextEquals("Chrome")
+        search().performClick().performKeyInput{repeat(12){pressKey(Key.DirectionRight)}}
+        search().assertIsFocused().assertTextEquals("Chro")
+        search().performKeyInput{pressKey(Key.Tab)}
+        search().assertIsFocused().assertTextEquals("Chrome")
         ui.onAllNodesWithText("Menú de acciones").assertCountEquals(0)
     }
     @Test fun tabWithCaretInsideQueryKeepsNativeTextAndOpensActions(){
         show("Chro")
-        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.MoveHome);pressKey(Key.Tab)}
-        ui.onNode(hasSetTextAction()).assertTextEquals("Chro")
+        search().performKeyInput{pressKey(Key.MoveHome);pressKey(Key.Tab)}
+        search().assertTextEquals("Chro")
         ui.onNode(hasText("Abrir") and isFocused()).assertExists()
         ui.onNode(hasText("Abrir") and isFocused()).performKeyInput{pressKey(Key.Escape)}
-        ui.onNode(hasSetTextAction()).assertTextEquals("Chro").assertIsFocused()
+        search().assertTextEquals("Chro").assertIsFocused()
     }
     @Test fun escapeCollapsesExpandedResultsBeforeClosingSearch(){
         show()
-        ui.onNode(hasSetTextAction()).performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.M);keyUp(Key.CtrlLeft)}
+        search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.M);keyUp(Key.CtrlLeft)}
         ui.waitUntil(15000){rows().fetchSemanticsNodes().size>=6}
-        ui.onNode(hasSetTextAction()).performKeyInput{pressKey(Key.Escape)}
+        search().performKeyInput{pressKey(Key.Escape)}
         rows().assertCountEquals(3)
-        ui.onNode(hasSetTextAction()).assertTextEquals("Chrome").assertIsFocused()
+        search().assertTextEquals("Chrome").assertIsFocused()
     }
     @Test fun tabletGraphiteCapture(){
         show(preset="graphite")
