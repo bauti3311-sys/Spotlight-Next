@@ -687,7 +687,7 @@ fun SpotlightPanel(
             val resultListHeight = minOf(resultLimit,
                 (if(compact)56.dp else GlassTokens.resultRowHeight(config))*visibleResults.size +
                     if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 16.dp)
-            val splitPanelHeight = if(liveAppInspector!=null)maxOf(resultListHeight,minOf(resultLimit,208.dp)) else minOf(resultLimit,400.dp)
+            val splitPanelHeight = if(liveAppInspector!=null)maxOf(resultListHeight,minOf(resultLimit,if(maxWidth>=840.dp)340.dp else 184.dp)) else minOf(resultLimit,400.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()

@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.testTag
         val showHints=maxWidth>=520.dp
         Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=12.dp,vertical=1.dp),verticalAlignment=Alignment.CenterVertically) {
             if(onExpand!=null) TextButton(onClick=onExpand,modifier=Modifier.heightIn(min=48.dp).testTag("results-expand"),contentPadding=PaddingValues(horizontal=4.dp)) {
-                Text(expandLabel,fontSize=11.sp,color=colors.onSurfaceVariant)
+                Text(if(showHints)expandLabel else if(expandLabel.startsWith("Ver menos"))"Menos" else "Más",fontSize=11.sp,color=colors.onSurfaceVariant)
             }
             else if(showHints && suggestion) Text(if(autocomplete)"Tab completar" else "Ctrl+Space completar",fontSize=11.sp,color=colors.onSurfaceVariant)
             Spacer(Modifier.weight(1f))

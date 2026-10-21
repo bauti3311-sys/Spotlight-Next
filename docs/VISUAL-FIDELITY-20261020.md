@@ -26,3 +26,7 @@ Implementación y pruebas todavía pendientes. Capturas Compose de estados equiv
 
 ## Checkpoint estructural parcial
 Cabecera inset de12dp, margen vertical10dp, radio20dp, material97% mínimo con gradiente sin blur, resultados apilados y tipo a derecha, inspector con icono46dp/Enter integrado/filas neutras/metadatos reales. Expansión integrada al pie; cuerpo automático mínimo208dp acotado por viewport. Ajustes conserva navegación y búsqueda global con rail transparente e iconos azules. Preview incrementa únicamente su versionCode a31. Código y pruebas aún no verificados; no APK entregada de este checkpoint.
+
+## Primera ronda real
+Checkpoint2bd04ac: producción Kotlin/Java compilada;25casos/4suites,23correctos/2fallidos. Regresión de altura compacta real por24dp exteriores+76dp cabecera+208dp cuerpo+pie: se corrige a184dp en anchos intermedios manteniendo aserción<340dp. En ventanas con contenido>=840dp se admite cuerpo340dp para presentar la jerarquía completa del inspector, siempre limitado al viewport.
+El segundo fallo era una expectativa anterior a PR18: SettingsWorkspaceTest buscaba Shizuku en Integraciones, pero la consolidación ya lo trasladó a Permisos y accesos. La prueba ahora navega al destino real y conserva la igualdad exacta de posición del rail después del scroll y ausencia de superficies retiradas. No se elimina ninguna prueba ni se rebaja el contrato de altura. XML de primera ronda preservados fuera del build. Cuatro nuevos casos nativos aún pendientes.
