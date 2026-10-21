@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.OverlayLayoutPolicyTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T14:12:17" hostname="e4f928177bdc" time="0.006">
+  <properties/>
+  <testcase name="narrowOverlayNeverUsesDeviceWidthToCreateTwoPanes" classname="dev.bautista.spotlight.overlay.OverlayLayoutPolicyTest" time="0.005"/>
+  <testcase name="everyDividerPositionPreservesBothMinimums" classname="dev.bautista.spotlight.overlay.OverlayLayoutPolicyTest" time="0.001"/>
+  <testcase name="keyboardAndLargeTextChooseOnePaneWithoutChangingPreference" classname="dev.bautista.spotlight.overlay.OverlayLayoutPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

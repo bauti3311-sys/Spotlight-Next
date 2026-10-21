@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.OverlayImeHeightTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-21T14:12:15" hostname="e4f928177bdc" time="1.632">
+  <properties/>
+  <testcase name="tabletPortraitRetainsKeyboardOnRefresh[28]" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.428"/>
+  <testcase name="tabletPortraitRetainsKeyboardOnRefresh" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.573"/>
+  <testcase name="geometryRefreshRetainsKeyboardUntilInsetsReportItHidden[28]" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.14"/>
+  <testcase name="geometryRefreshRetainsKeyboardUntilInsetsReportItHidden" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.096"/>
+  <testcase name="tabletLandscapeRetainsKeyboardOnRefresh[28]" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.277"/>
+  <testcase name="tabletLandscapeRetainsKeyboardOnRefresh" classname="dev.bautista.spotlight.overlay.OverlayImeHeightTest" time="0.114"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

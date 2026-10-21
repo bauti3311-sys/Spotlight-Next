@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-21T14:10:13" hostname="e4f928177bdc" time="1.535">
+  <properties/>
+  <testcase name="phoneCloseTargetDoesNotCloseOverlayOrClearQuery" classname="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" time="0.79"/>
+  <testcase name="tabletCloseTargetDoesNotCloseOverlayOrClearQuery" classname="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" time="0.745"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

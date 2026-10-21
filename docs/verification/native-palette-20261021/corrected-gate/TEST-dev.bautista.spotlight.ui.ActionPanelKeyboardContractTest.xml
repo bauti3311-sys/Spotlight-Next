@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T14:08:37" hostname="e4f928177bdc" time="60.863">
+  <properties/>
+  <testcase name="tabCyclesAndEnterRunsOnlyFocusedContextAction" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="59.952"/>
+  <testcase name="actionGroupsHaveVisibleHeadingsWithoutExecutingItems" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.495"/>
+  <testcase name="groupsAndIdentityDoNotDependOnTheVisibleTitle" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.416"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

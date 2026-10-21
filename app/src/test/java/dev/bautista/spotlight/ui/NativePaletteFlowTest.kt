@@ -119,6 +119,14 @@ class NativePaletteFlowTest {
         ui.onNodeWithTag("action-filter").performTextInput("Compartir")
         ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.DirectionDown);pressKey(Key.Enter)}
         assertEquals(0,called);ui.onNodeWithText("No disponible actualmente").assertExists()
-        ui.onNodeWithTag("action-filter").performTextClearance();ui.onNode(hasText("Compartir B") and isFocused()).assertExists()
+        // Compose text replacement explicitly requests editor focus; selection must still keep its ID.
+        val editor=ui.onNodeWithTag("action-filter")
+        editor.performTextClearance().assertIsFocused().assertTextEquals("")
+        ui.onNode(hasText("Compartir B") and isSelected()).assertExists().assertIsNotEnabled()
+        editor.performKeyInput{pressKey(Key.Enter)}
+        assertEquals(0,called)
+        editor.performKeyInput{pressKey(Key.DirectionUp);pressKey(Key.Enter)}
+        assertEquals(1,called)
+        ui.onNode(hasText("Compartir A") and isFocused()).assertExists()
     }
 }
