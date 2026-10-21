@@ -31,6 +31,7 @@ android {
   // and never replaces the historically signed package or its existing previews.
   create("raycastPreview") {
    initWith(getByName("debug"))
+   ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
    applicationIdSuffix = ".raycastpreview"
    versionNameSuffix = "-raycast-preview"
    signingConfig = signingConfigs.getByName("debug")
