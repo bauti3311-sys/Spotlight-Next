@@ -62,7 +62,12 @@ class NativePaletteFlowTest {
     }
     @Test fun copySubmenuReturnsToSameRootSelectionBeforeClosing(){
         show();open();ui.onNodeWithText("Copiar…").performScrollTo().performClick()
-        ui.onNodeWithText("Copiar paquete").assertExists();search().assertTextEquals("WhatsApp");capture("05-submenu")
+        val choice=ui.onNode(hasText("Copiar paquete") and hasClickAction()).performScrollTo().assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+        val choiceBounds=choice.fetchSemanticsNode().boundsInRoot
+        val panelBounds=ui.onNodeWithTag("action-surface").fetchSemanticsNode().boundsInRoot
+        val filterBounds=ui.onNodeWithTag("action-filter").fetchSemanticsNode().boundsInRoot
+        assertTrue(choiceBounds.top>=panelBounds.top && choiceBounds.bottom<=filterBounds.top)
+        search().assertTextEquals("WhatsApp");capture("05-submenu")
         ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
         ui.onNode(hasText("Copiar…") and isFocused()).assertExists()
         ui.onNode(hasText("Copiar…") and isFocused()).performKeyInput{pressKey(Key.Escape)}
@@ -80,6 +85,9 @@ class NativePaletteFlowTest {
     @Test fun constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow(){
         show(height=260f);open();ui.onNodeWithTag("action-filter").assertIsDisplayed()
         ui.onNodeWithContentDescription("Cerrar acciones").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+        val first=ui.onNode(hasText("Abrir") and hasClickAction()).assertIsDisplayed().assertHeightIsAtLeast(48.dp).fetchSemanticsNode().boundsInRoot
+        val filter=ui.onNodeWithTag("action-filter").fetchSemanticsNode().boundsInRoot
+        assertTrue(first.bottom<=filter.top)
         val window=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
         val panel=ui.onNodeWithTag("action-surface").fetchSemanticsNode().boundsInRoot
         assertTrue(panel.top>=window.top && panel.bottom<=window.bottom);capture("07-ime-budget-simulation")
