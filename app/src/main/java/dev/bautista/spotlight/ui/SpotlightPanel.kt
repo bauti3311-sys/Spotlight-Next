@@ -42,6 +42,7 @@ fun SpotlightPanel(
     availableHeightDp: Float? = null,
     invocation:String="touch",
     onContentExpansion:(Boolean)->Unit={},
+    onActionsVisibility:(Boolean)->Unit={},
     aiClient:DirectAi?=null,
     fileSelection:dev.bautista.spotlight.data.FileBuffer?=null,
 ) =
@@ -108,6 +109,8 @@ fun SpotlightPanel(
         fun bufferContext()=listOf(query,category,searchScope,fileBuffer.items.map{it.id to (it.action as? Action.Launch)?.intent?.data?.toString()})
         DisposableEffect(bufferContext()){onDispose{bufferExtraction.cancel()}}
         var menu by remember { mutableStateOf(false) }
+        SideEffect {onActionsVisibility(menu)}
+        DisposableEffect(Unit){onDispose{onActionsVisibility(false)}}
         var advancedActions by remember { mutableStateOf(false) }
         val documentExtraction = remember { DocumentExtractionRequest() }
         fun extractionContext() = listOf(query, category, searchScope, selected, preview?.id, menu, searchGeneration)
@@ -1218,7 +1221,7 @@ fun SpotlightPanel(
                     }
                 }
                 }
-                if(menu && preview!=null) ContextActionSurface(onDismiss={menu=false;if(!richPreview)preview=null;focus.requestFocus()}) { details(true) }
+                if(menu && preview!=null) ContextActionSurface(viewport,onDismiss={menu=false;if(!richPreview)preview=null;runCatching{focus.requestFocus()}}) { details(true) }
             }
         }
     }

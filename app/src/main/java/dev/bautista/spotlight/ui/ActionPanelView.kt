@@ -56,6 +56,9 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
         if(path.isNotEmpty()) { val frame=path.removeAt(path.lastIndex);filter=frame.filter;selectedId=frame.selectedId;filterFocused=false }
         else onClose?.invoke()
     }
+    val backNavigation=LocalActionBackNavigation.current
+    SideEffect {backNavigation?.back={back()}}
+    DisposableEffect(backNavigation){onDispose{backNavigation?.back=null}}
     fun activate(action:ContextAction?) {
         if(action==null || !action.state.executable)return
         if(action.children.isNotEmpty()) {path+=ActionMenuFrame(action.identity,filter,action.identity);filter="";selectedId=null;filterFocused=false}
@@ -83,6 +86,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
     Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).padding(8.dp).testTag("context-action-panel")
         .onPreviewKeyEvent { e ->
             if(e.type!=KeyEventType.KeyDown)false
+            else if((e.isCtrlPressed || e.isMetaPressed) && e.key==Key.K){onClose?.invoke();true}
             else if((e.isCtrlPressed || e.isMetaPressed) && e.key==Key.F){filterFocus.requestFocus();true}
             else if(e.isCtrlPressed || e.isMetaPressed)false
             else when(e.key) {
@@ -91,14 +95,22 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 Key.DirectionDown->{move(1);true}
                 Key.DirectionUp->{move(-1);true}
                 Key.Enter,Key.NumPadEnter->{activate(currentAction());true}
-                else->false
+                else->{
+                    val character=e.nativeKeyEvent.unicodeChar
+                    if(!filterFocused && !e.isAltPressed && character>=32 && Character.isValidCodePoint(character)) {
+                        filter=(filter+String(Character.toChars(character))).take(120)
+                        filterFocused=true
+                        filterFocus.requestFocus()
+                        true
+                    } else false
+                }
             }
         }) {
-        Column(Modifier.fillMaxWidth().weight(1f,fill=true).verticalScroll(rememberScrollState())) {
+        Column(Modifier.fillMaxWidth().weight(1f,fill=false).verticalScroll(rememberScrollState())) {
             var previous:ContextActionGroup?=null
             visible.forEachIndexed { i,action ->
                 val group=if(i==0 && action==all.firstOrNull())ContextActionGroup.Primary else action.group
-                if(group!=previous) {
+                if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=6.dp),color=colors.onSurface.copy(alpha=.08f))
                     Text(group.label.uppercase(),Modifier.padding(start=10.dp,top=4.dp,bottom=4.dp),
                         fontSize=10.sp,color=colors.onSurfaceVariant,letterSpacing=.6.sp)

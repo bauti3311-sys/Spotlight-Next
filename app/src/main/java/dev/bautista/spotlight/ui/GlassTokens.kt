@@ -13,7 +13,7 @@ import dev.bautista.spotlight.data.Config
 
 object GlassTokens {
     val small=8.dp;val gap=12.dp;val inset=18.dp;val hit=48.dp
-    val actionPanelMaxHeight=360.dp
+    val actionPanelMaxHeight=480.dp
     val actionSurface=Color(0xFF242430);val actionSelected=Color(0xFF343646)
     val indigo=Color(0xFF7275E8);val tertiary=Color(0xFF777B8D)
     val windowRadius=20.dp;val searchHeight=48.dp;val listInset=12.dp

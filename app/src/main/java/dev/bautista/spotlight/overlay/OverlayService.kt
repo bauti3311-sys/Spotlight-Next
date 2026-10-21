@@ -33,6 +33,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var view: WindowFocusHost? = null
     private var composition: ComposeView? = null
     private var closing=false
+    private var actionsVisible=false
     private var focusSeen = false
     private var showJob: Job? = null
     private val overlayContext: Context by lazy {
@@ -230,6 +231,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
                         onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry(animateWidth = true)}},
+                        onActionsVisibility={actionsVisible=it},
                     )
                 }
             }
@@ -294,7 +296,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     internal fun createHost(panel: ComposeView): WindowFocusHost {
         return WindowFocusHost(
                 overlayContext,
-                onOutside = { close() },
+                // The bounded child owns outside-dismiss while open. Touching an action
+                // beyond the compact parent must not close the parent underneath it.
+                onOutside = { if(!actionsVisible)close() },
                 onFocus = { gained ->
                     if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
                         android.util.Log.d("SpotlightOverlay", "Window focus=$gained")
