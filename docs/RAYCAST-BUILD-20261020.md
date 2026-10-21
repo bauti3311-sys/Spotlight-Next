@@ -25,3 +25,12 @@ Al reanudar, el entorno figura unavailable y exec_command responde: "No usable e
 3. Si no sobrevivieron resultados, restaurar las mismas versiones y ejecutar las 14 suites de `scripts/validate-raycast-sidebar.sh`; corregir fallos reales sin omitir aserciones.
 4. Ejecutar `:app:lintRaycastPreview` y `:app:assembleRaycastPreview`, verificar package `dev.bautista.spotlight.next.raycastpreview`, apksigner, zipalign y hashes, entregar APK + ZIP fuente del mismo commit. No incluir claves, cachés ni credenciales.
 5. Conservar firma principal/Review. Sin merge, force-push o CI no autorizado. Continuar Phone Use/integraciones solo después de cerrar esta entrega instalable.
+
+## Entorno recuperado y regresión de altura
+Comandos ejecutados: pwd -> /workspace/scratch/cd7b8fe1285c; git --version -> 2.51.1; javac17.0.20.1, Gradle8.10.2, SDK35 restaurados. No sobrevivieron XML ni proceso de la segunda ronda; su log estaba incompleto.
+
+Nueva ronda sobre221fc981:65casos/14suites,64correctos/1fallo. Las dos configuraciones de8d695c4 funcionan. Fallo real en tabletCaptureAndCompactHeight: el divisor lateral fijaba390dp aunque solo hubiera tres resultados, y el inspector podía crecer más que la lista. Evidencia resume-red.json y compact-height-red.xml.
+
+Corrección parcial: compartir altura calculada de resultados con inspector automático de apps y acotar/desplazar su contenido. Proporción62/38, umbral600dp, selección y Quick Look conservados; el límite de PDF permanece400dp. Aserción menor340dp intacta y se agrega comprobación de acceso desplazable a las acciones. Verificación pendiente.
+
+La primera invocación local de recuperación falló antes de compilar por --tests asociado a assemble; comando corregido, sin cambios de dependencias. Sin Actions.

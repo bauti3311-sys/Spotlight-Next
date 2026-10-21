@@ -682,6 +682,10 @@ fun SpotlightPanel(
             val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
             val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
+            val resultListHeight = minOf(resultLimit,
+                (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size +
+                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 40.dp)
+            val splitPanelHeight = if(liveAppInspector!=null)resultListHeight else minOf(resultLimit,400.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()
@@ -903,9 +907,7 @@ fun SpotlightPanel(
                                         .heightIn(
                                             max =
                                                 if (richPreview && !widePreview) resultLimit * .45f
-                                                else minOf(resultLimit,if(query.isBlank() && searchScope==null && category=="Todo")
-                                                    (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size + (visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp
-                                                else (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size+40.dp)
+                                                else resultListHeight
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
@@ -1223,7 +1225,7 @@ fun SpotlightPanel(
                         else if(category=="Apps" && widePreview)
                             // Raycast uses a compact list alongside its detail panel.
                             // Keep the legacy grid only for narrow/phone layouts.
-                            ContextSplitPanel(minOf(resultLimit,400.dp),{resultList()},{details()})
+                            ContextSplitPanel(splitPanelHeight,{resultList()},{details()})
                         else if (category == "Apps")
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(columns),
@@ -1310,7 +1312,7 @@ fun SpotlightPanel(
                                 }
                             }
                         else if(expandedPreview && richPreview)details()
-                        else if(widePreview) ContextSplitPanel(minOf(resultLimit,400.dp),{resultList()},{details()})
+                        else if(widePreview) ContextSplitPanel(splitPanelHeight,{resultList()},{details()})
                         else if(menu && preview!=null && !richPreview) {
                             // A single continuous window: keep the selected value on the
                             // left and reveal a bounded action sheet on the right, on demand.
