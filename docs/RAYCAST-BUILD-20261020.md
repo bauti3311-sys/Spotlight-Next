@@ -36,3 +36,5 @@ Corrección parcial: compartir altura calculada de resultados con inspector auto
 La primera invocación local de recuperación falló antes de compilar por --tests asociado a assemble; comando corregido, sin cambios de dependencias. Sin Actions.
 
 Seguimiento64b2d13:64/65, altura compacta y acciones desplazables correctas. El límite genérico del panel recortaba el pie de ActionPanel en tablet (QuickLookTouchTargetTest). Corrección acotada: scroll/límite solo para inspector automático de apps; menú explícito y Quick Look recuperan su medición previa. Ninguna aserción modificada o eliminada. Gate pendiente de reejecución.
+
+Gate58eef8e:65/65casos,0fallos/errores/omitidas; altura, menú y Quick Look correctos. Lint se detuvo con ProduceStateDoesNotAssignValue en carga MediaSession del inspector; diez advertencias y una informativa. No se generó APK en este gate. Se conserva reporte completo. Cambio mínimo: estado remember(appPackage,playingPackages) y LaunchedEffect con los mismos identificadores; reinicio al cambiar app y cancelación de consulta antigua, sin supresión de lint ni cambios de permisos/controles. Verificación del nuevo checkpoint pendiente.

@@ -1,0 +1,109 @@
+{
+  "source_sha": "58eef8e1d82b300c99a8398690a7d04ef301532f",
+  "suites": [
+    {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.agent.PhoneUsePolicyTest"
+    },
+    {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.control.AndroidCapabilityTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.control.MediaPlaybackTest"
+    },
+    {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.control.MediaTargetTest"
+    },
+    {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ai.ToolProtocolTest"
+    },
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.PreviewPresentationContractTest"
+    },
+    {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.QuickLookTouchTargetTest"
+    },
+    {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.RaycastQuickMenuComposeTest"
+    },
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest"
+    },
+    {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ai.ToolCapabilityTest"
+    },
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "dev.bautista.spotlight.ui.RaycastSettingsNavigationTest"
+    }
+  ],
+  "totals": {
+    "tests": 65,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

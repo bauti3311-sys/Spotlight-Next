@@ -947,8 +947,9 @@ fun SpotlightPanel(
                         inspectorItem?.let { item ->
                             if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
                                 val appPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
-                                val mediaCommands by produceState(initialValue=emptyList<String>(),appPackage,playingPackages) {
-                                    value=if(appPackage!=null) withContext(Dispatchers.IO) {
+                                var mediaCommands by remember(appPackage,playingPackages) { mutableStateOf(emptyList<String>()) }
+                                LaunchedEffect(appPackage,playingPackages) {
+                                    mediaCommands=if(appPackage!=null) withContext(Dispatchers.IO) {
                                         val primary=if(appPackage in playingPackages)"pause" else "play"
                                         listOf(primary,"next","previous").filter { MediaControl.availableForPackage(app,appPackage,it) }
                                     } else emptyList()
