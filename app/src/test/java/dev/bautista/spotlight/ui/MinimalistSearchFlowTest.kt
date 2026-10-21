@@ -31,7 +31,7 @@ class MinimalistSearchFlowTest {
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private fun show(query:String="Chrome", theme:String="dark", preset:String="glass") {
         val launcher=Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-        (listOf("Chrome")+(1..5).map{"Chrome $it"}).forEachIndexed{n,label->
+        (listOf("Chrome")+(1..5).map{"Chrome $it"}+"Firefox").forEachIndexed{n,label->
             val info=ActivityInfo().apply{packageName="fixture.chrome$n";name="Main";nonLocalizedLabel=label;applicationInfo=ApplicationInfo().apply{packageName="fixture.chrome$n"}}
             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})
         }
@@ -60,8 +60,19 @@ class MinimalistSearchFlowTest {
         search().performClick().performKeyInput{repeat(12){pressKey(Key.DirectionRight)}}
         search().assertIsFocused().assertTextEquals("Chro")
         search().performKeyInput{pressKey(Key.Tab)}
-        search().assertIsFocused().assertTextEquals("Chrome")
-        ui.onAllNodesWithText("Menú de acciones").assertCountEquals(0)
+        // Chro matches six installed apps: Tab opens actions instead of choosing a completion.
+        search().assertTextEquals("Chro")
+        ui.onNodeWithTag("action-surface").assertIsDisplayed()
+        ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
+        search().assertIsFocused().assertTextEquals("Chro")
+        search().performTextClearance()
+        search().performTextInput("Fire")
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:fixture.chrome6/Main").fetchSemanticsNodes().isNotEmpty()}
+        search().performKeyInput{repeat(12){pressKey(Key.DirectionRight)}}
+        search().assertIsFocused().assertTextEquals("Fire")
+        search().performKeyInput{pressKey(Key.Tab)}
+        search().assertIsFocused().assertTextEquals("Firefox")
+        ui.onNodeWithTag("action-surface").assertDoesNotExist()
     }
     @Test fun tabWithCaretInsideQueryKeepsNativeTextAndOpensActions(){
         show("Chro")

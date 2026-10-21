@@ -23,6 +23,8 @@ class SmartSearchAcceptanceTest {
         val activity=ActivityInfo().apply{packageName=pkg;name="Main";nonLocalizedLabel=title;applicationInfo=a;exported=true}
         Shadows.shadowOf(app.packageManager).installPackage(PackageInfo().apply{packageName=pkg;applicationInfo=a;activities=arrayOf(activity)})
         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+        // Real PackageManager also resolves the package-scoped launcher used by capability checks.
+        Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(pkg),ResolveInfo().apply{activityInfo=activity})
         app.search.invalidateApps()
     }
     private fun rows(q:String,c:AppConfig=config)=runBlocking{app.search.search(q,c).last()}
@@ -96,5 +98,12 @@ class SmartSearchAcceptanceTest {
     @Test fun deniedContactsNeverBecomeAuthorizedResults() {
         Shadows.shadowOf(app).denyPermissions(android.Manifest.permission.READ_CONTACTS)
         assertTrue(rows("Juan",config.copy(contacts=true)).none{it.category=="Contactos" && it.action !is Action.Access})
+    }
+    @Test fun configurationWarningsNeverOutrankALiveApplicationPrefix() {
+        val application=row("com.whatsapp","WhatsApp")
+        val warning=row("warning","WhatsApp no está instalado","Comandos",9000).copy(action=Action.SystemPanel("extensions"))
+        val ranked=ResultRanker.rank("whats",listOf(warning,application),config)
+        assertEquals(application.id,ranked.first().id)
+        assertEquals(application.id,CompactResults.select("whats",ranked,config).initial.first().id)
     }
 }

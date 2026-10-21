@@ -10,6 +10,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.github.takahirom.roborazzi.captureScreenRoboImage
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.RoborazziTaskType
 import dev.bautista.spotlight.SpotlightApp
@@ -49,7 +50,7 @@ class QuickLookTouchTargetTest {
         ui.waitForIdle()
         ui.onNodeWithText("Copiar resultado").assertIsDisplayed()
         ui.onNodeWithText("Enter · Ejecutar").assertIsDisplayed()
-        ui.onRoot().captureRoboImage("build/091-ui/f2-close-$device.png",
+        captureScreenRoboImage("build/091-ui/f2-close-$device.png",
             roborazziOptions = RoborazziOptions(taskType = RoborazziTaskType.Record))
         ui.onNodeWithText("Guardar como nota").performScrollTo().assertIsDisplayed()
         ui.onNodeWithContentDescription("Cerrar acciones")

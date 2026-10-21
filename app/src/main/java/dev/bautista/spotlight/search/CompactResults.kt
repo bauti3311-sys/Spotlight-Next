@@ -31,7 +31,7 @@ object CompactResults {
             val lexical = ResultRanker.matchClass(appQuery, item)
             if (item.category == "Aplicaciones") return when (lexical) { 6 -> 8; 5 -> 7; 4 -> 6; else -> 0 }
             val action = item.action
-            if(item.category in setOf("Comandos","Acciones") && action !is Action.Ask && action !is Action.Access && action !is Action.RestoreQuery) {
+            if(item.category in setOf("Comandos","Acciones") && action !is Action.Ask && action !is Action.Access && action !is Action.RestoreQuery && (action as? Action.SystemPanel)?.page!="extensions") {
                 if(lexical==6)return 8
                 if(lexical==5)return 7
                 if(lexical==4)return 6

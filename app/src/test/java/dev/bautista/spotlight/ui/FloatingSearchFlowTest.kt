@@ -87,6 +87,7 @@ class FloatingSearchFlowTest {
         ui.onNode(hasText("Abrir") and hasClickAction()).assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         ui.onNodeWithText("Copiar…").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         ui.onNodeWithText("Quitar favorita").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithText("Información de la app").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         assertEquals(before,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
     }
 }

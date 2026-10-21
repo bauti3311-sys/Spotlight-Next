@@ -113,7 +113,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=6.dp),color=colors.onSurface.copy(alpha=.08f))
                     Text(group.label.uppercase(),Modifier.padding(start=10.dp,top=4.dp,bottom=4.dp),
-                        fontSize=10.sp,color=colors.onSurfaceVariant,letterSpacing=.6.sp)
+                        fontSize=10.sp,lineHeight=12.sp,color=colors.onSurfaceVariant,letterSpacing=.6.sp)
                     previous=group
                 }
                 val active=action.identity==currentId

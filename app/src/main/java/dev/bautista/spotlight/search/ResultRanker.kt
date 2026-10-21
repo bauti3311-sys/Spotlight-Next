@@ -40,7 +40,8 @@ object ResultRanker {
         val t=normalize(item.title.trim()).split(Regex("\\s+")).joinToString(" ")
         val installed=item.category=="Aplicaciones"
         val command=item.category in setOf("Comandos","Acciones") && item.action !is Action.Ask &&
-            item.action !is Action.Access && item.action !is Action.RestoreQuery
+            item.action !is Action.Access && item.action !is Action.RestoreQuery &&
+            (item.action as? Action.SystemPanel)?.page!="extensions"
         return when {
             (installed || command) && t==q->6
             (installed || command) && t.startsWith(q)->5

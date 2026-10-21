@@ -94,7 +94,8 @@ class CompactResultsTest {
     @Test fun exactApplicationNeverAutocompletesIntoLongerSibling(){
         val rows=listOf(app("exact","Chrome"),app("beta","Chrome Beta"))
         assertNull(dev.bautista.spotlight.control.CommandCenter.complete("Chrome",rows))
-        assertEquals("Chrome",dev.bautista.spotlight.control.CommandCenter.complete("Chro",rows))
+        assertNull(dev.bautista.spotlight.control.CommandCenter.complete("Chro",rows))
+        assertEquals("Chrome",dev.bautista.spotlight.control.CommandCenter.complete("Chro",rows.take(1)))
     }
     @Test fun navigationKeepsExistingOrderWhenLateProvidersArrive(){
         val rows=listOf(app("b","Chrome Beta"),app("a","Chrome"))
