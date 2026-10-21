@@ -48,7 +48,7 @@ class QuickLookTouchTargetTest {
         ui.waitUntil(15000) { ui.onAllNodesWithContentDescription("Cerrar acciones").fetchSemanticsNodes().isNotEmpty() }
         ui.waitForIdle()
         ui.onNodeWithText("Copiar resultado").assertIsDisplayed()
-        ui.onNodeWithText("Tab siguiente · Shift+Tab anterior").assertIsDisplayed()
+        ui.onNodeWithText("Enter · Ejecutar").assertIsDisplayed()
         ui.onRoot().captureRoboImage("build/091-ui/f2-close-$device.png",
             roborazziOptions = RoborazziOptions(taskType = RoborazziTaskType.Record))
         ui.onNodeWithText("Guardar como nota").performScrollTo().assertIsDisplayed()

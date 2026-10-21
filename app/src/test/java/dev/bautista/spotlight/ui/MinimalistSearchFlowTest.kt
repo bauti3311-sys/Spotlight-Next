@@ -93,7 +93,10 @@ class MinimalistSearchFlowTest {
         val root=ui.onNodeWithTag("spotlight-root")
         assertTrue(root.fetchSemanticsNode().boundsInRoot.height<340*app.resources.displayMetrics.density)
         rows().assertCountEquals(3)
-        ui.onNodeWithText("Ver acciones contextuales").performScrollTo().assertIsDisplayed()
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
+        ui.onNodeWithTag("result:fixture.chrome0/Main").performTouchInput{longClick()}
+        ui.onNodeWithTag("action-surface").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Cerrar acciones").performClick()
         val file=File("build/minimalist-search/tablet-compact.png");file.parentFile?.mkdirs()
         root.captureRoboImage(file.absolutePath,roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         ui.onNodeWithTag("results-expand").performClick()

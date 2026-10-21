@@ -60,14 +60,15 @@ class VisualFidelityTest {
                 }
             }
         } }
-        ui.waitUntil(15000) { ui.onAllNodesWithTag("inspector-title").fetchSemanticsNodes().isNotEmpty() }
+        ui.waitUntil(15000) { ui.onAllNodesWithTag(if(query.isBlank())"result:suggest:app:com.whatsapp" else "result:com.whatsapp/Main").fetchSemanticsNodes().isNotEmpty() }
     }
     @Test fun whatsappOnAppearanceKeepsOneHeaderAndRealContext() {
         composition("WhatsApp")
-        ui.onNodeWithTag("inspector-title").assertTextEquals("WhatsApp")
-        ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
+        ui.onNodeWithTag("result:com.whatsapp/Main").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         assertNull(Shadows.shadowOf(app).peekNextStartedActivity())
-        ui.onNodeWithText("Ver información de la app").performScrollTo().performClick()
+        ui.onNodeWithTag("result:com.whatsapp/Main").performTouchInput{longClick()}
+        ui.onNodeWithText("Información de la app").performScrollTo().performClick()
         val intent=Shadows.shadowOf(app).nextStartedActivity
         assertEquals(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,intent.action)
         assertEquals("package:com.whatsapp",intent.data.toString())
@@ -75,7 +76,8 @@ class VisualFidelityTest {
     }
     @Test fun homeCompositionKeepsContextualInspector() {
         composition("")
-        ui.onNodeWithTag("inspector-title").assertTextEquals("WhatsApp")
+        ui.onNodeWithTag("result:suggest:app:com.whatsapp").assertIsDisplayed()
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         capture("tablet-home-on-settings")
     }
     @Test fun lightCompositionRetainsHierarchy() { composition("WhatsApp","light","macos");capture("tablet-light-on-settings") }

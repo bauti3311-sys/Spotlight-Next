@@ -13,10 +13,11 @@ import androidx.compose.ui.unit.*
     autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false) {
     val colors=MaterialTheme.colorScheme
     BoxWithConstraints(Modifier.fillMaxWidth()) {
+        val width=maxWidth
         Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=12.dp),verticalAlignment=Alignment.CenterVertically) {
             if(onExpand!=null) TextButton(onClick=onExpand,modifier=Modifier.testTag("results-expand"),contentPadding=PaddingValues(horizontal=4.dp)) {
-                Text(if(maxWidth>=520.dp)expandLabel else if(expandLabel.startsWith("Ver menos"))"Menos" else "Más",fontSize=11.sp,color=colors.onSurfaceVariant)
-            } else if(maxWidth>=560.dp) Text("Spotlight",fontSize=11.sp,color=colors.onSurfaceVariant)
+                Text(if(width>=520.dp)expandLabel else if(expandLabel.startsWith("Ver menos"))"Menos" else "Más",fontSize=11.sp,color=colors.onSurfaceVariant)
+            } else if(width>=560.dp) Text("Spotlight",fontSize=11.sp,color=colors.onSurfaceVariant)
             Spacer(Modifier.weight(1f))
             if(actionsOpen) {
                 Text("Enter · Ejecutar",fontSize=11.sp,color=colors.onSurfaceVariant)

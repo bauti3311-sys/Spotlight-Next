@@ -22,3 +22,5 @@ Nueva instrucción explícita del usuario sustituye el inspector automático apr
 4. Lint y Preview32 independiente, firma885838aa conservada, APK/ZIP exactos y evidencia. Sin CI/main/permisos/dependencias nuevos.
 
 Estado: plan de implementación; ninguna prueba nueva ni APK ejecutada de este bloque todavía. IME real/OneUI/servicios externos y rendimiento físico requieren dispositivo. No proponer blur adicional ni copiar recursos externos.
+
+Checkpoint26b356b guardó implementación sin verificar. Primera compilación detectó3referencias a maxWidth ocultas por receptores anidados; se capturan constraints antes de Row/LazyColumn. Se retira la cuadrícula de la presentación explícita Apps para conservar el mismo contrato de lista/flechas; preferencias/datos/CommandCenter no se eliminan. Se adaptan pruebas del inspector automático a selección de una columna, manteniendo altura/gestos/no ejecución/retorno y pruebas del divisor en Detail. El hint antiguo del menú se sustituye por Enter·Ejecutar del footer nuevo.10casos nuevos preparados; aún no ejecutados.

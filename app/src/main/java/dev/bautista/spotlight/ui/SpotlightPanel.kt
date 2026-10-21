@@ -616,19 +616,8 @@ fun SpotlightPanel(
             // Lock ordering on touch without moving the row underneath the finger.
             if (displayed.isNotEmpty() && navigating && !pointerSelecting) {
                 val target = selected.coerceIn(0, displayed.lastIndex)
-                if (category == "Apps") {
-                    if (motionEnabled)
-                        gridState.animateScrollToItem(
-                            target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
-                        )
-                    else
-                        gridState.scrollToItem(
-                            target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
-                        )
-                } else {
-                    if (motionEnabled && !navigating) listState.animateScrollToItem(target)
-                    else listState.scrollToItem(target)
-                }
+                if (motionEnabled && !navigating) listState.animateScrollToItem(target)
+                else listState.scrollToItem(target)
             }
         }
         BoxWithConstraints(
@@ -681,7 +670,7 @@ fun SpotlightPanel(
                 (if(compact)56.dp else GlassTokens.resultRowHeight(config))*visibleResults.size +
                     if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 16.dp)
             val splitPanelHeight = minOf(resultLimit,400.dp)
-            val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
+            val inlineResultRows=!compact && (!widePreview || maxWidth*.62f>=384.dp)
             Box(
                 Modifier.fillMaxWidth()
                     .glassSurface(config,legibleBackdrop=true)
@@ -774,46 +763,9 @@ fun SpotlightPanel(
                                     true
                                 } else false
                             }
-                            Key.DirectionDown -> {
-                                selected =
-                                    if (category == "Apps")
-                                        dev.bautista.spotlight.control.CommandCenter.moveGrid(
-                                            selected,
-                                            true,
-                                            columns,
-                                            recentCount,
-                                            visibleResults.size,
-                                        )
-                                    else
-                                        (selected + 1).coerceAtMost(
-                                            (visibleResults.size - 1).coerceAtLeast(0)
-                                        )
-                                navigating = true
-                                true
-                            }
-                            Key.DirectionUp -> {
-                                selected =
-                                    if (category == "Apps")
-                                        dev.bautista.spotlight.control.CommandCenter.moveGrid(
-                                            selected,
-                                            false,
-                                            columns,
-                                            recentCount,
-                                            visibleResults.size,
-                                        )
-                                    else (selected - 1).coerceAtLeast(0)
-                                navigating = true
-                                true
-                            }
-                            Key.DirectionLeft,
-                            Key.DirectionRight -> {
-                                if (category == "Apps" && navigating) {
-                                    selected =
-                                        (selected + if (event.key == Key.DirectionRight) 1 else -1)
-                                            .coerceIn(0, (visibleResults.size - 1).coerceAtLeast(0))
-                                    true
-                                } else false
-                            }
+                            Key.DirectionDown -> { selected=(selected+1).coerceAtMost((visibleResults.size-1).coerceAtLeast(0));navigating=true;true }
+                            Key.DirectionUp -> { selected=(selected-1).coerceAtLeast(0);navigating=true;true }
+                            Key.DirectionLeft,Key.DirectionRight -> false
                             Key.Enter,
                             Key.NumPadEnter -> {
                                 selectedResult?.let { execute(it) }
@@ -927,7 +879,7 @@ fun SpotlightPanel(
                                             navigating = true
                                         },
                                         { toggleFavorite(item) },
-                                        inline=!compact && (!widePreview || maxWidth*.62f>=384.dp),
+                                        inline=inlineResultRows,
                                         animations=motionEnabled,
                                         onInteraction={pointerSelecting=true;selected=i;navigating=true},
                                         playing=(item.action as? Action.Launch)?.intent?.component?.packageName in playingPackages,
@@ -1212,91 +1164,6 @@ fun SpotlightPanel(
                             // Raycast uses a compact list alongside its detail panel.
                             // Keep the legacy grid only for narrow/phone layouts.
                             ContextSplitPanel(splitPanelHeight,{resultList()},{details(false)},scrollInspector=false)
-                        else if (category == "Apps")
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(columns),
-                                state = gridState,
-                                modifier =
-                                    Modifier.fillMaxWidth()
-                                        .height(
-                                            minOf(
-                                                resultLimit,
-                                                (maxOf(
-                                                        1,
-                                                        ((visibleResults.size - recentCount + columns -
-                                                            1) / columns) +
-                                                            if (recentCount > 0)
-                                                                (recentCount + columns - 1) /
-                                                                    columns
-                                                            else 0,
-                                                    ) * 96)
-                                                    .dp + (if (recentCount > 0) 56.dp else 28.dp),
-                                            )
-                                        )
-                                        .padding(horizontal = 12.dp),
-                                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                verticalArrangement = Arrangement.spacedBy(6.dp),
-                            ) {
-                                visibleResults.forEachIndexed { i, item ->
-                                    if (i == 0 || (recentCount > 0 && i == recentCount)) {
-                                        item(
-                                            key = "heading:$i",
-                                            span = { GridItemSpan(maxLineSpan) },
-                                        ) {
-                                            Text(
-                                                if (recentCount > 0 && i == 0) "Recientes · hasta 5"
-                                                else "Todas las aplicaciones · A–Z",
-                                                fontSize = 12.sp,
-                                                fontWeight = FontWeight.SemiBold,
-                                                modifier =
-                                                    Modifier.padding(top = 8.dp, bottom = 4.dp),
-                                            )
-                                        }
-                                    }
-                                    item(key = "$i:${item.id}") {
-                                        Column(
-                                            Modifier.clip(RoundedCornerShape(14.dp))
-                                                .background(
-                                                    if (i == selected && navigating)
-                                                        colors.primary.copy(alpha = .12f)
-                                                    else Color.Transparent
-                                                )
-                                                .combinedClickable(
-                                                    onClick = {
-                                                        // Match list interaction: never launch on touch
-                                                        // while browsing the application grid.
-                                                        selectApplication(item,i)
-                                                    },
-                                                    onLongClick = {
-                                                        selected = i
-                                                        preview = item
-                                                        menu = true
-                                                        navigating = true
-                                                    },
-                                                )
-                                                .padding(vertical = 12.dp, horizontal = 4.dp),
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                        ) {
-                                            ResultIcon(item, Modifier.size(42.dp))
-                                            Spacer(Modifier.height(8.dp))
-                                            Text(
-                                                item.title,
-                                                fontSize = 12.sp,
-                                                lineHeight = 16.sp,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
-                                            )
-                                            if (item.id in favorites)
-                                                Icon(
-                                                    CommandIcons.Star,
-                                                    "Favorita",
-                                                    Modifier.size(12.dp),
-                                                    tint = colors.primary,
-                                                )
-                                        }
-                                    }
-                                }
-                            }
                         else if(expandedPreview && richPreview)details(false)
                         else if(widePreview) ContextSplitPanel(splitPanelHeight,{resultList()},{details(false)},scrollInspector=false)
                         else resultList()

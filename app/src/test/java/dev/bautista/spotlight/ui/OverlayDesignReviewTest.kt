@@ -50,17 +50,18 @@ class OverlayDesignReviewTest {
     }
     @Test fun tabletSelectionUpdatesInspectorWithoutLaunchingAnotherApp() {
         show()
-        ui.onNodeWithTag("results-pane").assertWidthIsAtLeast(400.dp)
-        ui.onNodeWithTag("context-inspector").assertWidthIsAtLeast(280.dp)
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         ui.onNodeWithTag("result:fixture.chrome2/Main").assertIsDisplayed().assertHeightIsEqualTo(48.dp)
         ui.onNodeWithTag("result:fixture.chrome1/Main").assertIsDisplayed().performClick()
-        ui.onNodeWithTag("inspector-title").assertTextEquals("Chrome 1")
-        ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed().assertHasClickAction()
+        ui.onNodeWithTag("result:fixture.chrome1/Main").assertIsSelected()
+        ui.onNodeWithTag("action-surface").assertDoesNotExist()
         assertNull(Shadows.shadowOf(app).peekNextStartedActivity())
         capture("tablet-selected-second")
     }
     @Test fun dividerCannotCompressEitherPaneBelowItsFunctionalMinimum() {
-        show()
+        ui.setContent { SpotlightTheme("dark") { Box(Modifier.width(960.dp)) {
+            ContextSplitPanel(300.dp,{ androidx.compose.material3.Text("Resultados") },{ androidx.compose.material3.Text("Detalle") })
+        } } }
         val divider=ui.onNodeWithContentDescription("Divisor ajustable del panel contextual")
         divider.performTouchInput { swipe(center,center.copy(x=center.x+500f),300) }
         ui.onNodeWithTag("results-pane").assertWidthIsAtLeast(400.dp)
@@ -73,6 +74,8 @@ class OverlayDesignReviewTest {
         show(width=640)
         ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         ui.onNodeWithTag("result:fixture.chrome0/Main").performClick()
+        ui.onNodeWithTag("action-surface").assertDoesNotExist()
+        ui.onNodeWithTag("result:fixture.chrome0/Main").performTouchInput { longClick() }
         ui.onNodeWithContentDescription("Cerrar acciones").assertExists()
         capture("intermediate-contextual-actions")
     }
@@ -85,7 +88,8 @@ class OverlayDesignReviewTest {
     }
     @Test fun homeShowsOneAuthorizedFavoriteApplicationWithInspector() {
         show(query="")
-        ui.onNodeWithTag("inspector-title").assertTextEquals("Chrome")
+        ui.onNodeWithTag("result:suggest:app:fixture.chrome0").assertIsDisplayed()
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         capture("tablet-home-favorite")
     }
     @Test fun lightThemeRetainsTheSameInspectorAndActions() { show(theme="light",preset="macos");capture("tablet-light") }
@@ -93,6 +97,8 @@ class OverlayDesignReviewTest {
         show(width=360)
         ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         ui.onNodeWithTag("result:fixture.chrome0/Main").performClick()
+        ui.onNodeWithTag("action-surface").assertDoesNotExist()
+        ui.onNodeWithTag("result:fixture.chrome0/Main").performTouchInput { longClick() }
         ui.onNodeWithContentDescription("Cerrar acciones").assertExists()
         capture("phone-contextual-actions")
     }
