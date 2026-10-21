@@ -44,7 +44,7 @@ class NativePaletteFlowTest {
     }
     private fun open(){search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.K);keyUp(Key.CtrlLeft)};ui.onNodeWithTag("action-surface").assertIsDisplayed()}
     private fun capture(name:String){ui.onNodeWithTag("spotlight-root").captureRoboImage("build/native-palette/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
-    @Test fun compactHomeHasNoAutomaticInspector(){show("");ui.onNodeWithTag("context-inspector").assertDoesNotExist();ui.onNodeWithTag("spotlight-root").assertHeightIsAtMost(300.dp);capture("01-home")}
+    @Test fun compactHomeHasNoAutomaticInspector(){show("");ui.onNodeWithTag("context-inspector").assertDoesNotExist();assertTrue(ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot.height<=300*app.resources.displayMetrics.density);capture("01-home")}
     @Test fun searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch(){
         show();ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         val before=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
@@ -90,6 +90,17 @@ class NativePaletteFlowTest {
         ui.onNodeWithContentDescription("Cerrar acciones").performClick();search().assertIsFocused()
     }
     @Test fun lightSearchAndActionsUseSameStructure(){show(theme="light");capture("10-light-search");open();capture("10-light-actions")}
+    @Test fun localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery() {
+        runBlocking { app.local.saveNote("Palettedetail\n"+"Contenido local autorizado para revisar. ".repeat(20)) }
+        ui.setContent{Box(Modifier.width(960.dp)){SpotlightPanel(app,AppConfig(files=false,animations=false,theme="dark",preset="glass"),{},"Palettedetail",640f)}}
+        ui.waitUntil(15000){ui.onAllNodes(SemanticsMatcher("local note row"){it.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.TestTag){""}.startsWith("result:note:")}).fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
+        search().performKeyInput{pressKey(Key.DirectionDown);pressKey(Key.DirectionUp);pressKey(Key.Spacebar)}
+        ui.onNodeWithTag("context-inspector").assertIsDisplayed()
+        search().assertTextEquals("Palettedetail");capture("06-local-note-detail")
+        search().performKeyInput{pressKey(Key.Escape)}
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist();search().assertTextEquals("Palettedetail").assertIsFocused()
+    }
     @Test fun unavailableActionCannotExecuteAndFilteringPreservesIdentity(){
         var called=0
         ui.setContent{SpotlightTheme("dark"){Box(Modifier.width(390.dp).height(360.dp)){

@@ -10,7 +10,6 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.text.*
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -159,7 +158,6 @@ fun SpotlightPanel(
         var searchFocused by remember{mutableStateOf(false)}
         var resultsFocused by remember{mutableStateOf(false)}
         val listState = rememberLazyListState()
-        val gridState = rememberLazyGridState()
         fun back() {
             aiJob?.cancel()
             showAi=false
@@ -1052,7 +1050,7 @@ fun SpotlightPanel(
                                 LinearProgressIndicator(Modifier.fillMaxWidth())
                         }
                         HorizontalDivider(color=colors.outlineVariant)
-                        if(searchScope?.section!="topic" && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || category!="Todo" || noteEditor || history.isNotEmpty())) Row(
+                        if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor) Row(
                             Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
