@@ -1,4 +1,4 @@
-# Raycast Native Palette — continuidad de Preview31
+# Raycast Native Palette — Preview32 verificada
 
 Base b0218d0b84c1628755b153b2aff6976a4aa380f0, rama feat/raycast-sidebar-permissions-20261020. HEAD local/remoto coinciden, árbol limpio antes de empezar. Reserva4eedbced78621a71814b9f73db751e9259ab0d3c: work-recovery-20261018-cd7b8fe1285c, mismo checkpoint. status por Git terminal sigue sin autenticación; se verifican referencias y propietario por conector GitHub y se publica con CAS sin force.
 
@@ -49,3 +49,18 @@ Reintento sobreaa4b790:compilación correcta,1caso ejecutado, foco del filtro co
 Fuente61a63399aeef4e57bc4e285899c7b2fd2085cb26:el único caso pendiente pasó realmente,1/1sin fallos/errores/omisiones (134,395s), XML final-targeted preservado. Se consolidan123casos únicos:122correctos de la ronda sobrea2f6537 y este caso dirigido, sin repetir los122 ni afirmar una ronda completa nueva en verde. Producción idéntica a a2f6537; solo se precisaron semánticas del test. Las6regresiones originales quedan cubiertas. Continúa la misma invocación con lintRaycastPreview y assembleRaycastPreview; todavía pendientes al guardar este checkpoint de pruebas.
 
 LintRaycastPreview completó realmente sobre la misma fuente61a6339:0errores/12advertencias/1informativa, XML preservado. Continúa el ensamblado, actualmente fusionando DEX; no se reinicia Gradle ni se modifica producción. Las advertencias se conservan visibles, sin cambios de dependencias ni supresiones. No hay APK entregada todavía al guardar.
+
+## Entrega verificada — Preview32
+APK y ZIP fuente exactos del commit 61a63399aeef4e57bc4e285899c7b2fd2085cb26, rama feat/raycast-sidebar-permissions-20261020. Compilación local assembleRaycastPreview correcta (misma invocación,1h2m58s), sin reiniciar ni recompilar producción después de a2f6537.123casos únicos verificados en rondas (122+1), lint0errores/12advertencias/1informativa. No se presenta como una nueva batería completa en verde.
+
+- Paquete dev.bautista.spotlight.next.raycastpreview; versión 2.0.1-raycast-preview/32; soloARM64. RaycastPreview conserva su firma Android Debug independiente histórica885838aa; no usa ni sustituye la principal/Review.
+- apksigner correcto; certificado completo 885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba; zipalign16KB correcto; entrada launcher declarada.
+-375entradas compilables contrastadas byte a byte con el commit y la copia compilada; ZIP Git íntegro del mismo SHA, con todas esas entradas y sin claves/credenciales.
+-APK Spotlight-Next-Raycast-Preview-61a6339.apk, 86506916bytes, SHA256 c21f93cf9499a45b7463a28be6338b115e24aa07d017310a50a29ba43647f27a.
+-ZIP Spotlight-Next-source-61a6339.zip, 7931546bytes, SHA256 7ff53115e8917b299afe158b61c27027a4217552d5a81dbc6de193503a832ff3.
+
+El primer intento de archivo fuente detectó un árbol Git antiguo faltante2a1b3a; se reconstruyeron936entradas en índice temporal separado, con blobs igual al índice y árbol igual a HEAD5be3ff8d. Recorrido del commit fuente y archivo ZIP comprobados después; ningún archivo/commit se sustituyó y no se recompiló. Gradle conservó sin eliminar símbolos ocho bibliotecas nativas precompiladas; empaquetado correcto y alineación verificada. Se conservan todas las advertencias en XML.
+
+Evidencia: verification/native-palette-20261021/delivery, corrected-gate y final-targeted. Capturas nativas adjuntas en ZIP de evidencias: una columna, Actions, filtro, submenú, detalle local, presupuesto IME, teléfono y Light. Las apps de los fixtures usan icono Android genérico; producción conserva PackageManager real. No son capturas OneUI ni prueba de servicios reales.
+
+Pendiente: instalación/actualización física OneUI, teclado/IME reales, PDF real, servicios autorizados y rendimiento medido. No hay ejecución Gradle pendiente. Próximo paso: probar esta Preview en la tablet antes de más diseño o funcionalidades. Sin CI, merge a main, force-push ni nueva clave.
