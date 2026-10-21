@@ -123,3 +123,6 @@ Cierre del bloque21/10:lint0errores/13avisos/1informativa y APKRaycastPreview33/
 
 
 Continuación21/10: decisiones10/18/26/29 conservan estado parcial. Tres contratos Compose adicionales aprobados en rondas: CtrlF/filtro/Enter/CtrlK, identidad ante reordenamiento y eliminación, y Back del submenú con restauración/liberación. Sin funciones ni producción nuevas; no sustituye OneUI/IME/rotación/toque exterior físicos. Evidencia action-navigation-20261021; APK33/560608f sigue vigente.
+
+
+Raycast Dark Glass21/10: decisiones9/10/18/19/20/29/35 permanecen parciales, con nuevo material/configuración de opacidad persistente, ajustes8áreas y ActionPanel con foco/gestos conservados.56casos únicos verificados en rondas; no implica prueba OneUI, proveedor, permisos reales o rendimiento físico. Ver RAYCAST-DARK-GLASS-20261021.md. Lint/entregaPreview34 pendientes en este checkpoint.

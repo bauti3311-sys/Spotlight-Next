@@ -575,3 +575,7 @@ Entrega visual: APK+ZIP fuente exactos2642739 verificados (373inputs,Preview31,c
 
 ### ActionPanel · cobertura adicional21/10
 Checkpoint8e54047 conservó tres tests nuevos antes de ejecutar. Suite de teclado6casos:5aprobados y1caso corregido solo en selectores (texto duplicado y placeholder); reintento final1/1aprobado38s. Se verifican filtro/CtrlF/CtrlK, identidad ante actualización asíncrona y puente Back/submenú/disposición. Evidencia de las tres rondas en docs/verification/action-navigation-20261021. Producción idéntica a Preview33/560608f, APK/fuente y certificado comprobados nuevamente; sin nuevo lint/assemble/APK ni CI. OneUI/IME/rotación/InputDispatcher físicos siguen pendientes.
+
+
+### Raycast Dark Glass ·21/10 ·código verificado
+Diseño definitivo03/04 implementado sobre base5cb4a1, código2ffe81e. Material compartido, opacidad real70–100%/nuevo80% sin alterar valores guardados, slider nativo refinado, ActionPanel superpuesto contextual y Ajustes completos8áreas con lógica/claves conservadas.56casos únicos aprobados en rondas31retenidos+24afectados+1nuevo; última revisión geométrica3/3. Capturas tablet/teléfono y contraste controlado; XML/logs en verification/dark-glass-20261021. Lint/APK34/ZIP/firma final pendientes; no afirmar entrega ni física. Sin CI/main/permisos/dependencias nuevos.

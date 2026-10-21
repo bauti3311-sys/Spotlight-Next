@@ -62,3 +62,16 @@ Integraciones: el catálogo de módulos anterior al encabezado se expande asínc
 Revisión visual real: sidebar y contenido ya comparten una superficie; filtro de acciones arriba y filas visibles. Se refinan el slider a pista fina/pomo circular manteniendo la semántica/gestos de Material, el acento azul para contraste blanco4.59:1 y los grupos de Apariencia. La vista previa completa de ejemplo se conserva bajo demanda, la ventana de Ajustes cambia opacidad inmediatamente. ActionPanel usa mayor opacidad (mínimo90%, superficie+16puntos hasta100%) para evitar que el texto de resultados se lea a través sin blur costoso; sigue siendo regulado por la preferencia. En tablet el panel sobresale96dp hacia la derecha cuando cabe; teléfono mantiene el anclaje anterior y siempre se limita al área segura.
 
 Pruebas afectadas activas al guardar este checkpoint; no declarar resultado todavía.
+
+
+## Cierre de pruebas sobre código2ffe81e
+- Compilación Kotlin real correcta58s (incluyó reintento automático del daemon al arrancar; no fallo del código).
+- Primera ronda51:48aprobados/3fallos conservados. Ronda afectada24/24aprobados1m17s: material4, ajustes3, capacidades1, ancho7, paleta3, QuickLook2, host4.
+- Capturas/contratos tras tarjetas de tema e icono contextual:9/9aprobados1m16s, incluyendo un caso nuevo con siete capturas sobre fondos controlados claros/oscuros.
+- Último ajuste de proporciones:3/3aprobados1m01s; Ajustes960dp máximo, margen vertical32dp en tablet (75% del ancho y92% del alto en1280×800); sidebar224dp. Panel de acciones con salida lateral18% del ancla hasta144dp, limitado a viewport; sin cambiar paleta ni scroll.
+- Total56casos únicos acreditados entre rondas (31no afectados retenidos +24afectados +1caso nuevo). No hubo una ejecución fresca completa de56. Ningún test eliminado, desactivado ni aserción funcional reducida.
+- Confirmación estructural adicional: mismos títulos de sección y campos config.* en MainActivity que5cb4a1. Manifest/SDK/permisos/servicios y dependencias sin cambios. Configuración guiada recupera su acceso, ocho rutas y todos los cuerpos funcionales conservados; historial, alias y servicios no se migran.
+- Cada área tiene captura nativa en tablet1280×800 y teléfono390×844. La comparación con03/04 se realizó sobre capturas reales: material uniforme, bordes finos, selección neutra, filtro superior, tipografía Inter, keycaps Android, tarjetas de tema, pista fina/pomo circular, sidebar compartido. No se afirma identidad pixel a pixel: las referencias contienen render/wallpaper difuminado, seis resultados de ejemplo y logos, mientras la app conserva hasta tres resultados iniciales reales.
+- Robolectric no compone el wallpaper del sistema en Activity; los fondos negros de Ajustes en capturas no acreditan la translucidez interventana en OneUI. Los siete escenarios de contraste usan fondos de prueba explícitos. Spotify es paquete fixture con icono genérico del PackageManager en laboratorio; el APK conserva los iconos de aplicaciones instaladas reales. Sin instalaciones físicas, IME real, blur, proveedor ni medición de rendimiento acreditados.
+
+Lint/assemblePreview34, verificación final de identidad y entrega siguen pendientes al publicar este cierre de pruebas. Firma histórica885838aa comprobada antes de compilar; no se generó clave nueva.
