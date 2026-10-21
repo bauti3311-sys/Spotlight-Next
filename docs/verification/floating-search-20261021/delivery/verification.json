@@ -1,0 +1,45 @@
+{
+  "source_sha": "560608f48fafa059c0a10df3c3772b4c247695d4",
+  "production_sha": "6af47a096daae35e4bffbeb84015be8670689a2a",
+  "branch": "feat/raycast-sidebar-permissions-20261020",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "version_code": 33,
+  "version_name": "2.0.1-raycast-preview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "signing": "historical Raycast Preview Android Debug certificate, independent of main and Review",
+  "abi": [
+    "arm64-v8a"
+  ],
+  "zipalign_16kb": true,
+  "launcher_declared": true,
+  "source_files_verified": 969,
+  "production_inputs_verified": 191,
+  "tests": {
+    "unique_cases_across_rounds": 71,
+    "retained_unaffected_cases": 23,
+    "final_affected_cases": 48,
+    "final_failures": 0,
+    "single_new_71_case_round_claimed": false
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 13,
+    "information": 1
+  },
+  "build_result": "BUILD SUCCESSFUL in 4m 33s",
+  "device_connected": false,
+  "one_ui_tested": false,
+  "real_ime_tested": false,
+  "files": [
+    {
+      "name": "Spotlight-Next-Raycast-Preview-33-560608f.apk",
+      "bytes": 86523300,
+      "sha256": "46e9fa6afecd14e623630df9da219bf23c3e0665880e0968d2b145035d78f24c"
+    },
+    {
+      "name": "Spotlight-Next-source-560608f.zip",
+      "bytes": 7993553,
+      "sha256": "97b7cde93b33c268d170d7eb42a007e0a636469ecde7a7f4276e0e193aae3dec"
+    }
+  ]
+}
