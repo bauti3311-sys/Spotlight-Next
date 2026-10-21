@@ -11,11 +11,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.*
 
-@Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit) {
+@Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit,scrollInspector:Boolean=false) {
     var fraction by remember{mutableFloatStateOf(.62f)}
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val width=with(LocalDensity.current){maxWidth.toPx()}.coerceAtLeast(1f)
-        Row(Modifier.fillMaxWidth().heightIn(max=height)){
+        Row(Modifier.fillMaxWidth().then(if(scrollInspector)Modifier.heightIn(max=height) else Modifier)){
             Box(Modifier.weight(fraction)){left()}
             Box(Modifier.width(12.dp).height(height).semantics {
                 contentDescription="Divisor ajustable del panel contextual"
@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.*
                 Box(Modifier.width(1.dp).fillMaxHeight().background(MaterialTheme.colorScheme.onSurface.copy(alpha=.07f)))
                 Box(Modifier.width(3.dp).height(32.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha=.18f)))
             }
-            Column(Modifier.weight(1-fraction).heightIn(max=height).verticalScroll(rememberScrollState())
+            Column(Modifier.weight(1-fraction)
+                .then(if(scrollInspector)Modifier.heightIn(max=height).verticalScroll(rememberScrollState()) else Modifier)
                 .background(MaterialTheme.colorScheme.onSurface.copy(alpha=.018f))){right()}
         }
     }

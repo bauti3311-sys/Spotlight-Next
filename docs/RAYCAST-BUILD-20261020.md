@@ -34,3 +34,5 @@ Nueva ronda sobre221fc981:65casos/14suites,64correctos/1fallo. Las dos configura
 Corrección parcial: compartir altura calculada de resultados con inspector automático de apps y acotar/desplazar su contenido. Proporción62/38, umbral600dp, selección y Quick Look conservados; el límite de PDF permanece400dp. Aserción menor340dp intacta y se agrega comprobación de acceso desplazable a las acciones. Verificación pendiente.
 
 La primera invocación local de recuperación falló antes de compilar por --tests asociado a assemble; comando corregido, sin cambios de dependencias. Sin Actions.
+
+Seguimiento64b2d13:64/65, altura compacta y acciones desplazables correctas. El límite genérico del panel recortaba el pie de ActionPanel en tablet (QuickLookTouchTargetTest). Corrección acotada: scroll/límite solo para inspector automático de apps; menú explícito y Quick Look recuperan su medición previa. Ninguna aserción modificada o eliminada. Gate pendiente de reejecución.

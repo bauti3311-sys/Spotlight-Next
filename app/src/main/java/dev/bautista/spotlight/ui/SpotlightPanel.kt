@@ -1225,7 +1225,7 @@ fun SpotlightPanel(
                         else if(category=="Apps" && widePreview)
                             // Raycast uses a compact list alongside its detail panel.
                             // Keep the legacy grid only for narrow/phone layouts.
-                            ContextSplitPanel(splitPanelHeight,{resultList()},{details()})
+                            ContextSplitPanel(splitPanelHeight,{resultList()},{details()},scrollInspector=liveAppInspector!=null)
                         else if (category == "Apps")
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(columns),
@@ -1312,7 +1312,7 @@ fun SpotlightPanel(
                                 }
                             }
                         else if(expandedPreview && richPreview)details()
-                        else if(widePreview) ContextSplitPanel(splitPanelHeight,{resultList()},{details()})
+                        else if(widePreview) ContextSplitPanel(splitPanelHeight,{resultList()},{details()},scrollInspector=liveAppInspector!=null)
                         else if(menu && preview!=null && !richPreview) {
                             // A single continuous window: keep the selected value on the
                             // left and reveal a bounded action sheet on the right, on demand.
