@@ -14,13 +14,15 @@ import dev.bautista.spotlight.data.Config
 object GlassTokens {
     val small=8.dp;val gap=12.dp;val inset=18.dp;val hit=48.dp
     val actionPanelMaxHeight=360.dp
-    val windowRadius=20.dp;val searchHeight=56.dp;val listInset=12.dp
+    val actionSurface=Color(0xFF242430);val actionSelected=Color(0xFF343646)
+    val indigo=Color(0xFF7275E8);val tertiary=Color(0xFF777B8D)
+    val windowRadius=20.dp;val searchHeight=48.dp;val listInset=12.dp
     val rowRadius=11.dp;val rowMinimum=42.dp;val glyph=20.dp
     val searchText=16.sp;val compactSearchText=16.sp
     val resultText=14.sp;val secondaryText=12.5.sp;val metadataText=11.sp
     val graphite=Color(0xFF1C1C21);val paper=Color(0xFFFAFAFC)
-    val darkInk=Color(0xFFF3F4F8);val lightInk=Color(0xFF18181B)
-    val darkSecondary=Color(0xFFA0A6B5);val lightSecondary=Color(0xFF52525B)
+    val darkInk=Color(0xFFF5F5F8);val lightInk=Color(0xFF18181B)
+    val darkSecondary=Color(0xFFA5A7B7);val lightSecondary=Color(0xFF52525B)
     @Composable fun selection()=MaterialTheme.colorScheme.onSurface.copy(alpha=.08f)
     @Composable fun hover()=MaterialTheme.colorScheme.onSurface.copy(alpha=.04f)
     const val glyphStroke=1.5f
@@ -31,7 +33,7 @@ object GlassTokens {
     fun windowColors(c:Config,dark:Boolean):List<Color> = when {
         !dark -> listOf(Color(0xE0FAFAFC),Color(0xF0EEEEF3))
         c.preset in setOf("raycast","graphite") -> listOf(Color(0xEB26272C),Color(0xF7191A1E))
-        else -> listOf(Color(0xF51F222B),Color(0xFA14161D))
+        else -> listOf(Color(0xFA1B1B23),Color(0xFD17171D))
     }
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)
         listOf(Color(0xFFB8C2DB).copy(alpha=.17f*amount),Color(0xFFA8B5D0).copy(alpha=.11f*amount))
