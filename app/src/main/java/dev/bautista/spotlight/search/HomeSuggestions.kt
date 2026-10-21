@@ -99,6 +99,7 @@ object HomeSuggestions {
                     else -> dev.bautista.spotlight.next.IntentRouter.route(raw, c.messageApp)
                         ?.takeIf { it is Action.SystemPanel && it.page == "display-review" }
                 } ?: return@forEachIndexed
+                if(action is Action.Device && context.getSystemService(android.media.AudioManager::class.java).isVolumeFixed)return@forEachIndexed
                 val targetKey = StableResults.actionSignature(action)
                 if (seenActionTargets.add(targetKey) && seenActionTargets.size <= 2) {
                     addCandidate(
@@ -146,7 +147,7 @@ object HomeSuggestions {
             val isAudioApp = a.applicationInfo?.category == ApplicationInfo.CATEGORY_AUDIO ||
                 pkg in setOf("com.spotify.music", "com.google.android.apps.youtube.music", "deezer.android.app", "com.apple.android.music")
             val detail = when {
-                isAudioApp && recentIndex == 0 -> "Continuar escuchando música · aplicación reciente"
+                isAudioApp && recentIndex == 0 -> "Aplicación multimedia reciente"
                 isFavorite -> "Aplicación favorita"
                 recentIndex >= 0 -> "Aplicación reciente · aprendizaje local"
                 else -> "Aplicación frecuente · aprendizaje local"
@@ -173,7 +174,7 @@ object HomeSuggestions {
         candidates += scoredApps
 
         // 5. Authorized WhatsApp notifications continuity
-        if (!c.privateMode && Replies.connected.value && Replies.targets.value.any { it.packageName == "com.whatsapp" }) {
+        if (!c.privateMode && Replies.connected.value && Replies.targets.value.any { it.packageName == "com.whatsapp" && it.messages.any{message->message.text.isNotBlank()} }) {
             addCandidate(
                 "replies",
                 "Leer mensajes de WhatsApp",

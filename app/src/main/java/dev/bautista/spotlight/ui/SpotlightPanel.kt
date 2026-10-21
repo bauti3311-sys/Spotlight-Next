@@ -610,9 +610,9 @@ fun SpotlightPanel(
                 if(config.autoKeyboard=="always" || config.autoKeyboard=="adaptive" && invocation=="keyboard")keyboard?.show()
                 else keyboard?.hide()
         }
-        LaunchedEffect(selected, category, displayed.size, navigating, pointerSelecting) {
+        LaunchedEffect(selected, category, navigating, pointerSelecting) {
             // Lock ordering on touch without moving the row underneath the finger.
-            if (displayed.isNotEmpty() && navigating && !pointerSelecting) {
+            if (!menu && displayed.isNotEmpty() && navigating && !pointerSelecting) {
                 val target = selected.coerceIn(0, displayed.lastIndex)
                 if (motionEnabled && !navigating) listState.animateScrollToItem(target)
                 else listState.scrollToItem(target)
@@ -766,7 +766,7 @@ fun SpotlightPanel(
                             Key.DirectionLeft,Key.DirectionRight -> false
                             Key.Enter,
                             Key.NumPadEnter -> {
-                                selectedResult?.let { execute(it) }
+                                present(resultsState.value).getOrNull(selected)?.let { execute(it) }
                                 true
                             }
                             else -> false
@@ -801,7 +801,7 @@ fun SpotlightPanel(
                         aiText = ""
                         category = "Todo"
                     },
-                    { selectedResult?.let { execute(it) } },
+                    { present(resultsState.value).getOrNull(selected)?.let { execute(it) } },
                     focus,
                     config.opacity,
                     compact,

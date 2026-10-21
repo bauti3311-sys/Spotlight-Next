@@ -44,7 +44,9 @@ class CommandCenterTest {
 
     @Test
     fun suggestionsPreserveTypedPrefixAndDoNotCompleteUnrelatedText() {
-        assertEquals("youtUbe ", CommandCenter.complete("youtU", emptyList()))
+        val live=Result("youtube:search","youtube ","Buscar en YouTube","Comandos",100,Action.ComposeSearch("youtube","com.google.android.youtube"))
+        assertEquals("youtUbe ", CommandCenter.complete("youtU", listOf(live)))
+        assertNull(CommandCenter.complete("youtU", emptyList()))
         assertEquals("WhatSApp", CommandCenter.complete("WhatS", listOf(app("wa", "WhatsApp"))))
         assertNull(CommandCenter.complete("", emptyList()))
         assertNull(CommandCenter.complete("texto que no es un comando", emptyList()))
