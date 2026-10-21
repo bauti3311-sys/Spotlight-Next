@@ -1,0 +1,20 @@
+# Obsidian Glass — revisión de producto y geometría
+
+Base: afc682c / APK a2ef090. PR17 y PR18 abiertos, sin merges. Reserva propia de Work comprobada. Esta revisión implementa primero P1 y un incremento de P2; no acredita las40decisiones completas.
+
+## Diagnóstico y decisiones
+
+- El inspector se habilita a600dp interiores, pero62/38 deja223dp para detalles y365dp para resultados. El divisor admite35/65 sin mínimos: puede degradar ambas columnas. Nueva política por espacio medido:400dp resultados +280dp inspector +12dp divisor; con fuentes grandes aumentan los mínimos, con altura útil menor240dp se usa una columna. Son presupuestos iniciales comprobables, no detección de tablet.
+- ResultRow usa560dp para pasar a formato de teléfono; una columna de400–500dp termina con filas más altas que la estimación externa. Se alineará el formato horizontal a400dp y una superficie mínima48dp, con una sola fuente de altura para lista e inspector.
+- El inspector repite subtítulo, paquete y acciones como enlaces sin jerarquía. Extraer presentación de app con identidad, botón principal, secundarias y metadatos locales; reutilizar callbacks existentes. No inventar desarrollador/tamaño ni sesiones.
+- ContextAction infiere grupo desde palabras españolas y usa título como identidad. Migración compatible a grupo e ID explícitos; el ejecutor y sus confirmaciones siguen siendo la autoridad. No añadir un segundo modelo de ejecución ni campos decorativos de disponibilidad sin proveedor real.
+- Las preferencias manuales de ancho no deben sobrescribirse para forzar dos columnas. El usuario conserva su slider; una ventana estrecha ofrece detalles bajo demanda. Sin controles adicionales de dp. No animar la geometría por cada cambio de inspector.
+- Ajustes ya fue renovado: conservar navegación/centro de permisos. Este primer incremento no reescribe Ajustes ni añade dependencias, capacidades o permisos.
+
+## Evidencia y límites
+
+La imagen mencionada no llegó en este adjunto: solo Texto pegado(9).txt. Se puede comparar antes/después nativo, pero no certificar fidelidad a esa referencia. La clave Raycast recuperada coincide con885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba; conservar paquete y aumentar solo versionCode de la variante. Backup privado separado, nunca Git/ZIPfuente. Persistencia externa falló403 en entrega anterior: no asumir respaldo remoto.
+
+Baseline Compose en preparación desdeafc682c. No hay dispositivo/KVM ni mediciones físicas de jank, memoria o batería. Se conservarán tests y capturas antes/después; IME geométrico simulado no equivale a teclado OneUI real. Políticas/pruebas nuevas todavía SIN EJECUTAR.
+
+Fuentes: Android Window Size Classes (developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes); Raycast ActionPanel y Detail (developers.raycast.com/api-reference/user-interface/action-panel y /detail). Se adaptan presupuesto de viewport, secciones semánticas y metadatos opcionales; sin componentes web.
