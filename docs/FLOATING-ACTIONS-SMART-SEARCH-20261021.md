@@ -59,3 +59,21 @@ APK y ZIP fuente del mismo SHA560608f48fafa059c0a10df3c3772b4c247695d4, producci
 Advertencias conservadas: incluye ViewConstructor del host programático y ClickableViewAccessibility por su manejo de ACTION_OUTSIDE (acciones accesibles delegadas a Compose). No se suprimieron controles ni advertencias para lograr verde. Los8.so precompilados siguen sin stripping; zipalign16KB correcto, funciones preservadas. ADB consultado en puerto propio5041:sin dispositivos; se cerró ese servidor. No hay validación física ni medidas de rendimiento, proveedor externo real o automatización futura.
 
 Gradle terminó; no hay ejecución pendiente. No añadir funciones antes de entregar estos archivos y revisar OneUI/IME/toques exteriores/teclado/PDF. WhatsAppBusiness fuera del alcance y sin modificaciones específicas. Sin CI, main, merge, force-push, permisos/dependencias nuevos ni nueva clave. Próximo bloque: observaciones físicas de Preview33 y solo correcciones reproducibles.
+
+
+## Continuación21/10 · contratos adicionales de ActionPanel
+
+Partida091bb3d, árbol limpio y reserva propia b347871 confirmados mediante GitHub. Checkpoint previo a pruebas8e54047. El entorno conservaba repositorio/entregables pero había perdido JDK/SDK/Gradle/caché en /tmp. Se restauraron Temurin17.0.20.1+1, Gradle8.10.2 y SDK35 con hashes oficiales, sin modificar versiones del proyecto.
+
+Se agregaron tres contratos Compose/Robolectric API33 en ActionPanelKeyboardContractTest:
+- Puente de Back: volver del submenú restaura el filtro padre, el siguiente Back cierra y la composición libera el callback. Se invoca el controlador compartido; no se afirma validación del dispatcher nativo/OneUI.
+- Ctrl+F enfoca el filtro independiente, Enter ejecuta el resultado filtrado y Ctrl+K cierra sin ejecutar otra acción.
+- Reordenamiento asíncrono conserva la identidad seleccionada; si desaparece, Enter usa el primer resultado vigente.
+
+Ejecución dirigida: `:app:testRaycastPreviewUnitTest --tests dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest`. Primera ronda6casos:5correctos/1fallo de selector duplicado (acción y texto editable «Sistema»),5m04s incluyendo caché fría. Primer reintento de un caso:1fallo de aserción del fixture, porque el campo vacío expone también el placeholder. Se corrigieron solamente los selectores: excluir action-filter al buscar la fila e inspeccionar SemanticsProperties.EditableText para comprobar el vacío. Todas las aserciones funcionales se conservan.
+
+Último reintento del único caso afectado:1/1correcto,0errores/omisiones, BUILD SUCCESSFUL38s. Total6casos únicos verificados en rondas5+1, incluidos los tres nuevos; no se repitieron las otras suites. XML/logs de las tres rondas preservados en docs/verification/action-navigation-20261021. No sumar este bloque como una ejecución completa nueva de71casos.
+
+Sin cambios de producción/configuración respecto al SHA fuente560608f de Preview33; no se repitieron lint/assemble ni se generó otra APK. La firma v2 del APK existente se volvió a comprobar con apksigner: certificado885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba. Hash APK46e9fa6afecd14e623630df9da219bf23c3e0665880e0968d2b145035d78f24c y fuente97b7cde93b33c268d170d7eb42a007e0a636469ecde7a7f4276e0e193aae3dec coinciden. Se mantienen los archivos entregados del mismo SHA560608f.
+
+Pendiente: validación física OneUI, dispatcher nativo Back, foco/IME/rotación y propagación del toque exterior con InputDispatcher real. Los nuevos tests no sustituyen estas verificaciones. Sin cambios de permisos, firmas, UI, funciones, Actions o main.

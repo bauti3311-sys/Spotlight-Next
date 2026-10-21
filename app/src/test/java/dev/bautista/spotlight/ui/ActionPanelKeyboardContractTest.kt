@@ -4,6 +4,8 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import org.junit.*
@@ -34,12 +36,13 @@ class ActionPanelKeyboardContractTest {
             }
         } }
         ui.onNodeWithTag("action-filter").performTextInput("Sistema")
-        ui.onNodeWithText("Sistema",useUnmergedTree=true).performClick()
+        ui.onNode(hasText("Sistema") and !hasTestTag("action-filter"),useUnmergedTree=true).performClick()
         ui.onNodeWithText("Permisos").assertExists()
-        ui.onNodeWithTag("action-filter").assertTextEquals("")
+        // The merged field also exposes its placeholder; inspect the editable value itself.
+        ui.onNodeWithTag("action-filter").assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText,AnnotatedString("")))
         ui.runOnIdle { assertNotNull(navigation.back);navigation.back!!.invoke() }
         ui.onNodeWithTag("action-filter").assertTextEquals("Sistema")
-        ui.onNodeWithText("Sistema",useUnmergedTree=true).assertExists()
+        ui.onNode(hasText("Sistema") and !hasTestTag("action-filter"),useUnmergedTree=true).assertExists()
         ui.runOnIdle { assertEquals(0,closed);navigation.back!!.invoke();assertEquals(1,closed);shown=false }
         ui.runOnIdle { assertNull(navigation.back) }
     }

@@ -120,3 +120,6 @@ Native Palette — entrega21/10: APK/ZIP exactos61a6339 verificados, Preview32/A
 21/10 · ActionPanel superpuesto y búsqueda, código6af47a0: avances en3/9/10/12/18/26/29/35. Se conservan motores/registro/ejecutor; ranking exacto/prefijo/fuzzy/alias, sugerencias locales, autocompletado no ambiguo y superficie hija de acciones sin reordenar la base.71casos únicos verificados en rondas23+48 y capturas nativas API33. Siguen parciales: falta física OneUI, servicios reales, latencia/RAM/jank medidos; no se declaran completas40decisiones. Lint/APK33 aún pendientes en este checkpoint.
 
 Cierre del bloque21/10:lint0errores/13avisos/1informativa y APKRaycastPreview33/ZIP fuente exacto560608f verificados;191inputs y969archivos fuente, firma885838aa conservada. Evidencia y límites en FLOATING-ACTIONS-SMART-SEARCH-20261021.md. Las decisiones citadas siguen parciales por validación física/servicios/rendimiento pendientes; no cambia su estado global por la entrega.
+
+
+Continuación21/10: decisiones10/18/26/29 conservan estado parcial. Tres contratos Compose adicionales aprobados en rondas: CtrlF/filtro/Enter/CtrlK, identidad ante reordenamiento y eliminación, y Back del submenú con restauración/liberación. Sin funciones ni producción nuevas; no sustituye OneUI/IME/rotación/toque exterior físicos. Evidencia action-navigation-20261021; APK33/560608f sigue vigente.
