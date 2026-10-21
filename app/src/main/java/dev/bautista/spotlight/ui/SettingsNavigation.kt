@@ -159,7 +159,7 @@ object SettingsGroups {
  if(query.isBlank() && SettingsGroups.of(title)!=LocalSettingsGroup.current)return
  if(query.isNotBlank() && !SettingsGroups.matches(title,query))return
  if(title=="Apariencia") {Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(16.dp),content=content);return}
- var expanded by rememberSaveable(title){mutableStateOf(title !in setOf("Diagnóstico de Spotlight","Transferir configuración","Bienvenido a Spotlight Next"))}
+ var expanded by rememberSaveable(title){mutableStateOf(title !in setOf("Diagnóstico de Spotlight","Transferir configuración","Bienvenido a Spotlight Next","Extensiones e integraciones","Integraciones automáticas","Tarjetas de información","Herramientas incluidas"))}
  val open=expanded || query.isNotBlank()
  Column(Modifier.fillMaxWidth().padding(vertical=4.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
   Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClickLabel=if(open)"Contraer sección" else "Expandir sección"){expanded=!expanded}

@@ -40,7 +40,7 @@ object GlassTokens {
     }
     fun secondary(c:Config,dark:Boolean)=if(dark) {if(opacity(c)<.80f)Color(0xFFE3E5ED) else darkSecondary} else {if(opacity(c)<.85f)Color(0xFF373C48) else lightSecondary}
     fun actionColor(c:Config,dark:Boolean)=
-        (if(dark)actionSurface else paper).copy(alpha=(opacity(c)+.08f).coerceAtMost(1f))
+        (if(dark)actionSurface else paper).copy(alpha=(opacity(c)+.16f).coerceIn(.90f,1f))
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)
         listOf(Color(0xFFB8C2DB).copy(alpha=.17f*amount),Color(0xFFA8B5D0).copy(alpha=.11f*amount))
         else listOf(.09f,.05f).map{Color.Black.copy(alpha=it*amount)}

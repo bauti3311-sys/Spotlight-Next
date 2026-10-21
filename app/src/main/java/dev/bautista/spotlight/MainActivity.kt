@@ -275,8 +275,8 @@ class MainActivity : ComponentActivity() {
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
-                                Text("Límite · ${config.clipLimit} elementos");Slider(config.clipLimit.toFloat(),{update(config.copy(clipLimit=it.toInt()))},valueRange=5f..50f)
-                                Text("Retención · ${config.clipRetention} minutos");Slider(config.clipRetention.toFloat(),{update(config.copy(clipRetention=it.toInt()))},valueRange=1f..60f)
+                                Text("Límite · ${config.clipLimit} elementos");GlassSlider(config.clipLimit.toFloat(),{update(config.copy(clipLimit=it.toInt()))},valueRange=5f..50f)
+                                Text("Retención · ${config.clipRetention} minutos");GlassSlider(config.clipRetention.toFloat(),{update(config.copy(clipRetention=it.toInt()))},valueRange=1f..60f)
                                 ConfirmedSettingsButton("Vaciar portapapeles de Spotlight","Se borrará únicamente el historial temporal de Spotlight."){app.local.clearClips()}
                             }
                             Section("Búsqueda y archivos") {

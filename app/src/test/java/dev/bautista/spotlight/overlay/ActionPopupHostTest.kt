@@ -25,6 +25,14 @@ class ActionPopupHostTest {
         assertTrue(placed.top<anchor.bottom)
         assertTrue(Rect(0,24,1280,800).contains(placed))
     }
+    @Test fun tabletOutsetOverlapsResultsAndClampsAtDisplayEdge() {
+        val anchor=Rect(220,80,960,330);val original=Rect(anchor)
+        val safe=Rect(0,24,1280,800)
+        val placed=ActionPopupPosition.place(anchor,safe,390,560,horizontalOutset=96)
+        assertEquals(original,anchor);assertEquals(anchor.right+96,placed.right)
+        assertTrue(placed.left<anchor.right);assertTrue(safe.contains(placed))
+        assertTrue(safe.contains(ActionPopupPosition.place(Rect(700,80,1250,330),safe,390,560,horizontalOutset=96)))
+    }
     @Test fun phoneImeAndRotationStayInsideUsableBounds() {
         for(safe in listOf(Rect(0,24,390,844),Rect(0,24,390,380),Rect(0,24,844,330))) {
             val placed=ActionPopupPosition.place(Rect(16,110,safe.right-16,284),safe,390,480)

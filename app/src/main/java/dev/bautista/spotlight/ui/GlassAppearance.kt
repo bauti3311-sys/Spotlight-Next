@@ -39,17 +39,20 @@ import kotlin.math.roundToInt
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Opacidad de superficie",style=MaterialTheme.typography.titleSmall)
-                    Text("100% es opaco. El texto y los iconos conservan su nitidez.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("100% es opaco. Texto e iconos siempre nítidos.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Text("${(GlassTokens.opacity(draft)*100).roundToInt()}%",Modifier.testTag("surface-opacity-value"),style=MaterialTheme.typography.labelLarge)
             }
-            Slider(GlassTokens.opacity(draft),{value->
+            GlassSlider(GlassTokens.opacity(draft),{value->
                 draft=draft.copy(opacity=value)
                 // Only this persisted field is immediate; other draft edits still require Apply.
                 update(AppearanceEdits.merge(c,c.copy(opacity=value)))
             },Modifier.testTag("surface-opacity-slider").semantics{contentDescription="Opacidad de superficie"},valueRange=GlassTokens.minimumOpacity..1f)
             TextButton(onClick={draft=draft.copy(opacity=GlassTokens.defaultOpacity);update(AppearanceEdits.merge(c,c.copy(opacity=GlassTokens.defaultOpacity)))}){Text("Restablecer opacidad · 80%")}
-            SpotlightTheme(draft.theme,draft){OverlayAppearancePreview(draft,simple=true)}
+            var preview by remember{mutableStateOf(false)}
+            TextButton(onClick={preview=!preview}){Text(if(preview)"Ocultar vista previa" else "Vista previa en vivo")}
+            // The complete settings surface updates immediately; this optional sample uses the same renderer.
+            if(preview)SpotlightTheme(draft.theme,draft){OverlayAppearancePreview(draft,simple=true)}
         }
         WindowSizeSettings(draft){edit(it)}
         Text("Acento",style=MaterialTheme.typography.titleSmall)

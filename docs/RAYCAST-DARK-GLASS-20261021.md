@@ -52,3 +52,13 @@ ActionPanel: mantiene hijo acotado/token/flags; filtro arriba, subtítulos y key
 Capturas baseline: dos casos DarkGlassSettingsTest aprobados sobre producción5cb4a1 antes de editar. Capturas de paleta de Preview33 conservadas bajo las mismas dimensiones/fixture. Las pruebas de esta nueva implementación están pendientes al publicar este checkpoint.
 
 Referencia API: https://developer.android.com/reference/android/view/WindowManager.LayoutParams#FLAG_SHOW_WALLPAPER
+
+
+## Primera ronda y refinamiento
+51casos/11suites:48correctos,3fallos,0errores/omisiones,1m22s. XML/logs preservados en verification/dark-glass-20261021/first. Los dos fallos QuickLook se detuvieron en un hint de footer sustituido por keycaps; se conserva la comprobación de hint visible, cierre48dp, consulta/resultado y overlay al cerrar. Se comprueba ahora Enter dentro del panel y ausencia del panel al cerrar, además de disponibilidad del botón Acciones.
+
+Integraciones: el catálogo de módulos anterior al encabezado se expande asíncronamente y puede desplazar el objetivo después de performScrollTo. Se mantiene accesible y bajo demanda, colapsado inicialmente junto a los otros catálogos extensos. El encabezado y la comprobación de estado real siguen sin debilitarse.
+
+Revisión visual real: sidebar y contenido ya comparten una superficie; filtro de acciones arriba y filas visibles. Se refinan el slider a pista fina/pomo circular manteniendo la semántica/gestos de Material, el acento azul para contraste blanco4.59:1 y los grupos de Apariencia. La vista previa completa de ejemplo se conserva bajo demanda, la ventana de Ajustes cambia opacidad inmediatamente. ActionPanel usa mayor opacidad (mínimo90%, superficie+16puntos hasta100%) para evitar que el texto de resultados se lea a través sin blur costoso; sigue siendo regulado por la preferencia. En tablet el panel sobresale96dp hacia la derecha cuando cabe; teléfono mantiene el anclaje anterior y siempre se limita al área segura.
+
+Pruebas afectadas activas al guardar este checkpoint; no declarar resultado todavía.

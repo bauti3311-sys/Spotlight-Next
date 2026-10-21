@@ -64,7 +64,7 @@ val LocalAppearance = staticCompositionLocalOf { Config() }
 @Composable
 fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme), content: @Composable () -> Unit) {
     val dark = theme == "dark" || (theme == "auto" && isSystemInDarkTheme())
-    val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFA1A1AA else 0xFF566172; "purple" -> if(dark)0xFFA855F7 else 0xFF7250CC; "rose" -> if(dark)0xFFF43F5E else 0xFFBF3A62; "green" -> if(dark)0xFF10B981 else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF0A84FF else 0xFF007AFF })
+    val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFA1A1AA else 0xFF566172; "purple" -> if(dark)0xFFA855F7 else 0xFF7250CC; "rose" -> if(dark)0xFFF43F5E else 0xFFBF3A62; "green" -> if(dark)0xFF10B981 else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF0072E8 else 0xFF0072E8 })
     val base=if(dark) Dark else Light
     val palette = when(config.preset){
         "pure"->base.copy(background=if(dark)Color(0xFF111111) else Color.White,surface=if(dark)Color(0xFF171717) else Color.White,onSurface=if(dark)Color.White else Color(0xFF111111))
