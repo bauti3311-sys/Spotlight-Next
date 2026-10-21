@@ -511,3 +511,7 @@ Fuente fc7f885,101pruebas dirigidas,lint0errores/11advertencias/1informativa,APK
 
 ### Corrección visual A/B — checkpoint de pruebas20/10
 Código f56f665:112/112 dirigidas en22suites, capturas nativas comparadas con las tres imágenes reales del usuario; geometría, material, jerarquía de inspector y rail de Ajustes corregidos. Lint/assemble activos al guardar; no afirmar entrega aún. Ver docs/VISUAL-FIDELITY-20261020.md. Firma/paquete históricos sin cambios, Preview31 independiente preparada.
+
+
+### Fidelidad visual A/B — cierre del código20/10
+Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0errores/11advertencias/1informativa y assembleRaycastPreview correctos. Capturas nativas comparadas contra B adjunta; barra inset, filas apiladas/tipo alineado, inspector jerárquico y rail azul de Ajustes. Preview31/ARM64/certificado885838aa conservado. Documentación final y capturas se incluyen en checkpoint posterior con las mismas entradas compilables; APK/ZIP exactos se verifican al entregarlos. Sin CI/main/dependencias nuevas.9/10/18/20/34/35 siguen parciales; OneUI/servicios reales/rendimiento físico pendientes. Ver docs/VISUAL-FIDELITY-20261020.md.

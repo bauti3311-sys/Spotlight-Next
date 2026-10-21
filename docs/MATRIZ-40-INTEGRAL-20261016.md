@@ -105,3 +105,7 @@ Fuente a2ef090:65/65dirigidas,lint0errores/10advertencias/1informativa y APK ind
 
 ### Refinamiento de producto — Preview30
 Fuente fc7f885,101pruebas dirigidas,lint0errores/11advertencias/1informativa,APK ARM64/firma/versionCode30/ZIP exacto verificados. Geometría por mínimos400/280, divisor acotado, filas48dp, inspector extraído con acción principal y grupos/IDs explícitos. Capturas antes/después nativas en docs/verification/design-review-20261020. APK86,5MB vs258MB (66,5%menos), no medición de RAM/batería. Firma885838aa preservada y respaldo privado persistente; CI preparado exige secreto dedicado aún no configurado, sin ejecución. Informe y límites: docs/PRODUCT-DESIGN-REVIEW-20261020.md. OneUI y referencia visual pendiente;40decisiones siguen parciales, disponibilidad/riesgo continúan en los ejecutores existentes.
+
+
+### Fidelidad visual A/B — cierre del código20/10
+Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0errores/11advertencias/1informativa y assembleRaycastPreview correctos. Capturas nativas comparadas contra B adjunta; barra inset, filas apiladas/tipo alineado, inspector jerárquico y rail azul de Ajustes. Preview31/ARM64/certificado885838aa conservado. Documentación final y capturas se incluyen en checkpoint posterior con las mismas entradas compilables; APK/ZIP exactos se verifican al entregarlos. Sin CI/main/dependencias nuevas.9/10/18/20/34/35 siguen parciales; OneUI/servicios reales/rendimiento físico pendientes. Ver docs/VISUAL-FIDELITY-20261020.md.
