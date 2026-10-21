@@ -520,3 +520,5 @@ Entrega visual: APK+ZIP fuente exactos2642739 verificados (373inputs,Preview31,c
 
 ### Native Palette — pruebas cerradas21/10
 Fuente61a6339, producción idéntica a a2f6537:123casos únicos verificados en rondas (122de23suites +1reintento dirigido). Se conservan fallos iniciales y correcciones; no se repiten122aprobadas. Paleta de una columna, Actions flotante, submenús/filtro/foco y cierres48dp cubiertos; integra regresiones de teclado, gestos, Gemini, PhoneUse y multimedia. Lint/APK siguen activos, no afirmar entrega aún. Ver RAYCAST-NATIVE-PALETTE-20261021.md. OneUI/IME/servicios y rendimiento físicos pendientes; sin CI/main/dependencias/funciones nuevas.
+
+Native Palette61a6339:lintRaycastPreview aprobado realmente (0errores/12advertencias/1informativa), evidencia XML junto al único reintento1/1.123casos únicos verificados en rondas; misma ejecución continúa assembleRaycastPreview, sin reiniciar ni cambiar producción. APK/firma/ZIP aún pendientes de cierre.

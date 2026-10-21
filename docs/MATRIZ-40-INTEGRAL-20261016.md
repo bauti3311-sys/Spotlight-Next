@@ -112,3 +112,5 @@ Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0er
 
 ### Native Palette21/10 — verificación local
 Decisiones9/10/18/26/29/35 siguen parciales. Fuente61a6339:123casos únicos correctos en rondas dirigidas (122+1); lista de una columna, Actions flotante por demanda, filtro independiente, selección por ID, submenús/retorno y controles48dp; regresiones de arrastre/cancelación, teclado, herramientas y multimedia conservadas. Lint/APK aún en ejecución al registrar; OneUI/IME/servicios y rendimiento físicos no verificados. No se declara cierre de las40decisiones ni integración nueva.
+
+Native Palette61a6339:lintRaycastPreview completado,0errores/12avisos/1informativa; se conservan estados parciales y límites físicos. Ensamblado aún en curso al guardar este checkpoint.

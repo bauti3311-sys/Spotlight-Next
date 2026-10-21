@@ -47,3 +47,5 @@ Reintento sobreaa4b790:compilación correcta,1caso ejecutado, foco del filtro co
 
 ## Cierre dirigido de pruebas21/10
 Fuente61a63399aeef4e57bc4e285899c7b2fd2085cb26:el único caso pendiente pasó realmente,1/1sin fallos/errores/omisiones (134,395s), XML final-targeted preservado. Se consolidan123casos únicos:122correctos de la ronda sobrea2f6537 y este caso dirigido, sin repetir los122 ni afirmar una ronda completa nueva en verde. Producción idéntica a a2f6537; solo se precisaron semánticas del test. Las6regresiones originales quedan cubiertas. Continúa la misma invocación con lintRaycastPreview y assembleRaycastPreview; todavía pendientes al guardar este checkpoint de pruebas.
+
+LintRaycastPreview completó realmente sobre la misma fuente61a6339:0errores/12advertencias/1informativa, XML preservado. Continúa el ensamblado, actualmente fusionando DEX; no se reinicia Gradle ni se modifica producción. Las advertencias se conservan visibles, sin cambios de dependencias ni supresiones. No hay APK entregada todavía al guardar.
