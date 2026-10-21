@@ -35,6 +35,22 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Restore persistent Raycast Preview signing identity
+        env:
+          PREVIEW_KEYSTORE_BASE64: ${{ secrets.RAYCAST_PREVIEW_KEYSTORE_BASE64 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$PREVIEW_KEYSTORE_BASE64" ]]; then
+            echo '::error::Dedicated Raycast Preview signing backup must be configured before CI delivery.'
+            exit 1
+          fi
+          install -d -m 700 "$HOME/.android"
+          printf '%s' "$PREVIEW_KEYSTORE_BASE64" | base64 --decode > "$HOME/.android/debug.keystore"
+          chmod 600 "$HOME/.android/debug.keystore"
+          keytool -J-Duser.language=en -list -v -keystore "$HOME/.android/debug.keystore" -storepass android |
+            grep -F 'SHA256: 88:58:38:AA:97:0E:0D:4B:A1:68:A2:B5:F3:E8:F1:A6:E7:33:42:63:C3:4C:9C:BC:88:8F:5C:70:38:1A:52:BA'
+
       - name: Prepare Android SDK
         uses: android-actions/setup-android@v4
         with:
@@ -60,6 +76,7 @@ jobs:
           mkdir -p delivery
           cp "$apk" delivery/Spotlight-Next-Raycast-Preview.apk
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs "$apk" > delivery/signature.txt
+          grep -Fq '885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba' delivery/signature.txt
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" > delivery/package.txt
           "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 "$apk"
           grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview'" delivery/package.txt

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.PreviewPresentationContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T02:11:21" hostname="e37c7bc9f734" time="0.057">
+  <properties/>
+  <testcase name="normalAppSearchResultKeepsInspectorEligibility" classname="dev.bautista.spotlight.ui.PreviewPresentationContractTest" time="0.018"/>
+  <testcase name="favoriteAppInHomeSuggestionsHasRealInspector" classname="dev.bautista.spotlight.ui.PreviewPresentationContractTest" time="0.019"/>
+  <testcase name="arbitrarySuggestionsCannotMasqueradeAsApps" classname="dev.bautista.spotlight.ui.PreviewPresentationContractTest" time="0.019"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
