@@ -126,3 +126,6 @@ Continuación21/10: decisiones10/18/26/29 conservan estado parcial. Tres contrat
 
 
 Raycast Dark Glass21/10: decisiones9/10/18/19/20/29/35 permanecen parciales, con nuevo material/configuración de opacidad persistente, ajustes8áreas y ActionPanel con foco/gestos conservados.56casos únicos verificados en rondas; no implica prueba OneUI, proveedor, permisos reales o rendimiento físico. Ver RAYCAST-DARK-GLASS-20261021.md. Lint/entregaPreview34 pendientes en este checkpoint.
+
+
+Entrega Glass34: cc1c28d APK/fuente,lint0errores/15advertencias/1info y56casos únicos acreditados por rondas; cifras no acreditan OneUI/proveedor/rendimiento físico. Decisiones siguen parciales; controles reales y privacidad preservados. Ver informeGlass y evidencia final.

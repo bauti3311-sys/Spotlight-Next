@@ -75,3 +75,18 @@ Pruebas afectadas activas al guardar este checkpoint; no declarar resultado toda
 - Robolectric no compone el wallpaper del sistema en Activity; los fondos negros de Ajustes en capturas no acreditan la translucidez interventana en OneUI. Los siete escenarios de contraste usan fondos de prueba explícitos. Spotify es paquete fixture con icono genérico del PackageManager en laboratorio; el APK conserva los iconos de aplicaciones instaladas reales. Sin instalaciones físicas, IME real, blur, proveedor ni medición de rendimiento acreditados.
 
 Lint/assemblePreview34, verificación final de identidad y entrega siguen pendientes al publicar este cierre de pruebas. Firma histórica885838aa comprobada antes de compilar; no se generó clave nueva.
+
+
+## EntregaPreview34 verificada
+Fuente APK/ZIP:cc1c28d5bb2471c9e1c78af5cfcac13b510f2f0d. Código igual al último gate2ffe81e;193entradas de producción/configuración verificadas porSHA256 y1016archivos del ZIP contrastados uno por uno con blobsGit.
+
+`:app:lintRaycastPreview :app:assembleRaycastPreview`:BUILD SUCCESSFUL3m18s,45tareas(12ejecutadas/33al día). Lint0errores/15advertencias/1informativa. Las dos advertencias adicionales frente aPreview33 son avisos informativos de versiones de dependencias existentes (ComposeBOM/documentfile); no se actualizaron dependencias. Se mantienen los avisos previos de ScopedStorage, APIShizuku, ExifInterface, RedundantLabel, ChromeOSABI, BouncyCastle, backup y hosts programáticos/accesibilidad. Ningún aviso se ocultó.
+
+APK ARM64, paquete dev.bautista.spotlight.next.raycastpreview, versionCode34/versionName2.0.1-raycast-preview, variante independiente derivada de debug (no Release/R8). Firma v2 y zipalign16KB correctos. Certificado histórico885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba recuperado del respaldo privado autorizado; no clave nueva ni firma principal/Review alterada. MainActivity declarada como launchable; funcionamiento básico cubierto en Compose/Activity, sin instalación del APK en dispositivo.
+
+- APK Spotlight-Next-Raycast-Preview-34-cc1c28d.apk:86.539.684bytes;SHA256 f2384b62091eecafae6309063c2be26b9cf5c8e73ea1a5130ddc6d03f4c6f524.
+- Fuente Spotlight-Next-source-cc1c28d.zip:8.068.614bytes;SHA256 b8f19d031494d19309785ea49cec187623154e20b7f49db86b504ed61cfd586c.
+
+Se ejecutó solo el caso teléfono de FloatingSearchFlowTest después del build para renovar sus cinco PNG con el placeholder contextual final:1/1aprobado17s, sin recompilar producción ni repetir suites. El total único permanece56; union de IDs de casos acreditada en verification.json.
+
+Comparativa HTML autocontenida y ZIP de evidencias incluyen los PNG originales, antes/después, cuatro renders de referencia identificados como conceptos y todos los XML/logs. Las imágenes no se insertan en el APK como UI. PR18 sigue abierto/borrador, basePhoneUse; rama feat/raycast-sidebar-permissions-20261020. Sin merge/main/force/Actions manuales/gastos. Sin procesos Gradle pendientes. Próxima validación útil: instalar esta actualización Preview en tablet y probar opacidad, wallpaper/IME, rotación y toque exterior con el InputDispatcher real. No continuar otro rediseño hasta feedback de esta entrega.

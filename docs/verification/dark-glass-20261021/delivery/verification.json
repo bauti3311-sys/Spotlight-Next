@@ -1,0 +1,112 @@
+{
+  "source_sha": "cc1c28d5bb2471c9e1c78af5cfcac13b510f2f0d",
+  "code_verified_sha": "2ffe81e6c72884d71463b7ecdc0aacdd380c108f",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "versionCode": 34,
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "signature_v2": true,
+  "zipalign_16kb": true,
+  "abi": [
+    "arm64-v8a"
+  ],
+  "production_inputs_verified": 193,
+  "source_files_verified": 1016,
+  "lint": {
+    "Warning": 15,
+    "Information": 1
+  },
+  "tests": {
+    "unique_verified": 56,
+    "first": {
+      "tests": 51,
+      "failures": 3
+    },
+    "affected": {
+      "tests": 24,
+      "failures": 0
+    },
+    "captures": {
+      "tests": 9,
+      "failures": 0
+    },
+    "geometry": {
+      "tests": 3,
+      "failures": 0
+    },
+    "phone_final": {
+      "tests": 1,
+      "failures": 0,
+      "duration": "17s"
+    },
+    "unique_case_ids": [
+      "dev.bautista.spotlight.data.SettingsPersistenceTest#appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData",
+      "dev.bautista.spotlight.data.SettingsPersistenceTest#legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries",
+      "dev.bautista.spotlight.data.SettingsPersistenceTest#staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint",
+      "dev.bautista.spotlight.data.SettingsPersistenceTest#visibleAppearanceMergeDoesNotResetUnrelatedPreferences",
+      "dev.bautista.spotlight.overlay.ActionPopupHostTest#childTokenAndTouchRegionRemainBoundedAndOutsideIsNotModal",
+      "dev.bautista.spotlight.overlay.ActionPopupHostTest#phoneImeAndRotationStayInsideUsableBounds",
+      "dev.bautista.spotlight.overlay.ActionPopupHostTest#tabletMenuCanExceedCompactParentWithoutMovingIt",
+      "dev.bautista.spotlight.overlay.ActionPopupHostTest#tabletOutsetOverlapsResultsAndClampsAtDisplayEdge",
+      "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#actionGroupsHaveVisibleHeadingsWithoutExecutingItems",
+      "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback",
+      "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction",
+      "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#groupsAndIdentityDoNotDependOnTheVisibleTitle",
+      "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose",
+      "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#tabCyclesAndEnterRunsOnlyFocusedContextAction",
+      "dev.bautista.spotlight.ui.DarkGlassMaterialTest#everyPresetUsesRealSurfaceAlphaAndActionPanelStaysLegible",
+      "dev.bautista.spotlight.ui.DarkGlassMaterialTest#opacityPersistsWithoutOverwritingConcurrentPrivateData",
+      "dev.bautista.spotlight.ui.DarkGlassMaterialTest#secondaryTextMaintainsAAContrastOnLightAndDarkBackdrops",
+      "dev.bautista.spotlight.ui.DarkGlassMaterialTest#visualAndConfigurationBackupsRoundTripNewOpacityRange",
+      "dev.bautista.spotlight.ui.DarkGlassSettingsTest#opacityIsImmediatePersistentAndSurvivesActivityRecreation",
+      "dev.bautista.spotlight.ui.DarkGlassSettingsTest#phoneAppearanceAndPermissionsRemainNavigable",
+      "dev.bautista.spotlight.ui.DarkGlassSettingsTest#tabletCapturesAllExistingAreasWithoutRequestingPermissions",
+      "dev.bautista.spotlight.ui.FloatingSearchFlowTest#phoneScenesPreserveSearchSelectionAndPaletteGeometry",
+      "dev.bautista.spotlight.ui.FloatingSearchFlowTest#realPaletteSurfacesOnControlledLightAndDarkBackdrops",
+      "dev.bautista.spotlight.ui.FloatingSearchFlowTest#tabletScenesPreserveSearchSelectionAndPaletteGeometry",
+      "dev.bautista.spotlight.ui.FloatingSearchFlowTest#tabletShowsSeveralActionsWithoutResizingThePalette",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#appearanceDraftOnlyAppliesOnRequest",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#appearanceHasOneWidthControlAndNoTechnicalOverrides",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#landscapeControlRemainsReachableWithoutTechnicalText",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#newWidthChoicePreservesPositionSavedDataAndLegacyValues",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#openingSettingsDoesNotMigrateLegacyGeometryArbitrarily",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#phoneExposesOneAccessibleCompactToWideSlider",
+      "dev.bautista.spotlight.ui.OverlayWidthSettingsTest#resettingPositionMustNotEraseHorizontalWidth",
+      "dev.bautista.spotlight.ui.QuickLookTouchTargetTest#phoneCloseTargetDoesNotCloseOverlayOrClearQuery",
+      "dev.bautista.spotlight.ui.QuickLookTouchTargetTest#tabletCloseTargetDoesNotCloseOverlayOrClearQuery",
+      "dev.bautista.spotlight.ui.RaycastSettingsNavigationTest#permissionsHaveOneCanonicalDestination",
+      "dev.bautista.spotlight.ui.RaycastSettingsNavigationTest#retainsAppAndDocumentPreferences",
+      "dev.bautista.spotlight.ui.RaycastSettingsNavigationTest#shortcutsAndIntegrationsStayOutOfPermissionList",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#accessibilityClickKeepsTheSameSelectionAndPrimaryContract",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#longPressShowsActionsWithoutInvokingPrimaryCallback",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything",
+      "dev.bautista.spotlight.ui.ResultTouchScrollTest#touchDownAndCancelledGestureDoNotSelectOrOpenPdf",
+      "dev.bautista.spotlight.ui.SettingsReviewCaptureTest#functionCenterShowsRealUnconfiguredStatesAndCanReturn",
+      "dev.bautista.spotlight.ui.SettingsReviewCaptureTest#guideRequiresSelectionAndExplicitActionForEachPermission",
+      "dev.bautista.spotlight.ui.SettingsReviewCaptureTest#homeIsCompactAndDoesNotRequestPermissions",
+      "dev.bautista.spotlight.ui.SettingsReviewCaptureTest#phoneHomeAndLightThemeRemainUsable",
+      "dev.bautista.spotlight.ui.SettingsReviewCaptureTest#shortcutsNavigateWithoutChangingPreferences",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#appearanceCategorySurvivesActivityRecreation",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#appearanceHasOneWidthAndResetRequiresConfirmation",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#darkCapabilitiesReflectUnavailablePermissions",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#globalSearchFindsGeminiAndReturnsToCategory",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#newIntentTargetsExistingSettingsActivity",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#phoneCanChooseAreaAndScrollAllControls",
+      "dev.bautista.spotlight.ui.SettingsWorkspaceTest#tabletHasSevenAreasAndIndependentDetailsPane"
+    ]
+  },
+  "physical_device_validation": false,
+  "build_variant": "raycastPreview debug-derived, not Release/R8",
+  "files": {
+    "Spotlight-Next-Raycast-Preview-34-cc1c28d.apk": {
+      "bytes": 86539684,
+      "sha256": "f2384b62091eecafae6309063c2be26b9cf5c8e73ea1a5130ddc6d03f4c6f524"
+    },
+    "Spotlight-Next-source-cc1c28d.zip": {
+      "bytes": 8068614,
+      "sha256": "b8f19d031494d19309785ea49cec187623154e20b7f49db86b504ed61cfd586c"
+    }
+  }
+}
