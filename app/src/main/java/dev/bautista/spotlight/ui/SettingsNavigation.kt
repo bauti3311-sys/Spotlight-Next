@@ -98,7 +98,7 @@ object SettingsGroups {
    OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().heightIn(min=52.dp).testTag("settings-search"),singleLine=true,placeholder={Text("Buscar en todos los ajustes",maxLines=1,overflow=TextOverflow.Ellipsis)},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))},trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(12.dp),colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=MaterialTheme.colorScheme.onSurface.copy(alpha=.12f)))
    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
     val category:@Composable (String)->Unit={group->
-     Row(Modifier.fillMaxWidth().selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=false},role=Role.Tab)
+     Row(Modifier.fillMaxWidth().testTag("settings-area:$group").selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=false},role=Role.Tab)
       .background(if(selected==group)MaterialTheme.colorScheme.primary.copy(alpha=.11f) else androidx.compose.ui.graphics.Color.Transparent,RoundedCornerShape(9.dp))
       .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically){
        Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.primary)

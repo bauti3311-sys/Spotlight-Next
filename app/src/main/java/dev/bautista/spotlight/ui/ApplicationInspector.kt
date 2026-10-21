@@ -56,7 +56,7 @@ import kotlinx.coroutines.withContext
             modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("inspector-primary-action")) {
             Icon(CommandIcons.Arrow,null,Modifier.size(18.dp))
             Spacer(Modifier.width(10.dp))
-            Text("Abrir aplicación",Modifier.weight(1f),fontSize=13.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            Text("Abrir aplicación",Modifier.weight(1f),fontSize=14.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
         Column(Modifier.fillMaxWidth()) {

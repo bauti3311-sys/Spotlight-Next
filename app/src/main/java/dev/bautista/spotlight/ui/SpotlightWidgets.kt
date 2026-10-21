@@ -116,7 +116,7 @@ fun ResultRow(
     ) {
         // Native application artwork keeps its own identity. Utility glyphs have
         // one stroke treatment and no tinted tile or selection stripe.
-        ResultIcon(result,Modifier.size(if(result.icon!=null || result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+        ResultIcon(result,Modifier.size(if(result.icon!=null)32.dp else if(result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
             Text(result.title,color=ink,fontWeight=FontWeight.Medium,

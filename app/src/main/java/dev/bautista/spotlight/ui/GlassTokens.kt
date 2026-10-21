@@ -27,7 +27,7 @@ object GlassTokens {
     const val selectionMs=90
     fun rowHeight(c:Config)=when(c.density){"compact"->36.dp;"spacious"->48.dp;else->42.dp}
     fun resultRowHeight(c:Config)=maxOf(48.dp,rowHeight(c))
-    fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->14.5.sp;else->14.sp}
+    fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->14.5.sp;else->14.5.sp}
     fun windowColors(c:Config,dark:Boolean):List<Color> = when {
         !dark -> listOf(Color(0xE0FAFAFC),Color(0xF0EEEEF3))
         c.preset in setOf("raycast","graphite") -> listOf(Color(0xEB26272C),Color(0xF7191A1E))
@@ -45,7 +45,7 @@ object GlassTokens {
     val dark=colors.surface.luminance()<.5f
     val referenceMaterial=c.preset in setOf("glass","macos","raycast","graphite")
     val material=if(referenceMaterial)GlassTokens.windowColors(c,dark).map {
-        it.copy(alpha=(it.alpha*(c.opacity/.96f)).coerceIn(if(legibleBackdrop).97f else .88f,1f))
+        it.copy(alpha=(it.alpha*(c.opacity/.96f)).coerceIn(if(legibleBackdrop).995f else .88f,1f))
     } else listOf(colors.surface.copy(alpha=GlassTokens.opacity(c)),colors.surface.copy(alpha=GlassTokens.opacity(c)))
     return shadow(28.dp,shape,clip=false,
             ambientColor=Color.Black.copy(alpha=.24f),spotColor=Color.Black.copy(alpha=.40f))
