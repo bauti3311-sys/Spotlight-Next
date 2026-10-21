@@ -19,6 +19,18 @@ import org.robolectric.annotation.GraphicsMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ActionPanelKeyboardContractTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
+    @Test fun groupsAndIdentityDoNotDependOnTheVisibleTitle() {
+        ui.setContent { SpotlightTheme {
+            ActionPanelView(listOf(
+                ContextAction("Abrir", "", CommandIcons.Apps, {}, id="open"),
+                ContextAction("Copiar", "Organizar", CommandIcons.Star, {}, id="pin", group=ContextActionGroup.Organize),
+                ContextAction("Copiar", "Texto", CommandIcons.ContentCopy, {}, id="copy", group=ContextActionGroup.Text)
+            ),FocusRequester())
+        } }
+        ui.onAllNodesWithText("Copiar").assertCountEquals(2)
+        ui.onNodeWithText("ORGANIZAR").assertExists()
+        ui.onNodeWithText("TEXTO").assertExists()
+    }
     @Test fun actionGroupsHaveVisibleHeadingsWithoutExecutingItems() {
         var action=""
         val focus=FocusRequester()
@@ -26,9 +38,9 @@ class ActionPanelKeyboardContractTest {
             SpotlightTheme("dark") {
                 ActionPanelView(listOf(
                     ContextAction("Abrir","Principal",CommandIcons.Chevron,{action="open"}),
-                    ContextAction("Añadir favorita","Ordenar",CommandIcons.Star,{action="favorite"}),
-                    ContextAction("Información de la app","Sistema",CommandIcons.Info,{action="system"}),
-                    ContextAction("Copiar texto","Texto",CommandIcons.ContentCopy,{action="copy"})
+                    ContextAction("Añadir favorita","Ordenar",CommandIcons.Star,{action="favorite"},id="favorite",group=ContextActionGroup.Organize),
+                    ContextAction("Información de la app","Sistema",CommandIcons.Info,{action="system"},id="info",group=ContextActionGroup.System),
+                    ContextAction("Copiar texto","Texto",CommandIcons.ContentCopy,{action="copy"},id="copy",group=ContextActionGroup.Text)
                 ),focus)
             }
         }

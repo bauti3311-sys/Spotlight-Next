@@ -18,3 +18,8 @@ La imagen mencionada no llegó en este adjunto: solo Texto pegado(9).txt. Se pue
 Baseline Compose en preparación desdeafc682c. No hay dispositivo/KVM ni mediciones físicas de jank, memoria o batería. Se conservarán tests y capturas antes/después; IME geométrico simulado no equivale a teclado OneUI real. Políticas/pruebas nuevas todavía SIN EJECUTAR.
 
 Fuentes: Android Window Size Classes (developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes); Raycast ActionPanel y Detail (developers.raycast.com/api-reference/user-interface/action-panel y /detail). Se adaptan presupuesto de viewport, secciones semánticas y metadatos opcionales; sin componentes web.
+
+## Checkpoint implementado, gate pendiente
+Baseline afc682c:7/7MinimalistSearchFlowTest, BUILD SUCCESSFUL6m11s, cuatro capturas antes preservadas. Implementados: política de panes y divisor con mínimos; ResultRow horizontal desde400dp y alto48dp compartido; ApplicationInspector extraído con acción principal, favorita, medios compatibles y metadatos; ContextAction con ID/grupo explícitos en todos los productores del panel; colores Obsidian y sombra refinados sin dependencias. Constructor legado conserva compatibilidad; disponibilidad/riesgo/confirmación continúan en ToolRegistry/Executor y no se declaran unificados.
+
+Nueve escenarios/políticas de test nuevos cubren selección, cambio de inspector sin lanzamiento, límites del divisor, teléfono, presupuesto IME simulado, favoritos reales del proveedor fixture, tema claro y centro de permisos. No equivalen a pruebas físicas. Preview versionCode30, mismo paquete y clave885838aa. Cambios preparados antes de gate, todavía no verificados.

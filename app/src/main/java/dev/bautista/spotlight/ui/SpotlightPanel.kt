@@ -657,7 +657,6 @@ fun SpotlightPanel(
             }
             if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("pane-raw-${resultsState.value.size}",searchScope?.section,searchGeneration,visibleResults.size)
             val compact = maxWidth < 560.dp
-            val inspectorWidthAvailable = maxWidth >= 600.dp
             // WindowManager WRAP_CONTENT bounds change after every layout. Never
             // use this Box's previous height as the next result pane's limit.
             val viewport =
@@ -665,26 +664,29 @@ fun SpotlightPanel(
                         ?: (LocalConfiguration.current.screenHeightDp * (1f - config.position) -
                             24f))
                     .dp
+            val inspectorWidthAvailable = dev.bautista.spotlight.overlay.OverlayLayoutPolicy.resolve(
+                maxWidth.value, viewport.value, LocalDensity.current.fontScale * config.textScale
+            ).split
             val actionSheetWidth=if(maxWidth<560.dp)maxWidth else minOf(360.dp,maxWidth)
             // Compact Raycast inspector: only show it on wide overlays when a
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
             val liveAppInspector=selectedResult?.takeIf {
-                config.adaptive && maxWidth>=600.dp && preview==null && !menu &&
+                config.adaptive && inspectorWidthAvailable && preview==null && !menu &&
                 !searchOptions && !showAi && systemPage==null && !noteEditor &&
                 category in setOf("Todo","Apps") && PreviewPresentation.isApplication(it)
             }
             val inspectorItem=preview ?: liveAppInspector
             val richPreview=PreviewPresentation.needsInspector(preview)
-            val widePreview=config.adaptive && maxWidth>=600.dp &&
+            val widePreview=config.adaptive && inspectorWidthAvailable &&
                 (richPreview || menu && preview!=null || liveAppInspector!=null)
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
             val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
             val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
             val resultListHeight = minOf(resultLimit,
-                (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size +
-                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 40.dp)
+                (if(compact)56.dp else GlassTokens.resultRowHeight(config))*visibleResults.size +
+                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 48.dp)
             val splitPanelHeight = if(liveAppInspector!=null)resultListHeight else minOf(resultLimit,400.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
@@ -964,7 +966,7 @@ fun SpotlightPanel(
                                         catch(e:Exception) { error=e.message ?: "El reproductor no aceptó la acción." }
                                     }
                                 }
-                                if(richPreview || PreviewPresentation.isApplication(item) || menu) {
+                                if((richPreview || PreviewPresentation.isApplication(item) || menu) && liveAppInspector==null) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     ResultIcon(item,Modifier.size(if(PreviewPresentation.isApplication(item))40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
                                     Spacer(Modifier.width(12.dp))
@@ -1020,58 +1022,43 @@ fun SpotlightPanel(
                                 }
                                 }
                                 if(liveAppInspector!=null && !menu) {
-                                    HorizontalDivider(color=colors.onSurface.copy(alpha=.07f))
-                                    Text("ACCIONES RÁPIDAS",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
-                                    TextButton(onClick={execute(item)}) {
-                                        Icon(CommandIcons.Chevron,null,Modifier.size(16.dp))
-                                        Spacer(Modifier.width(8.dp))
-                                        Text("Abrir aplicación")
-                                    }
-                                    mediaCommands.forEach{command->
-                                        TextButton(onClick={sendMediaCommand(command)}) {
-                                            Icon(CommandIcons.Bolt,null,Modifier.size(16.dp))
-                                            Spacer(Modifier.width(8.dp))
-                                            Text(when(command){"pause"->"Pausar reproducción";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"})
-                                        }
-                                    }
-                                    TextButton(onClick={preview=item;menu=true;navigating=true;hideKeyboardForActions()}) {
-                                        Icon(CommandIcons.Bolt,null,Modifier.size(16.dp))
-                                        Spacer(Modifier.width(8.dp))
-                                        Text("Ver acciones contextuales")
-                                    }
-                                    Text("Ctrl+K · Más acciones",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
+                                    ApplicationInspector(item,appPackage,favoriteId(item) in favorites,
+                                        appPackage!=null && appPackage in playingPackages,mediaCommands,
+                                        onOpen={execute(item)},onFavorite={toggleFavorite(item)},
+                                        onActions={preview=item;menu=true;navigating=true;hideKeyboardForActions()},
+                                        onMedia={sendMediaCommand(it)})
                                 }
                                 if(menu) {
                                     val actions=mutableListOf<ContextAction>()
-                                    fun add(title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,perform:()->Unit){actions+=ContextAction(title,description,icon,perform)}
-                                    add(when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
+                                    fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,perform:()->Unit){actions+=ContextAction(title,description,icon,perform,id=id,group=group)}
+                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
                                     if(item.id.startsWith("suggest:")) {
-                                        add(if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
-                                        add("Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
+                                        add("suggestion.pin",ContextActionGroup.Organize,if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
+                                        add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
                                     }
-                                    if(PreviewPresentation.isApplication(item))add("Acciones de ${item.title}","Capacidades públicas disponibles",CommandIcons.Apps){execute(Result("app:actions",item.title,"","Acciones",0,Action.RestoreQuery(item.title)))}
+                                    if(PreviewPresentation.isApplication(item))add("app.capabilities",ContextActionGroup.Open,"Acciones de ${item.title}","Capacidades públicas disponibles",CommandIcons.Apps){execute(Result("app:actions",item.title,"","Acciones",0,Action.RestoreQuery(item.title)))}
                                     mediaCommands.forEach{command->
-                                        add(when(command){"pause"->"Pausar";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
+                                        add("media:$command",ContextActionGroup.Open,when(command){"pause"->"Pausar";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
                                             "MediaSession autorizada de la aplicación seleccionada",CommandIcons.Bolt){sendMediaCommand(command)}
                                     }
-                                    if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add(if(favoriteId(item) in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
-                                    if(item.action !is Action.Copy)add("Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
-                                    if(query.isNotBlank())add(if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
-                                    if(item.category in setOf("Archivos","Notas","Portapapeles","Textos frecuentes"))add("Compartir","Selector de aplicaciones Android",CommandIcons.Share){share(item)}
-                                    if(item.category=="Archivos")add("Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
-                                    if(item.parentUri!=null)add("Mostrar carpeta","Ubicación del archivo",CommandIcons.Folder){locate(item)}
+                                    if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add("favorite.toggle",ContextActionGroup.Organize,if(favoriteId(item) in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
+                                    if(item.action !is Action.Copy)add("text.copy",ContextActionGroup.Text,"Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
+                                    if(query.isNotBlank())add("query.pin",ContextActionGroup.Organize,if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
+                                    if(item.category in setOf("Archivos","Notas","Portapapeles","Textos frecuentes"))add("share",ContextActionGroup.Share,"Compartir","Selector de aplicaciones Android",CommandIcons.Share){share(item)}
+                                    if(item.category=="Archivos")add("file.copy-name",ContextActionGroup.Text,"Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
+                                    if(item.parentUri!=null)add("file.reveal",ContextActionGroup.Open,"Mostrar carpeta","Ubicación del archivo",CommandIcons.Folder){locate(item)}
                                     if(PreviewPresentation.isApplication(item)) {
                                         val targetPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
                                             ?: item.id.removePrefix("suggest:app:").substringBefore('/')
-                                        add("Permisos y componentes públicos","Consulta local · administración opcional con Shizuku",CommandIcons.Shield){
+                                        add("app.permissions",ContextActionGroup.System,"Permisos y componentes públicos","Consulta local · administración opcional con Shizuku",CommandIcons.Shield){
                                             execute(item.copy(action=Action.SystemPanel("app",targetPackage)))
                                         }
-                                        add("Información de la app","Permisos y almacenamiento",CommandIcons.Info){
+                                        add("app.info",ContextActionGroup.System,"Información de la app","Permisos y almacenamiento",CommandIcons.Info){
                                             launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+targetPackage)))
                                         }
                                     }
-                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add(if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
-                                    if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add(
+                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.selection",ContextActionGroup.Organize,if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
+                                    if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add("file.extract",ContextActionGroup.Text,
                                         if(documentExtraction.running)"Cancelar extracción" else "Extraer texto",
                                         if(documentExtraction.running)"Procesamiento local en curso" else "PDF, Office, imagen o texto · procesamiento local",
                                         CommandIcons.FindInPage,
@@ -1089,15 +1076,15 @@ fun SpotlightPanel(
                                             }, { extracted -> preview=item.copy(preview=extracted.text);menu=true }, { e -> error=e.message ?: "No se pudo extraer texto" })
                                         }
                                     }
-                                    if(item.category=="Portapapeles") {val clip=item.preview ?: (item.action as? Action.Copy)?.text.orEmpty();add("Editar texto","Modificar el historial temporal",CommandIcons.EditNote){execute(item.copy(action=Action.EditClipboard(clip)))};add(if(clip in clipFavorites)"Quitar favorito temporal" else "Favorito temporal","Se elimina al caducar o cerrar el proceso",CommandIcons.Star){app.local.toggleClipFavorite(clip);preview=null;menu=false}}
-                                    if(item.category=="Portapapeles")add("Eliminar del historial","Eliminar solo de Spotlight",CommandIcons.Delete){app.local.deleteClip(item.preview ?: (item.action as? Action.Copy)?.text.orEmpty());preview=null}
+                                    if(item.category=="Portapapeles") {val clip=item.preview ?: (item.action as? Action.Copy)?.text.orEmpty();add("clipboard.edit",ContextActionGroup.Text,"Editar texto","Modificar el historial temporal",CommandIcons.EditNote){execute(item.copy(action=Action.EditClipboard(clip)))};add("clipboard.favorite",ContextActionGroup.Organize,if(clip in clipFavorites)"Quitar favorito temporal" else "Favorito temporal","Se elimina al caducar o cerrar el proceso",CommandIcons.Star){app.local.toggleClipFavorite(clip);preview=null;menu=false}}
+                                    if(item.category=="Portapapeles")add("clipboard.delete",ContextActionGroup.Management,"Eliminar del historial","Eliminar solo de Spotlight",CommandIcons.Delete){app.local.deleteClip(item.preview ?: (item.action as? Action.Copy)?.text.orEmpty());preview=null}
                                     val text=item.preview ?: (item.action as? Action.Copy)?.text
                                     if(!text.isNullOrBlank()) {
-                                        add("Guardar como nota","Guardar texto en el dispositivo",CommandIcons.EditNote){scope.launch{app.local.saveNote(text)}}
-                                        add("Traducir texto","Elegir idioma y procesar localmente",CommandIcons.Language){execute(Result("translate:text","","","Herramientas",0,Action.RestoreQuery("traducir en a es: "+text)))}
-                                        listOf("Explicar" to "Explicá", "Resumir" to "Resumí").forEach{(label,prompt)->add("$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome){execute(Result("ai:text",label,"","IA",0,Action.Ask(prompt+" este texto:\n"+text,true)))}}
+                                        add("text.save",ContextActionGroup.Text,"Guardar como nota","Guardar texto en el dispositivo",CommandIcons.EditNote){scope.launch{app.local.saveNote(text)}}
+                                        add("text.translate",ContextActionGroup.Text,"Traducir texto","Elegir idioma y procesar localmente",CommandIcons.Language){execute(Result("translate:text","","","Herramientas",0,Action.RestoreQuery("traducir en a es: "+text)))}
+                                        listOf("Explicar" to "Explicá", "Resumir" to "Resumí").forEach{(label,prompt)->add("ai:$prompt",ContextActionGroup.Text,"$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome){execute(Result("ai:text",label,"","IA",0,Action.Ask(prompt+" este texto:\n"+text,true)))}}
                                     }
-                                    if(item.id.startsWith("note:"))add("Eliminar nota","Revisar antes de eliminar",CommandIcons.Delete){clearForms();deletingNote=item;preview=null;menu=false}
+                                    if(item.id.startsWith("note:"))add("note.delete",ContextActionGroup.Management,"Eliminar nota","Revisar antes de eliminar",CommandIcons.Delete){clearForms();deletingNote=item;preview=null;menu=false}
                                     ActionPanelView(actions,actionFocus,onClose=if(richPreview)null else {{preview=null;menu=false;focus.requestFocus()}})
                                 }
                             }

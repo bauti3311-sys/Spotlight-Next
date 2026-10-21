@@ -21,17 +21,24 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import dev.bautista.spotlight.search.normalize
 
-data class ContextAction(val title:String,val description:String,val icon:ImageVector,val perform:()->Unit,val shortcut:String="") {
-    val group:String get()=when{title.startsWith("Eliminar")->"Gestión";title.contains("Permisos")||title.contains("Shizuku")||title.contains("componentes")->"Sistema";title.contains("favorita")||title.contains("consulta")||title.contains("sugerencia")->"Organizar";title.startsWith("Copiar")||title.startsWith("Guardar")||title.contains("IA")||title.startsWith("Traducir")->"Texto";else->"Más acciones"}
+enum class ContextActionGroup(val label:String) {
+    Primary("Principal"), Open("Más acciones"), Organize("Organizar"), Text("Texto"),
+    Share("Compartir"), System("Sistema"), Management("Gestión")
+}
+data class ContextAction(
+    val title:String, val description:String, val icon:ImageVector, val perform:()->Unit,
+    val shortcut:String="", val id:String="", val group:ContextActionGroup=ContextActionGroup.Open,
+) {
+    val identity:String get()=id.ifBlank{title} // Compatibility only; production supplies stable IDs.
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null) {
     var searching by remember {mutableStateOf(false)}
     var filter by remember {mutableStateOf("")};var selected by remember{mutableIntStateOf(0)};var filterFocused by remember{mutableStateOf(false)}
-    val distinct=actions.distinctBy{it.title};val all=distinct.take(1)+distinct.drop(1).sortedBy{listOf("Texto","Organizar","Más acciones","Sistema","Gestión").indexOf(it.group)};val visible=all.filter{normalize(it.title+" "+it.description).contains(normalize(filter))}
-    val requests=remember(visible.map{it.title}){List(visible.size){if(it==0)focus else FocusRequester()}}
+    val distinct=actions.distinctBy{it.identity};val all=distinct.take(1)+distinct.drop(1).sortedBy{it.group.ordinal};val visible=all.filter{normalize(it.title+" "+it.description).contains(normalize(filter))}
+    val requests=remember(visible.map{it.identity}){List(visible.size){if(it==0)focus else FocusRequester()}}
     LaunchedEffect(filter){selected=0}
-    LaunchedEffect(selected,filterFocused,visible.map{it.title}){if(!filterFocused){withFrameNanos{ };runCatching{requests.getOrNull(selected)?.requestFocus()}}}
+    LaunchedEffect(selected,filterFocused,visible.map{it.identity}){if(!filterFocused){withFrameNanos{ };runCatching{requests.getOrNull(selected)?.requestFocus()}}}
     Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).onPreviewKeyEvent{e->
         if(e.type!=KeyEventType.KeyDown || e.isCtrlPressed || e.isMetaPressed)false else when(e.key){
             Key.Tab->{filterFocused=false;selected=if(visible.isEmpty())0 else Math.floorMod(selected+if(e.isShiftPressed)-1 else 1,visible.size);true}
@@ -57,7 +64,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
         Column(Modifier.fillMaxWidth().weight(1f, fill=false).heightIn(max=240.dp).verticalScroll(rememberScrollState())){
             var previous=""
             visible.forEachIndexed{i,action->
-                val group=if(all.firstOrNull()==action)"Principal" else action.group
+                val group=if(all.firstOrNull()==action)"Principal" else action.group.label
                 if(group!=previous){
                     if(previous.isNotBlank())Spacer(Modifier.height(8.dp))
                     Text(group.uppercase(),
@@ -67,7 +74,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
                         fontSize=10.sp,letterSpacing=1.sp)
                     previous=group
                 }
-                val bring=remember(action.title){BringIntoViewRequester()}
+                val bring=remember(action.identity){BringIntoViewRequester()}
                 LaunchedEffect(selected,filterFocused){if(!filterFocused && selected==i)bring.bringIntoView()}
                 Surface(color=if(!filterFocused && i==selected)GlassTokens.selection() else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
                     val perform by rememberUpdatedState(action.perform)
@@ -75,7 +82,7 @@ data class ContextAction(val title:String,val description:String,val icon:ImageV
                     Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
                         .focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.focusable()
                         .semantics(mergeDescendants=true){role=Role.Button;this.selected=active;onClick(action.title){perform();true}}
-                        .pointerInput(action.title,i){detectTapGestures(onTap={selected=i;filterFocused=false;perform()})}
+                        .pointerInput(action.identity,i){detectTapGestures(onTap={selected=i;filterFocused=false;perform()})}
                         .bringIntoViewRequester(bring).padding(horizontal=12.dp,vertical=8.dp),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically){
                         Icon(action.icon,null,Modifier.size(19.dp));Spacer(Modifier.width(12.dp));Column(Modifier.weight(1f)){Text(action.title,modifier=Modifier.fillMaxWidth(),fontSize=14.sp,fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium);if(active) Text(action.description,modifier=Modifier.fillMaxWidth(),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}
                         val key=action.shortcut.ifBlank{if(all.firstOrNull()==action)"Enter" else ""};if(key.isNotBlank())Text(key,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)

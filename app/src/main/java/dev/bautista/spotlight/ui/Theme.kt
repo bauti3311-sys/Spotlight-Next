@@ -58,11 +58,11 @@ val LocalAppearance = staticCompositionLocalOf { Config() }
 @Composable
 fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme), content: @Composable () -> Unit) {
     val dark = theme == "dark" || (theme == "auto" && isSystemInDarkTheme())
-    val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFA1A1AA else 0xFF566172; "purple" -> if(dark)0xFFA855F7 else 0xFF7250CC; "rose" -> if(dark)0xFFF43F5E else 0xFFBF3A62; "green" -> if(dark)0xFF10B981 else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF3B82F6 else 0xFF0869D1 })
+    val accent = Color(when(config.accent) { "graphite" -> if(dark)0xFFA1A1AA else 0xFF566172; "purple" -> if(dark)0xFFA855F7 else 0xFF7250CC; "rose" -> if(dark)0xFFF43F5E else 0xFFBF3A62; "green" -> if(dark)0xFF10B981 else 0xFF137453; "orange" -> if(dark)0xFFFFB878 else 0xFFAD4D0B; else -> if(dark)0xFF2E6FE8 else 0xFF0869D1 })
     val base=if(dark) Dark else Light
     val palette = when(config.preset){
         "pure"->base.copy(background=if(dark)Color(0xFF111111) else Color.White,surface=if(dark)Color(0xFF171717) else Color.White,onSurface=if(dark)Color.White else Color(0xFF111111))
-        "glass"->base.copy(background=if(dark)Color(0xFF12151C) else Color(0xFFEFF2F7),surface=if(dark)GlassTokens.graphite else GlassTokens.paper,surfaceVariant=if(dark)Color(0xFF28292A) else Color(0xFFF0F0EE))
+        "glass"->base.copy(background=if(dark)Color(0xFF101218) else Color(0xFFEFF2F7),surface=if(dark)Color(0xFF191C24) else GlassTokens.paper,surfaceVariant=if(dark)Color(0xFF222630) else Color(0xFFF0F0EE))
         "hybrid"->base.copy(background=if(dark)Color(0xFF151618) else Color(0xFFEDEEF0),surface=if(dark)Color(0xFF202124) else Color(0xFFFAFAF8),surfaceVariant=if(dark)Color(0xFF292B2F) else Color(0xFFF0F1EF),onSurface=if(dark)Color(0xFFF2F3F5) else Color(0xFF202226),onSurfaceVariant=if(dark)Color(0xFFBEC1C8) else Color(0xFF59616B))
         "raycast"->base.copy(background=if(dark)Color(0xFF191A1E) else Color(0xFFF0EFF3),surface=if(dark)Color(0xFF26272C) else Color(0xFFFCFBFD),surfaceVariant=if(dark)Color(0xFF222329) else Color(0xFFE9E7EE),onSurface=if(dark)Color(0xFFFAFAFC) else GlassTokens.lightInk,onSurfaceVariant=if(dark)Color(0xFFA0A0AB) else GlassTokens.lightSecondary)
         "graphite"->base.copy(background=if(dark)Color(0xFF1D2023) else Color(0xFFF2F3F4),surface=if(dark)Color(0xFF262A2D) else Color.White,surfaceVariant=if(dark)Color(0xFF303438) else Color(0xFFE9ECEF))
