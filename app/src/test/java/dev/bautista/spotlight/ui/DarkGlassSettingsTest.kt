@@ -1,6 +1,7 @@
 package dev.bautista.spotlight.ui
 
 import androidx.compose.ui.test.*
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.github.takahirom.roborazzi.*
 import dev.bautista.spotlight.MainActivity
@@ -39,4 +40,19 @@ class DarkGlassSettingsTest {
   ui.onNodeWithText("Cambiar").performClick();ui.onNodeWithText("Permisos y accesos").performClick();capture("phone-permissions")
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
  }
+ @Test fun opacityIsImmediatePersistentAndSurvivesActivityRecreation(){
+  ready();ui.onNodeWithTag("settings-area:Apariencia").performClick()
+  ui.onNodeWithTag("surface-opacity-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.73f)}
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().opacity==.73f}}
+  ui.onNodeWithTag("surface-opacity-value").assertTextEquals("73%")
+  capture("tablet-opacity-73")
+  ui.activityRule.scenario.recreate()
+  ui.waitUntil(15000){ui.onAllNodesWithTag("surface-opacity-slider").fetchSemanticsNodes().isNotEmpty()}
+  ui.onNodeWithTag("surface-opacity-value").assertTextEquals("73%")
+  ui.onNodeWithText("Restablecer opacidad · 80%").performScrollTo().performClick()
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().opacity==.80f}}
+  ui.onNodeWithTag("surface-opacity-value").assertTextEquals("80%")
+  assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
+ }
+
 }

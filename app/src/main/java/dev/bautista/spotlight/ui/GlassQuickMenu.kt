@@ -20,11 +20,9 @@ import dev.bautista.spotlight.data.Config
 ) {
     val colors=MaterialTheme.colorScheme
     val shortcuts=listOf(
-        Triple("General",CommandIcons.Settings,"General"),
+        Triple("General",CommandIcons.Settings,"Todos los ajustes"),
         Triple("Apariencia",CommandIcons.Display,"Apariencia"),
-        Triple("Integraciones",CommandIcons.Layers,"Integraciones"),
         Triple("Inteligencia artificial",CommandIcons.AutoAwesome,"IA"),
-        Triple("Atajos",CommandIcons.Keyboard,"Atajos"),
         Triple("Permisos y accesos",CommandIcons.Shield,"Permisos")
     )
     Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -34,8 +32,8 @@ import dev.bautista.spotlight.data.Config
                 "Archivos" to CommandIcons.Folder,"Acciones" to CommandIcons.Bolt,
                 "IA" to CommandIcons.AutoAwesome).forEachIndexed{i,(mode,icon)->
                 val label=when(mode){"Apps"->"Aplicaciones";"Acciones"->"Comandos";else->mode}
-                IconButton(onClick={onFilter(mode)},modifier=Modifier.size(40.dp).semantics{
-                    contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl/⌘+$i"
+                IconButton(onClick={onFilter(mode)},modifier=Modifier.size(48.dp).semantics{
+                    contentDescription=if(i==0)"Búsqueda universal" else "$label · Ctrl+$i"
                 }) {Icon(icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)}
             }
         }
@@ -55,19 +53,11 @@ import dev.bautista.spotlight.data.Config
         }
         HorizontalDivider(color=colors.onSurface.copy(alpha=.07f))
         Text("AJUSTES",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
-        shortcuts.chunked(3).forEach{rowItems->
-            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
-                rowItems.forEach{(destination,icon,label)->
-                    Surface(onClick={onSettings(destination)},modifier=Modifier.weight(1f),
-                        shape=RoundedCornerShape(10.dp),
-                        color=colors.onSurface.copy(alpha=.045f)) {
-                        Row(Modifier.padding(horizontal=8.dp,vertical=12.dp),verticalAlignment=Alignment.CenterVertically,
-                            horizontalArrangement=Arrangement.spacedBy(6.dp)) {
-                            Icon(icon,null,Modifier.size(15.dp),tint=colors.onSurfaceVariant)
-                            Text(label,style=MaterialTheme.typography.labelSmall,maxLines=1)
-                        }
-                    }
-                }
+        shortcuts.forEach{(destination,icon,label)->
+            Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable{onSettings(destination)}.padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+                Icon(icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+                Text(label,Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium)
+                Icon(CommandIcons.Chevron,null,Modifier.size(14.dp),tint=colors.onSurfaceVariant)
             }
         }
     }

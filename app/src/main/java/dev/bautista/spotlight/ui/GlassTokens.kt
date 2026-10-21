@@ -28,7 +28,7 @@ object GlassTokens {
     const val glyphStroke=1.5f
     const val selectionMs=90
     fun rowHeight(c:Config)=when(c.density){"compact"->36.dp;"spacious"->48.dp;else->42.dp}
-    fun resultRowHeight(c:Config)=maxOf(48.dp,rowHeight(c))
+    fun resultRowHeight(c:Config)=maxOf(56.dp,rowHeight(c))
     fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->14.5.sp;else->15.sp}
     const val minimumOpacity=.70f
     const val defaultOpacity=.80f
@@ -38,6 +38,7 @@ object GlassTokens {
         return if(dark) listOf(Color(0xFF20212B).copy(alpha=alpha),Color(0xFF171921).copy(alpha=alpha))
         else listOf(Color(0xFFFAFAFC).copy(alpha=alpha),Color(0xFFF1F2F7).copy(alpha=alpha))
     }
+    fun secondary(c:Config,dark:Boolean)=if(dark) {if(opacity(c)<.80f)Color(0xFFE3E5ED) else darkSecondary} else {if(opacity(c)<.85f)Color(0xFF373C48) else lightSecondary}
     fun actionColor(c:Config,dark:Boolean)=
         (if(dark)actionSurface else paper).copy(alpha=(opacity(c)+.08f).coerceAtMost(1f))
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)

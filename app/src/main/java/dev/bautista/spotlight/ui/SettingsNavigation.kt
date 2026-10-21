@@ -113,8 +113,7 @@ object SettingsGroups {
   BoxWithConstraints(modifier.fillMaxWidth().onPreviewKeyEvent{it.type==KeyEventType.KeyDown && it.key==Key.Escape && back()}) {
    val wide=maxWidth>=760.dp
    val detail:@Composable ()->Unit={
-    holder.SaveableStateProvider(if(query.isBlank())selected else "search") {
-     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).testTag("settings-details"),verticalArrangement=Arrangement.spacedBy(10.dp)) {
+     Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(10.dp)) {
       Text(if(query.isNotBlank())"Resultados de ajustes" else if(!generalDetails && selected=="General")"Configuración guiada" else SettingsGroups.label(selected),fontSize=20.sp,fontWeight=FontWeight.SemiBold)
       Text(if(query.isNotBlank())"Controles disponibles en todas las secciones." else SettingsGroups.description(selected),fontSize=12.sp,color=colors.onSurfaceVariant)
       OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("settings-search"),singleLine=true,
@@ -122,14 +121,17 @@ object SettingsGroups {
        trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(10.dp),
        colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=colors.onSurface.copy(alpha=.10f),unfocusedContainerColor=colors.onSurface.copy(alpha=.025f)))
       HorizontalDivider(Modifier.padding(vertical=4.dp),color=colors.onSurface.copy(alpha=.10f))
+      holder.SaveableStateProvider(if(query.isBlank())selected else "search") {
+       Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("settings-details"),verticalArrangement=Arrangement.spacedBy(10.dp)) {
       if(selected=="General" && query.isBlank() && overview!=null) {
        if(generalDetails)TextButton(onClick={generalDetails=false},contentPadding=PaddingValues(0.dp)){Text("Configuración guiada",fontSize=12.sp)}
        else overview{generalDetails=true}
       }
       if(generalDetails || selected!="General" || query.isNotBlank())content()
       Spacer(Modifier.height(20.dp))
+       }
+      }
      }
-    }
    }
    if(wide)Row(Modifier.fillMaxSize()) {
     Column(Modifier.width(224.dp).fillMaxHeight().background(colors.onSurface.copy(alpha=.015f)).padding(12.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {

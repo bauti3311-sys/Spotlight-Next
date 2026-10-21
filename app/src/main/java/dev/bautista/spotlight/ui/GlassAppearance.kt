@@ -11,6 +11,7 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.data.Config
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable internal fun SettingsOptions(content:@Composable ()->Unit) {
@@ -40,7 +41,7 @@ import dev.bautista.spotlight.data.Config
                     Text("Opacidad de superficie",style=MaterialTheme.typography.titleSmall)
                     Text("100% es opaco. El texto y los iconos conservan su nitidez.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Text("${(GlassTokens.opacity(draft)*100).toInt()}%",Modifier.testTag("surface-opacity-value"),style=MaterialTheme.typography.labelLarge)
+                Text("${(GlassTokens.opacity(draft)*100).roundToInt()}%",Modifier.testTag("surface-opacity-value"),style=MaterialTheme.typography.labelLarge)
             }
             Slider(GlassTokens.opacity(draft),{value->
                 draft=draft.copy(opacity=value)

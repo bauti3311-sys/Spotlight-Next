@@ -20,12 +20,12 @@ import org.robolectric.annotation.*
 @OptIn(ExperimentalRoborazziApi::class)
 class SettingsReviewCaptureTest {
  @get:Rule val ui=createAndroidComposeRule<MainActivity>()
- private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-home").fetchSemanticsNodes().isNotEmpty()}}
+ private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithText("Configuración guiada").performClick();ui.onNodeWithTag("settings-home").assertExists()}
  private fun capture(name:String){ui.waitForIdle();ui.onRoot().captureRoboImage("build/review-settings/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
  @Test fun homeIsCompactAndDoesNotRequestPermissions(){
-  ready();ui.onNodeWithText("Tu espacio, a tu manera.").assertIsDisplayed()
+  ready();ui.onNodeWithText("Configuración a tu medida").assertIsDisplayed()
   ui.onNodeWithText("Diagnóstico de Spotlight").assertDoesNotExist()
-  ui.onNodeWithText("Avanzado").assertDoesNotExist()
+  ui.onNodeWithText("Avanzado").assertExists()
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
   val app=ui.activity.application as SpotlightApp
   runBlocking{val c=app.preferences.config.first();app.preferences.updateAppearance(c.copy(theme="dark",preset="glass",animations=false))}

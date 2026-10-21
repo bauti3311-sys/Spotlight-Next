@@ -92,7 +92,7 @@ labelLarge=SpotlightTypography.labelLarge.copy(fontFamily=font,fontSize=Spotligh
 labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=SpotlightTypography.labelMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
 labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)))
     val tone=when(config.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->palette.surface}
-    val toned=palette.copy(onSurfaceVariant=if(dark && GlassTokens.opacity(config)<.80f)Color(0xFFE3E5ED) else palette.onSurfaceVariant,surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
+    val toned=palette.copy(onSurfaceVariant=GlassTokens.secondary(config,dark),surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
     MaterialTheme(colorScheme = toned, typography=typography) {
         val motion=rememberMotionAllowed(config.animations)
         CompositionLocalProvider(LocalMotion provides motion,LocalAppearance provides config, LocalContentColor provides MaterialTheme.colorScheme.onSurface, content=content)
