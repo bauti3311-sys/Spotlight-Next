@@ -149,8 +149,8 @@ class MainActivity : ComponentActivity() {
                         Column(Modifier.widthIn(max = 1100.dp).fillMaxSize()) {
                             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                                 Column(Modifier.weight(1f)) {
-                                    Text("Ajustes",style=MaterialTheme.typography.headlineSmall)
-                                    Text("Spotlight Next",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
+                                    Text("Spotlight Next",style=MaterialTheme.typography.headlineSmall)
+                                    Text("Tu barra de búsqueda y acciones, siempre a mano.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
                                 }
                                 TextButton(onClick={
                                     if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))

@@ -5,6 +5,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
@@ -93,13 +95,13 @@ object SettingsGroups {
  BackHandler(chooser || query.isNotEmpty() || generalDetails){back()}
  CompositionLocalProvider(LocalSettingsQuery provides query) {
   Column(modifier.fillMaxWidth().onPreviewKeyEvent{it.type==KeyEventType.KeyDown && it.key==Key.Escape && back()},verticalArrangement=Arrangement.spacedBy(16.dp)) {
-   OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().testTag("settings-search"),singleLine=true,label={Text("Buscar en todos los ajustes",maxLines=1,overflow=TextOverflow.Ellipsis)},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))},trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(12.dp))
+   OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().heightIn(min=52.dp).testTag("settings-search"),singleLine=true,placeholder={Text("Buscar en todos los ajustes",maxLines=1,overflow=TextOverflow.Ellipsis)},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(18.dp))},trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(12.dp),colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=MaterialTheme.colorScheme.onSurface.copy(alpha=.12f)))
    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
     val category:@Composable (String)->Unit={group->
      Row(Modifier.fillMaxWidth().selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=false},role=Role.Tab)
       .background(if(selected==group)MaterialTheme.colorScheme.primary.copy(alpha=.11f) else androidx.compose.ui.graphics.Color.Transparent,RoundedCornerShape(9.dp))
       .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically){
-       Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp),tint=if(selected==group)MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+       Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.primary)
        Spacer(Modifier.width(12.dp));Text(group,Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium,
            fontWeight=if(selected==group)FontWeight.SemiBold else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
      }
@@ -114,18 +116,18 @@ object SettingsGroups {
      }
     }
     if(maxWidth>=760.dp)Row(Modifier.fillMaxSize(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
-     Surface(shape=RoundedCornerShape(16.dp),color=MaterialTheme.colorScheme.onSurface.copy(alpha=.035f)) {
+     Surface(shape=RoundedCornerShape(16.dp),color=Color.Transparent) {
       Column(Modifier.width(216.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(10.dp),
           verticalArrangement=Arrangement.spacedBy(4.dp)) {
-       Text("SPOTLIGHT NEXT",Modifier.padding(horizontal=12.dp,vertical=14.dp),
-           style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+       Text("SPOTLIGHT",Modifier.padding(horizontal=12.dp,vertical=14.dp),letterSpacing=2.sp,
+           style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.primary)
        visibleGroups.forEach{category(it)}
        TextButton(onClick={showAdvanced=!showAdvanced}){Text(if(showAdvanced)"Menos opciones" else "Más opciones")}
       }
      }
-     Surface(modifier=Modifier.weight(1f).fillMaxHeight(),shape=RoundedCornerShape(16.dp),
-         color=MaterialTheme.colorScheme.onSurface.copy(alpha=.022f)) {
-      Box(Modifier.fillMaxSize().padding(18.dp)){detail()}
+     Surface(modifier=Modifier.weight(1f).fillMaxHeight(),shape=RoundedCornerShape(18.dp),border=BorderStroke(.5.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.10f)),
+         color=MaterialTheme.colorScheme.onSurface.copy(alpha=.012f)) {
+      Box(Modifier.fillMaxSize().padding(24.dp)){detail()}
      }
     } else Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
      Box {

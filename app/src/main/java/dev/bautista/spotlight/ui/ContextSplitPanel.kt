@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.*
             }
             Column(Modifier.weight(1-effectiveFraction).testTag("context-inspector")
                 .then(if(scrollInspector)Modifier.heightIn(max=height).verticalScroll(rememberScrollState()) else Modifier)
-                .background(MaterialTheme.colorScheme.onSurface.copy(alpha=.018f))){right()}
+                ){right()}
         }
     }
 }

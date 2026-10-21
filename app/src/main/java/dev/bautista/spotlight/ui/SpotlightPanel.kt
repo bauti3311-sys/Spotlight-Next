@@ -687,7 +687,7 @@ fun SpotlightPanel(
             val resultListHeight = minOf(resultLimit,
                 (if(compact)56.dp else GlassTokens.resultRowHeight(config))*visibleResults.size +
                     if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 16.dp)
-            val splitPanelHeight = if(liveAppInspector!=null)maxOf(resultListHeight,minOf(resultLimit,128.dp)) else minOf(resultLimit,400.dp)
+            val splitPanelHeight = if(liveAppInspector!=null)maxOf(resultListHeight,minOf(resultLimit,208.dp)) else minOf(resultLimit,400.dp)
             val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
             Column(
                 Modifier.fillMaxWidth()
@@ -876,6 +876,7 @@ fun SpotlightPanel(
                             {mode->searchOptions=false;selectMode(mode)})
                     },
                     optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
+                    onBack=if(liveAppInspector!=null && (searchScope!=null || history.isNotEmpty()))({preview=null;menu=false;back()}) else null,
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
                     onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},
                     onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
@@ -946,7 +947,7 @@ fun SpotlightPanel(
                 }
                 val details:@Composable ()->Unit = {
                         inspectorItem?.let { item ->
-                            if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
+                            if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=18.dp,vertical=12.dp)) {
                                 val appPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
                                 var mediaCommands by remember(appPackage,playingPackages) { mutableStateOf(emptyList<String>()) }
                                 LaunchedEffect(appPackage,playingPackages) {
@@ -1024,6 +1025,7 @@ fun SpotlightPanel(
                                     ApplicationInspector(item,appPackage,favoriteId(item) in favorites,
                                         appPackage!=null && appPackage in playingPackages,mediaCommands,
                                         onOpen={execute(item)},onFavorite={toggleFavorite(item)},
+                                        onInfo={appPackage?.let { launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+it))) }},
                                         onActions={preview=item;menu=true;navigating=true;hideKeyboardForActions()},
                                         onMedia={sendMediaCommand(it)})
                                 }
@@ -1101,7 +1103,7 @@ fun SpotlightPanel(
                                 LinearProgressIndicator(Modifier.fillMaxWidth())
                         }
                         HorizontalDivider(color=colors.outlineVariant)
-                        if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || category!="Todo" || noteEditor || history.isNotEmpty()) Row(
+                        if(liveAppInspector==null && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || category!="Todo" || noteEditor || history.isNotEmpty())) Row(
                             Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -1336,15 +1338,10 @@ fun SpotlightPanel(
                                 fontSize = 10.sp,
                                 color = colors.onSurfaceVariant,
                             )
-                        if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
+                        val expandable=if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
                             val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
-                            if(full.all.size>full.initial.size || moreResults) TextButton(
-                                onClick={toggleMoreResults()},modifier=Modifier.align(Alignment.End).height(32.dp).testTag("results-expand"),
-                                contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp)) {
-                                Text(if(moreResults)"Ver menos resultados" else "Ver más resultados",fontSize=11.sp)
-                                Text("  Ctrl+M",fontSize=10.sp,color=colors.onSurfaceVariant)
-                            }
-                        }
+                            full.all.size>full.initial.size || moreResults
+                        } else false
                         HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
                         if(systemPage!=null || messageForm!=null || searchForm!=null || menu)
                             Text(if(menu)"↵ ejecutar acción   esc volver a resultados" else "Tab siguiente campo   esc volver",
@@ -1362,7 +1359,9 @@ fun SpotlightPanel(
                             },
                             onExecute={selectedResult?.let{execute(it)}},
                             onActions={hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true},
-                            autocomplete=canAutocomplete && searchFocused && suggestion!=null)
+                            autocomplete=canAutocomplete && searchFocused && suggestion!=null,
+                            expandLabel=if(moreResults)"Ver menos resultados" else "Ver más resultados",
+                            onExpand=if(expandable)({toggleMoreResults()}) else null)
                     }
                 }
             }

@@ -105,7 +105,7 @@ fun ResultRow(
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
             .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
-            .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=amount*if(dark).14f else .10f),RoundedCornerShape(GlassTokens.rowRadius))
+            .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=amount*if(dark).12f else .10f),RoundedCornerShape(GlassTokens.rowRadius))
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
             // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
@@ -118,31 +118,18 @@ fun ResultRow(
         // one stroke treatment and no tinted tile or selection stripe.
         ResultIcon(result,Modifier.size(if(result.icon!=null || result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
-        if(inline) Row(Modifier.weight(1f),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
-            Text(result.title,Modifier.weight(1f,fill=false),color=ink,
-                fontWeight=FontWeight.Normal,
-                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-            if(usefulSubtitle.isNotBlank()) Text(usefulSubtitle,Modifier.weight(1f),color=colors.onSurfaceVariant,
-                fontSize=GlassTokens.secondaryText*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-        } else {
-        Column(Modifier.weight(1f)) {
-            Text(
-                result.title,
-                color = ink,
-                fontWeight = FontWeight.Medium,
-                fontSize = GlassTokens.resultText*LocalAppearance.current.textScale,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if(usefulSubtitle.isNotBlank()) Text(
-                usefulSubtitle,
-                color = colors.onSurfaceVariant,
-                fontSize = GlassTokens.secondaryText*LocalAppearance.current.textScale,
-                maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+            Text(result.title,color=ink,fontWeight=FontWeight.Medium,
+                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
+                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            if(usefulSubtitle.isNotBlank()) Text(usefulSubtitle,color=colors.onSurfaceVariant,
+                fontSize=11.sp*appearance.textScale,lineHeight=13.sp*appearance.textScale,
+                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
         }
-        }
+        if(inline) Text(if(PreviewPresentation.isApplication(result))"Aplicación" else when(result.category){
+            "Archivos"->"Archivo";"Aplicaciones"->"Aplicación";"Sugerencias"->"Sugerencia";else->result.category},
+            Modifier.padding(start=10.dp).widthIn(max=86.dp),fontSize=10.sp*appearance.textScale,
+            color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
         if(playing) Text("En reproducción",Modifier.padding(start=6.dp).clip(RoundedCornerShape(5.dp))
             .background(Color(0x2222C58B)).border(1.dp,Color(0x3322C58B),RoundedCornerShape(5.dp)).padding(horizontal=8.dp,vertical=3.dp),
             color=if(dark)Color(0xFF8ED9BC) else Color(0xFF16684D),fontSize=10.sp,maxLines=1)

@@ -5,6 +5,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.interaction.*
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.semantics.*
@@ -49,6 +50,7 @@ fun SpotlightBar(
     onSearchFocusChanged:(Boolean)->Unit={},
     onAutocompleteAvailabilityChanged:(Boolean)->Unit={},
     quickMenu:(@Composable ()->Unit)?=null,
+    onBack:(()->Unit)?=null,
     onSaved:(()->Unit)?=null,
     onSettings:(()->Unit)?=null,
 ) {
@@ -72,8 +74,10 @@ fun SpotlightBar(
                 .padding(start = 4.dp, end = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
-                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+            if(onBack!=null) IconButton(onClick=onBack,modifier=Modifier.size(48.dp)) {
+                Icon(CommandIcons.Reply,"Volver a resultados",Modifier.size(20.dp),tint=colors.onSurfaceVariant)
+            } else IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) {
+                Icon(HugeIcons.Search,"Fuentes de búsqueda",Modifier.size(21.dp),tint=colors.onSurfaceVariant)
             }
             Spacer(Modifier.width(4.dp))
             BasicTextField(
@@ -148,12 +152,14 @@ fun SpotlightBar(
     BoxWithConstraints(Modifier.fillMaxWidth()) {
     val showSaved=maxWidth>=480.dp
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=10.dp)
+            .border(.5.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(12.dp))
+            .background(colors.onSurface.copy(alpha=.018f),RoundedCornerShape(12.dp)), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
             Row(Modifier.padding(end=8.dp),verticalAlignment=Alignment.CenterVertically) {
-                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(15.dp),tint=colors.onSurfaceVariant) } }
-                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(15.dp),tint=colors.onSurfaceVariant) } }
-                onSettings?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Settings,"Abrir Ajustes",Modifier.size(15.dp),tint=colors.onSurfaceVariant) } }
+                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
+                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
+                onSettings?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Settings,"Abrir Ajustes",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
             }
         }
         if(options) {
