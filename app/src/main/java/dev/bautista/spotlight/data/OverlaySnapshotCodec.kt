@@ -46,7 +46,7 @@ internal object OverlaySnapshotCodec {
             val j=raw as JSONObject;require(j.keys().asSequence().toSet()==setOf("t","v"))
             val v=j.get("v")
             return when(j.getString("t")){
-                "si" -> mutableIntStateOf((v as Number).toInt())
+                "si" -> mutableIntStateOf((v as Number).toLong().also{require(it in Int.MIN_VALUE..Int.MAX_VALUE && v.toDouble()==it.toDouble())}.toInt())
                 "sl" -> mutableLongStateOf((v as String).toLong())
                 "sf" -> mutableFloatStateOf((v as Number).toFloat().also{require(it.isFinite())})
                 "sd" -> mutableDoubleStateOf((v as Number).toDouble().also{require(it.isFinite())})

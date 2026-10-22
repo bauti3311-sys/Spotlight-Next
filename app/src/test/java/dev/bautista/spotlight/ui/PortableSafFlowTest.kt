@@ -50,14 +50,14 @@ class PortableSafFlowTest {
   val shadow=Shadows.shadowOf(ui.activity)
   val export=shadow.nextStartedActivityForResult
   assertEquals(Intent.ACTION_CREATE_DOCUMENT,export.intent.action)
-  ui.runOnIdle{shadow.receiveResult(export.intent,Activity.RESULT_OK,Intent().setData(uri))}
-  ui.waitUntil(10000){provider.file.exists() && provider.file.length()>0}
+  ui.runOnIdle{assertTrue(ui.activity.activityResultRegistry.dispatchResult(export.requestCode,Activity.RESULT_OK,Intent().setData(uri)))}
+  try {ui.waitUntil(10000){provider.file.exists() && provider.file.length()>0}}catch(e:Exception){println(ui.onRoot(useUnmergedTree=true).printToString());throw e}
   val settings=JSONObject(provider.file.readText()).getJSONObject("settings")
   assertEquals(1,settings.getJSONArray("customThemes").length());assertFalse(settings.has("trees"));assertFalse(settings.has("endpoint"))
   runBlocking{app.preferences.update(original.copy(opacity=.95f,customThemes="[]",aliases=emptySet()))}
   ui.onNodeWithText("Importar",useUnmergedTree=true).performScrollTo().performClick()
   val imported=shadow.nextStartedActivityForResult;assertEquals(Intent.ACTION_OPEN_DOCUMENT,imported.intent.action)
-  ui.runOnIdle{shadow.receiveResult(imported.intent,Activity.RESULT_OK,Intent().setData(uri))}
+  ui.runOnIdle{assertTrue(ui.activity.activityResultRegistry.dispatchResult(imported.requestCode,Activity.RESULT_OK,Intent().setData(uri)))}
   ui.waitUntil(10000){ui.onAllNodesWithText("Confirmar importación").fetchSemanticsNodes().isNotEmpty()}
   assertEquals(.95f,runBlocking{app.preferences.config.first()}.opacity)
   ui.onNodeWithText("Confirmar importación").performScrollTo().performClick()

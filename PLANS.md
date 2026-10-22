@@ -575,3 +575,7 @@ Base07fd823;productoAPK/ZIPe83b99d5fc594fd89f2e760266e1f30ad4ea9339. Propuestas/
 
 
 Preview39 · entrega verificada: código6b433ff/29casos únicos,lint0/13+1,assemble1m3s,APK39/certificado885838aa/V2/zipalign16KB/204inputs/1238blobs. APK y ZIP exactos, capturas nativas con procedencia, sin nuevo build tras documentación. C2: snapshotdurableOverlayService y todoslosrecursoslocales siguen pendientes; C3: SAF/proveedores/updatefísico. No afirmar proceso muerto/PDFinstrumentado/OneUI/serviciosreales. SinActions/main/force/firmas nuevas. Ver PREVIEW39-RECOVERY-SETTINGS-20261022.md.
+
+### Continuación integral C2–C5 ·22/10
+Terminal recuperada. HEAD documental69455b8 sincronizado conservando los cambios locales. Reserva propia comprobada por GitHub API y sin ejecución Java previa; runtime temporal desaparecido, restaurado JDK17/Gradle8.10.2/SDK35 en spotlight-runtime fuera del repo, caché también fuera del repo y de/tmp. Artefacto build-tools descargado otra vez tras detectar ZIP truncado y validar SHA1 oficial. No versión de dependencia modificada.
+Recuperado fixture SAF con dispatchResult+dump y validación estricta del codec; se publica como checkpoint PARCIAL antes de pruebas. Último resultado comprobado previo6/7; repetición actual únicamente PortableSafFlowTest en integral-saf-recovered.log, no declarada correcta todavía. Fuente nueva y evidencia saf-consent-first preservadas. Política vigente: continuar hacia candidata C5 sin Previews intermedias; no repetir suites correctas sin causa.
