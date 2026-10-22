@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.*
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.focus.*
@@ -112,6 +113,8 @@ fun SpotlightPanel(
         var pinnedPreview by remember { mutableStateOf<Result?>(null) }
         var pinnedCard by remember { mutableStateOf<InfoCard?>(null) }
         // Moving between the tablet column and phone sheet must retain edited form state.
+        val contextDrafts=rememberSaveableStateHolder()
+        val recentDrafts=remember{mutableListOf<String>()}
         val inspectorHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
         var expandedPreview by remember {mutableStateOf(false)}
         val previewPages=remember{mutableStateMapOf<String,Int>()}
@@ -848,7 +851,6 @@ fun SpotlightPanel(
             ) {
                 val header:@Composable ()->Unit = {
                 SpotlightBar(
-                    autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
                     query,
                     { next ->
                         // Selection/focus changes can report the same text. They must not
@@ -881,6 +883,7 @@ fun SpotlightPanel(
                     suggestion,
                     { acceptSuggestion() },
                     motionEnabled,
+                    autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
                     optionsOpen=searchOptions,
@@ -1260,7 +1263,7 @@ fun SpotlightPanel(
                                     val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
                                         ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
                                         ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"
-                                    ContextualDraftHost(taskKey){contextBody()}
+                                    ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
                                 }
                             }
                         }

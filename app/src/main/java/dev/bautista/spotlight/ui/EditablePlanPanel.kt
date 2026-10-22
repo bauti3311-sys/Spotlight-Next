@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -22,11 +23,11 @@ private fun text(step:PlanStep):String=when(step){is PlanStep.Brightness->"brill
     EditablePlanPanel(app,c,raw,initial,emptyList(),onAction)
 }
 @Composable fun EditablePlanPanel(app:SpotlightApp,c:Config,raw:String,initial:LocalPlan,boundCalls:List<ToolCall?>,onAction:(Action)->Unit) {
-    var bindings by remember(raw){mutableStateOf(initial.steps.indices.map{boundCalls.getOrNull(it)})}
-    var reviewedInputs by remember(raw){mutableStateOf<Pair<List<String>,List<ToolCall?>>?>(null)}
-    val scope=rememberCoroutineScope();var steps by remember(raw){mutableStateOf(initial.steps.map(::text))};var rows by remember(raw){mutableStateOf<List<ReviewedStep>>(emptyList())};var selected by remember(raw){mutableStateOf(setOf<Int>())};var status by remember(raw){mutableStateOf(mapOf<Int,String>())};var busy by remember{mutableStateOf(false)};var job by remember{mutableStateOf<Job?>(null)};var editing by remember{mutableIntStateOf(-1)};var error by remember{mutableStateOf("")};var save by remember{mutableStateOf(false)};var name by remember{mutableStateOf("")};var alias by remember{mutableStateOf("")};var icon by remember{mutableStateOf("layers")};var saving by remember{mutableStateOf(false)}
+    var bindings by rememberSaveable(raw,stateSaver=PlanBindingsSaver){mutableStateOf(initial.steps.indices.map{boundCalls.getOrNull(it)})}
+    var reviewedInputs by rememberSaveable(raw){mutableStateOf("")}
+    val scope=rememberCoroutineScope();var steps by rememberSaveable(raw){mutableStateOf(initial.steps.map(::text))};var rows by remember(raw){mutableStateOf<List<ReviewedStep>>(emptyList())};var selected by rememberSaveable(raw,stateSaver=PlanSelectionSaver){mutableStateOf(setOf<Int>())};var status by rememberSaveable(raw,stateSaver=PlanStatusSaver){mutableStateOf(mapOf<Int,String>())};var busy by remember{mutableStateOf(false)};var job by remember{mutableStateOf<Job?>(null)};var editing by rememberSaveable(raw){mutableIntStateOf(-1)};var error by remember{mutableStateOf("")};var save by rememberSaveable(raw){mutableStateOf(false)};var name by rememberSaveable(raw){mutableStateOf("")};var alias by rememberSaveable(raw){mutableStateOf("")};var icon by rememberSaveable(raw){mutableStateOf("layers")};var saving by remember{mutableStateOf(false)}
     val state by app.shizuku.state.collectAsState();val write by app.shizuku.writeCapability.collectAsState()
-    LaunchedEffect(steps,bindings,c,state,write){if(!busy){val inputs=steps.toList() to bindings.toList();val prior=selected.toSet();val retain=reviewedInputs==inputs;status=emptyMap();error="";rows=emptyList();selected=emptySet();val parsed=steps.mapIndexed{i,value->bindings.getOrNull(i)?.let{NativeCommands.step(it){value.removePrefix("abrir ")}} ?: LocalPlan.step(value)};if(parsed.any{it==null}){rows=emptyList();selected=emptySet();error="Revisá el paso editado: brillo, volumen, abrir una app o controlar música."}else try{rows=resolvePlan(app,c,LocalPlan(parsed.filterNotNull()),bindings);selected=rows.indices.filter{rows[it].call!=null && (!retain || it in prior)}.toSet();reviewedInputs=inputs}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudieron comprobar los requisitos."}}}
+    LaunchedEffect(steps,bindings,c,state,write){if(!busy){val inputs=planDraftKey(steps,bindings);val prior=selected.toSet();val retain=reviewedInputs==inputs;if(!retain)status=emptyMap();error="";rows=emptyList();selected=emptySet();val parsed=steps.mapIndexed{i,value->bindings.getOrNull(i)?.let{NativeCommands.step(it){value.removePrefix("abrir ")}} ?: LocalPlan.step(value)};if(parsed.any{it==null}){rows=emptyList();selected=emptySet();error="Revisá el paso editado: brillo, volumen, abrir una app o controlar música."}else try{rows=resolvePlan(app,c,LocalPlan(parsed.filterNotNull()),bindings);selected=rows.indices.filter{rows[it].call!=null && (!retain || it in prior)}.toSet();reviewedInputs=inputs}catch(e:CancellationException){throw e}catch(e:Exception){error="No se pudieron comprobar los requisitos."}}}
     Column(Modifier.fillMaxWidth().heightIn(max=440.dp).verticalScroll(rememberScrollState()).padding(18.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Revisar plan",style=MaterialTheme.typography.titleMedium);Text("Editá, ordená u omití pasos. Solo se ejecutan después de confirmar.",style=MaterialTheme.typography.bodySmall)
         steps.forEachIndexed {i,value->
@@ -36,7 +37,7 @@ private fun text(step:PlanStep):String=when(step){is PlanStep.Brightness->"brill
             }}
         }
         if(rows.any{it.call==null})TextButton(onClick={onAction(if(steps.mapNotNull{LocalPlan.step(it)}.any{it is PlanStep.Media})Action.Access("notifications") else Action.SystemPanel("shizuku"))}){Text("Revisar permisos y servicios")}
-        Button(enabled=!busy && selected.isNotEmpty() && rows.size==steps.size && status.isEmpty(),onClick={if(reviewedInputs!=(steps.toList() to bindings.toList()) || rows.size!=steps.size || selected.isEmpty())return@Button;busy=true;editing=-1;val chosen=selected;val review=rows.toList();job=scope.launch{try{
+        Button(enabled=!busy && selected.isNotEmpty() && rows.size==steps.size && status.isEmpty(),onClick={if(reviewedInputs!=planDraftKey(steps,bindings) || rows.size!=steps.size || selected.isEmpty())return@Button;busy=true;editing=-1;val chosen=selected;val review=rows.toList();job=scope.launch{try{
             PlanExecution(execute={call->ToolExecutor(app).execute(call,app.preferences.config.first(),true)},dispatch={result->
                 val launch=result.action as? Action.Launch ?: error("Esta acción necesita revisión individual antes de continuar.")
                 app.startActivity(Intent(launch.intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

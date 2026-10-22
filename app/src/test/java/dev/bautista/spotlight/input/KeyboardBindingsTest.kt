@@ -40,4 +40,11 @@ class KeyboardBindingsTest {
         assertFalse(KeyboardBindings.validEntries(setOf("unknown=1:0:0:45")))
         assertFalse(KeyboardBindings.validEntries(setOf("actions=1:0:0:45","actions=1:0:0:46")))
     }
+    @Test fun backupCannotBypassReservedOrConflictingCombinations() {
+        val current=dev.bautista.spotlight.data.Config()
+        for(entry in listOf("actions=1:0:0:${KeyEvent.KEYCODE_C}","actions=1:0:0:${KeyEvent.KEYCODE_M}")) {
+            val unsafe=current.copy(keyBindings=setOf(entry))
+            assertTrue(runCatching{ConfigTransfer.decode(ConfigTransfer.encode(unsafe),current)}.isFailure)
+        }
+    }
 }
