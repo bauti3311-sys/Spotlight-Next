@@ -1,0 +1,131 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=40143 -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=40143 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest
+> Task :app:processRaycastPreviewManifest
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeDebugMetadata NO-SOURCE
+> Task :app:mergeRaycastPreviewShaders UP-TO-DATE
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets UP-TO-DATE
+> Task :app:compressRaycastPreviewAssets UP-TO-DATE
+> Task :app:checkRaycastPreviewDuplicateClasses UP-TO-DATE
+> Task :app:desugarRaycastPreviewFileDependencies UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage
+> Task :app:mergeExtDexRaycastPreview
+> Task :app:mergeExtDexRaycastPreview UP-TO-DATE
+> Task :app:mergeLibDexRaycastPreview UP-TO-DATE
+> Task :app:mergeRaycastPreviewJniLibFolders UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeLibs UP-TO-DATE
+
+> Task :app:stripRaycastPreviewDebugSymbols
+Unable to strip the following libraries, packaging them as they are: .libmlkitcommonpipeline.so.oRaOta, .libonnxruntime.so.mr0HOE, .libtranslate_jni.so.K5R5DC.
+
+> Task :app:validateSigningRaycastPreview UP-TO-DATE
+> Task :app:writeRaycastPreviewAppMetadata UP-TO-DATE
+> Task :app:writeRaycastPreviewSigningConfigVersions UP-TO-DATE
+> Task :app:processRaycastPreviewResources
+> Task :app:compileRaycastPreviewKotlin UP-TO-DATE
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:generateRaycastPreviewLintReportModel
+> Task :app:bundleRaycastPreviewClassesToCompileJar UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestLintModel
+> Task :app:lintAnalyzeRaycastPreview
+> Task :app:lintAnalyzeRaycastPreviewUnitTest
+> Task :app:dexBuilderRaycastPreview
+> Task :app:mergeProjectDexRaycastPreview
+> Task :app:mergeRaycastPreviewGlobalSynthetics UP-TO-DATE
+> Task :app:processRaycastPreviewJavaRes UP-TO-DATE
+> Task :app:mergeRaycastPreviewJavaResource
+> Task :app:packageRaycastPreview
+> Task :app:createRaycastPreviewApkListingFileRedirect
+> Task :app:assembleRaycastPreview
+
+> Task :app:lintReportRaycastPreview
+Wrote HTML report to file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/build/reports/lint-results-raycastPreview.html
+
+> Task :app:lintRaycastPreview FAILED
+Lint found 1 errors, 13 warnings. First failure:
+
+/workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt:61: Error: produceState calls should assign value inside the producer lambda [ProduceStateDoesNotAssignValue from androidx.compose.runtime]
+        val dictationAvailable by produceState(false,context) {
+                                  ~~~~~~~~~~~~
+
+   Explanation for issues of type "ProduceStateDoesNotAssignValue":
+   produceState returns an observable State using values assigned inside the
+   producer lambda. If the lambda never assigns (i.e value = foo), then the
+   State will never change. Make sure to assign a value when the source you
+   are producing values from changes / emits a new value. For sample usage see
+   the produceState documentation.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.runtime
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+
+The full lint text report is located at:
+  /workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/build/intermediates/lint_intermediate_text_report/raycastPreview/lintReportRaycastPreview/lint-results-raycastPreview.txt
+w: Detected multiple Kotlin daemon sessions at 
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:lintRaycastPreview'.
+> Lint found errors in the project; aborting build.
+  
+  Fix the issues identified by lint, or create a baseline to see only new errors.
+  To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+  ```
+  android {
+      lint {
+          baseline = file("lint-baseline.xml")
+      }
+  }
+  ```
+  For more details, see https://developer.android.com/studio/write/lint#snapshot
+  
+  Lint found 1 errors, 13 warnings. First failure:
+  
+  /workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt:61: Error: produceState calls should assign value inside the producer lambda [ProduceStateDoesNotAssignValue from androidx.compose.runtime]
+          val dictationAvailable by produceState(false,context) {
+                                    ~~~~~~~~~~~~
+  
+     Explanation for issues of type "ProduceStateDoesNotAssignValue":
+     produceState returns an observable State using values assigned inside the
+     producer lambda. If the lambda never assigns (i.e value = foo), then the
+     State will never change. Make sure to assign a value when the source you
+     are producing values from changes / emits a new value. For sample usage see
+     the produceState documentation.
+  
+     Vendor: Jetpack Compose
+     Identifier: androidx.compose.runtime
+     Feedback: https://issuetracker.google.com/issues/new?component=612128
+  
+  
+  The full lint text report is located at:
+    /workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/build/intermediates/lint_intermediate_text_report/raycastPreview/lintReportRaycastPreview/lint-results-raycastPreview.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3m 27s
+45 actionable tasks: 17 executed, 28 up-to-date

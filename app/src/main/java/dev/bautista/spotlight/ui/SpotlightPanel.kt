@@ -58,8 +58,9 @@ fun SpotlightPanel(
                     ?.hideSoftInputFromWindow(token, 0)
             }
         }
-        val dictationAvailable by produceState(false,context) {
-            value=withContext(Dispatchers.IO) { runCatching { context.packageManager.resolveActivity(Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH),0)!=null }.getOrDefault(false) }
+        var dictationAvailable by remember(context) { mutableStateOf(false) }
+        LaunchedEffect(context) {
+            dictationAvailable=withContext(Dispatchers.IO) { runCatching { context.packageManager.resolveActivity(Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH),0)!=null }.getOrDefault(false) }
         }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
