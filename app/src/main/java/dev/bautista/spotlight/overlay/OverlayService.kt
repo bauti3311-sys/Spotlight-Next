@@ -44,11 +44,12 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var recoveryRegistry:SaveableStateRegistry?=null
     private var recoveryJob:Job?=null
     private var recoveryStorageBlocked=false
+    private var recoverySuppressed=false
     private var recoveryLoaded=false
     private var recoveryNotice=""
     private suspend fun checkpointTask() {
         val state=withContext(Dispatchers.Main.immediate){recoveryRegistry?.performSave()}
-        if(!config.privateMode && state!=null){app.contexts.saveOverlaySnapshot(state);recoveryStorageBlocked=false}
+        if(!config.privateMode && !recoverySuppressed && state!=null){app.contexts.saveOverlaySnapshot(state);recoveryStorageBlocked=false}
     }
     private fun clearRecovery() {
         val pending=recoveryJob;pending?.cancel();recoveryJob=null
@@ -71,7 +72,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         get() = application as SpotlightApp
 
     private var config by androidx.compose.runtime.mutableStateOf(Config())
-    private var initialQuery = ""
+    private var initialQuery by mutableStateOf("")
+    private var incomingQueryRevision by mutableIntStateOf(0)
     private var invocation = "touch"
     private var contentExpanded=false
     private val widthTransition = OverlayWidthTransition()
@@ -181,10 +183,13 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 .build(),
         )
         if (view != null || showJob?.isActive == true) {
+            val requested=intent?.getStringExtra("query")?.take(4000).orEmpty()
+            if(requested.isNotBlank()){initialQuery=requested;incomingQueryRevision++;return START_NOT_STICKY}
             close()
             return START_NOT_STICKY
         }
         initialQuery = intent?.getStringExtra("query")?.take(4000) ?: ""
+        if(initialQuery.isNotBlank())incomingQueryRevision++
         invocation=intent?.getStringExtra("invocation") ?: "touch"
         app.diagnostics.beginOpening()
         showJob =
@@ -194,12 +199,12 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     config=next
                     if(!recoveryLoaded){
                         recoveryLoaded=true
-                        val restored=if(initialQuery.isBlank() && !next.privateMode)runCatching{app.contexts.overlaySnapshot()}.onFailure{recoveryNotice="La sesión guardada no pudo recuperarse. Se conservó el archivo."}.getOrNull() else null
+                        val restored=if(!next.privateMode)runCatching{app.contexts.overlaySnapshot()}.onFailure{recoveryStorageBlocked=true;recoveryNotice="La sesión guardada no pudo recuperarse. Se conservó el archivo."}.getOrNull() else null
                         recoveryRegistry=SaveableStateRegistry(restored,OverlaySnapshotCodec::canSave)
                         if(restored!=null)recoveryNotice="Sesión local recuperada. Revisá las operaciones interrumpidas antes de repetirlas."
-                        if(initialQuery.isNotBlank() || next.privateMode)app.contexts.saveOverlaySnapshot(null)
+                        if(next.privateMode)app.contexts.saveOverlaySnapshot(null)
                     }
-                    if(next.privateMode && !old.privateMode)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(null)}}
+                    if(next.privateMode){recoverySuppressed=true;if(!old.privateMode)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(null)}}}
                     if(view==null && !closing)show()
                     else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
                         refreshWindowGeometry()
@@ -256,6 +261,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                         config,
                         onClose = { close() },
                         initialQuery = initialQuery,
+                        incomingQueryRevision=incomingQueryRevision,
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
                         onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry(animateWidth = true)}},
@@ -288,7 +294,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 // Only while the existing overlay is visible. No service/timer survives close.
                 // Sampling also catches providers registered by child compositions after a frame.
                 while(isActive && view===host){
-                    if(!config.privateMode && !recoveryStorageBlocked)try {
+                    if(!config.privateMode && !recoverySuppressed && !recoveryStorageBlocked)try {
                         val snapshot=recoveryRegistry?.performSave().orEmpty()
                         if(snapshot.isNotEmpty()) {
                             val encoded=withContext(Dispatchers.IO){OverlaySnapshotCodec.encode(snapshot).toString()}
@@ -408,7 +414,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     override fun onDestroy() {
-        if(!closing){val snapshot=recoveryRegistry?.performSave();recoveryJob?.cancel();if(snapshot!=null)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(snapshot)}}}
+        if(!closing){val snapshot=recoveryRegistry?.performSave();recoveryJob?.cancel();if(snapshot!=null && !recoverySuppressed)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(snapshot)}}}
         closing=true
         recoveryJob?.cancel()
         widthTransition.cancel()

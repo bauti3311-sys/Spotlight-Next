@@ -33,6 +33,6 @@ class AliasTemplateRankingTest {
   app.search.invalidateApps()
   val c=AppConfig(files=false,contacts=false,learning=false,aliases=setOf("spotify|volumen"))
   val rows=app.search.search("Spotify",c).last()
-  assertEquals("Spotify",CompactResults.select("Spotify",rows,c).initial.first().title)
+  assertEquals("labels="+app.packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),0).map{it.loadLabel(app.packageManager).toString()}+" rows="+rows.map{it.id+":"+it.title},"Spotify",CompactResults.select("Spotify",rows,c).initial.first().title)
  }
 }

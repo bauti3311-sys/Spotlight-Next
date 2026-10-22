@@ -48,6 +48,7 @@ fun SpotlightPanel(
     onActionsVisibility:(Boolean)->Unit={},
     aiClient:DirectAi?=null,
     fileSelection:dev.bautista.spotlight.data.FileBuffer?=null,
+    incomingQueryRevision:Int=0,
 ) =
     SpotlightTheme(config.theme, config) {
         val context = LocalContext.current
@@ -76,6 +77,7 @@ fun SpotlightPanel(
         var notificationKey by rememberSaveable {mutableStateOf<String?>(null)}
         var audioPanel by rememberSaveable { mutableStateOf(false) }
         var showAi by rememberSaveable { mutableStateOf(false) }
+        var aiGeneration by remember{mutableIntStateOf(0)}
         var aiJob by remember { mutableStateOf<Job?>(null) }
         var pendingAsk by rememberSaveable(stateSaver=AskTaskSaver) {mutableStateOf<Action.Ask?>(null)}
         var pendingWorkflow by rememberSaveable(stateSaver=WorkflowTaskSaver) {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
@@ -166,12 +168,13 @@ fun SpotlightPanel(
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
         val conversation = rememberSaveable(saver=ConversationTaskSaver) { mutableListOf<Pair<String, String>>() }
         val aiSessions=rememberSaveable(saver=InspectorAiSessionsSaver){InspectorAiSessions()}
+        var aiWasInterrupted by rememberSaveable{mutableStateOf(false)}
         var pendingAiPrompt by rememberSaveable{mutableStateOf("")}
         var aiContextDestination by rememberSaveable{mutableStateOf("")}
         val aiDestination=taskFingerprint(config.aiProvider+"|"+config.endpoint)
         LaunchedEffect(Unit) {
-            if((aiLoading || pendingAiPrompt.isNotBlank()) && aiJob==null){
-                aiLoading=false
+            if((aiLoading || pendingAiPrompt.isNotBlank() || aiWasInterrupted) && aiJob==null){
+                aiLoading=false;aiWasInterrupted=true
                 if(pendingAiPrompt.isNotBlank()){
                     if(aiText.isNotBlank()){conversation.add("user" to pendingAiPrompt);conversation.add("assistant" to aiText);while(conversation.size>12)conversation.removeAt(0)}
                     else followUp=pendingAiPrompt
@@ -223,6 +226,13 @@ fun SpotlightPanel(
                 query=previous.query;category=previous.category;searchScope=previous.scope;selected=previous.selected
             } else {searchScope=null;category="Todo"}
             runCatching{focus.requestFocus()}
+        }
+        LaunchedEffect(incomingQueryRevision) {
+            if(incomingQueryRevision>0){
+                clearForms();inspectorPinned=false;pinnedPreview=null;pinnedCard=null;preview=null;card=null
+                query=initialQuery;searchScope=null;category="Todo";selected=0;menu=false;navigating=false
+                runCatching{focus.requestFocus()}
+            }
         }
         fun selectMode(mode:String,clearQuery:Boolean=false) {
             if(!clearQuery && mode==category && searchScope?.section !in setOf("files","results"))return
@@ -562,6 +572,7 @@ fun SpotlightPanel(
                             val turns=conversation.toList()+if(pendingAiPrompt.isNotBlank())listOf("user" to pendingAiPrompt,"assistant" to aiText) else emptyList()
                             aiSessions.put(aiSessionKey,InspectorAiSnapshot(aiText,turns.takeLast(12),aiMessageTarget,pendingAiPrompt.isNotBlank()))
                         }
+                        val requestGeneration=++aiGeneration
                         aiJob?.cancel()
                         val taskKey=if(request.continuation && aiSessionKey.isNotBlank())aiSessionKey
                             else org.json.JSONObject().put("provider",config.aiProvider).put("model",config.aiModel).put("endpoint",config.endpoint)
@@ -569,7 +580,7 @@ fun SpotlightPanel(
                                 .put("turns",org.json.JSONArray(request.priorMessages.map{listOf(it.first,it.second)})).toString().let(::taskFingerprint)
                         if(!request.continuation)aiSessions.get(taskKey)?.let{saved->
                             aiSessionKey=taskKey;aiText=saved.text;conversation.clear();conversation.addAll(saved.turns)
-                            aiMessageTarget=saved.messageTarget;aiLoading=false;aiSaveStatus=if(saved.interrupted)"Respuesta parcial recuperada. Podés continuarla explícitamente." else "Conversación de esta tarea recuperada localmente."
+                            aiMessageTarget=saved.messageTarget;aiLoading=false;aiWasInterrupted=saved.interrupted;aiContextDestination=aiDestination;aiSaveStatus=if(saved.interrupted)"Respuesta parcial recuperada. Podés continuarla explícitamente." else "Conversación de esta tarea recuperada localmente."
                             return
                         }
                         aiSessionKey=taskKey
@@ -579,6 +590,7 @@ fun SpotlightPanel(
                         aiSaveStatus=""
                         aiMessageTarget=request.messageTarget
                         aiLoading = true
+                        aiWasInterrupted=false
                         pendingAiPrompt=request.prompt
                         aiContextDestination=aiDestination
                         val priorTurns=conversation.takeLast(10).toList()
@@ -590,27 +602,27 @@ fun SpotlightPanel(
                                             config,
                                             priorTurns + listOf("user" to request.prompt),
                                         )
-                                        .collect { if(aiSessionKey==taskKey)aiText += it }
-                                    if(aiSessionKey!=taskKey)return@launch
+                                        .collect { if(aiSessionKey==taskKey && aiGeneration==requestGeneration)aiText += it }
+                                    if(aiSessionKey!=taskKey || aiGeneration!=requestGeneration)return@launch
                                     pendingAiPrompt=""
                                     conversation.add("user" to request.prompt)
                                     conversation.add("assistant" to aiText)
                                     while (conversation.size > 12) conversation.removeAt(0)
                                     aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget))
                                 } catch (e: CancellationException) {
-                                    if(aiSessionKey==taskKey && pendingAiPrompt.isNotBlank()) {
+                                    if(aiSessionKey==taskKey && aiGeneration==requestGeneration && pendingAiPrompt.isNotBlank()) {
                                         if(aiText.isNotBlank()){
                                             conversation.add("user" to pendingAiPrompt);conversation.add("assistant" to aiText)
                                             while(conversation.size>12)conversation.removeAt(0)
                                             aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget,true))
                                         } else followUp=pendingAiPrompt
-                                        pendingAiPrompt="";aiSaveStatus="Respuesta interrumpida. No se reanudó ningún envío."
+                                        pendingAiPrompt="";aiWasInterrupted=true;aiSaveStatus="Respuesta interrumpida. No se reanudó ningún envío."
                                     }
                                     throw e
                                 } catch (e: Exception) {
-                                    if(aiSessionKey==taskKey)error = e.message ?: "No se pudo consultar IA"
+                                    if(aiSessionKey==taskKey && aiGeneration==requestGeneration)error = e.message ?: "No se pudo consultar IA"
                                 } finally {
-                                    if(aiSessionKey==taskKey)aiLoading = false
+                                    if(aiSessionKey==taskKey && aiGeneration==requestGeneration)aiLoading = false
                                 }
                             }
                     }

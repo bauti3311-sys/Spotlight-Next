@@ -10,7 +10,7 @@ internal class InspectorAiSessions {
             for(i in 0 until a.length()) {val j=a.getJSONObject(i);val t=j.getJSONArray("turns");require(t.length()<=12 && t.length()%2==0)
                 val turns=(0 until t.length()).map{n->val p=t.getJSONArray(n);p.getString(0) to p.getString(1)}
                 require(turns.withIndex().all{(n,p)->p.first==if(n%2==0)"user" else "assistant"})
-                put(j.getString("key"),InspectorAiSnapshot(j.getString("text"),turns,j.getString("target"),j.optBoolean("interrupted"))))
+                put(j.getString("key"),InspectorAiSnapshot(j.getString("text"),turns,j.getString("target"),j.optBoolean("interrupted")))
             }
         }
     }

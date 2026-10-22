@@ -20,7 +20,7 @@ import kotlinx.coroutines.*
     var status by remember{mutableStateOf("")};var busy by remember{mutableStateOf(false)};var job by remember{mutableStateOf<Job?>(null)}
     DisposableEffect(Unit){onDispose{job?.cancel()}}
     Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-        listOf("openai" to "OpenAI","gemini" to "Gemini","backend" to "Backend avanzado").forEach{(id,label)->FilterChip(config.aiProvider==id,{update(config.copy(aiProvider=id,aiModel=AiProtocol.defaultModel(id)))},enabled=!busy,label={Text(label)})}
+        listOf("gemini" to "Gemini","openai" to "OpenAI","backend" to "Backend avanzado").forEach{(id,label)->FilterChip(config.aiProvider==id,{update(config.copy(aiProvider=id,aiModel=AiProtocol.defaultModel(id)))},enabled=!busy,label={Text(label)})}
     }
     if(config.aiProvider!="backend") {
         OutlinedTextField(key,{key=it},label={Text(if(vault.contains(config.aiProvider))"Reemplazar API key guardada" else "API key")},enabled=!busy,visualTransformation=PasswordVisualTransformation(),singleLine=true,modifier=Modifier.fillMaxWidth())

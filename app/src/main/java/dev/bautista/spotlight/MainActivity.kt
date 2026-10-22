@@ -198,6 +198,9 @@ class MainActivity : ComponentActivity() {
                             Section("Transferir configuración") {
                                 Text("Preferencias, favoritos y alias. Los datos heredados se conservan; las claves, historiales, permisos y accesos a archivos permanecen en cada dispositivo.")
                                 Row{OutlinedButton(onClick={configExport.launch("Spotlight-configuracion.json")}){Text("Exportar")};TextButton(onClick={configImport.launch(arrayOf("application/json","text/plain"))}){Text("Importar")}}
+                                ConfirmedSettingsButton("Descartar sesión recuperable guardada","Elimina solo la recuperación del overlay. No elimina tus contextos, conversaciones guardadas ni preferencias; la tarea abierta se conserva.") {
+                                    scope.launch {runCatching{app.contexts.discardOverlaySnapshot()}.onSuccess{transferMessage="Sesión recuperable descartada."}.onFailure{transferMessage=it.message ?: "No se pudo descartar la sesión."}}
+                                }
                                 if(transferMessage.isNotBlank())Text(transferMessage)
                                 importPreview?.let{raw->run{Text("Revisar importación");Text(importSummary);Row{Button(onClick={scope.launch{runCatching{app.preferences.importPortable(raw)}.onSuccess{transferMessage="Configuración importada. Revisá las apps disponibles en este dispositivo.";importPreview=null}.onFailure{transferMessage=it.message.orEmpty()}}}){Text("Confirmar importación")};TextButton(onClick={importPreview=null}){Text("Cancelar")}}}}
                             }

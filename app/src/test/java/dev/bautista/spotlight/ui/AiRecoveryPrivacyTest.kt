@@ -2,6 +2,8 @@ package dev.bautista.spotlight.ui
 import dev.bautista.spotlight.search.*
 import org.junit.Test
 import org.junit.Assert.*
+@org.junit.runner.RunWith(org.robolectric.RobolectricTestRunner::class)
+@org.robolectric.annotation.Config(sdk=[33],application=android.app.Application::class)
 class AiRecoveryPrivacyTest {
  @Test fun changingDestinationRequiresReviewOfAllPriorContext() {
   val turns=listOf("user" to "Documento privado","assistant" to "Respuesta")

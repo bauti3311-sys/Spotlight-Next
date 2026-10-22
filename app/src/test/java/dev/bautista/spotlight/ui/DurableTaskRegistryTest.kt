@@ -37,7 +37,7 @@ class DurableTaskRegistryTest {
    }
   }
   ui.onNodeWithTag("tool-argument-0-text").performTextReplacement("Argumento conservado en disco")
-  ui.onNodeWithTag("tool-execute-0").performClick()
+  ui.onNodeWithTag("tool-execute-0").performScrollTo().performClick()
   ui.waitUntil(10000){effects==1}
   val disk=runBlocking{ContextStore(app,app.scope,app.preferences).overlaySnapshot()}
   assertNotNull(disk);assertNotNull(registry)
@@ -54,7 +54,7 @@ class DurableTaskRegistryTest {
     AiToolTaskPanel(app,AppConfig(),"Fixture",{},ToolPlan("",listOf(ToolCall("create_note",mapOf("text" to "No ejecutar")))),executeOverride={effects++;ToolExecution("unexpected")})
    }
   }}
-  ui.onNodeWithTag("tool-execute-0").performClick()
+  ui.onNodeWithTag("tool-execute-0").performScrollTo().performClick()
   ui.waitUntil(10000){ui.onAllNodesWithText("No se pudo guardar la recuperación").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithText("No se pudo guardar la recuperación").assertExists();assertEquals(0,effects)
  }

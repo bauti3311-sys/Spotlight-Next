@@ -51,7 +51,7 @@ class SearchEngine(
         }
 
     private suspend fun expandAliases(input:String,aliases:Set<String>):String {
-        if(aliases.isEmpty())return input
+        if(aliases.none{normalize(it.substringBefore('|'))==normalize(input.trim().substringBefore(' '))})return input
         // A user alias can never hide an installed application with that exact name.
         if(appList().any{normalize(it.label)==normalize(input.trim())})return input
         return dev.bautista.spotlight.personal.PersonalCommands.expand(input,aliases)

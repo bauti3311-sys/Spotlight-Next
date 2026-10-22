@@ -20,7 +20,7 @@ import org.json.JSONObject
 @Composable fun PrivacySettings(app:SpotlightApp,c:Config,update:(Config)->Unit) {
  val scope=rememberCoroutineScope()
  Row{Text("Modo privado",Modifier.weight(1f));Switch(c.privateMode,{update(c.copy(privateMode=it))})}
- Text("Suspende nuevas capturas y aprendizaje sin borrar datos. Las consultas manuales de IA se revisan antes de enviarse.",style=MaterialTheme.typography.bodySmall)
+ Text("Suspende capturas, aprendizaje y recuperación durable de esta ventana. Descarta su recuperación temporal; los guardados explícitos se conservan. Las consultas manuales de IA se revisan antes de enviarse.",style=MaterialTheme.typography.bodySmall)
  Row{Text("Ofrecer contexto del portapapeles al abrir",Modifier.weight(1f));Switch(c.captureContext,{update(c.copy(captureContext=it))},enabled=!c.privateMode)}
  Text("Solo con Spotlight enfocado. El contenido marcado sensible no se captura.",style=MaterialTheme.typography.bodySmall)
  val data=runCatching{JSONObject(c.usageData)}.getOrDefault(JSONObject())

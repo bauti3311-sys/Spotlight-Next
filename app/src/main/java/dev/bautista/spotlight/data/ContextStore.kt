@@ -22,6 +22,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private var started=false
     private var loadJob:Job?=null
     private var storageReady=false
+    private var overlayReadable=true
     private val mutableStorageIssue=MutableStateFlow<String?>(null)
     val storageIssue=mutableStorageIssue.asStateFlow()
     private var original=JSONObject()
@@ -187,22 +188,35 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         val out=file.startWrite();try{out.write(root.toString().toByteArray());file.finishWrite(out)}catch(e:Exception){file.failWrite(out);throw e}
     }
     /** Overlay recovery shares this private, atomic store; it is never in portable exports. */
-    suspend fun overlaySnapshot():Map<String,List<Any?>>? {
+    suspend fun overlaySnapshot():Map<String,List<Any?>>?=withContext(Dispatchers.IO) {
         start();loadJob?.join()
-        return lock.withLock {
+        if(!preferences.ready)preferences.config.first()
+        lock.withLock {
             check(storageReady){"No se pudo leer la recuperación local. Los datos anteriores se conservaron."}
             if(preferences.isPrivate)return@withLock null
-            original.optJSONObject("overlayRecovery")?.let(OverlaySnapshotCodec::decode)
+            try{if(original.has("overlayRecovery"))OverlaySnapshotCodec.decode(original.getJSONObject("overlayRecovery")) else null}
+            catch(e:Exception){overlayReadable=false;throw e}
         }
     }
     suspend fun saveOverlaySnapshot(state:Map<String,List<Any?>>?)=withContext(Dispatchers.IO) {
         start();loadJob?.join()
         lock.withLock {
             check(storageReady){"No se pudo guardar la recuperación local. No se autorizó la operación."}
+            check(overlayReadable || preferences.isPrivate){"La sesión anterior es incompatible. Descartala explícitamente desde Ajustes antes de reemplazarla."}
             val encoded=if(state==null || preferences.isPrivate)null else OverlaySnapshotCodec.encode(state)
             val previous=original
             original=JSONObject(original.toString()).apply{if(encoded==null)remove("overlayRecovery") else put("overlayRecovery",encoded)}
             try{withContext(NonCancellable){save()}}catch(e:Exception){original=previous;throw e}
+        }
+    }
+    suspend fun discardOverlaySnapshot()=withContext(Dispatchers.IO) {
+        start();loadJob?.join()
+        lock.withLock {
+            check(storageReady){"No se pudo leer el archivo de contextos. Se conservó intacto."}
+            val previous=original;val priorReadable=overlayReadable
+            original=JSONObject(original.toString()).apply{remove("overlayRecovery")}
+            try{withContext(NonCancellable){save()};overlayReadable=true}
+            catch(e:Exception){original=previous;overlayReadable=priorReadable;throw e}
         }
     }
     fun results(query:String):List<Result> {
