@@ -1,6 +1,8 @@
 package dev.bautista.spotlight.data
 
 import org.json.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotMutableState
 
 /** Typed Compose saved values only. Never Parcel, Java deserialization, Intent, grant or bitmap. */
 internal object OverlaySnapshotCodec {
@@ -12,6 +14,14 @@ internal object OverlaySnapshotCodec {
             fun tagged(type:String,data:Any)=JSONObject().put("t",type).put("v",data)
             return when(v){
                 null -> JSONObject.NULL
+                is MutableIntState -> tagged("si",v.intValue)
+                is MutableLongState -> tagged("sl",v.longValue.toString())
+                is MutableFloatState -> {require(v.floatValue.isFinite());tagged("sf",v.floatValue.toDouble())}
+                is MutableDoubleState -> {require(v.doubleValue.isFinite());tagged("sd",v.doubleValue)}
+                is SnapshotMutableState<*> -> {
+                    val policy=when(v.policy){structuralEqualityPolicy<Any?>()->"s";referentialEqualityPolicy<Any?>()->"r";neverEqualPolicy<Any?>()->"n";else->error("Política de estado no compatible.")}
+                    tagged("state",JSONObject().put("policy",policy).put("value",value(v.value,depth+1)))
+                }
                 is String -> {require(v.length<=96000);tagged("s",v)}
                 is Boolean -> tagged("b",v)
                 is Int -> tagged("i",v)
@@ -36,6 +46,14 @@ internal object OverlaySnapshotCodec {
             val j=raw as JSONObject;require(j.keys().asSequence().toSet()==setOf("t","v"))
             val v=j.get("v")
             return when(j.getString("t")){
+                "si" -> mutableIntStateOf((v as Number).toInt())
+                "sl" -> mutableLongStateOf((v as String).toLong())
+                "sf" -> mutableFloatStateOf((v as Number).toFloat().also{require(it.isFinite())})
+                "sd" -> mutableDoubleStateOf((v as Number).toDouble().also{require(it.isFinite())})
+                "state" -> (v as JSONObject).let { state ->
+                    val policy=when(state.getString("policy")){"s"->structuralEqualityPolicy<Any?>();"r"->referentialEqualityPolicy<Any?>();"n"->neverEqualPolicy<Any?>();else->error("Política no compatible.")}
+                    mutableStateOf(value(state.get("value"),depth+1),policy)
+                }
                 "s" -> (v as String).also{require(it.length<=96000)}
                 "b" -> v as Boolean
                 "i" -> (v as Number).toLong().also{require(it in Int.MIN_VALUE..Int.MAX_VALUE && v.toDouble()==it.toDouble())}.toInt()
@@ -53,6 +71,8 @@ internal object OverlaySnapshotCodec {
     fun canSave(value:Any):Boolean {
         fun supported(v:Any?,depth:Int):Boolean=depth<=32 && when(v){
             null,is String,is Boolean,is Int,is Long -> true
+            is SnapshotMutableState<*> -> supported(v.value,depth+1) && v.policy in listOf(structuralEqualityPolicy<Any?>(),referentialEqualityPolicy<Any?>(),neverEqualPolicy<Any?>())
+            is MutableIntState,is MutableLongState,is MutableFloatState,is MutableDoubleState -> true
             is Float -> v.isFinite()
             is Double -> v.isFinite()
             is List<*> -> v.all{supported(it,depth+1)}

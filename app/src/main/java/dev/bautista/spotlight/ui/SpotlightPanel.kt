@@ -52,6 +52,7 @@ fun SpotlightPanel(
     SpotlightTheme(config.theme, config) {
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
+        val checkpointTask=LocalTaskCheckpoint.current
         val keyboard = LocalSoftwareKeyboardController.current
         val platformView = LocalView.current
         fun hideKeyboardForActions() {
@@ -115,7 +116,7 @@ fun SpotlightPanel(
         var pinnedCard by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
         // Moving between the tablet column and phone sheet must retain edited form state.
         val contextDrafts=rememberSaveableStateHolder()
-        val recentDrafts=remember{mutableListOf<String>()}
+        val recentDrafts=rememberSaveable(saver=ContextDraftKeysSaver){mutableListOf<String>()}
         val inspectorHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
         var expandedPreview by rememberSaveable {mutableStateOf(false)}
         val previewPages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf<String,Int>()}
@@ -157,17 +158,28 @@ fun SpotlightPanel(
         var pinned by remember { mutableStateOf(config.pins) }
         var noteEditor by rememberSaveable { mutableStateOf(false) }
         var draft by rememberSaveable { mutableStateOf("") }
-        var aiMessageTarget by remember {mutableStateOf("")}
+        var aiMessageTarget by rememberSaveable {mutableStateOf("")}
         var aiText by rememberSaveable { mutableStateOf("") }
         var aiLoading by rememberSaveable { mutableStateOf(false) }
         var aiSaving by remember { mutableStateOf(false) }
         var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
-        LaunchedEffect(Unit) {
-            if(aiLoading && aiJob==null){aiLoading=false;aiSaveStatus="Respuesta interrumpida. El texto parcial se conservó; no se reanudó ningún envío."}
-        }
         val conversation = rememberSaveable(saver=ConversationTaskSaver) { mutableListOf<Pair<String, String>>() }
-        val aiSessions=remember{InspectorAiSessions()}
+        val aiSessions=rememberSaveable(saver=InspectorAiSessionsSaver){InspectorAiSessions()}
+        var pendingAiPrompt by rememberSaveable{mutableStateOf("")}
+        var aiContextDestination by rememberSaveable{mutableStateOf("")}
+        val aiDestination=taskFingerprint(config.aiProvider+"|"+config.endpoint)
+        LaunchedEffect(Unit) {
+            if((aiLoading || pendingAiPrompt.isNotBlank()) && aiJob==null){
+                aiLoading=false
+                if(pendingAiPrompt.isNotBlank()){
+                    if(aiText.isNotBlank()){conversation.add("user" to pendingAiPrompt);conversation.add("assistant" to aiText);while(conversation.size>12)conversation.removeAt(0)}
+                    else followUp=pendingAiPrompt
+                    pendingAiPrompt=""
+                }
+                aiSaveStatus="Respuesta interrumpida. El texto parcial se conservó; no se reanudó ningún envío."
+            }
+        }
         var aiSessionKey by rememberSaveable{mutableStateOf("")}
         val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
         var favorites by remember { mutableStateOf(config.favorites) }
@@ -434,7 +446,7 @@ fun SpotlightPanel(
                 },failure={e->error=e.message ?: "No se pudieron extraer los documentos"})
                 return
             }
-            val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)
+            val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)?.let{AiRequestPolicy.revalidateContinuation(it,aiContextDestination,aiDestination,conversation.toList())}
             if(ask!=null && (AiRequestPolicy.requiresReview(ask) || ask.origin==AiInputOrigin.USER_QUERY && !ai.configured(config))){clearForms();preview=null;menu=false;pendingAsk=ask;return}
             if(query.isNotBlank() && (item.action is Action.Device || item.category=="Aplicaciones" && item.action is Action.Launch)) app.scope.launch { app.preferences.recordAction(query) }
             if(item.action !is Action.Navigate && item.action !is Action.RestoreQuery && item.action !is Action.ReadNotification && (item.action as? Action.ComposeMessage)?.replyKey==null) app.scope.launch { app.preferences.recordSelection(item.id) }
@@ -546,14 +558,18 @@ fun SpotlightPanel(
                         error = "Guardá tu API key en Ajustes → Inteligencia artificial."
                     } else {
                         push();clearForms();showAi=true;if(category !in setOf("Todo","Acciones","IA"))category="Todo";preview=null;menu=false
+                        if(aiSessionKey.isNotBlank() && aiText.isNotBlank()) {
+                            val turns=conversation.toList()+if(pendingAiPrompt.isNotBlank())listOf("user" to pendingAiPrompt,"assistant" to aiText) else emptyList()
+                            aiSessions.put(aiSessionKey,InspectorAiSnapshot(aiText,turns.takeLast(12),aiMessageTarget,pendingAiPrompt.isNotBlank()))
+                        }
                         aiJob?.cancel()
                         val taskKey=if(request.continuation && aiSessionKey.isNotBlank())aiSessionKey
                             else org.json.JSONObject().put("provider",config.aiProvider).put("model",config.aiModel).put("endpoint",config.endpoint)
                                 .put("origin",request.origin.name).put("prompt",request.prompt).put("target",request.messageTarget)
-                                .put("turns",org.json.JSONArray(request.priorMessages.map{listOf(it.first,it.second)})).toString()
+                                .put("turns",org.json.JSONArray(request.priorMessages.map{listOf(it.first,it.second)})).toString().let(::taskFingerprint)
                         if(!request.continuation)aiSessions.get(taskKey)?.let{saved->
                             aiSessionKey=taskKey;aiText=saved.text;conversation.clear();conversation.addAll(saved.turns)
-                            aiMessageTarget=saved.messageTarget;aiLoading=false;aiSaveStatus="Conversación de esta tarea recuperada localmente."
+                            aiMessageTarget=saved.messageTarget;aiLoading=false;aiSaveStatus=if(saved.interrupted)"Respuesta parcial recuperada. Podés continuarla explícitamente." else "Conversación de esta tarea recuperada localmente."
                             return
                         }
                         aiSessionKey=taskKey
@@ -563,24 +579,38 @@ fun SpotlightPanel(
                         aiSaveStatus=""
                         aiMessageTarget=request.messageTarget
                         aiLoading = true
+                        pendingAiPrompt=request.prompt
+                        aiContextDestination=aiDestination
+                        val priorTurns=conversation.takeLast(10).toList()
                         aiJob =
                             scope.launch {
                                 try {
+                                    checkpointTask()
                                     ai.answer(
                                             config,
-                                            conversation.takeLast(10) + listOf("user" to request.prompt),
+                                            priorTurns + listOf("user" to request.prompt),
                                         )
-                                        .collect { aiText += it }
+                                        .collect { if(aiSessionKey==taskKey)aiText += it }
+                                    if(aiSessionKey!=taskKey)return@launch
+                                    pendingAiPrompt=""
                                     conversation.add("user" to request.prompt)
                                     conversation.add("assistant" to aiText)
                                     while (conversation.size > 12) conversation.removeAt(0)
                                     aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget))
                                 } catch (e: CancellationException) {
+                                    if(aiSessionKey==taskKey && pendingAiPrompt.isNotBlank()) {
+                                        if(aiText.isNotBlank()){
+                                            conversation.add("user" to pendingAiPrompt);conversation.add("assistant" to aiText)
+                                            while(conversation.size>12)conversation.removeAt(0)
+                                            aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget,true))
+                                        } else followUp=pendingAiPrompt
+                                        pendingAiPrompt="";aiSaveStatus="Respuesta interrumpida. No se reanudó ningún envío."
+                                    }
                                     throw e
                                 } catch (e: Exception) {
-                                    error = e.message ?: "No se pudo consultar IA"
+                                    if(aiSessionKey==taskKey)error = e.message ?: "No se pudo consultar IA"
                                 } finally {
-                                    aiLoading = false
+                                    if(aiSessionKey==taskKey)aiLoading = false
                                 }
                             }
                     }
@@ -1242,7 +1272,7 @@ fun SpotlightPanel(
                             )
                         else if (
                             category in setOf("Todo", "Acciones", "IA") &&
-                                (aiLoading || aiText.isNotBlank()) &&
+                                (aiLoading || aiText.isNotBlank() || aiSaveStatus.isNotBlank()) &&
                                 showAi
                         )
                             Column(
@@ -1252,7 +1282,7 @@ fun SpotlightPanel(
                             ) {
                                 Text(if(config.aiProvider=="gemini")"Gemini · Inteligencia artificial" else "Inteligencia artificial", fontWeight = FontWeight.SemiBold)
                                 SelectionContainer {
-                                    if(aiText.isBlank())Text("Pensando…",lineHeight=23.sp) else AiMarkdown(aiText)
+                                    if(aiText.isBlank())Text(if(aiLoading)"Pensando…" else "No se recibió una respuesta. Podés revisar y volver a enviar tu pregunta.",lineHeight=23.sp) else AiMarkdown(aiText)
                                 }
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
                                 TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }

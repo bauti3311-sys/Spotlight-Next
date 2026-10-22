@@ -11,5 +11,8 @@ object AiRequestPolicy {
         ask.priorMessages.joinToString("\n\n"){(role,text)->"${if(role=="assistant")"Spotlight" else "Usuario"}: $text"}+"\n\nNueva pregunta:\n"+ask.prompt
     fun question(prompt: String, continuation: Boolean = false): Action.Ask =
         Action.Ask(prompt, origin = AiInputOrigin.USER_QUERY, continuation = continuation)
+    fun revalidateContinuation(ask:Action.Ask,previousDestination:String,currentDestination:String,turns:List<Pair<String,String>>):Action.Ask =
+        if(ask.continuation && !ask.reviewed && turns.isNotEmpty() && previousDestination!=currentDestination)
+            ask.copy(sensitive=true,origin=AiInputOrigin.PRIVATE_CONTEXT,priorMessages=turns.takeLast(10)) else ask
     fun authorize(ask: Action.Ask): Action.Ask = prepare(ask).copy(sensitive = false, reviewed = true)
 }

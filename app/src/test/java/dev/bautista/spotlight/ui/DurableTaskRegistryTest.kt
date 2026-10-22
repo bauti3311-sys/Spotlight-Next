@@ -55,6 +55,7 @@ class DurableTaskRegistryTest {
    }
   }}
   ui.onNodeWithTag("tool-execute-0").performClick()
+  ui.waitUntil(10000){ui.onAllNodesWithText("No se pudo guardar la recuperación").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithText("No se pudo guardar la recuperación").assertExists();assertEquals(0,effects)
  }
 }

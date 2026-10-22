@@ -29,6 +29,7 @@ class AliasTemplateRankingTest {
   val pm=Shadows.shadowOf(app.packageManager)
   pm.installPackage(PackageInfo().apply{packageName=info.packageName;applicationInfo=info;activities=arrayOf(activity)})
   pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+  pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(info.packageName),ResolveInfo().apply{activityInfo=activity})
   app.search.invalidateApps()
   val c=AppConfig(files=false,contacts=false,learning=false,aliases=setOf("spotify|volumen"))
   val rows=app.search.search("Spotify",c).last()
