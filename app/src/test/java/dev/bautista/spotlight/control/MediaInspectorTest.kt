@@ -73,8 +73,9 @@ class MediaInspectorTest {
         val target=session("target")
         val other=session("other")
         val values=mutableListOf<MediaSnapshot?>()
-        val job=launch{MediaControl.inspect(app,"target").collect{values+=it}}
-        yield()
+        val first=CompletableDeferred<MediaSnapshot?>()
+        val job=launch{MediaControl.inspect(app,"target").collect{values+=it;first.complete(it)}}
+        first.await()
         assertEquals(1,shadowOf(target).callbacks.size)
         assertEquals(0,shadowOf(other).callbacks.size)
         assertEquals("target",values.last()?.packageName)
