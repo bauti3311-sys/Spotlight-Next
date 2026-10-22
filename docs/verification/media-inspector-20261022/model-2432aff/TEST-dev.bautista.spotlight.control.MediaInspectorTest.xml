@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.MediaInspectorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-22T15:42:51" hostname="9f8b8cbf2200" time="27.884">
+  <properties/>
+  <testcase name="snapshotUsesOnlyTheExactPackageAndRealMetadata" classname="dev.bautista.spotlight.control.MediaInspectorTest" time="27.769"/>
+  <testcase name="disappearedSessionClearsSnapshotAndRejectsStaleControls" classname="dev.bautista.spotlight.control.MediaInspectorTest" time="0.03"/>
+  <testcase name="seekingRequiresSupportedActionAndSameLiveSession" classname="dev.bautista.spotlight.control.MediaInspectorTest" time="0.031"/>
+  <testcase name="ambiguousPackageNeverShowsMetadataOrDispatchesEvenIfOnlyOneSessionSupportsAction" classname="dev.bautista.spotlight.control.MediaInspectorTest" time="0.03"/>
+  <testcase name="progressIsClampedAndPausedOrUnknownPositionIsHonest" classname="dev.bautista.spotlight.control.MediaInspectorTest" time="0.024"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

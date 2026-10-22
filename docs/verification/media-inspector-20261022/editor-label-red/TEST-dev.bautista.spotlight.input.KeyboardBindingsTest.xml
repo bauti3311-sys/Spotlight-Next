@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.input.KeyboardBindingsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-22T15:53:25" hostname="9f8b8cbf2200" time="2.412">
+  <properties/>
+  <testcase name="malformedOrDuplicateEntriesAreRejected" classname="dev.bautista.spotlight.input.KeyboardBindingsTest" time="2.259"/>
+  <testcase name="backupCannotBypassReservedOrConflictingCombinations" classname="dev.bautista.spotlight.input.KeyboardBindingsTest" time="0.056"/>
+  <testcase name="newBindingReplacesOnlyItsOwnEntryAndModifiersMatchExactly" classname="dev.bautista.spotlight.input.KeyboardBindingsTest" time="0.04"/>
+  <testcase name="defaultsAndLegacyClipboardPreferenceRemainCompatible" classname="dev.bautista.spotlight.input.KeyboardBindingsTest" time="0.029"/>
+  <testcase name="conflictsIncludeOtherCommandsGlobalAndTextEditing" classname="dev.bautista.spotlight.input.KeyboardBindingsTest" time="0.027"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

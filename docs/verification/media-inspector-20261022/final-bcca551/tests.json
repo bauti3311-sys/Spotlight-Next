@@ -1,0 +1,298 @@
+{
+  "code_sha": "bcca55163a46e407d3899867f9c05507d479c5cb",
+  "unique_cases": 48,
+  "method": "Last actual result per class#method; overlapping rounds are not summed. Historical Preview36 59 are not added.",
+  "rounds": [
+    {
+      "directory": "model-2432aff",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "ui-2432aff-red",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "media-green-draft-fixture-red",
+      "tests": 4,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "draft-shortcuts-first-green",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "editor-label-red",
+      "tests": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "directed-f2cc29a",
+      "tests": 39,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "final-bcca551",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "cases": {
+    "dev.bautista.spotlight.control.MediaInspectorTest#snapshotUsesOnlyTheExactPackageAndRealMetadata": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml",
+      "seconds": "0.056"
+    },
+    "dev.bautista.spotlight.control.MediaInspectorTest#disappearedSessionClearsSnapshotAndRejectsStaleControls": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml",
+      "seconds": "0.027"
+    },
+    "dev.bautista.spotlight.control.MediaInspectorTest#seekingRequiresSupportedActionAndSameLiveSession": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml",
+      "seconds": "0.033"
+    },
+    "dev.bautista.spotlight.control.MediaInspectorTest#ambiguousPackageNeverShowsMetadataOrDispatchesEvenIfOnlyOneSessionSupportsAction": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml",
+      "seconds": "0.024"
+    },
+    "dev.bautista.spotlight.control.MediaInspectorTest#progressIsClampedAndPausedOrUnknownPositionIsHonest": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml",
+      "seconds": "0.023"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#activePlaybackWinsOverFirstPausedSession": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.03"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#executionRefreshesSessionsAfterAvailabilityCheck": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.021"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#singlePausedPlayerStillSupportsResume": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.024"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#contextualCommandRejectsUnsupportedActionEvenIfPlayerExists": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.021"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#simultaneousPlayersNeverReceiveAnArbitraryCommand": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.022"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#contextualCommandNeverControlsUnrelatedPlayer": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.028"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#contextualCommandRejectsTwoSessionsFromSameApp": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.025"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#unsupportedCommandsNeverDispatch": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.032"
+    },
+    "dev.bautista.spotlight.control.MediaTargetTest#severalPausedPlayersAreAmbiguous": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/model-2432aff/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "seconds": "0.019"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest#realSessionMetadataIsContextualAndPinSurvivesSearchAndWidthChange": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml",
+      "seconds": "1.227"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest#absentSessionDoesNotCreateAnEmptyInspector": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml",
+      "seconds": "0.176"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest#phonePlayerFitsAndEscapeRestoresQuery": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml",
+      "seconds": "0.272"
+    },
+    "dev.bautista.spotlight.ui.ContextualDraftRestoreTest#searchDraftSurvivesLeavingItsContextAndRecreationWithoutRunning": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ContextualDraftRestoreTest.xml",
+      "seconds": "0.217"
+    },
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#malformedOrDuplicateEntriesAreRejected": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.input.KeyboardBindingsTest.xml",
+      "seconds": "0.025"
+    },
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#newBindingReplacesOnlyItsOwnEntryAndModifiersMatchExactly": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.input.KeyboardBindingsTest.xml",
+      "seconds": "0.025"
+    },
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#defaultsAndLegacyClipboardPreferenceRemainCompatible": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.input.KeyboardBindingsTest.xml",
+      "seconds": "0.021"
+    },
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#conflictsIncludeOtherCommandsGlobalAndTextEditing": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.input.KeyboardBindingsTest.xml",
+      "seconds": "0.02"
+    },
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#backupCannotBypassReservedOrConflictingCombinations": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.input.KeyboardBindingsTest.xml",
+      "seconds": "0.028"
+    },
+    "dev.bautista.spotlight.ui.ContextualDraftRestoreTest#editedPlanSurvivesContextSwitchAndRecreationWithoutExecuting": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ContextualDraftRestoreTest.xml",
+      "seconds": "0.403"
+    },
+    "dev.bautista.spotlight.ui.KeyboardShortcutEditorTest#editorRejectsConflictsThenStoresTheCapturedCombination": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.KeyboardShortcutEditorTest.xml",
+      "seconds": "4.046"
+    },
+    "dev.bautista.spotlight.ui.KeyboardShortcutEditorTest#reassignedActionShortcutTogglesTheActualFloatingPanelAndPreservesSearch": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.KeyboardShortcutEditorTest.xml",
+      "seconds": "0.879"
+    },
+    "dev.bautista.spotlight.control.MediaInspectorTest#observingRegistersOnlyTheTargetAndDisposalUnregistersCallbacks": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/final-bcca551/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml",
+      "seconds": "2.481"
+    },
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#configuredBindingsPersistInTheExistingDataStore": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.input.KeyboardBindingsTest.xml",
+      "seconds": "0.082"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "seconds": "3.68"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "seconds": "0.299"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "seconds": "0.124"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#tabCyclesAndEnterRunsOnlyFocusedContextAction": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "seconds": "0.128"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#actionGroupsHaveVisibleHeadingsWithoutExecutingItems": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "seconds": "0.09"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#groupsAndIdentityDoNotDependOnTheVisibleTitle": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "seconds": "0.104"
+    },
+    "dev.bautista.spotlight.ui.QuickLookTouchTargetTest#phoneCloseTargetDoesNotCloseOverlayOrClearQuery": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.QuickLookTouchTargetTest.xml",
+      "seconds": "0.312"
+    },
+    "dev.bautista.spotlight.ui.QuickLookTouchTargetTest#tabletCloseTargetDoesNotCloseOverlayOrClearQuery": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.QuickLookTouchTargetTest.xml",
+      "seconds": "0.305"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#accessibilityClickKeepsTheSameSelectionAndPrimaryContract": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.078"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.058"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.11"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#touchDownAndCancelledGestureDoNotSelectOrOpenPdf": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.06"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#longPressShowsActionsWithoutInvokingPrimaryCallback": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.121"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.165"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "seconds": "0.1"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "seconds": "0.63"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "seconds": "0.371"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "seconds": "0.697"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "seconds": "0.442"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp": {
+      "status": "passed",
+      "xml": "docs/verification/media-inspector-20261022/directed-f2cc29a/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "seconds": "0.378"
+    }
+  }
+}
