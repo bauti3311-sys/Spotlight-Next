@@ -152,6 +152,11 @@ object MediaControl {
             (it.playbackState?.actions ?: 0L) and required != 0L
         }
     }
+    fun controllablePackages(context:Context):Set<String> = runCatching {
+        val mask=PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS
+        context.applicationContext.getSystemService(MediaSessionManager::class.java).getActiveSessions(ComponentName(context,ReplyService::class.java))
+            .groupBy{it.packageName}.filterValues{it.size==1 && (it.single().playbackState?.actions ?: 0L) and mask!=0L}.keys
+    }.getOrDefault(emptySet())
     fun availableForPackage(context:Context,packageName:String,command:String)=
         controllerForPackage(context,packageName,command)!=null
 

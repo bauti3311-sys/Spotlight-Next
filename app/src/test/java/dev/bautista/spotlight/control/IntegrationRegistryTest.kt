@@ -22,4 +22,16 @@ class IntegrationRegistryTest {
         assertEquals("Aplicaciones",row.category)
         assertTrue(row.action is Action.Launch)
     }
+    @Test fun privateAndPermissionProtectedActivitiesAreNotAdvertisedAsExecutable() {
+        val context=RuntimeEnvironment.getApplication()
+        val intent=android.content.Intent("fixture.PRIVATE")
+        val info=android.content.pm.ActivityInfo().apply{packageName="external.app";name="Private";exported=false}
+        val manager=org.robolectric.Shadows.shadowOf(context.packageManager)
+        manager.addResolveInfoForIntent(intent,android.content.pm.ResolveInfo().apply{activityInfo=info})
+        assertFalse(IntegrationRegistry(context).resolves(intent))
+        info.exported=true;info.permission="fixture.permission.RESTRICTED"
+        assertFalse(IntegrationRegistry(context).resolves(intent))
+        info.permission=null
+        assertTrue(IntegrationRegistry(context).resolves(intent))
+    }
 }

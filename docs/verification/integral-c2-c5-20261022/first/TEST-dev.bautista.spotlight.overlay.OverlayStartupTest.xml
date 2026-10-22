@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.OverlayStartupTest" tests="8" skipped="0" failures="2" errors="0" timestamp="2026-10-22T18:02:52" hostname="6641cfb4c601" time="16.155">
+  <properties/>
+  <testcase name="transientFocusLossDoesNotStopOverlayService[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="7.98"/>
+  <testcase name="transientFocusLossDoesNotStopOverlayService" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="6.626"/>
+  <testcase name="outsideTouchStillStopsOverlayService[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.065">
+    <failure message="java.lang.ClassCastException: class android.app.Application cannot be cast to class dev.bautista.spotlight.SpotlightApp (android.app.Application and dev.bautista.spotlight.SpotlightApp are in unnamed module of loader org.robolectric.internal.AndroidSandbox$SdkSandboxClassLoader @55342f40)" type="java.lang.ClassCastException">java.lang.ClassCastException: class android.app.Application cannot be cast to class dev.bautista.spotlight.SpotlightApp (android.app.Application and dev.bautista.spotlight.SpotlightApp are in unnamed module of loader org.robolectric.internal.AndroidSandbox$SdkSandboxClassLoader @55342f40)
+	at dev.bautista.spotlight.overlay.OverlayService.getApp(OverlayService.kt:70)
+	at dev.bautista.spotlight.overlay.OverlayService.clearRecovery(OverlayService.kt:55)
+	at dev.bautista.spotlight.overlay.OverlayService.close(OverlayService.kt:388)
+	at dev.bautista.spotlight.overlay.OverlayService.createHost$lambda$15(OverlayService.kt:351)
+	at dev.bautista.spotlight.overlay.WindowFocusHost.dispatchTouchEvent(WindowFocusHost.kt:26)
+	at dev.bautista.spotlight.overlay.OverlayStartupTest.outsideTouchStillStopsOverlayService(OverlayStartupTest.kt:42)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="outsideTouchStillStopsOverlayService" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.05">
+    <failure message="java.lang.ClassCastException: class android.app.Application cannot be cast to class dev.bautista.spotlight.SpotlightApp (android.app.Application and dev.bautista.spotlight.SpotlightApp are in unnamed module of loader org.robolectric.internal.AndroidSandbox$SdkSandboxClassLoader @4b3a45f1)" type="java.lang.ClassCastException">java.lang.ClassCastException: class android.app.Application cannot be cast to class dev.bautista.spotlight.SpotlightApp (android.app.Application and dev.bautista.spotlight.SpotlightApp are in unnamed module of loader org.robolectric.internal.AndroidSandbox$SdkSandboxClassLoader @4b3a45f1)
+	at dev.bautista.spotlight.overlay.OverlayService.getApp(OverlayService.kt:70)
+	at dev.bautista.spotlight.overlay.OverlayService.clearRecovery(OverlayService.kt:55)
+	at dev.bautista.spotlight.overlay.OverlayService.close(OverlayService.kt:388)
+	at dev.bautista.spotlight.overlay.OverlayService.createHost$lambda$15(OverlayService.kt:351)
+	at dev.bautista.spotlight.overlay.WindowFocusHost.dispatchTouchEvent(WindowFocusHost.kt:26)
+	at dev.bautista.spotlight.overlay.OverlayStartupTest.outsideTouchStillStopsOverlayService(OverlayStartupTest.kt:42)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="windowRootAndComposeChildHaveServiceOwners[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.055"/>
+  <testcase name="windowRootAndComposeChildHaveServiceOwners" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.044"/>
+  <testcase name="composeCanAttachToAnActualOverlayWindow[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.722"/>
+  <testcase name="composeCanAttachToAnActualOverlayWindow" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.612"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

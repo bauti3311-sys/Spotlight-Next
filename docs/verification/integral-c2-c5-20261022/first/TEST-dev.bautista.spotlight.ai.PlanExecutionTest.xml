@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ai.PlanExecutionTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-22T18:02:28" hostname="6641cfb4c601" time="0.095">
+  <properties/>
+  <testcase name="missingConfirmationNeverExecutes" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.067"/>
+  <testcase name="failureBlocksRemainingSelectedChanges" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.004"/>
+  <testcase name="dispatchFailureNeverChangesVolume" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.003"/>
+  <testcase name="cancellationNeverStartsTheNextStep" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.0"/>
+  <testcase name="lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.015"/>
+  <testcase name="skippedStepDoesNotBlockAndObservedStateIsRetained" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.002"/>
+  <testcase name="existingSixStepLimitIsPreservedAndLargerPlansAreRejected" classname="dev.bautista.spotlight.ai.PlanExecutionTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

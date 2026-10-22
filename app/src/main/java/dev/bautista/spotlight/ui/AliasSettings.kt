@@ -18,10 +18,11 @@ import kotlinx.coroutines.*
     var alias by remember{mutableStateOf("")};var target by remember{mutableStateOf("")};var open by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")}
     Column(verticalArrangement=Arrangement.spacedBy(8.dp)){
         Text("Alias opcionales",style=MaterialTheme.typography.titleMedium)
+        Text("Usá {args} para insertar los argumentos. Una aplicación con nombre exacto conserva prioridad.",style=MaterialTheme.typography.bodySmall)
         Text("Las integraciones funcionan sin alias. Elegí una app o un comando para asignarle un nombre corto; no necesitás enlaces.",style=MaterialTheme.typography.bodySmall)
         OutlinedTextField(alias,{alias=it.take(24)},label={Text("Nombre corto")},singleLine=true,modifier=Modifier.fillMaxWidth())
         Box{OutlinedButton(onClick={open=true}){Text(target.ifBlank{"Elegir aplicación o comando"})};DropdownMenu(open,{open=false}){choices.forEach{choice->DropdownMenuItem(text={Text(choice)},onClick={target=choice;open=false})}}}
-        TextButton(enabled=target.isNotBlank(),onClick={if(!PersonalCommands.validAlias(alias))error="Usá letras, números o guiones, sin espacios." else {val items=config.aliases.filterNot{normalize(it.substringBefore('|'))==normalize(alias)}.toSet()+"${alias.trim()}|$target";if(PersonalCommands.expand(alias,items)==alias)error="El alias forma un ciclo." else {update(config.copy(aliases=items));alias="";target="";error=""}}}){Text("Guardar alias")}
+        TextButton(enabled=target.isNotBlank(),onClick={if(!PersonalCommands.validAlias(alias))error="Usá letras, números o guiones, sin espacios." else {val items=config.aliases.filterNot{normalize(it.substringBefore('|'))==normalize(alias)}.toSet()+"${alias.trim()}|$target";if(PersonalCommands.expand("$alias ejemplo",items)=="$alias ejemplo")error="El alias forma un ciclo." else {update(config.copy(aliases=items));alias="";target="";error=""}}}){Text("Guardar alias")}
         config.aliases.sorted().forEach{entry->Row{Text(entry.substringBefore('|')+" → "+entry.substringAfter('|'),Modifier.weight(1f));TextButton(onClick={update(config.copy(aliases=config.aliases-entry))}){Text("Eliminar")}}}
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
     }

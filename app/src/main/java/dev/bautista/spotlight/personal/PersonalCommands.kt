@@ -18,7 +18,10 @@ object PersonalCommands {
             val target = entry.substringAfter('|', "").trim()
             if (target.isBlank()) return query.trim()
             val arguments = text.substringAfter(' ', "").trim()
-            text = target + if(arguments.isNotEmpty()) " $arguments" else ""
+            text = if(target.contains("{args}")) {
+                if(arguments.isBlank())return query.trim()
+                target.replace("{args}",arguments)
+            } else target + if(arguments.isNotEmpty()) " $arguments" else ""
         }
         return query.trim()
     }
@@ -32,6 +35,10 @@ object PersonalCommands {
         val out = mutableListOf<Result>()
         c.pins.sorted().filter { q.isEmpty() || q in setOf("fijados","favoritos") || relevance(query, it)>0 }.forEach { target ->
             out += Result("pin:$target", target, "Consulta fijada · cargar sin ejecutar", "Consultas",850,Action.RestoreQuery(target))
+        }
+        c.aliases.filter{it.substringAfter('|',"").contains("{args}") && normalize(it.substringBefore('|'))==q}.forEach{entry->
+            val alias=entry.substringBefore('|')
+            out+=Result("alias:arguments:$alias",alias,"Completá los argumentos del comando","Comandos",1900,Action.RestoreQuery("$alias "))
         }
         val needle = q.removePrefix("snippet ").removePrefix("snip ")
         c.snippets.sorted().forEach { entry ->

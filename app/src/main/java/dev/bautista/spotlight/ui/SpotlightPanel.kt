@@ -72,15 +72,15 @@ fun SpotlightPanel(
         var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
         var messageForm by rememberSaveable(stateSaver=MessageTaskSaver) { mutableStateOf<Action.ComposeMessage?>(null) }
         var searchForm by rememberSaveable(stateSaver=SearchTaskSaver) { mutableStateOf<Action.ComposeSearch?>(null) }
-        var notificationKey by remember {mutableStateOf<String?>(null)}
-        var audioPanel by remember { mutableStateOf(false) }
+        var notificationKey by rememberSaveable {mutableStateOf<String?>(null)}
+        var audioPanel by rememberSaveable { mutableStateOf(false) }
         var showAi by rememberSaveable { mutableStateOf(false) }
         var aiJob by remember { mutableStateOf<Job?>(null) }
         var pendingAsk by rememberSaveable(stateSaver=AskTaskSaver) {mutableStateOf<Action.Ask?>(null)}
         var pendingWorkflow by rememberSaveable(stateSaver=WorkflowTaskSaver) {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
         var clipEditing by remember {mutableStateOf<String?>(null)}
         var snippetTemplate by remember {mutableStateOf<String?>(null)}
-        var timerMinutes by remember {mutableStateOf<Int?>(null)}
+        var timerMinutes by rememberSaveable {mutableStateOf<Int?>(null)}
         var deletingNote by remember {mutableStateOf<Result?>(null)}
         var snippetText by remember {mutableStateOf<String?>(null)}
         var snippetAlias by remember {mutableStateOf("")}
@@ -174,6 +174,20 @@ fun SpotlightPanel(
         val clips by app.local.clips.collectAsState()
         val clipFavorites by app.local.clipFavorites.collectAsState()
         val notes by app.local.notes.collectAsState()
+        LaunchedEffect(notes,preview?.id,pinnedPreview?.id) {
+            suspend fun revalidate(item:Result?):Result? {
+                val action=item?.action as? Action.EditNote ?: return item
+                val stored=org.json.JSONArray(app.preferences.noteData.first())
+                val note=(0 until stored.length()).map{stored.getJSONObject(it)}.firstOrNull{it.getString("id")==action.id}
+                if(note==null)return null
+                val text=note.getString("text")
+                return item.copy(title=text.lineSequence().first().take(100),preview=text,action=Action.EditNote(action.id,text))
+            }
+            val oldPreview=preview;val oldPin=pinnedPreview
+            val nextPreview=revalidate(oldPreview);val nextPin=revalidate(oldPin)
+            if(preview==oldPreview){preview=nextPreview;if(oldPreview!=null && nextPreview==null)error="La nota ya no existe. Su vista recuperada se descartó."}
+            if(pinnedPreview==oldPin){pinnedPreview=nextPin;if(oldPin!=null && nextPin==null)error="La nota ya no existe. Su vista recuperada se descartó."}
+        }
         val activeContext by app.contexts.active.collectAsState()
         val pinnedContexts by app.contexts.pinned.collectAsState()
         val savedChats by app.contexts.conversations.collectAsState()
@@ -732,7 +746,7 @@ fun SpotlightPanel(
             val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
             val richPreview=PreviewPresentation.needsInspector(inspectorItem)
             val taskInspector=inspectorTaskActive()
-            LaunchedEffect(Unit){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
+            LaunchedEffect(inspectorPinned,pinnedPreview?.id,pinnedCard,taskInspector){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
             val hasInspector=richPreview || inspectorCard!=null || taskInspector || mediaInspector
             val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
             fun dismissInspector() {

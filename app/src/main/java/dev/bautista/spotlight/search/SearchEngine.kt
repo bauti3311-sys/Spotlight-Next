@@ -50,6 +50,12 @@ class SearchEngine(
                     .also { apps = it }
         }
 
+    private suspend fun expandAliases(input:String,aliases:Set<String>):String {
+        if(aliases.isEmpty())return input
+        // A user alias can never hide an installed application with that exact name.
+        if(appList().any{normalize(it.label)==normalize(input.trim())})return input
+        return dev.bautista.spotlight.personal.PersonalCommands.expand(input,aliases)
+    }
     fun invalidateApps() {
         apps = null
     }
@@ -102,7 +108,7 @@ class SearchEngine(
         }
         val effectiveScope=interpretation.scope
         val canonical=LocalLanguage.canonical(input)
-        val query=dev.bautista.spotlight.personal.PersonalCommands.expand(interpretation.text,c.aliases)
+        val query=expandAliases(interpretation.text,c.aliases)
         val root=effectiveScope==null || effectiveScope.section in setOf("commands","ai") && input.isNotBlank()
         val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
@@ -124,7 +130,7 @@ class SearchEngine(
     }.flowOn(Dispatchers.Default)
 
     private fun searchSources(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
-        val query=ActionCatalog.canonical(dev.bautista.spotlight.personal.PersonalCommands.expand(input,c.aliases))
+        val query=ActionCatalog.canonical(expandAliases(input,c.aliases))
         if(scope==null && query.isBlank()) {
             if(!c.suggestions){send(emptyList());return@channelFlow}
             val suggestions=withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || index.hasImports() || context.contentResolver.persistedUriPermissions.any{it.isReadPermission && it.uri.toString() in c.trees}),local.clips.value.isNotEmpty())}

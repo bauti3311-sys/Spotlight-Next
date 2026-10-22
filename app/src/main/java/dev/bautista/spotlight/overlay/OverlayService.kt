@@ -52,7 +52,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
     private fun clearRecovery() {
         val pending=recoveryJob;pending?.cancel();recoveryJob=null
-        app.scope.launch {pending?.join();runCatching{app.contexts.saveOverlaySnapshot(null)}}
+        val owner=application as? SpotlightApp ?: return
+        owner.scope.launch {pending?.join();runCatching{owner.contexts.saveOverlaySnapshot(null)}}
     }
     private val overlayContext: Context by lazy {
         // Android 11 may return a WindowContext after denying its token registration,

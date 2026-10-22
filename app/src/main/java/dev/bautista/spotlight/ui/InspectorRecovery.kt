@@ -9,13 +9,16 @@ import dev.bautista.spotlight.search.*
 import org.json.*
 
 /** Descriptors only: never persist a live Intent, grant, renderer, icon or extracted document body. */
-internal val DocumentPreviewSaver=Saver<Result?,String>(save={item ->
+internal val DocumentPreviewSaver=Saver<Result?,String>(save=save@{item ->
+    if(item?.action is Action.EditNote)return@save JSONObject().put("kind","note").put("id",item.action.id).toString()
     val uri=(item?.action as? Action.Launch)?.intent?.data
     if(item==null || item.category!="Archivos" || uri?.scheme!="content")null
     else JSONObject().put("id",item.id).put("title",item.title).put("subtitle",item.subtitle)
         .put("uri",uri.toString()).put("mime",item.mime).put("modified",item.modifiedAt).put("size",item.sizeBytes).toString().takeIf{it.length<=8000}
 },restore={raw -> runCatching {
-    require(raw.length<=8000);val j=JSONObject(raw);val uri=Uri.parse(j.getString("uri"));require(uri.scheme=="content" && !uri.authority.isNullOrBlank())
+    require(raw.length<=8000);val j=JSONObject(raw)
+    if(j.optString("kind")=="note")return@runCatching Result("note:"+j.getString("id"),"Nota local","Revalidando nota guardada","Notas",0,Action.EditNote(j.getString("id"),""))
+    val uri=Uri.parse(j.getString("uri"));require(uri.scheme=="content" && !uri.authority.isNullOrBlank())
     Result(j.getString("id"),j.getString("title"),j.getString("subtitle"),"Archivos",0,
         Action.Launch(Intent(Intent.ACTION_VIEW).setDataAndType(uri,j.optString("mime").takeIf{it.isNotBlank()})),
         mime=j.optString("mime").takeIf{it.isNotBlank()},modifiedAt=if(j.isNull("modified"))null else j.getLong("modified"),sizeBytes=if(j.isNull("size"))null else j.getLong("size"))

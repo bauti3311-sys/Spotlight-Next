@@ -279,6 +279,7 @@ class Preferences(private val context: Context) {
             p[clipboardShortcut]=c.clipboardShortcut
             p[keyboardBindings]=c.keyBindings
             val extra=org.json.JSONObject(p[next20] ?: "{}")
+            extra.put("sourcePriority",c.sourcePriority)
             extra.put("customThemes",c.customThemes)
             extra.put("autoKeyboard",c.autoKeyboard)
             extra.put("glassIntensity",c.glassIntensity)

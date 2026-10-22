@@ -30,6 +30,7 @@ sealed interface ToolRequest {
     data class PrepareDial(val number:String):ToolRequest
     data class Volume(val percent:Int):ToolRequest
     data class Media(val command:String):ToolRequest
+    data class TargetMedia(val packageName:String,val command:String):ToolRequest
     data object Device:ToolRequest
     data object Diagnostics:ToolRequest
     data object AppFunctionsStatus:ToolRequest
@@ -53,6 +54,7 @@ object ToolRegistry {
         ToolDefinition("screen_sequence","Ejecutar pasos verificados","Secuencia de 1 a 4 pasos sobre UNA app. El campo steps es texto JSON: cada objeto tap requiere op, selector y expect; cada objeto type requiere op, selector y text. Selectores exactos de la pantalla, postcondiciones observables, autorización explícita y sin reintentos. Nunca inventes IDs.","tools",ToolRisk.CHANGE,listOf("package","steps")),
         ToolDefinition("open_app","Abrir aplicación","Abrir una aplicación instalada y elegida.","apps",ToolRisk.PREPARE,listOf("package")),
         ToolDefinition("set_volume","Ajustar volumen","Cambiar volumen multimedia al porcentaje indicado tras confirmar.","media",ToolRisk.CHANGE,listOf("percent")),
+        ToolDefinition("control_app_media","Controlar la app multimedia elegida","Controlar solo una sesión autorizada del paquete exacto; nunca cambiar a otro reproductor.","media",ToolRisk.CHANGE,listOf("package","command"),mapOf("command" to listOf("play","pause","next","previous"))),
         ToolDefinition("control_media","Controlar reproducción","Controlar una sesión multimedia autorizada.","media",ToolRisk.CHANGE,listOf("command"),mapOf("command" to listOf("play","pause","next","previous"))),
         ToolDefinition("device_info","Información del dispositivo","Consultar fabricante, modelo y versión de Android.","system",ToolRisk.READ,emptyList()),
         ToolDefinition("appfunctions_status","Compatibilidad AppFunctions","Consultar servicio y autorización local. No descubre ni ejecuta funciones de otras apps.","system",ToolRisk.READ,emptyList()),
@@ -88,6 +90,7 @@ object ToolRegistry {
             "open_app"->ToolRequest.OpenApp(packageName())
             "prepare_dial"->ToolRequest.PrepareDial(text("number").also{dev.bautista.spotlight.control.People.dialIntent(it)})
             "set_volume"->ToolRequest.Volume(text("percent").toIntOrNull()?.also{require(it in 0..100)} ?: error("Porcentaje inválido."))
+            "control_app_media"->ToolRequest.TargetMedia(packageName(),value("command"))
             "control_media"->ToolRequest.Media(value("command"))
             "device_info"->ToolRequest.Device
             "appfunctions_status"->ToolRequest.AppFunctionsStatus

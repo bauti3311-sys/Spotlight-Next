@@ -37,6 +37,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
             !dev.bautista.spotlight.extensions.ExtensionStore.enabled(app,d.extension) -> {status=CapabilityStatus.DISABLED;reason="Activá la integración correspondiente en Ajustes."}
             d.advanced && !app.shizuku.state.value.available -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="Shizuku debe estar conectado y autorizado."}
             d.id=="write_display_setting" && app.shizuku.writeCapability.value!=true -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Falta autorización de escritura verificada con Shizuku."}
+            d.id=="control_app_media" && MediaControl.controllablePackages(app).isEmpty() -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="No hay una sesión por aplicación compatible y autorizada."}
             d.id=="control_media" && !listOf("play","pause","next","previous").any{MediaControl.available(app,it)} -> {status=CapabilityStatus.CONNECTION_REQUIRED;reason="No hay un único reproductor compatible y autorizado. Revisá cuál está activo."}
             d.id in setOf("screen_inspect","screen_tap","screen_type","screen_sequence") && !PhoneUseService.connected() -> {status=CapabilityStatus.PERMISSION_REQUIRED;reason="Activá Spotlight · control de aplicaciones en Accesibilidad."}
             d.id=="search_contacts" && !c.contacts -> {status=CapabilityStatus.DISABLED;reason="La búsqueda de contactos está desactivada."}
@@ -73,7 +74,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                     // remain explicit instead of silently searching a different date field.
                     val notice=if(request.kind=="files")rows.firstOrNull{it.id in setOf("files:opened-unavailable","files:access")} else null
                     val matches=if(request.kind=="files")rows.filter{it.id.startsWith("file:") && it.action is Action.Launch} else rows
-                    ToolExecution(notice?.let{"${it.title} · ${it.subtitle}"} ?: matches.take(15).joinToString("\n"){"${it.title} · ${it.subtitle}"}.ifBlank{"No se encontraron coincidencias."})
+                    ToolExecution(notice?.let{"${it.title} · ${it.subtitle}"} ?: matches.take(15).joinToString("\n"){row->val pkg=if(request.kind=="apps")(row.action as? Action.Launch)?.intent?.component?.packageName else null;"${row.title} · ${row.subtitle}"+(pkg?.let{" · paquete: $it"} ?: "")}.ifBlank{"No se encontraron coincidencias."})
                 }
                 is ToolRequest.Calendar->ToolExecution(Agenda.search(app,"",request.period).take(15).joinToString("\n"){"${it.title} · ${it.subtitle}"}.ifBlank{"Sin eventos en ese período."})
                 is ToolRequest.InspectApp->{val d=AppInspector.inspect(app,request.packageName);ToolExecution("${d.label} · ${d.packageName}\nVersión ${d.version}\n${d.permissions.size} permisos declarados · ${d.components.size} componentes públicos",Action.SystemPanel("app",request.packageName))}
@@ -99,6 +100,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                     check(observed==target){"Android informó un nivel distinto al solicitado: $observed/$max. Revisá el estado; no se reintenta automáticamente."}
                     ToolExecution("Volumen multimedia observado: $observed/$max (${(observed-min)*100/(max-min)} %).",state=ExecutionState.VERIFIED)
                 }
+                is ToolRequest.TargetMedia->ToolExecution(MediaControl.executeForPackage(app,request.packageName,request.command),state=ExecutionState.REQUESTED)
                 is ToolRequest.Media->ToolExecution(MediaControl.execute(app,request.command),state=ExecutionState.REQUESTED)
                 ToolRequest.Device->ToolExecution("${Build.MANUFACTURER} ${Build.MODEL}\nAndroid ${Build.VERSION.RELEASE} · API ${Build.VERSION.SDK_INT}",Action.SystemPanel("device"))
                 ToolRequest.AppFunctionsStatus->ToolExecution(AppFunctionsSupport.inspect(app))

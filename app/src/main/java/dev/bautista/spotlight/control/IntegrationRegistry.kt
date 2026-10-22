@@ -14,7 +14,12 @@ data class Capability(val title: String, val state: CapabilityState, val explana
 /** Android is the authority. Only exported, resolvable activities and public
  * shortcuts are exposed; no inferred private app automation. */
 class IntegrationRegistry(private val context: Context) {
-    fun resolves(intent: Intent): Boolean = context.packageManager.resolveActivity(intent, 0) != null
+    fun resolves(intent: Intent): Boolean = runCatching {
+        val activity=context.packageManager.resolveActivity(intent,0)?.activityInfo ?: return@runCatching false
+        activity.enabled && activity.applicationInfo?.enabled!=false &&
+            (activity.packageName==context.packageName || activity.exported) &&
+            (activity.permission.isNullOrBlank() || androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)==android.content.pm.PackageManager.PERMISSION_GRANTED)
+    }.getOrDefault(false)
     fun capabilities(packageName: String): List<Capability> {
         val launcher = context.getSystemService(LauncherApps::class.java)
         val base=listOf(
