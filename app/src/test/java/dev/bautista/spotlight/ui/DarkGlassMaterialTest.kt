@@ -23,10 +23,10 @@ class DarkGlassMaterialTest {
    val c=AppConfig(preset=preset,opacity=value)
    for(dark in listOf(true,false)) {
     GlassTokens.windowColors(c,dark).forEach{assertEquals(value,it.alpha,.005f)}
-    assertEquals((value+.16f).coerceIn(.90f,1f),GlassTokens.actionColor(c,dark).alpha,.005f)
+    assertEquals(.92f,GlassTokens.actionColor(c,dark).alpha,.005f)
    }
   }
-  assertEquals(.80f,GlassTokens.opacity(AppConfig(opacity=Float.NaN)),0f)
+  assertEquals(.84f,GlassTokens.opacity(AppConfig(opacity=Float.NaN)),0f)
   assertEquals(.70f,GlassTokens.opacity(AppConfig(opacity=0f)),0f)
  }
  @Test fun secondaryTextMaintainsAAContrastOnLightAndDarkBackdrops(){

@@ -9,7 +9,7 @@ private val Context.store by preferencesDataStore("spotlight")
 
 data class Config(
     val theme: String = "auto",
-    val opacity: Float = .80f,
+    val opacity: Float = .84f,
     val width: Int = 640,
     val position: Float = .16f,
     val contacts: Boolean = false,
@@ -53,6 +53,7 @@ data class Config(
     val manualWidth:Int=if(width>0)width else 640,
     val windowScale:Float=-1f, // -1 preserves legacy geometry until the user changes the new slider
     val semanticSearch:Boolean=false,
+    val actionOpacity:Float=.92f, val settingsOpacity:Float=.94f,
 
 )
 
@@ -134,7 +135,7 @@ class Preferences(private val context: Context) {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")} .getOrDefault(org.json.JSONObject())
                 Config(
                     p[theme] ?: "auto",
-                    p[opacity] ?: .80f,
+                    p[opacity] ?: .84f,
                     p[width] ?: 0,
                     p[position] ?: .16f,
                     p[contacts] ?: false,
@@ -178,6 +179,8 @@ class Preferences(private val context: Context) {
                     sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision"),
                     manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
                     windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f
+                , actionOpacity=extra.optDouble("actionOpacity",.92).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .92f,
+                    settingsOpacity=extra.optDouble("settingsOpacity",.94).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .94f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
             }
 
@@ -185,12 +188,14 @@ class Preferences(private val context: Context) {
     suspend fun updateAppearance(c: Config) {
         context.store.edit { p ->
             p[theme] = c.theme
-            p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .80f
+            p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .84f
             p[animations] = c.animations
             p[density] = c.density
             p[accent] = c.accent
             p[stringPreferencesKey("preset")] = c.preset
             val extra = runCatching { org.json.JSONObject(p[next20] ?: "{}") }.getOrDefault(org.json.JSONObject())
+            extra.put("actionOpacity",c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .92f)
+            extra.put("settingsOpacity",c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .94f)
             extra.put("windowScale", c.windowScale.takeIf { it.isFinite() && it in 0f..1f } ?: -1f)
             p[next20] = extra.toString()
         }
@@ -242,7 +247,7 @@ class Preferences(private val context: Context) {
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
                 .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
-                .put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
+                .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width

@@ -832,7 +832,7 @@ fun SpotlightPanel(
                     onBack=if(searchScope!=null || history.isNotEmpty())({preview=null;menu=false;back()}) else null,
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
                     onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},
-                    onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
+                    onDictate=if(context.packageManager.resolveActivity(Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH),0)!=null)({launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))}) else null,
                 )
                 if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
                 if(activeContext!=null && !searchOptions)ContextChip(app,activeContext!!){action->execute(Result("context:active","","","Contexto",0,action))}

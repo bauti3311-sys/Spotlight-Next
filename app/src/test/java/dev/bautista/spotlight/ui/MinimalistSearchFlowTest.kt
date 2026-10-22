@@ -103,7 +103,8 @@ class MinimalistSearchFlowTest {
     @Test fun tabletCaptureAndCompactHeight(){
         show()
         val root=ui.onNodeWithTag("spotlight-root")
-        assertTrue(root.fetchSemanticsNode().boundsInRoot.height<340*app.resources.displayMetrics.density)
+        assertTrue("Six rows and chrome must fit the available tablet viewport",root.fetchSemanticsNode().boundsInRoot.height<480*app.resources.displayMetrics.density)
+        (0..5).forEach{ui.onNodeWithTag("result:fixture.chrome$it/Main").assertIsDisplayed().assertHeightIsAtLeast(48.dp)}
         rows().assertCountEquals(6)
         ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         ui.onNodeWithTag("result:fixture.chrome0/Main").performTouchInput{longClick()}

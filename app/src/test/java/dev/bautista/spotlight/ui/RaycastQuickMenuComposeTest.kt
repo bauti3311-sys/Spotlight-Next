@@ -32,19 +32,15 @@ class RaycastQuickMenuComposeTest {
         ui.runOnIdle { assertEquals("Permisos y accesos",destination) }
     }
 
-    @Test fun appearanceAndSearchShortcutsStayFunctional() {
-        var changed:Config?=null
-        var mode:String?=null
-        ui.setContent {
-            SpotlightTheme("dark") {
-                GlassQuickMenu(
-                    Config(),{changed=it},{},{mode=it}
-                )
-            }
+    @Test fun essentialMenuHasFourRealSettingsDestinations() {
+        var destination:String?=null
+        ui.setContent{SpotlightTheme("dark"){GlassQuickMenu(Config(),{},{destination=it},{})}}
+        listOf("Ajustes" to "General","Apariencia" to "Apariencia","Permisos" to "Permisos y accesos","Atajos" to "Atajos").forEach{(label,group)->
+            ui.onNodeWithText(label).assertIsDisplayed().performClick()
+            ui.runOnIdle{assertEquals(group,destination)}
         }
-        ui.onNodeWithText("Tema · Automático").performClick()
-        ui.runOnIdle { assertEquals("light",changed?.theme) }
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
-        ui.runOnIdle { assertEquals("Apps",mode) }
+        ui.onAllNodes(hasClickAction()).assertCountEquals(4)
+        ui.onNodeWithText("IA").assertDoesNotExist()
+        ui.onNodeWithText("Privado").assertDoesNotExist()
     }
 }

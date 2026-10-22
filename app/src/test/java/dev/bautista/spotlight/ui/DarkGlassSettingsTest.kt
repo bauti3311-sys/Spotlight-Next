@@ -53,10 +53,26 @@ class DarkGlassSettingsTest {
   ui.activityRule.scenario.recreate()
   ui.waitUntil(15000){ui.onAllNodesWithTag("surface-opacity-slider").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithTag("surface-opacity-value").assertTextEquals("73%")
-  ui.onNodeWithText("Restablecer opacidad · 80%").performScrollTo().performClick()
-  ui.waitUntil(15000){runBlocking{app.preferences.config.first().opacity==.80f}}
-  ui.onNodeWithTag("surface-opacity-value").assertTextEquals("80%")
+  ui.onNodeWithText("Restablecer opacidades · 84 / 92 / 94%").performScrollTo().performClick()
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().opacity==.84f}}
+  ui.onNodeWithTag("surface-opacity-value").assertTextEquals("84%")
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
+ }
+
+ @Test fun roleOpacityAndThemeSaveImmediatelyWithoutApply(){
+  ready();ui.onNodeWithTag("settings-area:Apariencia").performClick()
+  ui.onNodeWithTag("action-opacity-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.81f)}
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().actionOpacity==.81f}}
+  ui.onNodeWithTag("settings-opacity-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.89f)}
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().settingsOpacity==.89f}}
+  ui.onNodeWithText("macOS Light").performScrollTo().performClick()
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().theme=="light"}}
+  ui.onNodeWithText("Aplicar apariencia").assertDoesNotExist()
+  ui.activityRule.scenario.recreate()
+  ui.waitUntil(15000){ui.onAllNodesWithTag("settings-opacity-slider").fetchSemanticsNodes().isNotEmpty()}
+  ui.onNodeWithTag("action-opacity-value").assertTextEquals("81%")
+  ui.onNodeWithTag("settings-opacity-value").assertTextEquals("89%")
+  assertEquals("light",runBlocking{app.preferences.config.first().theme})
  }
 
 }

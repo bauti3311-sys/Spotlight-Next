@@ -53,13 +53,14 @@ class OverlayWidthSettingsTest {
         ui.onNodeWithTag("window-width-slider").performSemanticsAction(SemanticsActions.SetProgress){it(.75f)}
         ui.runOnIdle{assertEquals(.75f,config.windowScale);assertEquals(0,config.width);assertEquals(380,config.landscapeWidth);assertEquals(.25f,config.landscapePosition);assertEquals(setOf("pdf de ayer"),config.pins)}
     }
-    @Test fun appearanceDraftOnlyAppliesOnRequest() {
+    @Test fun appearanceUpdatesImmediatelyAndUndoPreservesLegacyGeometry() {
         var config by mutableStateOf(AppConfig(width=820,landscapeWidth=460,animations=false))
         show{GlassAppearance(config){config=it}}
         ui.onNodeWithTag("window-width-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.6f)}
-        ui.runOnIdle{assertEquals(-1f,config.windowScale);assertEquals(820,config.width)}
-        ui.onNodeWithText("Aplicar apariencia").performScrollTo().performClick()
+        ui.onNodeWithText("Aplicar apariencia").assertDoesNotExist()
         ui.runOnIdle{assertEquals(.6f,config.windowScale);assertEquals(820,config.width);assertEquals(820,config.manualWidth);assertEquals(460,config.landscapeWidth)}
+        ui.onNodeWithText("Deshacer cambios de esta visita").performScrollTo().performClick()
+        ui.runOnIdle{assertEquals(-1f,config.windowScale);assertEquals(820,config.width);assertEquals(460,config.landscapeWidth)}
     }
     @Test @Config(qualifiers="w390dp-h844dp") fun phoneExposesOneAccessibleCompactToWideSlider() {
         show{WindowSizeSettings(AppConfig(width=0,landscapeWidth=380),{})}

@@ -151,7 +151,7 @@ class MainActivity : ComponentActivity() {
                             .padding(horizontal = 12.dp, vertical = if(androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp>=760)32.dp else 12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Column(Modifier.widthIn(max = 960.dp).fillMaxSize().glassSurface(config)) {
+                        Column(Modifier.widthIn(max = 960.dp).fillMaxSize().glassSurface(config.copy(opacity=GlassTokens.settingsOpacity(config)))) {
                             SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),onInvoke={
                                 if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
                                 else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))

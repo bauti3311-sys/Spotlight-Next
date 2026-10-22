@@ -32,7 +32,7 @@ object GlassTokens {
     fun resultRowHeight(c:Config)=maxOf(hit,rowHeight(c))
     fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->15.sp;else->14.sp}
     const val minimumOpacity=.70f
-    const val defaultOpacity=.80f
+    const val defaultOpacity=.84f
     fun opacity(c:Config)=c.opacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: defaultOpacity
     fun windowColors(c:Config,dark:Boolean):List<Color> {
         val alpha=opacity(c)
@@ -40,10 +40,12 @@ object GlassTokens {
         else listOf(Color(0xFFFAFAFC).copy(alpha=alpha),Color(0xFFF1F2F7).copy(alpha=alpha))
     }
     fun secondary(c:Config,dark:Boolean)=if(dark) {if(opacity(c)<.80f)Color(0xFFE3E5ED) else darkSecondary} else {if(opacity(c)<.85f)Color(0xFF373C48) else lightSecondary}
+    fun actionOpacity(c:Config)=c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .92f
+    fun settingsOpacity(c:Config)=c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .94f
     fun actionColor(c:Config,dark:Boolean)=
-        (if(dark)actionSurface else paper).copy(alpha=(opacity(c)+.16f).coerceIn(.90f,1f))
+        (if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)
-        listOf(Color(0xFFB8C2DB).copy(alpha=.17f*amount),Color(0xFFA8B5D0).copy(alpha=.11f*amount))
+        listOf(Color(0xFFC7CBD4).copy(alpha=.17f*amount),Color(0xFFBFC3CC).copy(alpha=.11f*amount))
         else listOf(.09f,.05f).map{Color.Black.copy(alpha=it*amount)}
     fun selectionDuration(c:Config)=when(c.movement){"precise"->55;"liquid_immersive"->125;else->90}
 }

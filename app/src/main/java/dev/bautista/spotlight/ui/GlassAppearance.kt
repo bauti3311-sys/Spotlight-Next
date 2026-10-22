@@ -27,9 +27,10 @@ import kotlin.math.roundToInt
 
 @Composable fun GlassAppearance(c:Config,showHeading:Boolean,update:(Config)->Unit) {
     var draft by remember { mutableStateOf(c) }
-    var dirty by remember { mutableStateOf(false) }
-    LaunchedEffect(c) { if(!dirty)draft=c }
-    fun edit(next:Config){draft=next;dirty=true}
+    val opening=remember { c }
+    var awaitingSave by remember { mutableStateOf(false) }
+    LaunchedEffect(c) { if(!awaitingSave || AppearanceEdits.merge(c,draft)==c){draft=c;awaitingSave=false} }
+    fun edit(next:Config){draft=next;awaitingSave=true;update(AppearanceEdits.merge(c,next))}
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(18.dp)) {
         if(showHeading)Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
         Text("Raycast Dark Glass",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
@@ -37,17 +38,16 @@ import kotlin.math.roundToInt
         SettingsGroupSurface {
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Opacidad de superficie",style=MaterialTheme.typography.titleSmall)
+                    Text("Opacidad del buscador",style=MaterialTheme.typography.titleSmall)
                     Text("100% es opaco. Texto e iconos siempre nítidos.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Text("${(GlassTokens.opacity(draft)*100).roundToInt()}%",Modifier.testTag("surface-opacity-value"),style=MaterialTheme.typography.labelLarge)
             }
-            GlassSlider(GlassTokens.opacity(draft),{value->
-                draft=draft.copy(opacity=value)
-                // Only this persisted field is immediate; other draft edits still require Apply.
-                update(AppearanceEdits.merge(c,c.copy(opacity=value)))
-            },Modifier.testTag("surface-opacity-slider").semantics{contentDescription="Opacidad de superficie";stateDescription="${(GlassTokens.opacity(draft)*100).roundToInt()}%"},valueRange=GlassTokens.minimumOpacity..1f)
-            TextButton(onClick={draft=draft.copy(opacity=GlassTokens.defaultOpacity);update(AppearanceEdits.merge(c,c.copy(opacity=GlassTokens.defaultOpacity)))}){Text("Restablecer opacidad · 80%")}
+            GlassSlider(GlassTokens.opacity(draft),{edit(draft.copy(opacity=it))},
+                Modifier.testTag("surface-opacity-slider").semantics{contentDescription="Opacidad del buscador"},valueRange=GlassTokens.minimumOpacity..1f)
+            RoleOpacityControl("ActionPanel",GlassTokens.actionOpacity(draft),"action"){edit(draft.copy(actionOpacity=it))}
+            RoleOpacityControl("Ajustes",GlassTokens.settingsOpacity(draft),"settings"){edit(draft.copy(settingsOpacity=it))}
+            TextButton(onClick={edit(draft.copy(opacity=.84f,actionOpacity=.92f,settingsOpacity=.94f))}){Text("Restablecer opacidades · 84 / 92 / 94%")}
             var preview by remember{mutableStateOf(false)}
             TextButton(onClick={preview=!preview}){Text(if(preview)"Ocultar vista previa" else "Vista previa en vivo")}
             // The complete settings surface updates immediately; this optional sample uses the same renderer.
@@ -64,7 +64,8 @@ import kotlin.math.roundToInt
             Text("También respeta la preferencia del sistema.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         };Switch(!draft.animations,{edit(draft.copy(animations=!it))}) }
         Text("La altura se adapta al contenido, al teclado y al espacio disponible.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-        Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { Button(onClick={update(AppearanceEdits.merge(c,draft));dirty=false}){Text("Aplicar apariencia")};TextButton(onClick={draft=c;dirty=false}){Text("Descartar cambios")} }
+        Text("Los cambios se guardan y se muestran al instante.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        TextButton(onClick={edit(AppearanceEdits.merge(c,opening))}){Text("Deshacer cambios de esta visita")}
         ConfirmedSettingsButton("Restablecer apariencia","Restablece tema, opacidad, acento, densidad, movimiento y ancho. Tus datos y otras preferencias se conservan.") { edit(AppearanceEdits.merge(c,Config(windowScale=.5f))) }
     }
 }
@@ -94,4 +95,12 @@ import kotlin.math.roundToInt
    }
   }
  }
+}
+
+@Composable private fun RoleOpacityControl(label:String,value:Float,tag:String,onChange:(Float)->Unit) {
+    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+        Text("Opacidad de $label",Modifier.weight(1f),style=MaterialTheme.typography.titleSmall)
+        Text("${(value*100).roundToInt()}%",Modifier.testTag("$tag-opacity-value"),style=MaterialTheme.typography.labelLarge)
+    }
+    GlassSlider(value,onChange,Modifier.testTag("$tag-opacity-slider").semantics{contentDescription="Opacidad de $label"},valueRange=GlassTokens.minimumOpacity..1f)
 }
