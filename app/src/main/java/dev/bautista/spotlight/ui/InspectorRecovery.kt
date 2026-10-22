@@ -36,3 +36,8 @@ internal val PreviewPagesSaver=Saver<SnapshotStateMap<String,Int>,String>(save={
     require(raw.length<=8000);val j=JSONObject(raw);require(j.length()<=8)
     mutableStateMapOf<String,Int>().apply{j.keys().forEach{key->require(key.length<=800);put(key,j.getInt(key).also{require(it in 0..1_000_000)})}}
 }.getOrDefault(mutableStateMapOf())})
+
+internal val SearchScopeSaver=Saver<dev.bautista.spotlight.control.SearchScope?,String>(save={it?.let{v->JSONArray(listOf(v.topic,v.section,v.kind)).toString()}},restore={raw->runCatching{
+    require(raw.length<=16000);val a=JSONArray(raw);require(a.length()==3)
+    dev.bautista.spotlight.control.SearchScope(a.getString(0),a.getString(1),a.getString(2))
+}.getOrNull()})

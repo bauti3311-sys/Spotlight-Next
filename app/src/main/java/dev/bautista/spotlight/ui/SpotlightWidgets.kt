@@ -131,6 +131,7 @@ fun ResultRow(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun InfoCardView(card: InfoCard, onCopy: () -> Unit, onLink: () -> Unit,onShare:(()->Unit)?=null) {
     val colors = MaterialTheme.colorScheme
@@ -160,10 +161,10 @@ fun InfoCardView(card: InfoCard, onCopy: () -> Unit, onLink: () -> Unit,onShare:
                 Text(value, Modifier.weight(1f), fontSize = 13.sp)
             }
         }
-        Row {
-            TextButton(onClick = onCopy) { Text("Copiar") }
-            if(onShare!=null)TextButton(onClick=onShare){Text("Compartir")}
-            if (card.url != null) TextButton(onClick = onLink) { Text("Abrir fuente / mapa") }
+        FlowRow {
+            TextButton(modifier=Modifier.heightIn(min=48.dp),onClick = onCopy) { Text("Copiar") }
+            if(onShare!=null)TextButton(modifier=Modifier.heightIn(min=48.dp),onClick=onShare){Text("Compartir")}
+            if (card.url != null) TextButton(modifier=Modifier.heightIn(min=48.dp),onClick = onLink) { Text("Abrir fuente / mapa") }
         }
     }
 }

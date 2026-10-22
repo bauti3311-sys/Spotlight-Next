@@ -68,7 +68,7 @@ fun SpotlightPanel(
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
         var query by rememberSaveable { mutableStateOf(initialQuery) }
-        var searchScope by remember { mutableStateOf<SearchScope?>(null) }
+        var searchScope by rememberSaveable(stateSaver=SearchScopeSaver) { mutableStateOf<SearchScope?>(null) }
         var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
         var messageForm by rememberSaveable(stateSaver=MessageTaskSaver) { mutableStateOf<Action.ComposeMessage?>(null) }
         var searchForm by rememberSaveable(stateSaver=SearchTaskSaver) { mutableStateOf<Action.ComposeSearch?>(null) }
@@ -76,7 +76,7 @@ fun SpotlightPanel(
         var audioPanel by remember { mutableStateOf(false) }
         var showAi by rememberSaveable { mutableStateOf(false) }
         var aiJob by remember { mutableStateOf<Job?>(null) }
-        var pendingAsk by remember {mutableStateOf<Action.Ask?>(null)}
+        var pendingAsk by rememberSaveable(stateSaver=AskTaskSaver) {mutableStateOf<Action.Ask?>(null)}
         var pendingWorkflow by rememberSaveable(stateSaver=WorkflowTaskSaver) {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
         var clipEditing by remember {mutableStateOf<String?>(null)}
         var snippetTemplate by remember {mutableStateOf<String?>(null)}
@@ -95,8 +95,8 @@ fun SpotlightPanel(
         var restoringLocation by remember { mutableStateOf<Location?>(null) }
         val restoredLocation=restoringLocation?.takeIf{it.query==query && it.category==category && it.scope==searchScope}
         var searchOptions by remember { mutableStateOf(false) }
-        var moreResults by remember(query, category, searchScope) { mutableStateOf(restoredLocation?.expanded ?: false) }
-        var collapsedSelection by remember(query, category, searchScope) { mutableStateOf(restoredLocation?.retainedId) }
+        var moreResults by rememberSaveable(query, category, searchScope) { mutableStateOf(restoredLocation?.expanded ?: false) }
+        var collapsedSelection by rememberSaveable(query, category, searchScope) { mutableStateOf(restoredLocation?.retainedId) }
         SideEffect { restoringLocation=null }
         var canAutocomplete by remember { mutableStateOf(false) }
         val resultsState=remember { mutableStateOf(emptyList<Result>()) }
@@ -360,6 +360,8 @@ fun SpotlightPanel(
             launch(Intent.createChooser(send, "Compartir"))
         }
         fun lookup(action: Action.Lookup) {
+            val origin=Triple(query,searchScope,searchGeneration)
+            fun current()=origin==Triple(query,searchScope,searchGeneration)
             cardJob?.cancel()
             card = null
             cardLoading = true
@@ -367,19 +369,19 @@ fun SpotlightPanel(
             cardJob =
                 scope.launch {
                     try {
-                        card =
-                            withTimeout(if (action.type == "translate") 150000 else 35000) {
-                                app.online.lookup(action, config)
-                            }
+                        val next=withTimeout(if (action.type == "translate") 150000 else 35000) {
+                            app.online.lookup(action, config)
+                        }
+                        if(current())card=next
                     } catch (e: CancellationException) {
-                        if (e is TimeoutCancellationException)
+                        if (e is TimeoutCancellationException && current())
                             error =
                                 "La consulta tardó demasiado; revisá la conexión y volvé a intentar."
                         else throw e
                     } catch (e: Exception) {
-                        error = e.message ?: "No se pudo consultar el servicio"
+                        if(current())error = e.message ?: "No se pudo consultar el servicio"
                     } finally {
-                        cardLoading = false
+                        if(current())cardLoading = false
                     }
                 }
         }
@@ -625,10 +627,8 @@ fun SpotlightPanel(
                                 launch {
                                     cardLoading = true
                                     try {
-                                        card =
-                                            withTimeout(35000) {
-                                                app.online.lookup(request, config)
-                                            }
+                                        val next=withTimeout(35000) {app.online.lookup(request, config)}
+                                        if(isCurrentRequest())card=next
                                     } catch (e: CancellationException) {
                                         throw e
                                     } catch (e: Exception) {

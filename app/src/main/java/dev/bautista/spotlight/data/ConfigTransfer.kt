@@ -27,5 +27,5 @@ object ConfigTransfer {
   }
   return candidate
  }
- fun summary(c:Config)="${c.favorites.size} favoritos · ${c.snippets.size} fragmentos · ${Workflows.parse(c.routines).size} rutinas · ${c.quickLinks.size} quicklinks · ${c.aliases.size} alias"
+ fun summary(c:Config)="${JSONArray(c.customThemes).length()} temas · "+"${c.favorites.size} favoritos · ${c.snippets.size} fragmentos · ${Workflows.parse(c.routines).size} rutinas · ${c.quickLinks.size} quicklinks · ${c.aliases.size} alias"
 }

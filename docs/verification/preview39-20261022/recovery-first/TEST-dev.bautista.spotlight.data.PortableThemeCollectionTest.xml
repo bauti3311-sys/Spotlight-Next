@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.PortableThemeCollectionTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-22T17:03:15" hostname="9f8b8cbf2200" time="2.229">
+  <properties/>
+  <testcase name="malformedThemeRollsBackEntireTransaction" classname="dev.bautista.spotlight.data.PortableThemeCollectionTest" time="2.095"/>
+  <testcase name="legacyBackupPreservesExistingThemes" classname="dev.bautista.spotlight.data.PortableThemeCollectionTest" time="0.056"/>
+  <testcase name="themesAndPersonalCommandsRoundTripWithoutRestoringGrants" classname="dev.bautista.spotlight.data.PortableThemeCollectionTest" time="0.05"/>
+  <testcase name="duplicateIdsWrongTypesAndExcessCollectionsAreRejected" classname="dev.bautista.spotlight.data.PortableThemeCollectionTest" time="0.027"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -56,7 +56,7 @@ class InspectorResourceRecoveryTest {
   val restored=DocumentPreviewSaver.restore(raw)!!
   val intent=(restored.action as Action.Launch).intent
   assertEquals(0,intent.flags);assertNull(intent.extras);assertNull(restored.preview);assertEquals(descriptor.id,restored.id)
-  assertNull(DocumentPreviewSaver.restore(raw.replace("content://","file://")))
+  assertNull(DocumentPreviewSaver.restore(org.json.JSONObject(raw).put("uri","file:///forbidden").toString()))
  }
  @Test fun restoredDocumentAndPageKeepIdentityAndRecheckAccess() {
   val provider=provider();val restore=StateRestorationTester(ui)
@@ -92,4 +92,31 @@ class InspectorResourceRecoveryTest {
   val raw=with(InfoCardSaver){SaverScope{true}.save(card)}!!
   assertNull(InfoCardSaver.restore(raw)!!.url)
  }
+ @Test fun scopeAndSensitiveReviewRestoreWithoutAnAuthorization() {
+  val original=dev.bautista.spotlight.control.SearchScope("anatomía","files","pdf")
+  val raw=with(SearchScopeSaver){SaverScope{true}.save(original)}!!
+  assertEquals(original,SearchScopeSaver.restore(raw))
+  val reviewed=Action.Ask("Documento privado",sensitive=true,reviewed=true)
+  val saved=with(AskTaskSaver){SaverScope{true}.save(reviewed)}!!
+  val restored=AskTaskSaver.restore(saved)!!
+  assertFalse(restored.reviewed);assertTrue(restored.sensitive);assertEquals(reviewed.prompt,restored.prompt)
+ }
+ @Test @Config(qualifiers="w412dp-h915dp") fun recoveredCardActionsFitNarrowPhoneAtLargeFontScale() {
+  var clicked=0
+  ui.setContent {
+   val density=androidx.compose.ui.platform.LocalDensity.current
+   CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(density.density,1.3f)) {
+    SpotlightTheme("dark",AppConfig(theme="dark")) {
+     Box(Modifier.width(280.dp)) { InfoCardView(InfoCard("Resultado recuperado","Recuperada · Fuente local","Contenido preservado",url="https://example.com"),{clicked++},{clicked++},{clicked++}) }
+    }
+   }
+  }
+  val link=ui.onNodeWithText("Abrir fuente / mapa");link.performScrollTo().assertIsDisplayed()
+  ui.onNode(hasClickAction() and hasAnyDescendant(hasText("Abrir fuente / mapa"))).assertHeightIsAtLeast(48.dp)
+  val bounds=link.fetchSemanticsNode().boundsInRoot
+  assertTrue(bounds.left>=0 && bounds.right<=ui.onRoot().fetchSemanticsNode().boundsInRoot.right)
+  captureScreenRoboImage("build/preview39/card-phone-font130.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+  link.performClick();assertEquals(1,clicked)
+ }
+
 }
