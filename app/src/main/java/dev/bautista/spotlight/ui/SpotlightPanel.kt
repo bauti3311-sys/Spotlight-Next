@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.focus.*
@@ -66,17 +67,17 @@ fun SpotlightPanel(
         }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
-        var query by remember { mutableStateOf(initialQuery) }
+        var query by rememberSaveable { mutableStateOf(initialQuery) }
         var searchScope by remember { mutableStateOf<SearchScope?>(null) }
-        var systemPage by remember {mutableStateOf<Action.SystemPanel?>(null)}
-        var messageForm by remember { mutableStateOf<Action.ComposeMessage?>(null) }
-        var searchForm by remember { mutableStateOf<Action.ComposeSearch?>(null) }
+        var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
+        var messageForm by rememberSaveable(stateSaver=MessageTaskSaver) { mutableStateOf<Action.ComposeMessage?>(null) }
+        var searchForm by rememberSaveable(stateSaver=SearchTaskSaver) { mutableStateOf<Action.ComposeSearch?>(null) }
         var notificationKey by remember {mutableStateOf<String?>(null)}
         var audioPanel by remember { mutableStateOf(false) }
-        var showAi by remember { mutableStateOf(false) }
+        var showAi by rememberSaveable { mutableStateOf(false) }
         var aiJob by remember { mutableStateOf<Job?>(null) }
         var pendingAsk by remember {mutableStateOf<Action.Ask?>(null)}
-        var pendingWorkflow by remember {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
+        var pendingWorkflow by rememberSaveable(stateSaver=WorkflowTaskSaver) {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
         var clipEditing by remember {mutableStateOf<String?>(null)}
         var snippetTemplate by remember {mutableStateOf<String?>(null)}
         var timerMinutes by remember {mutableStateOf<Int?>(null)}
@@ -84,11 +85,11 @@ fun SpotlightPanel(
         var snippetText by remember {mutableStateOf<String?>(null)}
         var snippetAlias by remember {mutableStateOf("")}
         var snippetError by remember {mutableStateOf("")}
-        var followUp by remember{mutableStateOf("")}
+        var followUp by rememberSaveable{mutableStateOf("")}
         val replyTargets by Replies.targets.collectAsState()
         val replyConnected by Replies.connected.collectAsState()
         fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
-        var category by remember { mutableStateOf("Todo") }
+        var category by rememberSaveable { mutableStateOf("Todo") }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int,
             val expanded: Boolean, val retainedId: String?)
         var restoringLocation by remember { mutableStateOf<Location?>(null) }
@@ -101,7 +102,7 @@ fun SpotlightPanel(
         val resultsState=remember { mutableStateOf(emptyList<Result>()) }
         var results by resultsState
         var searchGeneration by remember { mutableIntStateOf(0) }
-        var selected by remember { mutableIntStateOf(0) }
+        var selected by rememberSaveable { mutableIntStateOf(0) }
         val history = remember { mutableStateListOf<Location>() }
         fun push() { history.add(Location(query,category,searchScope,selected,moreResults,collapsedSelection)) }
         var navigating by remember { mutableStateOf(false) }
@@ -156,14 +157,14 @@ fun SpotlightPanel(
         var noteEditor by remember { mutableStateOf(false) }
         var draft by remember { mutableStateOf("") }
         var aiMessageTarget by remember {mutableStateOf("")}
-        var aiText by remember { mutableStateOf("") }
+        var aiText by rememberSaveable { mutableStateOf("") }
         var aiLoading by remember { mutableStateOf(false) }
         var aiSaving by remember { mutableStateOf(false) }
         var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
         val conversation = remember { mutableListOf<Pair<String, String>>() }
         val aiSessions=remember{InspectorAiSessions()}
-        var aiSessionKey by remember{mutableStateOf("")}
+        var aiSessionKey by rememberSaveable{mutableStateOf("")}
         val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
         var favorites by remember { mutableStateOf(config.favorites) }
         val clips by app.local.clips.collectAsState()
@@ -713,7 +714,7 @@ fun SpotlightPanel(
             val mediaCandidate=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
             val inspectorItem=if(inspectorPinned)pinnedPreview else preview ?: mediaCandidate
             val inspectorPackage=(inspectorItem?.action as? Action.Launch)?.intent?.component?.packageName
-                ?.takeIf{PreviewPresentation.isApplication(inspectorItem)}
+                ?.takeIf{PreviewPresentation.isApplication(inspectorItem) && !inspectorTaskActive()}
             var mediaDismissed by remember(selectedResult?.id,query){mutableStateOf(false)}
             val mediaFlow=remember(context,inspectorPackage){
                 inspectorPackage?.let{MediaControl.inspect(context,it)} ?: kotlinx.coroutines.flow.flowOf(null)

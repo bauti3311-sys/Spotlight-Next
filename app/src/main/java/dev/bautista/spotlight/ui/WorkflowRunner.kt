@@ -8,6 +8,7 @@ import android.provider.AlarmClock
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,8 +33,8 @@ import kotlinx.coroutines.*
     var historyEnabled by remember{mutableStateOf(history.getBoolean("enabled",false))}
     suspend fun approve(details:String){val answer=CompletableDeferred<Boolean>();pending=details to answer;try{check(answer.await()){"Acción cancelada. La rutina se detuvo."}}finally{pending=null}}
 
-    var input by remember(w.id){mutableStateOf("")}
-    var progress by remember{mutableStateOf<WorkflowProgress?>(null)};var running by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var job by remember{mutableStateOf<Job?>(null)}
+    var input by rememberSaveable(w.id){mutableStateOf("")}
+    var progress by rememberSaveable(w.id,stateSaver=WorkflowProgressSaver){mutableStateOf<WorkflowProgress?>(null)};var running by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var job by remember{mutableStateOf<Job?>(null)}
     fun timerIntent(minutes:Int)=Intent(AlarmClock.ACTION_SET_TIMER).putExtra(AlarmClock.EXTRA_LENGTH,minutes*60).putExtra(AlarmClock.EXTRA_SKIP_UI,false).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     DisposableEffect(Unit){onDispose{job?.cancel()}}
     Column(Modifier.fillMaxWidth().heightIn(max=340.dp).verticalScroll(rememberScrollState()).padding(16.dp)){
@@ -44,6 +45,7 @@ import kotlinx.coroutines.*
         if(!running && progress==null)OutlinedTextField(input,{input=it.take(8000)},label={Text("Texto de entrada opcional")},minLines=1,maxLines=3,modifier=Modifier.fillMaxWidth())
         pending?.let{(details,answer)->Surface(color=MaterialTheme.colorScheme.secondaryContainer,shape=MaterialTheme.shapes.medium){Column(Modifier.padding(12.dp)){Text("Confirmar paso",style=MaterialTheme.typography.titleSmall);Text(details.take(8200));Row{Button(onClick={answer.complete(true)}){Text("Confirmar")};TextButton(onClick={answer.complete(false)}){Text("Cancelar paso")}}}}}
         prepared.forEach{(title,action)->TextButton(enabled=!running,onClick={onAction(action)}){Text("Abrir revisión: $title")}}
+        if(progress!=null && !running)Text("Repetir comienza desde el primer paso; los efectos previos no se deshacen.",style=MaterialTheme.typography.bodySmall)
         if(progress?.warning?.isNotBlank()==true)Text(progress!!.warning,color=MaterialTheme.colorScheme.error)
         if(!running)Row{Checkbox(historyEnabled,{historyEnabled=it;history.edit().putBoolean("enabled",it).apply()});Text("Guardar estado de rutinas · sin contenidos",style=MaterialTheme.typography.bodySmall)}
         if(running && pending==null)LinearProgressIndicator(progress={((progress?.step ?: 0).toFloat()/w.steps.size.coerceAtLeast(1)).coerceIn(0f,1f)},modifier=Modifier.fillMaxWidth())
@@ -67,7 +69,7 @@ import kotlinx.coroutines.*
                 override suspend fun extract(uri:String):String {val parsed=Uri.parse(uri);require(parsed.scheme=="content"){"Elegí un archivo autorizado mediante Android."};return dev.bautista.spotlight.index.DocumentText.extract(context,parsed,null)}
             }
             Workflows.run(w,host,input).collect{progress=it};if(historyEnabled)history.edit().putString("last", "${w.id}|${System.currentTimeMillis()}|${if(progress?.failed==true)"failed" else "completed"}").apply()
-        }catch(e:CancellationException){progress=WorkflowProgress(progress?.step ?: 0,w.steps.size,"Cancelada",progress?.output.orEmpty(),true);throw e}finally{running=false}}
+        }catch(e:CancellationException){progress=WorkflowProgress(progress?.step ?: 0,w.steps.size,"Cancelada",progress?.output.orEmpty(),failed=true);throw e}finally{running=false}}
     }){Text(if(progress==null)"Ejecutar" else "Repetir")};TextButton(onClick={if(running){job?.cancel()}else onDismiss()}){Text(if(running)"Detener" else "Cerrar")}}
     }
 }
