@@ -130,6 +130,9 @@ class UnifiedInspectorFlowTest {
             assertEquals("Dame un ejemplo",contents.getJSONObject(2).getJSONArray("parts").getJSONObject(0).getString("text"))
             search().assertTextEquals("2+2")
             capture("tablet-pinned-ai-fixture")
+            val shareText=ui.onNode(hasText("Compartir") and hasAnyAncestor(hasTestTag("inspector-content")),useUnmergedTree=true).fetchSemanticsNode()
+            assertTrue("Share label must fit one line in the tablet inspector",shareText.boundsInRoot.height<=24*app.resources.displayMetrics.density)
+            ui.onNode(hasText("Copiar") and hasClickAction() and hasAnyAncestor(hasTestTag("inspector-content"))).performScrollTo().assertIsDisplayed().assertHeightIsAtLeast(48.dp)
             assertEquals(0,closed)
         } finally { server.shutdown() }
     }

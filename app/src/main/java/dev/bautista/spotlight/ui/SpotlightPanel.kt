@@ -32,7 +32,7 @@ import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-@OptIn(FlowPreview::class, ExperimentalFoundationApi::class)
+@OptIn(FlowPreview::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun SpotlightPanel(
     app: SpotlightApp,
@@ -1202,7 +1202,7 @@ fun SpotlightPanel(
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
                                 TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }
                                 if(aiMessageTarget.isNotBlank() && aiText.isNotBlank() && !aiLoading)TextButton(onClick={execute(Result("ai:message","Preparar mensaje","","Comunicación",0,Action.ComposeMessage(config.messageApp,aiMessageTarget,aiText)))}){Text("Preparar mensaje para $aiMessageTarget")}
-                                Row {
+                                FlowRow(horizontalArrangement=Arrangement.spacedBy(4.dp)) {
                                     TextButton(enabled=aiText.isNotBlank() && !aiLoading && !aiSaving && conversation.lastOrNull()==("assistant" to aiText),onClick={val frozen=conversation.toList();aiSaving=true;scope.launch{try{app.contexts.saveConversation(frozen);aiSaveStatus="Conversación guardada localmente."}catch(e:CancellationException){throw e}catch(e:Exception){aiSaveStatus=e.message ?: "No se pudo guardar la conversación."}finally{aiSaving=false}}}){Text("Guardar conversación")}
                                     TextButton(onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
                                     TextButton(onClick = { copy(aiText) }) { Text("Copiar") }
