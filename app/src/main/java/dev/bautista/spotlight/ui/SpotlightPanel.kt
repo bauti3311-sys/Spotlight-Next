@@ -591,7 +591,11 @@ fun SpotlightPanel(
                 Row{TextButton(enabled=ai.configured(config),onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,AiRequestPolicy.authorize(ask)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
             }}
         }
-        LaunchedEffect(query){ if(showAi && !inspectorPinned){aiJob?.cancel();showAi=false} }
+        var observedAiQuery by remember{mutableStateOf(query)}
+        LaunchedEffect(query){
+            if(query!=observedAiQuery && showAi && !inspectorPinned){aiJob?.cancel();showAi=false}
+            observedAiQuery=query
+        }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
         LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
             snapshotFlow { Triple(query,searchScope,searchGeneration).also {
