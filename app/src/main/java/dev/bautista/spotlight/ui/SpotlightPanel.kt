@@ -176,6 +176,7 @@ fun SpotlightPanel(
             if(listState.isScrollInProgress)touchedResultId=null
         }
         fun back() {
+            inspectorPinned=false;pinnedPreview=null;pinnedCard=null
             aiJob?.cancel()
             showAi=false
             clearForms();preview=null;menu=false;noteEditor=false;selected=0;navigating=false;cardJob?.cancel();card=null
@@ -393,7 +394,7 @@ fun SpotlightPanel(
                 is Action.EditNote, is Action.NewNote -> true
                 else -> false
             }
-            if(inspectorPinned && replacesInspector) {
+            if(inspectorPinned && replacesInspector && item.id!="ai:confirmed") {
                 error="Desfijá el inspector para reemplazar su contenido. La tarea actual se conserva."
                 return
             }
@@ -855,9 +856,9 @@ fun SpotlightPanel(
                         selectMode(it)
                     },
                     {
-                        history.clear();clearForms();searchScope=null;query = ""
+                        history.clear();if(!inspectorPinned)clearForms();searchScope=null;query = ""
                         card = null
-                        aiText = ""
+                        if(!inspectorPinned)aiText = ""
                         category = "Todo"
                     },
                     { present(resultsState.value).getOrNull(selected)?.let { execute(it) } },

@@ -29,9 +29,9 @@ class UnifiedInspectorFlowTest {
     private var width by mutableIntStateOf(800)
     private var closed=0
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
-    private fun show(query:String) {
+    private fun show(query:String,client:dev.bautista.spotlight.ai.DirectAi?=null) {
         ui.setContent { Box(Modifier.width(width.dp)) {
-            SpotlightPanel(app,AppConfig(files=false,online=false,animations=false,learning=false,suggestions=false),{closed++},query,availableHeightDp=700f)
+            SpotlightPanel(app,AppConfig(files=false,online=false,animations=false,learning=false,suggestions=false),{closed++},query,availableHeightDp=700f,aiClient=client)
         } }
     }
     private fun awaitTag(tag:String) { ui.waitUntil(15000){ui.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()} }
@@ -54,14 +54,20 @@ class UnifiedInspectorFlowTest {
         capture("tablet-pinned-local")
         search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.K);keyUp(Key.CtrlLeft)}
         ui.onNodeWithTag("action-surface").assertIsDisplayed()
-        ui.onNodeWithText("Copiar resultado").assertExists()
-        ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
+        ui.onNodeWithText("Copiar resultado").performClick()
+        ui.runOnIdle {
+            val clipboard=app.getSystemService(android.content.ClipboardManager::class.java)
+            assertEquals("4",clipboard.primaryClip?.getItemAt(0)?.text?.toString())
+            assertEquals(0,closed)
+        }
         search().assertTextEquals("2+2").assertIsFocused()
         ui.onNodeWithContentDescription("Desfijar inspector").assertIsDisplayed()
         search().performKeyInput{pressKey(Key.Escape)}
         ui.onNodeWithTag("inspector-content").assertDoesNotExist()
         search().assertTextEquals("2+2").assertIsFocused()
         assertEquals(0,closed)
+        search().performKeyInput{pressKey(Key.Enter)}
+        ui.runOnIdle{assertEquals(1,closed)}
     }
 
     @Test fun pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout() {
@@ -86,4 +92,46 @@ class UnifiedInspectorFlowTest {
         ui.onNode(hasSetTextAction() and hasText("Cerati en vivo")).assertExists()
         assertEquals(0,closed)
     }
+    @Test fun pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp() {
+        val server=okhttp3.mockwebserver.MockWebServer()
+        server.start()
+        fun response(text:String)=okhttp3.mockwebserver.MockResponse().setHeader("Content-Type","text/event-stream")
+            .setBody("data: {\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"$text\"}]}}]}\n\n")
+        server.enqueue(response("Primera respuesta fixture"))
+        server.enqueue(response("Continuación fixture"))
+        try {
+            val client=dev.bautista.spotlight.ai.DirectAi(object:dev.bautista.spotlight.ai.AiCredentials {
+                override fun read(provider:String)="fixture-key"
+                override fun contains(provider:String)=true
+            },okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+                chain.proceed(chain.request().newBuilder().url(server.url("/fixture")).build())
+            }.build())
+            val question="Explicame el reflejo vestibuloocular"
+            show(question,client)
+            ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+            assertEquals(0,server.requestCount)
+            search().performKeyInput{pressKey(Key.Enter)}
+            ui.waitUntil(15000){ui.onAllNodesWithText("Primera respuesta fixture").fetchSemanticsNodes().isNotEmpty()}
+            ui.onNodeWithContentDescription("Fijar inspector").performClick()
+            search().performClick().performTextReplacement("2+2")
+            awaitTag("result:calc")
+            ui.onNodeWithText("Primera respuesta fixture").assertExists()
+            assertEquals(1,server.requestCount)
+            ui.onNode(hasSetTextAction() and hasText("Continuar conversación")).performScrollTo().performTextInput("Dame un ejemplo")
+            ui.onNodeWithText("Enviar").performScrollTo().performClick()
+            ui.waitUntil(15000){ui.onAllNodesWithText("Continuación fixture").fetchSemanticsNodes().isNotEmpty()}
+            assertEquals(2,server.requestCount)
+            server.takeRequest(2,java.util.concurrent.TimeUnit.SECONDS)
+            val request=server.takeRequest(2,java.util.concurrent.TimeUnit.SECONDS)!!
+            val contents=org.json.JSONObject(request.body.readUtf8()).getJSONArray("contents")
+            assertEquals(3,contents.length())
+            assertEquals(question,contents.getJSONObject(0).getJSONArray("parts").getJSONObject(0).getString("text"))
+            assertEquals("Primera respuesta fixture",contents.getJSONObject(1).getJSONArray("parts").getJSONObject(0).getString("text"))
+            assertEquals("Dame un ejemplo",contents.getJSONObject(2).getJSONArray("parts").getJSONObject(0).getString("text"))
+            search().assertTextEquals("2+2")
+            capture("tablet-pinned-ai-fixture")
+            assertEquals(0,closed)
+        } finally { server.shutdown() }
+    }
+
 }
