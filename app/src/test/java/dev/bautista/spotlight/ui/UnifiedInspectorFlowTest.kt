@@ -40,6 +40,7 @@ class UnifiedInspectorFlowTest {
     @Test fun pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection() {
         val text="Fijable prueba local\n"+"Contenido privado local. ".repeat(14)
         runBlocking { app.local.saveNote(text) }
+        ui.waitUntil(15000){app.local.notes.value.any{it.text==text}}
         val id=app.local.notes.value.first{it.text==text}.id
         show("Fijable")
         awaitTag("result:note:$id")

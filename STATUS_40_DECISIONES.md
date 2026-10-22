@@ -66,3 +66,9 @@ Lint/assembleRaycastPreview activos al redactar; APK35/firma/ZIP/hashes no se de
 C1.1 gatescerrados:producciónce46279,71casosúnicosdirigidos,últimos2dedictadocorrectos,lint0errores/13advertencias/1infoyassembleRaycastPreviewcorrectos3m6. Preview35debug-derived/ARM64;NOReleaseR8. Fuente finalAPK/ZIPyhashesseañadenalmanifiestodeentrega, sinaplicarcompletitudfísicaalosIDsparciales. Automatizaciónsiguepausada.
 
 EntregaC1.1:fuenteAPK/ZIPf497f8b,Preview35/certificadohistórico/193inputs/1067blobsverificados. GatesyhashesenMASTER-C1-20261022.md,71casosúnicos/lint0errores. D40continúaparcialhastaC5/R8/física;ningunadecisióndependiendodelhardwaresepromuevedebidoaestaAPK.
+
+
+## Continuidad recuperada C1/C2 ·22/10
+Reserva transferida con autorización explícita, CAS/FF, respaldo y propietario nuevo work-master-recovery-20261022-cc97a1bd; ver RECOVERY-C2-20261022.md. Código C1motion671e262:16/16casos dirigidos aprobados (OverlayWindowMotion2,OverlayStartup8,OverlayImeHeight6), sin repetir71dePreview35. D12 apertura140/cierre100 con foco disponible antes de finalizar animación y reducción inmediata; OneUI/performance física pendientes. D14ya implementa14/11/hit48segúnC1.1; el texto histórico superior de15/12/56no describeelHEADactual.
+
+C2tests33134ec:formulario sustituye lista/inspector ausente reproducido en prueba nativa; test de nota encontró fixture que leía StateFlow antes de publicación y se corrigió esperando el registro real. No se afirma segunda reproducción funcional por ese error. Corrección local integra formularios/IA/planes al ContextSplitPanel, inspector fijable explícito, retención de contenido/consulta y movableContent para ancho tablet/teléfono; aún NO verificada. D17/D18/D21/D24siguen parciales hasta pruebas nuevas. No servicios externos ni física acreditados; sin CI/main/merge/firma nueva.
