@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.SettingsPersistenceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-22T03:11:08" hostname="cbc8d00fe6ba" time="1.274">
+  <properties/>
+  <testcase name="appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="1.18"/>
+  <testcase name="visibleAppearanceMergeDoesNotResetUnrelatedPreferences" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.036"/>
+  <testcase name="legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.024"/>
+  <testcase name="staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint" classname="dev.bautista.spotlight.data.SettingsPersistenceTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

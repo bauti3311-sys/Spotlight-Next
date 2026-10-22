@@ -548,3 +548,7 @@ Raycast Dark Glass ·entrega34: APK/ZIP exactoscc1c28d verificados (193inputs/10
 
 ## Maestro definitivo40 ·C0/C1 ·22/10UTC
 Usuarioaprueba nuevo maestro; autoridad docs/master-40-20261021. Recuperados82blobs/árbol exacto115acc4 desde snapshotlocal091, referencia previa preservada. Inventario STATUS_40_DECISIONES.md distingue evidencia histórica56casos de verificaciones nuevas. C1 tests MasterC1ResultsTest conservados antes de corregir; rondaRED activa, sin resultados aún. JDK17.0.20.1/Gradle8.10.2/SDK35restaurados con hashes; sin CI ni firma nueva.
+
+
+## C1.1 ·código verificado22/10Argentina
+Código5c892537,71casos únicos correctos en rondas (34retenidosprimera+38segundacon3solapados+2nuevoscorregidos). Ver docs/MASTER-C1-20261022.md y verification/master-c1-20261022/tests.json para conteo exacto, fallos y límites. Material84/92/94/previewinmediato, filas1línea,consulta6/home3,segundotoque,dictadocondicional y⋯4accesos. Lint/APK35 activos, sin afirmar entrega aún. Reserva propia, PR18borrador, sinCI/main/force. Automatización creada pero PAUSADA por no poder verificar ejecutorWork; ningún reset de créditos inicia trabajo garantizado.

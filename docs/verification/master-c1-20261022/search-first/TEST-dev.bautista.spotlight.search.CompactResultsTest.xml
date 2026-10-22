@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.CompactResultsTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-22T03:05:32" hostname="cbc8d00fe6ba" time="0.354">
+  <properties/>
+  <testcase name="explicitUrlProviderAndFolderRequestsAreNotTreatedAsGenericFallbacks" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.047"/>
+  <testcase name="queryShowsSixAndExpansionRetainsEveryDistinctAction" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.028"/>
+  <testcase name="explicitDictionaryAndTextCommandsRemainAvailableInitially" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.034"/>
+  <testcase name="exactApplicationNeverAutocompletesIntoLongerSibling" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.027"/>
+  <testcase name="recognizedBrightnessMusicAndQuestionActionsStayEligible" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.035"/>
+  <testcase name="navigationKeepsExistingOrderWhenLateProvidersArrive" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.037"/>
+  <testcase name="duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.025"/>
+  <testcase name="exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.026"/>
+  <testcase name="explicitAiNotificationsAndAndroidCommandsSurviveDifferentLabels" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.025"/>
+  <testcase name="whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.022"/>
+  <testcase name="contentAndSemanticDocumentHitsDoNotRequireTitleOverlap" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.024"/>
+  <testcase name="explicitAppAndContactScopesUseTheirParsedSearchTerms" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.024"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

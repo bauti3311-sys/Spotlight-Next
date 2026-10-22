@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-22T03:12:46" hostname="cbc8d00fe6ba" time="4.55">
+  <properties/>
+  <testcase name="unavailableDictationIsHiddenAndOptionsDoNotChangeQuery" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="4.55"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

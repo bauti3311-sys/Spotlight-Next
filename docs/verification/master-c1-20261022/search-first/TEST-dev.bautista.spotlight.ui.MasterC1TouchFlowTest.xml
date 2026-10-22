@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-22T03:05:34" hostname="cbc8d00fe6ba" time="4.864">
+  <properties/>
+  <testcase name="initialHighlightRequiresFirstTapThenSecondTapExecutes" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="4.25"/>
+  <testcase name="enterStillExecutesWithoutTouchConfirmation" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.249"/>
+  <testcase name="cancelledSecondTapDoesNotExecuteAndLongPressShowsActions" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.364"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
