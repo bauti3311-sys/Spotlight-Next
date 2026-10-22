@@ -81,6 +81,15 @@ class ToolTaskRecoveryTest {
         assertEquals(original,audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC))
     }
 
+    @Test fun unfinishedArgumentStillRestoresAsAnEditableDraftWithoutExecution() {
+        val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        val restore=StateRestorationTester(ui)
+        restore.setContent{ContextualDraftHost("unfinished"){AiToolTaskPanel(app,AppConfig(),"Tarea",{},ToolPlan("",listOf(ToolCall("create_note",mapOf("text" to "Inicial")))))}}
+        ui.onNodeWithTag("tool-argument-0-text").performTextClearance()
+        restore.emulateSavedInstanceStateRestore()
+        ui.onNodeWithTag("tool-argument-0-text").assertExists()
+        ui.onNodeWithTag("tool-execute-0").assertExists()
+    }
     @Test fun taskSwitchKeepsSeparateArguments() {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         var task by mutableStateOf("one")

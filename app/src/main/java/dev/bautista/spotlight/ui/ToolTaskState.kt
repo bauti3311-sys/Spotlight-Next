@@ -7,7 +7,11 @@ import org.json.*
 
 internal val ToolProposalSaver=Saver<ToolPlan?,String>(
     save={p->p?.let{JSONObject().put("explanation",it.explanation).put("calls",JSONArray(it.calls.map(Workflows::encodeTool))).toString()}},
-    restore={raw->runCatching{val j=JSONObject(raw);val a=j.getJSONArray("calls");require(a.length()<=12);ToolPlan(j.getString("explanation"),(0 until a.length()).map{Workflows.toolCall(a.getString(it)).also(ToolRegistry::decode)})}.getOrNull()})
+    restore={raw->runCatching{val j=JSONObject(raw);val a=j.getJSONArray("calls");require(a.length()<=12);ToolPlan(j.getString("explanation"),(0 until a.length()).map{Workflows.toolCall(a.getString(it)).also{call->
+        val definition=ToolRegistry.definition(call.name) ?: error("Herramienta no registrada")
+        require(call.arguments.keys==definition.fields.toSet())
+        require(call.arguments.values.all{it.length<=8000 && !it.contains('\u0000')})
+    }})}.getOrNull()})
 internal data class ToolOutcome(val text:String,val state:ExecutionState,val review:Boolean=false)
 internal val ToolOutcomesSaver=Saver<Map<Int,ToolOutcome>,String>(
     save={map->JSONArray().apply{map.forEach{(index,value)->put(JSONObject().put("index",index).put("text",value.text).put("state",value.state.name).put("review",value.review))}}.toString()},
