@@ -572,3 +572,6 @@ Base07fd823;productoAPK/ZIPe83b99d5fc594fd89f2e760266e1f30ad4ea9339. Propuestas/
 
 ### Preview39 · código dirigido listo para gates
 29casos únicos correctos; recuperación documental y de tarjetas, scope/revisión sensible y respaldo de temas visuales en almacenamiento existente. Fuente/bitmaps/grants no se confunden; revalidación de foco también cubre LifecycleService. Fixtures de alias/JSON/semántica y registro Activity corregidos, fallo de recomposición off-thread conservado y caso con mismas aserciones migrado a ActivityScenario.recreate. Lint/assemble pendiente, sin APK39 entregada todavía. OverlayService sin snapshot durable sigue limitación explícita de C2; no afirmar proceso muerto ni hardware real. Ver STATUS y verification/preview39-20261022.
+
+
+Preview39 · entrega verificada: código6b433ff/29casos únicos,lint0/13+1,assemble1m3s,APK39/certificado885838aa/V2/zipalign16KB/204inputs/1238blobs. APK y ZIP exactos, capturas nativas con procedencia, sin nuevo build tras documentación. C2: snapshotdurableOverlayService y todoslosrecursoslocales siguen pendientes; C3: SAF/proveedores/updatefísico. No afirmar proceso muerto/PDFinstrumentado/OneUI/serviciosreales. SinActions/main/force/firmas nuevas. Ver PREVIEW39-RECOVERY-SETTINGS-20261022.md.

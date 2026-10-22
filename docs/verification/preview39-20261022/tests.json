@@ -1,4 +1,5 @@
 {
+  "code_sha": "6b433ff328df57ed28183bcb7dc977e5e1f97ab9",
   "unique_cases": 29,
   "latest_status": {
     "dev.bautista.spotlight.data.PortableImportTransactionTest#invalidImportIsAtomicAndLegacyPartialBackupKeepsNewFields": "passed",
@@ -258,6 +259,5 @@
       ]
     }
   ],
-  "final_directed_log": "final/directed.log",
-  "gates": "lint and APK pending at this checkpoint"
+  "note": "Only the explicitly selected classes are counted. Retained Gradle XML from other classes is not a new execution. Activity reconstruction is Robolectric, not physical process death."
 }
