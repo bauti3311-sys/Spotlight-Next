@@ -4,6 +4,7 @@ import android.app.Application
 import android.view.KeyEvent
 import dev.bautista.spotlight.data.*
 import org.junit.Assert.*
+import kotlinx.coroutines.flow.first
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -46,5 +47,13 @@ class KeyboardBindingsTest {
             val unsafe=current.copy(keyBindings=setOf(entry))
             assertTrue(runCatching{ConfigTransfer.decode(ConfigTransfer.encode(unsafe),current)}.isFailure)
         }
+    }
+    @Test fun configuredBindingsPersistInTheExistingDataStore()=kotlinx.coroutines.runBlocking {
+        val app=org.robolectric.RuntimeEnvironment.getApplication() as android.app.Application
+        val preferences=Preferences(app)
+        val c=KeyboardBindings.assign(dev.bautista.spotlight.data.Config(),"actions",KeyChord(KeyEvent.KEYCODE_L))
+        preferences.update(c)
+        val loaded=Preferences(app).config.first()
+        assertEquals(c.keyBindings,loaded.keyBindings)
     }
 }

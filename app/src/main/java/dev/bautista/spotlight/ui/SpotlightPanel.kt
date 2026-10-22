@@ -162,6 +162,8 @@ fun SpotlightPanel(
         var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
         val conversation = remember { mutableListOf<Pair<String, String>>() }
+        val aiSessions=remember{InspectorAiSessions()}
+        var aiSessionKey by remember{mutableStateOf("")}
         val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
         var favorites by remember { mutableStateOf(config.favorites) }
         val clips by app.local.clips.collectAsState()
@@ -524,6 +526,16 @@ fun SpotlightPanel(
                     } else {
                         push();clearForms();showAi=true;if(category !in setOf("Todo","Acciones","IA"))category="Todo";preview=null;menu=false
                         aiJob?.cancel()
+                        val taskKey=if(request.continuation && aiSessionKey.isNotBlank())aiSessionKey
+                            else org.json.JSONObject().put("provider",config.aiProvider).put("model",config.aiModel).put("endpoint",config.endpoint)
+                                .put("origin",request.origin.name).put("prompt",request.prompt).put("target",request.messageTarget)
+                                .put("turns",org.json.JSONArray(request.priorMessages.map{listOf(it.first,it.second)})).toString()
+                        if(!request.continuation)aiSessions.get(taskKey)?.let{saved->
+                            aiSessionKey=taskKey;aiText=saved.text;conversation.clear();conversation.addAll(saved.turns)
+                            aiMessageTarget=saved.messageTarget;aiLoading=false;aiSaveStatus="Conversación de esta tarea recuperada localmente."
+                            return
+                        }
+                        aiSessionKey=taskKey
                         aiText = ""
                         if(!request.continuation)conversation.clear()
                         if(request.priorMessages.isNotEmpty()){conversation.clear();conversation.addAll(request.priorMessages)}
@@ -541,6 +553,7 @@ fun SpotlightPanel(
                                     conversation.add("user" to request.prompt)
                                     conversation.add("assistant" to aiText)
                                     while (conversation.size > 12) conversation.removeAt(0)
+                                    aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget))
                                 } catch (e: CancellationException) {
                                     throw e
                                 } catch (e: Exception) {
@@ -1225,7 +1238,7 @@ fun SpotlightPanel(
                                     TextButton(modifier=Modifier.heightIn(min=48.dp),
                                         onClick = {
                                             aiJob?.cancel()
-                                            if(!aiLoading){aiText="";conversation.clear();aiMessageTarget=""}
+                                            if(!aiLoading){aiSessions.remove(aiSessionKey);aiText="";conversation.clear();aiMessageTarget="";aiSessionKey=""}
                                         }
                                     ) {
                                         Text(if (aiLoading) "Detener" else "Nueva conversación")

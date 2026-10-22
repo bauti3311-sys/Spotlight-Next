@@ -155,4 +155,36 @@ class UnifiedInspectorFlowTest {
         assertEquals(0,closed)
     }
 
+    @Test fun switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests() {
+        val server=okhttp3.mockwebserver.MockWebServer();server.start()
+        fun response(text:String)=okhttp3.mockwebserver.MockResponse().setHeader("Content-Type","text/event-stream")
+            .setBody("data: {\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"$text\"}]}}]}\n\n")
+        server.enqueue(response("Respuesta tarea uno"));server.enqueue(response("Respuesta tarea dos"))
+        try {
+            val client=dev.bautista.spotlight.ai.DirectAi(object:dev.bautista.spotlight.ai.AiCredentials {
+                override fun read(provider:String)="fixture-key"
+                override fun contains(provider:String)=true
+            },okhttp3.OkHttpClient.Builder().addInterceptor{chain->chain.proceed(chain.request().newBuilder().url(server.url("/fixture")).build())}.build())
+            val first="Explicame el reflejo vestibuloocular"
+            val second="Explicame el reflejo fotomotor"
+            show(first,client)
+            ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+            search().performKeyInput{pressKey(Key.Enter)}
+            ui.waitUntil(15000){ui.onAllNodesWithText("Respuesta tarea uno").fetchSemanticsNodes().isNotEmpty()}
+            search().performClick().performTextReplacement(second)
+            ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+            search().performKeyInput{pressKey(Key.Enter)}
+            ui.waitUntil(15000){ui.onAllNodesWithText("Respuesta tarea dos").fetchSemanticsNodes().isNotEmpty()}
+            search().performClick().performTextReplacement(first)
+            ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+            search().performKeyInput{pressKey(Key.Enter)}
+            ui.waitUntil(15000){ui.onAllNodesWithText("Respuesta tarea uno").fetchSemanticsNodes().isNotEmpty()}
+            assertEquals(2,server.requestCount)
+            server.takeRequest(2,java.util.concurrent.TimeUnit.SECONDS)
+            val contents=org.json.JSONObject(server.takeRequest(2,java.util.concurrent.TimeUnit.SECONDS)!!.body.readUtf8()).getJSONArray("contents")
+            assertEquals(1,contents.length())
+            assertEquals(second,contents.getJSONObject(0).getJSONArray("parts").getJSONObject(0).getString("text"))
+            ui.onNodeWithText("Conversación de esta tarea recuperada localmente.").assertExists()
+        } finally {server.shutdown()}
+    }
 }

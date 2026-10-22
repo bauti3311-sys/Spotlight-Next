@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.media.session.*
 import org.junit.Assert.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -66,5 +68,17 @@ class MediaInspectorTest {
         assertEquals(0L,shadowOf(c.transportControls).lastPerformedAction)
         manager.clearControllers();session("target",PlaybackState.ACTION_SEEK_TO)
         assertTrue(runCatching{MediaControl.seekForPackage(app,"target",3000,old.token)}.isFailure)
+    }
+    @Test fun observingRegistersOnlyTheTargetAndDisposalUnregistersCallbacks()=runBlocking(Dispatchers.Unconfined) {
+        val target=session("target")
+        val other=session("other")
+        val values=mutableListOf<MediaSnapshot?>()
+        val job=launch{MediaControl.inspect(app,"target").collect{values+=it}}
+        yield()
+        assertEquals(1,shadowOf(target).callbacks.size)
+        assertEquals(0,shadowOf(other).callbacks.size)
+        assertEquals("target",values.last()?.packageName)
+        job.cancelAndJoin()
+        assertEquals(0,shadowOf(target).callbacks.size)
     }
 }

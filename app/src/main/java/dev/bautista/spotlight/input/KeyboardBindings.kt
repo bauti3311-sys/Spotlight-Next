@@ -6,7 +6,7 @@ import dev.bautista.spotlight.data.Config
 data class KeyChord(val key:Int,val ctrl:Boolean=true,val alt:Boolean=false,val shift:Boolean=false) {
     val encoded get()="${if(ctrl)1 else 0}:${if(alt)1 else 0}:${if(shift)1 else 0}:$key"
     val label get()=listOfNotNull(if(ctrl)"Ctrl" else null,if(alt)"Alt" else null,if(shift)"Shift" else null,
-        KeyEvent.keyCodeToString(key).removePrefix("KEYCODE_").let{if(it=="SPACE")"Espacio" else it}).joinToString("+")
+        when(key){KeyEvent.KEYCODE_SPACE->"Espacio";in KeyEvent.KEYCODE_A..KeyEvent.KEYCODE_Z->('A'.code+key-KeyEvent.KEYCODE_A).toChar().toString();else->KeyEvent.keyCodeToString(key).removePrefix("KEYCODE_")}).joinToString("+")
     fun matches(e:KeyEvent)=e.keyCode==key && (e.isCtrlPressed||e.isMetaPressed)==ctrl && e.isAltPressed==alt && e.isShiftPressed==shift
     companion object {
         fun decode(raw:String):KeyChord? {
