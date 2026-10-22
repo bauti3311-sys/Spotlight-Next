@@ -28,8 +28,9 @@ object GlassTokens {
     const val glyphStroke=1.5f
     const val selectionMs=90
     fun rowHeight(c:Config)=when(c.density){"compact"->36.dp;"spacious"->48.dp;else->42.dp}
-    fun resultRowHeight(c:Config)=maxOf(56.dp,rowHeight(c))
-    fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->14.5.sp;else->15.sp}
+    // 44dp visual rhythm, with at least 48dp allocated to each accessible touch target.
+    fun resultRowHeight(c:Config)=maxOf(hit,rowHeight(c))
+    fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->15.sp;else->14.sp}
     const val minimumOpacity=.70f
     const val defaultOpacity=.80f
     fun opacity(c:Config)=c.opacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: defaultOpacity

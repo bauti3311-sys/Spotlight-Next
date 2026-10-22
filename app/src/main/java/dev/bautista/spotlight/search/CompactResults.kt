@@ -6,20 +6,21 @@ import dev.bautista.spotlight.data.Config
 /** Local presentation of the existing ranked search, never another provider or executor.
  * Secondary matches stay available in [all]; only useful candidates enter the initial view. */
 object CompactResults {
-    const val limit = 3
+    const val homeLimit = 3
+    const val limit = 6
     data class View(val initial: List<Result>, val all: List<Result>) {
         fun visible(expanded: Boolean, retainedId: String? = null): List<Result> {
             if (expanded) return all
             val retained = all.firstOrNull { it.id == retainedId } ?: return initial
             if (initial.any { it.id == retained.id }) return initial
             // Collapsing must not execute/select a different result under the user's hands.
-            return initial.take(limit - 1) + retained
+            return initial.take((initial.size - 1).coerceAtLeast(0)) + retained
         }
     }
 
     fun select(query: String, items: List<Result>, config: Config, preserveOrder: Boolean = false): View {
         val all = StableResults.unique(items.filterNot { it.id.startsWith("section:") })
-        if (query.isBlank()) return View(ResultSections.home(all).take(limit), all)
+        if (query.isBlank()) return View(ResultSections.home(all).take(homeLimit), all)
         val effectiveQuery=dev.bautista.spotlight.personal.PersonalCommands.expand(query,config.aliases)
         val intent = UniversalIntentEngine.resolve(effectiveQuery, config)
         val interpreted=QueryInterpreter.interpret(effectiveQuery)

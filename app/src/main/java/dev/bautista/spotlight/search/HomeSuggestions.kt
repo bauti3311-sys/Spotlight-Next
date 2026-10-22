@@ -21,7 +21,7 @@ import kotlin.math.ln
 object HomeSuggestions {
     const val MIN_RELEVANCE_SCORE = 300
     const val MAX_SUGGESTED_APPS = 1
-    const val MAX_TOTAL_SUGGESTIONS = 4
+    const val MAX_TOTAL_SUGGESTIONS = 3
     private const val HABIT_TTL_MS = 14L * 86_400_000L
     private const val HALF_LIFE_MS = 7.0 * 86_400_000.0
 

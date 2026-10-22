@@ -100,6 +100,8 @@ fun SpotlightPanel(
         fun push() { history.add(Location(query,category,searchScope,selected,moreResults,collapsedSelection)) }
         var navigating by remember { mutableStateOf(false) }
         var pointerSelecting by remember { mutableStateOf(false) }
+        // A highlighted keyboard/default result has not yet been confirmed by touch.
+        var touchedResultId by remember(query,category,searchScope) { mutableStateOf<String?>(null) }
         var preview by remember { mutableStateOf<Result?>(null) }
         var expandedPreview by remember {mutableStateOf(false)}
         val previewPages=remember{mutableStateMapOf<String,Int>()}
@@ -161,6 +163,9 @@ fun SpotlightPanel(
         var searchFocused by remember{mutableStateOf(false)}
         var resultsFocused by remember{mutableStateOf(false)}
         val listState = rememberLazyListState()
+        LaunchedEffect(listState.isScrollInProgress) {
+            if(listState.isScrollInProgress)touchedResultId=null
+        }
         fun back() {
             aiJob?.cancel()
             showAi=false
@@ -668,7 +673,7 @@ fun SpotlightPanel(
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
             val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
             val resultListHeight = minOf(resultLimit,
-                (if(compact)56.dp else GlassTokens.resultRowHeight(config))*visibleResults.size +
+                GlassTokens.resultRowHeight(config)*visibleResults.size +
                     if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 16.dp)
             val splitPanelHeight = minOf(resultLimit,400.dp)
             val inlineResultRows=!compact && (!widePreview || maxWidth*.62f>=384.dp)
@@ -676,7 +681,7 @@ fun SpotlightPanel(
                 Modifier.fillMaxWidth()
                     .glassSurface(config,legibleBackdrop=true)
                     .onPreviewKeyEvent { event ->
-                    if(event.type==KeyEventType.KeyDown)pointerSelecting=false
+                    if(event.type==KeyEventType.KeyDown){pointerSelecting=false;touchedResultId=null}
                     if (event.type != KeyEventType.KeyDown) false
                     else if (
                         noteEditor &&
@@ -866,8 +871,11 @@ fun SpotlightPanel(
                                         i == selected,
                                         if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned,
                                         {
+                                            val confirmed=touchedResultId==item.id && selected==i
                                             selected = i
-                                            if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
+                                            touchedResultId=item.id
+                                            if(confirmed){touchedResultId=null;execute(item)}
+                                            else if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
                                             else if(PreviewPresentation.isApplication(item)) {
                                                 // Touch selects/inspects; Enter remains the primary action.
                                                 selectApplication(item,i)
@@ -883,7 +891,7 @@ fun SpotlightPanel(
                                         { toggleFavorite(item) },
                                         inline=inlineResultRows,
                                         animations=motionEnabled,
-                                        onInteraction={pointerSelecting=true;selected=i;navigating=true},
+                                        onInteraction={pointerSelecting=true;navigating=true},
                                         playing=(item.action as? Action.Launch)?.intent?.component?.packageName in playingPackages,
                                     )
                                     if(query.isBlank() && searchScope==null && category=="Todo")Spacer(Modifier.height(3.dp))

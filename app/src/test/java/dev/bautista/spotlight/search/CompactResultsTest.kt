@@ -43,12 +43,12 @@ class CompactResultsTest {
         val sem=doc.copy(id="semantic",action=Action.Launch(Intent("semantic")),semanticMatch=true)
         assertEquals(2,select("PDF anatomía",listOf(doc,sem)).initial.size)
     }
-    @Test fun initialNeverExceedsThreeAndExpansionRetainsEveryDistinctAction(){
+    @Test fun queryShowsSixAndExpansionRetainsEveryDistinctAction(){
         val rows=(1..12).map{app("app$it","Chrome $it")}
         val view=select("Chrome",rows)
-        assertEquals(3,view.initial.size);assertEquals(12,view.visible(true).size)
+        assertEquals(6,view.initial.size);assertEquals(12,view.visible(true).size)
         val collapsed=view.visible(false,"app9")
-        assertEquals(3,collapsed.size);assertTrue(collapsed.any{it.id=="app9"})
+        assertEquals(6,collapsed.size);assertTrue(collapsed.any{it.id=="app9"})
         assertEquals(12,view.visible(true).size)
         assertEquals(3,CompactResults.select("",rows,AppConfig()).initial.size)
     }
@@ -86,7 +86,7 @@ class CompactResultsTest {
     @Test fun explicitAppAndContactScopesUseTheirParsedSearchTerms(){
         val rows=(1..6).map{app("app$it","Chrome $it")}+app("exact","Chrome")
         val view=select("/apps Chrome",rows)
-        assertEquals("exact",view.initial.first().id);assertEquals(3,view.initial.size)
+        assertEquals("exact",view.initial.first().id);assertEquals(6,view.initial.size)
         assertEquals(7,view.all.size)
         val contact=Result("contact:1","Juan","Contacto autorizado","Contactos",700,Action.ComposeMessage("sms","Juan"))
         assertEquals(listOf(contact.id),select("/contacts Juan",listOf(contact)).initial.map{it.id})

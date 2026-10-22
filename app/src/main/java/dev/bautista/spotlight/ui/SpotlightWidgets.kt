@@ -30,13 +30,7 @@ fun ResultIcon(
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
 ) {
-    if(result.mime=="application/pdf") {
-        val dark=MaterialTheme.colorScheme.surface.luminance()<.5f
-        val blue=Color(0xFFE94555)
-        Box(modifier.clip(RoundedCornerShape(6.dp)).background(blue).border(1.dp,Color.White.copy(alpha=.08f),RoundedCornerShape(6.dp)),contentAlignment=Alignment.Center) {
-            Icon(PhosphorIcons.Pdf,"Archivo PDF",Modifier.size(17.dp),tint=Color.White)
-        }
-    } else if (result.icon != null) {
+if (result.icon != null) {
         val bitmap =
             remember(result.id, result.icon) { result.icon.toBitmap(80, 80).asImageBitmap() }
         Image(bitmap, result.category, modifier.clip(RoundedCornerShape(7.dp)))
@@ -88,7 +82,7 @@ fun ResultRow(
     inline:Boolean=true,
 ) {
     val colors = MaterialTheme.colorScheme
-    val usefulSubtitle = if(PreviewPresentation.isApplication(result))"Aplicación" else dev.bautista.spotlight.search.CompactResults.subtitle(result)
+    val metadata = if(playing)"En reproducción" else if(PreviewPresentation.isApplication(result))"Aplicación" else result.mime?.substringAfterLast('/')?.uppercase()?.take(12) ?: ResultSections.category(result)
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
@@ -114,24 +108,13 @@ fun ResultRow(
     ) {
         // Native application artwork keeps its own identity. Utility glyphs have
         // one stroke treatment and no tinted tile or selection stripe.
-        if(result.icon==null && result.mime!="application/pdf")Box(Modifier.size(32.dp).background(colors.onSurface.copy(alpha=.075f),CircleShape),contentAlignment=Alignment.Center) {
-            ResultIcon(result,Modifier.size(18.dp),colors.onSurfaceVariant)
-        } else ResultIcon(result,Modifier.size(if(result.icon!=null)36.dp else 30.dp),colors.onSurfaceVariant)
+        ResultIcon(result,Modifier.size(if(result.icon!=null)28.dp else 20.dp),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
-        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
-            Text(result.title,color=ink,fontWeight=FontWeight.Medium,
-                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
-                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-            if(usefulSubtitle.isNotBlank()) Text(usefulSubtitle,color=colors.onSurfaceVariant,
-                fontSize=12.sp*appearance.textScale,lineHeight=15.sp*appearance.textScale,
-                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-        }
-        if(inline) {
-            if(selected)GlassKeycap("Enter") else Icon(CommandIcons.Chevron,null,Modifier.padding(start=10.dp).size(14.dp),tint=colors.onSurfaceVariant)
-        }
-        if(playing) Text("En reproducción",Modifier.padding(start=6.dp).clip(RoundedCornerShape(5.dp))
-            .background(Color(0x2222C58B)).border(1.dp,Color(0x3322C58B),RoundedCornerShape(5.dp)).padding(horizontal=8.dp,vertical=3.dp),
-            color=if(dark)Color(0xFF8ED9BC) else Color(0xFF16684D),fontSize=10.sp,maxLines=1)
+        Text(result.title,Modifier.weight(1f),color=ink,fontWeight=FontWeight.Medium,
+            fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
+            letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+        Text(metadata,Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,
+            fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {

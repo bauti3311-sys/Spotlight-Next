@@ -31,7 +31,7 @@ class MinimalistSearchFlowTest {
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private fun show(query:String="Chrome", theme:String="dark", preset:String="glass") {
         val launcher=Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-        (listOf("Chrome")+(1..5).map{"Chrome $it"}+"Firefox").forEachIndexed{n,label->
+        (listOf("Chrome")+(1..6).map{"Chrome $it"}+"Firefox").forEachIndexed{n,label->
             val info=ActivityInfo().apply{packageName="fixture.chrome$n";name="Main";nonLocalizedLabel=label;applicationInfo=ApplicationInfo().apply{packageName="fixture.chrome$n"}}
             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})
         }
@@ -43,15 +43,15 @@ class MinimalistSearchFlowTest {
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
     @Test fun compactExpansionAndCollapseKeepQueryFocusAndSelectedIdentity(){
         show()
-        rows().assertCountEquals(3)
+        rows().assertCountEquals(6)
         search().assertTextEquals("Chrome").assertIsFocused()
         ui.onNodeWithTag("results-expand").performClick()
         ui.waitUntil(15000){rows().fetchSemanticsNodes().size>=6}
         search().assertTextEquals("Chrome").assertIsFocused()
-        repeat(4){search().performKeyInput{pressKey(Key.DirectionDown)}}
+        repeat(6){search().performKeyInput{pressKey(Key.DirectionDown)}}
         val selected=rows().fetchSemanticsNodes().single{it.config.getOrElse(SemanticsProperties.Selected){false}}.config[SemanticsProperties.TestTag]
         search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.M);keyUp(Key.CtrlLeft)}
-        rows().assertCountEquals(3)
+        rows().assertCountEquals(6)
         assertEquals(selected,rows().fetchSemanticsNodes().single{it.config.getOrElse(SemanticsProperties.Selected){false}}.config[SemanticsProperties.TestTag])
         search().assertIsFocused().assertTextEquals("Chrome")
     }
@@ -67,7 +67,7 @@ class MinimalistSearchFlowTest {
         search().assertIsFocused().assertTextEquals("Chro")
         search().performTextClearance()
         search().performTextInput("Fire")
-        ui.waitUntil(15000){ui.onAllNodesWithTag("result:fixture.chrome6/Main").fetchSemanticsNodes().isNotEmpty()}
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:fixture.chrome7/Main").fetchSemanticsNodes().isNotEmpty()}
         search().performKeyInput{repeat(12){pressKey(Key.DirectionRight)}}
         search().assertIsFocused().assertTextEquals("Fire")
         search().performKeyInput{pressKey(Key.Tab)}
@@ -87,7 +87,7 @@ class MinimalistSearchFlowTest {
         search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.M);keyUp(Key.CtrlLeft)}
         ui.waitUntil(15000){rows().fetchSemanticsNodes().size>=6}
         search().performKeyInput{pressKey(Key.Escape)}
-        rows().assertCountEquals(3)
+        rows().assertCountEquals(6)
         search().assertTextEquals("Chrome").assertIsFocused()
     }
     @Test fun tabletGraphiteCapture(){
@@ -104,7 +104,7 @@ class MinimalistSearchFlowTest {
         show()
         val root=ui.onNodeWithTag("spotlight-root")
         assertTrue(root.fetchSemanticsNode().boundsInRoot.height<340*app.resources.displayMetrics.density)
-        rows().assertCountEquals(3)
+        rows().assertCountEquals(6)
         ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         ui.onNodeWithTag("result:fixture.chrome0/Main").performTouchInput{longClick()}
         ui.onNodeWithTag("action-surface").assertIsDisplayed()
