@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.lifecycle.Lifecycle
 import dev.bautista.spotlight.search.*
 import dev.bautista.spotlight.data.Config as AppConfig
@@ -41,15 +41,41 @@ class RecoveryDocumentProvider:ContentProvider() {
   return ParcelFileDescriptor.open(f,ParcelFileDescriptor.MODE_READ_ONLY)
  }
 }
+private val recoveryDescriptor=Result("file:fixture","Documento autorizado","Texto local","Archivos",1,Action.Launch(Intent(Intent.ACTION_VIEW,Uri.parse("content://recovery/document/one")).putExtra("unsafe","not persisted").addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)),mime="text/plain",preview="extracted body must not persist")
+
+class RecoverableDocumentActivity:ComponentActivity() {
+ companion object {var recover=false;var provider:RecoveryDocumentProvider?=null}
+ override fun onCreate(state:android.os.Bundle?) {
+  super.onCreate(state)
+  if(recover)setContentForRecovery()
+ }
+ private fun setContentForRecovery() { this.setContent {
+  SpotlightTheme("dark",AppConfig(theme="dark")) {
+   val doc by rememberSaveable(stateSaver=DocumentPreviewSaver){mutableStateOf<Result?>(recoveryDescriptor)}
+   val pages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf(recoveryDescriptor.id to 2)}
+   val card by rememberSaveable(stateSaver=InfoCardSaver){mutableStateOf<InfoCard?>(InfoCard("Tarjeta local","Fuente local","Dato conservado"))}
+   Column(Modifier.width(700.dp).padding(20.dp)){
+    Text(doc!!.title);Text("Página conservada: ${pages[doc!!.id]}")
+    Text(card!!.subtitle);Text(card!!.body)
+    AuthorizedFilePreview(this@RecoverableDocumentActivity,doc!!,false,pages[doc!!.id]!!,{pages[doc!!.id]=it})
+   }
+  }
+ }}
+}
 @OptIn(ExperimentalRoborazziApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],application=android.app.Application::class,qualifiers="w800dp-h700dp")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class InspectorResourceRecoveryTest {
- @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
- private val descriptor=Result("file:fixture","Documento autorizado","Texto local","Archivos",1,Action.Launch(Intent(Intent.ACTION_VIEW,Uri.parse("content://recovery/document/one")).putExtra("unsafe","not persisted").addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)),mime="text/plain",preview="extracted body must not persist")
+ val ui=createAndroidComposeRule<RecoverableDocumentActivity>()
+ private val setup=object:org.junit.rules.TestWatcher(){override fun starting(description:org.junit.runner.Description){
+  RecoverableDocumentActivity.recover=description.methodName=="restoredDocumentAndPageKeepIdentityAndRecheckAccess"
+  if(RecoverableDocumentActivity.recover)RecoverableDocumentActivity.provider=provider()
+ }}
+ @get:Rule val rules=org.junit.rules.RuleChain.outerRule(registerFixtureActivity(RecoverableDocumentActivity::class.java)).around(setup).around(ui)
+ private val descriptor get()=recoveryDescriptor
  private fun provider():RecoveryDocumentProvider {
-  val p=RecoveryDocumentProvider();p.attachInfo(ui.activity,ProviderInfo().apply{authority="recovery"});ShadowContentResolver.registerProviderInternal("recovery",p);return p
+  val p=RecoveryDocumentProvider();p.attachInfo(RuntimeEnvironment.getApplication(),ProviderInfo().apply{authority="recovery"});ShadowContentResolver.registerProviderInternal("recovery",p);return p
  }
  @Test fun descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody() {
   val raw=with(DocumentPreviewSaver){SaverScope{true}.save(descriptor)}!!
@@ -59,19 +85,9 @@ class InspectorResourceRecoveryTest {
   assertNull(DocumentPreviewSaver.restore(org.json.JSONObject(raw).put("uri","file:///forbidden").toString()))
  }
  @Test fun restoredDocumentAndPageKeepIdentityAndRecheckAccess() {
-  val provider=provider();val restore=StateRestorationTester(ui)
-  restore.setContent {SpotlightTheme("dark",AppConfig(theme="dark")){
-   var doc by rememberSaveable(stateSaver=DocumentPreviewSaver){mutableStateOf<Result?>(descriptor)}
-   val pages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf(descriptor.id to 2)}
-   var card by rememberSaveable(stateSaver=InfoCardSaver){mutableStateOf<InfoCard?>(InfoCard("Tarjeta local","Fuente local","Dato conservado"))}
-   Column(Modifier.width(700.dp).padding(20.dp)){
-    Text(doc!!.title);Text("Página conservada: ${pages[doc!!.id]}")
-    Text(card!!.subtitle);Text(card!!.body)
-    AuthorizedFilePreview(ui.activity,doc!!,false,pages[doc!!.id]!!,{pages[doc!!.id]=it})
-   }
-  }}
+  val provider=RecoverableDocumentActivity.provider!!
   ui.waitUntil(10000){ui.onAllNodesWithText("Contenido documental autorizado").fetchSemanticsNodes().isNotEmpty()}
-  val before=provider.opened;restore.emulateSavedInstanceStateRestore()
+  val before=provider.opened;ui.activityRule.scenario.recreate()
   ui.onNodeWithText("Página conservada: 2").assertExists();ui.onNodeWithText("Recuperada · Fuente local").assertExists()
   ui.waitUntil(10000){provider.opened>before && ui.onAllNodesWithText("Contenido documental autorizado").fetchSemanticsNodes().isNotEmpty()}
   captureScreenRoboImage("build/preview39/document-restored-tablet.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
