@@ -29,7 +29,7 @@ class NativePaletteFlowTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
-    private fun show(query:String="WhatsApp",width:Int=740,height:Float=640f,theme:String="dark") {
+    private fun show(query:String="WhatsApp",width:Int=740,height:Float=640f,theme:String="dark",expectedPackage:String="com.whatsapp") {
         val intent=Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
         listOf("com.whatsapp" to "WhatsApp","com.android.chrome" to "Chrome","com.spotify.music" to "Spotify").forEach { (pkg,title)->
             val a=ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel=title}
@@ -40,10 +40,19 @@ class NativePaletteFlowTest {
         app.search.invalidateApps()
         ui.setContent{Box(Modifier.width(width.dp)) {SpotlightPanel(app,AppConfig(theme=theme,preset=if(theme=="light")"macos" else "glass",
             files=false,animations=false,learning=false,favorites=setOf("com.whatsapp/Main")),{},query,height)}}
-        ui.waitUntil(15000){ui.onAllNodesWithTag(if(query.isBlank())"result:suggest:app:com.whatsapp" else "result:com.whatsapp/Main").fetchSemanticsNodes().isNotEmpty()}
+        ui.waitUntil(15000){ui.onAllNodesWithTag(if(query.isBlank())"result:suggest:app:com.whatsapp" else "result:$expectedPackage/Main").fetchSemanticsNodes().isNotEmpty()}
     }
     private fun open(){search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.K);keyUp(Key.CtrlLeft)};ui.onNodeWithTag("action-surface").assertIsDisplayed()}
     private fun capture(name:String){ui.onNodeWithTag("spotlight-root").captureRoboImage("build/native-palette/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
+    @Test fun spotifyPrefixShowsActualInstalledResultAndFloatingActions() {
+        show("spot",expectedPackage="com.spotify.music")
+        ui.onNodeWithTag("result:com.spotify.music/Main").assertIsSelected()
+        search().assertTextEquals("spot");capture("11-spotify-prefix")
+        val before=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
+        open();capture("12-spotify-actions")
+        assertEquals(before,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
+        search().assertTextEquals("spot");assertNull(Shadows.shadowOf(app).peekNextStartedActivity())
+    }
     @Test fun compactHomeHasNoAutomaticInspector(){show("");ui.onNodeWithTag("context-inspector").assertDoesNotExist();assertTrue(ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot.height<=300*app.resources.displayMetrics.density);capture("01-home")}
     @Test fun searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch(){
         show();ui.onNodeWithTag("context-inspector").assertDoesNotExist()
