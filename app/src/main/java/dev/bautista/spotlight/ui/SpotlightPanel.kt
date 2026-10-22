@@ -1108,7 +1108,7 @@ fun SpotlightPanel(
                                 LinearProgressIndicator(Modifier.fillMaxWidth())
                         }
                         HorizontalDivider(color=colors.outlineVariant)
-                        if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor) Row(
+                        if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor)) Row(
                             Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -1263,7 +1263,7 @@ fun SpotlightPanel(
                             full.all.size>full.initial.size || moreResults
                         } else false
                         HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
-                        if(systemPage!=null || messageForm!=null || searchForm!=null)
+                        if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
                             Text("Tab siguiente campo   esc volver",
                                 Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
                         else GlassContextFooter(

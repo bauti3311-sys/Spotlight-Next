@@ -31,7 +31,7 @@ class UnifiedInspectorFlowTest {
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
     private fun show(query:String,client:dev.bautista.spotlight.ai.DirectAi?=null) {
         ui.setContent { Box(Modifier.width(width.dp)) {
-            SpotlightPanel(app,AppConfig(files=false,online=false,animations=false,learning=false,suggestions=false),{closed++},query,availableHeightDp=700f,aiClient=client)
+            SpotlightPanel(app,AppConfig(theme="dark",preset="glass",aiProvider="gemini",aiModel="fixture-model",files=false,online=false,animations=false,learning=false,suggestions=false),{closed++},query,availableHeightDp=700f,aiClient=client)
         } }
     }
     private fun awaitTag(tag:String) { ui.waitUntil(15000){ui.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()} }
@@ -132,6 +132,24 @@ class UnifiedInspectorFlowTest {
             capture("tablet-pinned-ai-fixture")
             assertEquals(0,closed)
         } finally { server.shutdown() }
+    }
+
+    @Test @Config(qualifiers="w390dp-h844dp")
+    fun phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn() {
+        width=360
+        show("youtube")
+        awaitTag("result:catalog:youtube:search")
+        ui.onNodeWithTag("result:catalog:youtube:search").performClick()
+        search().performKeyInput{pressKey(Key.Enter)}
+        ui.onNodeWithTag("context-inspector").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Fijar inspector").assertIsDisplayed().performClick()
+        ui.onNodeWithText("Qué querés buscar").performTextReplacement("Cerati acústico")
+        ui.onNode(hasSetTextAction() and hasText("Cerati acústico")).assertIsDisplayed()
+        ui.onNodeWithText("Buscar",useUnmergedTree=true).assertIsDisplayed()
+        capture("phone-390-search-form-dark")
+        ui.onNodeWithContentDescription("Cerrar inspector").performClick()
+        search().assertTextEquals("youtube").assertIsFocused()
+        assertEquals(0,closed)
     }
 
 }
