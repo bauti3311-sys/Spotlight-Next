@@ -494,8 +494,8 @@
       "report": "docs/verification/master-c1-20261022/material-first/TEST-dev.bautista.spotlight.ui.RaycastQuickMenuComposeTest.xml"
     },
     "dev.bautista.spotlight.ui.MasterC1TouchFlowTest.installedSpeechActivityMakesDictationAvailable": {
-      "round": "material-first",
-      "report": "docs/verification/master-c1-20261022/material-first/TEST-dev.bautista.spotlight.ui.MasterC1TouchFlowTest.xml"
+      "round": "dictation-final",
+      "report": "docs/verification/master-c1-20261022/dictation-final/TEST-dev.bautista.spotlight.ui.MasterC1TouchFlowTest.xml"
     },
     "dev.bautista.spotlight.ui.DarkGlassSettingsTest.phoneAppearanceAndPermissionsRemainNavigable": {
       "round": "material-first",
@@ -626,8 +626,8 @@
       "report": "docs/verification/master-c1-20261022/material-first/TEST-dev.bautista.spotlight.data.SettingsPersistenceTest.xml"
     },
     "dev.bautista.spotlight.ui.MasterC1TouchFlowTest.unavailableDictationIsHiddenAndOptionsDoNotChangeQuery": {
-      "round": "affected",
-      "report": "docs/verification/master-c1-20261022/affected/TEST-dev.bautista.spotlight.ui.MasterC1TouchFlowTest.xml"
+      "round": "dictation-final",
+      "report": "docs/verification/master-c1-20261022/dictation-final/TEST-dev.bautista.spotlight.ui.MasterC1TouchFlowTest.xml"
     },
     "dev.bautista.spotlight.ui.MasterC1MaterialTest.migrationPreservesLegacyAlphaAndUnrelatedPrivateFields": {
       "round": "affected",
@@ -645,5 +645,13 @@
     "physical performance/IME/input dispatcher/rotation"
   ],
   "red": "2 cases / 1 expected fail at baseline0574dcb; interrupted prior run not a result",
-  "compile_failure": "Material test used inapplicable generic RuntimeEnvironment.getApplication<Application>(); corrected fixture only"
+  "compile_failure": "Material test used inapplicable generic RuntimeEnvironment.getApplication<Application>(); corrected fixture only",
+  "dictation_final": {
+    "code_sha": "ce46279d9dc834182f3e45dd6cd3d797bd3338cb",
+    "tests": 2,
+    "passed": 2,
+    "report": "docs/verification/master-c1-20261022/dictation-final/TEST-dev.bautista.spotlight.ui.MasterC1TouchFlowTest.xml",
+    "reason": "lint rejected produceState publication; explicit remember+LaunchedEffect keeps IO off main thread without suppressions"
+  },
+  "final_production_sha": "ce46279d9dc834182f3e45dd6cd3d797bd3338cb"
 }

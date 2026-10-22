@@ -1,0 +1,19 @@
+{
+  "java": "Temurin17.0.20.1+1",
+  "gradle": "8.10.2",
+  "sdk": "Android35 base r02 / BuildTools35.0.0",
+  "roborazzi": "1.29.0 unchanged",
+  "runtime": "/tmp/spotlight-tools",
+  "gradle_cache": "/tmp/spotlight-gradle-cache",
+  "runner": "/tmp/spotlight-tools/run.py",
+  "network": "Override both JAVA_TOOL_OPTIONS and GRADLE_OPTS with current HTTPS_PROXY parsed for every invocation; do not reuse historical ports. Official repositories unchanged.",
+  "test_runtime": "Test JVM only -XX:TieredStopAtLevel=1 historic Robolectric C2 workaround; host Gradle normal. No disabled tests.",
+  "download_checksums": {
+    "gradle_sha256": "31c55713e40233a8303827ceb42ca48a47267a0ad4bab9177123121e71524c26",
+    "jdk_sha256": "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e",
+    "platform_sha1": "0bb560a90a7a2cbd0dd8348224d518b638fe7949",
+    "buildtools_sha1": "2cfaa0bbb2336e9ec18ed3ecea84fa2e2af607bc"
+  },
+  "signing": "Existing private authorized backup recovered; certificate885838aa. No keys in repo or source ZIP.",
+  "device": "adb devices -l empty; no physical instrumentation or hardware claim."
+}

@@ -552,3 +552,5 @@ Usuarioaprueba nuevo maestro; autoridad docs/master-40-20261021. Recuperados82bl
 
 ## C1.1 ·código verificado22/10Argentina
 Código5c892537,71casos únicos correctos en rondas (34retenidosprimera+38segundacon3solapados+2nuevoscorregidos). Ver docs/MASTER-C1-20261022.md y verification/master-c1-20261022/tests.json para conteo exacto, fallos y límites. Material84/92/94/previewinmediato, filas1línea,consulta6/home3,segundotoque,dictadocondicional y⋯4accesos. Lint/APK35 activos, sin afirmar entrega aún. Reserva propia, PR18borrador, sinCI/main/force. Automatización creada pero PAUSADA por no poder verificar ejecutorWork; ningún reset de créditos inicia trabajo garantizado.
+
+C1.1gatesfinales:ce46279publicaestadoasíncronoconremember+LaunchedEffect después deProduceStateDoesNotAssignValue.2/2casosdedictado,lint0errores/13avisos/1infoyassembleRaycastPreviewcorrectos3m6.71casosúnicosenrondas, no71ejecutadosdenuevo. ADBsin dispositivos/Actionsrama0. EmpaquetarAPK35+ZIPcheckpointdocumentalcon193inputsidénticos ycertificado885838aa. No máscambiosdeproducciónantesdeentrega.
