@@ -1200,13 +1200,13 @@ fun SpotlightPanel(
                                     if(aiText.isBlank())Text("Pensando…",lineHeight=23.sp) else AiMarkdown(aiText)
                                 }
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
-                                TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }
+                                TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }
                                 if(aiMessageTarget.isNotBlank() && aiText.isNotBlank() && !aiLoading)TextButton(onClick={execute(Result("ai:message","Preparar mensaje","","Comunicación",0,Action.ComposeMessage(config.messageApp,aiMessageTarget,aiText)))}){Text("Preparar mensaje para $aiMessageTarget")}
                                 FlowRow(horizontalArrangement=Arrangement.spacedBy(4.dp)) {
-                                    TextButton(enabled=aiText.isNotBlank() && !aiLoading && !aiSaving && conversation.lastOrNull()==("assistant" to aiText),onClick={val frozen=conversation.toList();aiSaving=true;scope.launch{try{app.contexts.saveConversation(frozen);aiSaveStatus="Conversación guardada localmente."}catch(e:CancellationException){throw e}catch(e:Exception){aiSaveStatus=e.message ?: "No se pudo guardar la conversación."}finally{aiSaving=false}}}){Text("Guardar conversación")}
-                                    TextButton(onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
-                                    TextButton(onClick = { copy(aiText) }) { Text("Copiar") }
-                                    TextButton(
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=aiText.isNotBlank() && !aiLoading && !aiSaving && conversation.lastOrNull()==("assistant" to aiText),onClick={val frozen=conversation.toList();aiSaving=true;scope.launch{try{app.contexts.saveConversation(frozen);aiSaveStatus="Conversación guardada localmente."}catch(e:CancellationException){throw e}catch(e:Exception){aiSaveStatus=e.message ?: "No se pudo guardar la conversación."}finally{aiSaving=false}}}){Text("Guardar conversación")}
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),onClick = { copy(aiText) }) { Text("Copiar") }
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),
                                         onClick = {
                                             aiJob?.cancel()
                                             if(!aiLoading){aiText="";conversation.clear();aiMessageTarget=""}
