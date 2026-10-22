@@ -64,3 +64,5 @@ El inventario superior parte de115acc4 y se actualizó porID con C1.1. C1.1 impl
 Lint/assembleRaycastPreview activos al redactar; APK35/firma/ZIP/hashes no se declaran entregados hasta informe final. Capturas API33/Robolectric NATIVE con apps/proveedores fixture; sin wallpaper ni InputDispatcher físicos. Comparativa contra03/04 respeta material y01/02composición; prevalecen filas1línea del maestro. No afirmar100%de decisiones terminadas.
 
 C1.1 gatescerrados:producciónce46279,71casosúnicosdirigidos,últimos2dedictadocorrectos,lint0errores/13advertencias/1infoyassembleRaycastPreviewcorrectos3m6. Preview35debug-derived/ARM64;NOReleaseR8. Fuente finalAPK/ZIPyhashesseañadenalmanifiestodeentrega, sinaplicarcompletitudfísicaalosIDsparciales. Automatizaciónsiguepausada.
+
+EntregaC1.1:fuenteAPK/ZIPf497f8b,Preview35/certificadohistórico/193inputs/1067blobsverificados. GatesyhashesenMASTER-C1-20261022.md,71casosúnicos/lint0errores. D40continúaparcialhastaC5/R8/física;ningunadecisióndependiendodelhardwaresepromuevedebidoaestaAPK.

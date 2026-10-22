@@ -1,0 +1,44 @@
+{
+  "source_sha": "f497f8b06b357ebc0ad8474e8fd46e28c69e1f5a",
+  "compiled_production_sha": "ce46279d9dc834182f3e45dd6cd3d797bd3338cb",
+  "production_inputs_identical": 193,
+  "source_entries_verified": 1067,
+  "files": [
+    {
+      "name": "Spotlight-Next-Raycast-Preview-35-f497f8b.apk",
+      "size": 86539680,
+      "sha256": "52c646eadac0f548463e20b1e1a8be8f1e270144ecd7b8f0e37e5eb16baea5bd"
+    },
+    {
+      "name": "Spotlight-Next-source-f497f8b.zip",
+      "size": 8170369,
+      "sha256": "b60f959092c2b6332f347f3cbdee956e32062f05f1ff522dada3e4e21a7f2cce"
+    }
+  ],
+  "variant": "raycastPreview / debug-derived, not Release/R8",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "version_code": 35,
+  "version_name": "2.0.1-raycast-preview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "zipalign_16kb": true,
+  "signature_v2": true,
+  "abi": [
+    "arm64-v8a"
+  ],
+  "min_sdk": 26,
+  "target_sdk": 35,
+  "tests_unique_passed": 71,
+  "test_execution": "directed rounds35/34pass,40/38pass,6/6affected,2/2dictationfinal; overlaps not added",
+  "lint": {
+    "errors": 0,
+    "warnings": 13,
+    "information": 1
+  },
+  "build": "BUILD SUCCESSFUL in3m6s",
+  "device": "No adb devices; no physical installation or OneUI validation",
+  "captures": "RobolectricAPI33 NATIVE fixtures; tablet1280x800dp / phone390x844dp. Actual PNGs unaltered. Not system wallpaper/physical blur/input dispatcher.",
+  "comparison": "16 paired Preview34/Preview35 scenes and4 approved renders",
+  "pending": "C1 physical/IME/motion/shortcut-conflict editor/latency; C2-C5 partial as STATUS_40_DECISIONES.md",
+  "github_actions_branch_runs": 0,
+  "automation": "created but paused; Work runtime not verifiable"
+}
