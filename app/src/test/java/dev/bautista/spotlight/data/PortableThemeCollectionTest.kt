@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config as RoboConfig
 @RoboConfig(sdk=[33],application=Application::class)
 class PortableThemeCollectionTest {
  @Test fun themesAndPersonalCommandsRoundTripWithoutRestoringGrants()=runBlocking {
-  val source=ThemeTransfer.save(Config(aliases=setOf("musica|abrir Spotify"),quickLinks=setOf("Sitio|https://example.com"),opacity=.81f,typeface="inter"),"Mi Glass")
+  val source=ThemeTransfer.save(Config(aliases=setOf("musica|abrir Spotify"),quickLinks=setOf("sitio|https://example.com"),opacity=.81f,typeface="inter"),"Mi Glass")
   val p=Preferences(RuntimeEnvironment.getApplication());p.update(Config(trees=setOf("content://local-only"),aiRootConsent=true))
   p.importPortable(ConfigTransfer.encode(source))
   val restored=p.config.first()

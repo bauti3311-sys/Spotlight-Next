@@ -109,16 +109,16 @@ fun SpotlightPanel(
         var pointerSelecting by remember { mutableStateOf(false) }
         // A highlighted keyboard/default result has not yet been confirmed by touch.
         var touchedResultId by remember(query,category,searchScope) { mutableStateOf<String?>(null) }
-        var preview by remember { mutableStateOf<Result?>(null) }
-        var inspectorPinned by remember { mutableStateOf(false) }
-        var pinnedPreview by remember { mutableStateOf<Result?>(null) }
-        var pinnedCard by remember { mutableStateOf<InfoCard?>(null) }
+        var preview by rememberSaveable(stateSaver=DocumentPreviewSaver) { mutableStateOf<Result?>(null) }
+        var inspectorPinned by rememberSaveable { mutableStateOf(false) }
+        var pinnedPreview by rememberSaveable(stateSaver=DocumentPreviewSaver) { mutableStateOf<Result?>(null) }
+        var pinnedCard by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
         // Moving between the tablet column and phone sheet must retain edited form state.
         val contextDrafts=rememberSaveableStateHolder()
         val recentDrafts=remember{mutableListOf<String>()}
         val inspectorHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
-        var expandedPreview by remember {mutableStateOf(false)}
-        val previewPages=remember{mutableStateMapOf<String,Int>()}
+        var expandedPreview by rememberSaveable {mutableStateOf(false)}
+        val previewPages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf<String,Int>()}
         val fileBuffer=remember(fileSelection){fileSelection ?: dev.bautista.spotlight.data.FileBuffer()}
         val bufferExtraction=remember{DocumentExtractionRequest()}
         val bufferBusy=bufferExtraction.running
@@ -140,7 +140,7 @@ fun SpotlightPanel(
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
         LaunchedEffect(menu) { if (menu) hideKeyboardForActions() }
-        var previousSearch by remember {mutableStateOf<String?>(null)}
+        var previousSearch by remember {mutableStateOf<String?>(query)}
         var loading by remember { mutableStateOf(false) }
         fun invalidateResults() {
             // Returning to the same text within a debounce/frame still needs to refill cleared rows.
@@ -149,9 +149,10 @@ fun SpotlightPanel(
             results=emptyList()
         }
         var error by remember { mutableStateOf("") }
-        var card by remember { mutableStateOf<InfoCard?>(null) }
+        var card by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
         var cardLoading by remember { mutableStateOf(false) }
         var cardJob by remember { mutableStateOf<Job?>(null) }
+        DisposableEffect(Unit){onDispose{cardJob?.cancel()}}
         var editingNoteId by remember { mutableStateOf<String?>(null) }
         var pinned by remember { mutableStateOf(config.pins) }
         var noteEditor by remember { mutableStateOf(false) }
@@ -608,9 +609,8 @@ fun SpotlightPanel(
                     app.diagnostics.traceSearch(if(isCurrentRequest())"started" else "obsolete-start",requestScope?.section,generation)
                     if(!isCurrentRequest())return@collectLatest
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
-                    if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
+                    if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q;card=null}
                     cardJob?.cancel()
-                    card = null
                     cardLoading = false
                     error = ""
                     loading = true
@@ -621,7 +621,7 @@ fun SpotlightPanel(
                         coroutineScope {
                             val localRequest=TextTools.results(q).mapNotNull{it.action as? Action.Lookup}.firstOrNull{it.type.startsWith("text:")}
                             val request = localRequest ?: app.online.request(q)
-                            if (requestScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
+                            if (card==null && requestScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
                                 launch {
                                     cardLoading = true
                                     try {
@@ -732,6 +732,7 @@ fun SpotlightPanel(
             val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
             val richPreview=PreviewPresentation.needsInspector(inspectorItem)
             val taskInspector=inspectorTaskActive()
+            LaunchedEffect(Unit){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
             val hasInspector=richPreview || inspectorCard!=null || taskInspector || mediaInspector
             val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
             fun dismissInspector() {
@@ -1038,7 +1039,10 @@ fun SpotlightPanel(
                                         item.action is Action.Launch && item.action.intent.data != null
                                 ) {
                                     TextButton(onClick={expandedPreview=!expandedPreview}){Text(if(expandedPreview)"Volver al panel lateral" else "Ampliar vista previa")}
-                                    FilePreview(context, item,expandedPreview,previewPages[item.id] ?: 0,{previewPages[item.id]=it})
+                                    AuthorizedFilePreview(context, item,expandedPreview,previewPages[item.id] ?: 0,{page->
+                                        previewPages.remove(item.id);previewPages[item.id]=page
+                                        while(previewPages.size>8)previewPages.remove(previewPages.keys.first())
+                                    })
                                     TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
                                 }
                                 SelectionContainer {
