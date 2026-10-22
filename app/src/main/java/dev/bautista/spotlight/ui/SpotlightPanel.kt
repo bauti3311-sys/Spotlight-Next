@@ -158,10 +158,13 @@ fun SpotlightPanel(
         var draft by remember { mutableStateOf("") }
         var aiMessageTarget by remember {mutableStateOf("")}
         var aiText by rememberSaveable { mutableStateOf("") }
-        var aiLoading by remember { mutableStateOf(false) }
+        var aiLoading by rememberSaveable { mutableStateOf(false) }
         var aiSaving by remember { mutableStateOf(false) }
         var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
+        LaunchedEffect(Unit) {
+            if(aiLoading && aiJob==null){aiLoading=false;aiSaveStatus="Respuesta interrumpida. El texto parcial se conservó; no se reanudó ningún envío."}
+        }
         val conversation = rememberSaveable(saver=ConversationTaskSaver) { mutableListOf<Pair<String, String>>() }
         val aiSessions=remember{InspectorAiSessions()}
         var aiSessionKey by rememberSaveable{mutableStateOf("")}
