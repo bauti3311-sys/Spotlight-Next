@@ -28,7 +28,7 @@ import kotlinx.coroutines.*
     val app=context.applicationContext as SpotlightApp
     val executor=remember(app){ToolExecutor(app)};val chat=remember(app){DirectAi(app)}
     var pending by remember{mutableStateOf<Pair<String,CompletableDeferred<Boolean>>?>(null)}
-    val prepared=remember{mutableStateListOf<Pair<String,Action>>()}
+    var prepared by rememberSaveable(w.id,stateSaver=PreparedWorkflowSaver){mutableStateOf(emptyList<Pair<String,String>>())}
     val history=remember{context.getSharedPreferences("workflow_history",Context.MODE_PRIVATE)}
     var historyEnabled by remember{mutableStateOf(history.getBoolean("enabled",false))}
     suspend fun approve(details:String){val answer=CompletableDeferred<Boolean>();pending=details to answer;try{check(answer.await()){"Acción cancelada. La rutina se detuvo."}}finally{pending=null}}
@@ -44,7 +44,10 @@ import kotlinx.coroutines.*
         progress?.let{p->Text("${p.step}/${p.total} · ${p.label}");if(p.output.isNotBlank())Text(p.output.take(1000));if(p.failed)Text("La rutina se detuvo; los pasos restantes no se ejecutaron.",color=MaterialTheme.colorScheme.error)}
         if(!running && progress==null)OutlinedTextField(input,{input=it.take(8000)},label={Text("Texto de entrada opcional")},minLines=1,maxLines=3,modifier=Modifier.fillMaxWidth())
         pending?.let{(details,answer)->Surface(color=MaterialTheme.colorScheme.secondaryContainer,shape=MaterialTheme.shapes.medium){Column(Modifier.padding(12.dp)){Text("Confirmar paso",style=MaterialTheme.typography.titleSmall);Text(details.take(8200));Row{Button(onClick={answer.complete(true)}){Text("Confirmar")};TextButton(onClick={answer.complete(false)}){Text("Cancelar paso")}}}}}
-        prepared.forEach{(title,action)->TextButton(enabled=!running,onClick={onAction(action)}){Text("Abrir revisión: $title")}}
+        prepared.forEach{(title,encoded)->TextButton(enabled=!running,onClick={scope.launch{
+            try{val call=Workflows.toolCall(encoded);check(ToolRegistry.definition(call.name)?.risk!=ToolRisk.CHANGE){"Revisá el resultado del cambio anterior antes de repetirlo."};executor.execute(call,app.preferences.config.first(),true).action?.let(onAction) ?: run{error="La revisión ya no está disponible."}}
+            catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo recuperar la revisión."}
+        }}){Text("Volver a preparar revisión: $title")}}
         if(progress!=null && !running)Text("Repetir comienza desde el primer paso; los efectos previos no se deshacen.",style=MaterialTheme.typography.bodySmall)
         if(progress?.warning?.isNotBlank()==true)Text(progress!!.warning,color=MaterialTheme.colorScheme.error)
         if(!running)Row{Checkbox(historyEnabled,{historyEnabled=it;history.edit().putBoolean("enabled",it).apply()});Text("Guardar estado de rutinas · sin contenidos",style=MaterialTheme.typography.bodySmall)}
@@ -53,7 +56,7 @@ import kotlinx.coroutines.*
     }
     Row {TextButton(enabled=!running,onClick={
         if(w.steps.any{it.type=="timer"} && context.packageManager.resolveActivity(timerIntent(1),0)==null){error="No hay una app Reloj compatible. No se ejecutó ningún paso.";return@TextButton}
-        error="";prepared.clear();progress=null;running=true;job=scope.launch{try{
+        error="";prepared=emptyList();progress=null;running=true;job=scope.launch{try{
             val host=object:WorkflowHost {
                 override suspend fun copy(text:String){context.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("Spotlight",text))}
                 override suspend fun note(text:String){local.saveNote(text)}
@@ -63,7 +66,7 @@ import kotlinx.coroutines.*
                     val definition=ToolRegistry.definition(call.name) ?: error("Herramienta no compatible.")
                     if(definition.risk!=ToolRisk.READ)approve(definition.title+"\n"+call.arguments.entries.joinToString("\n"){"${it.key}: ${it.value}"})
                     val result=executor.execute(call,app.preferences.config.first(),definition.risk!=ToolRisk.READ)
-                    result.action?.let{prepared+=definition.title to it};return result.text
+                    result.action?.let{prepared=prepared+(definition.title to Workflows.encodeTool(call))};return result.text
                 }
                 override suspend fun ai(text:String):String {val config=app.preferences.config.first();check(chat.configured(config)){"Configurá IA antes de ejecutar."};approve("Enviar este texto a ${config.aiProvider}:\n$text");return withTimeout(180000){chat.answer(config,listOf("user" to text)).fold(""){all,delta->(all+delta).also{check(it.length<=8000){"La respuesta supera el límite de la rutina."}}}}}
                 override suspend fun extract(uri:String):String {val parsed=Uri.parse(uri);require(parsed.scheme=="content"){"Elegí un archivo autorizado mediante Android."};return dev.bautista.spotlight.index.DocumentText.extract(context,parsed,null)}

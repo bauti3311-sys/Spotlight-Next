@@ -16,7 +16,7 @@ import dev.bautista.spotlight.data.Config
 import dev.bautista.spotlight.search.Action
 import kotlinx.coroutines.*
 
-@Composable fun AiToolPanel(app:SpotlightApp,config:Config,initialPrompt:String,onAction:(Action)->Unit,initialPlan:ToolPlan?=null,executeOverride:(suspend (ToolCall)->ToolExecution)?=null) {
+@Composable internal fun AiToolTaskPanel(app:SpotlightApp,config:Config,initialPrompt:String,onAction:(Action)->Unit,initialPlan:ToolPlan?=null,executeOverride:(suspend (ToolCall)->ToolExecution)?=null) {
     var prompt by rememberSaveable(initialPrompt){mutableStateOf(initialPrompt.take(3000))};var plan by rememberSaveable(initialPrompt,stateSaver=ToolProposalSaver){mutableStateOf(initialPlan)};var busy by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var job by remember{mutableStateOf<Job?>(null)};val scope=rememberCoroutineScope()
     var results by rememberSaveable(initialPrompt,stateSaver=ToolOutcomesSaver){mutableStateOf(emptyMap<Int,ToolOutcome>())};var interrupted by rememberSaveable(initialPrompt){mutableIntStateOf(-1)};val executor=remember{ToolExecutor(app)};val agent=remember{ToolAgent(CredentialVault(app))}
     val chat=remember{DirectAi(app)}
@@ -73,4 +73,8 @@ import kotlinx.coroutines.*
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
         TextButton(onClick={val copy=app.toolAudit.summary();onAction(Action.Copy(copy.ifBlank{"Sin operaciones registradas."}))}){Text("Copiar registro sin textos ni argumentos")}
     }
+}
+
+@Composable fun AiToolPanel(app:SpotlightApp,config:Config,initialPrompt:String,onAction:(Action)->Unit) {
+    AiToolTaskPanel(app,config,initialPrompt,onAction)
 }

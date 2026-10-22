@@ -133,9 +133,11 @@ class Preferences(private val context: Context) {
     val config: Flow<Config> =
         context.store.data
             .catch { emit(emptyPreferences()) }
-            .map { p ->
+            .map { p -> readConfig(p) }
+
+    private fun readConfig(p:androidx.datastore.preferences.core.Preferences):Config {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")} .getOrDefault(org.json.JSONObject())
-                Config(
+                return Config(
                     p[theme] ?: "auto",
                     p[opacity] ?: .84f,
                     p[width] ?: 0,
@@ -184,7 +186,7 @@ class Preferences(private val context: Context) {
                     actionOpacity=extra.optDouble("actionOpacity",.92).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .92f,
                     settingsOpacity=extra.optDouble("settingsOpacity",.94).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .94f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
-            }
+    }
 
     /** A settings edit must not overwrite habits, privacy, files or concurrent changes. */
     suspend fun updateAppearance(c: Config) {
@@ -236,6 +238,60 @@ class Preferences(private val context: Context) {
                 kept.put(current.get(i))
             }
             p[routines]=kept.toString()
+        }
+    }
+
+    /** Validate before writing, merge against the transaction's current values; never import grants or secrets. */
+    suspend fun importPortable(raw:String) {
+        context.store.edit { p ->
+            val c=ConfigTransfer.decode(raw,readConfig(p))
+            p[theme]=c.theme
+            p[opacity]=c.opacity
+            p[width]=c.width
+            p[position]=c.position
+            p[animations]=c.animations
+            p[engine]=c.engine
+            p[favorites]=c.favorites
+            p[blur]=c.blur
+            p[shortcut]=c.shortcut
+            p[quickLinks]=c.quickLinks
+            p[aliases]=c.aliases
+            p[snippets]=c.snippets
+            p[pins]=c.pins
+            p[accent]=c.accent
+            p[appearance]=c.appearance
+            p[density]=c.density
+            p[messageApp]=c.messageApp
+            p[aiProvider]=c.aiProvider
+            p[aiModel]=c.aiModel
+            p[corner]=c.corner
+            p[textScale]=c.textScale
+            p[iconSize]=c.iconSize
+            p[maxHeight]=c.maxHeight
+            p[adaptive]=c.adaptive
+            p[routines]=c.routines
+            p[clipLimit]=c.clipLimit
+            p[clipRetention]=c.clipRetention
+            p[suggestions]=c.suggestions
+            p[hiddenSuggestions]=c.hiddenSuggestions
+            p[pinnedSuggestions]=c.pinnedSuggestions
+            p[preset]=c.preset
+            p[clipboardShortcut]=c.clipboardShortcut
+            p[keyboardBindings]=c.keyBindings
+            val extra=org.json.JSONObject(p[next20] ?: "{}")
+            extra.put("autoKeyboard",c.autoKeyboard)
+            extra.put("glassIntensity",c.glassIntensity)
+            extra.put("surfaceTone",c.surfaceTone)
+            extra.put("borderWidth",c.borderWidth)
+            extra.put("shadowSize",c.shadowSize)
+            extra.put("typeface",c.typeface)
+            extra.put("selectionStyle",c.selectionStyle)
+            extra.put("movement",c.movement)
+            extra.put("manualWidth",c.manualWidth)
+            extra.put("windowScale",c.windowScale)
+            extra.put("actionOpacity",c.actionOpacity)
+            extra.put("settingsOpacity",c.settingsOpacity)
+            p[next20]=extra.toString()
         }
     }
 

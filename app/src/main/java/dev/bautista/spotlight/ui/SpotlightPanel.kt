@@ -162,7 +162,7 @@ fun SpotlightPanel(
         var aiSaving by remember { mutableStateOf(false) }
         var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
-        val conversation = remember { mutableListOf<Pair<String, String>>() }
+        val conversation = rememberSaveable(saver=ConversationTaskSaver) { mutableListOf<Pair<String, String>>() }
         val aiSessions=remember{InspectorAiSessions()}
         var aiSessionKey by rememberSaveable{mutableStateOf("")}
         val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
