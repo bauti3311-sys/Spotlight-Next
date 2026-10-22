@@ -72,7 +72,7 @@ class InspectorResourceRecoveryTest {
   RecoverableDocumentActivity.recover=description.methodName=="restoredDocumentAndPageKeepIdentityAndRecheckAccess"
   if(RecoverableDocumentActivity.recover)RecoverableDocumentActivity.provider=provider()
  }}
- @get:Rule val rules=org.junit.rules.RuleChain.outerRule(registerFixtureActivity(RecoverableDocumentActivity::class.java)).around(setup).around(ui)
+ @get:Rule val rules=org.junit.rules.RuleChain.outerRule(registerDocumentFixture()).around(setup).around(ui)
  private val descriptor get()=recoveryDescriptor
  private fun provider():RecoveryDocumentProvider {
   val p=RecoveryDocumentProvider();p.attachInfo(RuntimeEnvironment.getApplication(),ProviderInfo().apply{authority="recovery"});ShadowContentResolver.registerProviderInternal("recovery",p);return p
@@ -149,4 +149,14 @@ class InspectorResourceRecoveryTest {
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
  }
 
+}
+
+private fun registerDocumentFixture()=object:org.junit.rules.ExternalResource(){
+ override fun before(){
+  val app=RuntimeEnvironment.getApplication<android.app.Application>()
+  val component=ComponentName(app,RecoverableDocumentActivity::class.java)
+  val manager=Shadows.shadowOf(app.packageManager)
+  val info=manager.addActivityIfNotPresent(component);info.exported=true
+  manager.addResolveInfoForIntent(Intent.makeMainActivity(component),android.content.pm.ResolveInfo().apply{activityInfo=info})
+ }
 }
