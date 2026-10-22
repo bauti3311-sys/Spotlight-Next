@@ -24,6 +24,7 @@ import dev.bautista.spotlight.data.LocalStore
 import kotlinx.coroutines.*
 
 @Composable fun WorkflowRunner(w:Workflow,local:LocalStore,onAction:(Action)->Unit={},onDismiss:()->Unit) {
+    val checkpoint=LocalTaskCheckpoint.current
     val context=LocalContext.current;val scope=rememberCoroutineScope()
     val app=context.applicationContext as SpotlightApp
     val executor=remember(app){ToolExecutor(app)};val chat=remember(app){DirectAi(app)}
@@ -58,17 +59,17 @@ import kotlinx.coroutines.*
         if(w.steps.any{it.type=="timer"} && context.packageManager.resolveActivity(timerIntent(1),0)==null){error="No hay una app Reloj compatible. No se ejecutó ningún paso.";return@TextButton}
         error="";prepared=emptyList();progress=null;running=true;job=scope.launch{try{
             val host=object:WorkflowHost {
-                override suspend fun copy(text:String){context.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("Spotlight",text))}
-                override suspend fun note(text:String){local.saveNote(text)}
-                override suspend fun volume(level:Int){approve("Cambiar volumen multimedia a $level %");val audio=context.getSystemService(AudioManager::class.java);audio.setStreamVolume(AudioManager.STREAM_MUSIC,audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*level/100,0)}
-                override suspend fun timer(minutes:Int){context.startActivity(timerIntent(minutes))}
+                override suspend fun copy(text:String){checkpoint();context.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("Spotlight",text))}
+                override suspend fun note(text:String){checkpoint();local.saveNote(text)}
+                override suspend fun volume(level:Int){approve("Cambiar volumen multimedia a $level %");checkpoint();val audio=context.getSystemService(AudioManager::class.java);audio.setStreamVolume(AudioManager.STREAM_MUSIC,audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*level/100,0)}
+                override suspend fun timer(minutes:Int){checkpoint();context.startActivity(timerIntent(minutes))}
                 override suspend fun tool(call:ToolCall):String {
                     val definition=ToolRegistry.definition(call.name) ?: error("Herramienta no compatible.")
                     if(definition.risk!=ToolRisk.READ)approve(definition.title+"\n"+call.arguments.entries.joinToString("\n"){"${it.key}: ${it.value}"})
-                    val result=executor.execute(call,app.preferences.config.first(),definition.risk!=ToolRisk.READ)
+                    checkpoint();val result=executor.execute(call,app.preferences.config.first(),definition.risk!=ToolRisk.READ)
                     result.action?.let{prepared=prepared+(definition.title to Workflows.encodeTool(call))};return result.text
                 }
-                override suspend fun ai(text:String):String {val config=app.preferences.config.first();check(chat.configured(config)){"Configurá IA antes de ejecutar."};approve("Enviar este texto a ${config.aiProvider}:\n$text");return withTimeout(180000){chat.answer(config,listOf("user" to text)).fold(""){all,delta->(all+delta).also{check(it.length<=8000){"La respuesta supera el límite de la rutina."}}}}}
+                override suspend fun ai(text:String):String {val config=app.preferences.config.first();check(chat.configured(config)){"Configurá IA antes de ejecutar."};approve("Enviar este texto a ${config.aiProvider}:\n$text");checkpoint();return withTimeout(180000){chat.answer(config,listOf("user" to text)).fold(""){all,delta->(all+delta).also{check(it.length<=8000){"La respuesta supera el límite de la rutina."}}}}}
                 override suspend fun extract(uri:String):String {val parsed=Uri.parse(uri);require(parsed.scheme=="content"){"Elegí un archivo autorizado mediante Android."};return dev.bautista.spotlight.index.DocumentText.extract(context,parsed,null)}
             }
             Workflows.run(w,host,input).collect{progress=it};if(historyEnabled)history.edit().putString("last", "${w.id}|${System.currentTimeMillis()}|${if(progress?.failed==true)"failed" else "completed"}").apply()

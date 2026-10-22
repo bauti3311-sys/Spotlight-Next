@@ -153,10 +153,10 @@ fun SpotlightPanel(
         var cardLoading by remember { mutableStateOf(false) }
         var cardJob by remember { mutableStateOf<Job?>(null) }
         DisposableEffect(Unit){onDispose{cardJob?.cancel()}}
-        var editingNoteId by remember { mutableStateOf<String?>(null) }
+        var editingNoteId by rememberSaveable { mutableStateOf<String?>(null) }
         var pinned by remember { mutableStateOf(config.pins) }
-        var noteEditor by remember { mutableStateOf(false) }
-        var draft by remember { mutableStateOf("") }
+        var noteEditor by rememberSaveable { mutableStateOf(false) }
+        var draft by rememberSaveable { mutableStateOf("") }
         var aiMessageTarget by remember {mutableStateOf("")}
         var aiText by rememberSaveable { mutableStateOf("") }
         var aiLoading by rememberSaveable { mutableStateOf(false) }

@@ -19,11 +19,15 @@ import kotlinx.coroutines.*
 @Composable internal fun AiToolTaskPanel(app:SpotlightApp,config:Config,initialPrompt:String,onAction:(Action)->Unit,initialPlan:ToolPlan?=null,executeOverride:(suspend (ToolCall)->ToolExecution)?=null) {
     var prompt by rememberSaveable(initialPrompt){mutableStateOf(initialPrompt.take(3000))};var plan by rememberSaveable(initialPrompt,stateSaver=ToolProposalSaver){mutableStateOf(initialPlan)};var busy by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var job by remember{mutableStateOf<Job?>(null)};val scope=rememberCoroutineScope()
     var results by rememberSaveable(initialPrompt,stateSaver=ToolOutcomesSaver){mutableStateOf(emptyMap<Int,ToolOutcome>())};var interrupted by rememberSaveable(initialPrompt){mutableIntStateOf(-1)};val executor=remember{ToolExecutor(app)};val agent=remember{ToolAgent(CredentialVault(app))}
+    val checkpoint=LocalTaskCheckpoint.current
     val chat=remember{DirectAi(app)}
     val configured=chat.configured(config)
     val state by app.shizuku.state.collectAsState()
     DisposableEffect(Unit){onDispose{job?.cancel()}}
-    suspend fun runCall(call:ToolCall)=executeOverride?.invoke(call) ?: executor.execute(call,app.preferences.config.first(),confirmed=true)
+    suspend fun runCall(call:ToolCall):ToolExecution {
+        if(ToolRegistry.definition(call.name)?.risk!=ToolRisk.READ)checkpoint()
+        return executeOverride?.invoke(call) ?: executor.execute(call,app.preferences.config.first(),confirmed=true)
+    }
     Column(Modifier.testTag("tool-task").fillMaxWidth().heightIn(max=340.dp).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
         Text("IA con herramientas",style=MaterialTheme.typography.titleMedium)
         Text("Solo se envía esta solicitud al proveedor. Las propuestas se revisan aquí; los resultados locales no se envían automáticamente.",style=MaterialTheme.typography.bodySmall)

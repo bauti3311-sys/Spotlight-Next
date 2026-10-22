@@ -186,6 +186,25 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         root.put("conversations",JSONArray().apply{mutableConversations.value.forEach{item->put(JSONObject(conversationRecords[item.id]?.toString() ?: "{}").put("id",item.id).put("title",item.title).put("text",item.text).put("created",item.created).apply{if(item.turns.isNotEmpty())put("turns",ConversationHistory.encode(item.turns))})}})
         val out=file.startWrite();try{out.write(root.toString().toByteArray());file.finishWrite(out)}catch(e:Exception){file.failWrite(out);throw e}
     }
+    /** Overlay recovery shares this private, atomic store; it is never in portable exports. */
+    suspend fun overlaySnapshot():Map<String,List<Any?>>? {
+        start();loadJob?.join()
+        return lock.withLock {
+            check(storageReady){"No se pudo leer la recuperación local. Los datos anteriores se conservaron."}
+            if(preferences.isPrivate)return@withLock null
+            original.optJSONObject("overlayRecovery")?.let(OverlaySnapshotCodec::decode)
+        }
+    }
+    suspend fun saveOverlaySnapshot(state:Map<String,List<Any?>>?)=withContext(Dispatchers.IO) {
+        start();loadJob?.join()
+        lock.withLock {
+            check(storageReady){"No se pudo guardar la recuperación local. No se autorizó la operación."}
+            val encoded=if(state==null || preferences.isPrivate)null else OverlaySnapshotCodec.encode(state)
+            val previous=original
+            original=JSONObject(original.toString()).apply{if(encoded==null)remove("overlayRecovery") else put("overlayRecovery",encoded)}
+            try{withContext(NonCancellable){save()}}catch(e:Exception){original=previous;throw e}
+        }
+    }
     fun results(query:String):List<Result> {
         val contexts=mutablePinned.value.mapNotNull{item->val score=relevance(query,item.title);if(score==0)null else Result("context:${item.id}",item.title,"Contexto fijado · activar y revisar","Contexto",score+450,Action.SystemPanel("context",item.id))}
         val chats=mutableConversations.value.mapNotNull{item->val score=relevance(query,item.title);if(score==0 && !normalize(query).contains("conversacion"))null else Result("conversation:${item.id}",item.title,"Conversación guardada manualmente · abrir","IA",score+500,Action.SystemPanel("conversation",item.id))}
