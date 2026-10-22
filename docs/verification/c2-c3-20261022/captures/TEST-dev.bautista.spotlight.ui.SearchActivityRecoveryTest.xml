@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SearchActivityRecoveryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-22T16:28:47" hostname="9f8b8cbf2200" time="0.893">
+  <properties/>
+  <testcase name="activityRecreationRestoresTheActualInspectorFormAndQuery" classname="dev.bautista.spotlight.ui.SearchActivityRecoveryTest" time="0.893"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
