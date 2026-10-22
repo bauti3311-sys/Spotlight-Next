@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-22T11:57:35" hostname="846daf2ba33b" time="7.233">
+  <properties/>
+  <testcase name="pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp" classname="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" time="7.233"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

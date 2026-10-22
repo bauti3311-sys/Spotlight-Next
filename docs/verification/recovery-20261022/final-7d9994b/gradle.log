@@ -1,0 +1,88 @@
+Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=46621 -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=46621
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreviewUnitTest UP-TO-DATE
+> Task :app:mergeRaycastPreviewShaders UP-TO-DATE
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets UP-TO-DATE
+> Task :app:packageRaycastPreviewUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestConfig UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeDebugMetadata NO-SOURCE
+> Task :app:compressRaycastPreviewAssets UP-TO-DATE
+> Task :app:checkRaycastPreviewDuplicateClasses UP-TO-DATE
+> Task :app:desugarRaycastPreviewFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexRaycastPreview UP-TO-DATE
+> Task :app:mergeLibDexRaycastPreview UP-TO-DATE
+> Task :app:mergeRaycastPreviewJniLibFolders UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeLibs UP-TO-DATE
+> Task :app:stripRaycastPreviewDebugSymbols UP-TO-DATE
+> Task :app:validateSigningRaycastPreview UP-TO-DATE
+> Task :app:writeRaycastPreviewAppMetadata UP-TO-DATE
+> Task :app:writeRaycastPreviewSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileRaycastPreviewKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=46621 -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=46621
+    2. Kotlin compile daemon is ready
+w: file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt:15:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/InvokeActivity.kt:34:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/control/ReplyService.kt:34:155 'val sender: CharSequence?' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt:39:50 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt:199:48 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SettingsAccessSummary.kt:53:18 'fun checkOpNoThrow(p0: String, p1: Int, p2: String): Int' is deprecated. Deprecated in Java.
+
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:bundleRaycastPreviewClassesToCompileJar
+> Task :app:bundleRaycastPreviewClassesToRuntimeJar
+> Task :app:compileRaycastPreviewUnitTestKotlin UP-TO-DATE
+> Task :app:compileRaycastPreviewUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processRaycastPreviewJavaRes UP-TO-DATE
+> Task :app:processRaycastPreviewUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=46621 -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=46621
+
+OpenGLRenderer W 10-22 07:57:41   207   244 Trying to start new animators on 0x7fc48bcc5cc0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 10-22 07:57:41   207   244 Trying to start new animators on 0x7fc48bd73260 (UnprojectedRipple) without an animation handle!
+
+> Task :app:finalizeTestRoborazziRaycastPreview SKIPPED
+> Task :app:generateRaycastPreviewLintReportModel
+> Task :app:generateRaycastPreviewUnitTestLintModel
+> Task :app:lintAnalyzeRaycastPreview
+> Task :app:lintAnalyzeRaycastPreviewUnitTest
+> Task :app:dexBuilderRaycastPreview
+> Task :app:mergeProjectDexRaycastPreview
+> Task :app:mergeRaycastPreviewGlobalSynthetics UP-TO-DATE
+> Task :app:mergeRaycastPreviewJavaResource UP-TO-DATE
+> Task :app:packageRaycastPreview
+> Task :app:createRaycastPreviewApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleRaycastPreview
+
+> Task :app:lintReportRaycastPreview
+Wrote HTML report to file:///workspace/scratch/cd7b8fe1285c/Spotlight-Next/app/build/reports/lint-results-raycastPreview.html
+
+> Task :app:lintRaycastPreview
+
+BUILD SUCCESSFUL in 3m 35s
+52 actionable tasks: 13 executed, 39 up-to-date

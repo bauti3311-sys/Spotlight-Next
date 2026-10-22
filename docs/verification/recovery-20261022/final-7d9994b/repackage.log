@@ -1,0 +1,50 @@
+Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=33109 -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=33109
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeDebugMetadata NO-SOURCE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:compileRaycastPreviewKotlin UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:mergeRaycastPreviewShaders UP-TO-DATE
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets UP-TO-DATE
+> Task :app:compressRaycastPreviewAssets UP-TO-DATE
+> Task :app:checkRaycastPreviewDuplicateClasses UP-TO-DATE
+> Task :app:desugarRaycastPreviewFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexRaycastPreview UP-TO-DATE
+> Task :app:mergeLibDexRaycastPreview UP-TO-DATE
+> Task :app:dexBuilderRaycastPreview UP-TO-DATE
+> Task :app:mergeProjectDexRaycastPreview UP-TO-DATE
+> Task :app:mergeRaycastPreviewGlobalSynthetics UP-TO-DATE
+> Task :app:processRaycastPreviewJavaRes UP-TO-DATE
+> Task :app:mergeRaycastPreviewJavaResource UP-TO-DATE
+> Task :app:mergeRaycastPreviewJniLibFolders UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeLibs UP-TO-DATE
+> Task :app:stripRaycastPreviewDebugSymbols UP-TO-DATE
+> Task :app:validateSigningRaycastPreview UP-TO-DATE
+> Task :app:writeRaycastPreviewAppMetadata UP-TO-DATE
+> Task :app:writeRaycastPreviewSigningConfigVersions UP-TO-DATE
+> Task :app:packageRaycastPreview
+> Task :app:createRaycastPreviewApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleRaycastPreview
+
+BUILD SUCCESSFUL in 12s
+37 actionable tasks: 1 executed, 36 up-to-date

@@ -19,19 +19,19 @@ Recuperación: entorno local limpio091bb3d restaurado a115acc4;82blobs SHA1 y á
 |D09|Tres sugerencias inteligentes|implementada y probada|C1.1 HomeSuggestions MAX_TOTAL_SUGGESTIONS3/MAX_SUGGESTED_APPS1, sinrelleno/remoto. HomeSuggestionsTest4/4 yflujos nativos.|
 |D10|Controles contextuales|implementada y probada|C1.1 SpotlightBar limpiar/⋯; dictado consultado asíncronamente por resolverAndroid, sinbotónIAfijo. MasterC1TouchFlowTest confirma disponible/ausente yconservación consulta.|
 |D11|Centro superior adaptativo|parcial|overlay/OverlayService.kt, OverlayLayoutPolicy.kt y AdaptiveLayout.kt; pruebas geometría/IME existentes; no dispositivo OneUI.|
-|D12|Microanimaciones Raycast|parcial|OverlayService visibleprimerframe/foco inmediato; cierre55/90/115ms, no entrada140ms. Falta validar movimiento/reducción sin retraso.|
+|D12|Microanimaciones Raycast|parcial|OverlayWindowMotion/OverlayService apertura140/cierre100;16dirigidas C1correctas (2motion/8startup/6IME). Foco/input antes de terminar animación y reducción cubiertos; FPS/latencia/OneUI físicos pendientes.|
 |D13|Dark Glass refinado|implementada y probada|GlassTokens.glassSurface: radio16dp/borde1dp/sombra20dp; capturas nativas Preview34. Aceptación física pendiente, no afirmada.|
-|D14|Raycast equilibrada|parcial|ui/Theme.kt Inter incluida; ResultRow15sp/12sp/56dp contradice14/11 y fila44 con hit48.|
+|D14|Raycast equilibrada|parcial|C1.1 ResultRow14sp/metadato11sp/hit48 ya verificados; C2accionesIAahora48dp explícitos con test. FontScale/TalkBack físicos pendientes; no usar descripción histórica15/12/56.|
 |D15|Contextual inteligente|parcial|ui/SpotlightPanel.kt + FilePreview.kt; selección documental local y recursos; ResultTouchScrollTest/QuickLookTouchTargetTest. Física pendiente.|
 |D16|Reproductor en inspector|parcial|control/MediaControl.kt + SpotlightPanel detalleapp; estados/controles autorizados probados con fixtures. No reproductor completo unificado/progreso real validado.|
-|D17|IA en inspector contextual|parcial|SpotlightPanel.kt, AiPanel.kt, DirectAi.kt: streaming/cancelación/copia existentes. No todo integrado en único inspector.|
-|D18|Contextual con opción de fijar|pendiente|ContextPanel.kt fija CONTEXTO persistido, no el inspector visual que siga selección. No confundir ambas capacidades.|
+|D17|IA en inspector contextual|parcial|C2.1 reúne respuesta/stream/follow-up/consentimiento en inspector existente; AI fijada conserva3turnos exactos mientras se busca localmente, sinHTTPporteclear. MockWebServer≠Gemini real; herramientas/planes y físico pendientes.|
+|D18|Contextual con opción de fijar|parcial|Inspector visual fijable/desfijable, contenido local/IA/formulario conservados; cierre restaura consulta/selección y ActionPanel usa resultadoactual. UnifiedInspectorFlowTest4casos; recreación/rotación física y todos los planes pendientes.|
 |D19|Esencial Raycast|implementada y probada|C1.1 GlassQuickMenu cuatro rutas reales Ajustes/Apariencia/Permisos/Atajos separadas deCtrlK; RaycastQuickMenuComposeTest yMasterC1TouchFlowTest.|
 |D20|Centro inteligente|parcial|CapabilitySettings.kt/SettingsNavigation.kt/Capabilities.kt: estados Android y rutas. Falta certificar todos los permisos y revocaciones reales.|
-|D21|En el inspector lateral|parcial|SpotlightPanel.kt contiene formularios existentes; falta reunirlos en único inspector adaptativo y verificar argumentos.|
+|D21|En el inspector lateral|parcial|Formularios/IA/planes renderizan mediante ContextSplitPanel y hostmovible, sin segundo motor. BorradorSearchEditor conserva texto al cambiar800↔360 y teléfono390×844. Cobertura completa de mensajes/planes en hardware pendiente.|
 |D22|Confirmación inteligente|parcial|ai/ToolCapability.kt, ToolExecutor.kt, AiRequestPolicy.kt, agent/PhoneUsePolicy.kt; ToolProtocolTest/PlanExecutionTest y políticas. No certificación appsdestino.|
 |D23|Seleccionar y confirmar|implementada y probada|C1.1 SpotlightPanel primer toque deliberado/segundoejecuta/Enterdirecto/longacciones; resetea confirmación al navegar/scroll/query. MasterC1TouchFlowTest5/5 yResultTouchScrollTest7/7 (PDFfixture). Validación física pendienteC5.|
-|D24|Cierre contextual inteligente|parcial|SpotlightPanel.execute conserva vistas/documentos/errores según acción; falta política única de cierre y fijación visual.|
+|D24|Cierre contextual inteligente|parcial|Cierre contextual: Copycierra al terminar sin tarea/inspector; fijación y documentos conservan superficie; Launch/Shortcut/InApp respetanretención, Devicecierra solo completed/verified. Caso localCopy/pin probado; rutasexternas físicas pendientes.|
 |D25|Búsqueda híbrida inteligente|parcial|search/ResultRanker.kt/CompactResults.kt/SearchEngine.kt +control/CommandCenter.kt; exact/prefix/alias/fuzzy/local/history cubiertos en Preview33; repetir afectadosC1 y medir latencia real.|
 |D26|Profunda por capacidades|parcial|control/IntegrationRegistry.kt, ai/ToolRegistry.kt, MediaControl.kt yPhoneUseService.kt; Intents/MediaSession/allowlists existentes. AppFunctions y capacidades externas condicionadas a API/caller/apps.|
 |D27|Encadenados editables|parcial|ui/EditablePlanPanel.kt, ai/PlanExecution.kt; edición/cancelación/stop y pruebas existentes; falta dependencias/reanudación/inspector completos.|
@@ -47,11 +47,11 @@ Recuperación: entorno local limpio091bb3d restaurado a115acc4;82blobs SHA1 y á
 |D37|Rendimiento adaptativo inteligente|parcial|FileIndex.kt/DocumentText.kt límites e incremental; cancelación SearchEngine yLRU existentes. Cold/warm/RAM/batería/OneUI NO medidos.|
 |D38|Inteligente y configurable|parcial|Preferences.privateMode, AiRequestPolicy/ContextStore/ConfigTransfer: consentimiento/local/borrado; faltan cobertura integral de borrados separados y pruebas físicas.|
 |D39|Actualización segura + respaldo local|parcial|data/ConfigTransfer.kt/ThemeTransfer.kt ySettingsPersistenceTest: formatos validados/sinAPIkeys; identidadPreview34 verificada. Falta migración nuevosroles/rollback e instalación de actualización real.|
-|D40|Calidad por checkpoints|parcial|docs/verification/dark-glass-20261021 contiene56casos únicos/lint0errores/15avisos/1info yAPK34+ZIPcc1c28d. Son evidenciaHISTÓRICA; C1–C5 yR8/física nuevos pendientes.|
+|D40|Calidad por checkpoints|parcial|Preview36/7d9994b:59casos únicos dirigidos en rondas, lint0errores/13avisos/1info, APK/ZIP mismoSHA/certificado885838aa/zipalign16KB. CapturasAPI33NATIVE; noReleaseR8 ni instalación física. C3–C5 y matriz restante abiertos.|
 
-## Siguiente bloque C1
+## Pendientes actuales C1/C2
 
-Implementar sin segundo motor: límites home3/consulta6, filas1línea14/11 y hit48, utilidades monocromas, segundo toque deliberado/Enter con scroll seguro. Después roles84/92/94 persistentes y tema inmediato; controles/foco/geometría/motion y regresión dirigida. No declarar C1 estable ni nueva APK hasta sus gates.
+C1: editor general de atajos/detector de conflictos y mediciones/IME/fontScale físicos, sin rehacer C1.1 ni sus71casos. C2: completar metadata/progreso MediaSession real en el inspector, conservación de todos los planes/herramientas y revocación de recursos; instalación de Preview36 en OneUI/Motorola separada. C3–C5 conservan los pendientes documentados. Ver RECOVERY-C2-20261022.md para evidencia nueva y siguiente bloque concreto.
 
 La especificación/prompt/CSV originales y hashes están en docs/master-40-20261021. Imágenes03/04 material,01/02 composición; sus8hashes fueron verificados. Ningún render es capturaAndroid.
 
@@ -72,3 +72,7 @@ EntregaC1.1:fuenteAPK/ZIPf497f8b,Preview35/certificadohistórico/193inputs/1067b
 Reserva transferida con autorización explícita, CAS/FF, respaldo y propietario nuevo work-master-recovery-20261022-cc97a1bd; ver RECOVERY-C2-20261022.md. Código C1motion671e262:16/16casos dirigidos aprobados (OverlayWindowMotion2,OverlayStartup8,OverlayImeHeight6), sin repetir71dePreview35. D12 apertura140/cierre100 con foco disponible antes de finalizar animación y reducción inmediata; OneUI/performance física pendientes. D14ya implementa14/11/hit48segúnC1.1; el texto histórico superior de15/12/56no describeelHEADactual.
 
 C2tests33134ec:formulario sustituye lista/inspector ausente reproducido en prueba nativa; test de nota encontró fixture que leía StateFlow antes de publicación y se corrigió esperando el registro real. No se afirma segunda reproducción funcional por ese error. Corrección local integra formularios/IA/planes al ContextSplitPanel, inspector fijable explícito, retención de contenido/consulta y movableContent para ancho tablet/teléfono; aún NO verificada. D17/D18/D21/D24siguen parciales hasta pruebas nuevas. No servicios externos ni física acreditados; sin CI/main/merge/firma nueva.
+
+
+## C1.2/C2.1 ·checkpoint instalable36
+FuenteAPK/ZIP7d9994b1aca0507406e2614e01a270b81173ecbd;59casos únicos dirigidos (16C1 +39retenidos de regresión +4nuevos finales, sin contar repeticiones), última pruebaIAconobjetivo48dp1/1correcta. Lint0errores/13avisos/1info yassemble3m35s; reempaquetadosolo12s (1tarea,36up-to-date) elimina16.3MBdehuecos ZIP sin cambiar payload/código. Paqueteindependiente36/certificado885838aa/1102blobs fuente/195inputs/8libsARM64idénticasaAAR/zipalign16KBverificados. NoR8/CI/instalaciónfísica/proveedorreal. Matrizmantieneparciales.

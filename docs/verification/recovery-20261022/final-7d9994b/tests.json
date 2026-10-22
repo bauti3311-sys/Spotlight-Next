@@ -1,0 +1,429 @@
+{
+  "unique_passed": 59,
+  "no_sum_of_overlaps": true,
+  "rounds": [
+    {
+      "round": "motion-inspector-red",
+      "source_sha_prefix": "33134ec",
+      "xml": "docs/verification/recovery-20261022/motion-inspector-red/TEST-dev.bautista.spotlight.overlay.OverlayWindowMotionTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayWindowMotionTest",
+          "test": "openingRemainsVisibleAndAcceptsInputBeforeAnimationFinishes",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayWindowMotionTest",
+          "test": "reducedMotionIsImmediatelyVisibleAndClosesWithoutAnAnimationCallback",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "motion-inspector-red",
+      "source_sha_prefix": "33134ec",
+      "xml": "docs/verification/recovery-20261022/motion-inspector-red/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+          "test": "tabletPortraitRetainsKeyboardOnRefresh[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+          "test": "tabletPortraitRetainsKeyboardOnRefresh",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+          "test": "geometryRefreshRetainsKeyboardUntilInsetsReportItHidden[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+          "test": "geometryRefreshRetainsKeyboardUntilInsetsReportItHidden",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+          "test": "tabletLandscapeRetainsKeyboardOnRefresh[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+          "test": "tabletLandscapeRetainsKeyboardOnRefresh",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "motion-inspector-red",
+      "source_sha_prefix": "33134ec",
+      "xml": "docs/verification/recovery-20261022/motion-inspector-red/TEST-dev.bautista.spotlight.overlay.OverlayStartupTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "transientFocusLossDoesNotStopOverlayService[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "transientFocusLossDoesNotStopOverlayService",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "outsideTouchStillStopsOverlayService[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "outsideTouchStillStopsOverlayService",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "windowRootAndComposeChildHaveServiceOwners[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "windowRootAndComposeChildHaveServiceOwners",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "composeCanAttachToAnActualOverlayWindow[28]",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+          "test": "composeCanAttachToAnActualOverlayWindow",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+          "test": "asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+          "test": "nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+          "test": "ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+          "test": "tabCyclesAndEnterRunsOnlyFocusedContextAction",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+          "test": "actionGroupsHaveVisibleHeadingsWithoutExecutingItems",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+          "test": "groupsAndIdentityDoNotDependOnTheVisibleTitle",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.ui.UniversalProductionFlowTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+          "test": "naturalCalculatorEnterCopiesLocallyWithoutGeminiRequest",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+          "test": "savingInlineConversationRetainsAllCompletedExchanges",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UniversalProductionFlowTest",
+          "test": "typedQuestionDoesNotSendUntilEnterThenStreamsMarkdownInline",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.control.MediaPlaybackTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.control.MediaPlaybackTest",
+          "test": "badgeRequiresActualPlayingState",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.ui.QuickLookTouchTargetTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.QuickLookTouchTargetTest",
+          "test": "phoneCloseTargetDoesNotCloseOverlayOrClearQuery",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.QuickLookTouchTargetTest",
+          "test": "tabletCloseTargetDoesNotCloseOverlayOrClearQuery",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.control.MediaTargetTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "activePlaybackWinsOverFirstPausedSession",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "executionRefreshesSessionsAfterAvailabilityCheck",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "singlePausedPlayerStillSupportsResume",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "contextualCommandRejectsUnsupportedActionEvenIfPlayerExists",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "simultaneousPlayersNeverReceiveAnArbitraryCommand",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "contextualCommandNeverControlsUnrelatedPlayer",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "contextualCommandRejectsTwoSessionsFromSameApp",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "unsupportedCommandsNeverDispatch",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+          "test": "severalPausedPlayersAreAmbiguous",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.ui.MasterC1TouchFlowTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.MasterC1TouchFlowTest",
+          "test": "installedSpeechActivityMakesDictationAvailable",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.MasterC1TouchFlowTest",
+          "test": "unavailableDictationIsHiddenAndOptionsDoNotChangeQuery",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.MasterC1TouchFlowTest",
+          "test": "initialHighlightRequiresFirstTapThenSecondTapExecutes",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.MasterC1TouchFlowTest",
+          "test": "enterStillExecutesWithoutTouchConfirmation",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.MasterC1TouchFlowTest",
+          "test": "cancelledSecondTapDoesNotExecuteAndLongPressShowsActions",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.agent.PhoneUsePolicyTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.agent.PhoneUsePolicyTest",
+          "test": "validatesRealAppAndBlocksPrivilegedWindows",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.agent.PhoneUsePolicyTest",
+          "test": "onlyExactTypedSelectorsAreAccepted",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.agent.PhoneUsePolicyTest",
+          "test": "overlayRedrawDoesNotInvalidateExternalObservation",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.agent.PhoneUsePolicyTest",
+          "test": "textLengthAndLabelsAreBounded",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "regressions-426f3d1",
+      "source_sha_prefix": "426f3d1",
+      "xml": "docs/verification/recovery-20261022/regressions-426f3d1/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "accessibilityClickKeepsTheSameSelectionAndPrimaryContract",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "touchDownAndCancelledGestureDoNotSelectOrOpenPdf",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "longPressShowsActionsWithoutInvokingPrimaryCallback",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+          "test": "fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "preview36-candidate-5a9ac1a",
+      "source_sha_prefix": "5a9ac1a",
+      "xml": "docs/verification/recovery-20261022/preview36-candidate-5a9ac1a/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "preview36-candidate-5a9ac1a",
+      "source_sha_prefix": "5a9ac1a",
+      "xml": "docs/verification/recovery-20261022/preview36-candidate-5a9ac1a/TEST-dev.bautista.spotlight.ui.FloatingSearchFlowTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.FloatingSearchFlowTest",
+          "test": "phoneScenesPreserveSearchSelectionAndPaletteGeometry",
+          "status": "passed"
+        },
+        {
+          "suite": "dev.bautista.spotlight.ui.FloatingSearchFlowTest",
+          "test": "tabletScenesPreserveSearchSelectionAndPaletteGeometry",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "round": "final-7d9994b",
+      "source_sha_prefix": "7d9994b",
+      "xml": "docs/verification/recovery-20261022/final-7d9994b/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml",
+      "cases": [
+        {
+          "suite": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest",
+          "test": "pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "physical": false,
+  "robolectric_api": "28/30/33; screenshots API33 NATIVE",
+  "prior_preview35_71_cases_not_counted": true
+}
