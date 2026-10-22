@@ -153,7 +153,7 @@ class InspectorResourceRecoveryTest {
 
 private fun registerDocumentFixture()=object:org.junit.rules.ExternalResource(){
  override fun before(){
-  val app=RuntimeEnvironment.getApplication<android.app.Application>()
+  val app=RuntimeEnvironment.getApplication()
   val component=ComponentName(app,RecoverableDocumentActivity::class.java)
   val manager=Shadows.shadowOf(app.packageManager)
   val info=manager.addActivityIfNotPresent(component);info.exported=true

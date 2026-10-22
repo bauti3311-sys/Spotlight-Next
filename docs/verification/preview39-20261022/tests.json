@@ -1,0 +1,263 @@
+{
+  "unique_cases": 29,
+  "latest_status": {
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#invalidImportIsAtomicAndLegacyPartialBackupKeepsNewFields": "passed",
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#backupDoesNotContainAuthorizationOrPrivateHistory": "passed",
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#fullGlassAndKeyboardRoundTripPreservesLocalConsentAndGrants": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#malformedThemeRollsBackEntireTransaction": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#legacyBackupPreservesExistingThemes": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#themesAndPersonalCommandsRoundTripWithoutRestoringGrants": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#duplicateIdsWrongTypesAndExcessCollectionsAreRejected": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme": "passed",
+    "dev.bautista.spotlight.control.MediaInspectorTest#observingRegistersOnlyTheTargetAndDisposalUnregistersCallbacks": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#recoveredCardActionsFitNarrowPhoneAtLargeFontScale": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#scopeAndSensitiveReviewRestoreWithoutAnAuthorization": "passed",
+    "dev.bautista.spotlight.ui.AiActivityRecoveryTest#completedConversationSurvivesActivityRecreationWithoutResendingAndRetainsTurns": "passed",
+    "dev.bautista.spotlight.ui.C3SettingsCaptureTest#backupAndPermissionPagesUseTheExistingGlassWorkspaceWithoutRequestingAccess": "passed",
+    "dev.bautista.spotlight.productivity.PortableConfigTest#focusPauseResumeAndCompletionCountOnlyOnce": "passed",
+    "dev.bautista.spotlight.productivity.PortableConfigTest#legacyAutomaticWidthWithoutMemoryImportsAndInvalidWidthValuesStayAtomic": "passed",
+    "dev.bautista.spotlight.productivity.PortableConfigTest#automaticAndLargeManualWidthsMustRoundTripWithoutLosingManualMemory": "passed",
+    "dev.bautista.spotlight.productivity.PortableConfigTest#portableSettingsRoundTripAndDeviceAccessStaysLocal": "passed",
+    "dev.bautista.spotlight.productivity.PortableConfigTest#invalidImportsAreAtomicAndNeverAcceptCredentialsOrPermissionFlags": "passed",
+    "dev.bautista.spotlight.productivity.PortableConfigTest#rebootOrMonotonicResetDiscardsSessionAndStatsAreOptIn": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp": "passed",
+    "dev.bautista.spotlight.ui.SearchActivityRecoveryTest#activityRecreationRestoresTheActualInspectorFormAndQuery": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume": "passed"
+  },
+  "rounds": [
+    {
+      "directory": "themes-first",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.data.PortableImportTransactionTest#invalidImportIsAtomicAndLegacyPartialBackupKeepsNewFields",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableImportTransactionTest#backupDoesNotContainAuthorizationOrPrivateHistory",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableImportTransactionTest#fullGlassAndKeyboardRoundTripPreservesLocalConsentAndGrants",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#malformedThemeRollsBackEntireTransaction",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#legacyBackupPreservesExistingThemes",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#themesAndPersonalCommandsRoundTripWithoutRestoringGrants",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#duplicateIdsWrongTypesAndExcessCollectionsAreRejected",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "directory": "recovery-first",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#malformedThemeRollsBackEntireTransaction",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#legacyBackupPreservesExistingThemes",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#themesAndPersonalCommandsRoundTripWithoutRestoringGrants",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#duplicateIdsWrongTypesAndExcessCollectionsAreRejected",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "directory": "regressions",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.control.MediaInspectorTest#observingRegistersOnlyTheTargetAndDisposalUnregistersCallbacks",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#recoveredCardActionsFitNarrowPhoneAtLargeFontScale",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#scopeAndSensitiveReviewRestoreWithoutAnAuthorization",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AiActivityRecoveryTest#completedConversationSurvivesActivityRecreationWithoutResendingAndRetainsTurns",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.C3SettingsCaptureTest#backupAndPermissionPagesUseTheExistingGlassWorkspaceWithoutRequestingAccess",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.productivity.PortableConfigTest#focusPauseResumeAndCompletionCountOnlyOnce",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.productivity.PortableConfigTest#legacyAutomaticWidthWithoutMemoryImportsAndInvalidWidthValuesStayAtomic",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.productivity.PortableConfigTest#automaticAndLargeManualWidthsMustRoundTripWithoutLosingManualMemory",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.productivity.PortableConfigTest#portableSettingsRoundTripAndDeviceAccessStaysLocal",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.productivity.PortableConfigTest#invalidImportsAreAtomicAndNeverAcceptCredentialsOrPermissionFlags",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.productivity.PortableConfigTest#rebootOrMonotonicResetDiscardsSessionAndStatsAreOptIn",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.SearchActivityRecoveryTest#activityRecreationRestoresTheActualInspectorFormAndQuery",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "directory": "final-first",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#recoveredCardActionsFitNarrowPhoneAtLargeFontScale",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#scopeAndSensitiveReviewRestoreWithoutAnAuthorization",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "directory": "final",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#recoveredCardActionsFitNarrowPhoneAtLargeFontScale",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#scopeAndSensitiveReviewRestoreWithoutAnAuthorization",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "final_directed_log": "final/directed.log",
+  "gates": "lint and APK pending at this checkpoint"
+}
