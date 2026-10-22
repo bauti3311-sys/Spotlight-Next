@@ -693,13 +693,24 @@ fun SpotlightPanel(
             // Compact Raycast inspector: only show it on wide overlays when a
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
-            val inspectorItem=if(inspectorPinned)pinnedPreview else preview
+            val mediaCandidate=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
+            val inspectorItem=if(inspectorPinned)pinnedPreview else preview ?: mediaCandidate
+            val inspectorPackage=(inspectorItem?.action as? Action.Launch)?.intent?.component?.packageName
+                ?.takeIf{PreviewPresentation.isApplication(inspectorItem)}
+            var mediaDismissed by remember(selectedResult?.id,query){mutableStateOf(false)}
+            val mediaFlow=remember(context,inspectorPackage){
+                inspectorPackage?.let{MediaControl.inspect(context,it)} ?: kotlinx.coroutines.flow.flowOf(null)
+            }
+            val mediaSnapshot by mediaFlow.collectAsState(initial=null)
+            val mediaInspector=inspectorPackage!=null && !mediaDismissed &&
+                (mediaSnapshot?.packageName==inspectorPackage || inspectorPinned)
             val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
             val richPreview=PreviewPresentation.needsInspector(inspectorItem)
             val taskInspector=inspectorTaskActive()
-            val hasInspector=richPreview || inspectorCard!=null || taskInspector
+            val hasInspector=richPreview || inspectorCard!=null || taskInspector || mediaInspector
             val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
             fun dismissInspector() {
+                mediaDismissed=true
                 inspectorPinned=false;pinnedPreview=null;pinnedCard=null
                 preview=null;card=null;expandedPreview=false;menu=false
                 clearForms();noteEditor=false;aiJob?.cancel();showAi=false
@@ -1217,6 +1228,28 @@ fun SpotlightPanel(
                                 }
                                 if(aiSaveStatus.isNotBlank())Text(aiSaveStatus,style=MaterialTheme.typography.bodySmall)
                             }
+                        else if(mediaInspector) {
+                            details(false)
+                            val observed=mediaSnapshot?.takeIf{it.packageName==inspectorPackage}
+                            if(observed==null)Text("La sesión ya no está disponible.",Modifier.padding(18.dp),style=MaterialTheme.typography.bodySmall)
+                            else Column(Modifier.padding(start=18.dp,end=18.dp,bottom=12.dp)) {
+                                var mediaStatus by remember(inspectorPackage){mutableStateOf("")}
+                                MediaInspector(observed,onCommand={command->
+                                    scope.launch {
+                                        try {
+                                            mediaStatus=withContext(Dispatchers.IO){MediaControl.executeForPackage(app,observed.packageName,command)}
+                                            app.toolAudit.record("control_media","requested")
+                                        } catch(e:CancellationException){throw e} catch(e:Exception){mediaStatus=e.message ?: "No se pudo solicitar la acción."}
+                                    }
+                                },onSeek={position->
+                                    scope.launch {
+                                        try {mediaStatus=withContext(Dispatchers.IO){MediaControl.seekForPackage(app,observed.packageName,position,observed.token)}}
+                                        catch(e:CancellationException){throw e} catch(e:Exception){mediaStatus=e.message ?: "No se pudo solicitar la posición."}
+                                    }
+                                })
+                                if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
+                            }
+                        }
                         else if(richPreview)details(false)
                         }
                         val pane:@Composable ()->Unit = {
