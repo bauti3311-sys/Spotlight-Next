@@ -128,3 +128,45 @@ private fun registerFixtureActivity(type:Class<out ComponentActivity>)=object:or
   manager.addResolveInfoForIntent(android.content.Intent.makeMainActivity(component),android.content.pm.ResolveInfo().apply{activityInfo=info})
  }
 }
+
+class RecoverableAiActivity:ComponentActivity() {
+ companion object {lateinit var server:okhttp3.mockwebserver.MockWebServer}
+ override fun onCreate(savedInstanceState:Bundle?) {
+  super.onCreate(savedInstanceState)
+  val client=dev.bautista.spotlight.ai.DirectAi(object:dev.bautista.spotlight.ai.AiCredentials {
+   override fun read(provider:String)="fixture-key";override fun contains(provider:String)=true
+  },okhttp3.OkHttpClient.Builder().addInterceptor{chain->chain.proceed(chain.request().newBuilder().url(server.url("/fixture")).build())}.build())
+  setContent{androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.width(800.dp)) {
+   SpotlightPanel(application as SpotlightApp,AppConfig(theme="dark",aiProvider="gemini",aiModel="fixture-model",files=false,online=false,learning=false,suggestions=false,animations=false),{},"Explicame el reflejo vestibuloocular",availableHeightDp=800f,aiClient=client)
+  }}
+ }
+}
+@OptIn(ExperimentalTestApi::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk=[33],application=SpotlightApp::class,qualifiers="w1000dp-h1000dp")
+class AiActivityRecoveryTest {
+ val ui=createAndroidComposeRule<RecoverableAiActivity>()
+ private val serverRule=object:org.junit.rules.ExternalResource(){
+  override fun before(){val server=okhttp3.mockwebserver.MockWebServer();server.start();RecoverableAiActivity.server=server
+   for(text in listOf("Respuesta conservada","Seguimiento conservado"))server.enqueue(okhttp3.mockwebserver.MockResponse().setHeader("Content-Type","text/event-stream").setBody("data: {\"candidates\":[{\"content\":{\"parts\":[{\"text\":\"$text\"}]}}]}\n\n"))
+  }
+  override fun after(){RecoverableAiActivity.server.shutdown()}
+ }
+ @get:Rule val rules=org.junit.rules.RuleChain.outerRule(serverRule).around(registerFixtureActivity(RecoverableAiActivity::class.java)).around(ui)
+ @Test fun completedConversationSurvivesActivityRecreationWithoutResendingAndRetainsTurns() {
+  fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
+  ui.waitUntil(15000){ui.onAllNodesWithText("Responder con Gemini").fetchSemanticsNodes().isNotEmpty()}
+  search().performKeyInput{pressKey(androidx.compose.ui.input.key.Key.Enter)}
+  ui.waitUntil(15000){ui.onAllNodesWithText("Respuesta conservada").fetchSemanticsNodes().isNotEmpty()}
+  ui.activityRule.scenario.recreate()
+  ui.onNodeWithText("Respuesta conservada").assertExists()
+  assertEquals(1,RecoverableAiActivity.server.requestCount)
+  ui.onNode(hasSetTextAction() and hasText("Continuar conversación")).performScrollTo().performTextInput("Dame un ejemplo")
+  ui.onNodeWithText("Enviar").performScrollTo().performClick()
+  ui.waitUntil(15000){ui.onAllNodesWithText("Seguimiento conservado").fetchSemanticsNodes().isNotEmpty()}
+  val server=RecoverableAiActivity.server;assertEquals(2,server.requestCount)
+  server.takeRequest(2,java.util.concurrent.TimeUnit.SECONDS)
+  val contents=org.json.JSONObject(server.takeRequest(2,java.util.concurrent.TimeUnit.SECONDS)!!.body.readUtf8()).getJSONArray("contents")
+  assertEquals(3,contents.length());assertEquals("Respuesta conservada",contents.getJSONObject(1).getJSONArray("parts").getJSONObject(0).getString("text"))
+ }
+}
