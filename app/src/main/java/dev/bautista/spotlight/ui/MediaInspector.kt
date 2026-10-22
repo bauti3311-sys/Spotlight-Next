@@ -26,13 +26,17 @@ private fun mediaTime(ms:Long):String {
     val s=snapshot
     var dragging by remember(s.token,s.title,s.duration){mutableStateOf<Float?>(null)}
     Column(Modifier.fillMaxWidth().testTag("media-inspector").padding(top=12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        s.artwork?.let { artwork ->
-            Image(artwork.asImageBitmap(),contentDescription="Portada de la sesión",contentScale=ContentScale.Crop,
-                modifier=Modifier.size(104.dp).clip(RoundedCornerShape(10.dp)))
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+            s.artwork?.let { artwork ->
+                Image(artwork.asImageBitmap(),contentDescription="Portada de la sesión",contentScale=ContentScale.Crop,
+                    modifier=Modifier.size(64.dp).clip(RoundedCornerShape(8.dp)))
+            }
+            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+                Text(s.title.ifBlank{"Título no disponible"},style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=TextOverflow.Ellipsis)
+                if(s.artist.isNotBlank())Text(s.artist,style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=2,overflow=TextOverflow.Ellipsis)
+                if(s.album.isNotBlank())Text(s.album,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+            }
         }
-        Text(s.title.ifBlank{"Título no disponible"},style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=TextOverflow.Ellipsis)
-        if(s.artist.isNotBlank())Text(s.artist,style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=2,overflow=TextOverflow.Ellipsis)
-        if(s.album.isNotBlank())Text(s.album,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
         Text(when(s.state?.state){PlaybackState.STATE_PLAYING->"En reproducción";PlaybackState.STATE_PAUSED->"En pausa";PlaybackState.STATE_BUFFERING->"Cargando audio…";PlaybackState.STATE_STOPPED->"Detenido";PlaybackState.STATE_ERROR->"El reproductor informó un error";else->"Estado no disponible"},style=MaterialTheme.typography.labelSmall)
         val duration=s.duration
         val position=s.positionAt(s.observedAt)

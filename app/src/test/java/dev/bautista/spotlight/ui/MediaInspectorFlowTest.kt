@@ -54,7 +54,7 @@ class MediaInspectorFlowTest {
         ui.onNodeWithTag("media-inspector").assertIsDisplayed()
         ui.onNodeWithTag("context-inspector").assertExists()
         ui.onNodeWithText("Pista de prueba local").assertIsDisplayed()
-        ui.onNodeWithContentDescription("Pausar reproducción").assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithContentDescription("Pausar reproducción").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         ui.onNodeWithContentDescription("Pista anterior").assertDoesNotExist()
         ui.onNodeWithTag("media-seek").assertDoesNotExist()
         captureScreenRoboImage("build/media-inspector/tablet-session-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))

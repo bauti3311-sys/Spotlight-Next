@@ -53,6 +53,7 @@ fun SpotlightBar(
     onBack:(()->Unit)?=null,
     onSaved:(()->Unit)?=null,
     onSettings:(()->Unit)?=null,
+    autocompleteKeyLabel:String="Ctrl+Space",
 ) {
     val colors = MaterialTheme.colorScheme
     var editorValue by remember { mutableStateOf(TextFieldValue(query,TextRange(query.length))) }
@@ -134,7 +135,7 @@ fun SpotlightBar(
             )
             if (suggestion != null)
                 Text(
-                    "Ctrl+Space",
+                    autocompleteKeyLabel,
                     fontSize = 10.sp,
                     color = colors.onSurfaceVariant,
                     modifier =

@@ -234,25 +234,8 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             Section("Teclado físico · acceso global optativo") {
-                                Text("Portapapeles dentro de la barra")
-                                Row(Modifier.horizontalScroll(rememberScrollState())){listOf("ctrl_shift_v" to "Ctrl/⌘+Shift+V","ctrl_p" to "Ctrl/⌘+P","off" to "Sin atajo").forEach{(key,label)->FilterChip(config.clipboardShortcut==key,{update(config.copy(clipboardShortcut=key))},label={Text(label)})}}
-                                Row(
-                                    Modifier.horizontalScroll(rememberScrollState()),
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                ) {
-                                    listOf(
-                                            "ctrl_alt" to "Ctrl+Alt+Espacio",
-                                            "alt" to "Alt+Espacio",
-                                            "ctrl" to "Ctrl+Espacio",
-                                        )
-                                        .forEach { (key, label) ->
-                                            FilterChip(
-                                                config.shortcut == key,
-                                                { update(config.copy(shortcut = key)) },
-                                                label = { Text(label, fontSize = 11.sp) },
-                                            )
-                                        }
-                                }
+                                KeyboardShortcutEditor(config,::update)
+                                GlobalKeyboardShortcutOptions(config,::update)
                                 Text(
                                     "Para reconocer el atajo, Android entrega eventos de teclas al servicio. Spotlight no guarda lo escrito, no recibe eventos de contenido y no lee pantallas. El servicio solo se usa si lo activás manualmente.",
                                     fontSize = 12.sp,

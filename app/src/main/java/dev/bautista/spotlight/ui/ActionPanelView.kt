@@ -39,7 +39,7 @@ data class ContextAction(
 private data class ActionMenuFrame(val id:String,val filter:String,val selectedId:String?)
 
 @OptIn(ExperimentalFoundationApi::class)
-@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null,contextResult:dev.bautista.spotlight.search.Result?=null) {
+@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null,contextResult:dev.bautista.spotlight.search.Result?=null,actionsKey:dev.bautista.spotlight.input.KeyChord=dev.bautista.spotlight.input.KeyChord(android.view.KeyEvent.KEYCODE_K)) {
     val path=remember {mutableStateListOf<ActionMenuFrame>()}
     var filter by remember {mutableStateOf("")}
     var selectedId by remember {mutableStateOf<String?>(null)}
@@ -86,7 +86,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
     Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).padding(8.dp).testTag("context-action-panel")
         .onPreviewKeyEvent { e ->
             if(e.type!=KeyEventType.KeyDown)false
-            else if((e.isCtrlPressed || e.isMetaPressed) && e.key==Key.K){onClose?.invoke();true}
+            else if(actionsKey.matches(e.nativeKeyEvent)){onClose?.invoke();true}
             else if((e.isCtrlPressed || e.isMetaPressed) && e.key==Key.F){filterFocus.requestFocus();true}
             else if(e.isCtrlPressed || e.isMetaPressed)false
             else when(e.key) {

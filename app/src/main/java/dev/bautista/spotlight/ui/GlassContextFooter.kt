@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.*
 
 /** Shared keycaps; hints describe actual Android contracts and retain 48dp touch targets. */
 @Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit,
- autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false) {
+ autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false,actionsKeyLabel:String="Ctrl+K") {
  val colors=MaterialTheme.colorScheme
  BoxWithConstraints(Modifier.fillMaxWidth()) {
   val wide=maxWidth>=560.dp
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.*
     Text(if(wide)expandLabel else if(expandLabel.startsWith("Ver menos"))"Menos" else "Más",fontSize=11.sp,color=colors.onSurfaceVariant)
    }
    if(enabled)TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=6.dp),modifier=Modifier.heightIn(min=48.dp)) {
-    GlassKeycap(if(actionsOpen)"Escape" else "Ctrl+K");Spacer(Modifier.width(8.dp));Text(if(actionsOpen)"Volver" else "Acciones",fontSize=11.sp,color=colors.onSurfaceVariant)
+    GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel);Spacer(Modifier.width(8.dp));Text(if(actionsOpen)"Volver" else "Acciones",fontSize=11.sp,color=colors.onSurfaceVariant)
    }
    if(autocomplete && !actionsOpen && wide)Row(Modifier.padding(start=10.dp),verticalAlignment=Alignment.CenterVertically){GlassKeycap("Tab");Spacer(Modifier.width(8.dp));Text("Autocompletar",fontSize=11.sp,color=colors.onSurfaceVariant)}
   }

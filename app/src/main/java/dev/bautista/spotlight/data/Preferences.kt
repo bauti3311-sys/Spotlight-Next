@@ -54,6 +54,7 @@ data class Config(
     val windowScale:Float=-1f, // -1 preserves legacy geometry until the user changes the new slider
     val semanticSearch:Boolean=false,
     val actionOpacity:Float=.92f, val settingsOpacity:Float=.94f,
+    val keyBindings:Set<String> = emptySet(),
 
 )
 
@@ -117,6 +118,7 @@ class Preferences(private val context: Context) {
     private val clipLimit = intPreferencesKey("clipLimit")
     private val clipRetention = intPreferencesKey("clipRetention")
     private val preset = stringPreferencesKey("preset")
+    private val keyboardBindings=stringSetPreferencesKey("keyboard_bindings")
     private val clipboardShortcut=stringPreferencesKey("clipboard_shortcut")
     private val suggestions = booleanPreferencesKey("suggestions")
     private val hiddenSuggestions = stringSetPreferencesKey("hiddenSuggestions")
@@ -169,7 +171,7 @@ class Preferences(private val context: Context) {
                     p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
                     p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
                     p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "glass"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
-                ).copy(privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
+                ).copy(keyBindings=p[keyboardBindings]?.takeIf{dev.bautista.spotlight.input.KeyboardBindings.validEntries(it)} ?: emptySet(),privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
                     autoKeyboard=extra.optString("autoKeyboard","adaptive").takeIf{it in setOf("adaptive","always","never")} ?: "adaptive",
                     glassIntensity=extra.optDouble("glassIntensity",.45).toFloat().coerceIn(0f,1f),
                     surfaceTone=extra.optString("surfaceTone","neutral"),borderWidth=extra.optDouble("borderWidth",1.0).toFloat().coerceIn(0f,2f),
@@ -293,6 +295,7 @@ class Preferences(private val context: Context) {
             p[clipRetention] = c.clipRetention
             p[preset]=c.preset
             p[clipboardShortcut]=c.clipboardShortcut
+            p[keyboardBindings]=c.keyBindings
             p[suggestions]=c.suggestions
             p[hiddenSuggestions]=c.hiddenSuggestions
             p[pinnedSuggestions]=c.pinnedSuggestions

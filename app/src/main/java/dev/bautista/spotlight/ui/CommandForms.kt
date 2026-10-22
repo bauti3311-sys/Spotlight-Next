@@ -5,6 +5,7 @@ import android.media.AudioManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,8 +16,8 @@ import kotlinx.coroutines.*
 
 @Composable fun MessageEditor(draft:Action.ComposeMessage,onLaunch:(Intent)->Unit,onAccess:(String)->Unit,onCancel:()->Unit) {
     val context=LocalContext.current
-    var target by remember(draft){mutableStateOf(draft.target)}
-    var body by remember(draft){mutableStateOf(draft.text)}
+    var target by rememberSaveable(draft){mutableStateOf(draft.target)}
+    var body by rememberSaveable(draft){mutableStateOf(draft.text)}
     var choices by remember(draft){mutableStateOf(emptyList<Person>())}
     var selected by remember(draft){mutableStateOf<Person?>(null)}
     var address by remember(draft){mutableStateOf("")}
@@ -96,7 +97,7 @@ import kotlinx.coroutines.*
 }
 
 @Composable fun SearchEditor(draft:Action.ComposeSearch,onRun:(Action)->Unit,onCancel:()->Unit) {
-    var term by remember(draft){mutableStateOf(draft.query)}
+    var term by rememberSaveable(draft){mutableStateOf(draft.query)}
     val focus=remember(draft){FocusRequester()}
     LaunchedEffect(draft){delay(60);focus.requestFocus()}
     Column(Modifier.fillMaxWidth().padding(16.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
