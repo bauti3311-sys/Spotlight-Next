@@ -25,7 +25,10 @@ class MasterC1MaterialTest {
   assertEquals(.94f,GlassTokens.settingsOpacity(c.copy(opacity=.70f)),0f)
  }
  @Test fun migrationPreservesLegacyAlphaAndUnrelatedPrivateFields()=runBlocking {
-  val context=RuntimeEnvironment.getApplication<Application>()
+  val context=object:android.content.ContextWrapper(RuntimeEnvironment.getApplication()){
+   override fun getApplicationContext():android.content.Context=this
+   override fun getFilesDir()=java.io.File(super.getFilesDir(),"master-c1-${java.util.UUID.randomUUID()}").apply{mkdirs()}
+  }
   val p=Preferences(context)
   assertEquals(.84f,p.config.first().opacity,0f)
   val old=p.config.first().copy(opacity=.97f,favorites=setOf("kept"),autoKeyboard="never")

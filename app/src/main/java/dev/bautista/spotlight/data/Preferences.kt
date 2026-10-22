@@ -178,8 +178,8 @@ class Preferences(private val context: Context) {
                     landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
                     sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision"),
                     manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
-                    windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f
-                , actionOpacity=extra.optDouble("actionOpacity",.92).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .92f,
+                    windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f,
+                    actionOpacity=extra.optDouble("actionOpacity",.92).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .92f,
                     settingsOpacity=extra.optDouble("settingsOpacity",.94).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .94f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
             }

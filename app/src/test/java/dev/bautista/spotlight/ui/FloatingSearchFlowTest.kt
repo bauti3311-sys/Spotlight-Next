@@ -29,7 +29,7 @@ import org.robolectric.annotation.GraphicsMode
 class FloatingSearchFlowTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     private var fixtureBackdrop by mutableStateOf(Color(0xFF303136))
-    private var fixtureOpacity by mutableFloatStateOf(.80f)
+    private var fixtureOpacity by mutableFloatStateOf(.84f)
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
     private fun capture(name:String) {

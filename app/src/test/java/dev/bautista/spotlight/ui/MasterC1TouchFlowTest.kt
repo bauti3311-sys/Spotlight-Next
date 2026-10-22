@@ -28,7 +28,8 @@ class MasterC1TouchFlowTest {
  private var closed=0
  private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
  private fun row()=ui.onNodeWithTag("result:com.spotify.music/Main")
- private fun show(){
+ private fun show(speech:Boolean=false){
+  if(speech)Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH),ResolveInfo().apply{activityInfo=ActivityInfo().apply{packageName="fixture.voice";name="Voice";exported=true;applicationInfo=ApplicationInfo().apply{packageName="fixture.voice"}}})
   val info=ActivityInfo().apply{packageName="com.spotify.music";name="Main";nonLocalizedLabel="Spotify";exported=true;applicationInfo=ApplicationInfo().apply{packageName="com.spotify.music";nonLocalizedLabel="Spotify"}}
   Shadows.shadowOf(app.packageManager).installPackage(PackageInfo().apply{packageName="com.spotify.music";applicationInfo=info.applicationInfo;activities=arrayOf(info)})
   Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=info})
@@ -57,4 +58,18 @@ class MasterC1TouchFlowTest {
   show();search().performKeyInput{pressKey(Key.Enter)}
   ui.runOnIdle{assertEquals("com.spotify.music",Shadows.shadowOf(app).nextStartedActivity?.component?.packageName);assertEquals(1,closed)}
  }
+ @Test fun unavailableDictationIsHiddenAndOptionsDoNotChangeQuery(){
+  show();ui.onNodeWithContentDescription("Dictar consulta").assertDoesNotExist()
+  ui.onNodeWithContentDescription("Opciones de Spotlight").performClick()
+  listOf("Ajustes","Apariencia","Permisos","Atajos").forEach{ui.onNodeWithText(it).assertIsDisplayed()}
+  search().assertTextEquals("spot");row().assertDoesNotExist()
+  ui.onNodeWithContentDescription("Opciones de Spotlight").performClick()
+  search().assertTextEquals("spot");row().assertIsSelected()
+ }
+ @Test fun installedSpeechActivityMakesDictationAvailable(){
+  show(true)
+  ui.waitUntil(15000){ui.onAllNodesWithContentDescription("Dictar consulta").fetchSemanticsNodes().isNotEmpty()}
+  ui.onNodeWithContentDescription("Dictar consulta").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+ }
+
 }
