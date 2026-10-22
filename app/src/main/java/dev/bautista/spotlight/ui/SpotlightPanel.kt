@@ -112,9 +112,9 @@ fun SpotlightPanel(
         var pointerSelecting by remember { mutableStateOf(false) }
         // A highlighted keyboard/default result has not yet been confirmed by touch.
         var touchedResultId by remember(query,category,searchScope) { mutableStateOf<String?>(null) }
-        var preview by rememberSaveable(stateSaver=DocumentPreviewSaver) { mutableStateOf<Result?>(null) }
+        var preview by rememberSaveable(stateSaver=remember(context){inspectorResultSaver(context)}) { mutableStateOf<Result?>(null) }
         var inspectorPinned by rememberSaveable { mutableStateOf(false) }
-        var pinnedPreview by rememberSaveable(stateSaver=DocumentPreviewSaver) { mutableStateOf<Result?>(null) }
+        var pinnedPreview by rememberSaveable(stateSaver=remember(context){inspectorResultSaver(context)}) { mutableStateOf<Result?>(null) }
         var pinnedCard by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
         // Moving between the tablet column and phone sheet must retain edited form state.
         val contextDrafts=rememberSaveableStateHolder()
@@ -122,7 +122,7 @@ fun SpotlightPanel(
         val inspectorHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
         var expandedPreview by rememberSaveable {mutableStateOf(false)}
         val previewPages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf<String,Int>()}
-        val fileBuffer=remember(fileSelection){fileSelection ?: dev.bautista.spotlight.data.FileBuffer()}
+        val fileBuffer=rememberSaveable(fileSelection,saver=FileBufferSaver){fileSelection ?: dev.bautista.spotlight.data.FileBuffer()}
         val bufferExtraction=remember{DocumentExtractionRequest()}
         val bufferBusy=bufferExtraction.running
         fun bufferContext()=listOf(query,category,searchScope,fileBuffer.items.map{it.id to (it.action as? Action.Launch)?.intent?.data?.toString()})
@@ -317,7 +317,7 @@ fun SpotlightPanel(
                         query = "notas"
                         category = "Acciones"
                     }
-                    .onFailure { error = "No se pudo guardar" }
+                    .onFailure { error = it.message ?: "No se pudo guardar" }
             }
         }
         LaunchedEffect(noteEditor) {
@@ -1249,7 +1249,7 @@ fun SpotlightPanel(
                         else if(searchForm!=null)SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
                         else if(audioPanel)AudioControl {back()}
                         else if (noteEditor)
-                            Column(Modifier.padding(18.dp)) {
+                            Column(Modifier.heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {
                                 Text(if(editingNoteId==null) "Nueva nota" else "Editar nota");if(editingNoteId==null)TextButton(onClick={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix","nota ").putExtra("fallback","nota $draft"))}){Text("Dictar nota · revisar antes de guardar")}
                                 OutlinedTextField(
                                     draft,
@@ -1259,7 +1259,8 @@ fun SpotlightPanel(
                                         .focusRequester(editorFocus),
                                     label = { Text("Texto de la nota") },
                                 )
-                                Row {
+                                FlowRow {
+                                    if(editingNoteId!=null)TextButton(onClick={editingNoteId=null;saveDraft()},enabled=draft.isNotBlank()){Text("Guardar como nota nueva")}
                                     TextButton(
                                         onClick = { saveDraft() },
                                         enabled = draft.isNotBlank(),

@@ -44,3 +44,28 @@ internal val SearchScopeSaver=Saver<dev.bautista.spotlight.control.SearchScope?,
     require(raw.length<=16000);val a=JSONArray(raw);require(a.length()==3)
     dev.bautista.spotlight.control.SearchScope(a.getString(0),a.getString(1),a.getString(2))
 }.getOrNull()})
+
+/** Application identity is resolved anew; cached launch flags/components are not authorizations. */
+internal fun inspectorResultSaver(context:android.content.Context)=Saver<Result?,String>(save={item->
+    val owner=this
+    if(PreviewPresentation.isApplication(item)) {
+        (item?.action as? Action.Launch)?.intent?.component?.packageName?.let{JSONObject().put("kind","app").put("package",it).toString()}
+    } else with(DocumentPreviewSaver){owner.save(item)}
+},restore={raw->runCatching {
+    require(raw.length<=8000)
+    val j=JSONObject(raw)
+    if(j.optString("kind")=="app") {
+        val pkg=j.getString("package");require(pkg.matches(Regex("[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)+")))
+        val intent=context.packageManager.getLaunchIntentForPackage(pkg) ?: return@runCatching null
+        val info=context.packageManager.getApplicationInfo(pkg,0)
+        Result("$pkg/${intent.component?.className}",context.packageManager.getApplicationLabel(info).toString(),"Aplicación instalada","Aplicaciones",0,Action.Launch(intent),runCatching{context.packageManager.getApplicationIcon(info)}.getOrNull())
+    } else DocumentPreviewSaver.restore(raw)
+}.getOrNull()})
+
+internal val FileBufferSaver=Saver<dev.bautista.spotlight.data.FileBuffer,String>(save={buffer->
+    val owner=this
+    JSONArray(buffer.items.mapNotNull{with(DocumentPreviewSaver){owner.save(it)}}).toString()
+},restore={raw->runCatching{
+    require(raw.length<=96000);val a=JSONArray(raw);require(a.length()<=12)
+    dev.bautista.spotlight.data.FileBuffer().apply{for(i in 0 until a.length())DocumentPreviewSaver.restore(a.getString(i))?.let{add(it)}}
+}.getOrDefault(dev.bautista.spotlight.data.FileBuffer())})

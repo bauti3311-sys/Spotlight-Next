@@ -21,7 +21,8 @@ object CompactResults {
     fun select(query: String, items: List<Result>, config: Config, preserveOrder: Boolean = false): View {
         val all = StableResults.unique(items.filterNot { it.id.startsWith("section:") })
         if (query.isBlank()) return View(ResultSections.home(all).take(homeLimit), all)
-        val effectiveQuery=dev.bautista.spotlight.personal.PersonalCommands.expand(query,config.aliases)
+        val literalExact=all.any{it.category in setOf("Aplicaciones","Comandos","Acciones") && ResultRanker.matchClass(query,it)==6}
+        val effectiveQuery=if(literalExact)query else dev.bautista.spotlight.personal.PersonalCommands.expand(query,config.aliases)
         val intent = UniversalIntentEngine.resolve(effectiveQuery, config)
         val interpreted=QueryInterpreter.interpret(effectiveQuery)
         val appQuery = intent.entities.firstOrNull { it.type == EntityType.APP_NAME }?.value ?: interpreted.text

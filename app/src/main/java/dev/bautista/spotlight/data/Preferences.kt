@@ -208,12 +208,14 @@ class Preferences(private val context: Context) {
     /** Persist only the AI fields actually edited, preserving concurrent privacy/history/source changes. */
     suspend fun updateAi(before:Config,after:Config) {
         context.store.edit { p ->
+            val destinationChanged=(before.aiProvider!=after.aiProvider && p[aiProvider]!=after.aiProvider) ||
+                (before.endpoint!=after.endpoint && p[endpoint]!=after.endpoint)
             if(before.aiProvider!=after.aiProvider)p[aiProvider]=after.aiProvider
             if(before.aiModel!=after.aiModel)p[aiModel]=after.aiModel
             if(before.endpoint!=after.endpoint)p[endpoint]=after.endpoint
-            if(before.aiRootConsent!=after.aiRootConsent) {
+            if(before.aiRootConsent!=after.aiRootConsent || destinationChanged) {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")}.getOrDefault(org.json.JSONObject())
-                extra.put("aiRootConsent",after.aiRootConsent);p[next20]=extra.toString()
+                extra.put("aiRootConsent",after.aiRootConsent && (!destinationChanged || !before.aiRootConsent));p[next20]=extra.toString()
             }
         }
     }
@@ -244,7 +246,8 @@ class Preferences(private val context: Context) {
     /** Validate before writing, merge against the transaction's current values; never import grants or secrets. */
     suspend fun importPortable(raw:String) {
         context.store.edit { p ->
-            val c=ConfigTransfer.decode(raw,readConfig(p))
+            val previous=readConfig(p)
+            val c=ConfigTransfer.decode(raw,previous)
             p[theme]=c.theme
             p[opacity]=c.opacity
             p[width]=c.width
@@ -279,6 +282,8 @@ class Preferences(private val context: Context) {
             p[clipboardShortcut]=c.clipboardShortcut
             p[keyboardBindings]=c.keyBindings
             val extra=org.json.JSONObject(p[next20] ?: "{}")
+            // A portable file cannot authorize sending data to a different provider.
+            if(previous.aiProvider!=c.aiProvider)extra.put("aiRootConsent",false)
             extra.put("sourcePriority",c.sourcePriority)
             extra.put("customThemes",c.customThemes)
             extra.put("autoKeyboard",c.autoKeyboard)
@@ -301,13 +306,15 @@ class Preferences(private val context: Context) {
         val previousPrivate=isPrivate;val previousRevision=privacyRevision
         val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode
         try {context.store.edit { p ->
+            val prior=readConfig(p)
+            val rootConsent=c.aiRootConsent && (!prior.aiRootConsent || (prior.aiProvider==c.aiProvider && prior.endpoint==c.endpoint))
             p[privateVersion]=revision
             p[privateFlag]=c.privateMode
             p[next20]=org.json.JSONObject().put("autoKeyboard",c.autoKeyboard).put("glassIntensity",c.glassIntensity.toDouble())
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
                 .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
-                .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
+                .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",rootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width

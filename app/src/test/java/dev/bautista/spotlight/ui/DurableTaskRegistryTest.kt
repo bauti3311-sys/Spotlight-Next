@@ -22,11 +22,11 @@ class DurableTaskRegistryTest {
  @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
  private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
  @Test fun persistedRunningMarkerAndArgumentsRestoreWithoutReplayingTheEffect() {
-  var generation by mutableIntStateOf(0);var restored:Map<String,List<Any?>>?=null
+  var visible by mutableStateOf(true);var restored:Map<String,List<Any?>>?=null
   var registry:SaveableStateRegistry?=null;var effects=0
   val pending=CompletableDeferred<ToolExecution>()
   ui.setContent {
-   key(generation){
+   if(visible){
     val current=remember{SaveableStateRegistry(restored,OverlaySnapshotCodec::canSave)}
     SideEffect{registry=current}
     CompositionLocalProvider(LocalSaveableStateRegistry provides current,LocalTaskCheckpoint provides {app.contexts.saveOverlaySnapshot(current.performSave())}) {
@@ -41,7 +41,8 @@ class DurableTaskRegistryTest {
   ui.waitUntil(10000){effects==1}
   val disk=runBlocking{ContextStore(app,app.scope,app.preferences).overlaySnapshot()}
   assertNotNull(disk);assertNotNull(registry)
-  ui.runOnIdle{restored=disk;generation++}
+  ui.runOnIdle{visible=false};ui.waitForIdle()
+  ui.runOnIdle{restored=disk;visible=true}
   ui.onNodeWithText("Operación interrumpida. Su efecto externo no se puede deducir al restaurar.").assertExists()
   ui.onNodeWithTag("tool-execute-0").assertDoesNotExist()
   ui.onNodeWithText("text: Argumento conservado en disco").assertExists()

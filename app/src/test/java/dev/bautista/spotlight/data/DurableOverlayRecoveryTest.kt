@@ -16,6 +16,7 @@ import java.io.File
 class DurableOverlayRecoveryTest {
  private val app get()=RuntimeEnvironment.getApplication()
  private val scope=CoroutineScope(SupervisorJob()+Dispatchers.IO)
+ @Before fun reset()=runBlocking {Preferences(app).update(Config());android.util.AtomicFile(File(app.noBackupFilesDir,"spotlight-context-v1.json")).delete()}
  @After fun stop(){scope.cancel()}
  @Test fun newStoreRestoresTypedDraftsAndDoesNotLoseSavedConversations()=runBlocking {
   val prefs=Preferences(app);val first=ContextStore(app,scope,prefs)
@@ -45,5 +46,14 @@ class DurableOverlayRecoveryTest {
   val file=File(app.noBackupFilesDir,"spotlight-context-v1.json");file.writeText("{broken")
   val store=ContextStore(app,scope,Preferences(app));assertTrue(runCatching{store.overlaySnapshot()}.isFailure)
   assertTrue(runCatching{store.saveOverlaySnapshot(null)}.isFailure);assertEquals("{broken",file.readText())
+ }
+ @Test fun corruptRecoveryIsPreservedUntilExplicitDiscardWithoutLosingOtherRecords()=runBlocking {
+  val file=File(app.noBackupFilesDir,"spotlight-context-v1.json")
+  val raw="""{"version":1,"contexts":[{"id":"kept","title":"Guardado","kind":"text","text":"No perder","created":1}],"overlayRecovery":{"version":99}}"""
+  file.writeText(raw);val store=ContextStore(app,scope,Preferences(app))
+  assertTrue(runCatching{store.overlaySnapshot()}.isFailure)
+  assertTrue(runCatching{store.saveOverlaySnapshot(mapOf("query" to listOf("new")))}.isFailure)
+  assertEquals(raw,file.readText());store.discardOverlaySnapshot()
+  assertNull(store.overlaySnapshot());assertEquals("kept",store.pinned.value.single().id)
  }
 }
