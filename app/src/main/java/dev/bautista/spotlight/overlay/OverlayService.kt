@@ -247,7 +247,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             insets
         }
         try {
+            val openingMotion = motionAllowed()
+            OverlayWindowMotion.prepare(host, openingMotion)
             wm.addView(host, params(openingBounds))
+            OverlayWindowMotion.open(host, openingMotion)
             view = host
             composition = panel
             ViewCompat.requestApplyInsets(host)
@@ -261,7 +264,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     }
                 }}
             })
-            // Visible on the first frame: no competing window/Compose entrance animations.
+            // Visible and focusable on the first frame; motion changes drawing properties only.
             clipboard.addPrimaryClipChangedListener(clipListener)
             host.postDelayed(
                 {
@@ -340,8 +343,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         showJob?.cancel()
         val host=view
         if(host!=null && host.isAttachedToWindow && motionAllowed()) {
-            host.animate().cancel()
-            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(when(config.movement){"precise"->55L;"liquid_immersive"->115L;else->90L}).withEndAction {if(view===host)finishClose()}.start()
+            OverlayWindowMotion.close(host, true) { if(view===host)finishClose() }
         } else finishClose()
     }
     private fun finishClose() {
