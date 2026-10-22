@@ -20,6 +20,7 @@ internal suspend fun canReadPreview(context:Context,item:Result):Boolean=withCon
 
 @Composable internal fun AuthorizedFilePreview(context:Context,item:Result,expanded:Boolean,page:Int,onPage:(Int)->Unit) {
     val owner=LocalLifecycleOwner.current
+    val view=androidx.compose.ui.platform.LocalView.current
     var active by remember(owner){mutableStateOf(owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))}
     var revision by remember(owner){mutableIntStateOf(0)}
     DisposableEffect(owner) {
@@ -30,6 +31,17 @@ internal suspend fun canReadPreview(context:Context,item:Result):Boolean=withCon
         }}
         owner.lifecycle.addObserver(observer)
         onDispose{owner.lifecycle.removeObserver(observer)}
+    }
+    // LifecycleService stays STARTED; it has no Activity ON_RESUME. Window focus
+    // is also required to revalidate when returning from Android permission settings.
+    DisposableEffect(view,owner) {
+        val observer=android.view.ViewTreeObserver.OnWindowFocusChangeListener { focused ->
+            if(focused){revision++;active=owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)}
+            else active=false
+        }
+        val tree=view.viewTreeObserver
+        tree.addOnWindowFocusChangeListener(observer)
+        onDispose{if(tree.isAlive)tree.removeOnWindowFocusChangeListener(observer)}
     }
     // Remove the renderer/media child while inactive, including its callbacks and descriptors.
     if(!active)return

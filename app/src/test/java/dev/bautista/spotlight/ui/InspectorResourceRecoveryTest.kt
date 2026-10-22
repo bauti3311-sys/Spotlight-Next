@@ -112,11 +112,25 @@ class InspectorResourceRecoveryTest {
    }
   }
   val link=ui.onNodeWithText("Abrir fuente / mapa");link.performScrollTo().assertIsDisplayed()
-  ui.onNode(hasClickAction() and hasAnyDescendant(hasText("Abrir fuente / mapa"))).assertHeightIsAtLeast(48.dp)
+  ui.onNode(hasClickAction() and hasAnyDescendant(hasText("Abrir fuente / mapa")),useUnmergedTree=true).assertHeightIsAtLeast(48.dp)
   val bounds=link.fetchSemanticsNode().boundsInRoot
   assertTrue(bounds.left>=0 && bounds.right<=ui.onRoot().fetchSemanticsNode().boundsInRoot.right)
   captureScreenRoboImage("build/preview39/card-phone-font130.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
   link.performClick();assertEquals(1,clicked)
+ }
+
+ @Test fun overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume() {
+  val provider=provider()
+  ui.setContent{SpotlightTheme("dark",AppConfig(theme="dark")){AuthorizedFilePreview(ui.activity,descriptor,false,0,{})}}
+  ui.waitUntil(10000){ui.onAllNodesWithText("Contenido documental autorizado").fetchSemanticsNodes().isNotEmpty()}
+  fun focus(value:Boolean) {ui.runOnIdle {
+   org.robolectric.util.ReflectionHelpers.callInstanceMethod<Void>(ui.activity.window.decorView.viewTreeObserver,"dispatchOnWindowFocusChange",org.robolectric.util.ReflectionHelpers.ClassParameter.from(Boolean::class.javaPrimitiveType,value))
+  }}
+  focus(false)
+  ui.onNodeWithText("Contenido documental autorizado").assertDoesNotExist()
+  provider.allowed=false;focus(true)
+  ui.waitUntil(10000){ui.onAllNodesWithText("El documento ya no está disponible o perdió su autorización. Volvé a seleccionarlo desde Archivos.").fetchSemanticsNodes().isNotEmpty()}
+  assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
  }
 
 }
