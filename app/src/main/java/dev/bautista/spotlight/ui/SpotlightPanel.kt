@@ -824,13 +824,16 @@ fun SpotlightPanel(
                 }
             }
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
-            val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
+            val availableBody = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceAtLeast(0.dp)
+            // maxHeight is a results-list preference. A contextual inspector may
+            // use the remaining viewport, shrinking naturally to its content.
+            val panelLimit = if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
-            val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
+            val resultLimit = (panelLimit - if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
             val resultListHeight = minOf(resultLimit,
                 GlassTokens.resultRowHeight(config)*visibleResults.size +
                     if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 44.dp)
-            val splitPanelHeight = minOf(resultLimit,400.dp)
+            val splitPanelHeight = resultLimit
             val inlineResultRows=!compact && (!widePreview || maxWidth*.62f>=384.dp)
             Box(
                 Modifier.fillMaxWidth()
@@ -997,11 +1000,13 @@ fun SpotlightPanel(
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))},
                     onCancel={bufferExtraction.cancel()})
                 if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
-                }
-                if(query.isBlank() && searchScope==null && category=="Todo" && visibleResults.isEmpty() && !loading) {
+                if(homeLayout && systemPage==null && history.isEmpty() && !hasInspector && !menu &&
+                    !inspectorTaskActive() && !searchOptions && activeContext==null &&
+                    fileBuffer.items.isEmpty() && visibleResults.isEmpty() && !loading) {
                     Text(if(config.suggestions)"Tus favoritos y acciones recientes aparecerán acá." else "Las sugerencias están desactivadas en Ajustes → General.",
                         Modifier.fillMaxWidth().testTag("home-suggestion-hint").padding(horizontal=20.dp,vertical=12.dp),
                         fontSize=11.sp,color=colors.onSurfaceVariant)
+                }
                 }
                 val expanded = showAi || systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && visibleResults.isNotEmpty())
                 fun selectApplication(item:Result,index:Int) {

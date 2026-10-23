@@ -33,6 +33,20 @@ class ProductEntryPointsTest {
         assertEquals("General",settings.getStringExtra("group"))
         ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
     }
+    @Test fun homeHintDisappearsInSavedAndReturnsOnlyOnHome() {
+        val app=RuntimeEnvironment.getApplication() as SpotlightApp
+        ui.setContent { SpotlightPanel(app,AppConfig(files=false,animations=false,suggestions=false),{},availableHeightDp=700f) }
+        ui.onNodeWithTag("home-suggestion-hint").assertIsDisplayed()
+        assertTrue(ui.onNodeWithTag("home-suggestion-hint").getUnclippedBoundsInRoot().top >=
+            ui.onNodeWithTag("spotlight-bar").getUnclippedBoundsInRoot().bottom)
+        ui.onNodeWithContentDescription("Abrir Guardados").performClick()
+        ui.onNodeWithTag("home-suggestion-hint").assertDoesNotExist()
+        ui.onNodeWithText("Volver").performClick()
+        ui.onNodeWithTag("home-suggestion-hint").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
+        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        ui.onNodeWithTag("home-suggestion-hint").assertDoesNotExist()
+    }
     @Test fun catalogAlsoHidesRetiredModesAndKeepsRealAndroidActions() {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent { SpotlightTheme { NextPanel(app,"catalog",""){} } }

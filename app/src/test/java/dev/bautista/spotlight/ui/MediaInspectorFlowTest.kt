@@ -32,7 +32,7 @@ class MediaInspectorFlowTest {
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
     private var width by mutableIntStateOf(800)
     private fun search()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
-    private fun show(session:Boolean=true) {
+    private fun show(session:Boolean=true,availableHeight:Float=700f) {
         val pkg="com.spotify.music"
         val a=ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel="Spotify"}
         val activity=ActivityInfo().apply{packageName=pkg;name="Main";nonLocalizedLabel="Spotify";applicationInfo=a;exported=true}
@@ -46,7 +46,7 @@ class MediaInspectorFlowTest {
             Shadows.shadowOf(c).setPlaybackState(PlaybackState.Builder().setState(PlaybackState.STATE_PLAYING,42000,1f,android.os.SystemClock.elapsedRealtime()).setActions(PlaybackState.ACTION_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT).build())
             Shadows.shadowOf(app.getSystemService(MediaSessionManager::class.java)).addController(c)
         }
-        ui.setContent { Box(Modifier.width(width.dp)){SpotlightPanel(app,AppConfig(theme="dark",preset="glass",files=false,online=false,animations=false,learning=false,suggestions=false),{},"spot",availableHeightDp=700f)} }
+        ui.setContent { Box(Modifier.width(width.dp)){SpotlightPanel(app,AppConfig(theme="dark",preset="glass",files=false,online=false,animations=false,learning=false,suggestions=false),{},"spot",availableHeightDp=availableHeight)} }
         ui.waitUntil(15000){ui.onAllNodesWithTag("result:com.spotify.music/Main").fetchSemanticsNodes().isNotEmpty()}
     }
     @Test fun realSessionMetadataIsContextualAndPinSurvivesSearchAndWidthChange() {
@@ -66,6 +66,16 @@ class MediaInspectorFlowTest {
         ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         ui.onNodeWithTag("media-inspector").assertExists()
         search().assertTextEquals("2+2")
+    }
+    @Test @Config(qualifiers="w1280dp-h1100dp") fun tallViewportShowsBottomActionsWithoutScrolling() {
+        show(availableHeight=1000f)
+        ui.onNodeWithText("Ver acciones contextuales").assertIsDisplayed()
+        ui.onNodeWithText("com.spotify.music").assertIsDisplayed()
+        val bottom=ui.onNodeWithText("com.spotify.music").getUnclippedBoundsInRoot().bottom
+        val inspector=ui.onNodeWithTag("context-inspector").getUnclippedBoundsInRoot()
+        assertTrue("Metadata must fit before any scroll",bottom<=inspector.bottom)
+        ui.onNodeWithContentDescription("Pausar reproducción").assertIsDisplayed()
+        captureScreenRoboImage("build/media-inspector/tablet-tall-session-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
     }
     @Test fun absentSessionDoesNotCreateAnEmptyInspector() {
         show(false)
