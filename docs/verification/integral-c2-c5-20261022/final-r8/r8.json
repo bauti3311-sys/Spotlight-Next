@@ -1,0 +1,22 @@
+{
+  "mapping.txt": {
+    "size_bytes": 74384775,
+    "sha256": "cb6a1430cdc888cad588912bd0999b0fe0d55828a36b041b5d511ed59a1a0bd3"
+  },
+  "configuration.txt": {
+    "size_bytes": 46781,
+    "sha256": "2d72817678a60277b44de1deba9b13813ef61c142077fdd030442c5855984b2c"
+  },
+  "seeds.txt": {
+    "size_bytes": 2016292,
+    "sha256": "fcc032d6d5331ef8d970210fdd1232f3c83627218be4ac168d1b30412fd66e57"
+  },
+  "usage.txt": {
+    "size_bytes": 5740241,
+    "sha256": "a15e5de3e718595d3fe3896a07e23bbf18cbe19ba591e8560561f3709c4ef5c4"
+  },
+  "resources.txt": {
+    "size_bytes": 495987,
+    "sha256": "96982ab78e58067be55c8f194d6dc54c2f95af795bf8312d6c9245d7f87aa073"
+  }
+}

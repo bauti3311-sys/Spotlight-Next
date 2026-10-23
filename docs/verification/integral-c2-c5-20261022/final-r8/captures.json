@@ -1,0 +1,122 @@
+[
+  {
+    "file": "01-Inicio-tablet.png",
+    "source": "Spotlight-Next/app/build/native-palette/01-home.png",
+    "capture_source_sha": "98cddb0e17a26550eec6b654fcf28ff21c617bae",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "f44a26a1b9e31386a9fabdcb5fef58eea1087f81f2946fd8a6b6dcac3771adab",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Inicio real: una favorita disponible; no se agregan resultados de relleno."
+  },
+  {
+    "file": "02-Spot-Spotify.png",
+    "source": "Spotlight-Next/app/build/native-palette/11-spotify-prefix.png",
+    "capture_source_sha": "98cddb0e17a26550eec6b654fcf28ff21c617bae",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "d1b45cd283404ede2cd296ce9d3d01d4c15f90310550ca839ee82262af0943c8",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Prefijo spot: Spotify instalada de prueba conserva la selección. Los iconos genéricos proceden del PackageManager fixture."
+  },
+  {
+    "file": "03-ActionPanel-tablet.png",
+    "source": "Spotlight-Next/app/build/native-palette/12-spotify-actions.png",
+    "capture_source_sha": "98cddb0e17a26550eec6b654fcf28ff21c617bae",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "44966e4bcbed8144bef8f1acd0958074b5578486b00dffaa8f2e721d93807b9b",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Popup Android completo sobre la paleta; consulta y geometría de resultados conservadas. Fondo del host de prueba, no wallpaper físico."
+  },
+  {
+    "file": "04-Filtro-acciones.png",
+    "source": "Spotlight-Next/app/build/native-palette/04-filter.png",
+    "capture_source_sha": "98cddb0e17a26550eec6b654fcf28ff21c617bae",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "851e47c0aa30df0fcc3edf89c92f49450676736714335ba586b35cbce5e7b462",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Filtro de acciones independiente de la consulta principal."
+  },
+  {
+    "file": "05-Submenu.png",
+    "source": "Spotlight-Next/app/build/native-palette/05-submenu.png",
+    "capture_source_sha": "98cddb0e17a26550eec6b654fcf28ff21c617bae",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "69f85569ce20fb087f2d193092fdda36644371ee61d0c538e39436703d817491",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Submenú de copia con navegación Escape; filtro superior según el maestro."
+  },
+  {
+    "file": "06-ActionPanel-telefono.png",
+    "source": "Spotlight-Next/app/build/native-palette/08-phone.png",
+    "capture_source_sha": "98cddb0e17a26550eec6b654fcf28ff21c617bae",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "7e371b84500c8a5d5a1e829c48cf3e4c65352eac758e53962cdc590e9028197d",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Viewport390×844, acciones alcanzables y cierre de48dp. No simula el IME ni el InputDispatcher de OneUI."
+  },
+  {
+    "file": "07-Media-tablet.png",
+    "source": "Spotlight-Next/app/build/media-inspector/tablet-session-fixture.png",
+    "capture_source_sha": "d621998a0d2076bb8068423abc825bbbf7143595",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "430d590ac87df547c2e0977c21bdc10e6c8c8eca3e20be006842bce0c33b6014",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "MediaSession Android de prueba: metadatos/progreso/controles del paquete exacto. Sin audio ni Spotify real."
+  },
+  {
+    "file": "08-Media-telefono.png",
+    "source": "Spotlight-Next/app/build/media-inspector/phone-session-fixture.png",
+    "capture_source_sha": "d621998a0d2076bb8068423abc825bbbf7143595",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "f2c96d640464c9249b934d180069847a83a6c1743ffc301c9b78d95472b46e3a",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Mismo inspector en teléfono; portada vacía deliberada del fixture. No se inventa una portada remota."
+  },
+  {
+    "file": "09-Permisos.png",
+    "source": "Spotlight-Next/app/build/task-recovery/settings-permissions.png",
+    "capture_source_sha": "d621998a0d2076bb8068423abc825bbbf7143595",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "9adc56bad290baeb398db899b5ad8c4a472deacd2ddd3b2de704481c5fddd9cb",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "MainActivity, centro único de permisos y estados del entorno Android de prueba."
+  },
+  {
+    "file": "10-Ajustes-Avanzado.png",
+    "source": "Spotlight-Next/app/build/task-recovery/settings-backup.png",
+    "capture_source_sha": "d621998a0d2076bb8068423abc825bbbf7143595",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "8c352a883b34d2afe7af257829f281f2ed8abb1ae2c065f4a742842fa705d419",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Ajustes Avanzado, no es el selector SAF del sistema. El roundtrip SAF se acredita con la prueba separada."
+  },
+  {
+    "file": "11-Formulario-tablet.png",
+    "source": "Spotlight-Next/app/build/unified-inspector/tablet-search-form.png",
+    "capture_source_sha": "d621998a0d2076bb8068423abc825bbbf7143595",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "05f23ba5924b1d362c41ccc75a0a48f1002d1cb85736ad6649fc128790a7e92f",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Formulario real en el inspector contextual, sin reemplazar la lista de búsqueda."
+  },
+  {
+    "file": "12-Formulario-telefono.png",
+    "source": "Spotlight-Next/app/build/unified-inspector/phone-390-search-form-dark.png",
+    "capture_source_sha": "d621998a0d2076bb8068423abc825bbbf7143595",
+    "production_inputs_identical_to": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+    "sha256": "4d98e622200e9eb295fd08830f3afd7021e0f855244f7e64cb4f4316c3e88ff6",
+    "runtime": "Robolectric4.14.1 / API33 / GraphicsMode.NATIVE",
+    "physical": false,
+    "caption": "Formulario adaptado al ancho390dp."
+  }
+]
