@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
@@ -58,9 +58,15 @@ class AdaptiveInspectorFlowTest {
     }
     private fun awaitResult(pkg:String) {ui.waitUntil(15000){ui.onAllNodesWithTag("result:$pkg/Main").fetchSemanticsNodes().isNotEmpty()}}
     private fun assertButtonColor(expected:Color) {
-        val image=ui.onNodeWithTag("inspector-primary-action").captureToImage()
-        val actual=image.toPixelMap()[image.width/2,4]
-        assertEquals(expected.red,actual.red,.02f);assertEquals(expected.green,actual.green,.02f);assertEquals(expected.blue,actual.blue,.02f)
+        val file=java.io.File("build/adaptive-inspector/primary-color-probe.png")
+        ui.onNodeWithTag("inspector-primary-action").captureRoboImage(file.absolutePath,
+            roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        val image=android.graphics.BitmapFactory.decodeFile(file.absolutePath)
+        assertNotNull("Native button capture must decode",image)
+        try {
+            val actual=Color(image.getPixel(image.width/2,4))
+            assertEquals(expected.red,actual.red,.02f);assertEquals(expected.green,actual.green,.02f);assertEquals(expected.blue,actual.blue,.02f)
+        } finally {image.recycle()}
     }
     @Test fun selectedInstalledAppsUseRealInspectorAndPinRetainsItsOwnColor() {
         show()
@@ -68,6 +74,13 @@ class AdaptiveInspectorFlowTest {
         ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         assertButtonColor(InspectorAccent.brand("com.spotify.music")!!)
         captureScreenRoboImage("build/adaptive-inspector/tablet-spotify-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        val before=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
+        search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.K);keyUp(Key.CtrlLeft)}
+        ui.onNodeWithTag("action-surface").assertIsDisplayed()
+        assertEquals(before,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
+        ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
+        ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed()
+        search().assertTextEquals("Spotify")
         ui.onNodeWithContentDescription("Fijar inspector").performClick()
         search().performClick().performTextReplacement("Gmail");awaitResult("com.google.android.gm")
         ui.onNodeWithTag("result:com.google.android.gm/Main").performClick()

@@ -113,6 +113,7 @@ fun SpotlightPanel(
         // A highlighted keyboard/default result has not yet been confirmed by touch.
         var touchedResultId by remember(query,category,searchScope) { mutableStateOf<String?>(null) }
         var preview by rememberSaveable(stateSaver=remember(context){inspectorResultSaver(context)}) { mutableStateOf<Result?>(null) }
+        var applicationPreviewId by rememberSaveable { mutableStateOf<String?>(null) }
         var inspectorPinned by rememberSaveable { mutableStateOf(false) }
         var pinnedPreview by rememberSaveable(stateSaver=remember(context){inspectorResultSaver(context)}) { mutableStateOf<Result?>(null) }
         var pinnedCard by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
@@ -775,8 +776,10 @@ fun SpotlightPanel(
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
             LaunchedEffect(selectedResult?.id,inspectorPinned) {
-                if(!inspectorPinned && !inspectorTaskActive() && PreviewPresentation.isApplication(preview))
+                if(!inspectorPinned && !inspectorTaskActive() && applicationPreviewId!=null) {
                     preview=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
+                    applicationPreviewId=preview?.id
+                }
             }
             val mediaCandidate=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
             val inspectorItem=if(inspectorPinned)pinnedPreview else preview ?: mediaCandidate
@@ -792,13 +795,14 @@ fun SpotlightPanel(
             val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
             val richPreview=PreviewPresentation.needsInspector(inspectorItem)
             val applicationPreview=PreviewPresentation.isApplication(inspectorItem) &&
-                !inspectorTaskActive() && (preview?.id==inspectorItem?.id || inspectorPinned)
+                !inspectorTaskActive() && (applicationPreviewId==inspectorItem?.id || inspectorPinned)
             val taskInspector=inspectorTaskActive()
             LaunchedEffect(inspectorPinned,pinnedPreview?.id,pinnedCard,taskInspector){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
             val hasInspector=richPreview || applicationPreview || inspectorCard!=null || taskInspector || mediaInspector
             val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
             fun dismissInspector() {
                 mediaDismissed=true
+                applicationPreviewId=null
                 inspectorPinned=false;pinnedPreview=null;pinnedCard=null
                 preview=null;card=null;expandedPreview=false;menu=false
                 clearForms();noteEditor=false;aiJob?.cancel();showAi=false
@@ -1000,6 +1004,7 @@ fun SpotlightPanel(
                     pointerSelecting=true
                     hideKeyboardForActions()
                     preview=item
+                    applicationPreviewId=item.id
                     menu=false
                 }
                 val resultList:@Composable ()->Unit = {

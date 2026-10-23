@@ -14,3 +14,6 @@ Pruebas nuevas: InspectorAccentTest(identidad/destinos/contraste/extracción); A
 
 ## Segundo checkpoint parcial
 Primercompile:2erroresdeinferenciaComposable corregidos mediante lambda tipada. Reintento no llegó al código por metadata.bin deGradle; help--stacktrace luego correcto13s sin limpiar dependencias. Logs originales conservados. Icons8iOS de50px reales incorporados en ficha, controles ytoolbar; enlace deatribuciónvisibleenAjustes, NOTICEconfuentes. Selección/acciones ajustadas para conservar identidad y ficha. Gate dirigido(27casos planeados, cinco clases) en curso: no se declaran aprobados todavía.
+
+## Diagnóstico de la primera ronda
+27casos ejecutados;23correctos/4fallidos. MediaInspectorFlow3/3,UnifiedInspectorFlow5/5,InspectorAccent4/4 correctos yretenidos. NativePalette9/12:abrirAcciones establecía previewapp y la fichanueva agrandaba la paleta;corrección distingue inspección explícita de selección paraAcciones, conservando estado fijado. Adaptive2/3:PixelCopy.captureToImage espera unredraw deventana no soportadoenRobolectric; la prueba ahora captura elbotón nativo conRoborazzi y mantiene las3asercionesRGB. Repetición limitada a15casos; unfallo detransporte/cleanupCouldnotdeletekotlin-classes impidióejecutarla. Se aísla elbuild delárbol sincronizado, segúnCODEX-ENTORNO-APROBADO. Gradle8.10.2/JDK17/SDK35 yversiones dedependencias intactos.
