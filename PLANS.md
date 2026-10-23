@@ -627,3 +627,7 @@ Base d3c221b9; core5fc672e4, inspector/grafo/disco/relativos39430eb2. Dependenci
 
 ## 2026-10-23 — UI fixes awaiting restored runtime
 Source changes and four new regression cases prepared for split-inspector height and the home hint in Saved. See docs/UI-INSPECTOR-HOME-FIXES-20261023.md. Android execution blocked before Gradle: prior runtime helper/SDK/caches absent. No new passing test, no APK, matrix unchanged9/25/6. Next: run ContextSplitHeightTest, ProductEntryPointsTest, MediaInspectorFlowTest and SpotlightPanelLayoutTest in Android environment; finish global scroll/footer validation, then D28.
+
+
+## 23/10 — Ampliación aprobada: integraciones y Chromecast
+Orden vigente: validar errores08f19055 → D28 → D26 → Spotify Search/reproducción → Google Cast/Remote v2 experimental → D35/D36/D37 y las25 decisiones con pruebas insuficientes → cierre real de las40. Alcance y límites en docs/PRIORIDADES-INTEGRACIONES-20261023.md. Una configuración externa de Spotify/Chromecast no bloquea trabajo independiente; primero siguen siendo obligatorias las regresiones UI. Runtime Android anterior aún ausente; sin nuevas ejecuciones ni promociones, matriz9/25/6 y Preview44/45 conservadas.
