@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import dev.bautista.spotlight.R
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -56,13 +58,13 @@ private fun mediaTime(ms:Long):String {
             }
         } else Text("Progreso no disponible",style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(4.dp)) {
-            if(s.supports(PlaybackState.ACTION_SKIP_TO_PREVIOUS))IconButton(onClick={onCommand("previous")},modifier=Modifier.size(48.dp)) {Icon(CommandIcons.SkipPrevious,"Pista anterior")}
+            if(s.supports(PlaybackState.ACTION_SKIP_TO_PREVIOUS))IconButton(onClick={onCommand("previous")},modifier=Modifier.size(48.dp)) {Icon(painterResource(R.drawable.inspector_ios_previous),"Pista anterior",Modifier.size(22.dp))}
             val command=if(s.playing)"pause" else "play"
             if(s.supports(if(s.playing)PlaybackState.ACTION_PAUSE else PlaybackState.ACTION_PLAY))
                 FilledTonalIconButton(onClick={onCommand(command)},colors=IconButtonDefaults.filledTonalIconButtonColors(
                     containerColor=colors.primary,contentColor=colors.onPrimary),
-                    modifier=Modifier.size(48.dp)){Icon(if(s.playing)CommandIcons.Pause else CommandIcons.Play,if(s.playing)"Pausar reproducción" else "Reanudar reproducción")}
-            if(s.supports(PlaybackState.ACTION_SKIP_TO_NEXT))IconButton(onClick={onCommand("next")},modifier=Modifier.size(48.dp)){Icon(CommandIcons.SkipNext,"Pista siguiente")}
+                    modifier=Modifier.size(48.dp)){Icon(painterResource(if(s.playing)R.drawable.inspector_ios_pause else R.drawable.inspector_ios_play),if(s.playing)"Pausar reproducción" else "Reanudar reproducción",Modifier.size(22.dp))}
+            if(s.supports(PlaybackState.ACTION_SKIP_TO_NEXT))IconButton(onClick={onCommand("next")},modifier=Modifier.size(48.dp)){Icon(painterResource(R.drawable.inspector_ios_next),"Pista siguiente",Modifier.size(22.dp))}
         }
     }
 }

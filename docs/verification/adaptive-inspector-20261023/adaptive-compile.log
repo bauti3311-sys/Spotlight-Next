@@ -1,0 +1,78 @@
+Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=36217 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=36217
+
+Welcome to Gradle 8.10.2!
+
+Here are the highlights of this release:
+ - Support for Java 23
+ - Faster configuration cache
+ - Better configuration cache reports
+
+For more details see https://docs.gradle.org/8.10.2/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Observed package id 'platforms;android-35-ext15' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-ext15')
+Observed package id 'platforms;android-35-ext15' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-ext15')
+Checking the license for package Android SDK Platform 35 in /workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/licenses
+License for package Android SDK Platform 35 accepted.
+Preparing "Install Android SDK Platform 35 (revision 2)".
+Warning: Package "Android SDK Platform 35" (platforms;android-35) should be installed in 
+"/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35" but 
+"Android SDK Platform 35" (platforms;android-35-ext15) is already installed there.
+Installing in "/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-2" instead.
+"Install Android SDK Platform 35 (revision 2)" ready.
+Installing Android SDK Platform 35 in /workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-2
+"Install Android SDK Platform 35 (revision 2)" complete.
+"Install Android SDK Platform 35 (revision 2)" finished.
+Observed package id 'platforms;android-35-ext15' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-ext15')
+Observed package id 'platforms;android-35' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-2' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35')
+Warning: Observed package id 'platforms;android-35-ext15' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-ext15')
+Warning: Observed package id 'platforms;android-35' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-2' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35')
+Checking the license for package Android SDK Platform-Tools in /workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/licenses
+License for package Android SDK Platform-Tools accepted.
+Preparing "Install Android SDK Platform-Tools v.37.0.1".
+"Install Android SDK Platform-Tools v.37.0.1" ready.
+Installing Android SDK Platform-Tools in /workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platform-tools
+"Install Android SDK Platform-Tools v.37.0.1" complete.
+"Install Android SDK Platform-Tools v.37.0.1" finished.
+Warning: Observed package id 'platforms;android-35-ext15' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-ext15')
+Warning: Observed package id 'platforms;android-35' in inconsistent location '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35-2' (Expected '/workspace/scratch/cd7b8fe1285c/spotlight-runtime/android-sdk/platforms/android-35')
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl
+> Task :app:generateDebugResValues
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:compileDebugKotlin
+e: file:///workspace/scratch/cd7b8fe1285c/recovery/source/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt:1328:50 Argument type mismatch: actual type is 'kotlin.Unit?', but '@Composable() androidx.compose.runtime.internal.ComposableFunction0<kotlin.Unit>?' was expected.
+e: file:///workspace/scratch/cd7b8fe1285c/recovery/source/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt:1343:33 'if' must have both main and 'else' branches when used as an expression.
+
+> Task :app:compileDebugKotlin FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3m 59s
+16 actionable tasks: 16 executed

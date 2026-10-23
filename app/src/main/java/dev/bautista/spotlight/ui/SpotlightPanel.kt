@@ -774,6 +774,10 @@ fun SpotlightPanel(
             // Compact Raycast inspector: only show it on wide overlays when a
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
+            LaunchedEffect(selectedResult?.id,inspectorPinned) {
+                if(!inspectorPinned && !inspectorTaskActive() && PreviewPresentation.isApplication(preview))
+                    preview=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
+            }
             val mediaCandidate=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
             val inspectorItem=if(inspectorPinned)pinnedPreview else preview ?: mediaCandidate
             val inspectorPackage=(inspectorItem?.action as? Action.Launch)?.intent?.component?.packageName
@@ -808,10 +812,10 @@ fun SpotlightPanel(
                         else {pinnedPreview=null;pinnedCard=null}
                         inspectorPinned=next
                     },modifier=Modifier.size(48.dp).testTag("inspector-pin")) {
-                        Icon(CommandIcons.Pin,if(inspectorPinned)"Desfijar inspector" else "Fijar inspector",Modifier.size(18.dp))
+                        Icon(androidx.compose.ui.res.painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_pin),if(inspectorPinned)"Desfijar inspector" else "Fijar inspector",Modifier.size(18.dp))
                     }
                     IconButton(onClick={dismissInspector()},modifier=Modifier.size(48.dp)) {
-                        Icon(CommandIcons.Close,"Cerrar inspector",Modifier.size(18.dp))
+                        Icon(androidx.compose.ui.res.painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_close),"Cerrar inspector",Modifier.size(18.dp))
                     }
                 }
             }
@@ -888,7 +892,7 @@ fun SpotlightPanel(
                             Key.Escape,
                             Key.Back -> {
                                 if(searchOptions){searchOptions=false;focus.requestFocus()}
-                                else if(menu){menu=false;if(!richPreview)preview=null;focus.requestFocus()}
+                                else if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}
                                 else if(expandedPreview){expandedPreview=false;focus.requestFocus()}
                                 else if (hasInspector) {dismissInspector()}
                                 else if(moreResults){toggleMoreResults()}
@@ -1121,7 +1125,7 @@ fun SpotlightPanel(
                                 }
                                 if(actionsOnly) {
                                     val actions=mutableListOf<ContextAction>()
-                                    fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,state:ContextActionState=ContextActionState.Available,risk:dev.bautista.spotlight.ai.ToolRisk=dev.bautista.spotlight.ai.ToolRisk.READ,perform:()->Unit){actions+=ContextAction(title,description,icon,{menu=false;if(!richPreview)preview=null;focus.requestFocus();perform()},id=id,group=group,state=state,risk=risk)}
+                                    fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,state:ContextActionState=ContextActionState.Available,risk:dev.bautista.spotlight.ai.ToolRisk=dev.bautista.spotlight.ai.ToolRisk.READ,perform:()->Unit){actions+=ContextAction(title,description,icon,{menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus();perform()},id=id,group=group,state=state,risk=risk)}
                                     add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
                                     if(item.id.startsWith("suggest:")) {
                                         add("suggestion.pin",ContextActionGroup.Organize,if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
@@ -1188,7 +1192,7 @@ fun SpotlightPanel(
                                         actions.removeAll(copyChoices.toSet())
                                         actions+=ContextAction("Copiar…","Elegir formato",CommandIcons.ContentCopy,{},id="copy.formats",group=ContextActionGroup.Text,children=copyChoices)
                                     }
-                                    ActionPanelView(actions,actionFocus,actionsKey=KeyboardBindings.resolve(config,"actions")!!,onClose={menu=false;if(!richPreview)preview=null;focus.requestFocus()},contextResult=item)
+                                    ActionPanelView(actions,actionFocus,actionsKey=KeyboardBindings.resolve(config,"actions")!!,onClose={menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()},contextResult=item)
                                 }
                             }
                         }
@@ -1320,12 +1324,8 @@ fun SpotlightPanel(
                         else if(mediaInspector || applicationPreview) {
                             val observed=mediaSnapshot?.takeIf{it.packageName==inspectorPackage}
                             inspectorItem?.let { application -> Column(Modifier.padding(start=18.dp,end=18.dp,bottom=12.dp)) {
-                                ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
-                                    observed?.playing==true,emptyList(),onOpen={execute(application)},
-                                    onFavorite={toggleFavorite(application)},
-                                    onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
-                                    onActions={preview=application;menu=true;navigating=true},onMedia={},
-                                    mediaContent=if(observed==null)null else {
+                                val player: @Composable () -> Unit = {
+                                    if(observed!=null) {
                                 var mediaStatus by remember(inspectorPackage){mutableStateOf("")}
                                 MediaInspector(observed,onCommand={command->
                                     scope.launch {
@@ -1341,7 +1341,14 @@ fun SpotlightPanel(
                                     }
                                 })
                                 if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
-                                    })
+                                    }
+                                }
+                                ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
+                                    observed?.playing==true,emptyList(),onOpen={execute(application)},
+                                    onFavorite={toggleFavorite(application)},
+                                    onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
+                                    onActions={preview=application;menu=true;navigating=true},onMedia={},
+                                    mediaContent=if(observed==null)null else player)
                                 if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
                             } }
                         }
@@ -1416,7 +1423,7 @@ fun SpotlightPanel(
                                 else->"Ejecutar"
                             },
                             onExecute={selectedResult?.let{execute(it)}},
-                            onActions={if(menu){menu=false;if(!richPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
+                            onActions={if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
                             autocomplete=canAutocomplete && searchFocused && suggestion!=null,
                             actionsOpen=menu,
                             actionsKeyLabel=KeyboardBindings.resolve(config,"actions")!!.label,
@@ -1425,7 +1432,7 @@ fun SpotlightPanel(
                     }
                 }
                 }
-                if(menu && preview!=null) ContextActionSurface(viewport,onDismiss={menu=false;if(!richPreview)preview=null;runCatching{focus.requestFocus()}}) { details(true) }
+                if(menu && preview!=null) ContextActionSurface(viewport,onDismiss={menu=false;if(!richPreview && !applicationPreview)preview=null;runCatching{focus.requestFocus()}}) { details(true) }
             }
         }
     }

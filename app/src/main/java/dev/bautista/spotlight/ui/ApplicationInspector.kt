@@ -8,7 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import dev.bautista.spotlight.R
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -57,21 +58,21 @@ import kotlinx.coroutines.withContext
             colors=ButtonDefaults.buttonColors(containerColor=colors.primary,contentColor=colors.onPrimary),
             contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp),
             modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("inspector-primary-action")) {
-            Icon(CommandIcons.Arrow,null,Modifier.size(18.dp))
+            Icon(painterResource(R.drawable.inspector_ios_open),null,Modifier.size(18.dp))
             Spacer(Modifier.width(10.dp))
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=14.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
         Column(Modifier.fillMaxWidth()) {
-            InspectorActionRow("Ver información de la app",CommandIcons.Info,onClick=onInfo)
+            InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
-                if(favorite)CommandIcons.Star else CommandIcons.StarBorder,onClick=onFavorite)
+                R.drawable.inspector_ios_star,onClick=onFavorite)
             mediaCommands.forEach { command ->
                 InspectorActionRow(when(command){"pause"->"Pausar reproducción";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
-                    when(command){"pause"->CommandIcons.Pause;"play"->CommandIcons.Play;"next"->CommandIcons.Next;else->CommandIcons.Previous},
+                    when(command){"pause"->R.drawable.inspector_ios_pause;"play"->R.drawable.inspector_ios_play;"next"->R.drawable.inspector_ios_next;else->R.drawable.inspector_ios_previous},
                     onClick={onMedia(command)})
             }
-            InspectorActionRow("Ver acciones contextuales",CommandIcons.Sliders,"Ctrl+K",onActions)
+            InspectorActionRow("Ver acciones contextuales",R.drawable.inspector_ios_actions,"Ctrl+K",onActions)
         }
         if(packageName!=null) {
             HorizontalDivider(color=colors.onSurface.copy(alpha=.10f))
@@ -83,11 +84,11 @@ import kotlinx.coroutines.withContext
     }
 }
 
-@Composable private fun InspectorActionRow(label:String,icon:ImageVector,hint:String?=null,onClick:()->Unit) {
+@Composable private fun InspectorActionRow(label:String,icon:Int,hint:String?=null,onClick:()->Unit) {
     val colors=MaterialTheme.colorScheme
     Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable(onClick=onClick).padding(horizontal=2.dp),
         verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
-        Icon(icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+        Icon(painterResource(icon),null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
         Text(label,Modifier.weight(1f),fontSize=12.sp,maxLines=2,overflow=TextOverflow.Ellipsis)
         if(hint!=null)InspectorKeyHint(hint)
     }

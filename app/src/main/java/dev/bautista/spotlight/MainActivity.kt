@@ -594,6 +594,9 @@ class MainActivity : ComponentActivity() {
                                 fontSize = 12.sp,
                                 color = colors.onSurfaceVariant,
                             )
+                            TextButton(onClick={runCatching{startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://icons8.com/icons/ios")))}}) {
+                                Text("Iconos iOS del inspector · Icons8",fontSize=12.sp)
+                            }
                         }
                     }
                 }

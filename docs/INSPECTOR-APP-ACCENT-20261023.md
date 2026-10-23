@@ -11,3 +11,6 @@ Base remota4bb1b7050b63721f25e893ba2bfa385d26c3fec6; fuente recuperada por1356bl
 - Ficha ApplicationInspector existente conectada con MediaSession yaccionesreales; no se inventan portadas/canciones/controles ni otroinspector.
 
 Pruebas nuevas: InspectorAccentTest(identidad/destinos/contraste/extracción); AdaptiveInspectorFlowTest(scope/cambio/fijación/teléfono). Todavía NO ejecutadas al checkpoint inicial. Regresiones previstas: MediaInspectorFlowTest yUnifiedInspectorFlowTest. SDK35/buildtools35/Gradle8.10.2 restaurados y hashes oficiales cotejados. Registro de compilación fuera del árbol: spotlight-runtime/adaptive-compile.log. Sin APK, firma, hardware OneUI/Moto, servicios externos o validación visual Android nuevos todavía.
+
+## Segundo checkpoint parcial
+Primercompile:2erroresdeinferenciaComposable corregidos mediante lambda tipada. Reintento no llegó al código por metadata.bin deGradle; help--stacktrace luego correcto13s sin limpiar dependencias. Logs originales conservados. Icons8iOS de50px reales incorporados en ficha, controles ytoolbar; enlace deatribuciónvisibleenAjustes, NOTICEconfuentes. Selección/acciones ajustadas para conservar identidad y ficha. Gate dirigido(27casos planeados, cinco clases) en curso: no se declaran aprobados todavía.
