@@ -74,6 +74,24 @@ class NativePaletteFlowTest {
         ui.onNodeWithContentDescription("Cerrar acciones").performClick()
         search().assertIsFocused().assertTextEquals("Spotify")
     }
+    @Test fun selectedApplicationColorsTheSearchGlyphAndHomeKeepsActualSuggestions() {
+        show("Spotify",expectedPackage="com.spotify.music")
+        val path="build/native-palette/14-search-context-accent.png"
+        ui.onNodeWithTag("search-context-accent").captureRoboImage(path,roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        val bitmap=android.graphics.BitmapFactory.decodeFile(path)
+        assertNotNull(bitmap)
+        var green=0
+        for(y in 0 until bitmap.height)for(x in 0 until bitmap.width) {
+            val pixel=bitmap.getPixel(x,y)
+            if(android.graphics.Color.green(pixel)>120 && android.graphics.Color.green(pixel)>android.graphics.Color.red(pixel)*1.3f)green++
+        }
+        bitmap.recycle();assertTrue("The actual search glyph is Spotify green",green>2)
+        search().performTextClearance()
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:suggest:app:com.whatsapp").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithTag("result:suggest:app:com.whatsapp").assertIsDisplayed()
+        ui.onNodeWithTag("home-suggestion-hint").assertDoesNotExist()
+        capture("15-home-real-suggestion")
+    }
     @Test fun compactHomeHasNoAutomaticInspector(){show("");ui.onNodeWithTag("context-inspector").assertDoesNotExist();assertTrue(ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot.height<=300*app.resources.displayMetrics.density);capture("01-home")}
     @Test fun searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch(){
         show();ui.onNodeWithTag("context-inspector").assertDoesNotExist()

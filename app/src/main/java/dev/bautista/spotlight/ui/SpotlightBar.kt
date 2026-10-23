@@ -54,6 +54,7 @@ fun SpotlightBar(
     onSaved:(()->Unit)?=null,
     onSettings:(()->Unit)?=null,
     autocompleteKeyLabel:String="Ctrl+Space",
+    contextAccent:Color?=null,
 ) {
     val colors = MaterialTheme.colorScheme
     var editorValue by remember { mutableStateOf(TextFieldValue(query,TextRange(query.length))) }
@@ -78,7 +79,7 @@ fun SpotlightBar(
             if(onBack!=null) IconButton(onClick=onBack,modifier=Modifier.size(48.dp)) {
                 IosCommandIcon(CommandIcons.Reply,"Volver a resultados",Modifier.size(20.dp),tint=colors.onSurfaceVariant)
             } else Box(Modifier.size(48.dp),contentAlignment=Alignment.Center) {
-                IosCommandIcon(CommandIcons.Search,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant)
+                IosCommandIcon(CommandIcons.Search,null,Modifier.size(21.dp).semantics{testTag="search-context-accent"},tint=contextAccent ?: colors.onSurfaceVariant)
             }
             Spacer(Modifier.width(4.dp))
             BasicTextField(
@@ -104,7 +105,7 @@ fun SpotlightBar(
                 singleLine = true,
                 textStyle =
                     TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText),
-                cursorBrush = SolidColor(colors.primary),
+                cursorBrush = SolidColor(contextAccent ?: colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
                 decorationBox = { inner ->

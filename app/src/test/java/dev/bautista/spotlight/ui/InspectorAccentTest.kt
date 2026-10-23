@@ -63,4 +63,11 @@ class InspectorAccentTest {
         assertNull(InspectorAccent.iconColor(ColorDrawable(android.graphics.Color.GRAY)))
         assertNull(InspectorAccent.iconColor(null))
     }
+    @Test fun commandAccentUsesTheSelectedPackageAndClearsForUnrelatedResults() {
+        assertEquals(InspectorAccent.brand("com.spotify.music"),InspectorAccent.result(app("com.spotify.music")))
+        assertEquals(InspectorAccent.brand("com.whatsapp"),InspectorAccent.result(app("com.whatsapp")))
+        assertNull(InspectorAccent.result(null))
+        assertNull(InspectorAccent.result(Result("note:1","Spotify","","Notas",0,Action.Copy("local"))))
+        assertNull(InspectorAccent.result(app("com.example.reader","Spotify")))
+    }
 }

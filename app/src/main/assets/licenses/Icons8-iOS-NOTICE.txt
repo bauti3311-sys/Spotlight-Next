@@ -12,3 +12,5 @@ Palette additions on 2026-10-23, same source/license/attribution: search--v1, mi
 Common commands migrated; specialist glyphs outside this scene retain their existing licensed artwork.
 
 Additional same-source scene controls: security-checked, speech-bubble.
+
+Settings navigation additions on 2026-10-23: monitor, keyboard, squared-menu, sparkling, horizontal-settings-mixer--v1. Same Icons8 iOS50 source and attribution.

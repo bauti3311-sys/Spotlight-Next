@@ -22,7 +22,7 @@ import org.robolectric.annotation.*
 class DarkGlassSettingsTest {
  @get:Rule val ui=createAndroidComposeRule<MainActivity>()
  private val app get()=ui.activity.application as SpotlightApp
- private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()};runBlocking{val c=app.preferences.config.first();app.preferences.updateAppearance(c.copy(theme="dark",preset="glass",animations=false))};ui.waitForIdle()}
+ private fun ready(material:String="raycast"){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()};runBlocking{val c=app.preferences.config.first();app.preferences.updateAppearance(c.copy(theme="dark",preset=material,animations=false))};ui.waitForIdle()}
  private fun capture(n:String){ui.waitForIdle();captureScreenRoboImage("build/dark-glass/$n.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
  @Test fun tabletCapturesAllExistingAreasWithoutRequestingPermissions(){
   ready()
@@ -45,7 +45,7 @@ class DarkGlassSettingsTest {
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
  }
  @Test fun opacityIsImmediatePersistentAndSurvivesActivityRecreation(){
-  ready();ui.onNodeWithTag("settings-area:Apariencia").performClick()
+  ready("glass");ui.onNodeWithTag("settings-area:Apariencia").performClick()
   ui.onNodeWithTag("surface-opacity-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.73f)}
   ui.waitUntil(15000){runBlocking{app.preferences.config.first().opacity==.73f}}
   ui.onNodeWithTag("surface-opacity-value").assertTextEquals("73%")
@@ -53,7 +53,7 @@ class DarkGlassSettingsTest {
   ui.activityRule.scenario.recreate()
   ui.waitUntil(15000){ui.onAllNodesWithTag("surface-opacity-slider").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithTag("surface-opacity-value").assertTextEquals("73%")
-  ui.onNodeWithText("Restablecer opacidades · 84 / 92 / 94%").performScrollTo().performClick()
+  ui.onNodeWithText("Restablecer opacidades del material").performScrollTo().performClick()
   ui.waitUntil(15000){runBlocking{app.preferences.config.first().opacity==.84f}}
   ui.onNodeWithTag("surface-opacity-value").assertTextEquals("84%")
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)

@@ -83,6 +83,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
         }
     }
     val colors=MaterialTheme.colorScheme
+    val commandAccent=rememberCommandAccent(contextResult)
     Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).padding(12.dp).testTag("context-action-panel")
         .onPreviewKeyEvent { e ->
             if(e.type!=KeyEventType.KeyDown)false
@@ -148,7 +149,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                     .bringIntoViewRequester(bring).padding(horizontal=10.dp,vertical=6.dp),
                     verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
                     IosCommandIcon(if(i==0 && path.isEmpty() && action==all.firstOrNull())CommandIcons.Arrow else action.icon,
-                        null,Modifier.size(20.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else colors.onSurfaceVariant)
+                        null,Modifier.size(20.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else if(i==0 && path.isEmpty())commandAccent ?: colors.onSurfaceVariant else colors.onSurfaceVariant)
                     Column(Modifier.weight(1f)) {
                         Text(action.title,fontSize=13.sp,fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
                             maxLines=1,overflow=TextOverflow.Ellipsis)

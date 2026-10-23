@@ -28,4 +28,10 @@ class HomeSuggestionsTest {
         assertEquals(listOf("Spotify"),favoriteRows.filter{it.action is Action.Launch}.map{it.title})
         assertTrue(favoriteRows.none{it.subtitle.contains("frecuente") || it.subtitle.contains("reciente")})
     }
+    @Test fun currentVolumeActionAppearsWithoutInventingAnApplication() {
+        val rows=HomeSuggestions.results(context,AppConfig(files=false,actionRecent=listOf("volumen 40%")),false,false)
+        assertTrue(rows.any{it.action is dev.bautista.spotlight.search.Action.Device})
+        assertTrue(rows.none{it.action is dev.bautista.spotlight.search.Action.Launch})
+        assertTrue(rows.size<=3)
+    }
 }

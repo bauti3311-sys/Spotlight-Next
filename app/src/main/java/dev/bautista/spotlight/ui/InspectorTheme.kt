@@ -45,6 +45,11 @@ internal object InspectorAccent {
         else -> null
     }
 
+    fun result(item:Result?):Color? {
+        val pkg=destination(item,null,null,null,false) ?: return null
+        return brand(pkg) ?: iconColor(item?.icon)
+    }
+
     /** A private, bounded 32px copy; never alter a Drawable shared with the result list. */
     fun iconColor(drawable: Drawable?): Color? {
         val copy = drawable?.constantState?.newDrawable()?.mutate() ?: return null
@@ -104,4 +109,11 @@ internal object InspectorAccent {
                 palette.primary.copy(alpha = .055f), palette.primary.copy(alpha = .012f))))) { content() }
         }
     }
+}
+
+/** A contextual glyph/control accent; never recolor the graphite surface or global Settings. */
+@Composable internal fun rememberCommandAccent(item:Result?):Color? {
+    val base=MaterialTheme.colorScheme
+    val raw=remember(item?.id,item?.action,item?.icon){InspectorAccent.result(item)}
+    return remember(base,raw){raw?.let{InspectorAccent.palette(base,it).primary}}
 }

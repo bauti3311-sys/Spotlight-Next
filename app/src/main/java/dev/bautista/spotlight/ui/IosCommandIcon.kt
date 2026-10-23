@@ -15,6 +15,12 @@ import dev.bautista.spotlight.R
  */
 @Composable internal fun IosCommandIcon(icon:ImageVector,description:String?,modifier:Modifier=Modifier,tint:Color=LocalContentColor.current) {
     val asset=when(icon) {
+        CommandIcons.Display->R.drawable.inspector_ios_display
+        CommandIcons.Keyboard->R.drawable.inspector_ios_keyboard
+        CommandIcons.Apps->R.drawable.inspector_ios_grid
+        CommandIcons.AutoAwesome->R.drawable.inspector_ios_sparkle
+        CommandIcons.Sliders->R.drawable.inspector_ios_sliders
+        HugeIcons.Settings,CommandIcons.Settings->R.drawable.inspector_ios_actions
         CommandIcons.Shield->R.drawable.inspector_ios_shield
         CommandIcons.ChatBubbleOutline->R.drawable.inspector_ios_chat
         CommandIcons.Search->R.drawable.inspector_ios_search

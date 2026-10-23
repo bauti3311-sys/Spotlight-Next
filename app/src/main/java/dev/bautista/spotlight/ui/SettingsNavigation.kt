@@ -46,7 +46,7 @@ object SettingsGroups {
  fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Search;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Apps;"Atajos"->CommandIcons.Keyboard;"General"->HugeIcons.Settings;"Avanzado"->CommandIcons.Sliders;else->CommandIcons.Shield}
  fun description(group:String)=when(canonical(group)){
   "General"->"Inicio, sugerencias y formas de abrir Spotlight."
-  "Apariencia"->"Raycast Dark Glass, opacidad y tamaño de la ventana."
+  "Apariencia"->"Solid Graphite, Dark Glass y opacidad por superficie."
   "Inteligencia artificial"->"Proveedor, credenciales y contexto bajo tu control."
   "Búsqueda y archivos"->"Fuentes autorizadas, índice y reconocimiento local."
   "Integraciones"->"Aplicaciones, conexiones y herramientas disponibles."
@@ -55,7 +55,7 @@ object SettingsGroups {
   else->"Alias, prioridades, respaldo y diagnóstico."
  }
  fun summary(title:String)=when {
-  title=="Apariencia"->"Raycast Dark Glass y variantes de contraste"
+  title=="Apariencia"->"Solid Graphite y variantes de contraste"
   title.startsWith("Inteligencia")->"Configurar proveedor y clave; comprobar conexión de forma explícita"
   title.startsWith("Shizuku")->"Consultar conexión y autorización del servicio real"
   title.startsWith("Índice")->"Consultar estado, actualizar o cancelar el análisis local"
@@ -98,15 +98,15 @@ object SettingsGroups {
  val groups=listOf("General","Apariencia","Búsqueda y archivos","Integraciones","Permisos y accesos","Inteligencia artificial","Atajos","Avanzado")
  val brand:@Composable ()->Unit={
   Row(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=12.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
-   Box(Modifier.size(40.dp).background(colors.primary,RoundedCornerShape(10.dp)),contentAlignment=Alignment.Center){Icon(CommandIcons.Search,null,Modifier.size(26.dp),tint=colors.onPrimary)}
+   Box(Modifier.size(40.dp).background(colors.primary.copy(alpha=.12f),RoundedCornerShape(10.dp)),contentAlignment=Alignment.Center){IosCommandIcon(CommandIcons.Search,null,Modifier.size(26.dp),tint=colors.primary)}
    Column {Text("Spotlight Next",fontSize=15.sp,fontWeight=FontWeight.SemiBold);Text("Búsqueda en todas partes",fontSize=10.sp,color=colors.onSurfaceVariant)}
   }
  }
  val category:@Composable (String)->Unit={group->
   Row(Modifier.fillMaxWidth().testTag("settings-area:$group").selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=true},role=Role.Tab)
-   .background(if(selected==group)colors.onSurface.copy(alpha=.10f) else Color.Transparent,RoundedCornerShape(9.dp))
+   .background(if(selected==group)colors.primary.copy(alpha=.12f) else Color.Transparent,RoundedCornerShape(9.dp))
    .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-   Icon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.onSurface)
+   IosCommandIosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.primary)
    Text(SettingsGroups.label(group),Modifier.weight(1f),fontSize=13.sp,fontWeight=if(selected==group)FontWeight.Medium else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
   }
  }
@@ -118,8 +118,8 @@ object SettingsGroups {
       Text(if(query.isNotBlank())"Resultados de ajustes" else if(!generalDetails && selected=="General")"Configuración guiada" else SettingsGroups.label(selected),fontSize=20.sp,fontWeight=FontWeight.SemiBold)
       Text(if(query.isNotBlank())"Controles disponibles en todas las secciones." else SettingsGroups.description(selected),fontSize=12.sp,color=colors.onSurfaceVariant)
       OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("settings-search"),singleLine=true,
-       textStyle=MaterialTheme.typography.bodySmall,placeholder={Text("Buscar en todos los ajustes",fontSize=12.sp)},leadingIcon={Icon(CommandIcons.Search,null,Modifier.size(17.dp))},
-       trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){Icon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(10.dp),
+       textStyle=MaterialTheme.typography.bodySmall,placeholder={Text("Buscar en todos los ajustes",fontSize=12.sp)},leadingIcon={IosCommandIcon(CommandIcons.Search,null,Modifier.size(17.dp))},
+       trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){IosCommandIcon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(10.dp),
        colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=colors.onSurface.copy(alpha=.10f),unfocusedContainerColor=colors.onSurface.copy(alpha=.025f)))
       HorizontalDivider(Modifier.padding(vertical=4.dp),color=colors.onSurface.copy(alpha=.10f))
       holder.SaveableStateProvider(if(query.isBlank())selected else "search") {
@@ -140,12 +140,12 @@ object SettingsGroups {
      onInvoke?.let{TextButton(onClick=it,modifier=Modifier.fillMaxWidth()){Text("Abrir Spotlight",fontSize=12.sp)}}
     }
     VerticalDivider(color=colors.onSurface.copy(alpha=.10f))
-    Box(Modifier.weight(1f).fillMaxHeight().padding(26.dp)){detail()}
+    Box(Modifier.weight(1f).fillMaxHeight().padding(horizontal=28.dp,vertical=24.dp)){detail()}
    } else Column(Modifier.fillMaxSize().padding(16.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Box(Modifier.weight(1f)){brand()};onInvoke?.let{IconButton(onClick=it){Icon(CommandIcons.Search,"Abrir Spotlight",Modifier.size(20.dp))}}}
+    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Box(Modifier.weight(1f)){brand()};onInvoke?.let{IconButton(onClick=it){IosCommandIcon(CommandIcons.Search,"Abrir Spotlight",Modifier.size(20.dp))}}}
     Box {
-     OutlinedButton(onClick={chooser=true},modifier=Modifier.fillMaxWidth().testTag("settings-category-picker"),shape=RoundedCornerShape(10.dp)) {Icon(SettingsGroups.icon(selected),null,Modifier.size(18.dp));Spacer(Modifier.width(12.dp));Text(SettingsGroups.label(selected),Modifier.weight(1f));Text("Cambiar")}
-     DropdownMenu(chooser,{chooser=false},modifier=Modifier.heightIn(max=480.dp)){groups.forEach{group->DropdownMenuItem(text={Text(group)},leadingIcon={Icon(SettingsGroups.icon(group),null,Modifier.size(18.dp))},onClick={query="";onSelect(group);chooser=false;generalDetails=true})}}
+     OutlinedButton(onClick={chooser=true},modifier=Modifier.fillMaxWidth().testTag("settings-category-picker"),shape=RoundedCornerShape(10.dp)) {IosCommandIcon(SettingsGroups.icon(selected),null,Modifier.size(18.dp));Spacer(Modifier.width(12.dp));Text(SettingsGroups.label(selected),Modifier.weight(1f));Text("Cambiar")}
+     DropdownMenu(chooser,{chooser=false},modifier=Modifier.heightIn(max=480.dp)){groups.forEach{group->DropdownMenuItem(text={Text(group)},leadingIcon={IosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(18.dp))},onClick={query="";onSelect(group);chooser=false;generalDetails=true})}}
     }
     Box(Modifier.weight(1f).fillMaxWidth()){detail()}
    }
@@ -166,14 +166,14 @@ object SettingsGroups {
   Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClickLabel=if(open)"Contraer sección" else "Expandir sección"){expanded=!expanded}
    .semantics{stateDescription=if(open)"Expandida" else "Contraída"},verticalAlignment=Alignment.CenterVertically){
    Text(title,Modifier.weight(1f),fontSize=13.sp,fontWeight=FontWeight.SemiBold)
-   Icon(CommandIcons.Chevron,null,Modifier.size(14.dp).rotate(if(open)90f else 0f),tint=MaterialTheme.colorScheme.onSurfaceVariant)
+   IosCommandIcon(CommandIcons.Chevron,null,Modifier.size(14.dp).rotate(if(open)90f else 0f),tint=MaterialTheme.colorScheme.onSurfaceVariant)
   }
   if(open)SettingsGroupSurface{content()}
  }
 }
 
 @Composable fun SettingsGroupSurface(content:@Composable ColumnScope.()->Unit) {
- Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(12.dp),color=MaterialTheme.colorScheme.onSurface.copy(alpha=.025f),
+ Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(12.dp),color=MaterialTheme.colorScheme.surfaceVariant.copy(alpha=.30f),
   border=BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.075f)),tonalElevation=0.dp) {
   Column(Modifier.padding(horizontal=14.dp,vertical=10.dp),verticalArrangement=Arrangement.spacedBy(10.dp),content=content)
  }

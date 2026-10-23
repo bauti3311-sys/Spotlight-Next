@@ -972,6 +972,7 @@ fun SpotlightPanel(
                     { acceptSuggestion() },
                     motionEnabled,
                     autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
+                    contextAccent=rememberCommandAccent(selectedResult),
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
                     optionsOpen=searchOptions,
@@ -996,6 +997,11 @@ fun SpotlightPanel(
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))},
                     onCancel={bufferExtraction.cancel()})
                 if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
+                }
+                if(query.isBlank() && searchScope==null && category=="Todo" && visibleResults.isEmpty() && !loading) {
+                    Text(if(config.suggestions)"Tus favoritos y acciones recientes aparecerán acá." else "Las sugerencias están desactivadas en Ajustes → General.",
+                        Modifier.fillMaxWidth().testTag("home-suggestion-hint").padding(horizontal=20.dp,vertical=12.dp),
+                        fontSize=11.sp,color=colors.onSurfaceVariant)
                 }
                 val expanded = showAi || systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && visibleResults.isNotEmpty())
                 fun selectApplication(item:Result,index:Int) {
