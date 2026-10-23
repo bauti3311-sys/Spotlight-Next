@@ -77,7 +77,7 @@ android {
 // Review updates keep their original certificate and advance independently of production.
 androidComponents {
  onVariants(selector().withBuildType("raycastPreview")) { variant ->
-  variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 14) }
+  variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 15) }
  }
  onVariants(selector().withBuildType("review")) { variant ->
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
