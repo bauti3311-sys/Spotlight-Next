@@ -15,9 +15,10 @@ class ShareContextActivity:ComponentActivity() {
  override fun onCreate(state:Bundle?){super.onCreate(state);if(state!=null){finish();return};lifecycleScope.launch {
   try {
    val app=application as SpotlightApp
-   val text=intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString().orEmpty()
-   @Suppress("DEPRECATION") val uri=intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
-   @Suppress("DEPRECATION") val multiple=if(intent.action==Intent.ACTION_SEND_MULTIPLE)intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM).orEmpty() else emptyList()
+   val input=dev.bautista.spotlight.sharing.SharedInput.parse(intent)
+   val text=input.text
+   val uri=input.documents.singleOrNull()
+   val multiple=input.documents.takeIf{it.size>1}.orEmpty()
    if(multiple.isNotEmpty()) {
     require(multiple.size<=12 && multiple.all{it.scheme=="content"})
     val joined=withContext(Dispatchers.IO){multiple.mapIndexed{index,input->
