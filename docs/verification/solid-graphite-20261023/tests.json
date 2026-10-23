@@ -1,0 +1,191 @@
+{
+  "unique_cases": 34,
+  "runs": [
+    {
+      "round": "iteration1",
+      "cases": 20
+    },
+    {
+      "round": "refined",
+      "cases": 18
+    },
+    {
+      "round": "final-native",
+      "cases": 13
+    }
+  ],
+  "all_passed": true,
+  "cases": {
+    "dev.bautista.spotlight.ui.SolidGraphiteTest.contrastOverLightAndDarkBackdropsIsStableWithoutBlur": {
+      "latest_round": "iteration1",
+      "seconds": "2.167",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.SolidGraphiteTest.darkGlassRemainsAnExplicitHistoricalMaterialAndOtherDataIsUntouched": {
+      "latest_round": "iteration1",
+      "seconds": "0.032",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.SolidGraphiteTest.explicitStoredOpacitySurvivesReopeningWithoutForcedMigration": {
+      "latest_round": "iteration1",
+      "seconds": "0.3",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.SolidGraphiteTest.defaultIsNeutralGraphiteWithIndependentHighOpacityRoles": {
+      "latest_round": "iteration1",
+      "seconds": "0.051",
+      "passed": true
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest.appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData": {
+      "latest_round": "iteration1",
+      "seconds": "2.522",
+      "passed": true
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest.visibleAppearanceMergeDoesNotResetUnrelatedPreferences": {
+      "latest_round": "iteration1",
+      "seconds": "0.064",
+      "passed": true
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest.legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries": {
+      "latest_round": "iteration1",
+      "seconds": "0.048",
+      "passed": true
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest.staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint": {
+      "latest_round": "iteration1",
+      "seconds": "0.057",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.compactHomeHasNoAutomaticInspector": {
+      "latest_round": "final-native",
+      "seconds": "6.512",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus": {
+      "latest_round": "final-native",
+      "seconds": "0.486",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch": {
+      "latest_round": "final-native",
+      "seconds": "0.435",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.enterFromSearchLaunchesTheRealPrimaryIntent": {
+      "latest_round": "final-native",
+      "seconds": "0.219",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.briefTapSelectsWhileLongPressOpensActionsWithoutLaunching": {
+      "latest_round": "final-native",
+      "seconds": "0.419",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.lightSearchAndActionsUseSameStructure": {
+      "latest_round": "final-native",
+      "seconds": "0.359",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery": {
+      "latest_round": "final-native",
+      "seconds": "0.342",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.unavailableActionCannotExecuteAndFilteringPreservesIdentity": {
+      "latest_round": "final-native",
+      "seconds": "0.158",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow": {
+      "latest_round": "final-native",
+      "seconds": "0.332",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.phoneUsesSameFloatingActionsAndCanReachLastEntry": {
+      "latest_round": "final-native",
+      "seconds": "0.306",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.copySubmenuReturnsToSameRootSelectionBeforeClosing": {
+      "latest_round": "final-native",
+      "seconds": "0.37",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.spotifyPrefixShowsActualInstalledResultAndFloatingActions": {
+      "latest_round": "final-native",
+      "seconds": "0.38",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback": {
+      "latest_round": "refined",
+      "seconds": "5.746",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose": {
+      "latest_round": "refined",
+      "seconds": "0.395",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction": {
+      "latest_round": "refined",
+      "seconds": "0.165",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.tabCyclesAndEnterRunsOnlyFocusedContextAction": {
+      "latest_round": "refined",
+      "seconds": "0.151",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.actionGroupsHaveVisibleHeadingsWithoutExecutingItems": {
+      "latest_round": "refined",
+      "seconds": "0.132",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.groupsAndIdentityDoNotDependOnTheVisibleTitle": {
+      "latest_round": "refined",
+      "seconds": "0.112",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.accessibilityClickKeepsTheSameSelectionAndPrimaryContract": {
+      "latest_round": "refined",
+      "seconds": "5.44",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce": {
+      "latest_round": "refined",
+      "seconds": "0.139",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch": {
+      "latest_round": "refined",
+      "seconds": "0.227",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.touchDownAndCancelledGestureDoNotSelectOrOpenPdf": {
+      "latest_round": "refined",
+      "seconds": "0.101",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.longPressShowsActionsWithoutInvokingPrimaryCallback": {
+      "latest_round": "refined",
+      "seconds": "0.115",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything": {
+      "latest_round": "refined",
+      "seconds": "0.254",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument": {
+      "latest_round": "refined",
+      "seconds": "0.145",
+      "passed": true
+    },
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest.spotifyExactMasterSceneUsesOnlyAvailableResultsAndRestoresSearch": {
+      "latest_round": "final-native",
+      "seconds": "0.811",
+      "passed": true
+    }
+  },
+  "baseline_pre_change_cases": 1
+}

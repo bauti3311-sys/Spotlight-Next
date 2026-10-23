@@ -27,3 +27,32 @@ NoAPK nueva niCI/merge/force. Próximo: finalizarbaseline, publicarcheckpointpar
 Primera ronda20/20correctos:SolidGraphite4,SettingsPersistence4,NativePalette12. Captura confirma que ya no se transparentan resultados a través delActionPanel, pero la última fila estaba parcialmente recortada por cinco encabezados. Corrección dirigida: agrupación visual de apertura/comunicación bajoPrincipal ycopiado bajoOrganizar encontextoApp; no cambia identidad/orden/ejecutor. Segundo gate18/18correctos:ActionPanelKeyboard6,ResultTouchScroll7 y5NativePaletteafectados. Nueva aserción verifica queInformaciónApp quedaenteramentevisible sin scroll en tablet. Se conservaron todas las asercionesprevias; los encabezados esperados pasan amayúsculas por elestiloaprobado.
 
 Ajuste medido: campo52dp+8dpverticales=barra60dp; el valor56dpdelprimercheckpoint daba64dp. Se preparó elencabezadoRESULTADOS con28dpdepresupuesto adicional, sinforzaraltura nidatos. PreparadaPreview42 independiente ycaptura exactaSpotify: noDescubrimientoSemanal si no hayfuente. Última rondaNativePalette13 aún pendiente alpublicar estecheckpoint; R8/lint/APKnuevos aún pendientes. Evidencia de20y18 casos, baseline eiteraciones se conserva en docs/verification/solid-graphite-20261023.
+
+
+## Checkpoint estable · Preview42
+Código APK/ZIP **be76e8ed54177a44df14930d627009c953ef7f7d**. Pruebas actuales:34casos únicos correctos en rondas20+18+13 (51ejecuciones), más1baseline anterior; no se reutilizan las27 dePreview41 como resultado de este cambio. Lint actual0errores/14advertencias/1informativa. Aviso adicional:inspector_ios_link sinuso; se conserva informado yR8elimina recursos no utilizados. Gate lint+R8/shrinkResources/assembleRaycastPreview correcto5m54s. No se desactivaron pruebas ni controles.
+
+Paquete dev.bautista.spotlight.next.raycastpreview, versionCode42, min26/target35, ARM64 y no debuggable. Firma final externa con respaldo privado histórico, certificado885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba; V2 yzipalign16KB correctos. ZIP1435blobs Git cotejados y449entradas idénticas entre fuente/build. Principal yReview intactas; PR18borrador; noActions/main/force.
+
+### Cinco diferencias corregidas con evidencia
+1. Material:el fondo delActionPanel ya no deja ver los títulos/resultados detrás enSolidGraphite.
+2. Capas:fondo19191D,borde17%,radio16dp y elevación20dp distinguen panel ypaleta sinblur externo.
+3. Jerarquía:filas con título/subtítulo, encabezadoRESULTADOS discreto eInter existente; no nuevas tarjetas.
+4. Densidad:gruposdeacciones compactados sin alterar identidad/ejecución; última acción habitual totalmente visible en tablet sin scroll, comprobado por aserción de límites.
+5. Coherencia:Icons8iOS en controles comunes,búsqueda/copiado/favoritos/info/abrir,conatribución; logos de apps siguen PackageManager.
+
+### Comparación real y límites restantes
+Hay antes/después con la misma consulta `spot`, selección yhost1280×800; además escenaexactaSpotify yteléfono390×844. Referencia yCompose se comparan por recorte delActionPanel yescala uniforme de ancho; superposición50%ymapadediferencias sininventarporcentajedefidelidad. Roborazzi33/NATIVE, paquetesfixture eiconos genéricos, no un Spotify real. El render tiene playlists/MediaSession no disponibles enfixture: no se inventaron para igualar altura. La etiqueta de búsquedaweb muestra elfallback delresolver delpaquete de prueba, no una capacidadSpotifycertificada.
+
+Se detectó quecaptureRoboImage de nodo de subventana captura la raízActivity en este runtime. Esas imágenes históricas se conservan como diagnóstico, pero la comparación usa el recorte delpopup en la captura real de todaslasventanas. ElROI está registrado en captures.json; no se sustituyeron iconos ni superficies por renders.
+
+Diferencias visibles pendientes:filas deacciones mínimas48dp son más altas que elrender normalizado; paleta se acorta con2resultados reales; agrupación ytexto corresponden acapacidades reales; noacentoSpotify fuera delinspector; hostActivity no valida centrado/sombras/composición entreventanas deOneUI. La pantallaAjustes comparte tokens yperfil, pero no se declara auditada visualmente en todas sus secciones en este bloque. Tampoco migración total de iconos especializados. **La fidelidad visual definitiva yC5 siguen abiertos.**
+
+En instalaciones actuales se preserva elmaterial/las opacidades guardadas. Activar **Apariencia→SolidGraphite** aplica98/100/99; DarkGlass sigueopcional con84/92/94. Nuevas instalaciones usanSolidGraphite. No se sobrescriben ajustes manuales mediante una migración ambigua.
+
+### Continuidad
+Runtime restauradoen/workspace/spotlight-solid-runtime-20261023, buildaislado en/workspace/spotlight-native-build-20261023. Fuente canónica conservaGitlocalbase4bb1b70 con cambios ya publicados: no descartar ni publicar esa base. SDK35r02/buildtools35/Gradle8.10.2 restauradosconhashesoficiales,sindependenciasnuevas. Comparador y scripts de laboratorio se preservan en evidencia privada; keystore/credenciales nuncaenGit/ZIP. Siguiente: comprobación física dePreview42, después ajustar diferencias reales yextender revisión de estos tokens aGeneral/Apariencia/inspector, manteniendoelfuncionamiento existente. No hay desarrollo en segundo plano anunciado.
+
+### Hashes entregables
+- Spotlight-Next-Raycast-Preview-42-be76e8e.apk: `e65f100c3970615835e65f801714b2892fd375e20a84d204a87aa0bd4b63d4cf`.
+- Spotlight-Next-Preview-42-source-be76e8e.zip: `9722941c9590894957460968f26e35385a6612c6c6a4c23ebf1633baf80f1178`.

@@ -1,0 +1,43 @@
+{
+  "source_commit": "be76e8ed54177a44df14930d627009c953ef7f7d",
+  "branch": "feat/raycast-sidebar-permissions-20261020",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "versionCode": 42,
+  "historical_certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "signature_v2": true,
+  "zipalign_16kb": true,
+  "debuggable": false,
+  "abi": "arm64-v8a",
+  "r8_and_resource_shrinking": true,
+  "source_blobs_verified": 1435,
+  "build_inputs_byte_matched": 449,
+  "tests": {
+    "unique_passed": 34,
+    "reused_from_prior_verified_checkpoint": false,
+    "affected_last_round": 13,
+    "unaffected_retained": 21,
+    "executions_in_rounds": 51,
+    "baseline_before_change": 1
+  },
+  "physical_installation_tested": false,
+  "real_service_validation": false,
+  "github_actions_used": false,
+  "artifacts": [
+    {
+      "filename": "Spotlight-Next-Raycast-Preview-42-be76e8e.apk",
+      "bytes": 73278621,
+      "sha256": "e65f100c3970615835e65f801714b2892fd375e20a84d204a87aa0bd4b63d4cf"
+    },
+    {
+      "filename": "Spotlight-Next-Preview-42-source-be76e8e.zip",
+      "bytes": 8969971,
+      "sha256": "9722941c9590894957460968f26e35385a6612c6c6a4c23ebf1633baf80f1178"
+    }
+  ],
+  "lint": {
+    "Warning": 14,
+    "Information": 1
+  },
+  "material": "Solid Graphite",
+  "historical_signing_applied_externally": true
+}
