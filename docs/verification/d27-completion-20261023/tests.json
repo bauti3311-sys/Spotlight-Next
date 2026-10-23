@@ -1,0 +1,22 @@
+{
+  "unique_latest_passed": 60,
+  "new_cases_authored": 28,
+  "previous_D27_regressions": 20,
+  "related_regressions": 12,
+  "round1": {
+    "cases": 23,
+    "passed": 22,
+    "failed": 1,
+    "reason": "JSONObject not mocked in plain JVM codec test; corrected runner, assertions preserved"
+  },
+  "round2": {
+    "cases": 27,
+    "passed": 27
+  },
+  "durable": {
+    "cases": 19,
+    "passed": 19
+  },
+  "physical_validation": false,
+  "real_Gemini": false
+}

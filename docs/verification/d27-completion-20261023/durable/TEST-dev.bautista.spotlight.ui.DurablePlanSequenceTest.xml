@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.DurablePlanSequenceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:58:00" hostname="801452d05747" time="5.439">
+  <properties/>
+  <testcase name="diskSnapshotRestoresTypedResultAndPendingConfirmationWithoutReplay" classname="dev.bautista.spotlight.ui.DurablePlanSequenceTest" time="5.15"/>
+  <testcase name="corruptReceiptAndBindingSnapshotsFailClosed" classname="dev.bautista.spotlight.ui.DurablePlanSequenceTest" time="0.077"/>
+  <testcase name="sequenceCannotExecuteWhenDurableCheckpointFails" classname="dev.bautista.spotlight.ui.DurablePlanSequenceTest" time="0.212"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

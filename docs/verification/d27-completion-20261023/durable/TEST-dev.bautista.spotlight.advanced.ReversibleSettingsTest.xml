@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.advanced.ReversibleSettingsTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:57:48" hostname="801452d05747" time="0.055">
+  <properties/>
+  <testcase name="binderFailurePreservesRecovery" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.049"/>
+  <testcase name="originalSurvivesMultipleChangesAndRestores" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.001"/>
+  <testcase name="restoreRequiresExplicitConsent" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.0"/>
+  <testcase name="noMutationWithoutConfirmation" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.001"/>
+  <testcase name="unavailablePermissionAndInvalidInputsDoNothing" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.0"/>
+  <testcase name="cancelledConnectionDoesNotProceed" classname="dev.bautista.spotlight.advanced.ReversibleSettingsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

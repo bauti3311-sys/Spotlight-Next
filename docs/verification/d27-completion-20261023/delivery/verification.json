@@ -1,0 +1,49 @@
+{
+  "source_sha": "39430eb2b8247c59bb9b4f8a8341d00329ca3d70",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "versionCode": 45,
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "v2": true,
+  "zipalign16kb": true,
+  "minSdk": 26,
+  "targetSdk": 35,
+  "debuggable": false,
+  "apk": "Spotlight-Next-Raycast-Preview-45-39430eb.apk",
+  "apk_sha256": "6722b2c57d51de89533a2aaa3766f65d27bc20180270b277753652c53b867472",
+  "apk_bytes": 73315765,
+  "native_libraries": {
+    "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+    "lib/arm64-v8a/libdatastore_shared_counter.so": "d3e48717c9aa147e0ab21063ba0e8e0211cabf8bf40b222640829519edbf58e1",
+    "lib/arm64-v8a/liblanguage_id_l2c_jni.so": "4479b044bbdad9a938fea15698dfa3473e73bd6bab9f8e0468fc3cc6069c137e",
+    "lib/arm64-v8a/libmlkit_google_ocr_pipeline.so": "fa41d509a661e8aa8b3e3ac1a28541f8823f308414fcad733fe26d61feea2646",
+    "lib/arm64-v8a/libmlkitcommonpipeline.so": "c146e1f60adeb21e7feb8062cdb446056ce619e430d3555c3872b3ff8a907c2f",
+    "lib/arm64-v8a/libonnxruntime.so": "e40f09d07dc53726b8bfbf48a7907673b8f86718a057655a62790a39874a7302",
+    "lib/arm64-v8a/libonnxruntime4j_jni.so": "2cc3f16ab527959a81b572adebcfb71a25ea4b8547c9b92d705b423e9c822d39",
+    "lib/arm64-v8a/libtranslate_jni.so": "35b3d0366291347e3f25e80e809ee398d716aea49cd03278007fedd526a1496f"
+  },
+  "r8_mapping_bytes": 75690255,
+  "physical_installation": false,
+  "external_services_validation": false,
+  "source_zip_sha256": "ca9f76d4f259d1e052e95c5440d8e6c58b722b1dfb02e58c71e308d2bae2108f",
+  "source_zip": "Spotlight-Next-source-39430eb2.zip",
+  "source_blobs": 1514,
+  "production_inputs": 237,
+  "unique_tests_passed": 60,
+  "new_tests_authored": 28,
+  "D27_previous_regressions": 20,
+  "related_regressions": 12,
+  "lint": {
+    "errors": 0,
+    "warnings": 15,
+    "information": 1
+  },
+  "gate_duration": "4m32s",
+  "native_libraries_unchanged_from_Preview44": true,
+  "mapping_sha256": "9726970dcfc3aea2b463f9b4f521cc693904b4417e10b181c7ea79efd1757f25",
+  "D27": "COMPLETA Y PROBADA: software contract; physical certification tracked in D40",
+  "matrix": {
+    "complete": 9,
+    "implemented_insufficient_tests": 25,
+    "partial": 6
+  }
+}

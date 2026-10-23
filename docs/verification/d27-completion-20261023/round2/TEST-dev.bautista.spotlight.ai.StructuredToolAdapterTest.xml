@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ai.StructuredToolAdapterTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:51:28" hostname="801452d05747" time="3.956">
+  <properties/>
+  <testcase name="actualNoteAdapterVerifiesNewPersistedRecordOnlyAfterConfirmation" classname="dev.bautista.spotlight.ai.StructuredToolAdapterTest" time="3.777"/>
+  <testcase name="actualVolumeAdapterRequiresConfirmationAndReturnsObservedValue" classname="dev.bautista.spotlight.ai.StructuredToolAdapterTest" time="0.089"/>
+  <testcase name="actualLocalCalculationAndTextAdaptersProduceExplicitTypedOutputs" classname="dev.bautista.spotlight.ai.StructuredToolAdapterTest" time="0.089"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

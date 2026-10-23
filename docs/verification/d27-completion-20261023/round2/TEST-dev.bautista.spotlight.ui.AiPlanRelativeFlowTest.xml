@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.AiPlanRelativeFlowTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:51:40" hostname="801452d05747" time="5.59">
+  <properties/>
+  <testcase name="relativeDraftRestoresAndEachResolvedActionStillNeedsConfirmation" classname="dev.bautista.spotlight.ui.AiPlanRelativeFlowTest" time="4.968"/>
+  <testcase name="invalidEditedArgumentCannotExecuteAndCanBeCorrectedWithoutInterruption" classname="dev.bautista.spotlight.ui.AiPlanRelativeFlowTest" time="0.3"/>
+  <testcase name="cancelledPredecessorNeverUnlocksOrReplaysItsDependent" classname="dev.bautista.spotlight.ui.AiPlanRelativeFlowTest" time="0.321"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

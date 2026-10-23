@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.AiPlanSequenceFlowTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:57:53" hostname="801452d05747" time="5.945">
+  <properties/>
+  <testcase name="brightnessRelativeDraftRecalculatesAndRestoresWithoutPermissionsOrExecution" classname="dev.bautista.spotlight.ui.AiPlanSequenceFlowTest" time="5.063"/>
+  <testcase name="cancellationPersistsFenceAndNeverContinuesLaterSteps" classname="dev.bautista.spotlight.ui.AiPlanSequenceFlowTest" time="0.423"/>
+  <testcase name="typedBindingSequencePausesForConfirmationAndRestoresWithoutRepeatingReads" classname="dev.bautista.spotlight.ui.AiPlanSequenceFlowTest" time="0.459"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

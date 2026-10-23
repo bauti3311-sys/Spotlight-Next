@@ -88,3 +88,6 @@ PR18 sigue borrador, notas intactas, sin procesos Gradle activos al cerrar.
 La reserva propia conserva el checkpoint publicado para continuidad de esta sesión.
 Próxima tarea concreta: dependencias tipadas de resultados entre herramientas;
 D27 sigue parcial y no se atribuye ejecución secuencial general a este editor.
+
+## Actualización posterior: cierre funcional D27
+Código39430eb2 completa el contrato de software deD27: dependencias tipadas y secuencia,brillo/volumenrelativos,persistencia durable,sinreplay.60casos únicos aprobados,20anteriores incluidos. Las brechas indicadas arriba son históricas. Estado vigente y límites en D27-FUNCTIONAL-CLOSURE-20261023.md; certificación física/externa separada enD40.

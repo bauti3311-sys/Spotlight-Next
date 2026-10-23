@@ -193,8 +193,8 @@
     "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
     "decision": "Confirmación y resultados",
     "source": "ToolExecutor.kt; ToolCapability.kt; AiRequestPolicy.kt; PhoneUsePolicy.kt",
-    "tests": "PlanExecutionTest; ToolProtocolTest; PhoneUsePolicyTest",
-    "remaining": "Políticas de riesgo y estados prepared/requested/verified existentes; no reportar apertura solicitada como éxito externo.",
+    "tests": "PlanExecutionTest; ToolProtocolTest; PhoneUsePolicyTest; StructuredToolAdapterTest; StructuredNativePlanFlowTest; DurablePlanSequenceTest",
+    "remaining": "Políticas de riesgo y estados prepared/requested/verified existentes; no reportar apertura solicitada como éxito externo. Nueva nota requiere confirmación eIDpersistido nuevo/texto exacto antes deVERIFIED; cadena nativa texto→nota→cálculo sin duplicación probada. Validación global externa sigue insuficiente.",
     "physical": "Mensajería y servicios externos reales; permisos mínimos."
   },
   {
@@ -235,12 +235,12 @@
   },
   {
     "id": "D27",
-    "state": "PARCIAL",
+    "state": "COMPLETA Y PROBADA",
     "decision": "Planes encadenados",
-    "source": "EditablePlanPanel.kt; InterpretationPanel.kt; AiToolPanel.kt; PlanExecution.kt; ToolPlanEditing.kt",
-    "tests": "ToolPlanEditingTest; AiPlanEditingFlowTest; ToolPlanRelativeTest; AiPlanRelativeFlowTest; ToolTaskRecoveryTest; docs/verification/d27-ai-20261023",
-    "remaining": "Editor IA: añadir/quitar/subir/bajar/omitir y editar argumentos, borradores persistentes y volumen relativo proyectado40+10→50 con dependencia verificada. 20casos dirigidos aprobados (11 del editor incluidos), sin replay. Falta dependencia/resultados tipados generales, relativos de otros ajustes y ejecución secuencial general; cada acción sigue confirmándose por separado.",
-    "physical": "Confirmaciones nuevas, estado externo incierto y hardware/proveedores reales."
+    "source": "AiToolPanel.kt; ToolPlanEditing.kt; StructuredToolResults.kt; ToolSequenceExecution.kt; ToolTaskState.kt; EditablePlanPanel.kt; PlanExecution.kt",
+    "tests": "60 casos únicos dirigidos, incluidos los20anteriores; docs/verification/d27-completion-20261023/tests.json; DurablePlanSequenceTest; StructuredNativePlanFlowTest; ToolSequenceExecutionTest",
+    "remaining": "Contrato funcional de software completo y probado: edición, dependencias NUMBER/TEXT registradas, ciclos/tipos/omitidos/remapeo, secuencia con confirmación por riesgo, estados, fallo/cancelación, persistencia durable/sin replay y relativos volumen/brillo. Adaptadores externos PREPARED/REQUESTED detienen la secuencia hasta revisión; no se inventa verificación. Otros adaptadores sin esquema no ofrecen enlaces ficticios.",
+    "physical": "OneUI/Moto/Shizuku y Gemini reales pendientes deD40; no equivalen a losfixtures Robolectric. Límites por capacidad documentados en D27-FUNCTIONAL-CLOSURE-20261023.md."
   },
   {
     "id": "D28",

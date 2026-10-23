@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ai.ToolCapabilityTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:57:49" hostname="801452d05747" time="3.937">
+  <properties/>
+  <testcase name="volumeReportsTheObservedPlatformLevel" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="3.707"/>
+  <testcase name="permissionsAreRecheckedBeforeExecution" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="0.064"/>
+  <testcase name="disabledMediaIsNotAdvertisedBySearchOrTools" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="0.116"/>
+  <testcase name="staleFolderGrantDoesNotAdvertiseAvailableFileSearch" classname="dev.bautista.spotlight.ai.ToolCapabilityTest" time="0.05"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
