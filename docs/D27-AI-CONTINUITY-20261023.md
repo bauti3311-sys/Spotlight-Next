@@ -47,3 +47,32 @@ Preview44 permanece inalterada y corresponde a `bf674880`, no al editor nuevo:
 APK SHA256 `faabb9a6cbcf577ee32f6e994463adb8c254869a74563cef608709c740e55949`.
 No se recompiló ni se le atribuyen estas funciones nuevas. No validación física,
 servicios externos, benchmark, nuevo certificado o permiso sensible.
+
+## D27 · proyección relativa y dependencias de volumen
+
+El editor permite marcar set_volume como Cambio relativo. Es una edición explícita
+local del usuario; el esquema del proveedor sigue proponiendo porcentajes absolutos.
+Se conserva una base de volumen al crear el borrador y se proyectan solo los pasos
+seleccionados:40 seguido de+10 se revisa50; omitir/quitar/reordenar/editar recalcula
+sin acumular proyecciones. Límites0–100,delta−100–100 y rechazo de campos adicionales.
+Un predecesor seleccionado inválido bloquea sus relativos; omitirlo explícitamente
+usa la base o el anterior seleccionado. Cada relativo dependiente exige VERIFIED
+del predecesor antes de habilitar su confirmación. REQUESTED/PREPARED/COMPLETED no
+certifican volumen. No se interpretan textos de resultados como instrucciones.
+
+ToolPlanRelativeTest6/6 y AiPlanRelativeFlowTest3/3, junto a las11regresiones
+del editor/restauración:20/20,1m55s. Incluye confirmaciones separadas40y50,
+cancelación bloqueando dependiente, persistencia sin replay y argumentos inválidos
+no ejecutables. Tras limpiar el indicador antiguo al descartar una propuesta,
+los2casos afectados de cancelación/restauración se repitieron y aprobaron.
+Son20casos únicos,no22ni31. XML de rondas relative/final preservados.
+
+LintDebug: intento offline falló al construir debugAndroidTestCompileClasspath
+por dependencias de pruebas instrumentadas ausentes en caché (androidx.test.ext:junit
+1.2.1,runner1.6.2 y transitivas). No se borraron tests ni se cambiaron versiones.
+LintRaycastPreview está en ejecución separada; no assemble ni nueva APK.
+
+D27 sigue PARCIAL: pendientes dependencias/resultados tipados generales, brillo
+relativo dentro de propuestas IA y ejecución secuencial general. El editor local
+previo conserva brillo/volumen encadenados y PlanExecution con su evidencia.
+No se afirma validación física ni interacción real con Gemini en estos fixtures.

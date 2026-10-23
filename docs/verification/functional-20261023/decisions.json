@@ -237,9 +237,9 @@
     "id": "D27",
     "state": "PARCIAL",
     "decision": "Planes encadenados",
-    "source": "EditablePlanPanel.kt; InterpretationPanel.kt; AiToolPanel.kt; PlanExecution.kt",
-    "tests": "RelativePlanChainTest; PlanReviewProjectionTest; PlanEditingFlowTest; PlanExecutionTest; NativeCommandFlowTest",
-    "remaining": "Bug40+10→10 reproducido y corregido; proyección6casos/añadir-restaurar2 correctos, regresión de selección confirmada.  Propuestas IA carecen de quitar/añadir y dependencias/resultados generales; no reanudar cambios externos automáticamente.",
+    "source": "EditablePlanPanel.kt; InterpretationPanel.kt; AiToolPanel.kt; PlanExecution.kt; ToolPlanEditing.kt",
+    "tests": "ToolPlanEditingTest; AiPlanEditingFlowTest; ToolPlanRelativeTest; AiPlanRelativeFlowTest; ToolTaskRecoveryTest; docs/verification/d27-ai-20261023",
+    "remaining": "Editor IA: añadir/quitar/subir/bajar/omitir y editar argumentos, borradores persistentes y volumen relativo proyectado40+10→50 con dependencia verificada. 20casos dirigidos aprobados (11 del editor incluidos), sin replay. Falta dependencia/resultados tipados generales, relativos de otros ajustes y ejecución secuencial general; cada acción sigue confirmándose por separado.",
     "physical": "Confirmaciones nuevas, estado externo incierto y hardware/proveedores reales."
   },
   {
@@ -284,7 +284,7 @@
     "decision": "Compartir contexto",
     "source": "ShareContextActivity.kt; ContextStore.kt",
     "tests": "SharedInputTest; SharedInputActivityTest; SharedStorageTest; ContextRecoveryTest",
-    "remaining": "SEND/MULTIPLE/ClipData unificados, deduplicados y acotados; 8casos de entrada correctos. Flujo Activity/extracción en verificación; permisos de proveedor todavía simulados.",
+    "remaining": "SEND/MULTIPLE/ClipData unificados, deduplicados y acotados; 8casos de entrada correctos. Flujo Activity→ContextStore 3/3 aprobado; fixture cc6b4f65; permisos de proveedor todavía simulados.",
     "physical": "Grants y revocación desde proveedores Android reales; no se restauran grants por backup."
   },
   {
