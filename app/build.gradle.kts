@@ -27,10 +27,14 @@ android {
   }
  }
  buildTypes { getByName("debug") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += "arm64-v8a" }; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") }
-  // Disposable Raycast UI preview. Distinct application ID, uses Android debug signing
-  // and never replaces the historically signed package or its existing previews.
+  // Independent Raycast candidate; preserve its recovered historical certificate.
+  // Never replaces the production or Review packages.
   create("raycastPreview") {
    initWith(getByName("debug"))
+   isDebuggable = false
+   isMinifyEnabled = true
+   isShrinkResources = true
+   proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
    ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
    applicationIdSuffix = ".raycastpreview"
    versionNameSuffix = "-raycast-preview"
@@ -73,7 +77,7 @@ android {
 // Review updates keep their original certificate and advance independently of production.
 androidComponents {
  onVariants(selector().withBuildType("raycastPreview")) { variant ->
-  variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 10) }
+  variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 11) }
  }
  onVariants(selector().withBuildType("review")) { variant ->
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }

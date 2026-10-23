@@ -19,6 +19,8 @@ import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.robolectric.*
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.Implements
+import org.robolectric.annotation.Implementation
 
 class BackupDocumentProvider:ContentProvider() {
  lateinit var file:java.io.File
@@ -30,8 +32,22 @@ class BackupDocumentProvider:ContentProvider() {
  override fun update(u:Uri,v:ContentValues?,s:String?,a:Array<out String>?)=0
  override fun openFile(uri:Uri,mode:String)=ParcelFileDescriptor.open(file,if(mode.contains('w'))ParcelFileDescriptor.MODE_CREATE or ParcelFileDescriptor.MODE_TRUNCATE or ParcelFileDescriptor.MODE_READ_WRITE else ParcelFileDescriptor.MODE_READ_ONLY)
 }
+/** Explicit document stream adapter: Robolectric descriptors do not implement a real SAF provider. */
+@Implements(ContentResolver::class)
+class BackupResolverShadow:org.robolectric.shadows.ShadowContentResolver() {
+ companion object {lateinit var target:java.io.File}
+ @Implementation public override fun openOutputStream(uri:Uri,mode:String):java.io.OutputStream {
+  println("Provider output: "+uri+" thread="+Thread.currentThread().name+" file="+target)
+  if(uri.authority!="portable-backup")return super.openOutputStream(uri,mode)
+  return target.outputStream()
+ }
+ @Implementation public override fun openInputStream(uri:Uri):java.io.InputStream {
+  if(uri.authority!="portable-backup")return super.openInputStream(uri)
+  return target.inputStream()
+ }
+}
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk=[33],application=SpotlightApp::class,qualifiers="w1280dp-h800dp")
+@Config(sdk=[33],application=SpotlightApp::class,qualifiers="w1280dp-h800dp",shadows=[BackupResolverShadow::class])
 class PortableSafFlowTest {
  @get:Rule val ui=createAndroidComposeRule<MainActivity>()
  @Test fun actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit() {
@@ -39,9 +55,12 @@ class PortableSafFlowTest {
   val provider=BackupDocumentProvider();provider.attachInfo(app,ProviderInfo().apply{authority="portable-backup"})
   org.robolectric.shadows.ShadowContentResolver.registerProviderInternal("portable-backup",provider)
   val uri=Uri.parse("content://portable-backup/document/config")
-  val resolver=Shadows.shadowOf(app.contentResolver)
-  resolver.registerOutputStreamSupplier(uri){provider.file.outputStream()}
-  resolver.registerInputStreamSupplier(uri){provider.file.inputStream()}
+  BackupResolverShadow.target=provider.file
+  // Prove the simulated provider can carry bytes before exercising the production callbacks.
+  ui.activity.contentResolver.openOutputStream(uri,"wt")!!.use{it.write(byteArrayOf(7))}
+  assertEquals(listOf<Byte>(7),provider.file.readBytes().toList())
+  runBlocking{kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO){ui.activity.contentResolver.openOutputStream(uri,"wt")!!.use{it.write(byteArrayOf(8))}}}
+  assertEquals(listOf<Byte>(8),provider.file.readBytes().toList());provider.file.writeBytes(byteArrayOf())
   val original=runBlocking{val c=app.preferences.config.first();ThemeTransfer.save(c.copy(opacity=.79f,sourcePriority="""{"Archivos":80}""",aliases=setOf("musica|buscar {args} en spotify")),"Mi Glass").also{app.preferences.update(it)}}
   ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithTag("settings-area:Avanzado").performScrollTo().performClick()
@@ -51,7 +70,7 @@ class PortableSafFlowTest {
   val export=shadow.nextStartedActivityForResult
   assertEquals(Intent.ACTION_CREATE_DOCUMENT,export.intent.action)
   ui.runOnIdle{assertTrue(ui.activity.activityResultRegistry.dispatchResult(export.requestCode,Activity.RESULT_OK,Intent().setData(uri)))}
-  try {ui.waitUntil(10000){provider.file.exists() && provider.file.length()>0}}catch(e:Exception){println(ui.onRoot(useUnmergedTree=true).printToString());throw e}
+  try {ui.waitUntil(10000){provider.file.exists() && provider.file.length()>0}}catch(e:Throwable){println("Lifecycle="+ui.activity.lifecycle.currentState+" exportCode="+export.requestCode+" file="+provider.file);println(ui.onRoot(useUnmergedTree=true).printToString());println("Toast="+org.robolectric.shadows.ShadowToast.getTextOfLatestToast());throw e}
   val settings=JSONObject(provider.file.readText()).getJSONObject("settings")
   assertEquals(1,settings.getJSONArray("customThemes").length());assertFalse(settings.has("trees"));assertFalse(settings.has("endpoint"))
   runBlocking{app.preferences.update(original.copy(opacity=.95f,customThemes="[]",aliases=emptySet()))}

@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config as RoboConfig
 @RoboConfig(sdk=[33],application=SpotlightApp::class)
 class PrivateRecoveryPolicyTest {
  @Test fun privateModeClearsSuspendedOverlayWithoutDeletingExplicitSavedConversations()=runBlocking {
-  val app=RuntimeEnvironment.getApplication<SpotlightApp>()
+  val app=RuntimeEnvironment.getApplication() as SpotlightApp
   app.preferences.update(Config(privateMode=false));app.preferences.config.first{!it.privateMode}
   app.contexts.saveConversation("Conservar conversación explícita","Guardada antes del modo privado")
   app.contexts.saveOverlaySnapshot(mapOf("query" to listOf("texto efímero")))
