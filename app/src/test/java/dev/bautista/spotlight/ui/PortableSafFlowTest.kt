@@ -19,8 +19,6 @@ import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.robolectric.*
 import org.robolectric.annotation.Config
-import org.robolectric.annotation.Implements
-import org.robolectric.annotation.Implementation
 
 class BackupDocumentProvider:ContentProvider() {
  lateinit var file:java.io.File
@@ -32,22 +30,8 @@ class BackupDocumentProvider:ContentProvider() {
  override fun update(u:Uri,v:ContentValues?,s:String?,a:Array<out String>?)=0
  override fun openFile(uri:Uri,mode:String)=ParcelFileDescriptor.open(file,if(mode.contains('w'))ParcelFileDescriptor.MODE_CREATE or ParcelFileDescriptor.MODE_TRUNCATE or ParcelFileDescriptor.MODE_READ_WRITE else ParcelFileDescriptor.MODE_READ_ONLY)
 }
-/** Explicit document stream adapter: Robolectric descriptors do not implement a real SAF provider. */
-@Implements(ContentResolver::class)
-class BackupResolverShadow:org.robolectric.shadows.ShadowContentResolver() {
- companion object {lateinit var target:java.io.File}
- @Implementation public override fun openOutputStream(uri:Uri,mode:String):java.io.OutputStream {
-  println("Provider output: "+uri+" thread="+Thread.currentThread().name+" file="+target)
-  if(uri.authority!="portable-backup")return super.openOutputStream(uri,mode)
-  return target.outputStream()
- }
- @Implementation public override fun openInputStream(uri:Uri):java.io.InputStream {
-  if(uri.authority!="portable-backup")return super.openInputStream(uri)
-  return target.inputStream()
- }
-}
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk=[33],application=SpotlightApp::class,qualifiers="w1280dp-h800dp",shadows=[BackupResolverShadow::class])
+@Config(sdk=[33],application=SpotlightApp::class,qualifiers="w1280dp-h800dp")
 class PortableSafFlowTest {
  @get:Rule val ui=createAndroidComposeRule<MainActivity>()
  @Test fun actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit() {
@@ -55,12 +39,10 @@ class PortableSafFlowTest {
   val provider=BackupDocumentProvider();provider.attachInfo(app,ProviderInfo().apply{authority="portable-backup"})
   org.robolectric.shadows.ShadowContentResolver.registerProviderInternal("portable-backup",provider)
   val uri=Uri.parse("content://portable-backup/document/config")
-  BackupResolverShadow.target=provider.file
-  // Prove the simulated provider can carry bytes before exercising the production callbacks.
-  ui.activity.contentResolver.openOutputStream(uri,"wt")!!.use{it.write(byteArrayOf(7))}
-  assertEquals(listOf<Byte>(7),provider.file.readBytes().toList())
-  runBlocking{kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO){ui.activity.contentResolver.openOutputStream(uri,"wt")!!.use{it.write(byteArrayOf(8))}}}
-  assertEquals(listOf<Byte>(8),provider.file.readBytes().toList());provider.file.writeBytes(byteArrayOf())
+  val contentResolver=ui.activity.contentResolver
+  val resolver=Shadows.shadowOf(contentResolver)
+  resolver.registerOutputStreamSupplier(uri){provider.file.outputStream()}
+  resolver.registerInputStreamSupplier(uri){provider.file.inputStream()}
   val original=runBlocking{val c=app.preferences.config.first();ThemeTransfer.save(c.copy(opacity=.79f,sourcePriority="""{"Archivos":80}""",aliases=setOf("musica|buscar {args} en spotify")),"Mi Glass").also{app.preferences.update(it)}}
   ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithTag("settings-area:Avanzado").performScrollTo().performClick()
@@ -70,7 +52,9 @@ class PortableSafFlowTest {
   val export=shadow.nextStartedActivityForResult
   assertEquals(Intent.ACTION_CREATE_DOCUMENT,export.intent.action)
   ui.runOnIdle{assertTrue(ui.activity.activityResultRegistry.dispatchResult(export.requestCode,Activity.RESULT_OK,Intent().setData(uri)))}
-  try {ui.waitUntil(10000){provider.file.exists() && provider.file.length()>0}}catch(e:Throwable){println("Lifecycle="+ui.activity.lifecycle.currentState+" exportCode="+export.requestCode+" file="+provider.file);println(ui.onRoot(useUnmergedTree=true).printToString());println("Toast="+org.robolectric.shadows.ShadowToast.getTextOfLatestToast());throw e}
+  // Semantics access drains Robolectric's paused Android main queue; polling File alone does not.
+  ui.waitUntil(10000){ui.onAllNodesWithText("Configuración exportada.").fetchSemanticsNodes().isNotEmpty()}
+  assertTrue(provider.file.exists());assertTrue(provider.file.length()>0)
   val settings=JSONObject(provider.file.readText()).getJSONObject("settings")
   assertEquals(1,settings.getJSONArray("customThemes").length());assertFalse(settings.has("trees"));assertFalse(settings.has("endpoint"))
   runBlocking{app.preferences.update(original.copy(opacity=.95f,customThemes="[]",aliases=emptySet()))}
@@ -80,7 +64,8 @@ class PortableSafFlowTest {
   ui.waitUntil(10000){ui.onAllNodesWithText("Confirmar importación").fetchSemanticsNodes().isNotEmpty()}
   assertEquals(.95f,runBlocking{app.preferences.config.first()}.opacity)
   ui.onNodeWithText("Confirmar importación").performScrollTo().performClick()
-  ui.waitUntil(10000){app.preferences.current?.opacity==.79f}
+  ui.waitUntil(10000){ui.onAllNodesWithText("Configuración importada. Revisá las apps disponibles en este dispositivo.").fetchSemanticsNodes().isNotEmpty()}
+  assertEquals(.79f,runBlocking{app.preferences.config.first()}.opacity)
   val restored=runBlocking{app.preferences.config.first()};assertEquals(original.aliases,restored.aliases);assertEquals(original.customThemes,restored.customThemes);assertEquals(original.trees,restored.trees)
  }
 }
