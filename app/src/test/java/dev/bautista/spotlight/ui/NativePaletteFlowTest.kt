@@ -38,7 +38,7 @@ class NativePaletteFlowTest {
             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(intent,ResolveInfo().apply{activityInfo=activity})
         }
         app.search.invalidateApps()
-        ui.setContent{Box(Modifier.width(width.dp)) {SpotlightPanel(app,AppConfig(theme=theme,preset=if(theme=="light")"macos" else "glass",
+        ui.setContent{Box(Modifier.width(width.dp)) {SpotlightPanel(app,AppConfig(theme=theme,preset=if(theme=="light")"macos" else AppConfig().preset,
             files=false,animations=false,learning=false,favorites=setOf("com.whatsapp/Main")),{},query,height)}}
         ui.waitUntil(15000){ui.onAllNodesWithTag(if(query.isBlank())"result:suggest:app:com.whatsapp" else "result:$expectedPackage/Main").fetchSemanticsNodes().isNotEmpty()}
     }

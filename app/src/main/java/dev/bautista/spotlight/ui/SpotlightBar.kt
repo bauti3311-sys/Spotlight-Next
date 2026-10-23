@@ -76,9 +76,9 @@ fun SpotlightBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if(onBack!=null) IconButton(onClick=onBack,modifier=Modifier.size(48.dp)) {
-                Icon(CommandIcons.Reply,"Volver a resultados",Modifier.size(20.dp),tint=colors.onSurfaceVariant)
+                IosCommandIcon(CommandIcons.Reply,"Volver a resultados",Modifier.size(20.dp),tint=colors.onSurfaceVariant)
             } else Box(Modifier.size(48.dp),contentAlignment=Alignment.Center) {
-                Icon(HugeIcons.Search,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant)
+                IosCommandIcon(CommandIcons.Search,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant)
             }
             Spacer(Modifier.width(4.dp))
             BasicTextField(
@@ -144,7 +144,7 @@ fun SpotlightBar(
 
             if (query.isNotEmpty())
                 IconButton(onClick = { onClear() }, modifier = Modifier.size(48.dp)) {
-                    Icon(HugeIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
+                    IosCommandIcon(CommandIcons.Close, "Limpiar búsqueda", Modifier.size(18.dp))
                 }
         }
     }
@@ -156,9 +156,9 @@ fun SpotlightBar(
         Row(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=4.dp), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
             Row(Modifier.padding(end=8.dp),verticalAlignment=Alignment.CenterVertically) {
-                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Saved,"Abrir Guardados",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
-                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(HugeIcons.Mic,"Dictar consulta",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
-                IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) { Icon(CommandIcons.MoreHoriz,"Opciones de Spotlight",Modifier.size(20.dp),tint=colors.onSurfaceVariant) }
+                onSaved?.takeIf{showSaved}?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { Icon(painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_saved),"Abrir Guardados",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
+                onDictate?.let { IconButton(onClick=it,modifier=Modifier.size(48.dp)) { IosCommandIcon(CommandIcons.Mic,"Dictar consulta",Modifier.size(18.dp),tint=colors.onSurfaceVariant) } }
+                IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) { IosCommandIcon(CommandIcons.MoreHoriz,"Opciones de Spotlight",Modifier.size(20.dp),tint=colors.onSurfaceVariant) }
             }
         }
         if(options) {

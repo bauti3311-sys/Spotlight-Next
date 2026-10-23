@@ -9,7 +9,7 @@ private val Context.store by preferencesDataStore("spotlight")
 
 data class Config(
     val theme: String = "auto",
-    val opacity: Float = .84f,
+    val opacity: Float = .98f,
     val width: Int = 640,
     val position: Float = .16f,
     val contacts: Boolean = false,
@@ -43,7 +43,7 @@ data class Config(
     val corner:Int=22, val textScale:Float=1f, val iconSize:Int=30, val maxHeight:Int=480, val adaptive:Boolean=true,
     val routines:String="[]", val onboarded:Boolean=false, val clipLimit:Int=20, val clipRetention:Int=15,
     val suggestions:Boolean=true, val hiddenSuggestions:Set<String> = emptySet(), val pinnedSuggestions:Set<String> = emptySet(),
-    val preset:String="glass", val clipboardShortcut:String="ctrl_shift_v",
+    val preset:String="raycast", val clipboardShortcut:String="ctrl_shift_v",
     val privateMode:Boolean=false, val autoKeyboard:String="adaptive",
     val glassIntensity:Float=.45f, val surfaceTone:String="neutral", val borderWidth:Float=1f,
     val shadowSize:Float=12f, val typeface:String="inter", val selectionStyle:String="glass",
@@ -53,7 +53,7 @@ data class Config(
     val manualWidth:Int=if(width>0)width else 640,
     val windowScale:Float=-1f, // -1 preserves legacy geometry until the user changes the new slider
     val semanticSearch:Boolean=false,
-    val actionOpacity:Float=.92f, val settingsOpacity:Float=.94f,
+    val actionOpacity:Float=1f, val settingsOpacity:Float=.99f,
     val keyBindings:Set<String> = emptySet(),
 
 )
@@ -139,7 +139,7 @@ class Preferences(private val context: Context) {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")} .getOrDefault(org.json.JSONObject())
                 return Config(
                     p[theme] ?: "auto",
-                    p[opacity] ?: .84f,
+                    p[opacity] ?: .98f,
                     p[width] ?: 0,
                     p[position] ?: .16f,
                     p[contacts] ?: false,
@@ -172,7 +172,7 @@ class Preferences(private val context: Context) {
                     p[aiModel] ?: "gpt-4.1-mini", p[learning] ?: true, p[usageData] ?: "{}",
                     p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
                     p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
-                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "glass"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
+                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "raycast"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
                 ).copy(keyBindings=p[keyboardBindings]?.takeIf{dev.bautista.spotlight.input.KeyboardBindings.validEntries(it)} ?: emptySet(),privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
                     autoKeyboard=extra.optString("autoKeyboard","adaptive").takeIf{it in setOf("adaptive","always","never")} ?: "adaptive",
                     glassIntensity=extra.optDouble("glassIntensity",.45).toFloat().coerceIn(0f,1f),
@@ -183,8 +183,8 @@ class Preferences(private val context: Context) {
                     sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision"),
                     manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
                     windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f,
-                    actionOpacity=extra.optDouble("actionOpacity",.92).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .92f,
-                    settingsOpacity=extra.optDouble("settingsOpacity",.94).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .94f
+                    actionOpacity=extra.optDouble("actionOpacity",1.0).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: 1f,
+                    settingsOpacity=extra.optDouble("settingsOpacity",.99).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .99f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
     }
 
@@ -192,14 +192,14 @@ class Preferences(private val context: Context) {
     suspend fun updateAppearance(c: Config) {
         context.store.edit { p ->
             p[theme] = c.theme
-            p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .84f
+            p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .98f
             p[animations] = c.animations
             p[density] = c.density
             p[accent] = c.accent
             p[stringPreferencesKey("preset")] = c.preset
             val extra = runCatching { org.json.JSONObject(p[next20] ?: "{}") }.getOrDefault(org.json.JSONObject())
-            extra.put("actionOpacity",c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .92f)
-            extra.put("settingsOpacity",c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .94f)
+            extra.put("actionOpacity",c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: 1f)
+            extra.put("settingsOpacity",c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .99f)
             extra.put("windowScale", c.windowScale.takeIf { it.isFinite() && it in 0f..1f } ?: -1f)
             p[next20] = extra.toString()
         }

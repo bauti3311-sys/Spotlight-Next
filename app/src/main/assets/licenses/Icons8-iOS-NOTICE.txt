@@ -7,3 +7,6 @@ Used with attribution and an in-app link in Settings. These icons are not licens
 
 Source names: skip-to-start, end, play, pause, info, star, pin, external-link, settings, delete-sign.
 Original application icons are still loaded from Android PackageManager, not replaced by these action glyphs.
+
+Palette additions on 2026-10-23, same source/license/attribution: search--v1, microphone, bookmark-ribbon, ellipsis, copy, link, chevron-right, reply-arrow, share.
+Common commands migrated; specialist glyphs outside this scene retain their existing licensed artwork.

@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
     fun edit(next:Config){draft=next;awaitingSave=true;update(AppearanceEdits.merge(c,next))}
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(18.dp)) {
         if(showHeading)Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
-        Text("Raycast Dark Glass",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("Raycast · Solid Graphite",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
         GlassThemeChoices(draft){edit(it)}
         SettingsGroupSurface {
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
@@ -47,7 +47,7 @@ import kotlin.math.roundToInt
                 Modifier.testTag("surface-opacity-slider").semantics{contentDescription="Opacidad del buscador"},valueRange=GlassTokens.minimumOpacity..1f)
             RoleOpacityControl("ActionPanel",GlassTokens.actionOpacity(draft),"action"){edit(draft.copy(actionOpacity=it))}
             RoleOpacityControl("Ajustes",GlassTokens.settingsOpacity(draft),"settings"){edit(draft.copy(settingsOpacity=it))}
-            TextButton(onClick={edit(draft.copy(opacity=.84f,actionOpacity=.92f,settingsOpacity=.94f))}){Text("Restablecer opacidades · 84 / 92 / 94%")}
+            TextButton(onClick={edit(draft.copy(opacity=if(draft.preset=="glass").84f else .98f,actionOpacity=if(draft.preset=="glass").92f else 1f,settingsOpacity=if(draft.preset=="glass").94f else .99f))}){Text("Restablecer opacidades del material")}
             var preview by remember{mutableStateOf(false)}
             TextButton(onClick={preview=!preview}){Text(if(preview)"Ocultar vista previa" else "Vista previa en vivo")}
             // The complete settings surface updates immediately; this optional sample uses the same renderer.
@@ -80,9 +80,9 @@ import kotlin.math.roundToInt
  BoxWithConstraints(Modifier.fillMaxWidth()) {
   val width=if(maxWidth>=560.dp)(maxWidth-16.dp)/3 else (maxWidth-8.dp)/2
   FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-   listOf(Triple("glass","dark","Raycast Dark Glass"),Triple("raycast","dark","Graphite"),Triple("glass","light","macOS Light")).forEach{(preset,theme,label)->
+   listOf(Triple("raycast","dark","Solid Graphite"),Triple("glass","dark","Dark Glass"),Triple("glass","light","macOS Light")).forEach{(preset,theme,label)->
     val active=c.preset==preset && c.theme==theme
-    Surface(onClick={edit(c.copy(preset=preset,theme=theme))},modifier=Modifier.width(width).heightIn(min=76.dp).semantics{selected=active},
+    Surface(onClick={edit(if(theme=="dark")AppearancePresets.apply(if(preset=="glass")"Dark Glass" else "Solid Graphite",c) else c.copy(preset=preset,theme=theme))},modifier=Modifier.width(width).heightIn(min=76.dp).semantics{selected=active},
      shape=RoundedCornerShape(10.dp),color=colors.onSurface.copy(alpha=.025f),border=BorderStroke(1.dp,if(active)colors.primary else colors.onSurface.copy(alpha=.10f))) {
      Row(Modifier.padding(10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
       Box(Modifier.size(30.dp).background(Brush.linearGradient(if(theme=="light")listOf(Color.White,Color(0xFFD9DFED)) else listOf(Color(0xFF383C50),Color(0xFF14161E))),RoundedCornerShape(7.dp)).border(1.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(7.dp)))

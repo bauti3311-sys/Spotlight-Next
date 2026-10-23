@@ -35,7 +35,7 @@ if (result.icon != null) {
             remember(result.id, result.icon) { result.icon.toBitmap(80, 80).asImageBitmap() }
         Image(bitmap, result.category, modifier.clip(RoundedCornerShape(7.dp)))
     } else
-        Icon(
+        IosCommandIcon(
             when {
                 result.mime=="application/pdf"->PhosphorIcons.Pdf
                 result.action is Action.WorkflowRun -> when(dev.bautista.spotlight.automation.Workflows.parse(LocalAppearance.current.routines).firstOrNull{it.id==result.action.id}?.icon){"bolt"->CommandIcons.Bolt;"sun"->CommandIcons.Sun;"music"->CommandIcons.MusicNote;else->CommandIcons.Layers}
@@ -110,12 +110,17 @@ fun ResultRow(
         // one stroke treatment and no tinted tile or selection stripe.
         ResultIcon(result,Modifier.size(if(result.icon!=null)28.dp else 20.dp),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
-        Text(result.title,Modifier.weight(1f),color=ink,fontWeight=FontWeight.Medium,
-            fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
-            letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-        Text(metadata,Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,
+        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+            Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
+                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
+                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            val subtitle=if(PreviewPresentation.isApplication(result))"Aplicación" else result.subtitle.takeIf{it.isNotBlank()} ?: metadata
+            Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+                maxLines=1,overflow=TextOverflow.Ellipsis)
+        }
+        if(playing)Text("En reproducción",Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,
             fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
-        if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
+        if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
         if(selected || hovered) IconButton(onClick = {onInteraction();onDetails()}, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {

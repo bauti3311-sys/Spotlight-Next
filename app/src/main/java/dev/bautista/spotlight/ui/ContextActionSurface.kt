@@ -43,7 +43,7 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
         val next=Rect(left,top,left+b.width.toInt(),top+b.height.toInt())
         if(next!=rect)rect=next
     })
-    val width=with(density){minOf(390.dp,(rect?.width() ?: 1).toDp()-8.dp).coerceAtLeast(1.dp).roundToPx()}
+    val width=with(density){minOf(360.dp,(rect?.width() ?: 1).toDp()-8.dp).coerceAtLeast(1.dp).roundToPx()}
     val height=with(density){minOf(GlassTokens.actionPanelMaxHeight+16.dp,availableHeight-16.dp).coerceAtLeast(1.dp).roundToPx()}
     if(rect!=null) {
         DisposableEffect(anchor,parent) {
@@ -58,10 +58,10 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
                 CompositionLocalProvider(LocalActionBackNavigation provides navigation) {
                     Box(Modifier.heightIn(max=maxHeight).padding(8.dp)) {
                         Surface(Modifier.fillMaxWidth().heightIn(max=(maxHeight-16.dp).coerceAtLeast(0.dp))
-                            .shadow(12.dp,RoundedCornerShape(14.dp),clip=false).testTag("action-surface"),
-                            shape=RoundedCornerShape(14.dp),
+                            .shadow(20.dp,RoundedCornerShape(16.dp),clip=false).testTag("action-surface"),
+                            shape=RoundedCornerShape(16.dp),
                             color=GlassTokens.actionColor(LocalAppearance.current,dark),
-                            border=BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.09f))) {currentContent()}
+                            border=BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.17f))) {currentContent()}
                     }
                 }
             }

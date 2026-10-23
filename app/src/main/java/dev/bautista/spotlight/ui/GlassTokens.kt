@@ -14,9 +14,9 @@ import dev.bautista.spotlight.data.Config
 object GlassTokens {
     val small=8.dp;val gap=12.dp;val inset=18.dp;val hit=48.dp
     val actionPanelMaxHeight=560.dp
-    val actionSurface=Color(0xFF20212B);val actionSelected=Color(0xFF343646)
+    val actionSurface=Color(0xFF19191D);val actionSelected=Color(0xFF333338)
     val indigo=Color(0xFF7275E8);val tertiary=Color(0xFF777B8D)
-    val windowRadius=16.dp;val searchHeight=48.dp;val listInset=12.dp
+    val windowRadius=16.dp;val searchHeight=56.dp;val listInset=12.dp
     val rowRadius=11.dp;val rowMinimum=42.dp;val glyph=20.dp
     val searchText=18.sp;val compactSearchText=18.sp
     val resultText=14.sp;val secondaryText=12.5.sp;val metadataText=11.sp
@@ -32,18 +32,19 @@ object GlassTokens {
     fun resultRowHeight(c:Config)=maxOf(hit,rowHeight(c))
     fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->15.sp;else->14.sp}
     const val minimumOpacity=.70f
-    const val defaultOpacity=.84f
+    const val defaultOpacity=.98f
     fun opacity(c:Config)=c.opacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: defaultOpacity
     fun windowColors(c:Config,dark:Boolean):List<Color> {
         val alpha=opacity(c)
-        return if(dark) listOf(Color(0xFF20212B).copy(alpha=alpha),Color(0xFF171921).copy(alpha=alpha))
+        return if(dark && c.preset!="glass") listOf(Color(0xFF1B1B20).copy(alpha=alpha),Color(0xFF17171C).copy(alpha=alpha))
+        else if(dark) listOf(Color(0xFF20212B).copy(alpha=alpha),Color(0xFF171921).copy(alpha=alpha))
         else listOf(Color(0xFFFAFAFC).copy(alpha=alpha),Color(0xFFF1F2F7).copy(alpha=alpha))
     }
     fun secondary(c:Config,dark:Boolean)=if(dark) {if(opacity(c)<.80f)Color(0xFFE3E5ED) else darkSecondary} else {if(opacity(c)<.85f)Color(0xFF373C48) else lightSecondary}
-    fun actionOpacity(c:Config)=c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .92f
-    fun settingsOpacity(c:Config)=c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .94f
+    fun actionOpacity(c:Config)=c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: 1f
+    fun settingsOpacity(c:Config)=c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .99f
     fun actionColor(c:Config,dark:Boolean)=
-        (if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
+        (if(dark && c.preset=="glass")Color(0xFF20212B) else if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)
         listOf(Color(0xFFC7CBD4).copy(alpha=.17f*amount),Color(0xFFBFC3CC).copy(alpha=.11f*amount))
         else listOf(.09f,.05f).map{Color.Black.copy(alpha=it*amount)}
@@ -54,11 +55,11 @@ object GlassTokens {
     val shape=RoundedCornerShape(GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
     val material=GlassTokens.windowColors(c,dark)
-    return shadow(20.dp,shape,clip=false,
+    return shadow(24.dp,shape,clip=false,
             ambientColor=Color.Black.copy(alpha=.24f),spotColor=Color.Black.copy(alpha=.40f))
         .clip(shape)
         .background(Brush.verticalGradient(material))
-        .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=if(dark).19f else .12f),shape)
+        .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=if(dark).16f else .12f),shape)
         .drawWithContent {
             drawContent()
             drawLine(Color.White.copy(alpha=if(dark).12f else .60f),
