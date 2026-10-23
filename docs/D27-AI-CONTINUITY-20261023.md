@@ -70,9 +70,21 @@ Son20casos únicos,no22ni31. XML de rondas relative/final preservados.
 LintDebug: intento offline falló al construir debugAndroidTestCompileClasspath
 por dependencias de pruebas instrumentadas ausentes en caché (androidx.test.ext:junit
 1.2.1,runner1.6.2 y transitivas). No se borraron tests ni se cambiaron versiones.
-LintRaycastPreview está en ejecución separada; no assemble ni nueva APK.
+LintRaycastPreview terminó correctamente en2m57s:0errores,15advertencias,1informativa. No assemble ni nueva APK.
 
 D27 sigue PARCIAL: pendientes dependencias/resultados tipados generales, brillo
 relativo dentro de propuestas IA y ejecución secuencial general. El editor local
 previo conserva brillo/volumen encadenados y PlanExecution con su evidencia.
 No se afirma validación física ni interacción real con Gemini en estos fixtures.
+
+## Cierre verificado
+
+Código relativo publicado `6639a421cc08b9724ab435842efde8ce9aee2b49`;
+235entradas productivas/configuración cotejadas por GitSHA1 contra árbol remoto.
+Resumen y lint XML actuales en verification/d27-ai-20261023/final.
+Fixture3/3 y20casos únicos de edición/restauración/proyección correctos; dos
+regresiones de cancelación repetidas después del último ajuste, sin sumar repeticiones.
+PR18 sigue borrador, notas intactas, sin procesos Gradle activos al cerrar.
+La reserva propia conserva el checkpoint publicado para continuidad de esta sesión.
+Próxima tarea concreta: dependencias tipadas de resultados entre herramientas;
+D27 sigue parcial y no se atribuye ejecución secuencial general a este editor.
