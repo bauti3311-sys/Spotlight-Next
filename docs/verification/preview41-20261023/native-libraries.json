@@ -1,0 +1,22 @@
+{
+  "matched_original_aars": {
+    "libandroidx.graphics.path.so": "graphics-path-1.0.1.aar",
+    "liblanguage_id_l2c_jni.so": "language-id-17.0.6.aar",
+    "libtranslate_jni.so": "translate-17.0.3.aar",
+    "libmlkitcommonpipeline.so": "vision-internal-vkp-18.2.3.aar",
+    "libmlkit_google_ocr_pipeline.so": "text-recognition-bundled-common-17.0.0.aar",
+    "libdatastore_shared_counter.so": "datastore-core-release.aar",
+    "libonnxruntime.so": "onnxruntime-android-1.23.2.aar",
+    "libonnxruntime4j_jni.so": "onnxruntime-android-1.23.2.aar"
+  },
+  "sha256": {
+    "libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+    "libdatastore_shared_counter.so": "d3e48717c9aa147e0ab21063ba0e8e0211cabf8bf40b222640829519edbf58e1",
+    "liblanguage_id_l2c_jni.so": "4479b044bbdad9a938fea15698dfa3473e73bd6bab9f8e0468fc3cc6069c137e",
+    "libmlkit_google_ocr_pipeline.so": "fa41d509a661e8aa8b3e3ac1a28541f8823f308414fcad733fe26d61feea2646",
+    "libmlkitcommonpipeline.so": "c146e1f60adeb21e7feb8062cdb446056ce619e430d3555c3872b3ff8a907c2f",
+    "libonnxruntime.so": "e40f09d07dc53726b8bfbf48a7907673b8f86718a057655a62790a39874a7302",
+    "libonnxruntime4j_jni.so": "2cc3f16ab527959a81b572adebcfb71a25ea4b8547c9b92d705b423e9c822d39",
+    "libtranslate_jni.so": "35b3d0366291347e3f25e80e809ee398d716aea49cd03278007fedd526a1496f"
+  }
+}

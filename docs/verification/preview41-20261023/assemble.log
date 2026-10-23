@@ -1,0 +1,69 @@
+Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=46607 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=46607
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Observed package id 'platforms;android-35-ext15' in inconsistent location '/workspace/spotlight-native-runtime-20261023/android-sdk/platforms/android-35' (Expected '/workspace/spotlight-native-runtime-20261023/android-sdk/platforms/android-35-ext15')
+Observed package id 'platforms;android-35' in inconsistent location '/workspace/spotlight-native-runtime-20261023/android-sdk/platforms/android-35-2' (Expected '/workspace/spotlight-native-runtime-20261023/android-sdk/platforms/android-35')
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest
+> Task :app:processRaycastPreviewManifest
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeRaycastPreviewJniLibFolders
+> Task :app:processRaycastPreviewManifestForPackage
+> Task :app:processRaycastPreviewResources
+> Task :app:mergeRaycastPreviewNativeLibs
+> Task :app:compileRaycastPreviewKotlin UP-TO-DATE
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:generateRaycastPreviewLintVitalReportModel
+
+> Task :app:stripRaycastPreviewDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so, liblanguage_id_l2c_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libonnxruntime.so, libonnxruntime4j_jni.so, libtranslate_jni.so.
+
+> Task :app:extractRaycastPreviewNativeSymbolTables
+> Task :app:mergeRaycastPreviewNativeDebugMetadata NO-SOURCE
+> Task :app:checkRaycastPreviewDuplicateClasses
+> Task :app:mergeRaycastPreviewArtProfile
+> Task :app:expandRaycastPreviewArtProfileWildcards
+> Task :app:mergeRaycastPreviewGeneratedProguardFiles
+> Task :app:processRaycastPreviewJavaRes
+> Task :app:mergeRaycastPreviewJavaResource
+> Task :app:mergeRaycastPreviewStartupProfile
+> Task :app:lintVitalAnalyzeRaycastPreview
+> Task :app:minifyRaycastPreviewWithR8
+> Task :app:lintVitalReportRaycastPreview
+> Task :app:lintVitalRaycastPreview
+> Task :app:mergeRaycastPreviewShaders
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets
+> Task :app:compressRaycastPreviewAssets
+> Task :app:extractRaycastPreviewVersionControlInfo
+> Task :app:convertLinkedResourcesToProtoRaycastPreview
+> Task :app:collectRaycastPreviewDependencies
+> Task :app:sdkRaycastPreviewDependencyData
+> Task :app:validateSigningRaycastPreview
+> Task :app:writeRaycastPreviewAppMetadata
+> Task :app:writeRaycastPreviewSigningConfigVersions
+> Task :app:compileRaycastPreviewArtProfile
+> Task :app:shrinkRaycastPreviewRes
+> Task :app:convertShrunkResourcesToBinaryRaycastPreview
+> Task :app:optimizeRaycastPreviewResources
+> Task :app:packageRaycastPreview
+> Task :app:createRaycastPreviewApkListingFileRedirect
+> Task :app:assembleRaycastPreview
+
+BUILD SUCCESSFUL in 2m 19s
+51 actionable tasks: 37 executed, 14 up-to-date
