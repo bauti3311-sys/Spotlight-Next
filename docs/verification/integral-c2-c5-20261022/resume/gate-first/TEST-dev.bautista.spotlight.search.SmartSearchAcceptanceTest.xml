@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-23T00:15:05" hostname="3e23142f4df9" time="0.43">
+  <properties/>
+  <testcase name="completionRequiresAnUnambiguousLiveCandidate" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.02"/>
+  <testcase name="configurationWarningsNeverOutrankALiveApplicationPrefix" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.019"/>
+  <testcase name="selectedOrderSurvivesAsyncPeersButRemovedResultsDisappear" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.018"/>
+  <testcase name="exactCommandsBeatApplicationPrefixesEvenWithExtremeHistory" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.022"/>
+  <testcase name="volumePrefixesDoNotDisplaceAnInstalledApplicationPrefix" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.042"/>
+  <testcase name="absentAppsAndEmptyQueriesDoNotInventExecutions" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.04"/>
+  <testcase name="deniedContactsNeverBecomeAuthorizedResults" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.03"/>
+  <testcase name="partialInstalledAppsAreFirstWithoutRemoteAi" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.068"/>
+  <testcase name="typoStillOffersTheMatchingInstalledApplication" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.039"/>
+  <testcase name="explicitOpenSpotifyResolvesLocallyAndNeverAsAnAiProposal" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.039"/>
+  <testcase name="aliasesKeepTheTargetApplicationEligibleAndAccentsAreNormalized" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.039"/>
+  <testcase name="relevantPartialApplicationBeatsGenericContextActionsInCompactView" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.019"/>
+  <testcase name="blankHomeDoesNotInventApplicationsOrWhatsAppContent" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

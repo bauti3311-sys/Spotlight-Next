@@ -43,7 +43,14 @@ class NativePaletteFlowTest {
         ui.waitUntil(15000){ui.onAllNodesWithTag(if(query.isBlank())"result:suggest:app:com.whatsapp" else "result:$expectedPackage/Main").fetchSemanticsNodes().isNotEmpty()}
     }
     private fun open(){search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.K);keyUp(Key.CtrlLeft)};ui.onNodeWithTag("action-surface").assertIsDisplayed()}
-    private fun capture(name:String){ui.onNodeWithTag("spotlight-root").captureRoboImage("build/native-palette/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
+    private fun capture(name:String){
+        val options=RoborazziOptions(taskType=RoborazziTaskType.Record)
+        if(ui.onAllNodesWithTag("action-surface").fetchSemanticsNodes().isNotEmpty()) {
+            // Popup is a separate Android root; palette-only captures omit it.
+            captureScreenRoboImage("build/native-palette/$name.png",roborazziOptions=options)
+            ui.onNodeWithTag("action-surface").captureRoboImage("build/native-palette/$name-panel.png",roborazziOptions=options)
+        } else ui.onNodeWithTag("spotlight-root").captureRoboImage("build/native-palette/$name.png",roborazziOptions=options)
+    }
     @Test fun spotifyPrefixShowsActualInstalledResultAndFloatingActions() {
         show("spot",expectedPackage="com.spotify.music")
         ui.onNodeWithTag("result:com.spotify.music/Main").assertIsSelected()
@@ -75,7 +82,8 @@ class NativePaletteFlowTest {
         val choiceBounds=choice.fetchSemanticsNode().boundsInRoot
         val panelBounds=ui.onNodeWithTag("action-surface").fetchSemanticsNode().boundsInRoot
         val filterBounds=ui.onNodeWithTag("action-filter").fetchSemanticsNode().boundsInRoot
-        assertTrue(choiceBounds.top>=panelBounds.top && choiceBounds.bottom<=filterBounds.top)
+        assertTrue("Approved filter is above the submenu rows",choiceBounds.top>=filterBounds.bottom)
+        assertTrue("Submenu row stays inside the panel",choiceBounds.bottom<=panelBounds.bottom && choiceBounds.left>=panelBounds.left && choiceBounds.right<=panelBounds.right)
         search().assertTextEquals("WhatsApp");capture("05-submenu")
         ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
         ui.onNode(hasText("Copiar…") and isFocused()).assertExists()
@@ -98,7 +106,7 @@ class NativePaletteFlowTest {
         ui.onNodeWithContentDescription("Cerrar acciones").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         val first=ui.onNode(hasText("Abrir") and hasClickAction()).assertIsDisplayed().assertHeightIsAtLeast(48.dp).fetchSemanticsNode().boundsInRoot
         val filter=ui.onNodeWithTag("action-filter").fetchSemanticsNode().boundsInRoot
-        assertTrue(first.bottom<=filter.top)
+        assertTrue("Approved filter is above the primary action",first.top>=filter.bottom)
         val window=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
         val panel=ui.onNodeWithTag("action-surface").fetchSemanticsNode().boundsInRoot
         assertEquals(original,window)

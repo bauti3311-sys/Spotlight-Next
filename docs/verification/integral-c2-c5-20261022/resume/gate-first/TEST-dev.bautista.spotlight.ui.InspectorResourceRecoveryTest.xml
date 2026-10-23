@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-23T00:15:15" hostname="3e23142f4df9" time="0.624">
+  <properties/>
+  <testcase name="descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.069"/>
+  <testcase name="recoveredCardActionsFitNarrowPhoneAtLargeFontScale" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.121"/>
+  <testcase name="revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.115"/>
+  <testcase name="scopeAndSensitiveReviewRestoreWithoutAnAuthorization" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.04"/>
+  <testcase name="restoredDocumentAndPageKeepIdentityAndRecheckAccess" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.158"/>
+  <testcase name="overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.087"/>
+  <testcase name="savedCardDoesNotRestoreUnsupportedExternalScheme" classname="dev.bautista.spotlight.ui.InspectorResourceRecoveryTest" time="0.034"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
