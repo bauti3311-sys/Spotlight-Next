@@ -91,8 +91,8 @@ class ActionPanelKeyboardContractTest {
             ),FocusRequester())
         } }
         ui.onAllNodesWithText("Copiar").assertCountEquals(2)
-        ui.onNodeWithText("Organizar").assertExists()
-        ui.onNodeWithText("Texto").assertExists()
+        ui.onNodeWithText("ORGANIZAR").assertExists()
+        ui.onNodeWithText("TEXTO").assertExists()
     }
     @Test fun actionGroupsHaveVisibleHeadingsWithoutExecutingItems() {
         var action=""
@@ -107,9 +107,9 @@ class ActionPanelKeyboardContractTest {
                 ),focus)
             }
         }
-        ui.onNodeWithText("Principal").assertExists()
-        ui.onNodeWithText("Organizar").assertExists()
-        ui.onNodeWithText("Texto").assertExists()
+        ui.onNodeWithText("PRINCIPAL").assertExists()
+        ui.onNodeWithText("ORGANIZAR").assertExists()
+        ui.onNodeWithText("TEXTO").assertExists()
         ui.runOnIdle { assertEquals("",action) }
     }
 

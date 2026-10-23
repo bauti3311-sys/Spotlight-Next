@@ -829,7 +829,7 @@ fun SpotlightPanel(
             val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
             val resultListHeight = minOf(resultLimit,
                 GlassTokens.resultRowHeight(config)*visibleResults.size +
-                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 16.dp)
+                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 44.dp)
             val splitPanelHeight = minOf(resultLimit,400.dp)
             val inlineResultRows=!compact && (!widePreview || maxWidth*.62f>=384.dp)
             Box(
@@ -1019,6 +1019,10 @@ fun SpotlightPanel(
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
+                                if(query.isNotBlank() && visibleResults.isNotEmpty()) item("results-heading") {
+                                    Text("RESULTADOS",Modifier.padding(start=12.dp,top=8.dp,bottom=8.dp),
+                                        fontSize=10.sp,lineHeight=12.sp,fontWeight=FontWeight.SemiBold,color=colors.onSurfaceVariant)
+                                }
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
                                     val section=ResultSections.category(item)
                                     if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section,first=i==0 && homeLayout)

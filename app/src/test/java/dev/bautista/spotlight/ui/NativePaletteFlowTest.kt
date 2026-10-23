@@ -57,8 +57,22 @@ class NativePaletteFlowTest {
         search().assertTextEquals("spot");capture("11-spotify-prefix")
         val before=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
         open();capture("12-spotify-actions")
+        val last=ui.onNodeWithText("Información de la app").assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+        val surface=ui.onNodeWithTag("action-surface").fetchSemanticsNode().boundsInRoot
+        assertTrue("All usual app actions fit without scrolling on tablet",last.bottom<=surface.bottom-8*app.resources.displayMetrics.density)
         assertEquals(before,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
         search().assertTextEquals("spot");assertNull(Shadows.shadowOf(app).peekNextStartedActivity())
+    }
+    @Test fun spotifyExactMasterSceneUsesOnlyAvailableResultsAndRestoresSearch() {
+        show("Spotify",expectedPackage="com.spotify.music")
+        ui.onNodeWithText("RESULTADOS").assertIsDisplayed()
+        ui.onNodeWithTag("result:com.spotify.music/Main").assertIsSelected()
+        val original=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
+        open();capture("13-spotify-master")
+        assertEquals(original,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
+        ui.onNodeWithText("Descubrimiento Semanal").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Cerrar acciones").performClick()
+        search().assertIsFocused().assertTextEquals("Spotify")
     }
     @Test fun compactHomeHasNoAutomaticInspector(){show("");ui.onNodeWithTag("context-inspector").assertDoesNotExist();assertTrue(ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot.height<=300*app.resources.displayMetrics.density);capture("01-home")}
     @Test fun searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch(){

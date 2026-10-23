@@ -16,7 +16,7 @@ object GlassTokens {
     val actionPanelMaxHeight=560.dp
     val actionSurface=Color(0xFF19191D);val actionSelected=Color(0xFF333338)
     val indigo=Color(0xFF7275E8);val tertiary=Color(0xFF777B8D)
-    val windowRadius=16.dp;val searchHeight=56.dp;val listInset=12.dp
+    val windowRadius=16.dp;val searchHeight=52.dp;val listInset=12.dp
     val rowRadius=11.dp;val rowMinimum=42.dp;val glyph=20.dp
     val searchText=18.sp;val compactSearchText=18.sp
     val resultText=14.sp;val secondaryText=12.5.sp;val metadataText=11.sp

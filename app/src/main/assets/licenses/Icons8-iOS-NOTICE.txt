@@ -10,3 +10,5 @@ Original application icons are still loaded from Android PackageManager, not rep
 
 Palette additions on 2026-10-23, same source/license/attribution: search--v1, microphone, bookmark-ribbon, ellipsis, copy, link, chevron-right, reply-arrow, share.
 Common commands migrated; specialist glyphs outside this scene retain their existing licensed artwork.
+
+Additional same-source scene controls: security-checked, speech-bubble.

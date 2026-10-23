@@ -123,7 +123,12 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
         Column(Modifier.fillMaxWidth().weight(1f,fill=false).verticalScroll(rememberScrollState())) {
             var previous:ContextActionGroup?=null
             visible.forEachIndexed { i,action ->
-                val group=if(i==0 && action==all.firstOrNull())ContextActionGroup.Primary else action.group
+                val appContext=contextResult?.let{PreviewPresentation.isApplication(it)}==true
+                val group=if(i==0 && action==all.firstOrNull())ContextActionGroup.Primary else if(appContext)when(action.group) {
+                    ContextActionGroup.Open,ContextActionGroup.Communicate->ContextActionGroup.Primary
+                    ContextActionGroup.Text->ContextActionGroup.Organize
+                    else->action.group
+                } else action.group
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=6.dp),color=colors.onSurface.copy(alpha=.08f))
                     Text(group.label.uppercase(java.util.Locale.ROOT),Modifier.padding(start=10.dp,top=4.dp,bottom=4.dp),
