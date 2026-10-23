@@ -1,0 +1,51 @@
+{
+  "source_commit": "be76e8ed54177a44df14930d627009c953ef7f7d",
+  "documentary_checkpoint": "4a798ce569e34276ab0048db1cd46e02c2b1c762",
+  "branch": "feat/raycast-sidebar-permissions-20261020",
+  "owner": "work-master-recovery-20261022-cc97a1bd",
+  "artifacts": [
+    {
+      "name": "Spotlight-Next-Raycast-Preview-42-be76e8e.apk",
+      "library_file_id": "libfile_4241aed676a481919ddb4e1e1bf6e90c"
+    },
+    {
+      "name": "Spotlight-Next-Preview-42-source-be76e8e.zip",
+      "library_file_id": "libfile_c0d1c24cf63c8191b4a804b1f5f547b8"
+    },
+    {
+      "name": "Solid-Graphite-Preview42-evidencia.zip",
+      "library_file_id": "libfile_2a147481001c8191a1b3a2980fffd0eb"
+    },
+    {
+      "name": "Solid-Graphite-informe-Preview42.md",
+      "library_file_id": "libfile_612225a4f064819196340db6cab975c3"
+    },
+    {
+      "name": "Solid-Graphite-antes-despues.png",
+      "library_file_id": "libfile_5ec02b908b2c81919f51c5b8025404c3"
+    },
+    {
+      "name": "Solid-Graphite-referencia-compose.png",
+      "library_file_id": "libfile_5c9d44fb27208191987f63ef11e0adab"
+    },
+    {
+      "name": "Solid-Graphite-Spotify-Compose-tablet.png",
+      "library_file_id": "libfile_7bace55003788191bb3f0409d81ff832"
+    },
+    {
+      "name": "Solid-Graphite-Compose-telefono.png",
+      "library_file_id": "libfile_20c7e0337014819192911925c2829f18"
+    },
+    {
+      "name": "Solid-Graphite-superposicion-50.png",
+      "library_file_id": "libfile_c7fe30c359b48191a320fe1db078df3b"
+    },
+    {
+      "name": "Solid-Graphite-diferencias.png",
+      "library_file_id": "libfile_37e7e28a86f081918d660aa062668eb3"
+    }
+  ],
+  "signature": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "versionCode": 42,
+  "physical_validation": false
+}
