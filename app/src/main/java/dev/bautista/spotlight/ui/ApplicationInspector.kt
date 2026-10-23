@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
     onInfo: () -> Unit,
     onActions: () -> Unit,
     onMedia: (String) -> Unit,
+    mediaContent: (@Composable () -> Unit)? = null,
 ) {
     val colors=MaterialTheme.colorScheme
     val context=LocalContext.current
@@ -51,7 +52,9 @@ import kotlinx.coroutines.withContext
                     color=colors.onSurfaceVariant)
             }
         }
+        mediaContent?.invoke()
         Button(onClick=onOpen,shape=RoundedCornerShape(10.dp),
+            colors=ButtonDefaults.buttonColors(containerColor=colors.primary,contentColor=colors.onPrimary),
             contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp),
             modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("inspector-primary-action")) {
             Icon(CommandIcons.Arrow,null,Modifier.size(18.dp))

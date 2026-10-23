@@ -24,6 +24,7 @@ private fun mediaTime(ms:Long):String {
 /** Displays only metadata supplied by the authorized MediaSession. Audio stays in its app. */
 @Composable fun MediaInspector(snapshot:MediaSnapshot,onCommand:(String)->Unit,onSeek:(Long)->Unit) {
     val s=snapshot
+    val colors=MaterialTheme.colorScheme
     var dragging by remember(s.token,s.title,s.duration){mutableStateOf<Float?>(null)}
     Column(Modifier.fillMaxWidth().testTag("media-inspector").padding(top=12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
@@ -43,9 +44,12 @@ private fun mediaTime(ms:Long):String {
         if(duration!=null && position!=null) {
             val fraction=position.toFloat()/duration.toFloat()
             if(s.supports(PlaybackState.ACTION_SEEK_TO))Slider(dragging ?: fraction,{dragging=it},
+                colors=SliderDefaults.colors(thumbColor=colors.primary,activeTrackColor=colors.primary,
+                    inactiveTrackColor=colors.onSurface.copy(alpha=.12f)),
                 onValueChangeFinished={dragging?.let{onSeek((it*duration).toLong())};dragging=null},
                 modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("media-seek"))
-            else LinearProgressIndicator(progress={fraction.coerceIn(0f,1f)},modifier=Modifier.fillMaxWidth().testTag("media-progress"))
+            else LinearProgressIndicator(progress={fraction.coerceIn(0f,1f)},color=colors.primary,
+                trackColor=colors.onSurface.copy(alpha=.12f),modifier=Modifier.fillMaxWidth().testTag("media-progress"))
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
                 Text(mediaTime(position),style=MaterialTheme.typography.labelSmall)
                 Text(mediaTime(duration),style=MaterialTheme.typography.labelSmall)
@@ -55,7 +59,9 @@ private fun mediaTime(ms:Long):String {
             if(s.supports(PlaybackState.ACTION_SKIP_TO_PREVIOUS))IconButton(onClick={onCommand("previous")},modifier=Modifier.size(48.dp)) {Icon(CommandIcons.SkipPrevious,"Pista anterior")}
             val command=if(s.playing)"pause" else "play"
             if(s.supports(if(s.playing)PlaybackState.ACTION_PAUSE else PlaybackState.ACTION_PLAY))
-                FilledTonalIconButton(onClick={onCommand(command)},modifier=Modifier.size(48.dp)){Icon(if(s.playing)CommandIcons.Pause else CommandIcons.Play,if(s.playing)"Pausar reproducción" else "Reanudar reproducción")}
+                FilledTonalIconButton(onClick={onCommand(command)},colors=IconButtonDefaults.filledTonalIconButtonColors(
+                    containerColor=colors.primary,contentColor=colors.onPrimary),
+                    modifier=Modifier.size(48.dp)){Icon(if(s.playing)CommandIcons.Pause else CommandIcons.Play,if(s.playing)"Pausar reproducción" else "Reanudar reproducción")}
             if(s.supports(PlaybackState.ACTION_SKIP_TO_NEXT))IconButton(onClick={onCommand("next")},modifier=Modifier.size(48.dp)){Icon(CommandIcons.SkipNext,"Pista siguiente")}
         }
     }

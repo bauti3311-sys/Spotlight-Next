@@ -787,9 +787,11 @@ fun SpotlightPanel(
                 (mediaSnapshot?.packageName==inspectorPackage || inspectorPinned)
             val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
             val richPreview=PreviewPresentation.needsInspector(inspectorItem)
+            val applicationPreview=PreviewPresentation.isApplication(inspectorItem) &&
+                !inspectorTaskActive() && (preview?.id==inspectorItem?.id || inspectorPinned)
             val taskInspector=inspectorTaskActive()
             LaunchedEffect(inspectorPinned,pinnedPreview?.id,pinnedCard,taskInspector){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
-            val hasInspector=richPreview || inspectorCard!=null || taskInspector || mediaInspector
+            val hasInspector=richPreview || applicationPreview || inspectorCard!=null || taskInspector || mediaInspector
             val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
             fun dismissInspector() {
                 mediaDismissed=true
@@ -993,7 +995,7 @@ fun SpotlightPanel(
                     navigating=true
                     pointerSelecting=true
                     hideKeyboardForActions()
-                    preview=null
+                    preview=item
                     menu=false
                 }
                 val resultList:@Composable ()->Unit = {
@@ -1315,10 +1317,15 @@ fun SpotlightPanel(
                                 }
                                 if(aiSaveStatus.isNotBlank())Text(aiSaveStatus,style=MaterialTheme.typography.bodySmall)
                             }
-                        else if(mediaInspector) {
+                        else if(mediaInspector || applicationPreview) {
                             val observed=mediaSnapshot?.takeIf{it.packageName==inspectorPackage}
-                            if(observed==null)Text("La sesión ya no está disponible.",Modifier.padding(18.dp),style=MaterialTheme.typography.bodySmall)
-                            else Column(Modifier.padding(start=18.dp,end=18.dp,bottom=12.dp)) {
+                            inspectorItem?.let { application -> Column(Modifier.padding(start=18.dp,end=18.dp,bottom=12.dp)) {
+                                ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
+                                    observed?.playing==true,emptyList(),onOpen={execute(application)},
+                                    onFavorite={toggleFavorite(application)},
+                                    onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
+                                    onActions={preview=application;menu=true;navigating=true},onMedia={},
+                                    mediaContent=if(observed==null)null else {
                                 var mediaStatus by remember(inspectorPackage){mutableStateOf("")}
                                 MediaInspector(observed,onCommand={command->
                                     scope.launch {
@@ -1334,18 +1341,27 @@ fun SpotlightPanel(
                                     }
                                 })
                                 if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
-                            }
+                                    })
+                                if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
+                            } }
                         }
                         else if(richPreview)details(false)
                         }
                         val pane:@Composable ()->Unit = {
                             inspectorHost {
+                                val accentPackage=InspectorAccent.destination(inspectorItem,messageForm,searchForm,systemPage,taskInspector)
+                                val accentIcon=inspectorItem?.takeIf {
+                                    PreviewPresentation.isApplication(it) &&
+                                        (it.action as? Action.Launch)?.intent?.component?.packageName==accentPackage
+                                }?.icon
+                                InspectorTheme(accentPackage,accentIcon) {
                                 Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
                                     inspectorToolbar()
                                     val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
                                         ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
                                         ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"
                                     ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                }
                                 }
                             }
                         }
