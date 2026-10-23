@@ -12,10 +12,10 @@ internal val ToolProposalSaver=Saver<ToolPlan?,String>(
         require(call.arguments.keys==definition.fields.toSet())
         require(call.arguments.values.all{it.length<=8000 && !it.contains('\u0000')})
     }})}.getOrNull()})
-internal data class ToolOutcome(val text:String,val state:ExecutionState,val review:Boolean=false)
+internal data class ToolOutcome(val text:String,val state:ExecutionState,val review:Boolean=false,val outputs:Map<String,ToolValue> = emptyMap())
 internal val ToolOutcomesSaver=Saver<Map<Int,ToolOutcome>,String>(
-    save={map->JSONArray().apply{map.forEach{(index,value)->put(JSONObject().put("index",index).put("text",value.text).put("state",value.state.name).put("review",value.review))}}.toString()},
-    restore={raw->runCatching{val a=JSONArray(raw);(0 until a.length()).associate{val j=a.getJSONObject(it);j.getInt("index") to ToolOutcome(j.getString("text"),ExecutionState.valueOf(j.getString("state")),j.getBoolean("review"))}}.getOrDefault(emptyMap())})
+    save={map->JSONArray().apply{map.forEach{(index,value)->put(JSONObject().put("index",index).put("text",value.text).put("state",value.state.name).put("review",value.review).put("outputs",StructuredToolResults.encodeValues(value.outputs)))}}.toString()},
+    restore={raw->runCatching{val a=JSONArray(raw);(0 until a.length()).associate{val j=a.getJSONObject(it);j.getInt("index") to ToolOutcome(j.getString("text"),ExecutionState.valueOf(j.getString("state")),j.getBoolean("review"),StructuredToolResults.decodeValues(j.optJSONObject("outputs") ?: JSONObject()))}}.getOrDefault(mapOf(-1 to ToolOutcome("El estado guardado no es válido; prepará una propuesta nueva.",ExecutionState.COMPLETED)))})
 internal val WorkflowProgressSaver=Saver<WorkflowProgress?,String>(save={p->p?.let{JSONObject().put("step",it.step).put("total",it.total).put("label",it.label).put("output",it.output).put("complete",it.complete).put("failed",it.failed).put("warning",it.warning).toString()}},restore={raw->val j=JSONObject(raw);val done=j.getBoolean("complete");WorkflowProgress(j.getInt("step"),j.getInt("total"),if(done)j.getString("label") else "Interrumpida · revisar antes de repetir",j.getString("output"),complete=done,failed=j.getBoolean("failed")||!done,warning=j.getString("warning"))})
 
 internal val SearchTaskSaver=Saver<dev.bautista.spotlight.search.Action.ComposeSearch?,String>(save={it?.let{v->JSONArray(listOf(v.topic,v.packageName,v.query)).toString()}},restore={val a=JSONArray(it);dev.bautista.spotlight.search.Action.ComposeSearch(a.getString(0),a.getString(1),a.getString(2))})
