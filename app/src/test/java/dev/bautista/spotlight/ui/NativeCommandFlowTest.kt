@@ -54,6 +54,10 @@ class NativeCommandFlowTest {
   ui.setContent{SpotlightPanel(app,c,{},initialQuery="Mi comando verificado")}
   val result=hasText("Mi comando verificado") and !hasSetTextAction()
   ui.waitUntil(15000){ui.onAllNodes(result).fetchSemanticsNodes().isNotEmpty()}
+  ui.onNode(result).performClick()
+  // First touch only selects under D23; opening the review needs confirmation.
+  ui.onNodeWithText("Confirmar pasos seleccionados").assertDoesNotExist()
+  assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
   ui.onNode(result).performClick();ready()
   assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
   ui.onNodeWithText("Confirmar pasos seleccionados").performScrollTo().performClick()
