@@ -24,8 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger
 class SharedTextProvider : ContentProvider() {
     override fun onCreate()=true
     override fun getType(uri: Uri)="text/plain"
-    override fun query(u:Uri,p:Array<out String>?,s:String?,a:Array<out String>?,o:String?):Cursor =
-        MatrixCursor(arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE)).apply { addRow(arrayOf("${u.lastPathSegment}.txt", 100)) }
+    override fun query(u:Uri,p:Array<out String>?,s:String?,a:Array<out String>?,o:String?):Cursor {
+        val columns=p ?: arrayOf(OpenableColumns.DISPLAY_NAME,OpenableColumns.SIZE)
+        return MatrixCursor(columns).apply { addRow(columns.map { name ->
+            when(name) { OpenableColumns.DISPLAY_NAME -> "${u.lastPathSegment}.txt"; OpenableColumns.SIZE -> 100L; else -> null }
+        }) }
+    }
     override fun insert(u:Uri,v:ContentValues?):Uri?=null
     override fun delete(u:Uri,s:String?,a:Array<out String>?)=0
     override fun update(u:Uri,v:ContentValues?,s:String?,a:Array<out String>?)=0
