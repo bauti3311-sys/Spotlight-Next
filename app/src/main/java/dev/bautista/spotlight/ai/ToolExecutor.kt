@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import org.json.*
 
-data class ToolExecution(val text:String,val action:Action?=null,val state:ExecutionState=if(action==null)ExecutionState.COMPLETED else ExecutionState.PREPARED)
+data class ToolExecution(val text:String,val action:Action?=null,val state:ExecutionState=if(action==null)ExecutionState.COMPLETED else ExecutionState.PREPARED,val outputs:Map<String,ToolValue> = emptyMap())
 class ToolAudit(context:Context) {
     private val privacy=(context.applicationContext as? SpotlightApp)?.preferences
     private val prefs=context.getSharedPreferences("tool_audit",Context.MODE_PRIVATE)
@@ -60,10 +60,16 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
         val request=ToolRegistry.authorize(call,available(c).map{it.id}.toSet(),confirmed)
         try {
             val execution=withTimeout(20000){withContext(Dispatchers.IO){when(request){
-                is ToolRequest.Calculate->ToolExecution(Calculator.evaluate(request.expression) ?: error("Expresión no válida."))
+                is ToolRequest.Calculate->{val value=Calculator.evaluate(request.expression) ?: error("Expresión no válida.");val typed=StructuredToolResults.number(value);ToolExecution(value,state=if(typed!=null)ExecutionState.VERIFIED else ExecutionState.COMPLETED,outputs=typed?.let{mapOf("value" to it)}.orEmpty())}
                 is ToolRequest.Convert->ToolExecution(LocalTools.convert(request.query)?.let{"${it.title} · ${it.subtitle}"} ?: error("Conversión no compatible."))
-                is ToolRequest.Transform->ToolExecution(TextTools.transform(request.operation,request.text))
-                is ToolRequest.CreateNote->{app.local.saveNote(request.text);ToolExecution("Nota guardada en este dispositivo.")}
+                is ToolRequest.Transform->{val value=TextTools.transform(request.operation,request.text);val typed=StructuredToolResults.text(value);ToolExecution(value,state=ExecutionState.VERIFIED,outputs=typed?.let{mapOf("text" to it)}.orEmpty())}
+                is ToolRequest.CreateNote->{
+                    val before=JSONArray(app.preferences.noteData.first());val ids=(0 until before.length()).map{before.getJSONObject(it).getString("id")}.toSet()
+                    app.local.saveNote(request.text)
+                    val after=JSONArray(app.preferences.noteData.first())
+                    check((0 until after.length()).any{val note=after.getJSONObject(it);note.getString("id") !in ids && note.getString("text")==request.text}){"No se pudo verificar la nota guardada; no se reintenta automáticamente."}
+                    ToolExecution("Nota guardada y verificada en este dispositivo.",state=ExecutionState.VERIFIED)
+                }
                 is ToolRequest.Search -> {
                     val rows=when(request.kind) {
                         "apps"->searchEngine.search(request.query,c,SearchScope("","apps")).first()
@@ -78,8 +84,8 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                 }
                 is ToolRequest.Calendar->ToolExecution(Agenda.search(app,"",request.period).take(15).joinToString("\n"){"${it.title} · ${it.subtitle}"}.ifBlank{"Sin eventos en ese período."})
                 is ToolRequest.InspectApp->{val d=AppInspector.inspect(app,request.packageName);ToolExecution("${d.label} · ${d.packageName}\nVersión ${d.version}\n${d.permissions.size} permisos declarados · ${d.components.size} componentes públicos",Action.SystemPanel("app",request.packageName))}
-                is ToolRequest.SettingRead->ToolExecution("${request.key}: ${app.advancedBackend.read(request.key)}")
-                is ToolRequest.SettingWrite->{app.reversibleSettings.apply(request.key,request.value,confirmed);ToolExecution("Cambio verificado. El valor anterior quedó guardado para restaurarlo.",state=ExecutionState.VERIFIED)}
+                is ToolRequest.SettingRead->{val value=app.advancedBackend.read(request.key);check(dev.bautista.spotlight.advanced.AdvancedPolicy.validSetting(request.key,value)){"Valor observado fuera de los límites compatibles."};ToolExecution("${request.key}: $value",state=ExecutionState.VERIFIED,outputs=mapOf("value" to ToolValue(ToolValueType.NUMBER,value)))}
+                is ToolRequest.SettingWrite->{app.reversibleSettings.apply(request.key,request.value,confirmed);ToolExecution("Cambio verificado. El valor anterior quedó guardado para restaurarlo.",state=ExecutionState.VERIFIED,outputs=mapOf("value" to ToolValue(ToolValueType.NUMBER,request.value)))}
                 is ToolRequest.PrepareMessage->ToolExecution("Borrador preparado. Elegí el destinatario y revisá el envío.",Action.ComposeMessage(request.channel,request.name,request.text))
                 is ToolRequest.Workflow->{check(Workflows.parse(c.routines).any{it.id==request.id}){"La rutina no existe."};ToolExecution("Rutina preparada para revisión.",Action.WorkflowRun(request.id))}
                 ToolRequest.ScreenInspect->ToolExecution(PhoneUseService.inspect())
@@ -98,7 +104,7 @@ class ToolExecutor(private val app:SpotlightApp,private val searchEngine:SearchE
                     audio.setStreamVolume(AudioManager.STREAM_MUSIC,target,0)
                     val observed=audio.getStreamVolume(AudioManager.STREAM_MUSIC)
                     check(observed==target){"Android informó un nivel distinto al solicitado: $observed/$max. Revisá el estado; no se reintenta automáticamente."}
-                    ToolExecution("Volumen multimedia observado: $observed/$max (${(observed-min)*100/(max-min)} %).",state=ExecutionState.VERIFIED)
+                    ToolExecution("Volumen multimedia observado: $observed/$max (${(observed-min)*100/(max-min)} %).",state=ExecutionState.VERIFIED,outputs=mapOf("percent" to ToolValue(ToolValueType.NUMBER,((observed-min)*100/(max-min)).toString())))
                 }
                 is ToolRequest.TargetMedia->ToolExecution(MediaControl.executeForPackage(app,request.packageName,request.command),state=ExecutionState.REQUESTED)
                 is ToolRequest.Media->ToolExecution(MediaControl.execute(app,request.command),state=ExecutionState.REQUESTED)
