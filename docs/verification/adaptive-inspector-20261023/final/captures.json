@@ -1,0 +1,32 @@
+[
+  {
+    "file": "tablet-spotify-fixture.png",
+    "sha256": "7f0bace8445b08bfd15fecfbc05c36629c8e4b5c4fb762c33ef007644a12524d",
+    "pixels": [
+      1280,
+      800
+    ],
+    "origin": "Robolectric33/NATIVE/Compose real, fixture packages with Android placeholder icons; no physical device/wallpaper/provider",
+    "source_code_commit": "821ea952b4925499de49f94a4300a1f58946b150"
+  },
+  {
+    "file": "tablet-gmail-fixture.png",
+    "sha256": "728e89ebfabbc4f053bbd1c9715cc3dd06733c3e4d278cd93c105339c7f87373",
+    "pixels": [
+      1280,
+      800
+    ],
+    "origin": "Robolectric33/NATIVE/Compose real, fixture packages with Android placeholder icons; no physical device/wallpaper/provider",
+    "source_code_commit": "821ea952b4925499de49f94a4300a1f58946b150"
+  },
+  {
+    "file": "phone-spotify-fixture.png",
+    "sha256": "18b5433f24756e5e7b047e467380c74e756fad1ed09732eab81ef3918d3a4bd6",
+    "pixels": [
+      390,
+      844
+    ],
+    "origin": "Robolectric33/NATIVE/Compose real, fixture packages with Android placeholder icons; no physical device/wallpaper/provider",
+    "source_code_commit": "821ea952b4925499de49f94a4300a1f58946b150"
+  }
+]

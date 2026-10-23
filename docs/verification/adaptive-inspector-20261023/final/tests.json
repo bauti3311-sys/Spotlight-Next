@@ -1,0 +1,232 @@
+{
+  "unique_cases": 27,
+  "latest_all_passed": true,
+  "unaffected_retained": 12,
+  "affected_rerun": 15,
+  "runs": [
+    {
+      "label": "first-27",
+      "total": 27,
+      "passed": 23,
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.localThemeChangesWithPackageAndDoesNotLeakOutsideInspector",
+          "passed": true,
+          "seconds": "28.4"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.phoneUsesSameInspectorAndKeepsSearchAfterClosing",
+          "passed": true,
+          "seconds": "2.087"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.selectedInstalledAppsUseRealInspectorAndPinRetainsItsOwnColor",
+          "passed": false,
+          "seconds": "2.347"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorAccentTest.darkAndLightAccentsKeepReadableControlsWithoutChangingErrorOrSurface",
+          "passed": true,
+          "seconds": "2.613"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorAccentTest.formDestinationWinsAndUnrelatedTasksNeverInheritSelectedApplication",
+          "passed": true,
+          "seconds": "0.046"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorAccentTest.unknownAppsUseBoundedIconColorAndDoNotMutateSharedDrawable",
+          "passed": true,
+          "seconds": "0.135"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorAccentTest.identityIsExactAndNeverGuessedFromResultTitleOrQuery",
+          "passed": true,
+          "seconds": "0.03"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests",
+          "passed": true,
+          "seconds": "6.909"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn",
+          "passed": true,
+          "seconds": "0.813"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout",
+          "passed": true,
+          "seconds": "0.747"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection",
+          "passed": true,
+          "seconds": "0.611"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp",
+          "passed": true,
+          "seconds": "0.49"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.MediaInspectorFlowTest.realSessionMetadataIsContextualAndPinSurvivesSearchAndWidthChange",
+          "passed": true,
+          "seconds": "7.843"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.MediaInspectorFlowTest.absentSessionDoesNotCreateAnEmptyInspector",
+          "passed": true,
+          "seconds": "0.355"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.MediaInspectorFlowTest.phonePlayerFitsAndEscapeRestoresQuery",
+          "passed": true,
+          "seconds": "0.464"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.compactHomeHasNoAutomaticInspector",
+          "passed": true,
+          "seconds": "7.259"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus",
+          "passed": true,
+          "seconds": "0.86"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch",
+          "passed": false,
+          "seconds": "0.392"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.enterFromSearchLaunchesTheRealPrimaryIntent",
+          "passed": true,
+          "seconds": "0.216"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.briefTapSelectsWhileLongPressOpensActionsWithoutLaunching",
+          "passed": true,
+          "seconds": "0.382"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.lightSearchAndActionsUseSameStructure",
+          "passed": true,
+          "seconds": "0.419"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery",
+          "passed": true,
+          "seconds": "0.317"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.unavailableActionCannotExecuteAndFilteringPreservesIdentity",
+          "passed": true,
+          "seconds": "0.146"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow",
+          "passed": false,
+          "seconds": "0.243"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.phoneUsesSameFloatingActionsAndCanReachLastEntry",
+          "passed": true,
+          "seconds": "0.329"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.copySubmenuReturnsToSameRootSelectionBeforeClosing",
+          "passed": true,
+          "seconds": "0.386"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.spotifyPrefixShowsActualInstalledResultAndFloatingActions",
+          "passed": false,
+          "seconds": "0.385"
+        }
+      ]
+    },
+    {
+      "label": "affected-15",
+      "total": 15,
+      "passed": 15,
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.localThemeChangesWithPackageAndDoesNotLeakOutsideInspector",
+          "passed": true,
+          "seconds": "5.215"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.phoneUsesSameInspectorAndKeepsSearchAfterClosing",
+          "passed": true,
+          "seconds": "1.813"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.selectedInstalledAppsUseRealInspectorAndPinRetainsItsOwnColor",
+          "passed": true,
+          "seconds": "1.031"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.compactHomeHasNoAutomaticInspector",
+          "passed": true,
+          "seconds": "6.461"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus",
+          "passed": true,
+          "seconds": "0.678"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch",
+          "passed": true,
+          "seconds": "0.455"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.enterFromSearchLaunchesTheRealPrimaryIntent",
+          "passed": true,
+          "seconds": "0.227"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.briefTapSelectsWhileLongPressOpensActionsWithoutLaunching",
+          "passed": true,
+          "seconds": "0.473"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.lightSearchAndActionsUseSameStructure",
+          "passed": true,
+          "seconds": "0.419"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery",
+          "passed": true,
+          "seconds": "0.339"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.unavailableActionCannotExecuteAndFilteringPreservesIdentity",
+          "passed": true,
+          "seconds": "0.138"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow",
+          "passed": true,
+          "seconds": "0.322"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.phoneUsesSameFloatingActionsAndCanReachLastEntry",
+          "passed": true,
+          "seconds": "0.298"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.copySubmenuReturnsToSameRootSelectionBeforeClosing",
+          "passed": true,
+          "seconds": "0.323"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest.spotifyPrefixShowsActualInstalledResultAndFloatingActions",
+          "passed": true,
+          "seconds": "0.38"
+        }
+      ]
+    }
+  ]
+}

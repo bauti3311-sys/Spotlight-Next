@@ -1,0 +1,19 @@
+{
+  "source_code_commit": "821ea952b4925499de49f94a4300a1f58946b150",
+  "source_inputs": 436,
+  "tests_unique": 27,
+  "tests_in_rounds": true,
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 13,
+    "Information": 1
+  },
+  "debug_and_raycast_kotlin_java_compilation": true,
+  "apk_generated": false,
+  "release_r8_rerun": false,
+  "physical_validation": false,
+  "services_real": false,
+  "new_dependencies": false,
+  "github_actions_used": false
+}
