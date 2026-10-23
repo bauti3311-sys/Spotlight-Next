@@ -19,11 +19,11 @@ import dev.bautista.spotlight.control.SearchScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 
-internal data class ReviewedStep(val title:String,val call:ToolCall?,val requirement:String)
+internal data class ReviewedStep(val title:String,val call:ToolCall?,val requirement:String,val relative:RelativePlanValue?=null)
 internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan,boundCalls:List<ToolCall?> = emptyList()):List<ReviewedStep> {
     val capabilities=ToolExecutor(app).capabilities(c).associateBy { it.definition.id }
     val available=capabilities.filterValues { it.status==CapabilityStatus.AVAILABLE }.keys
-    return plan.steps.mapIndexed { index,step ->
+    val rows = plan.steps.mapIndexed { index,step ->
         boundCalls.getOrNull(index)?.let { saved ->
             require(dev.bautista.spotlight.automation.NativeCommands.accepts(saved)){"Acción guardada no compatible."}
             val request=ToolRegistry.decode(saved)
@@ -35,11 +35,12 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan,boundC
         }
         val title:String
         val call:ToolCall?
+        var relative:RelativePlanValue? = null
         when(step) {
             is PlanStep.Brightness->{title="Brillo al ${step.percent}%";call=if(step.percent*255/100<20)null else ToolCall("write_display_setting",mapOf("key" to "screen_brightness","value" to (step.percent*255/100).toString()))}
             is PlanStep.Volume->{title="Volumen al ${step.percent}%";call=ToolCall("set_volume",mapOf("percent" to step.percent.toString()))}
-            is PlanStep.RelativeBrightness->{val value=(android.provider.Settings.System.getInt(app.contentResolver,"screen_brightness",128)*100/255+step.delta).coerceIn(8,100);title="Brillo ${if(step.delta>0)"+" else ""}${step.delta}% → $value%";call=ToolCall("write_display_setting",mapOf("key" to "screen_brightness","value" to (value*255/100).toString()))}
-            is PlanStep.RelativeVolume->{val a=app.getSystemService(android.media.AudioManager::class.java);val max=a.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC).coerceAtLeast(1);val value=(a.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)*100/max+step.delta).coerceIn(0,100);title="Volumen ${if(step.delta>0)"+" else ""}${step.delta}% → $value%";call=ToolCall("set_volume",mapOf("percent" to value.toString()))}
+            is PlanStep.RelativeBrightness->{val baseline=android.provider.Settings.System.getInt(app.contentResolver,"screen_brightness",128)*100/255;relative=RelativePlanValue(RelativePlanSetting.BRIGHTNESS,step.delta,baseline);val value=(baseline+step.delta).coerceIn(8,100);title="Brillo ${if(step.delta>0)"+" else ""}${step.delta}% → $value%";call=ToolCall("write_display_setting",mapOf("key" to "screen_brightness","value" to (value*255/100).toString()))}
+            is PlanStep.RelativeVolume->{val a=app.getSystemService(android.media.AudioManager::class.java);val max=a.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC).coerceAtLeast(1);val baseline=a.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)*100/max;relative=RelativePlanValue(RelativePlanSetting.VOLUME,step.delta,baseline);val value=(baseline+step.delta).coerceIn(0,100);title="Volumen ${if(step.delta>0)"+" else ""}${step.delta}% → $value%";call=ToolCall("set_volume",mapOf("percent" to value.toString()))}
             is PlanStep.Media->{title=when(step.command){"pause"->"Pausar música";"play"->"Reanudar música";"next"->"Siguiente tema";else->"Tema anterior"};call=if(dev.bautista.spotlight.control.MediaControl.available(app,step.command))ToolCall("control_media",mapOf("command" to step.command)) else null}
             is PlanStep.Open->{title="Abrir ${step.name}";val apps=app.search.search(step.name,c,SearchScope("","apps")).first().filter { it.action is Action.Launch && it.category=="Aplicaciones" };val exact=apps.filter { normalize(it.title)==normalize(step.name) };val match=exact.singleOrNull() ?: apps.singleOrNull();call=(match?.action as? Action.Launch)?.intent?.component?.packageName?.let { ToolCall("open_app",mapOf("package" to it)) }}
         }
@@ -51,8 +52,9 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan,boundC
             step is PlanStep.Open && call==null->"No hay una app única coincidente. Buscá y elegí la aplicación."
             call!=null->capabilities[call.name]?.let{"${it.status.label} · ${it.reason}"} ?: "La herramienta no está disponible."
             else->"No se pudo comprobar la capacidad necesaria."
-        })
+        },relative)
     }
+    return projectPlanRows(rows, rows.indices.toSet())
 }
 
 @Composable internal fun DocumentAiCompoundPanel(
