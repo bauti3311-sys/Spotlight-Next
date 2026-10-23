@@ -106,7 +106,7 @@ object SettingsGroups {
   Row(Modifier.fillMaxWidth().testTag("settings-area:$group").selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=true},role=Role.Tab)
    .background(if(selected==group)colors.primary.copy(alpha=.12f) else Color.Transparent,RoundedCornerShape(9.dp))
    .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-   IosCommandIosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.primary)
+   IosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.primary)
    Text(SettingsGroups.label(group),Modifier.weight(1f),fontSize=13.sp,fontWeight=if(selected==group)FontWeight.Medium else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
   }
  }
