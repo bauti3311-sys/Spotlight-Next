@@ -228,9 +228,9 @@
     "id": "D26",
     "state": "PARCIAL",
     "decision": "Integraciones por capacidades",
-    "source": "IntegrationRegistry.kt; ToolRegistry.kt; ToolExecutor.kt",
-    "tests": "IntegrationRegistryTest; TargetMediaToolTest; PhoneUseSequencePolicyTest",
-    "remaining": "Intents/MediaSession/shortcuts condicionales reales. AppFunctions detecta prerrequisitos, no ejecutor general completo. No atribuir todo a Android.",
+    "source": "IntegrationRegistry.kt; ToolRegistry.kt; ToolExecutor.kt; AppCapabilities.kt; AppCapabilityActions.kt",
+    "tests": "IntegrationRegistryTest; TargetMediaToolTest; PhoneUseSequencePolicyTest; AppCapabilitiesTest (6 nuevos NO ejecutados)",
+    "remaining": "Adaptadores públicos de búsqueda/compartir conectados al inspector y revalidados por paquete. Falta compilar/ejecutar regresiones y validar destinos reales; APIs autenticadas y AppFunctions reales no cerrados. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
     "physical": "Apps deben publicar APIs/shortcuts; rol launcher para shortcuts y autorizaciones opcionales."
   },
   {
@@ -246,9 +246,9 @@
     "id": "D28",
     "state": "PARCIAL",
     "decision": "Comandos y alias",
-    "source": "NativeCommands.kt; PersonalCommands.kt; Preferences.kt; CommandTemplates.kt; CommandTemplatePanel.kt",
-    "tests": "NativeCommandsTest; PersonalCommandsTest; AliasTemplateRankingTest; NativeCommandFlowTest; CommandTemplatesTest (13 nuevos NO ejecutados); CommandTemplateFlowTest (4 nuevos NO ejecutados)",
-    "remaining": "Implementación de parámetros tipados generales, edición, persistencia con revisión y carga D27 preparada. Sin compilar/ejecutar por runtime Android ausente; no promover. Faltan verificar regresiones, permisos/destinos reales, persistencia/recuperación y cierre de todos los criterios. Evidencia: docs/verification/d28-20261023/STATUS.md.",
+    "source": "NativeCommands.kt; PersonalCommands.kt; Preferences.kt; CommandTemplates.kt; CommandTemplatePanel.kt; CommandTemplates.kt; CommandTemplatePanel.kt",
+    "tests": "NativeCommandsTest; PersonalCommandsTest; AliasTemplateRankingTest; NativeCommandFlowTest; CommandTemplatesTest (13 nuevos NO ejecutados); CommandTemplateFlowTest (4 nuevos NO ejecutados); CommandTemplatesTest (16); CommandTemplateFlowTest (4): NO ejecutados",
+    "remaining": "Formularios por esquema, parámetros, revisión/edición/persistencia/conflictos y carga D27 implementados; lectura tolera registros futuros sin borrarlos. Falta compilar y probar permisos/recuperación real. No se guardan todavía semánticas relativas ni omisiones como plantilla. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
     "physical": "Aplicaciones disponibles/permisos revalidados; sin scripts arbitrarios."
   },
   {
@@ -309,27 +309,27 @@
     "id": "D35",
     "state": "PARCIAL",
     "decision": "Resultados vivos",
-    "source": "NativeProviders.kt; NextPanel.kt; OnlineTools.kt",
-    "tests": "NativeProviderTest; OnlineDataTest; OfflineHttpContractTest; CalculatorTest",
-    "remaining": "Calculadora local y clima/deportes con caché/fuente/fecha existentes; uniformidad de filas/detalle/FX y cobertura completa por certificar.",
+    "source": "NativeProviders.kt; NextPanel.kt; OnlineTools.kt; SourceFreshness.kt; SourceFreshnessLabel.kt; NativeProviders.kt; SportsAgendaPanel.kt",
+    "tests": "NativeProviderTest; OnlineDataTest; OfflineHttpContractTest; CalculatorTest; SourceFreshnessTest; SportsAgendaMergeTest (4 nuevos NO ejecutados); NativeProviderTest ampliado",
+    "remaining": "Procedencia/hora de consulta/caché por resultado y merge de observación más reciente implementados. No implica datos en vivo ni actualización del proveedor. Compilación, regresiones y otros resultados contextuales pendientes. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
     "physical": "Disponibilidad/cuotas/fuentes externas; fixtures HTTP no son una consulta real."
   },
   {
     "id": "D36",
     "state": "PARCIAL",
     "decision": "Microestados",
-    "source": "SpotlightPanel.kt; ContextPanel.kt; ShareContextActivity.kt",
-    "tests": "ContextStorageStatusFlowTest; ToolTaskRecoveryTest; PlanExecutionTest",
-    "remaining": "Errores/cancelación locales existentes; importación compartida larga carece de progreso/cancelación visible propio. No todos los estados están unificados.",
+    "source": "SpotlightPanel.kt; ContextPanel.kt; ShareContextActivity.kt; ShareContextActivity.kt; BoundedSharedCopy.kt; SharedImportPanel.kt",
+    "tests": "ContextStorageStatusFlowTest; ToolTaskRecoveryTest; PlanExecutionTest; BoundedSharedCopyTest; SharedImportPanelTest (5 nuevos NO ejecutados)",
+    "remaining": "Importación compartida con progreso/cancelación y protección de publicación implementada. Falta regresión Activity→ContextStore y comprobación UI/errores/servicios; no cierre. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
     "physical": "Interrupciones y revocación reales, sin falso éxito externo."
   },
   {
     "id": "D37",
     "state": "PARCIAL",
     "decision": "Rendimiento",
-    "source": "FileIndex.kt; DocumentText.kt; SearchEngine.kt",
-    "tests": "AdaptiveIndexTest; OcrBudgetTest; OverlayStartupTest",
-    "remaining": "Límites/LRU/cancelación existentes; falta benchmark cold/warm/RAM/jank/batería y ajustar con mediciones.",
+    "source": "FileIndex.kt; DocumentText.kt; SearchEngine.kt; Diagnostics.kt",
+    "tests": "AdaptiveIndexTest; OcrBudgetTest; OverlayStartupTest; DiagnosticsMeasurementTest (5 nuevos NO ejecutados)",
+    "remaining": "Instrumentación corregida: primera apertura no equivale a arranque frío; heap Java no es RAM/PSS. Sin benchmark físico, jank, CPU o indexación medidos. Compilar/probar antes de cualquier aceptación. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
     "physical": "Tab A9+ y Moto; no deducir rendimiento físico de tests JVM."
   },
   {
@@ -354,9 +354,9 @@
     "id": "D40",
     "state": "PARCIAL",
     "decision": "Calidad integral",
-    "source": "AGENTS.md; STATUS_40_DECISIONES.md",
-    "tests": "docs/verification/integral-c2-c5-20261022; docs/verification/solid-graphite-20261023",
-    "remaining": "Checkpoints/APK42 y evidencias existentes, pruebas funcionales nuevas en curso; no candidato C5 completo.",
+    "source": "AGENTS.md; STATUS_40_DECISIONES.md; scripts/test-d28-directed.sh; scripts/test_directed_runner.py",
+    "tests": "docs/verification/integral-c2-c5-20261022; docs/verification/solid-graphite-20261023; DirectedRunnerTest 5/5 ejecutados (solo tooling); todas las nuevas Android pendientes",
+    "remaining": "Runner por grupos, offline/sin descarga/APK/Actions comprobado con stub. No acredita ninguna prueba Android, integración externa ni validación física. UI08f19055, D28 e integraciones siguen pendientes. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
     "physical": "One UI/Moto, proceso, IME, servicios externos, seguridad y rendimiento físicos obligatorios."
   }
 ]

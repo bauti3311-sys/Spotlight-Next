@@ -1,0 +1,8 @@
+// Release each Robolectric classloader after its class; no parallel test JVMs.
+allprojects {
+    tasks.withType(Test).configureEach {
+        maxParallelForks = 1
+        forkEvery = 1
+        maxHeapSize = '1536m'
+    }
+}

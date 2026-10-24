@@ -7,3 +7,5 @@ Base0c8b0a8d. Code: typed whole-argument parameters (TEXT/NUMBER/PACKAGE/CHOICE)
 Affordable alternative: run `bash scripts/test-d28-directed.sh` on an already provisioned local host/Codespace with JDK17, Gradle8.10.2, SDK35 and cached dependencies. Offline, one Gradle worker, directed classes only; no APK and no GitHub Actions dispatch. UI regressions remain listed first. No Actions authorized or started. No physical/Gemini/Spotify/Cast verification.
 
 D28 remains PARTIAL and UI08f19055 remains pending. Matrix9 complete/25 insufficient/6partial; Preview44/45 unchanged. Next execution gate: UI regressions, CommandTemplatesTest/CommandTemplateFlowTest, native-command neighbors; fix any compile or runtime failure before promoting D28 or packaging a Preview.
+
+Ampliación continua: formularios por esquema y validación conjunta; ahora16 casos de dominio y4 de UI (20), todos sin ejecutar. Lectura por registro conserva visibilidad junto a formatos futuros. Ver ../continuous-20261023/STATUS.md; el runner admite grupos y por defecto valida UI primero, sin descargas.
