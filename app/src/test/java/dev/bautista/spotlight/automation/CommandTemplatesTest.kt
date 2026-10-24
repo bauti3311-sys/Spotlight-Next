@@ -84,7 +84,8 @@ class CommandTemplatesTest {
     }
     @Test fun mixedNativeAndTemplateCommandsRemainVisibleAndOnlyOpenReview() {
         val native=Workflow("native","Comando previo",steps=listOf(WorkflowStep("tool_action",Workflows.encodeTool(volume))),kind=NativeCommands.KIND)
-        val raw=JSONArray(Workflows.encode(listOf(native))).put(CommandTemplates.encode(template())).toString()
+        val raw=JSONArray(Workflows.encode(listOf(native))).put(JSONObject().put("kind","future-format").put("metadata","preserve"))
+            .put("opaque future record").put(CommandTemplates.encode(template())).toString()
         assertEquals(1,Workflows.parse(raw).size);assertEquals(2,NativeCommands.results(raw).size)
         val result=Workflows.results("estudio",raw,emptySet()).single()
         assertEquals(Action.SystemPanel("saved-command",template().id),result.action)
