@@ -110,6 +110,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         val suppliedMime=context.contentResolver.getType(uri).orEmpty()
         val title=runCatching{context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME),null,null,null)?.use{if(it.moveToFirst())it.getString(0) else null}}.getOrNull() ?: "Documento autorizado"
         val mime=dev.bautista.spotlight.index.OfficeText.mime(title,suppliedMime).orEmpty()
+        currentCoroutineContext().ensureActive()
         SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
     }
     suspend fun text(item:SharedContext):String=withContext(Dispatchers.IO) {
