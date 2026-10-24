@@ -631,3 +631,7 @@ Source changes and four new regression cases prepared for split-inspector height
 
 ## 23/10 — Ampliación aprobada: integraciones y Chromecast
 Orden vigente: validar errores08f19055 → D28 → D26 → Spotify Search/reproducción → Google Cast/Remote v2 experimental → D35/D36/D37 y las25 decisiones con pruebas insuficientes → cierre real de las40. Alcance y límites en docs/PRIORIDADES-INTEGRACIONES-20261023.md. Una configuración externa de Spotify/Chromecast no bloquea trabajo independiente; primero siguen siendo obligatorias las regresiones UI. Runtime Android anterior aún ausente; sin nuevas ejecuciones ni promociones, matriz9/25/6 y Preview44/45 conservadas.
+
+
+## 23/10 — Gate #54: test compilation correction, no CI rerun
+Single authorized directed-tests run40048431940 on b0252a94: production Kotlin/Java compiled; unit-test Kotlin failed on five DpRect.height references in ContextSplitHeightTest. Replaced with bottom-top helper, preserving assertions and thresholds. Static review found no other occurrence across243 test sources. No Android tests executed; quota prevented artifact upload, original GitHub/local job logs preserved. Evidence: docs/verification/mandatory-gate-20261023/gate-54-failure.md. No production changes, new CI/APK or matrix promotion;9/25/6 unchanged. Next gate only with new explicit authorization.
