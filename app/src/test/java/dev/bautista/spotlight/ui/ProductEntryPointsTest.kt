@@ -1,6 +1,7 @@
 package dev.bautista.spotlight.ui
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import dev.bautista.spotlight.SpotlightApp
@@ -16,6 +17,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@OptIn(ExperimentalTestApi::class)
 @Config(sdk=[33],qualifiers="w1280dp-h800dp",application=SpotlightApp::class)
 class ProductEntryPointsTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
@@ -26,7 +28,8 @@ class ProductEntryPointsTest {
         ui.onNodeWithContentDescription("Abrir Guardados").assertIsDisplayed().performClick()
         ui.onNodeWithText("pdf de ayer").assertExists()
         ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
-        ui.onNodeWithContentDescription("Abrir Ajustes").performClick()
+        ui.onNodeWithContentDescription("Opciones de Spotlight").performClick()
+        ui.onNodeWithText("Ajustes").performClick()
         val settings=org.robolectric.Shadows.shadowOf(ui.activity).nextStartedActivity
         assertEquals(dev.bautista.spotlight.MainActivity::class.java.name,settings.component!!.className)
         assertEquals(app.packageName,settings.component!!.packageName)
@@ -42,9 +45,11 @@ class ProductEntryPointsTest {
         ui.onNodeWithContentDescription("Abrir Guardados").performClick()
         ui.onNodeWithTag("home-suggestion-hint").assertDoesNotExist()
         ui.onNodeWithText("Volver").performClick()
+        ui.waitUntil(15000) { runCatching { ui.onNodeWithTag("home-suggestion-hint").assertIsDisplayed() }.isSuccess }
         ui.onNodeWithTag("home-suggestion-hint").assertIsDisplayed()
-        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick()
-        ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        ui.onNode(hasSetTextAction()).performKeyInput {
+            keyDown(Key.CtrlLeft); pressKey(Key.One); keyUp(Key.CtrlLeft)
+        }
         ui.onNodeWithTag("home-suggestion-hint").assertDoesNotExist()
     }
     @Test fun catalogAlsoHidesRetiredModesAndKeepsRealAndroidActions() {
@@ -64,7 +69,7 @@ class ProductEntryPointsTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent { SpotlightPanel(app,legacy.copy(files=false,animations=false),{},initialQuery="2+2") }
         ui.waitUntil(15000) { ui.onAllNodesWithText("4").fetchSemanticsNodes().isNotEmpty() }
-        ui.onNodeWithText("Tab acciones").performClick()
+        ui.onNode(hasSetTextAction()).performKeyInput { pressKey(Key.Tab) }
         ui.onNodeWithText("Guardar como nota").assertExists()
         ui.onNodeWithText("Guardar texto frecuente").assertDoesNotExist()
     }
