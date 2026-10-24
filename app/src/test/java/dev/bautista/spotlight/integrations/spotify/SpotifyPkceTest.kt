@@ -5,7 +5,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class SpotifyPkceTest {
-    private fun pending()=SpotifyPkce.prepare("a".repeat(32),"dev.bautista.spotlight.next.raycastpreview.spotify://oauth",1000)
+    private fun pending()=SpotifyPkce.prepare("a".repeat(32),"http://127.0.0.1:43123/spotify/callback",1000)
     private fun callback(p:PendingSpotifyAuthorization,state:String=p.state)="${p.redirect}?code=fixture-code&state=${URLEncoder.encode(state,"UTF-8")}"
     @Test fun s256MatchesRfc7636Vector() {
         assertEquals("E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",SpotifyPkce.challenge("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"))
@@ -18,7 +18,7 @@ class SpotifyPkceTest {
     }
     @Test fun wrongStateRedirectDuplicatesAndExpiredResponseAreRejected() {
         for(build in listOf<(PendingSpotifyAuthorization)->String>(
-            {callback(it,"wrong")},{callback(it).replace("://oauth","://evil")},{callback(it)+"&state=${it.state}"})) {
+            {callback(it,"wrong")},{callback(it).replace("127.0.0.1", "127.0.0.2")},{callback(it)+"&state=${it.state}"})) {
             val p=pending();assertTrue(runCatching{SpotifyPkce.exchangeRequest(p,build(p),2000)}.isFailure)
         }
         val p=pending();assertTrue(runCatching{SpotifyPkce.exchangeRequest(p,callback(p),601001)}.isFailure)
@@ -34,7 +34,7 @@ class SpotifyPkceTest {
         assertTrue(runCatching{SpotifyPkce.exchangeRequest(p,callback(p),2001)}.isFailure)
     }
     @Test fun insecureOrQueryBearingRedirectsAreRejected() {
-        for(url in listOf("http://example.com/callback","https://example.com/callback?state=owned","https://user@example.com/callback","other.app://oauth"))
+        for(url in listOf("http://example.com/callback","https://example.com/callback?state=owned","https://user@example.com/callback","other.app://oauth", "http://localhost:43123/spotify/callback", "http://127.0.0.1:43123/other", "dev.bautista.spotlight.next.raycastpreview.spotify://oauth"))
             assertTrue(runCatching{SpotifyPkce.prepare("a".repeat(32),url)}.isFailure)
     }
 }

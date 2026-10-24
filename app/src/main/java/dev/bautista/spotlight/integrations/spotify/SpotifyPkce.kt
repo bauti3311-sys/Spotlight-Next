@@ -12,7 +12,7 @@ import java.util.Base64
 /** Ephemeral verifier/state are never encoded into configuration, logs or source backups. */
 class PendingSpotifyAuthorization internal constructor(
     internal val clientId:String,internal val redirect:String,internal val verifier:String,
-    internal val state:String,internal val createdAt:Long,
+    internal val state:String,internal val createdAt:Long,internal val scopes:Set<String>,
 ) {
     internal var consumed=false
     override fun toString()="PendingSpotifyAuthorization(redacted)"
@@ -23,21 +23,24 @@ object SpotifyPkce {
         require(verifier.matches(Regex("[A-Za-z0-9._~-]{43,128}")))
         return Base64.getUrlEncoder().withoutPadding().encodeToString(MessageDigest.getInstance("SHA-256").digest(verifier.toByteArray(Charsets.US_ASCII)))
     }
-    fun prepare(clientId:String,redirect:String,now:Long=System.currentTimeMillis()):PendingSpotifyAuthorization {
+    fun prepare(clientId:String,redirect:String,now:Long=System.currentTimeMillis(),scopes:Set<String> = emptySet()):PendingSpotifyAuthorization {
         require(clientId.matches(Regex("[A-Za-z0-9]{32}"))){"Client ID inválido."}
         val uri=URI(redirect)
         require(uri.rawQuery==null && uri.rawFragment==null && uri.rawUserInfo==null)
         require(uri.scheme=="https" && !uri.host.isNullOrBlank() ||
-            uri.scheme in setOf("dev.bautista.spotlight.next.spotify","dev.bautista.spotlight.next.raycastpreview.spotify") && uri.host=="oauth"){"Registrá un redirect seguro y exacto."}
+            uri.scheme=="http" && uri.host=="127.0.0.1" && uri.port in 1..65535 && uri.rawPath=="/spotify/callback"){
+            "Registrá un redirect HTTPS o el retorno local exacto de Spotify."}
         require(redirect.length<=1000 && now>=0)
-        return PendingSpotifyAuthorization(clientId,redirect,random(),random(),now)
+        require(scopes.all{it in setOf("user-read-playback-state","user-modify-playback-state")})
+        return PendingSpotifyAuthorization(clientId,redirect,random(),random(),now,scopes.toSet())
     }
     fun authorizationUrl(pending:PendingSpotifyAuthorization):String {
         check(!pending.consumed)
         return "https://accounts.spotify.com/authorize".toHttpUrl().newBuilder()
             .addQueryParameter("client_id",pending.clientId).addQueryParameter("response_type","code")
             .addQueryParameter("redirect_uri",pending.redirect).addQueryParameter("state",pending.state)
-            .addQueryParameter("code_challenge_method","S256").addQueryParameter("code_challenge",challenge(pending.verifier)).build().toString()
+            .addQueryParameter("code_challenge_method","S256").addQueryParameter("code_challenge",challenge(pending.verifier))
+            .apply{if(pending.scopes.isNotEmpty())addQueryParameter("scope",pending.scopes.sorted().joinToString(" "))}.build().toString()
     }
     /** One valid response consumes this transaction. No client secret and no token in a URL. */
     fun exchangeRequest(pending:PendingSpotifyAuthorization,callback:String,now:Long=System.currentTimeMillis()):Request = synchronized(pending) {

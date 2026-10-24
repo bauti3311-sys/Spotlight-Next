@@ -15,7 +15,7 @@ interface AiCredentials { fun read(provider:String):String?; fun contains(provid
 /** Keys never enter DataStore, backups, URLs or logging. Call read/save on IO. */
 class CredentialVault(context:Context):AiCredentials {
     private val directory=File(context.noBackupFilesDir,"credentials")
-    private fun file(provider:String):File { require(provider in setOf("openai","gemini","thesportsdb"));return File(directory,"$provider.enc") }
+    private fun file(provider:String):File { require(provider in setOf("openai","gemini","thesportsdb","spotify"));return File(directory,"$provider.enc") }
     @Synchronized private fun key():SecretKey {
         val store=KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
         (store.getKey("spotlight.ai.v1",null) as? SecretKey)?.let { return it }
