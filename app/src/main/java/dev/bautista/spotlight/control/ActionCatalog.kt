@@ -11,8 +11,8 @@ data class SearchScope(val topic:String,val section:String,val kind:String="") {
 
 object ActionCatalog {
     fun displayName(topic:String):String=mapOf("whatsapp_business" to "WhatsApp Business","whatsapp" to "WhatsApp","youtube" to "YouTube","gmail" to "Gmail","sms" to "SMS","email" to "Correo","sofascore" to "Sofascore")[topic] ?: topic.replaceFirstChar{it.uppercase()}
-    private val aliases=mapOf("whatsapp business" to "whatsapp_business","whatsapp_business" to "whatsapp_business","wa" to "whatsapp","yt" to "youtube","youtube" to "youtube","whatsapp" to "whatsapp","sonido" to "sonido","audio" to "sonido","volumen" to "sonido","ajustes de sonido" to "sonido","wi-fi" to "sistema","wifi" to "sistema","bluetooth" to "sistema","pantalla" to "sistema","sistema" to "sistema","ajustes" to "sistema","configuracion" to "sistema","agenda" to "agenda","calendario" to "agenda","archivos" to "archivos","acciones" to "acciones","sp" to "spotify","spotify" to "spotify","sofascore" to "sofascore","telegram" to "telegram","mapas" to "mapas","chrome" to "chrome","google" to "google","gmail" to "gmail")
-    val packages=mapOf("whatsapp_business" to "com.whatsapp.w4b","whatsapp" to "com.whatsapp","youtube" to "com.google.android.youtube","spotify" to "com.spotify.music","sofascore" to "com.sofascore.results","telegram" to "org.telegram.messenger","mapas" to "com.google.android.apps.maps","chrome" to "com.android.chrome","gmail" to "com.google.android.gm")
+    private val aliases=mapOf("whatsapp business" to "whatsapp_business","whatsapp_business" to "whatsapp_business","wa" to "whatsapp","yt" to "youtube","youtube" to "youtube","whatsapp" to "whatsapp","sonido" to "sonido","audio" to "sonido","volumen" to "sonido","ajustes de sonido" to "sonido","wi-fi" to "sistema","wifi" to "sistema","bluetooth" to "sistema","pantalla" to "sistema","sistema" to "sistema","ajustes" to "sistema","configuracion" to "sistema","agenda" to "agenda","calendario" to "agenda","archivos" to "archivos","acciones" to "acciones","sp" to "spotify","spotify" to "spotify","sofascore" to "sofascore","telegram" to "telegram","mapas" to "mapas","chrome" to "chrome","vivaldi" to "vivaldi","google" to "google","gmail" to "gmail")
+    val packages=mapOf("whatsapp_business" to "com.whatsapp.w4b","whatsapp" to "com.whatsapp","youtube" to "com.google.android.youtube","spotify" to "com.spotify.music","sofascore" to "com.sofascore.results","telegram" to "org.telegram.messenger","mapas" to "com.google.android.apps.maps","chrome" to "com.android.chrome","vivaldi" to "com.vivaldi.browser","gmail" to "com.google.android.gm")
     fun topic(query:String):String?=aliases[normalize(query.trim())]
     fun canonical(query:String):String {
         Regex("^buscar videos(?: de)? (.+)$",RegexOption.IGNORE_CASE).matchEntire(query.trim())?.let{return "youtube "+it.groupValues[1]}
@@ -51,7 +51,7 @@ object ActionCatalog {
                 else out+=row("$topic:compose","Enviar mensaje","Elegir contacto y escribir aquí",Action.ComposeMessage(if(topic=="gmail")"email" else "whatsapp"))
                 if(topic in setOf("whatsapp","whatsapp_business"))out+=row("wa:reply","Responder mensajes recibidos","Notificaciones con respuesta directa",Action.Navigate(SearchScope(topic,"replies")))
             }
-            "youtube","spotify","sofascore","google","chrome","mapas" -> out+=row("$topic:search",if(topic=="sofascore")"Buscar equipo o resultado" else "Buscar en $title","Ingresar búsqueda aquí",Action.ComposeSearch(topic,packageName ?: ""))
+            "youtube","spotify","sofascore","google","chrome","vivaldi","mapas" -> out+=row("$topic:search",if(topic=="sofascore")"Buscar equipo o resultado" else "Buscar en $title","Ingresar búsqueda aquí",Action.ComposeSearch(topic,packageName ?: ""))
             "sonido" -> {
                 out+=row("audio-panel","Controlar volumen","Ajuste multimedia dentro de Spotlight",Action.AudioPanel())
                 listOf("Subir volumen" to "volume_up","Bajar volumen" to "volume_down","Silenciar" to "mute","Activar sonido" to "unmute","Reproducir" to "play","Pausar" to "pause","Siguiente canción" to "next","Canción anterior" to "previous").forEach{(label,cmd)->out+=row(cmd,label,"Control nativo",Action.Device(cmd))}
@@ -91,10 +91,10 @@ object ActionCatalog {
     fun searchAction(topic:String,packageName:String,query:String):Action? {
         val q=query.trim();if(q.isBlank())return null
         val url=when(topic){"youtube"->"https://www.youtube.com/results?search_query=";"spotify"->"https://open.spotify.com/search/";"mapas"->"https://www.google.com/maps/search/?api=1&query=";"sofascore"->"https://www.google.com/search?q=";else->"https://www.google.com/search?q="}
-        val term=when(topic){"sofascore"->"site:sofascore.com $q resultado";"google","chrome","youtube","spotify","mapas"->q;else->"$topic $q"}
+        val term=when(topic){"sofascore"->"site:sofascore.com $q resultado";"google","chrome","vivaldi","youtube","spotify","mapas","app"->q;else->"$topic $q"}
         val web=Intent(Intent.ACTION_VIEW,Uri.parse(url+Uri.encode(term)))
         val pkg=packageName.ifBlank {packages[topic].orEmpty()}
-        return if(topic in setOf("google","chrome") || pkg.isBlank())Action.Launch(web)
-        else Action.InApp(if(topic in setOf("youtube","spotify","mapas"))Intent(web).setPackage(pkg) else Intent(Intent.ACTION_SEARCH).setPackage(pkg).putExtra(android.app.SearchManager.QUERY,q),web)
+        return if(topic=="google" || pkg.isBlank())Action.Launch(web)
+        else Action.InApp(if(topic in setOf("youtube","spotify","mapas","chrome","vivaldi"))Intent(web).setPackage(pkg) else Intent(Intent.ACTION_SEARCH).setPackage(pkg).putExtra(android.app.SearchManager.QUERY,q),web)
     }
 }

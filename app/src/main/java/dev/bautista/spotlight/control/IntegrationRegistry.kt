@@ -16,6 +16,7 @@ data class Capability(val title: String, val state: CapabilityState, val explana
 class IntegrationRegistry(private val context: Context) {
     fun resolves(intent: Intent): Boolean = runCatching {
         val activity=context.packageManager.resolveActivity(intent,0)?.activityInfo ?: return@runCatching false
+        if(intent.`package`!=null && activity.packageName!=intent.`package`)return@runCatching false
         activity.enabled && activity.applicationInfo?.enabled!=false &&
             (activity.packageName==context.packageName || activity.exported) &&
             (activity.permission.isNullOrBlank() || androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)==android.content.pm.PackageManager.PERMISSION_GRANTED)
@@ -27,7 +28,7 @@ class IntegrationRegistry(private val context: Context) {
             Capability("Buscar dentro de la app", if(resolves(Intent(Intent.ACTION_SEARCH).setPackage(packageName))) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Actividad pública de búsqueda"),
             Capability("Accesos directos publicados", if(launcher?.hasShortcutHostPermission() == true) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Android los reserva al lanzador predeterminado; Spotlight conserva tu lanzador actual")
         )
-        val documented=if(packageName in setOf("com.spotify.music","com.google.android.youtube","com.google.android.apps.maps","com.sofascore.results"))listOf(Capability("Búsqueda documentada",CapabilityState.AVAILABLE,"Abrir búsqueda mediante enlace compatible o respaldo web; no controlar datos internos")) else emptyList()
+        val documented=if(AppCapabilities(context).available(packageName).any{it.mechanism==AppCapabilityMechanism.DOCUMENTED_LINK} && packageName in setOf("com.spotify.music","com.google.android.youtube","com.google.android.apps.maps","com.sofascore.results"))listOf(Capability("Búsqueda documentada",CapabilityState.AVAILABLE,"Abrir búsqueda mediante enlace compatible o respaldo web; no controlar datos internos")) else emptyList()
         return base + documented + if(packageName in setOf("com.whatsapp","com.whatsapp.w4b")) listOf(
             Capability("Elegir contactos",if(People.allowed(context)) CapabilityState.AVAILABLE else CapabilityState.PERMISSION_REQUIRED,"READ_CONTACTS se solicita al elegir un nombre"),
             Capability("Responder notificaciones",if(Replies.connected.value) CapabilityState.AVAILABLE else CapabilityState.PERMISSION_REQUIRED,"Acceso especial a notificaciones; solo respuestas que la app publica")

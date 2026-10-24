@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
     onActions: () -> Unit,
     onMedia: (String) -> Unit,
     mediaContent: (@Composable () -> Unit)? = null,
+    capabilitiesContent: (@Composable () -> Unit)? = null,
 ) {
     val colors=MaterialTheme.colorScheme
     val context=LocalContext.current
@@ -74,6 +75,7 @@ import kotlinx.coroutines.withContext
             }
             InspectorActionRow("Ver acciones contextuales",R.drawable.inspector_ios_actions,"Ctrl+K",onActions)
         }
+        capabilitiesContent?.invoke()
         if(packageName!=null) {
             HorizontalDivider(color=colors.onSurface.copy(alpha=.10f))
             Column(Modifier.fillMaxWidth().testTag("inspector-metadata"),verticalArrangement=Arrangement.spacedBy(10.dp)) {
