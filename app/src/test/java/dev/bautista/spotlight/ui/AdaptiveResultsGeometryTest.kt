@@ -19,6 +19,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],qualifiers="w1280dp-h1100dp",application=SpotlightApp::class)
+@org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
 class AdaptiveResultsGeometryTest {
     @get:Rule val ui=createComposeRule()
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
@@ -39,6 +40,7 @@ class AdaptiveResultsGeometryTest {
                 initialQuery="Geometry",availableHeightDp=viewport)
         } }
         ui.waitUntil(15000){ui.onAllNodesWithTag("result:fixture.geometry00/fixture.geometry00.Main").fetchSemanticsNodes().isNotEmpty()}
+println("GEOMETRY ROOT="+ui.onNodeWithTag("spotlight-root").getUnclippedBoundsInRoot()+" ROWS="+ui.onAllNodes(hasText("Geometry",substring=true)).fetchSemanticsNodes().map { it.boundsInRoot })
     }
     private fun footerFits() {
         val root=ui.onNodeWithTag("spotlight-root").getUnclippedBoundsInRoot()
@@ -59,7 +61,7 @@ class AdaptiveResultsGeometryTest {
     @Test fun keyboardBudgetShrinksAndRestoresWithoutLosingMatches() {
         show();ui.onNodeWithText("Geometry 11").assertIsDisplayed()
         ui.runOnIdle{viewport=330f};footerFits()
-        ui.onNodeWithText("Geometry 11").performScrollTo().assertIsDisplayed()
+        ui.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Geometry 11"));ui.onNodeWithText("Geometry 11").assertIsDisplayed()
         ui.runOnIdle{viewport=1000f};ui.waitForIdle();footerFits()
         ui.onNodeWithText("Geometry 11").assertIsDisplayed()
     }
@@ -74,7 +76,7 @@ class AdaptiveResultsGeometryTest {
         show(compact=true)
         ui.onNodeWithText("Geometry 06").assertDoesNotExist()
         ui.onNodeWithTag("results-expand").performClick()
-        ui.onNodeWithText("Geometry 11").performScrollTo().assertIsDisplayed()
+        ui.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Geometry 11"));ui.onNodeWithText("Geometry 11").assertIsDisplayed()
         footerFits()
     }
 }
