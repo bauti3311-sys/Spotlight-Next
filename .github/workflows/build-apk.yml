@@ -1,9 +1,21 @@
-name: Build Debug APK
+name: Spotlight Android gate or Preview (manual)
 
 # Manual only. Select feat/raycast-sidebar-permissions-20261020 in the Actions UI.
 # This file also exists on main, so GitHub can show its Run workflow button.
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'directed-tests: compile + directed unit tests, no APK. preview: existing delivery flow.'
+        type: choice
+        options: [directed-tests, preview]
+        default: directed-tests
+        required: true
+      source_sha:
+        description: 'Exact 40-character source SHA. Initial functional gate: 085142ea.'
+        type: string
+        default: '085142ea35bd7d19085d45118ee1776b1c80d721'
+        required: true
 
 permissions:
   contents: read
@@ -13,19 +25,143 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  directed-gate:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' && inputs.mode == 'directed-tests'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      SPOTLIGHT_GRADLE_BIN: gradle
+    steps:
+      - name: Validate exact source request
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo '::error::A full lowercase source SHA is required.'; exit 2; }
+          test "$GITHUB_REF" = 'refs/heads/feat/raycast-sidebar-permissions-20261020'
+
+      - name: Checkout exact source SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify source ancestry and preserve identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git merge-base --is-ancestor "$SOURCE_SHA" refs/remotes/origin/feat/raycast-sidebar-permissions-20261020
+          mkdir -p gate-evidence
+          git rev-parse HEAD > gate-evidence/SOURCE_SHA.txt
+          printf '%s\n' "${GITHUB_WORKFLOW_SHA:-$GITHUB_SHA}" > gate-evidence/WORKFLOW_SHA.txt
+          printf '%s\n' "$GITHUB_WORKFLOW_REF" > gate-evidence/WORKFLOW_REF.txt
+          test -f scripts/test-d28-directed.sh
+          test -f scripts/directed-tests.init.gradle
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Reuse Android SDK installation
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+
+      - name: Ensure only required Android compile packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -f "$ANDROID_HOME/platforms/android-35/android.jar" || ! -x "$ANDROID_HOME/build-tools/35.0.0/aapt2" ]]; then
+            sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+          fi
+
+      - name: Restore Gradle 8.10.2 and dependency caches
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+          cache-read-only: false
+
+      - name: Compile production and unit test sources once
+        shell: bash
+        run: |
+          set -euo pipefail
+          java -version 2>&1 | tee gate-evidence/java.log
+          gradle --version | tee gate-evidence/gradle.log
+          gradle :app:compileDebugUnitTestKotlin -I scripts/directed-tests.init.gradle \
+            --no-daemon --max-workers=1 --console=plain --stacktrace \
+            2>&1 | tee gate-evidence/compile.log
+
+      - name: Directed groups UI then D28 and integrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Compile/warmup above may download missing dependencies. Tests use the
+          # source's existing offline runner; Robolectric may fetch its own runtime.
+          for group in ui d28 capabilities spotify cast imports metrics sources; do
+            if bash scripts/test-d28-directed.sh "$group" 2>&1 | tee "gate-evidence/$group.log"; then
+              result=0
+            else
+              result=$?
+            fi
+            # Gradle replaces this directory on the next test invocation.
+            mkdir -p "gate-evidence/results/$group"
+            if [[ -d app/build/test-results/testDebugUnitTest ]]; then
+              find app/build/test-results/testDebugUnitTest -maxdepth 1 -type f -name '*.xml' -exec cp -t "gate-evidence/results/$group/" {} +
+            fi
+            printf '%s\n' "$result" > "gate-evidence/$group.exit-code"
+            if (( result != 0 )); then exit "$result"; fi
+          done
+
+      - name: Retain last failing test results and verify no APK was generated
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p gate-evidence
+          if [[ -d app/build/test-results/testDebugUnitTest ]]; then
+            mkdir -p gate-evidence/results-last
+            find app/build/test-results/testDebugUnitTest -maxdepth 1 -type f -name '*.xml' -exec cp -t gate-evidence/results-last/ {} +
+          fi
+          if find app/build/outputs -type f -name '*.apk' -print -quit 2>/dev/null | grep -q .; then
+            echo '::error::Unexpected APK output; gate must not assemble or sign APKs.'
+            exit 1
+          fi
+
+      - name: Upload only gate logs and XML reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directed-gate-${{ inputs.source_sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gate-evidence/
+          if-no-files-found: warn
+          retention-days: 3
+          compression-level: 6
+
   raycast-preview:
-    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020'
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' && inputs.mode == 'preview'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout exact selected branch
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Verify selected revision
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
         run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
           test "$GITHUB_REF" = 'refs/heads/feat/raycast-sidebar-permissions-20261020'
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git merge-base --is-ancestor "$SOURCE_SHA" refs/remotes/origin/feat/raycast-sidebar-permissions-20261020
           printf 'Building source SHA: '
           git rev-parse HEAD
 
