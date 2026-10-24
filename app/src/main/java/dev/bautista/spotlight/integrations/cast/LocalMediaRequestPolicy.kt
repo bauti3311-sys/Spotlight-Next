@@ -38,7 +38,7 @@ class LocalMediaRequestPolicy(
 data class LocalMediaGrant(val status:Int,val offset:Long,val length:Long,val includeBody:Boolean,val headers:Map<String,String>)
 data class ByteRange(val start:Long,val endInclusive:Long) {
     init {require(start>=0 && endInclusive>=start)}
-    val length get()=endInclusive-start+1
+    val length get()=Math.addExact(endInclusive-start,1L)
     companion object {
         /** Single RFC7233 range only. A server must translate rejection to HTTP416,
          * never silently return the entire private file. */

@@ -12,6 +12,9 @@ class LocalMediaRequestPolicyTest {
         assertEquals(ByteRange(0,999),ByteRange.parse("bytes=-2000",1000))
         assertEquals(ByteRange(999,999),ByteRange.parse("bytes=999-999999",1000))
     }
+    @Test fun publicRangeLengthCannotOverflowToNegative() {
+        assertTrue(runCatching{ByteRange(0,Long.MAX_VALUE).length}.isFailure)
+    }
     @Test fun invalidMultipleAndOverflowRangesDoNotFallBackToFullContent() {
         for(header in listOf("bytes=0-9,20-30","bytes=1000-","bytes=-0","bytes=9-1","bytes=-","bytes=999999999999999999999999-","items=0-1"))
             assertTrue(header,runCatching{ByteRange.parse(header,1000)}.isFailure)
