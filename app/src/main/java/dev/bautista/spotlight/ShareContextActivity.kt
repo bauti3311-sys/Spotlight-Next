@@ -24,7 +24,9 @@ class ShareContextActivity:ComponentActivity() {
  private var importJob:Job?=null
  internal fun cancelImport(){importJob?.cancel();finish()}
  override fun onCreate(state:Bundle?){super.onCreate(state);if(state!=null){finish();return}
- setContent { val current by progress.collectAsState();SpotlightTheme(theme="dark"){SharedImportPanel(current,::cancelImport)} }
+ setContent { val current by progress.collectAsState()
+  val config by (application as SpotlightApp).preferences.config.collectAsState(initial=dev.bautista.spotlight.data.Config())
+  SpotlightTheme(theme=config.theme,config=config){SharedImportPanel(current,::cancelImport)} }
  importJob=lifecycleScope.launch {
   try {
    val app=application as SpotlightApp
