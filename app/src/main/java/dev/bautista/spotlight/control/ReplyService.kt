@@ -44,9 +44,13 @@ object Replies {
     @Synchronized fun remove(key:String){entries.remove(key);publish()}
     @Synchronized fun clear(){entries.clear();mutable.value=emptyList();connected.value=false}
     fun results(query:String="",packageName:String="com.whatsapp",reply:Boolean=false):List<Result> = targets.value.filter{it.packageName==packageName && (query.isBlank() || normalize(it.title).contains(normalize(query)) || normalize(it.visibleText).contains(normalize(query)))}.map{t->Result("reply:${t.key}",t.title,if(t.group)"Grupo · notificación actual" else "WhatsApp · notificación actual","Mensajes",2200,if(reply && t.action!=null)Action.ComposeMessage(if(packageName=="com.whatsapp.w4b")"whatsapp_business" else "whatsapp",t.title,replyKey=t.key) else Action.ReadNotification(t.key),preview=t.visibleText.ifBlank{"La notificación no contiene texto accesible."})}
-    fun send(context:Context,key:String,text:String) {
-        require(text.isNotBlank())
+    @Synchronized fun send(context:Context,key:String,text:String,expected:ReplyTarget?=null) {
+        require(text.isNotBlank() && text.length<=8000)
+        check(connected.value){"El servicio de notificaciones está desconectado. Revisá el acceso antes de responder."}
         val target=targets.value.firstOrNull{it.key==key} ?: error("La notificación ya no está disponible")
+        if(expected!=null)check(target.key==expected.key && target.packageName==expected.packageName &&
+            target.title==expected.title && target.conversationId==expected.conversationId && target.group==expected.group &&
+            target.action?.actionIntent==expected.action?.actionIntent){"La conversación o su acción cambió. Revisá y confirmá nuevamente."}
         val action=target.action ?: error("Esta notificación no admite respuesta directa")
         val inputs=action.remoteInputs?.filter{it.allowFreeFormInput}?.toTypedArray()?.takeIf{it.isNotEmpty()} ?: error("No admite respuesta")
         val values=Bundle();inputs.forEach{values.putCharSequence(it.resultKey,text.take(8000))}

@@ -10,6 +10,8 @@ android {
  buildToolsVersion = "35.0.0"
  defaultConfig { testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"; applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = releaseIdentity.getProperty("version.code").toInt(); versionName = releaseIdentity.getProperty("version.name") }
  testOptions { unitTests.isIncludeAndroidResources = true }
+ // Compile the isolated WhatsApp provider against Android in tests only; never package it.
+ sourceSets.getByName("test").java.srcDir(rootProject.file("experiments/whatsapp/android"))
  buildFeatures { compose = true; aidl = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
  kotlinOptions { jvmTarget = "17" }
