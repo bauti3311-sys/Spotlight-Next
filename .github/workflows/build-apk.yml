@@ -86,6 +86,7 @@ jobs:
           cache-read-only: false
 
       - name: Compile production and unit test sources once
+        id: compile
         shell: bash
         run: |
           set -euo pipefail
@@ -96,12 +97,16 @@ jobs:
             2>&1 | tee gate-evidence/compile.log
 
       - name: Directed groups UI then D28 and integrations
+        id: directed
         shell: bash
         run: |
           set -euo pipefail
           # Compile/warmup above may download missing dependencies. Tests use the
           # source's existing offline runner; Robolectric may fetch its own runtime.
           for group in ui d28 capabilities spotify cast imports metrics sources; do
+            touch "gate-evidence/$group.started"
+            # Do not attribute a previous group's XML to a runner that fails early.
+            rm -f app/build/test-results/testDebugUnitTest/*.xml
             if bash scripts/test-d28-directed.sh "$group" 2>&1 | tee "gate-evidence/$group.log"; then
               result=0
             else
@@ -131,15 +136,15 @@ jobs:
             exit 1
           fi
 
-      - name: Upload only gate logs and XML reports
+      # Temporarily no artifact upload in directed-tests: storage quota exhausted.
+      # Full Gradle/runner output remains in the GitHub Actions job logs.
+      - name: Summarize compilation and directed test results
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: directed-gate-${{ inputs.source_sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: gate-evidence/
-          if-no-files-found: warn
-          retention-days: 3
-          compression-level: 6
+        shell: bash
+        env:
+          COMPILE_RESULT: ${{ steps.compile.outcome }}
+          GROUPS_RESULT: ${{ steps.directed.outcome }}
+        run: python3 scripts/summarize-directed-gate.py
 
   raycast-preview:
     if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' && inputs.mode == 'preview'

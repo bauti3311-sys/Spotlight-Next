@@ -44,10 +44,15 @@ class GateWorkflowTest(unittest.TestCase):
         self.assertIn('tee gate-evidence/compile.log', text)
         self.assertIn('gate-evidence/$group.log', text)
         self.assertIn('gate-evidence/results/$group/', text)
-        upload = [s for s in self.gate['steps'] if s.get('uses', '').startswith('actions/upload-artifact@')][0]
-        self.assertEqual('always()', upload['if'])
-        self.assertEqual('gate-evidence/', upload['with']['path'])
-        self.assertEqual('3', upload['with']['retention-days'])
+        self.assertIn('set -euo pipefail', text)
+        self.assertFalse(any(s.get('uses', '').startswith('actions/upload-artifact@') for s in self.gate['steps']))
+        summary = next(s for s in self.gate['steps'] if 'summarize-directed-gate.py' in s.get('run', ''))
+        self.assertEqual('always()', summary['if'])
+        self.assertEqual('${{ steps.compile.outcome }}', summary['env']['COMPILE_RESULT'])
+        self.assertEqual('${{ steps.directed.outcome }}', summary['env']['GROUPS_RESULT'])
+        self.assertFalse(any('continue-on-error' in s for s in self.gate['steps']))
+        preview = self.doc['jobs']['raycast-preview']
+        self.assertTrue(any(s.get('uses', '').startswith('actions/upload-artifact@') for s in preview['steps']))
     def test_all_embedded_shell_steps_have_valid_bash_syntax(self):
         for job in self.doc['jobs'].values():
             for step in job['steps']:
