@@ -1,0 +1,22 @@
+test_bulk_names_groups_and_oversized_text_rejected (test_bridge.BridgeTest.test_bulk_names_groups_and_oversized_text_rejected) ... ok
+test_crash_fence_before_dispatch_remains_unknown (test_bridge.BridgeTest.test_crash_fence_before_dispatch_remains_unknown) ... ok
+test_disabled_by_default_and_no_fallback (test_bridge.BridgeTest.test_disabled_by_default_and_no_fallback) ... ok
+test_disconnect_disables_and_drops_approvals (test_bridge.BridgeTest.test_disconnect_disables_and_drops_approvals) ... ok
+test_duplicate_concurrent_confirmations_send_once (test_bridge.BridgeTest.test_duplicate_concurrent_confirmations_send_once) ... ok
+test_expired_and_cancelled_drafts_do_not_execute (test_bridge.BridgeTest.test_expired_and_cancelled_drafts_do_not_execute) ... ok
+test_http_auth_origin_and_explicit_approval (test_bridge.BridgeTest.test_http_auth_origin_and_explicit_approval) ... ok
+test_logout_failure_still_disables_locally (test_bridge.BridgeTest.test_logout_failure_still_disables_locally) ... ok
+test_preparation_never_sends_and_approval_is_exact (test_bridge.BridgeTest.test_preparation_never_sends_and_approval_is_exact) ... ok
+test_private_journal_contains_no_text_phone_or_key (test_bridge.BridgeTest.test_private_journal_contains_no_text_phone_or_key) ... ok
+test_redirect_is_not_followed (test_bridge.BridgeTest.test_redirect_is_not_followed) ... ok
+test_remoteinput_is_requested_not_delivered_and_public_intent_needs_external_review (test_bridge.BridgeTest.test_remoteinput_is_requested_not_delivered_and_public_intent_needs_external_review) ... ok
+test_rewritten_text_requires_new_review_and_cancels_old_draft (test_bridge.BridgeTest.test_rewritten_text_requires_new_review_and_cancels_old_draft) ... ok
+test_unknown_after_network_failure_is_never_retried_even_after_restart (test_bridge.BridgeTest.test_unknown_after_network_failure_is_never_retried_even_after_restart) ... ok
+test_unverified_delivery_claim_is_not_accepted_as_delivered (test_bridge.BridgeTest.test_unverified_delivery_claim_is_not_accepted_as_delivered) ... ok
+test_upstream_requires_https_no_userinfo_or_query (test_bridge.BridgeTest.test_upstream_requires_https_no_userinfo_or_query) ... ok
+test_wuzapi_wire_contract_against_controlled_http_fixture (test_bridge.BridgeTest.test_wuzapi_wire_contract_against_controlled_http_fixture) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 1.784s
+
+OK
