@@ -1,0 +1,164 @@
+{
+  "source_sha": "4db071b8a2cb5de9e56c9a1c9668a0dcf36be6a6",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "version_code": 46,
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "apk_signature_v2": true,
+  "zipalign_16kb": true,
+  "debuggable": false,
+  "source_blobs_verified": 1588,
+  "tests": {
+    "kind": "JVM/Robolectric/Compose with controlled fixtures; not physical validation",
+    "unique_passed": 96,
+    "failed_remaining": 0,
+    "groups": {
+      "ui": {
+        "unique_cases": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "ui",
+            "executed": 13,
+            "failed": 6
+          },
+          {
+            "round": "ui-six",
+            "executed": 6,
+            "failed": 2
+          },
+          {
+            "round": "ui-two",
+            "executed": 2,
+            "failed": 1
+          },
+          {
+            "round": "ui-grid",
+            "executed": 1,
+            "failed": 0
+          }
+        ]
+      },
+      "d28": {
+        "unique_cases": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "d28",
+            "executed": 33,
+            "failed": 1
+          },
+          {
+            "round": "d28-one",
+            "executed": 1,
+            "failed": 0
+          },
+          {
+            "round": "d28-stale",
+            "executed": 1,
+            "failed": 0
+          }
+        ]
+      },
+      "capabilities": {
+        "unique_cases": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "capabilities",
+            "executed": 8,
+            "failed": 0
+          }
+        ]
+      },
+      "spotify": {
+        "unique_cases": 12,
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "spotify",
+            "executed": 12,
+            "failed": 0
+          }
+        ]
+      },
+      "cast": {
+        "unique_cases": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "cast",
+            "executed": 9,
+            "failed": 0
+          }
+        ]
+      },
+      "imports": {
+        "unique_cases": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "imports",
+            "executed": 8,
+            "failed": 0
+          }
+        ]
+      },
+      "metrics": {
+        "unique_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "metrics",
+            "executed": 5,
+            "failed": 0
+          }
+        ]
+      },
+      "sources": {
+        "unique_cases": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "rounds": [
+          {
+            "round": "sources",
+            "executed": 7,
+            "failed": 0
+          }
+        ]
+      }
+    },
+    "note": "Initial UI and D28 failures and all rerun XML retained. Test-only fixture corrections published after APK source commit; APK production inputs unchanged."
+  },
+  "physical_validation": false,
+  "spotify_playback_and_cast": "Not claimed functional",
+  "files": {
+    "Spotlight-Next-Raycast-Preview-46-4db071b8.apk": {
+      "bytes": 73282262,
+      "sha256": "e6f5f86d34082e14e09b3731eaacf3353d4d172f35bce71936459a53e3297e82"
+    },
+    "Spotlight-Next-source-4db071b8.zip": {
+      "bytes": 9193931,
+      "sha256": "d204dea9a4b4319487327d3ccdfff5ab3a13fe7694181152016cd44ce7399cd7"
+    }
+  },
+  "post_build_changes_test_only": [
+    "app/src/test/java/dev/bautista/spotlight/ui/CommandTemplateFlowTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/ProductEntryPointsTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/SpotlightPanelLayoutTest.kt"
+  ]
+}

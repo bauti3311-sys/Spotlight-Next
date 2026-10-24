@@ -77,4 +77,26 @@ class CommandTemplateFlowTest {
         assertTrue(closed.get());assertEquals(previous.routines,runBlocking{app.preferences.config.first()}.routines)
         assertEquals(before,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
     }
+    @Test fun staleEditorPreservesNewerTemplateAndUnexecutedDraft() {
+        val previous=runBlocking{app.preferences.config.first()}
+        val t=template();val audio=app.getSystemService(AudioManager::class.java)
+        val before=audio.getStreamVolume(AudioManager.STREAM_MUSIC)
+        runBlocking{app.preferences.update(previous.copy(routines="[]"));app.preferences.saveCommandTemplate(t)}
+        try {
+            val closed=AtomicBoolean(false)
+            ui.setContent{SpotlightTheme{CommandTemplateEditor(app,t,0){closed.set(true)}}}
+            ui.onNodeWithText("Valor 1 · percent").performTextReplacement("75")
+            runBlocking{app.preferences.saveCommandTemplate(t.copy(name="Volumen actualizado",alias="actualizado"),0)}
+            ui.onNodeWithTag("template-save").assertIsDisplayed().performClick()
+            ui.waitUntil(15000){ui.onAllNodesWithText("El comando cambió en otra sesión.").fetchSemanticsNodes().isNotEmpty()}
+            assertFalse(closed.get())
+            ui.onNode(hasSetTextAction() and hasText("75")).assertExists()
+            val current=CommandTemplates.parse(runBlocking{app.preferences.config.first()}.routines).single()
+            assertEquals(1,current.revision)
+            assertEquals("Volumen actualizado",current.name)
+            assertEquals("actualizado",current.alias)
+            assertEquals("40",CommandTemplates.instantiate(current).calls.single().arguments["percent"])
+            assertEquals(before,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
+        } finally {runBlocking{app.preferences.update(app.preferences.config.first().copy(routines=previous.routines))}}
+    }
 }
