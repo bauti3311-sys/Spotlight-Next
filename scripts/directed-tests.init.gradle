@@ -1,5 +1,14 @@
 // Release each Robolectric classloader after its class; no parallel test JVMs.
 allprojects {
+    if (path == ':app') {
+        tasks.register('warmDirectedTestRuntime') {
+            doLast {
+                // Compilation resolves the compile classpath only. Fetch runtime
+                // jars online before the existing directed runner goes offline.
+                configurations.getByName('debugUnitTestRuntimeClasspath').files
+            }
+        }
+    }
     tasks.withType(Test).configureEach {
         maxParallelForks = 1
         forkEvery = 1

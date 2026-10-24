@@ -37,6 +37,7 @@ class GateWorkflowTest(unittest.TestCase):
         for forbidden in ('assembleDebug', 'assembleRaycastPreview', 'connectedDebugAndroidTest', 'sign-release', 'apksigner', 'keytool', 'secrets.'):
             self.assertNotIn(forbidden, text)
         self.assertIn(':app:compileDebugUnitTestKotlin', text)
+        self.assertIn(':app:warmDirectedTestRuntime', text)
         self.assertIn('for group in ui d28 capabilities spotify cast imports metrics sources', text)
         self.assertIn('if (( result != 0 )); then exit "$result"; fi', text)
     def test_logs_xml_and_failures_are_preserved(self):

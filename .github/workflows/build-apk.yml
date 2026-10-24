@@ -92,7 +92,7 @@ jobs:
           set -euo pipefail
           java -version 2>&1 | tee gate-evidence/java.log
           gradle --version | tee gate-evidence/gradle.log
-          gradle :app:compileDebugUnitTestKotlin -I scripts/directed-tests.init.gradle \
+          gradle :app:compileDebugUnitTestKotlin :app:warmDirectedTestRuntime -I scripts/directed-tests.init.gradle \
             --no-daemon --max-workers=1 --console=plain --stacktrace \
             2>&1 | tee gate-evidence/compile.log
 
