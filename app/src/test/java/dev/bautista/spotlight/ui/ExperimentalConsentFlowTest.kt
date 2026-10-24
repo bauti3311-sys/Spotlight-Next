@@ -40,9 +40,11 @@ class ExperimentalConsentFlowTest {
         ui.onNodeWithTag("whatsapp-consent-privacy").performClick()
         ui.onNodeWithText("Acepto y autorizo preparar el experimento").performClick()
         ui.waitUntil(5000) { ExperimentalMessagingPreferences(context).allowed }
+        ui.waitUntil(5000) { ui.onAllNodesWithText("Volver al modo normal").fetchSemanticsNodes().size==1 }
         ui.onNodeWithTag("whatsapp-link-device").assertIsNotEnabled()
         ui.onNodeWithText("Volver al modo normal").performClick()
         ui.waitUntil(5000) { !ExperimentalMessagingPreferences(context).allowed }
+        ui.waitUntil(5000) { ui.onAllNodesWithText("Activar modo experimental").fetchSemanticsNodes().size==1 }
         ui.onNodeWithText("Activar modo experimental").assertIsDisplayed()
     }
     @Test fun missingConsentCannotBePersistedByPartialAcknowledgement() {
