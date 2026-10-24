@@ -246,9 +246,9 @@
     "id": "D28",
     "state": "PARCIAL",
     "decision": "Comandos y alias",
-    "source": "NativeCommands.kt; PersonalCommands.kt; Preferences.kt",
-    "tests": "NativeCommandsTest; PersonalCommandsTest; AliasTemplateRankingTest; NativeCommandFlowTest",
-    "remaining": "Comandos/alias/plantillas persistentes y conflictos existentes. Planes nativos guardan valores tipados fijos: parámetros generales de planes aún por completar.",
+    "source": "NativeCommands.kt; PersonalCommands.kt; Preferences.kt; CommandTemplates.kt; CommandTemplatePanel.kt",
+    "tests": "NativeCommandsTest; PersonalCommandsTest; AliasTemplateRankingTest; NativeCommandFlowTest; CommandTemplatesTest (13 nuevos NO ejecutados); CommandTemplateFlowTest (4 nuevos NO ejecutados)",
+    "remaining": "Implementación de parámetros tipados generales, edición, persistencia con revisión y carga D27 preparada. Sin compilar/ejecutar por runtime Android ausente; no promover. Faltan verificar regresiones, permisos/destinos reales, persistencia/recuperación y cierre de todos los criterios. Evidencia: docs/verification/d28-20261023/STATUS.md.",
     "physical": "Aplicaciones disponibles/permisos revalidados; sin scripts arbitrarios."
   },
   {

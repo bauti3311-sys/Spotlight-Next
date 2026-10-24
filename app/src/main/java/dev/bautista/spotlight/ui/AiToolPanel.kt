@@ -16,12 +16,12 @@ import dev.bautista.spotlight.data.Config
 import dev.bautista.spotlight.search.Action
 import kotlinx.coroutines.*
 
-@Composable internal fun AiToolTaskPanel(app:SpotlightApp,config:Config,initialPrompt:String,onAction:(Action)->Unit,initialPlan:ToolPlan?=null,executeOverride:(suspend (ToolCall)->ToolExecution)?=null) {
+@Composable internal fun AiToolTaskPanel(app:SpotlightApp,config:Config,initialPrompt:String,onAction:(Action)->Unit,initialPlan:ToolPlan?=null,executeOverride:(suspend (ToolCall)->ToolExecution)?=null,initialBindings:ToolBindings=emptyMap()) {
     var prompt by rememberSaveable(initialPrompt){mutableStateOf(initialPrompt.take(3000))};var plan by rememberSaveable(initialPrompt,stateSaver=ToolProposalSaver){mutableStateOf(initialPlan)};var busy by remember{mutableStateOf(false)};var error by remember{mutableStateOf("")};var job by remember{mutableStateOf<Job?>(null)};val scope=rememberCoroutineScope()
     var results by rememberSaveable(initialPrompt,stateSaver=ToolOutcomesSaver){mutableStateOf(emptyMap<Int,ToolOutcome>())};var interrupted by rememberSaveable(initialPrompt){mutableIntStateOf(-1)};val executor=remember{ToolExecutor(app)};val agent=remember{ToolAgent(CredentialVault(app))}
     var omitted by rememberSaveable(initialPrompt,stateSaver=ToolOmissionsSaver){mutableStateOf(emptySet<Int>())}
     var relativeVolumes by rememberSaveable(initialPrompt,stateSaver=ToolOmissionsSaver){mutableStateOf(emptySet<Int>())}
-    var bindings by rememberSaveable(initialPrompt,stateSaver=ToolBindingsSaver){mutableStateOf(emptyMap<Int,Map<String,ToolResultRef>>())}
+    var bindings by rememberSaveable(initialPrompt,stateSaver=ToolBindingsSaver){mutableStateOf(initialBindings)}
     var relativeBrightness by rememberSaveable(initialPrompt,stateSaver=ToolOmissionsSaver){mutableStateOf(emptySet<Int>())}
     var brightnessBaseline by rememberSaveable(initialPrompt){mutableStateOf<Int?>(null)}
     var sequencing by rememberSaveable(initialPrompt){mutableStateOf(false)}
@@ -36,6 +36,8 @@ import kotlinx.coroutines.*
         if(max>min)(audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)-min)*100/(max-min) else 0
     }
     var adding by rememberSaveable(initialPrompt){mutableStateOf(false)}
+    var savingTemplate by rememberSaveable(initialPrompt){mutableStateOf(false)}
+    val templateId=rememberSaveable(initialPrompt){java.util.UUID.randomUUID().toString()}
     var available by remember { mutableStateOf(emptyList<ToolDefinition>()) }
     LaunchedEffect(config){available=executor.available(config)}
     fun draft(p:ToolPlan)=ToolPlanDraft(p,results,omitted,relativeVolumes,bindings,relativeBrightness)
@@ -83,6 +85,9 @@ import kotlinx.coroutines.*
             val editable=!busy && interrupted<0 && results.isEmpty() && !sequencing
             Text("Añadí, quitá, ordená u omití pasos antes de ejecutar. Cada acción se confirma por separado.",style=MaterialTheme.typography.bodySmall)
             if(results.isNotEmpty())Text("La estructura queda protegida después de ejecutar para evitar repeticiones.",style=MaterialTheme.typography.bodySmall)
+            TextButton(enabled=editable && omitted.isEmpty() && relativeVolumes.isEmpty() && relativeBrightness.isEmpty(),onClick={savingTemplate=!savingTemplate},modifier=Modifier.testTag("tool-save-template")){Text("Guardar como plantilla")}
+            if(savingTemplate && editable)key(p,bindings){CommandTemplateEditor(app,
+                dev.bautista.spotlight.automation.CommandTemplate(templateId,"","",p,bindings=bindings),null){savingTemplate=false}}
             TextButton(enabled=editable && p.calls.size<6,onClick={adding=!adding},modifier=Modifier.testTag("tool-add")){Text(if(adding)"Cerrar acciones disponibles" else "Añadir paso")}
             if(adding && editable) available.forEach { definition ->
                 TextButton(modifier=Modifier.testTag("tool-add-${definition.id}"),onClick={change(draft(p).add(blankToolCall(definition)));adding=false}){Text(definition.title)}
