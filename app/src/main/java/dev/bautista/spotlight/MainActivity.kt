@@ -195,6 +195,7 @@ class MainActivity : ComponentActivity() {
                             Section("Clima y agenda deportiva") { Text("Clima de Open-Meteo y agenda gratuita de TheSportsDB, consultados directamente desde la barra.");Row{OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","clima"))}){Text("Clima")};TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","deportes"))}){Text("Deportes")}} }
                             Section("Extensiones e integraciones") { dev.bautista.spotlight.ui.ExtensionPanel(app,config) }
                             Section("Integraciones · capacidades disponibles") { CapabilitySettings(app,config,permissionRevision) }
+                            Section("Integraciones · Spotify") { SpotifySettings(app) }
                             Section("Transferir configuración") {
                                 Text("Preferencias, favoritos y alias. Los datos heredados se conservan; las claves, historiales, permisos y accesos a archivos permanecen en cada dispositivo.")
                                 Row{OutlinedButton(onClick={configExport.launch("Spotlight-configuracion.json")}){Text("Exportar")};TextButton(onClick={configImport.launch(arrayOf("application/json","text/plain"))}){Text("Importar")}}

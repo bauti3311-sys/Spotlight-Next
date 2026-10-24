@@ -53,6 +53,7 @@ class SpotlightApp : Application() {
     val reversibleSettings by lazy {dev.bautista.spotlight.advanced.ReversibleSettings(advancedBackend,settingsJournal)}
     val toolAudit by lazy {dev.bautista.spotlight.ai.ToolAudit(this)}
     val preferences by lazy { Preferences(this) }
+    val spotify by lazy { dev.bautista.spotlight.integrations.spotify.SpotifyConnection(this) }
     val contexts by lazy { dev.bautista.spotlight.data.ContextStore(this,scope,preferences) }
     val diagnostics by lazy { dev.bautista.spotlight.overlay.Diagnostics(this) }
     val local by lazy { dev.bautista.spotlight.data.LocalStore(preferences, scope) }

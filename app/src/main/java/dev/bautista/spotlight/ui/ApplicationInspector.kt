@@ -55,6 +55,9 @@ import kotlinx.coroutines.withContext
             }
         }
         mediaContent?.invoke()
+        if(packageName=="com.spotify.music") {
+            (context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.let { SpotifySearchPanel(it) }
+        }
         Button(onClick=onOpen,shape=RoundedCornerShape(10.dp),
             colors=ButtonDefaults.buttonColors(containerColor=colors.primary,contentColor=colors.onPrimary),
             contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp),
