@@ -38,7 +38,7 @@ class CommandTemplateFlowTest {
         restore.emulateSavedInstanceStateRestore()
         ui.onNodeWithTag("tool-sequence-start").assertExists()
         assertEquals(before,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
-        ui.onNodeWithTag("tool-sequence-start").performClick()
+        ui.onNodeWithTag("tool-sequence-start").performScrollTo().assertIsDisplayed().assertIsEnabled().performClick()
         ui.waitUntil(15000){ui.onAllNodesWithTag("tool-sequence-status").fetchSemanticsNodes().isNotEmpty()}
         // Starting an ordered plan still pauses for the sensitive action's own confirmation.
         assertEquals(before,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
