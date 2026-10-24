@@ -29,4 +29,6 @@ if [[ -n "${SPOTLIGHT_GRADLE_BIN:-}" ]]; then runner=("$SPOTLIGHT_GRADLE_BIN");e
  runner=(bash gradlew)
 fi
 filters=();for test_class in "${tests[@]}";do filters+=(--tests "$test_class");done
-"${runner[@]}" :app:testDebugUnitTest -I scripts/directed-tests.init.gradle --offline --no-daemon --max-workers=1 --console=plain "${filters[@]}"
+printf -v selected_classes '%s,' "${tests[@]}"
+selected_classes="${selected_classes%,}"
+"${runner[@]}" :app:testDebugUnitTest -I scripts/directed-tests.init.gradle "-PspotlightDirectedClasses=$selected_classes" --offline --no-daemon --max-workers=1 --console=plain "${filters[@]}"

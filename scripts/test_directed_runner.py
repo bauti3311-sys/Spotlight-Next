@@ -29,6 +29,12 @@ class DirectedRunnerTest(unittest.TestCase):
                               text=True, capture_output=True, timeout=5)
     def arguments(self):
         return json.loads(self.log.read_text())
+    def test_discovery_is_limited_to_exact_selected_classes(self):
+        result = self.run_group('ui')
+        self.assertEqual(0, result.returncode, result.stderr)
+        args = self.arguments()
+        names = [args[i + 1] for i, value in enumerate(args) if value == '--tests']
+        self.assertIn('-PspotlightDirectedClasses=' + ','.join(names), args)
     def test_default_runs_only_ui_regressions_offline_without_apk_or_publish(self):
         result = self.run_group()
         self.assertEqual(0, result.returncode, result.stderr)

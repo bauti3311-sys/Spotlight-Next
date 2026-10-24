@@ -10,6 +10,16 @@ allprojects {
         }
     }
     tasks.withType(Test).configureEach {
+        // Filter class discovery as well as test methods. With forkEvery=1,
+        // --tests alone can still start workers for unrelated candidate classes.
+        def directedClasses = providers.gradleProperty('spotlightDirectedClasses').orNull
+        if (directedClasses != null) {
+            def names = directedClasses.split(',').toList()
+            if (!names.every { it ==~ /[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)+/ }) {
+                throw new GradleException('Invalid directed test class list')
+            }
+            setIncludes(names.collect { it.replace('.', '/') + '.class' } as Set)
+        }
         maxParallelForks = 1
         forkEvery = 1
         maxHeapSize = '1536m'
