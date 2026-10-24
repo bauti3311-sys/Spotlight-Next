@@ -91,4 +91,13 @@ class MediaInspectorFlowTest {
         ui.onNodeWithTag("media-inspector").assertDoesNotExist()
         search().assertTextEquals("spot").assertIsFocused()
     }
+    @Test @Config(qualifiers="w1280dp-h1100dp") fun spotifySearchExpandsOnlyWhenRequestedAndCanClose() {
+        show(availableHeight=1000f)
+        ui.onNodeWithTag("spotify-search-panel").assertDoesNotExist()
+        ui.onNodeWithContentDescription("Buscar dentro de Spotify").performClick()
+        ui.onNodeWithTag("spotify-search-panel").assertExists()
+        ui.onNodeWithText("Cerrar búsqueda de Spotify").performScrollTo().performClick()
+        ui.onNodeWithTag("spotify-search-panel").assertDoesNotExist()
+        ui.onNodeWithText("com.spotify.music").assertIsDisplayed()
+    }
 }

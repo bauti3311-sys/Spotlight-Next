@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
     Text("En Spotify Dashboard → tu app → Settings → Redirect URIs, registrá exactamente:\nhttp://127.0.0.1/spotify/callback\nGuardá los cambios. Spotlight agrega un puerto temporal, admitido por Spotify para retornos locales.", style = MaterialTheme.typography.bodySmall)
     Text("Development Mode requiere Premium del propietario y una cuenta autorizada en User Management (hasta cinco usuarios nuevos). Reproducir con la Web API requiere Premium y un dispositivo Spotify activo. No se solicita acceso a biblioteca en esta etapa.", style = MaterialTheme.typography.bodySmall)
     fun action(block: suspend () -> Unit) {
+        if (busy) return
         message = ""; busy = true
         job = scope.launch {
             try { block() } catch (e: CancellationException) { throw e }
@@ -59,12 +60,12 @@ import kotlinx.coroutines.launch
 }
 
 /** Explicit remote queries only; selecting a result never starts playback. */
-@Composable internal fun SpotifySearchPanel(app: SpotlightApp) {
+@Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "") {
     val connection = app.spotify
     val state by connection.state.collectAsState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    var query by rememberSaveable { mutableStateOf("") }
+    var query by rememberSaveable(initialQuery) { mutableStateOf(initialQuery.take(240)) }
     var type by rememberSaveable { mutableStateOf(SpotifyItemType.TRACK) }
     var results by remember { mutableStateOf<List<SpotifySearchItem>>(emptyList()) }
     var selected by remember { mutableStateOf<SpotifySearchItem?>(null) }
@@ -74,6 +75,7 @@ import kotlinx.coroutines.launch
     LaunchedEffect(Unit) { connection.inspect() }
     LaunchedEffect(state) { if (state != SpotifyConnectionState.AUTHORIZED) { job?.cancel(); results = emptyList(); selected = null } }
     fun action(block: suspend () -> Unit) {
+        if (busy) return
         message = ""; busy = true
         job = scope.launch {
             try { block() } catch (e: CancellationException) { throw e }

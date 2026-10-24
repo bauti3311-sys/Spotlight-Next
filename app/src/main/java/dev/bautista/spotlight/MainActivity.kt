@@ -214,6 +214,7 @@ class MainActivity : ComponentActivity() {
                                 Text(if(notificationAccess)"Acceso a notificaciones activo. Los mensajes visibles permanecen solo en memoria." else "Acceso a notificaciones desactivado. Podés habilitarlo para leer y responder mensajes disponibles.")
                                 TextButton(onClick={settingsGroup="Permisos y accesos"}){Text("Gestionar contactos y notificaciones →")}
                                 Text("Android separa contactos, calendario, archivos y notificaciones. Las respuestas directas funcionan con mensajes que tengan una notificación compatible; una conversación nueva se prepara y se envía desde WhatsApp.",fontSize=12.sp,color=colors.onSurfaceVariant)
+                                WhatsAppExperimentalSettings()
                             }
                             Section("Acceso rápido") {
                                 Text(

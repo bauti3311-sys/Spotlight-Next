@@ -38,6 +38,7 @@ import kotlinx.coroutines.withContext
     val colors=MaterialTheme.colorScheme
     val context=LocalContext.current
     var version by remember(packageName) { mutableStateOf<String?>(null) }
+    var spotifySearch by remember(packageName) { mutableStateOf(false) }
     LaunchedEffect(packageName) {
         version=packageName?.let { pkg -> withContext(Dispatchers.IO) {
             runCatching { context.packageManager.getPackageInfo(pkg,0).versionName }.getOrNull()
@@ -53,10 +54,14 @@ import kotlinx.coroutines.withContext
                 Text(if(playing)"En reproducción" else "Aplicación instalada",fontSize=12.sp,
                     color=colors.onSurfaceVariant)
             }
+            if(packageName=="com.spotify.music")IconButton(onClick={spotifySearch=!spotifySearch}) {
+                IosCommandIcon(CommandIcons.Search,"Buscar dentro de Spotify",Modifier.size(20.dp))
+            }
         }
         mediaContent?.invoke()
-        if(packageName=="com.spotify.music") {
+        if(packageName=="com.spotify.music" && spotifySearch) {
             (context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.let { SpotifySearchPanel(it) }
+            TextButton(onClick={spotifySearch=false}) { Text("Cerrar búsqueda de Spotify") }
         }
         Button(onClick=onOpen,shape=RoundedCornerShape(10.dp),
             colors=ButtonDefaults.buttonColors(containerColor=colors.primary,contentColor=colors.onPrimary),

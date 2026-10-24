@@ -98,6 +98,18 @@ import kotlinx.coroutines.*
 }
 
 @Composable fun SearchEditor(draft:Action.ComposeSearch,onRun:(Action)->Unit,onCancel:()->Unit) {
+    val app=LocalContext.current.applicationContext as? dev.bautista.spotlight.SpotlightApp
+    if(draft.topic=="spotify" && app!=null) {
+        val spotifyState by app.spotify.state.collectAsState()
+        LaunchedEffect(Unit){app.spotify.inspect()}
+        if(spotifyState==dev.bautista.spotlight.integrations.spotify.SpotifyConnectionState.AUTHORIZED) {
+            Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                SpotifySearchPanel(app,draft.query)
+                TextButton(onClick=onCancel){Text("Volver")}
+            }
+            return
+        }
+    }
     var term by rememberSaveable(draft){mutableStateOf(draft.query)}
     val focus=remember(draft){FocusRequester()}
     LaunchedEffect(draft){delay(60);focus.requestFocus()}
