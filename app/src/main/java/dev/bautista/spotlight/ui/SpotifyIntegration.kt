@@ -59,6 +59,10 @@ import kotlinx.coroutines.launch
     if (message.isNotBlank()) Text(message, style = MaterialTheme.typography.bodySmall)
 }
 
+/** Persist an API string: the overlay's durable codec deliberately rejects enum objects. */
+@Composable internal fun rememberSpotifyFilterType(): MutableState<String> =
+    rememberSaveable { mutableStateOf(SpotifyItemType.TRACK.api) }
+
 /** Explicit remote queries only; selecting a result never starts playback. */
 @Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "") {
     val connection = app.spotify
@@ -66,7 +70,8 @@ import kotlinx.coroutines.launch
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var query by rememberSaveable(initialQuery) { mutableStateOf(initialQuery.take(240)) }
-    var type by rememberSaveable { mutableStateOf(SpotifyItemType.TRACK) }
+    var typeKey by rememberSpotifyFilterType()
+    val type = SpotifyItemType.entries.firstOrNull { it.api == typeKey } ?: SpotifyItemType.TRACK
     var results by remember { mutableStateOf<List<SpotifySearchItem>>(emptyList()) }
     var selected by remember { mutableStateOf<SpotifySearchItem?>(null) }
     var message by remember { mutableStateOf("") }
@@ -93,7 +98,7 @@ import kotlinx.coroutines.launch
                 enabled = !busy, label = { Text("Canción, artista, álbum o playlist") }, modifier = Modifier.fillMaxWidth().testTag("spotify-search-query"))
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 SpotifyItemType.entries.forEach { option ->
-                    FilterChip(enabled = !busy, selected = option == type, onClick = { job?.cancel(); type = option; selected = null; results = emptyList() },
+                    FilterChip(enabled = !busy, selected = option == type, onClick = { job?.cancel(); typeKey = option.api; selected = null; results = emptyList() },
                         label = { Text(when(option) { SpotifyItemType.TRACK -> "Tema"; SpotifyItemType.ARTIST -> "Artista"; SpotifyItemType.ALBUM -> "Álbum"; else -> "Lista" }, style = MaterialTheme.typography.labelSmall) })
                 }
             }

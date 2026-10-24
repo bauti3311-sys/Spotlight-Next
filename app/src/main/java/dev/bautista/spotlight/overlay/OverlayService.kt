@@ -414,7 +414,17 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     override fun onDestroy() {
-        if(!closing){val snapshot=recoveryRegistry?.performSave();recoveryJob?.cancel();if(snapshot!=null && !recoverySuppressed)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(snapshot)}}}
+        if(!closing){
+            // A child can register unsupported saveable state. Preserve the previous
+            // recovery file and finish cleanup; never log the rejected state contents.
+            val snapshot=runCatching { recoveryRegistry?.performSave() }
+                .onFailure { android.util.Log.e("SpotlightOverlay", "Could not capture overlay recovery; keeping the previous checkpoint.") }
+                .getOrNull()
+            recoveryJob?.cancel()
+            if(snapshot!=null && !recoverySuppressed)app.scope.launch {
+                runCatching { app.contexts.saveOverlaySnapshot(snapshot) }
+            }
+        }
         closing=true
         recoveryJob?.cancel()
         widthTransition.cancel()
