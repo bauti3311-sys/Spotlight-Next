@@ -7,6 +7,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.ai.*
 import dev.bautista.spotlight.automation.*
@@ -57,6 +59,7 @@ import kotlinx.coroutines.*
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable internal fun SavedTemplatePanel(app:SpotlightApp,config:Config,template:CommandTemplate,onAction:(Action)->Unit) {
     val key="${template.id}:${template.revision}"
     var editing by rememberSaveable(key){mutableStateOf(false)}
@@ -69,11 +72,24 @@ import kotlinx.coroutines.*
         Text(template.name,style=MaterialTheme.typography.titleMedium)
         if(editing)CommandTemplateEditor(app,template,template.revision){editing=false}
         else {
-            template.parameters.forEachIndexed{i,p->OutlinedTextField(values[i],{v->values=values.toMutableList().also{it[i]=v.take(8000)}},
-                enabled=preparedValues==null,label={Text(p.name)},supportingText={Text(p.type.name)},modifier=Modifier.fillMaxWidth())}
+            val arguments=template.parameters.mapIndexed{i,p->p.name to values.getOrElse(i){""}}.toMap()
+            val validation=remember(template,arguments){runCatching{CommandTemplates.parameterErrors(template,arguments)}.getOrElse{mapOf("_plan" to "La plantilla requiere revisión.")}}
+            template.parameters.forEachIndexed{i,p->
+                val update:(String)->Unit={v->values=values.toMutableList().also{it[i]=v.take(8000)}}
+                OutlinedTextField(values.getOrElse(i){""},update,enabled=preparedValues==null,label={Text(p.name)},
+                    isError=p.name in validation,keyboardOptions=KeyboardOptions(keyboardType=if(p.type==CommandParameterType.NUMBER)KeyboardType.Decimal else KeyboardType.Text),
+                    supportingText={Text(validation[p.name] ?: when(p.type){CommandParameterType.NUMBER->"Número válido para la acción";CommandParameterType.PACKAGE->"Paquete Android exacto";CommandParameterType.CHOICE->"Elegí una opción compatible";else->"Texto literal"})},
+                    modifier=Modifier.fillMaxWidth().testTag("template-parameter-${p.name}"))
+                if(p.type==CommandParameterType.CHOICE)FlowRow(horizontalArrangement=Arrangement.spacedBy(6.dp)) {
+                    CommandTemplates.choices(template,p.name).forEach { choice ->
+                        FilterChip(selected=values.getOrElse(i){""}==choice,onClick={update(choice)},enabled=preparedValues==null,label={Text(choice)})
+                    }
+                }
+            }
+            validation["_plan"]?.let{Text(it,color=MaterialTheme.colorScheme.error)}
             if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
             if(preparedValues==null) {
-                Button(onClick={runCatching{CommandTemplates.instantiate(template,template.parameters.mapIndexed{i,p->p.name to values[i]}.toMap())}
+                Button(enabled=validation.isEmpty(),onClick={runCatching{CommandTemplates.instantiate(template,arguments)}
                     .onSuccess{preparedValues=values.toList();error=""}.onFailure{error=it.message ?: "Revisá los parámetros."}},modifier=Modifier.testTag("template-prepare")){Text("Revisar pasos del comando")}
                 TextButton(onClick={editing=true}){Text("Editar plantilla")}
                 ConfirmedSettingsButton("Eliminar plantilla","Elimina únicamente esta plantilla guardada.") {

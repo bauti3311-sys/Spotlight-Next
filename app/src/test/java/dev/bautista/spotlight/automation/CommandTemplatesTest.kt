@@ -121,6 +121,27 @@ class CommandTemplatesTest {
         assertEquals(SequenceDisposition.FINISHED,advance().disposition)
         assertEquals(2,executed.size)
     }
+    @Test fun dynamicFormReportsSpecificMissingInvalidAndUnknownParameters() {
+        val t=template()
+        assertTrue(CommandTemplates.parameterErrors(t,mapOf("nivel" to "50")).isEmpty())
+        assertTrue("nivel" in CommandTemplates.parameterErrors(t,emptyMap()))
+        assertTrue("nivel" in CommandTemplates.parameterErrors(t,mapOf("nivel" to "101")))
+        assertTrue("extra" in CommandTemplates.parameterErrors(t,mapOf("nivel" to "50","extra" to "x")))
+    }
+    @Test fun dynamicChoicesComeFromActualToolSchema() {
+        val t=CommandTemplate("media","Reproductor","",ToolPlan("",listOf(ToolCall("control_media",mapOf("command" to "pause")))),
+            listOf(CommandParameter("accion",CommandParameterType.CHOICE,"pause")),listOf(CommandParameterTarget(0,"command","accion")))
+        assertEquals(setOf("play","pause","next","previous"),CommandTemplates.choices(t,"accion").toSet())
+        assertTrue("accion" in CommandTemplates.parameterErrors(t,mapOf("accion" to "send")))
+    }
+    @Test fun relatedFieldsAreValidatedAsOneResolvedRequest() {
+        val t=CommandTemplate("display","Pantalla","",ToolPlan("",listOf(ToolCall("write_display_setting",mapOf("key" to "screen_brightness","value" to "100")))),
+            listOf(CommandParameter("ajuste",CommandParameterType.CHOICE,"screen_brightness"),CommandParameter("valor",CommandParameterType.NUMBER,"100")),
+            listOf(CommandParameterTarget(0,"key","ajuste"),CommandParameterTarget(0,"value","valor")))
+        val values=mapOf("ajuste" to "screen_off_timeout","valor" to "30000")
+        assertTrue(CommandTemplates.parameterErrors(t,values).isEmpty())
+        assertEquals("30000",CommandTemplates.instantiate(t,values).calls.single().arguments["value"])
+    }
     @Test fun fullStoreRejectsNewTemplateWithoutDeletingOldEntries() {
         val raw=JSONArray().apply{repeat(30){put(JSONObject().put("id","old-$it"))}}.toString()
         rejects{CommandTemplates.upsert(raw,template(),null,emptySet())}

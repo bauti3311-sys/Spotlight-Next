@@ -57,6 +57,34 @@ object CommandTemplates {
         StructuredToolResults.validate(template.plan.calls,template.bindings,emptySet())
         resolve(template,template.parameters.associate{it.name to it.defaultValue})
     }
+    /** Dynamic forms derive choices from every destination, not from user-entered labels. */
+    fun choices(template:CommandTemplate,parameter:String):List<String> {
+        val destinations=template.targets.filter{it.parameter==parameter}
+        if(destinations.isEmpty())return emptyList()
+        val sets=destinations.map { target ->
+            ToolRegistry.definition(template.plan.calls[target.step].name)?.choices?.get(target.argument)?.toSet() ?: emptySet()
+        }
+        return sets.reduce{a,b->a.intersect(b)}.sorted()
+    }
+    fun parameterErrors(template:CommandTemplate,values:Map<String,String>):Map<String,String> {
+        validate(template)
+        val errors=linkedMapOf<String,String>()
+        template.parameters.forEach { parameter ->
+            val value=values[parameter.name]
+            val problem=runCatching {
+                require(value!=null){"Falta este parámetro."};checkValue(parameter,value)
+                template.targets.filter{it.parameter==parameter.name}.forEach { target ->
+                    val call=template.plan.calls[target.step]
+                    val supplied=template.targets.filter{it.step==target.step && it.parameter in values}
+                        .associate{it.argument to values.getValue(it.parameter)}
+                    ToolRegistry.decode(call.copy(arguments=call.arguments+supplied+(target.argument to value)))
+                }
+            }.exceptionOrNull()?.message
+            if(problem!=null)errors[parameter.name]=problem
+        }
+        (values.keys-template.parameters.map{it.name}.toSet()).forEach{errors[it]="Parámetro desconocido."}
+        return errors
+    }
     private fun resolve(template:CommandTemplate,values:Map<String,String>):ToolPlan {
         require(values.keys==template.parameters.map{it.name}.toSet()){"Faltan parámetros o hay parámetros desconocidos."}
         template.parameters.forEach{checkValue(it,values.getValue(it.name))}

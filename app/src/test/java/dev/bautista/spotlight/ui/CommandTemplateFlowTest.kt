@@ -48,7 +48,7 @@ class CommandTemplateFlowTest {
         val audio=app.getSystemService(AudioManager::class.java);val before=audio.getStreamVolume(AudioManager.STREAM_MUSIC)
         ui.setContent{SpotlightTheme{SavedTemplatePanel(app,AppConfig(),template()){}}}
         ui.onNodeWithText("nivel").performTextReplacement("101")
-        ui.onNodeWithTag("template-prepare").performClick()
+        ui.onNodeWithTag("template-prepare").assertIsNotEnabled()
         ui.onNodeWithTag("tool-sequence-start").assertDoesNotExist()
         assertEquals(before,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
     }
