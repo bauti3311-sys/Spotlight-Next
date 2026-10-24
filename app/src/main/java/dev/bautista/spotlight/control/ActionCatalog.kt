@@ -39,6 +39,9 @@ object ActionCatalog {
         return Action.ComposeMessage(channel,target,body)
     }
     private fun row(id:String,title:String,subtitle:String,action:Action)=Result("catalog:$id",title,subtitle,"Acciones",2200,action)
+    /** Keep navigation/reply capabilities too; action class is not an eligibility filter. */
+    fun applicationActions(packageName:String):List<Result> = packages.entries
+        .firstOrNull { it.value == packageName }?.let { menu(it.key,packageName=packageName) }.orEmpty()
     fun menu(topic:String,launch:Intent?=null,packageName:String?=packages[topic]):List<Result> {
         val title=displayName(topic)
         val out=mutableListOf<Result>()
@@ -48,7 +51,7 @@ object ActionCatalog {
         when(topic) {
             "whatsapp","whatsapp_business","telegram","gmail" -> {
                 if(topic=="telegram")out+=row("telegram:compose","Compartir mensaje","Elegir contacto dentro de Telegram",Action.ComposeMessage("telegram"))
-                else out+=row("$topic:compose","Enviar mensaje","Elegir contacto y escribir aquí",Action.ComposeMessage(if(topic=="gmail")"email" else "whatsapp"))
+                else out+=row("$topic:compose","Enviar mensaje","Elegir contacto y escribir aquí",Action.ComposeMessage(if(topic=="gmail")"email" else topic))
                 if(topic in setOf("whatsapp","whatsapp_business"))out+=row("wa:reply","Responder mensajes recibidos","Notificaciones con respuesta directa",Action.Navigate(SearchScope(topic,"replies")))
             }
             "youtube","spotify","sofascore","google","chrome","vivaldi","mapas" -> out+=row("$topic:search",if(topic=="sofascore")"Buscar equipo o resultado" else "Buscar en $title","Ingresar búsqueda aquí",Action.ComposeSearch(topic,packageName ?: ""))

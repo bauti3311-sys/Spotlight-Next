@@ -43,6 +43,17 @@ class CompactResultsTest {
         val sem=doc.copy(id="semantic",action=Action.Launch(Intent("semantic")),semanticMatch=true)
         assertEquals(2,select("PDF anatomía",listOf(doc,sem)).initial.size)
     }
+    @Test fun adaptiveSearchIncludesEveryEligibleMatchWithoutAddingNoise() {
+        val rows=(1..14).map{app("adaptive$it","Chrome $it")}
+        val noise=app("noise","WhatsApp")
+        val view=select("Chrome",rows+noise)
+        assertEquals(6,view.visible(false).size)
+        assertEquals(rows.map{it.id}.toSet(),view.visible(false,adaptive=true).map{it.id}.toSet())
+        assertFalse(view.visible(false,adaptive=true).any{it.id==noise.id})
+        assertEquals(15,view.visible(true,adaptive=true).size)
+        assertEquals(3,CompactResults.select("",rows,AppConfig()).visible(false,adaptive=true).size)
+    }
+
     @Test fun queryShowsSixAndExpansionRetainsEveryDistinctAction(){
         val rows=(1..12).map{app("app$it","Chrome $it")}
         val view=select("Chrome",rows)

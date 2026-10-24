@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.*
 @Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit,
  autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false,actionsKeyLabel:String="Ctrl+K") {
  val colors=MaterialTheme.colorScheme
- BoxWithConstraints(Modifier.fillMaxWidth()) {
+ BoxWithConstraints(Modifier.fillMaxWidth().testTag("context-footer")) {
   val wide=maxWidth>=560.dp
   Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=10.dp),verticalAlignment=Alignment.CenterVertically) {
    if(enabled)TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=6.dp),modifier=Modifier.weight(1f)) {

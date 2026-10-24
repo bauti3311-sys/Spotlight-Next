@@ -55,6 +55,7 @@ data class Config(
     val semanticSearch:Boolean=false,
     val actionOpacity:Float=1f, val settingsOpacity:Float=.99f,
     val keyBindings:Set<String> = emptySet(),
+    val compactSearchResults:Boolean=false,
 
 )
 
@@ -113,6 +114,7 @@ class Preferences(private val context: Context) {
     private val iconSize = intPreferencesKey("iconSize")
     private val maxHeight = intPreferencesKey("maxHeight")
     private val adaptive = booleanPreferencesKey("adaptive")
+    private val compactSearchResults = booleanPreferencesKey("compactSearchResults")
     private val routines = stringPreferencesKey("routines")
     private val onboarded = booleanPreferencesKey("onboarded")
     private val clipLimit = intPreferencesKey("clipLimit")
@@ -173,7 +175,7 @@ class Preferences(private val context: Context) {
                     p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
                     p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
                     p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "raycast"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
-                ).copy(keyBindings=p[keyboardBindings]?.takeIf{dev.bautista.spotlight.input.KeyboardBindings.validEntries(it)} ?: emptySet(),privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
+                ).copy(compactSearchResults=p[compactSearchResults] ?: false,keyBindings=p[keyboardBindings]?.takeIf{dev.bautista.spotlight.input.KeyboardBindings.validEntries(it)} ?: emptySet(),privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
                     autoKeyboard=extra.optString("autoKeyboard","adaptive").takeIf{it in setOf("adaptive","always","never")} ?: "adaptive",
                     glassIntensity=extra.optDouble("glassIntensity",.45).toFloat().coerceIn(0f,1f),
                     surfaceTone=extra.optString("surfaceTone","neutral"),borderWidth=extra.optDouble("borderWidth",1.0).toFloat().coerceIn(0f,2f),
@@ -195,6 +197,7 @@ class Preferences(private val context: Context) {
             p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .98f
             p[animations] = c.animations
             p[density] = c.density
+            p[compactSearchResults] = c.compactSearchResults
             p[accent] = c.accent
             p[stringPreferencesKey("preset")] = c.preset
             val extra = runCatching { org.json.JSONObject(p[next20] ?: "{}") }.getOrDefault(org.json.JSONObject())
@@ -291,6 +294,7 @@ class Preferences(private val context: Context) {
             p[iconSize]=c.iconSize
             p[maxHeight]=c.maxHeight
             p[adaptive]=c.adaptive
+            p[compactSearchResults]=c.compactSearchResults
             p[routines]=c.routines
             p[clipLimit]=c.clipLimit
             p[clipRetention]=c.clipRetention
@@ -373,6 +377,7 @@ class Preferences(private val context: Context) {
             p[iconSize] = c.iconSize
             p[maxHeight] = c.maxHeight
             p[adaptive] = c.adaptive
+            p[compactSearchResults] = c.compactSearchResults
             p[routines] = c.routines
             p[onboarded] = c.onboarded
             p[clipLimit] = c.clipLimit

@@ -279,7 +279,7 @@ fun SpotlightPanel(
             val filtered=filterResults(items).filter(ProductVisibility::allowed)
             return if(!inspectorTaskActive() && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null))emptyList() else if (category == "Apps" && query.isBlank())
                 dev.bautista.spotlight.control.CommandCenter.orderedApps(filtered, recentAppIds)
-            else if(searchScope==null && category=="Todo")CompactResults.select(query,filtered,config,navigating || preview!=null).visible(moreResults,collapsedSelection)
+            else if(searchScope==null && category=="Todo")CompactResults.select(query,filtered,config,navigating || preview!=null).visible(moreResults,collapsedSelection,adaptive=query.isNotBlank() && !config.compactSearchResults)
             else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
         }
         fun toggleMoreResults() {
@@ -827,9 +827,11 @@ fun SpotlightPanel(
             val availableBody = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceAtLeast(0.dp)
             // maxHeight is a results-list preference. A contextual inspector may
             // use the remaining viewport, shrinking naturally to its content.
-            val panelLimit = if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
+            val adaptiveSearch = query.isNotBlank() && !config.compactSearchResults
+            val panelLimit = if(adaptiveSearch)(viewport - 84.dp - extraHeaders.dp).coerceAtLeast(0.dp)
+                else if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
-            val resultLimit = (panelLimit - if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
+            val resultLimit = (panelLimit - if(adaptiveSearch)52.dp else if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
             val resultListHeight = minOf(resultLimit,
                 GlassTokens.resultRowHeight(config)*visibleResults.size +
                     if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 44.dp)
@@ -1026,7 +1028,7 @@ fun SpotlightPanel(
                                         .heightIn(
                                             max =
                                                 if ((richPreview || mediaInspector) && !widePreview) resultLimit * .35f
-                                                else resultListHeight
+                                                else if(adaptiveSearch)resultLimit else resultListHeight
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
@@ -1152,10 +1154,7 @@ fun SpotlightPanel(
                                         add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
                                     }
                                     if(PreviewPresentation.isApplication(item)) {
-                                        val topic=ActionCatalog.packages.entries.firstOrNull{it.value==appPackage}?.key
-                                        if(topic!=null)ActionCatalog.menu(topic,packageName=appPackage).filter {
-                                            it.action is Action.ComposeMessage || it.action is Action.ComposeSearch
-                                        }.forEach { target -> add("app.intent:${target.id}",ContextActionGroup.Communicate,target.title,target.subtitle,CommandIcons.ChatBubbleOutline,
+                                        ActionCatalog.applicationActions(appPackage.orEmpty()).forEach { target -> add("app.intent:${target.id}",ContextActionGroup.Communicate,target.title,target.subtitle,CommandIcons.ChatBubbleOutline,
                                             risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)} }
                                         if(appPackage!=null)add("app.copy-package",ContextActionGroup.Text,"Copiar paquete","Identificador de Android",CommandIcons.ContentCopy){copy(appPackage)}
                                     }
@@ -1426,7 +1425,7 @@ fun SpotlightPanel(
                             )
                         val expandable=if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
                             val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
-                            full.all.size>full.initial.size || moreResults
+                            full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
                         } else false
                         HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
                         if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)

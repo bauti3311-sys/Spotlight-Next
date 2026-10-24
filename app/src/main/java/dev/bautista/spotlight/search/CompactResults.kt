@@ -8,9 +8,10 @@ import dev.bautista.spotlight.data.Config
 object CompactResults {
     const val homeLimit = 3
     const val limit = 6
-    data class View(val initial: List<Result>, val all: List<Result>) {
-        fun visible(expanded: Boolean, retainedId: String? = null): List<Result> {
+    data class View(val initial: List<Result>, val all: List<Result>, val relevant: List<Result> = initial) {
+        fun visible(expanded: Boolean, retainedId: String? = null, adaptive: Boolean = false): List<Result> {
             if (expanded) return all
+            if (adaptive) return relevant
             val retained = all.firstOrNull { it.id == retainedId } ?: return initial
             if (initial.any { it.id == retained.id }) return initial
             // Collapsing must not execute/select a different result under the user's hands.
@@ -67,7 +68,8 @@ object CompactResults {
         val eligible = all.map { it to tier(it) }.filter { it.second > 0 }
         val best = if (preserveOrder) eligible else eligible.sortedWith(
             compareByDescending<Pair<Result, Int>> { it.second }.thenByDescending { it.first.score })
-        return View(best.take(limit).map { it.first }, all)
+        val relevant = best.map { it.first }
+        return View(relevant.take(limit), all, relevant)
     }
 
     fun subtitle(item: Result): String = item.subtitle.takeUnless {
