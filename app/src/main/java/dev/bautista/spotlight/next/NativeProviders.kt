@@ -11,7 +11,7 @@ import java.time.LocalDate
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-data class NativeSnapshot(val json:JSONObject,val fetchedAt:Long,val stale:Boolean=false,val warning:String="")
+data class NativeSnapshot(val json:JSONObject,val fetchedAt:Long,val stale:Boolean=false,val warning:String="",val source:String="",val fromCache:Boolean=false)
 /** User-triggered, bounded HTTPS calls, cancellable and persistent per-request cache. */
 class NativeProviders(private val context:Context,private val fetcher:(suspend (HttpUrl)->JSONObject)?=null,private val clock:()->Long={System.currentTimeMillis()}) {
     private val prefs=context.getSharedPreferences("native_provider_cache_v1",Context.MODE_PRIVATE)
@@ -28,9 +28,9 @@ class NativeProviders(private val context:Context,private val fetcher:(suspend (
     private suspend fun cached(key:String,ttl:Long,refresh:Boolean,url:HttpUrl):NativeSnapshot=mutex.withLock {
         val previous=runCatching{JSONObject(prefs.getString(key,null) ?: "")}.getOrNull()
         val time=previous?.optLong("saved") ?: 0L;val now=clock()
-        if(previous!=null && now>=time && now-time<if(refresh)30_000L else ttl)return@withLock NativeSnapshot(previous.getJSONObject("body"),time)
-        try {val data=fetcher?.invoke(url) ?: json(url);val saved=clock();prefs.edit().putString(key,JSONObject().put("saved",saved).put("body",data).toString()).apply();if(prefs.all.size>64){val older=prefs.all.keys.filter{it!=key}.sortedBy{runCatching{JSONObject(prefs.getString(it,"").orEmpty()).optLong("saved")}.getOrDefault(0)};val editor=prefs.edit();older.take(prefs.all.size-64).forEach{editor.remove(it)};editor.apply()};NativeSnapshot(data,saved)}
-        catch(e:CancellationException){throw e}catch(e:Exception){if(previous!=null)NativeSnapshot(previous.getJSONObject("body"),time,true,"No se pudo actualizar. Se muestran datos guardados.")else throw IllegalStateException("No se pudo consultar el proveedor. Comprobá conexión y probá de nuevo.",e)}
+        if(previous!=null && now>=time && now-time<if(refresh)30_000L else ttl)return@withLock NativeSnapshot(previous.getJSONObject("body"),time,source=url.host,fromCache=true)
+        try {val data=fetcher?.invoke(url) ?: json(url);val saved=clock();currentCoroutineContext().ensureActive();prefs.edit().putString(key,JSONObject().put("saved",saved).put("body",data).toString()).apply();if(prefs.all.size>64){val older=prefs.all.keys.filter{it!=key}.sortedBy{runCatching{JSONObject(prefs.getString(it,"").orEmpty()).optLong("saved")}.getOrDefault(0)};val editor=prefs.edit();older.take(prefs.all.size-64).forEach{editor.remove(it)};editor.apply()};NativeSnapshot(data,saved,source=url.host)}
+        catch(e:CancellationException){throw e}catch(e:Exception){if(previous!=null)NativeSnapshot(previous.getJSONObject("body"),time,true,"No se pudo actualizar. Se muestran datos guardados.",url.host,true)else throw IllegalStateException("No se pudo consultar el proveedor. Comprobá conexión y probá de nuevo.",e)}
     }
     suspend fun weather(city:String="",refresh:Boolean=false):NativeSnapshot {
         val name=city.trim().take(100);var lat=-38.0023;var lon=-57.5575;var label="Mar del Plata"

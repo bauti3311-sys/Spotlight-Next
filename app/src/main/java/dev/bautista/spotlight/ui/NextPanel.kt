@@ -134,7 +134,7 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
             }
             j.optJSONObject("daily")?.let {d->val days=d.optJSONArray("time");for(i in 0 until (days?.length() ?: 0)){NextCard(days!!.optString(i),"${d.optJSONArray("temperature_2m_min")?.optString(i)}° / ${d.optJSONArray("temperature_2m_max")?.optString(i)}° · Lluvia ${d.optJSONArray("precipitation_probability_max")?.optString(i)}%",CommandIcons.Cloud){Text("UV ${d.optJSONArray("uv_index_max")?.optString(i)} · Amanecer ${d.optJSONArray("sunrise")?.optString(i)?.substringAfter('T')} · Atardecer ${d.optJSONArray("sunset")?.optString(i)?.substringAfter('T')}",style=MaterialTheme.typography.bodySmall)}}}
             if(snapshot.stale)Text(snapshot.warning,color=MaterialTheme.colorScheme.error)
-            Text("Open-Meteo · ${j.optString("timezone")} · Actualizado ${stamp(snapshot.fetchedAt)}",style=MaterialTheme.typography.labelSmall)
+            SourceFreshnessLabel(SourceFreshness("Open-Meteo",snapshot.fetchedAt,snapshot.fromCache,snapshot.stale))
         }
     }
 }

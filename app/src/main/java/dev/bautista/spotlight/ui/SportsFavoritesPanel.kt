@@ -34,7 +34,7 @@ import java.util.Date
             snapshot?.let{data->val events=SportsFavorites.events(selected!!,data.json)
                 if(events.isEmpty())Text("Sin encuentros disponibles para este favorito. La ausencia de datos no significa que no haya partidos.")
                 events.forEach{event->HorizontalDivider();Text(event.optString("strEvent").takeUnless{it.isBlank() || it=="null"} ?: "Encuentro",style=MaterialTheme.typography.titleMedium);Text(ProviderValues.score(event));Text(event.optString("strStatus").takeUnless{it.isBlank() || it=="null"} ?: "Estado no informado");Text(event.optString("dateEvent").takeUnless{it.isBlank() || it=="null"} ?: "Fecha no informada");val time=event.optString("strTimestamp").takeUnless{it.isBlank() || it=="null"} ?: event.optString("strTime").takeUnless{it.isBlank() || it=="null"};if(time!=null)Text("Horario del proveedor: $time · zona no confirmada",style=MaterialTheme.typography.bodySmall)}
-                if(data.stale)Text(data.warning,color=MaterialTheme.colorScheme.error);Text("TheSportsDB · Actualizado ${DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT).format(Date(data.fetchedAt))}",style=MaterialTheme.typography.labelSmall)
+                if(data.stale)Text(data.warning,color=MaterialTheme.colorScheme.error);SourceFreshnessLabel(SourceFreshness("TheSportsDB",data.fetchedAt,data.fromCache,data.stale))
             }
             Row{TextButton(onClick={onboarding=true}){Text("Agregar favorito")};TextButton(onClick={favorites=favorites.filterNot{it==selected};store.save(favorites);selected=favorites.firstOrNull();onboarding=favorites.isEmpty()}){Text("Quitar favorito")}}
         }
