@@ -225,8 +225,27 @@ class Preferences(private val context: Context) {
         context.store.edit { p ->
             val current=runCatching{org.json.JSONArray(p[routines] ?: "[]")}.getOrElse{error("No se pudieron leer los comandos existentes. Exportá la configuración antes de repararlos.")}
             check(current.length()<30){"Se alcanzó el límite de 30 elementos guardados. No se borró contenido anterior."}
+            val keys=listOf(command.name,command.alias).filter{it.isNotBlank()}.map{dev.bautista.spotlight.search.normalize(it)}.toSet()
+            check((p[aliases] ?: emptySet()).none{dev.bautista.spotlight.search.normalize(it.substringBefore('|')) in keys}){"El nombre o alias coincide con un alias existente."}
+            for(i in 0 until current.length()) {
+                val old=current.optJSONObject(i) ?: continue
+                check(old.optString("id")!=command.id && listOf(old.optString("name"),old.optString("alias")).filter{it.isNotBlank()}.none{dev.bautista.spotlight.search.normalize(it) in keys}){"El nombre, alias o identificador ya existe."}
+            }
             val item=org.json.JSONArray(dev.bautista.spotlight.automation.Workflows.encode(listOf(command))).getJSONObject(0)
             current.put(item);p[routines]=current.toString()
+        }
+    }
+
+    suspend fun saveCommandTemplate(template:dev.bautista.spotlight.automation.CommandTemplate,expectedRevision:Int?=null) {
+        context.store.edit { p ->
+            p[routines]=dev.bautista.spotlight.automation.CommandTemplates.upsert(
+                p[routines] ?: "[]",template,expectedRevision,p[aliases] ?: emptySet())
+        }
+    }
+
+    suspend fun deleteCommandTemplate(id:String,expectedRevision:Int) {
+        context.store.edit { p ->
+            p[routines]=dev.bautista.spotlight.automation.CommandTemplates.delete(p[routines] ?: "[]",id,expectedRevision)
         }
     }
 
