@@ -37,7 +37,7 @@ class SpotifySearchClient internal constructor(client:OkHttpClient,private val a
     internal fun request(query:String,types:Set<SpotifyItemType>,accessToken:String,offset:Int):Request {
         require(query.isNotBlank() && query.length<=240 && '\u0000' !in query)
         require(types.isNotEmpty() && offset in 0..1000)
-        require(accessToken.length in 1..4096 && accessToken.none{it.isWhitespace() || it.isISOControl()}){"Autorización Spotify inválida."}
+        require(accessToken.length in 1..4096 && accessToken.matches(Regex("[A-Za-z0-9._~+/-]+=*"))){"Autorización Spotify inválida."}
         val url=apiBase.newBuilder().addPathSegments("v1/search").addQueryParameter("q",query.trim())
             .addQueryParameter("type",types.sortedBy{it.ordinal}.joinToString(","){it.api})
             .addQueryParameter("limit","10").addQueryParameter("offset",offset.toString()).build()

@@ -40,6 +40,11 @@ class LocalMediaRequestPolicyTest {
         val a=lease();val b=lease();assertNotEquals(a.path,b.path)
         assertFalse(a.toString().contains(a.path));assertFalse(a.toString().contains(a.contentUri))
     }
+    @Test fun malformedPrivateUrlDoesNotEnterErrorMessages() {
+        val secretUrl="https://media.example/bad%private-secret"
+        val error=runCatching{CastMediaPolicy.directUrl(secretUrl,"video/mp4",true)}.exceptionOrNull()
+        assertNotNull(error);assertFalse(error.toString().contains(secretUrl))
+    }
     @Test fun onlyExplicitlyAuthorizedUnprotectedDirectMediaIsEligible() {
         assertEquals("https://media.example/video.mp4",CastMediaPolicy.directUrl("https://media.example/video.mp4","video/mp4",true).toString())
         for(url in listOf("http://media.example/video.mp4","https://user:pass@media.example/video.mp4","https://media.example/video.mp4?token=private","file:///private/video.mp4"))

@@ -55,6 +55,11 @@ class SpotifySearchClientTest {
         assertTrue(SpotifySearchClient.parse(raw,type).isEmpty())
         assertTrue(runCatching{SpotifySearchClient.parse("x".repeat(1048577),type)}.isFailure)
     }
+    @Test fun malformedSecretCannotReachHeaderBuilderErrorMessages() {
+        val secret="private-token-👁"
+        val error=runCatching{SpotifySearchClient().request("Cerati",type,secret,0)}.exceptionOrNull()
+        assertNotNull(error);assertFalse(error.toString().contains(secret))
+    }
     @Test fun invalidQueriesAndHeadersAreRejectedBeforeNetwork() {
         val client=SpotifySearchClient()
         assertTrue(runCatching{client.request("",type,"fixture-token",0)}.isFailure)
