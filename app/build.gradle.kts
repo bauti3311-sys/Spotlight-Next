@@ -38,7 +38,9 @@ android {
    ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
    applicationIdSuffix = ".raycastpreview"
    versionNameSuffix = "-raycast-preview"
-   signingConfig = signingConfigs.getByName("debug")
+   // Never substitute a generated debug certificate for the historical Preview identity.
+   // CI/tests can configure the project without a key; that case yields unsigned output.
+   signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null
    matchingFallbacks += listOf("debug")
   }
   // Independent, release-optimized preview. Never an update of the historically signed app.
