@@ -104,3 +104,7 @@ Broader test-shape choices are in [Compose UI testing patterns](../compose-ui-te
 ## Spotlight adaptation — 2026-10-25
 
 Adapted from Chris Banes at 6c30c500c36a1827c8fde75415dd7a31394bc02c, Apache-2.0. Full license: [LICENSE](../compose-component-design/LICENSE). This is reviewed guidance only: no installer, hooks, binaries or runtime dependencies. Repository AGENTS and current user contracts take precedence. Keep Kotlin 2.0.21, Compose BOM 2024.12.01 and existing overlay keyboard contracts. Do not add Navigation Compose, preview tooling or a newer API simply because an example mentions it. Scope performance work to a measured flow; see [native contract](../spotlight-raycast-native/SKILL.md). No automatic subagents, CI or broad refactors are authorized by this skill.
+
+## Android keyboard test environment
+
+Without a physical keyboard, request InputMode.Keyboard through LocalInputModeManager in the test setup and assert the actual mode before sending Tab/Enter. A touch-mode fixture can retain text-field focus while skipping non-text targets. Keep real key input and focused semantics assertions; do not replace them with arbitrary focus mutations. Use the project's supported API, not ComposeUiTestConfig from newer Compose. Source: https://developer.android.com/codelabs/large-screens/keyboard-focus-management-in-compose . Environment setup is not physical keyboard validation.

@@ -76,6 +76,7 @@ import kotlinx.coroutines.launch
     rememberSaveable { mutableStateOf(SpotifyItemType.TRACK.api) }
 
 /** Explicit remote queries only; selecting a result never starts playback. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "") {
     val connection = app.spotify
     val state by connection.state.collectAsState()
@@ -108,7 +109,8 @@ import kotlinx.coroutines.launch
         } else {
             OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
                 enabled = !busy, label = { Text("Canción, artista, álbum o playlist") }, modifier = Modifier.fillMaxWidth().testTag("spotify-search-query"))
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 SpotifyItemType.entries.forEach { option ->
                     FilterChip(enabled = !busy, selected = option == type, onClick = { job?.cancel(); typeKey = option.api; selected = null; results = emptyList() },
                         label = { Text(when(option) { SpotifyItemType.TRACK -> "Tema"; SpotifyItemType.ARTIST -> "Artista"; SpotifyItemType.ALBUM -> "Álbum"; else -> "Lista" }, style = MaterialTheme.typography.labelSmall) })
