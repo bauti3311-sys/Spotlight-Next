@@ -21,9 +21,14 @@ data class SpotifySearchItem(val type:SpotifyItemType,val id:String,val name:Str
     val url get()="https://open.spotify.com/${type.api}/$id"
 }
 data class SpotifySearchPage(val items:List<SpotifySearchItem>,val observedAt:Long,val query:String)
-class SpotifyApiException(val status:Int,val retryAfterSeconds:Int?):IOException(when(status){
-    401->"Spotify requiere volver a autorizar el acceso.";403->"Spotify no habilitó esta operación para la cuenta o aplicación."
-    429->"Spotify limitó las consultas. Esperá antes de reintentar.";else->"Spotify no pudo completar la consulta ($status)."
+enum class SpotifyFailureReason { NO_ACTIVE_DEVICE }
+class SpotifyApiException(val status:Int,val retryAfterSeconds:Int?,val reason:SpotifyFailureReason?=null):IOException(when{
+    status==401->"Spotify requiere volver a autorizar el acceso."
+    status==403->"Spotify no habilitó esta operación para la cuenta o aplicación."
+    status==429->"Spotify limitó las consultas. Esperá antes de reintentar."
+    status==404 && reason==SpotifyFailureReason.NO_ACTIVE_DEVICE->"Spotify informa que no encuentra un dispositivo activo para esta cuenta (404 · NO_ACTIVE_DEVICE)."
+    status==404->"Spotify rechazó la operación (404). No se pudo determinar el motivo."
+    else->"Spotify no pudo completar la consulta ($status)."
 })
 
 /** Explicit invocation only. No credentials in URL, redirects, caching or automatic retries. */
