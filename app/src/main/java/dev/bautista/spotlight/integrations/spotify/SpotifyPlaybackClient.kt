@@ -33,6 +33,9 @@ class SpotifyPlaybackClient internal constructor(client: OkHttpClient, private v
         http.read(request(command, token, item))
         return "Solicitud aceptada por Spotify; comprobá el estado del reproductor."
     }
+    /** Baseline delegation used to reproduce the missing preflight in a controlled test. */
+    suspend fun playSelection(token: String, item: SpotifySearchItem): String = command("play", token, item)
+
     suspend fun observe(token: String): SpotifyPlaybackObservation? {
         val raw = http.read(request("state", token))
         if (raw.isBlank()) return null
