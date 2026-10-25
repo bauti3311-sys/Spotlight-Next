@@ -1,0 +1,34 @@
+{
+  "tested_source_sha": "ac370d9820c1d7eed49da6b0aa44c9988b802835",
+  "purpose": "Experimental official local Spotify playback and native UI refinement",
+  "real_spotify_account_tested": false,
+  "physical_device_tested": false,
+  "reported_audio_interruption_resolved": false,
+  "tests": {
+    "total": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration": "5m5s",
+    "groups": {
+      "SpotifyLocalPlayerTest": 4,
+      "SpotifyLocalConsentTest": 2,
+      "SpotifyResultRowTest": 2,
+      "SpotifyIntegrationFlowTest": 2,
+      "SpotifyOverlayRecoveryRegressionTest": 4
+    }
+  },
+  "sdk": {
+    "version": "0.8.0",
+    "source_commit": "5aa4d62465f61a0677081ae9a3108177d0365fc3",
+    "git_blob": "ec49aad33b631e3b1066be6ccecb2da528fcc9b9",
+    "new_permissions": 0
+  },
+  "screenshots": "Controlled native component fixtures, Inter/Graphite; not physical screenshots",
+  "preview_version_code": 51,
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "build": "pending",
+  "matrix": "9/25/6 unchanged",
+  "github_actions_used": false
+}
