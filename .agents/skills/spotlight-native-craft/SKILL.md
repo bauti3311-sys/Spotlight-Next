@@ -15,3 +15,11 @@ Adaptación local de Impeccable (Paul Bakaus, Apache-2.0), modificada para Compo
 7. Aplicar el cambio mínimo. Ejecutar casos Compose de semántica, foco y geometría pertinentes; comparar capturas reales del mismo escenario cuando cambie su apariencia. Registrar por separado JVM/Robolectric y prueba física. No afirmar mejoras de rendimiento sin medición.
 
 La skill guía al desarrollador; instalarla no cambia por sí solo el APK ni garantiza una interfaz mejor.
+
+## Critique → simplify → audit → polish
+
+- Critique: choose one screenshot/state, identify at most four observable defects by region and user effect. Read code to distinguish clipping from intentional truncation; do not invent defects from taste.
+- Simplify: remove a redundant layer/control only if its function remains accessible; preserve labels, confirmation, recovery and permission explanations. No new palette or generic card system.
+- Audit: check hierarchy, text scaling, contrast, touch target, selected vs focused semantics, keyboard traversal, footer/window/IME bounds, scroll and error recovery. Mark unobserved states pending.
+- Polish: apply the smallest reversible correction, compare real before/after at identical fixture settings, run directed input/geometry/restore tests, and stop when the observed defect is fixed.
+- Use spotlight-raycast-native for component mapping and the adoption review. This extends the existing Impeccable adaptation; it does not reinstall or update upstream code. Never equate more installed skills with better UI.
