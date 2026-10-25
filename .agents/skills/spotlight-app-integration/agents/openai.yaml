@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spotlight App Integration"
+  short_description: "Validar capacidades Android reales y confirmaciones"
+  default_prompt: "Aplicá $spotlight-app-integration al cambio solicitado respetando AGENTS.md y la evidencia disponible."

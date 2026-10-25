@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spotlight Native Craft"
+  short_description: "Refinar Compose sin perder la identidad aprobada"
+  default_prompt: "Aplicá $spotlight-native-craft al cambio solicitado respetando AGENTS.md y la evidencia disponible."

@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-25",
+  "base": "da17167987a054e52fa36bb6df6ebf7d3089dbac",
+  "installed": "Two repository-local text-only adaptations, not upstream executables or APK integrations",
+  "sources": [
+    {
+      "repo": "pbakaus/impeccable",
+      "sha": "9fa16a06d8957fde5687984629fd028c9f2abf10",
+      "license": "Apache-2.0"
+    },
+    {
+      "repo": "android/skills",
+      "sha": "4ebabf2b0fd6c04b7150023c8b612f80592a6226",
+      "license": "Apache-2.0"
+    }
+  ],
+  "validation": {
+    "quick_validate": "2/2 passed",
+    "forward_review": "4/4 scenarios checked by isolated read-only agent; clarified fallback confirmation and icon scopes"
+  },
+  "excluded": [
+    "Impeccable engine, automatic downloads and hooks",
+    "Unadapted AppFunctions requiring target36/compile37",
+    "SDK/dependency updates",
+    "New sensitive permissions",
+    "Account access or real external actions"
+  ],
+  "limitations": [
+    "Does not fix unresolved physical Spotify audio interruption",
+    "No new UI appearance validated by installing skills",
+    "Matrix unchanged:9/25/6"
+  ]
+}
