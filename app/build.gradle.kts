@@ -88,6 +88,8 @@ androidComponents {
  }
 }
 dependencies {
+ implementation("com.spotify.android:app-remote:0.8.0@aar")
+ implementation("com.google.code.gson:gson:2.11.0")
  implementation("com.microsoft.onnxruntime:onnxruntime-android:1.23.2")
  androidTestImplementation("androidx.test.ext:junit:1.2.1")
  androidTestImplementation("androidx.test:runner:1.6.2")

@@ -22,6 +22,8 @@ class SpotifyConnection(context: Context) {
         override fun save(tokens: SpotifyTokens) = vault.save("spotify", tokens.encode())
         override fun clear() = vault.delete("spotify")
     })
+    private val localPlayer=SpotifyLocalPlayer(OfficialSpotifyRemote(app))
+    suspend fun authorizeLocalPlayback() = localPlayer.authorize(clientId)
     private val connecting = Mutex()
     @Volatile private var authorizationJob: Job? = null
     private val mutableState = MutableStateFlow(SpotifyConnectionState.DISCONNECTED)
@@ -72,6 +74,7 @@ class SpotifyConnection(context: Context) {
     }
     suspend fun disconnect() = withContext(Dispatchers.IO) {
         authorizationJob?.takeIf { it != currentCoroutineContext().job }?.cancelAndJoin()
+        localPlayer.disconnect()
         session.disconnect()
         mutableState.value = SpotifyConnectionState.DISCONNECTED
     }
@@ -85,11 +88,10 @@ class SpotifyConnection(context: Context) {
         }
     suspend fun playback(command: String, item: SpotifySearchItem? = null): String = withContext(Dispatchers.IO) {
         val player = SpotifyPlaybackClient()
-        val token = session.token(clientId)
-        if (command == "play" && item != null) player.playSelection(token, item)
-        else player.command(command, token, item)
+        if (command == "play" && item != null) localPlayer.play(clientId, item)
+        else player.command(command, session.token(clientId), item)
     }
     suspend fun observe(): SpotifyPlaybackObservation? = withContext(Dispatchers.IO) {
-        SpotifyPlaybackClient().observe(session.token(clientId))
+        localPlayer.observe(clientId)
     }
 }

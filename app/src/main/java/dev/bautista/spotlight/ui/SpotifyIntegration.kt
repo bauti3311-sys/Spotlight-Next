@@ -1,7 +1,6 @@
 package dev.bautista.spotlight.ui
 
 import android.content.Intent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -54,6 +53,13 @@ import kotlinx.coroutines.launch
         Button(enabled = !busy && connection.clientId.isNotBlank() && connection.clientId==clientId.trim(),
             onClick = { action { connection.connect(); message = "Autorización recibida de Spotify." } }) { Text("Conectar Spotify") }
     }
+    OutlinedButton(enabled=!busy && connection.clientId==clientId.trim() && clientId.trim().length==32,
+        onClick={action{connection.authorizeLocalPlayback();message="Reproducción local autorizada. Ya podés confirmar una canción desde Spotlight."}}) {
+        Text("Autorizar reproducción local")
+    }
+    Text("Para App Remote, registrá este paquete Android en Spotify Dashboard: "+app.packageName+
+        ". La autorización inicial puede mostrar Spotify; después el SDK controla su servicio en segundo plano.",
+        style=MaterialTheme.typography.bodySmall)
     if (state == SpotifyConnectionState.CONNECTING) TextButton(onClick = { job?.cancel() }) { Text("Cancelar conexión") }
     if (state != SpotifyConnectionState.CONNECTING) TextButton(onClick = { action { connection.disconnect(); message = "Tokens eliminados de este dispositivo. También podés revocar el acceso en tu cuenta de Spotify." } }) { Text("Desconectar y eliminar tokens") }
     if (message.isNotBlank()) Text(message, style = MaterialTheme.typography.bodySmall)
@@ -111,14 +117,11 @@ import kotlinx.coroutines.launch
             }) { Text("Buscar en Spotify") }
             if (busy) TextButton(onClick = { job?.cancel() }) { Text("Cancelar solicitud") }
             results.forEach { item ->
-                Column(Modifier.fillMaxWidth().clickable { selected = item }.padding(vertical = 8.dp)) {
-                    Text(item.name, style = MaterialTheme.typography.bodyMedium)
-                    Text(item.subtitle, style = MaterialTheme.typography.bodySmall)
-                }
+                SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={selected=item})
             }
             selected?.let { item ->
                 Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)
-                Text("Se solicitará la reproducción en tu dispositivo Spotify activo. No cambia de app.", style = MaterialTheme.typography.bodySmall)
+                Text("Se solicitará la reproducción al cliente Spotify de este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
                 Button(enabled = !busy, onClick = { action { message = connection.playback("play", item) } }) { Text("Confirmar reproducción") }
                 TextButton(enabled = !busy, onClick = { action {
                     val observed = connection.observe()
