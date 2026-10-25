@@ -635,3 +635,10 @@ Orden vigente: validar errores08f19055 → D28 → D26 → Spotify Search/reprod
 
 ## 23/10 — Gate #54: test compilation correction, no CI rerun
 Single authorized directed-tests run40048431940 on b0252a94: production Kotlin/Java compiled; unit-test Kotlin failed on five DpRect.height references in ContextSplitHeightTest. Replaced with bottom-top helper, preserving assertions and thresholds. Static review found no other occurrence across243 test sources. No Android tests executed; quota prevented artifact upload, original GitHub/local job logs preserved. Evidence: docs/verification/mandatory-gate-20261023/gate-54-failure.md. No production changes, new CI/APK or matrix promotion;9/25/6 unchanged. Next gate only with new explicit authorization.
+
+
+## Preview 50 — diagnóstico Spotify y entrega bloqueada (2026-10-25)
+
+- Fuente APK/ZIP `965646a9c53717075708c81a885556b2f02fd374`; 20/20 casos dirigidos, lint0errores14advertencias y Raycast R8 correcto; paquete50/certificado histórico/16KiB/hashes verificados.
+- El corte físico al confirmar NO está resuelto. Se corrigió solamente el descarte del motivo de error. Sin cuenta real ni Actions.
+- APK, ZIP y evidencia en `/workspaces/.spotlight-tools/delivery50`; entrega NO realizada por `Debugger unattached`. Codespace aún sin parada confirmada. Recuperar publicación existente sin recompilar ni duplicar; ver `docs/verification/preview50-diagnostics.md` y `.json`.

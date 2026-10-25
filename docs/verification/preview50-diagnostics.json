@@ -1,0 +1,73 @@
+{
+  "source_sha": "965646a9c53717075708c81a885556b2f02fd374",
+  "tested_kotlin_source_sha": "d40451548b6c76df8b780d377b2359d03d58ab38",
+  "version_code": 50,
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "purpose": "Diagnostic build; NOT a verified fix for the reported audio interruption on Confirm playback",
+  "reported_audio_interruption_resolved": false,
+  "real_spotify_account_tested": false,
+  "physical_device_tested": false,
+  "baseline": {
+    "source_sha": "c33472295a9902fea6de3b34dc7d98a48c83a68a",
+    "tests": 1,
+    "failures": 1,
+    "defect": "SpotifyHttp discarded explicit NO_ACTIVE_DEVICE reason"
+  },
+  "directed": {
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration": "6m7s",
+    "groups": {
+      "SpotifyPlaybackFailureTest": 5,
+      "SpotifyPlaybackClientTest": 3,
+      "SpotifySearchClientTest": 6,
+      "SpotifyIntegrationFlowTest": 2,
+      "SpotifyOverlayRecoveryRegressionTest": 4
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 14
+  },
+  "changes": [
+    "Bounded recognized error reason, no raw response text",
+    "Unknown 404 remains explicitly undiagnosed",
+    "No changes to playback/pause commands or retry policy",
+    "Raycast versionCode 50"
+  ],
+  "source_difference_after_tests": "Only Raycast versionCode and verification documentation; Kotlin identical to tested d4045154",
+  "github_actions_used": false,
+  "matrix": "9/25/6 unchanged",
+  "build": {
+    "result": "BUILD SUCCESSFUL",
+    "duration": "16m4s",
+    "tasks_executed": 25,
+    "tasks_up_to_date": 31
+  },
+  "identity_checks": {
+    "package": true,
+    "version_code": true,
+    "historical_certificate": true,
+    "non_debuggable": true,
+    "zipalign_16k": true,
+    "git_archive_same_commit": true,
+    "no_signing_files_in_source_archive": true
+  },
+  "hashes": {
+    "apk": "f8cef5bee6553e5d9d6e411271b189dcbea3e7d9d0fc3d40e7fb7de258efac6f",
+    "source": "956af45d7f6b33906ade76ce809f6b1428a6a13ac8f113ef64e0d777c542be29",
+    "evidence": "76e85e81a490bc21b11d304e98d0c6f596606e4ec1452f6f768f0332535a25e1"
+  },
+  "delivery": {
+    "status": "NOT_UPLOADED",
+    "release_created": false,
+    "reason": "Browser control repeatedly timed out; after runtime recovery debugger was unattached, including when claiming the existing tab. Terminal input could no longer be controlled. No upload/build retry.",
+    "directory": "/workspaces/.spotlight-tools/delivery50",
+    "publisher": "/workspaces/.spotlight-tools/evidence50/publish-private-draft50.sh",
+    "codespace": "ubiquitous-waffle-7vgr7gxxgjrw3x7qv",
+    "codespace_stop_confirmed": false
+  }
+}
