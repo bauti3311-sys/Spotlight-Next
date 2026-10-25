@@ -85,7 +85,7 @@ class SpotifyOverlayRecoveryRegressionTest {
         ui.onNodeWithText("Overlay cerrado").assertIsDisplayed()
         ui.runOnIdle{registry=SaveableStateRegistry(recovered,OverlaySnapshotCodec::canSave);visible=true}
         authorizeFixtureWithoutCredentials()
-        ui.onNodeWithTag("spotify-search-query").assertTextEquals("Cerati")
+        ui.onNodeWithTag("spotify-search-query").assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("Cerati")))
         ui.onNodeWithText("Álbum").assertIsSelected()
         ui.onNodeWithTag("spotify-result-status").assertDoesNotExist()
         ui.onNodeWithText("Confirmar reproducción").assertDoesNotExist()
