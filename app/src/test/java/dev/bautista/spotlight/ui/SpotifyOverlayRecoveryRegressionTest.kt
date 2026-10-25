@@ -52,7 +52,8 @@ class SpotifyOverlayRecoveryRegressionTest {
     /** No account/token is installed: the marker only makes the actual UI exercise its error path. */
     private fun authorizeFixtureWithoutCredentials() {
         ui.waitForIdle()
-        runBlocking{app.spotify.inspect()}
+        // Valid public configuration reaches the missing-token error before any HTTP request.
+        runBlocking{app.spotify.configure("a".repeat(32));app.spotify.inspect()}
         assertFalse(CredentialVault(app).contains("spotify"))
         ui.runOnIdle {
             ReflectionHelpers.getField<MutableStateFlow<SpotifyConnectionState>>(app.spotify,"mutableState").value=SpotifyConnectionState.AUTHORIZED
