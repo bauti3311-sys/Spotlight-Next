@@ -642,3 +642,8 @@ Single authorized directed-tests run40048431940 on b0252a94: production Kotlin/J
 - Fuente APK/ZIP `965646a9c53717075708c81a885556b2f02fd374`; 20/20 casos dirigidos, lint0errores14advertencias y Raycast R8 correcto; paquete50/certificado histórico/16KiB/hashes verificados.
 - El corte físico al confirmar NO está resuelto. Se corrigió solamente el descarte del motivo de error. Sin cuenta real ni Actions.
 - APK, ZIP y evidencia en `/workspaces/.spotlight-tools/delivery50`; entrega NO realizada por `Debugger unattached`. Codespace aún sin parada confirmada. Recuperar publicación existente sin recompilar ni duplicar; ver `docs/verification/preview50-diagnostics.md` y `.json`.
+
+
+### Preview 50 — entrega recuperada (2026-10-25)
+
+Publicación privada completada una vez desde el mismo Codespace vía navegador de Work, sin recompilar: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-91aa708fe2bc7c721410. Seis assets uploaded y hashes del servidor cotejados. Fuente APK/ZIP965646a9, 20/20 casos y lint0E14W; el corte de reproducción real sigue pendiente. Ver docs/verification/preview50-diagnostics.md para límites y procedencia. Conservar Preview49, PR18borrador y matriz9/25/6.

@@ -62,12 +62,55 @@
     "evidence": "76e85e81a490bc21b11d304e98d0c6f596606e4ec1452f6f768f0332535a25e1"
   },
   "delivery": {
-    "status": "NOT_UPLOADED",
-    "release_created": false,
-    "reason": "Browser control repeatedly timed out; after runtime recovery debugger was unattached, including when claiming the existing tab. Terminal input could no longer be controlled. No upload/build retry.",
+    "status": "UPLOADED_AND_SERVER_HASH_VERIFIED",
+    "release_created": true,
     "directory": "/workspaces/.spotlight-tools/delivery50",
     "publisher": "/workspaces/.spotlight-tools/evidence50/publish-private-draft50.sh",
     "codespace": "ubiquitous-waffle-7vgr7gxxgjrw3x7qv",
-    "codespace_stop_confirmed": false
+    "initial_blocker": "Browser control repeatedly timed out; after runtime recovery debugger was unattached, including when claiming the existing tab. Terminal input could no longer be controlled. No upload/build retry.",
+    "release_id": 423143708,
+    "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-91aa708fe2bc7c721410",
+    "private_repository": true,
+    "draft": true,
+    "publication_runs": 1,
+    "recovery": "Existing persistent Codespace controlled using Work cloud browser after local browser context became unavailable; no rebuild/test rerun.",
+    "assets": [
+      {
+        "name": "README.txt",
+        "size": 1627,
+        "digest": "sha256:9b4598cdf7f7b8fcade1c559f2d683f1f95959d55fbe0c06e197f720e5c9193d",
+        "download_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-91aa708fe2bc7c721410/README.txt"
+      },
+      {
+        "name": "SHA256SUMS",
+        "size": 318,
+        "digest": "sha256:b3ddf260f4c173b02562bcfeccb07dbd32785ba9bdd9d688ff37bb29c8aee58a",
+        "download_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-91aa708fe2bc7c721410/SHA256SUMS"
+      },
+      {
+        "name": "SOURCE_COMMIT",
+        "size": 41,
+        "digest": "sha256:aa0a66f8a2dbb3fc3912cb0a61e3bcf5ad4a357c10af0f31d0f49e56dea7956b",
+        "download_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-91aa708fe2bc7c721410/SOURCE_COMMIT"
+      },
+      {
+        "name": "Spotlight-Next-Preview50-evidence.zip",
+        "size": 41247,
+        "digest": "sha256:76e85e81a490bc21b11d304e98d0c6f596606e4ec1452f6f768f0332535a25e1",
+        "download_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-91aa708fe2bc7c721410/Spotlight-Next-Preview50-evidence.zip"
+      },
+      {
+        "name": "Spotlight-Next-Raycast-Preview-50-965646a9.apk",
+        "size": 73315030,
+        "digest": "sha256:f8cef5bee6553e5d9d6e411271b189dcbea3e7d9d0fc3d40e7fb7de258efac6f",
+        "download_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-91aa708fe2bc7c721410/Spotlight-Next-Raycast-Preview-50-965646a9.apk"
+      },
+      {
+        "name": "Spotlight-Next-source-965646a9.zip",
+        "size": 9276386,
+        "digest": "sha256:956af45d7f6b33906ade76ce809f6b1428a6a13ac8f113ef64e0d777c542be29",
+        "download_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-91aa708fe2bc7c721410/Spotlight-Next-source-965646a9.zip"
+      }
+    ]
   }
 }

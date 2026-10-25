@@ -1,4 +1,4 @@
-# Preview 50 — diagnóstico Spotify, entrega pendiente
+# Preview 50 — diagnóstico Spotify, entrega verificada
 
 **El corte de audio reportado al confirmar reproducción NO está reproducido ni resuelto.** Activar Spotify primero no resolvió el caso del usuario. No se operó una cuenta real.
 
@@ -18,12 +18,14 @@ Se confirmó y corrigió un defecto independiente: el cliente descartaba el moti
 - Fuente ZIP SHA256: 956af45d7f6b33906ade76ce809f6b1428a6a13ac8f113ef64e0d777c542be29
 - Evidencia ZIP SHA256: 76e85e81a490bc21b11d304e98d0c6f596606e4ec1452f6f768f0332535a25e1
 
-## Bloqueo de entrega y continuidad
+## Entrega privada verificada
 
-Los archivos están en `/workspaces/.spotlight-tools/delivery50`. Logs, XML y verificadores en `/workspaces/.spotlight-tools/evidence50`. La carpeta `/workspaces/.spotlight-tools/spotify-playback-failure` conserva también el fixture previo y el fallo original.
+[APK, ZIP fuente, evidencia y SHA256SUMS](https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-91aa708fe2bc7c721410)
 
-**No se creó una release ni se subieron los archivos.** El control del navegador devolvió timeouts y finalmente `Debugger unattached`, incluso al recuperar la pestaña conocida. El intento de publicación no apareció en la terminal y la API confirmó ausencia de Preview50. No afirmar entrega ni parada del Codespace: su detención no pudo verificarse. No se recompiló ni se lanzó Actions.
+Se recuperó el acceso al mismo Codespace mediante el navegador de Work. Se comprobó ausencia de publisher activo, log previo, metadatos y release50; se verificaron de nuevo los hashes locales y se ejecutó una única publicación bajo flock, sin repetir build ni pruebas. Exit0 y seis assets uploaded. Los hashes SHA256 de GitHub coinciden con APK, fuente y evidencia locales.
 
-Al reconectar: primero inspeccionar procesos, `publish50.log`, `release-metadata.json` y releases remotas para evitar duplicados. Revisar el publisher existente (puede tener un guard preparado de flock/metadatos; no se confirmó su ejecución). Si no empezó la publicación, ejecutar el publisher existente, verificar hashes del servidor y luego detener el Codespace. No reconstruir APK/ZIP. El checkout puede seguir en 965646a9c53717075708c81a885556b2f02fd374; este commit posterior contiene solo evidencia.
+El bloqueo original por timeouts y Debugger unattached queda como historial resuelto. Archivos, caches, firma y evidencias permanecen en /workspaces/.spotlight-tools/delivery50 y evidence50; no se expusieron credenciales. El publisher valida repositorio privado y protege las cabeceras de autorización fuera del ZIP.
 
-Preview49 conservada, PR18 en borrador, matriz9/25/6 intacta. No se modificó firma, preferencias, scopes ni permisos. Falta prueba física y obtener el motivo del rechazo de reproducción en la cuenta del usuario.
+**Preview 50 es diagnóstica: el corte de audio real sigue pendiente de causa y solución.** No hubo operaciones en una cuenta Spotify real ni validación física. El siguiente intento del usuario puede mostrar NO_ACTIVE_DEVICE solo si Spotify lo informa explícitamente; un 404 sin motivo reconocido sigue sin diagnóstico.
+
+Preview49 conservada, PR18 en borrador y matriz9/25/6 intacta. Sin Actions, nuevas funcionalidades, scopes, permisos, cambios de firma o preferencias. APK/ZIP siguen siendo del SHA965646a9; este checkpoint posterior solo actualiza evidencia.
