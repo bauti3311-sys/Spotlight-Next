@@ -76,7 +76,7 @@ class SpotifyOverlayRecoveryRegressionTest {
         ui.onNodeWithTag("spotify-search-query").performTextInput("Cerati")
         ui.onNode(hasText("Buscar en Spotify") and hasClickAction()).performClick()
         ui.waitUntil(5000){ui.onAllNodesWithTag("spotify-result-status").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithTag("spotify-result-status").assertTextContains("Conectá tu cuenta")
+        ui.onNodeWithTag("spotify-result-status").assertTextEquals("Conectá tu cuenta de Spotify en Ajustes.")
         ui.onNodeWithTag("spotify-search-panel").assertIsDisplayed()
         lateinit var snapshot:Map<String,List<Any?>>
         ui.runOnIdle{snapshot=registry.performSave()}
