@@ -2,6 +2,7 @@ package dev.bautista.spotlight.control
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
 import android.os.Process
 import dev.bautista.spotlight.search.*
@@ -17,7 +18,7 @@ class IntegrationRegistry(private val context: Context) {
     fun resolves(intent: Intent): Boolean = runCatching {
         val activity=context.packageManager.resolveActivity(intent,0)?.activityInfo ?: return@runCatching false
         if(intent.`package`!=null && activity.packageName!=intent.`package`)return@runCatching false
-        activity.enabled && activity.applicationInfo?.enabled!=false &&
+        activity.enabled && activity.applicationInfo?.let { it.enabled && (it.flags and ApplicationInfo.FLAG_SUSPENDED)==0 }!=false &&
             (activity.packageName==context.packageName || activity.exported) &&
             (activity.permission.isNullOrBlank() || androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)==android.content.pm.PackageManager.PERMISSION_GRANTED)
     }.getOrDefault(false)

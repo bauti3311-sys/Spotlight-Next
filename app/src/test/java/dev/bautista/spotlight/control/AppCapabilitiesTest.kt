@@ -61,4 +61,28 @@ class AppCapabilitiesTest {
             assertEquals("Cerati",action.intent.data!!.getQueryParameter("q"))
         }
     }
+
+    @Test fun disabledOrSuspendedAppsDoNotPublishShareActions() {
+        val pkg="fixture.share"
+        val activity=expose(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage(pkg),pkg)
+        val registry=AppCapabilities(context)
+        assertEquals(1,registry.available(pkg).size)
+        activity.enabled=false
+        assertTrue(registry.available(pkg).isEmpty())
+        activity.enabled=true
+        activity.applicationInfo.enabled=false
+        assertTrue(registry.available(pkg).isEmpty())
+        activity.applicationInfo.enabled=true
+        activity.applicationInfo.flags=activity.applicationInfo.flags or ApplicationInfo.FLAG_SUSPENDED
+        assertTrue(registry.available(pkg).isEmpty())
+        assertTrue(runCatching{registry.prepare(pkg,"share-text")}.isFailure)
+        assertNull(Shadows.shadowOf(context).nextStartedActivity)
+    }
+    @Test fun anotherPackageCannotSupplyTheSelectedAppsShareCapability() {
+        val pkg="fixture.selected"
+        expose(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage(pkg),"fixture.other")
+        assertTrue(AppCapabilities(context).available(pkg).isEmpty())
+        assertTrue(runCatching{AppCapabilities(context).prepare(pkg,"share-text")}.isFailure)
+        assertNull(Shadows.shadowOf(context).nextStartedActivity)
+    }
 }
