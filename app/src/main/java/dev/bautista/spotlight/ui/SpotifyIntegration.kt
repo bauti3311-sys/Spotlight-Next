@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
         modifier = Modifier.fillMaxWidth().testTag("spotify-client-id"))
     Text("No ingreses el Client Secret. Se guardan tokens cifrados en este dispositivo; no se incluyen en respaldos.", style = MaterialTheme.typography.bodySmall)
     Text("En Spotify Dashboard → tu app → Settings → Redirect URIs, registrá exactamente:\nhttp://127.0.0.1/spotify/callback\nGuardá los cambios. Spotlight agrega un puerto temporal, admitido por Spotify para retornos locales.", style = MaterialTheme.typography.bodySmall)
-    Text("Development Mode requiere Premium del propietario y una cuenta autorizada en User Management (hasta cinco usuarios nuevos). Reproducir con la Web API requiere Premium y un dispositivo Spotify activo. No se solicita acceso a biblioteca en esta etapa.", style = MaterialTheme.typography.bodySmall)
+    Text("La búsqueda usa la autorización de tu cuenta. La reproducción local usa el cliente Spotify instalado en segundo plano; no exige activar previamente un reproductor Web API. Las canciones a demanda dependen de las capacidades de tu cuenta.", style = MaterialTheme.typography.bodySmall)
     fun action(block: suspend () -> Unit) {
         if (busy) return
         message = ""; busy = true
@@ -60,6 +60,12 @@ import kotlinx.coroutines.launch
     Text("Para App Remote, registrá este paquete Android en Spotify Dashboard: "+app.packageName+
         ". La autorización inicial puede mostrar Spotify; después el SDK controla su servicio en segundo plano.",
         style=MaterialTheme.typography.bodySmall)
+    val fingerprint=remember(app){spotifySigningFingerprint(app)}
+    androidx.compose.foundation.text.selection.SelectionContainer {
+        Text("Paquete: "+app.packageName+ "\nSHA-1: "+(fingerprint ?: "No disponible"),
+            style=MaterialTheme.typography.bodySmall)
+    }
+    if(busy && state!=SpotifyConnectionState.CONNECTING) TextButton(onClick={job?.cancel()}) { Text("Cancelar solicitud") }
     if (state == SpotifyConnectionState.CONNECTING) TextButton(onClick = { job?.cancel() }) { Text("Cancelar conexión") }
     if (state != SpotifyConnectionState.CONNECTING) TextButton(onClick = { action { connection.disconnect(); message = "Tokens eliminados de este dispositivo. También podés revocar el acceso en tu cuenta de Spotify." } }) { Text("Desconectar y eliminar tokens") }
     if (message.isNotBlank()) Text(message, style = MaterialTheme.typography.bodySmall)
@@ -117,7 +123,7 @@ import kotlinx.coroutines.launch
             }) { Text("Buscar en Spotify") }
             if (busy) TextButton(onClick = { job?.cancel() }) { Text("Cancelar solicitud") }
             results.forEach { item ->
-                SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={selected=item})
+                SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={if(!busy)selected=item})
             }
             selected?.let { item ->
                 Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)

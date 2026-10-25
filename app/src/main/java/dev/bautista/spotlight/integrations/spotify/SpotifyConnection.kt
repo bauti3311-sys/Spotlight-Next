@@ -23,7 +23,11 @@ class SpotifyConnection(context: Context) {
         override fun clear() = vault.delete("spotify")
     })
     private val localPlayer=SpotifyLocalPlayer(OfficialSpotifyRemote(app))
-    suspend fun authorizeLocalPlayback() = localPlayer.authorize(clientId)
+    val localPlaybackEnabled: Boolean get()=settings.getBoolean("local-playback-consent",false)
+    suspend fun authorizeLocalPlayback() {
+        localPlayer.authorize(clientId)
+        check(settings.edit().putBoolean("local-playback-consent",true).commit()){"No se pudo guardar el consentimiento local."}
+    }
     private val connecting = Mutex()
     @Volatile private var authorizationJob: Job? = null
     private val mutableState = MutableStateFlow(SpotifyConnectionState.DISCONNECTED)
@@ -75,6 +79,7 @@ class SpotifyConnection(context: Context) {
     suspend fun disconnect() = withContext(Dispatchers.IO) {
         authorizationJob?.takeIf { it != currentCoroutineContext().job }?.cancelAndJoin()
         localPlayer.disconnect()
+        check(settings.edit().putBoolean("local-playback-consent",false).commit()){"No se pudo desactivar el control local."}
         session.disconnect()
         mutableState.value = SpotifyConnectionState.DISCONNECTED
     }
@@ -88,10 +93,14 @@ class SpotifyConnection(context: Context) {
         }
     suspend fun playback(command: String, item: SpotifySearchItem? = null): String = withContext(Dispatchers.IO) {
         val player = SpotifyPlaybackClient()
-        if (command == "play" && item != null) localPlayer.play(clientId, item)
+        if (command == "play" && item != null) {
+            check(localPlaybackEnabled){"Autorizá primero la reproducción local en Ajustes → Integraciones → Spotify."}
+            localPlayer.play(clientId, item)
+        }
         else player.command(command, session.token(clientId), item)
     }
     suspend fun observe(): SpotifyPlaybackObservation? = withContext(Dispatchers.IO) {
+        check(localPlaybackEnabled){"Autorizá primero la reproducción local en Ajustes → Integraciones → Spotify."}
         localPlayer.observe(clientId)
     }
 }
