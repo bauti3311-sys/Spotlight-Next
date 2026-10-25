@@ -1,5 +1,8 @@
 package dev.bautista.spotlight.integrations.spotify
 
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import java.io.IOException
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -33,8 +36,28 @@ class SpotifyPlaybackClient internal constructor(client: OkHttpClient, private v
         http.read(request(command, token, item))
         return "Solicitud aceptada por Spotify; comprobá el estado del reproductor."
     }
-    /** Baseline delegation used to reproduce the missing preflight in a controlled test. */
-    suspend fun playSelection(token: String, item: SpotifySearchItem): String = command("play", token, item)
+
+    /** Check the current account's live target before replacing its selected content.
+     * No transfer, pause, fallback, retry or persistence of device identifiers. */
+    suspend fun playSelection(token: String, item: SpotifySearchItem): String {
+        val raw = http.read(request("state", token))
+        val deviceId = try {
+            val device = if (raw.isBlank()) null else JSONObject(raw).optJSONObject("device")
+            val id = device?.opt("id") as? String
+            if (device?.opt("is_active") != true || device?.opt("is_restricted") != false ||
+                id.isNullOrBlank() || id.length > 256 || id.any { it.isISOControl() }) null else id
+        } catch (_: Exception) { null }
+        if (deviceId == null) throw IOException(
+            "Spotify no informó un dispositivo activo y controlable para esta cuenta. " +
+                "No se solicitó cambiar la música. Revisá el reproductor y la cuenta de Spotify."
+        )
+        currentCoroutineContext().ensureActive()
+        val approved = request("play", token, item)
+        val targeted = approved.newBuilder().url(approved.url.newBuilder()
+            .addQueryParameter("device_id", deviceId).build()).build()
+        http.read(targeted)
+        return "Solicitud aceptada por Spotify; comprobá el estado del reproductor."
+    }
 
     suspend fun observe(token: String): SpotifyPlaybackObservation? {
         val raw = http.read(request("state", token))

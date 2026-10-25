@@ -84,7 +84,10 @@ class SpotifyConnection(context: Context) {
             }
         }
     suspend fun playback(command: String, item: SpotifySearchItem? = null): String = withContext(Dispatchers.IO) {
-        SpotifyPlaybackClient().command(command, session.token(clientId), item)
+        val player = SpotifyPlaybackClient()
+        val token = session.token(clientId)
+        if (command == "play" && item != null) player.playSelection(token, item)
+        else player.command(command, token, item)
     }
     suspend fun observe(): SpotifyPlaybackObservation? = withContext(Dispatchers.IO) {
         SpotifyPlaybackClient().observe(session.token(clientId))
