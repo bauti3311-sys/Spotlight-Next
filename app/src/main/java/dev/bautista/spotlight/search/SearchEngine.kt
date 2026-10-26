@@ -50,6 +50,12 @@ class SearchEngine(
                     .also { apps = it }
         }
 
+    private suspend fun expandAliases(input:String,aliases:Set<String>):String {
+        if(aliases.none{normalize(it.substringBefore('|'))==normalize(input.trim().substringBefore(' '))})return input
+        // A user alias can never hide an installed application with that exact name.
+        if(appList().any{normalize(it.label)==normalize(input.trim())})return input
+        return dev.bautista.spotlight.personal.PersonalCommands.expand(input,aliases)
+    }
     fun invalidateApps() {
         apps = null
     }
@@ -102,22 +108,32 @@ class SearchEngine(
         }
         val effectiveScope=interpretation.scope
         val canonical=LocalLanguage.canonical(input)
-        val query=interpretation.text
+        val query=expandAliases(interpretation.text,c.aliases)
         val root=effectiveScope==null || effectiveScope.section in setOf("commands","ai") && input.isNotBlank()
         val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
         searchSources(query,c,effectiveScope).collect { rows ->
             val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else StableResults.unique(ResultRanker.rank(query,rows,c))
-            send(all)
+            // Only advertise device controls backed by a currently available local route.
+            // The executor still rechecks permission, configuration and target at execution.
+            send(all.filter { item ->
+                when(val action=item.action) {
+                    is Action.Device -> if(action.command.startsWith("volume:") || action.command in setOf("volume_up","volume_down","mute","unmute"))
+                        !context.getSystemService(android.media.AudioManager::class.java).isVolumeFixed
+                    else MediaControl.available(context,action.command)
+                    is Action.AudioPanel -> !context.getSystemService(android.media.AudioManager::class.java).isVolumeFixed
+                    else -> true
+                }
+            })
         }
     }.flowOn(Dispatchers.Default)
 
     private fun searchSources(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
-        val query=ActionCatalog.canonical(dev.bautista.spotlight.personal.PersonalCommands.expand(input,c.aliases))
+        val query=ActionCatalog.canonical(expandAliases(input,c.aliases))
         if(scope==null && query.isBlank()) {
             if(!c.suggestions){send(emptyList());return@channelFlow}
-            val suggestions=withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || c.trees.isNotEmpty()),local.clips.value.isNotEmpty())}
+            val suggestions=withContext(Dispatchers.IO){HomeSuggestions.results(context,c,c.files && (index.broadAllowed() || index.hasImports() || context.contentResolver.persistedUriPermissions.any{it.isReadPermission && it.uri.toString() in c.trees}),local.clips.value.isNotEmpty())}
             send(suggestions)
             if(c.files && dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"files")) {
                 val now=System.currentTimeMillis()

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.WindowSizePolicyTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-21T02:11:07" hostname="e37c7bc9f734" time="3.645">
+  <properties/>
+  <testcase name="persistenceAndPortableBackupsPreserveNewChoiceAndOldData[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.97"/>
+  <testcase name="persistenceAndPortableBackupsPreserveNewChoiceAndOldData" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="2.508"/>
+  <testcase name="legacyWidthsRemainExactUntilUserChangesSlider[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.023"/>
+  <testcase name="legacyWidthsRemainExactUntilUserChangesSlider" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.024"/>
+  <testcase name="scaleSurvivesImeAndRespectsBothOrientations[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.021"/>
+  <testcase name="scaleSurvivesImeAndRespectsBothOrientations" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.026"/>
+  <testcase name="oldBackupDoesNotInventNewWidthChoice[28]" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.028"/>
+  <testcase name="oldBackupDoesNotInventNewWidthChoice" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.044"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

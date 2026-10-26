@@ -5,6 +5,8 @@ import dev.bautista.spotlight.data.Preferences
 import dev.bautista.spotlight.search.SearchEngine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class SpotlightApp : Application() {
     val processStartedAt=android.os.SystemClock.elapsedRealtime()
@@ -15,7 +17,12 @@ class SpotlightApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        scope.launch { preferences.config.collectLatest { } }
+        scope.launch {
+            preferences.config.map { it.privateMode }.distinctUntilChanged().collectLatest { privateMode ->
+                // Also clear a suspended session when no OverlayService is alive.
+                if(privateMode)runCatching { contexts.saveOverlaySnapshot(null) }
+            }
+        }
         contexts.start()
         scope.launch { dev.bautista.spotlight.index.PdfSnapshotFiles.removeAbandoned(this@SpotlightApp) }
         val filter =
@@ -46,6 +53,7 @@ class SpotlightApp : Application() {
     val reversibleSettings by lazy {dev.bautista.spotlight.advanced.ReversibleSettings(advancedBackend,settingsJournal)}
     val toolAudit by lazy {dev.bautista.spotlight.ai.ToolAudit(this)}
     val preferences by lazy { Preferences(this) }
+    val spotify by lazy { dev.bautista.spotlight.integrations.spotify.SpotifyConnection(this) }
     val contexts by lazy { dev.bautista.spotlight.data.ContextStore(this,scope,preferences) }
     val diagnostics by lazy { dev.bautista.spotlight.overlay.Diagnostics(this) }
     val local by lazy { dev.bautista.spotlight.data.LocalStore(preferences, scope) }

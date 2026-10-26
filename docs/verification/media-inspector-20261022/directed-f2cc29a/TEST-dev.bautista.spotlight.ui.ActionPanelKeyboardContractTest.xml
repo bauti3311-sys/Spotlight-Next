@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-22T15:56:35" hostname="9f8b8cbf2200" time="4.426">
+  <properties/>
+  <testcase name="asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="3.68"/>
+  <testcase name="nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.299"/>
+  <testcase name="ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.124"/>
+  <testcase name="tabCyclesAndEnterRunsOnlyFocusedContextAction" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.128"/>
+  <testcase name="actionGroupsHaveVisibleHeadingsWithoutExecutingItems" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.09"/>
+  <testcase name="groupsAndIdentityDoNotDependOnTheVisibleTitle" classname="dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest" time="0.104"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

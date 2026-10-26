@@ -66,16 +66,15 @@ object CommandCenter {
     fun complete(query: String, results: List<Result>): String? {
         if (query.isBlank()) return null
         // An exact app/document is already complete; never ghost a longer sibling over it.
-        if (results.any { it.category in setOf("Aplicaciones", "Archivos") && normalize(it.title)==normalize(query.trim()) }) return null
-        val candidates =
-            results
-                .filter { it.category == "Aplicaciones" || it.category == "Archivos" }
-                .map { it.title } + examples
-        val match =
-            candidates.firstOrNull {
-                normalize(it).startsWith(normalize(query)) && it.length > query.length
-            }
-        return match?.let { query + it.drop(query.length) }
+        if (results.any { it.category in setOf("Aplicaciones", "Archivos", "Comandos", "Acciones") && normalize(it.title.trim())==normalize(query.trim()) }) return null
+        // Complete only a live, unambiguous result. Static help examples are not capabilities.
+        val candidates=results.filter {
+            it.category in setOf("Aplicaciones","Archivos","Comandos","Acciones") &&
+                it.action !is Action.Ask && it.action !is Action.Access
+        }.map{it.title}.filter{normalize(it).startsWith(normalize(query)) && it.length>query.length}
+            .distinctBy{normalize(it)}
+        val match=candidates.singleOrNull() ?: return null
+        return query+match.drop(query.length)
     }
 
     fun orderedApps(items: List<Result>, recent: List<String>): List<Result> {

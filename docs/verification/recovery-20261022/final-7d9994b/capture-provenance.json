@@ -1,0 +1,44 @@
+[
+  {
+    "filename": "Preview36-Inspector-IA-tablet.png",
+    "label": "Inspector IA fijado \u00b7 tablet \u00b7 7d9994b",
+    "sha256": "7666475bf51630e664e13d62a885176834e3853458e219b19b7e2b38d0f991e1",
+    "source": "Robolectric API33 GraphicsMode.NATIVE",
+    "physical": false
+  },
+  {
+    "filename": "Preview36-Formulario-telefono.png",
+    "label": "Formulario \u00b7 tel\u00e9fono390\u00d7844 \u00b7 5a9ac1a",
+    "sha256": "4d98e622200e9eb295fd08830f3afd7021e0f855244f7e64cb4f4316c3e88ff6",
+    "source": "Robolectric API33 GraphicsMode.NATIVE",
+    "physical": false
+  },
+  {
+    "filename": "Preview36-Formulario-tablet.png",
+    "label": "Formulario fijado \u00b7 tablet \u00b7 5a9ac1a",
+    "sha256": "05f23ba5924b1d362c41ccc75a0a48f1002d1cb85736ad6649fc128790a7e92f",
+    "source": "Robolectric API33 GraphicsMode.NATIVE",
+    "physical": false
+  },
+  {
+    "filename": "Preview36-QuickLook-local.png",
+    "label": "Vista local fijada \u00b7 nota fixture \u00b7 5a9ac1a",
+    "sha256": "1df4f8d34d6e0a591738c0d87fcc02cd17b9dd95a323152b6b6926bdb10cbaa9",
+    "source": "Robolectric API33 GraphicsMode.NATIVE",
+    "physical": false
+  },
+  {
+    "filename": "Preview36-ActionPanel-tablet.png",
+    "label": "ActionPanel superpuesto \u00b7 tablet \u00b7 5a9ac1a",
+    "sha256": "acee99afdaaeee2cfacc77afdd4e06db7ace5449d43039e50c88898e72c5de00",
+    "source": "Robolectric API33 GraphicsMode.NATIVE",
+    "physical": false
+  },
+  {
+    "filename": "Preview36-ActionPanel-telefono.png",
+    "label": "ActionPanel superpuesto \u00b7 tel\u00e9fono390\u00d7844 \u00b7 5a9ac1a",
+    "sha256": "535c99fc56bd41d03d1fe4ec98caf6395417ddeaa0d9e33bc4f8e0fd44bc67d9",
+    "source": "Robolectric API33 GraphicsMode.NATIVE",
+    "physical": false
+  }
+]

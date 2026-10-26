@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.NativePaletteFlowTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-21T21:09:27" hostname="3f4aaaec44b7" time="4.147">
+  <properties/>
+  <testcase name="compactHomeHasNoAutomaticInspector" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.518"/>
+  <testcase name="filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.775"/>
+  <testcase name="searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.692"/>
+  <testcase name="enterFromSearchLaunchesTheRealPrimaryIntent" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.291"/>
+  <testcase name="briefTapSelectsWhileLongPressOpensActionsWithoutLaunching" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.242"/>
+  <testcase name="lightSearchAndActionsUseSameStructure" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.295"/>
+  <testcase name="localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.376"/>
+  <testcase name="unavailableActionCannotExecuteAndFilteringPreservesIdentity" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.113"/>
+  <testcase name="constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.312"/>
+  <testcase name="phoneUsesSameFloatingActionsAndCanReachLastEntry" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.254"/>
+  <testcase name="copySubmenuReturnsToSameRootSelectionBeforeClosing" classname="dev.bautista.spotlight.ui.NativePaletteFlowTest" time="0.277"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+View.captureToImage Could not find window for view. Falling back to View#draw instead of PixelCopy(If you are using Material3 dialogs, this is expected).
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

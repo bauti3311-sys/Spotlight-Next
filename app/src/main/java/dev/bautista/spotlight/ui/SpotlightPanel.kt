@@ -10,12 +10,13 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.text.*
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.focus.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import dev.bautista.spotlight.control.*
+import dev.bautista.spotlight.input.KeyboardBindings
 import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.ai.DirectAi
 import dev.bautista.spotlight.data.Config
@@ -33,7 +35,7 @@ import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-@OptIn(FlowPreview::class, ExperimentalFoundationApi::class)
+@OptIn(FlowPreview::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun SpotlightPanel(
     app: SpotlightApp,
@@ -43,12 +45,15 @@ fun SpotlightPanel(
     availableHeightDp: Float? = null,
     invocation:String="touch",
     onContentExpansion:(Boolean)->Unit={},
+    onActionsVisibility:(Boolean)->Unit={},
     aiClient:DirectAi?=null,
     fileSelection:dev.bautista.spotlight.data.FileBuffer?=null,
+    incomingQueryRevision:Int=0,
 ) =
     SpotlightTheme(config.theme, config) {
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
+        val checkpointTask=LocalTaskCheckpoint.current
         val keyboard = LocalSoftwareKeyboardController.current
         val platformView = LocalView.current
         fun hideKeyboardForActions() {
@@ -58,57 +63,74 @@ fun SpotlightPanel(
                     ?.hideSoftInputFromWindow(token, 0)
             }
         }
+        var dictationAvailable by remember(context) { mutableStateOf(false) }
+        LaunchedEffect(context) {
+            dictationAvailable=withContext(Dispatchers.IO) { runCatching { context.packageManager.resolveActivity(Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH),0)!=null }.getOrDefault(false) }
+        }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
-        var query by remember { mutableStateOf(initialQuery) }
-        var searchScope by remember { mutableStateOf<SearchScope?>(null) }
-        var systemPage by remember {mutableStateOf<Action.SystemPanel?>(null)}
-        var messageForm by remember { mutableStateOf<Action.ComposeMessage?>(null) }
-        var searchForm by remember { mutableStateOf<Action.ComposeSearch?>(null) }
-        var notificationKey by remember {mutableStateOf<String?>(null)}
-        var audioPanel by remember { mutableStateOf(false) }
-        var showAi by remember { mutableStateOf(false) }
+        var query by rememberSaveable { mutableStateOf(initialQuery) }
+        var searchScope by rememberSaveable(stateSaver=SearchScopeSaver) { mutableStateOf<SearchScope?>(null) }
+        var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
+        var messageForm by rememberSaveable(stateSaver=MessageTaskSaver) { mutableStateOf<Action.ComposeMessage?>(null) }
+        var searchForm by rememberSaveable(stateSaver=SearchTaskSaver) { mutableStateOf<Action.ComposeSearch?>(null) }
+        var notificationKey by rememberSaveable {mutableStateOf<String?>(null)}
+        var audioPanel by rememberSaveable { mutableStateOf(false) }
+        var showAi by rememberSaveable { mutableStateOf(false) }
+        var aiGeneration by remember{mutableIntStateOf(0)}
         var aiJob by remember { mutableStateOf<Job?>(null) }
-        var pendingAsk by remember {mutableStateOf<Action.Ask?>(null)}
-        var pendingWorkflow by remember {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
+        var pendingAsk by rememberSaveable(stateSaver=AskTaskSaver) {mutableStateOf<Action.Ask?>(null)}
+        var pendingWorkflow by rememberSaveable(stateSaver=WorkflowTaskSaver) {mutableStateOf<dev.bautista.spotlight.automation.Workflow?>(null)}
         var clipEditing by remember {mutableStateOf<String?>(null)}
         var snippetTemplate by remember {mutableStateOf<String?>(null)}
-        var timerMinutes by remember {mutableStateOf<Int?>(null)}
+        var timerMinutes by rememberSaveable {mutableStateOf<Int?>(null)}
         var deletingNote by remember {mutableStateOf<Result?>(null)}
         var snippetText by remember {mutableStateOf<String?>(null)}
         var snippetAlias by remember {mutableStateOf("")}
         var snippetError by remember {mutableStateOf("")}
-        var followUp by remember{mutableStateOf("")}
+        var followUp by rememberSaveable{mutableStateOf("")}
         val replyTargets by Replies.targets.collectAsState()
         val replyConnected by Replies.connected.collectAsState()
         fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
-        var category by remember { mutableStateOf("Todo") }
+        var category by rememberSaveable { mutableStateOf("Todo") }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int,
             val expanded: Boolean, val retainedId: String?)
         var restoringLocation by remember { mutableStateOf<Location?>(null) }
         val restoredLocation=restoringLocation?.takeIf{it.query==query && it.category==category && it.scope==searchScope}
         var searchOptions by remember { mutableStateOf(false) }
-        var moreResults by remember(query, category, searchScope) { mutableStateOf(restoredLocation?.expanded ?: false) }
-        var collapsedSelection by remember(query, category, searchScope) { mutableStateOf(restoredLocation?.retainedId) }
+        var moreResults by rememberSaveable(query, category, searchScope) { mutableStateOf(restoredLocation?.expanded ?: false) }
+        var collapsedSelection by rememberSaveable(query, category, searchScope) { mutableStateOf(restoredLocation?.retainedId) }
         SideEffect { restoringLocation=null }
         var canAutocomplete by remember { mutableStateOf(false) }
         val resultsState=remember { mutableStateOf(emptyList<Result>()) }
         var results by resultsState
         var searchGeneration by remember { mutableIntStateOf(0) }
-        var selected by remember { mutableIntStateOf(0) }
+        var selected by rememberSaveable { mutableIntStateOf(0) }
         val history = remember { mutableStateListOf<Location>() }
         fun push() { history.add(Location(query,category,searchScope,selected,moreResults,collapsedSelection)) }
         var navigating by remember { mutableStateOf(false) }
         var pointerSelecting by remember { mutableStateOf(false) }
-        var preview by remember { mutableStateOf<Result?>(null) }
-        var expandedPreview by remember {mutableStateOf(false)}
-        val previewPages=remember{mutableStateMapOf<String,Int>()}
-        val fileBuffer=remember(fileSelection){fileSelection ?: dev.bautista.spotlight.data.FileBuffer()}
+        // A highlighted keyboard/default result has not yet been confirmed by touch.
+        var touchedResultId by remember(query,category,searchScope) { mutableStateOf<String?>(null) }
+        var preview by rememberSaveable(stateSaver=remember(context){inspectorResultSaver(context)}) { mutableStateOf<Result?>(null) }
+        var applicationPreviewId by rememberSaveable { mutableStateOf<String?>(null) }
+        var inspectorPinned by rememberSaveable { mutableStateOf(false) }
+        var pinnedPreview by rememberSaveable(stateSaver=remember(context){inspectorResultSaver(context)}) { mutableStateOf<Result?>(null) }
+        var pinnedCard by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
+        // Moving between the tablet column and phone sheet must retain edited form state.
+        val contextDrafts=rememberSaveableStateHolder()
+        val recentDrafts=rememberSaveable(saver=ContextDraftKeysSaver){mutableListOf<String>()}
+        val inspectorHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
+        var expandedPreview by rememberSaveable {mutableStateOf(false)}
+        val previewPages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf<String,Int>()}
+        val fileBuffer=rememberSaveable(fileSelection,saver=FileBufferSaver){fileSelection ?: dev.bautista.spotlight.data.FileBuffer()}
         val bufferExtraction=remember{DocumentExtractionRequest()}
         val bufferBusy=bufferExtraction.running
         fun bufferContext()=listOf(query,category,searchScope,fileBuffer.items.map{it.id to (it.action as? Action.Launch)?.intent?.data?.toString()})
         DisposableEffect(bufferContext()){onDispose{bufferExtraction.cancel()}}
         var menu by remember { mutableStateOf(false) }
+        SideEffect {onActionsVisibility(menu)}
+        DisposableEffect(Unit){onDispose{onActionsVisibility(false)}}
         var advancedActions by remember { mutableStateOf(false) }
         val documentExtraction = remember { DocumentExtractionRequest() }
         fun extractionContext() = listOf(query, category, searchScope, selected, preview?.id, menu, searchGeneration)
@@ -116,14 +138,13 @@ fun SpotlightPanel(
         // state, closing the gap before Compose runs disposal after a selection/query change.
         DisposableEffect(extractionContext()) { onDispose { documentExtraction.cancel() } }
         // Hold width across loading/result replacement; typing must not pulse the window.
-        val expandForContent = query.isNotBlank() || menu || preview != null || showAi ||
+        val expandForContent = query.isNotBlank() || PreviewPresentation.needsInspector(preview) || inspectorPinned || messageForm!=null || searchForm!=null || pendingAsk!=null || pendingWorkflow!=null || showAi ||
             systemPage?.page in setOf("calendar", "sports-native", "weather-native")
         LaunchedEffect(expandForContent) { onContentExpansion(expandForContent) }
         val motionEnabled=LocalMotion.current
         val actionFocus=remember {FocusRequester()}
         LaunchedEffect(menu) { if (menu) hideKeyboardForActions() }
-        LaunchedEffect(menu,preview?.id) { if(menu) {withFrameNanos { };runCatching { actionFocus.requestFocus() }} }
-        var previousSearch by remember {mutableStateOf<String?>(null)}
+        var previousSearch by remember {mutableStateOf<String?>(query)}
         var loading by remember { mutableStateOf(false) }
         fun invalidateResults() {
             // Returning to the same text within a debounce/frame still needs to refill cleared rows.
@@ -132,25 +153,57 @@ fun SpotlightPanel(
             results=emptyList()
         }
         var error by remember { mutableStateOf("") }
-        var card by remember { mutableStateOf<InfoCard?>(null) }
+        var card by rememberSaveable(stateSaver=InfoCardSaver) { mutableStateOf<InfoCard?>(null) }
         var cardLoading by remember { mutableStateOf(false) }
         var cardJob by remember { mutableStateOf<Job?>(null) }
-        var editingNoteId by remember { mutableStateOf<String?>(null) }
+        DisposableEffect(Unit){onDispose{cardJob?.cancel()}}
+        var editingNoteId by rememberSaveable { mutableStateOf<String?>(null) }
         var pinned by remember { mutableStateOf(config.pins) }
-        var noteEditor by remember { mutableStateOf(false) }
-        var draft by remember { mutableStateOf("") }
-        var aiMessageTarget by remember {mutableStateOf("")}
-        var aiText by remember { mutableStateOf("") }
-        var aiLoading by remember { mutableStateOf(false) }
+        var noteEditor by rememberSaveable { mutableStateOf(false) }
+        var draft by rememberSaveable { mutableStateOf("") }
+        var aiMessageTarget by rememberSaveable {mutableStateOf("")}
+        var aiText by rememberSaveable { mutableStateOf("") }
+        var aiLoading by rememberSaveable { mutableStateOf(false) }
         var aiSaving by remember { mutableStateOf(false) }
         var aiSaveStatus by remember { mutableStateOf("") }
         val ai = remember(context,aiClient) { aiClient ?: DirectAi(context) }
-        val conversation = remember { mutableListOf<Pair<String, String>>() }
+        val conversation = rememberSaveable(saver=ConversationTaskSaver) { mutableListOf<Pair<String, String>>() }
+        val aiSessions=rememberSaveable(saver=InspectorAiSessionsSaver){InspectorAiSessions()}
+        var aiWasInterrupted by rememberSaveable{mutableStateOf(false)}
+        var pendingAiPrompt by rememberSaveable{mutableStateOf("")}
+        var aiContextDestination by rememberSaveable{mutableStateOf("")}
+        val aiDestination=taskFingerprint(config.aiProvider+"|"+config.endpoint)
+        LaunchedEffect(Unit) {
+            if((aiLoading || pendingAiPrompt.isNotBlank() || aiWasInterrupted) && aiJob==null){
+                aiLoading=false;aiWasInterrupted=true
+                if(pendingAiPrompt.isNotBlank()){
+                    if(aiText.isNotBlank()){conversation.add("user" to pendingAiPrompt);conversation.add("assistant" to aiText);while(conversation.size>12)conversation.removeAt(0)}
+                    else followUp=pendingAiPrompt
+                    pendingAiPrompt=""
+                }
+                aiSaveStatus="Respuesta interrumpida. El texto parcial se conservó; no se reanudó ningún envío."
+            }
+        }
+        var aiSessionKey by rememberSaveable{mutableStateOf("")}
         val playingPackages by remember(context){MediaControl.playing(context)}.collectAsState(initial=emptySet())
         var favorites by remember { mutableStateOf(config.favorites) }
         val clips by app.local.clips.collectAsState()
         val clipFavorites by app.local.clipFavorites.collectAsState()
         val notes by app.local.notes.collectAsState()
+        LaunchedEffect(notes,preview?.id,pinnedPreview?.id) {
+            suspend fun revalidate(item:Result?):Result? {
+                val action=item?.action as? Action.EditNote ?: return item
+                val stored=org.json.JSONArray(app.preferences.noteData.first())
+                val note=(0 until stored.length()).map{stored.getJSONObject(it)}.firstOrNull{it.getString("id")==action.id}
+                if(note==null)return null
+                val text=note.getString("text")
+                return item.copy(title=text.lineSequence().first().take(100),preview=text,action=Action.EditNote(action.id,text))
+            }
+            val oldPreview=preview;val oldPin=pinnedPreview
+            val nextPreview=revalidate(oldPreview);val nextPin=revalidate(oldPin)
+            if(preview==oldPreview){preview=nextPreview;if(oldPreview!=null && nextPreview==null)error="La nota ya no existe. Su vista recuperada se descartó."}
+            if(pinnedPreview==oldPin){pinnedPreview=nextPin;if(oldPin!=null && nextPin==null)error="La nota ya no existe. Su vista recuperada se descartó."}
+        }
         val activeContext by app.contexts.active.collectAsState()
         val pinnedContexts by app.contexts.pinned.collectAsState()
         val savedChats by app.contexts.conversations.collectAsState()
@@ -160,8 +213,11 @@ fun SpotlightPanel(
         var searchFocused by remember{mutableStateOf(false)}
         var resultsFocused by remember{mutableStateOf(false)}
         val listState = rememberLazyListState()
-        val gridState = rememberLazyGridState()
+        LaunchedEffect(listState.isScrollInProgress) {
+            if(listState.isScrollInProgress)touchedResultId=null
+        }
         fun back() {
+            inspectorPinned=false;pinnedPreview=null;pinnedCard=null
             aiJob?.cancel()
             showAi=false
             clearForms();preview=null;menu=false;noteEditor=false;selected=0;navigating=false;cardJob?.cancel();card=null
@@ -172,9 +228,16 @@ fun SpotlightPanel(
             } else {searchScope=null;category="Todo"}
             runCatching{focus.requestFocus()}
         }
+        LaunchedEffect(incomingQueryRevision) {
+            if(incomingQueryRevision>0){
+                clearForms();inspectorPinned=false;pinnedPreview=null;pinnedCard=null;preview=null;card=null
+                query=initialQuery;searchScope=null;category="Todo";selected=0;menu=false;navigating=false
+                runCatching{focus.requestFocus()}
+            }
+        }
         fun selectMode(mode:String,clearQuery:Boolean=false) {
             if(!clearQuery && mode==category && searchScope?.section !in setOf("files","results"))return
-            push();clearForms();aiJob?.cancel();showAi=false;noteEditor=false;preview=null;menu=false;advancedActions=false
+            push();clearForms();inspectorPinned=false;pinnedPreview=null;pinnedCard=null;aiJob?.cancel();showAi=false;noteEditor=false;preview=null;menu=false;advancedActions=false
             cardJob?.cancel();card=null;selected=0;navigating=false;invalidateResults()
             if(clearQuery)query=""
             category=mode
@@ -206,11 +269,17 @@ fun SpotlightPanel(
                     )
                 }
         }
+        fun inspectorTaskActive() = showAi || pendingAsk!=null || pendingWorkflow!=null ||
+            messageForm!=null || searchForm!=null || timerMinutes!=null || audioPanel ||
+            notificationKey!=null || noteEditor || clipEditing!=null || snippetTemplate!=null ||
+            snippetText!=null || deletingNote!=null || systemPage?.page in setOf(
+                "interpret", "agent", "weather-native", "sports-native", "calendar", "context-ai", "conversation")
+        fun keepSurface() = inspectorPinned || inspectorTaskActive() || PreviewPresentation.needsInspector(preview)
         fun present(items:List<Result>):List<Result> {
             val filtered=filterResults(items).filter(ProductVisibility::allowed)
-            return if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null)emptyList() else if (category == "Apps" && query.isBlank())
+            return if(!inspectorTaskActive() && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null))emptyList() else if (category == "Apps" && query.isBlank())
                 dev.bautista.spotlight.control.CommandCenter.orderedApps(filtered, recentAppIds)
-            else if(searchScope==null && category=="Todo")CompactResults.select(query,filtered,config,navigating || preview!=null).visible(moreResults,collapsedSelection)
+            else if(searchScope==null && category=="Todo")CompactResults.select(query,filtered,config,navigating || preview!=null).visible(moreResults,collapsedSelection,adaptive=query.isNotBlank() && !config.compactSearchResults)
             else ResultSections.grouped(filtered, expanded=searchScope!=null || category!="Todo" || query.isBlank(),query=query,preserveOrder=navigating || preview!=null)
         }
         fun toggleMoreResults() {
@@ -249,7 +318,7 @@ fun SpotlightPanel(
                         query = "notas"
                         category = "Acciones"
                     }
-                    .onFailure { error = "No se pudo guardar" }
+                    .onFailure { error = it.message ?: "No se pudo guardar" }
             }
         }
         LaunchedEffect(noteEditor) {
@@ -279,7 +348,7 @@ fun SpotlightPanel(
                         context.startActivity(
                             Intent(intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         )
-                    if (close) onClose()
+                    if (close && !keepSurface()) onClose()
                 }
                 .onFailure { error = "No hay una app disponible para esta acción." }
         }
@@ -302,7 +371,7 @@ fun SpotlightPanel(
                             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
                         )
                 )
-                onClose()
+                if(!keepSurface())onClose()
             } catch (e: Exception) {
                 launch(
                     Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -328,6 +397,8 @@ fun SpotlightPanel(
             launch(Intent.createChooser(send, "Compartir"))
         }
         fun lookup(action: Action.Lookup) {
+            val origin=Triple(query,searchScope,searchGeneration)
+            fun current()=origin==Triple(query,searchScope,searchGeneration)
             cardJob?.cancel()
             card = null
             cardLoading = true
@@ -335,19 +406,19 @@ fun SpotlightPanel(
             cardJob =
                 scope.launch {
                     try {
-                        card =
-                            withTimeout(if (action.type == "translate") 150000 else 35000) {
-                                app.online.lookup(action, config)
-                            }
+                        val next=withTimeout(if (action.type == "translate") 150000 else 35000) {
+                            app.online.lookup(action, config)
+                        }
+                        if(current())card=next
                     } catch (e: CancellationException) {
-                        if (e is TimeoutCancellationException)
+                        if (e is TimeoutCancellationException && current())
                             error =
                                 "La consulta tardó demasiado; revisá la conexión y volvé a intentar."
                         else throw e
                     } catch (e: Exception) {
-                        error = e.message ?: "No se pudo consultar el servicio"
+                        if(current())error = e.message ?: "No se pudo consultar el servicio"
                     } finally {
-                        cardLoading = false
+                        if(current())cardLoading = false
                     }
                 }
         }
@@ -366,6 +437,17 @@ fun SpotlightPanel(
         }
         fun execute(item: Result) {
             error = ""
+            val replacesInspector = when(val action=item.action) {
+                is Action.Ask -> !action.continuation
+                is Action.ComposeSearch, is Action.ComposeMessage, is Action.SystemPanel,
+                is Action.WorkflowRun, is Action.Lookup, is Action.AudioPanel,
+                is Action.EditNote, is Action.NewNote -> true
+                else -> false
+            }
+            if(inspectorPinned && replacesInspector && item.id!="ai:confirmed") {
+                error="Desfijá el inspector para reemplazar su contenido. La tarea actual se conserva."
+                return
+            }
             if(item.action is Action.SystemPanel && item.action.page=="selection-ai") {
                 if(fileBuffer.items.isEmpty()){error="Añadí documentos a la selección desde sus acciones.";return}
                 pendingAsk=null
@@ -375,12 +457,12 @@ fun SpotlightPanel(
                 },failure={e->error=e.message ?: "No se pudieron extraer los documentos"})
                 return
             }
-            val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)
+            val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)?.let{AiRequestPolicy.revalidateContinuation(it,aiContextDestination,aiDestination,conversation.toList())}
             if(ask!=null && (AiRequestPolicy.requiresReview(ask) || ask.origin==AiInputOrigin.USER_QUERY && !ai.configured(config))){clearForms();preview=null;menu=false;pendingAsk=ask;return}
             if(query.isNotBlank() && (item.action is Action.Device || item.category=="Aplicaciones" && item.action is Action.Launch)) app.scope.launch { app.preferences.recordAction(query) }
             if(item.action !is Action.Navigate && item.action !is Action.RestoreQuery && item.action !is Action.ReadNotification && (item.action as? Action.ComposeMessage)?.replyKey==null) app.scope.launch { app.preferences.recordSelection(item.id) }
             when (val action = item.action) {
-                is Action.SystemPanel -> {push();clearForms();systemPage=action;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
+                is Action.SystemPanel -> {push();clearForms();systemPage=if(action.page=="agent" && action.packageName.isBlank())action.copy(packageName=query) else action;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
                 is Action.ReadNotification -> {push();clearForms();notificationKey=action.key;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.EditClipboard -> {push();clearForms();clipEditing=action.text;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.ExpandSnippet -> {push();clearForms();snippetTemplate=action.template;preview=null;menu=false;card=null;noteEditor=false}
@@ -396,7 +478,7 @@ fun SpotlightPanel(
                         launch(timer)
                     }.onFailure {error="No se pudo preparar la sesión."}
                 }
-                is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
+                is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());if(!keepSurface())onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
                 is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};invalidateResults();preview=null;menu=false;selected=0;focus.requestFocus()}
                 is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.ComposeSearch -> {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
@@ -411,7 +493,7 @@ fun SpotlightPanel(
                             context.startActivity(
                                 Intent(action.intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             )
-                            onClose()
+                            if(!keepSurface())onClose()
                         }
                         .onFailure { launch(action.fallback) }
                 }
@@ -424,6 +506,7 @@ fun SpotlightPanel(
                                     else dev.bautista.spotlight.ai.ToolCall("control_media",mapOf("command" to action.command))
                                 val result=dev.bautista.spotlight.ai.ToolExecutor(app).execute(call,app.preferences.config.first(),confirmed=true)
                                 error=result.text
+                                if(result.state in setOf(dev.bautista.spotlight.ai.ExecutionState.VERIFIED, dev.bautista.spotlight.ai.ExecutionState.COMPLETED) && !keepSurface())onClose()
                             }catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo ejecutar esta acción."}
                         }
                     } else {
@@ -450,9 +533,9 @@ fun SpotlightPanel(
                         .onFailure { error = it.message ?: "La app activa no admite esta acción" }
                     }
                 }
-                is Action.Copy -> copy(action.text)
+                is Action.Copy -> { copy(action.text); if(!keepSurface())onClose() }
                 is Action.Launch -> {
-                    launch(action.intent)
+                    launch(action.intent, close=item.category!="Archivos")
                     app.scope.launch { app.preferences.record(action.intent.component?.let { "${it.packageName}/${it.className}" } ?: item.id) }
                 }
                 is Action.RestoreQuery -> {
@@ -486,30 +569,61 @@ fun SpotlightPanel(
                         error = "Guardá tu API key en Ajustes → Inteligencia artificial."
                     } else {
                         push();clearForms();showAi=true;if(category !in setOf("Todo","Acciones","IA"))category="Todo";preview=null;menu=false
+                        if(aiSessionKey.isNotBlank() && aiText.isNotBlank()) {
+                            val turns=conversation.toList()+if(pendingAiPrompt.isNotBlank())listOf("user" to pendingAiPrompt,"assistant" to aiText) else emptyList()
+                            aiSessions.put(aiSessionKey,InspectorAiSnapshot(aiText,turns.takeLast(12),aiMessageTarget,pendingAiPrompt.isNotBlank()))
+                        }
+                        val requestGeneration=++aiGeneration
                         aiJob?.cancel()
+                        val taskKey=if(request.continuation && aiSessionKey.isNotBlank())aiSessionKey
+                            else org.json.JSONObject().put("provider",config.aiProvider).put("model",config.aiModel).put("endpoint",config.endpoint)
+                                .put("origin",request.origin.name).put("prompt",request.prompt).put("target",request.messageTarget)
+                                .put("turns",org.json.JSONArray(request.priorMessages.map{listOf(it.first,it.second)})).toString().let(::taskFingerprint)
+                        if(!request.continuation)aiSessions.get(taskKey)?.let{saved->
+                            aiSessionKey=taskKey;aiText=saved.text;conversation.clear();conversation.addAll(saved.turns)
+                            aiMessageTarget=saved.messageTarget;aiLoading=false;aiWasInterrupted=saved.interrupted;aiContextDestination=aiDestination;aiSaveStatus=if(saved.interrupted)"Respuesta parcial recuperada. Podés continuarla explícitamente." else "Conversación de esta tarea recuperada localmente."
+                            return
+                        }
+                        aiSessionKey=taskKey
                         aiText = ""
                         if(!request.continuation)conversation.clear()
                         if(request.priorMessages.isNotEmpty()){conversation.clear();conversation.addAll(request.priorMessages)}
                         aiSaveStatus=""
                         aiMessageTarget=request.messageTarget
                         aiLoading = true
+                        aiWasInterrupted=false
+                        pendingAiPrompt=request.prompt
+                        aiContextDestination=aiDestination
+                        val priorTurns=conversation.takeLast(10).toList()
                         aiJob =
                             scope.launch {
                                 try {
+                                    checkpointTask()
                                     ai.answer(
                                             config,
-                                            conversation.takeLast(10) + listOf("user" to request.prompt),
+                                            priorTurns + listOf("user" to request.prompt),
                                         )
-                                        .collect { aiText += it }
+                                        .collect { if(aiSessionKey==taskKey && aiGeneration==requestGeneration)aiText += it }
+                                    if(aiSessionKey!=taskKey || aiGeneration!=requestGeneration)return@launch
+                                    pendingAiPrompt=""
                                     conversation.add("user" to request.prompt)
                                     conversation.add("assistant" to aiText)
                                     while (conversation.size > 12) conversation.removeAt(0)
+                                    aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget))
                                 } catch (e: CancellationException) {
+                                    if(aiSessionKey==taskKey && aiGeneration==requestGeneration && pendingAiPrompt.isNotBlank()) {
+                                        if(aiText.isNotBlank()){
+                                            conversation.add("user" to pendingAiPrompt);conversation.add("assistant" to aiText)
+                                            while(conversation.size>12)conversation.removeAt(0)
+                                            aiSessions.put(taskKey,InspectorAiSnapshot(aiText,conversation.toList(),aiMessageTarget,true))
+                                        } else followUp=pendingAiPrompt
+                                        pendingAiPrompt="";aiWasInterrupted=true;aiSaveStatus="Respuesta interrumpida. No se reanudó ningún envío."
+                                    }
                                     throw e
                                 } catch (e: Exception) {
-                                    error = e.message ?: "No se pudo consultar IA"
+                                    if(aiSessionKey==taskKey && aiGeneration==requestGeneration)error = e.message ?: "No se pudo consultar IA"
                                 } finally {
-                                    aiLoading = false
+                                    if(aiSessionKey==taskKey && aiGeneration==requestGeneration)aiLoading = false
                                 }
                             }
                     }
@@ -537,7 +651,11 @@ fun SpotlightPanel(
                 Row{TextButton(enabled=ai.configured(config),onClick={pendingAsk=null;execute(Result("ai:confirmed","","","IA",0,AiRequestPolicy.authorize(ask)))}){Text("Enviar")};TextButton(onClick={pendingAsk=null}){Text("Cancelar")}}
             }}
         }
-        LaunchedEffect(query){ if(showAi){aiJob?.cancel();showAi=false} }
+        var observedAiQuery by remember{mutableStateOf(query)}
+        LaunchedEffect(query){
+            if(query!=observedAiQuery && showAi && !inspectorPinned){aiJob?.cancel();showAi=false}
+            observedAiQuery=query
+        }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
         LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
             snapshotFlow { Triple(query,searchScope,searchGeneration).also {
@@ -550,9 +668,8 @@ fun SpotlightPanel(
                     app.diagnostics.traceSearch(if(isCurrentRequest())"started" else "obsolete-start",requestScope?.section,generation)
                     if(!isCurrentRequest())return@collectLatest
                     // Selection is reset by explicit edits/mode changes, never by a provider refresh.
-                    if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q}
+                    if(previousSearch!=q){navigating=false;preview=null;menu=false;previousSearch=q;card=null}
                     cardJob?.cancel()
-                    card = null
                     cardLoading = false
                     error = ""
                     loading = true
@@ -563,14 +680,12 @@ fun SpotlightPanel(
                         coroutineScope {
                             val localRequest=TextTools.results(q).mapNotNull{it.action as? Action.Lookup}.firstOrNull{it.type.startsWith("text:")}
                             val request = localRequest ?: app.online.request(q)
-                            if (requestScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
+                            if (card==null && requestScope==null && ActionCatalog.topic(q)==null && (config.online || localRequest!=null) && request != null && request.type.startsWith("text:") && !config.privateMode)
                                 launch {
                                     cardLoading = true
                                     try {
-                                        card =
-                                            withTimeout(35000) {
-                                                app.online.lookup(request, config)
-                                            }
+                                        val next=withTimeout(35000) {app.online.lookup(request, config)}
+                                        if(isCurrentRequest())card=next
                                     } catch (e: CancellationException) {
                                         throw e
                                     } catch (e: Exception) {
@@ -613,23 +728,12 @@ fun SpotlightPanel(
                 if(config.autoKeyboard=="always" || config.autoKeyboard=="adaptive" && invocation=="keyboard")keyboard?.show()
                 else keyboard?.hide()
         }
-        LaunchedEffect(selected, category, displayed.size, navigating, pointerSelecting) {
+        LaunchedEffect(selected, category, navigating, pointerSelecting) {
             // Lock ordering on touch without moving the row underneath the finger.
-            if (displayed.isNotEmpty() && navigating && !pointerSelecting) {
+            if (!menu && displayed.isNotEmpty() && navigating && !pointerSelecting) {
                 val target = selected.coerceIn(0, displayed.lastIndex)
-                if (category == "Apps") {
-                    if (motionEnabled)
-                        gridState.animateScrollToItem(
-                            target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
-                        )
-                    else
-                        gridState.scrollToItem(
-                            target + 1 + if (recentCount > 0 && target >= recentCount) 1 else 0
-                        )
-                } else {
-                    if (motionEnabled && !navigating) listState.animateScrollToItem(target)
-                    else listState.scrollToItem(target)
-                }
+                if (motionEnabled && !navigating) listState.animateScrollToItem(target)
+                else listState.scrollToItem(target)
             }
         }
         BoxWithConstraints(
@@ -644,7 +748,16 @@ fun SpotlightPanel(
             val visibleResults=present(resultsState.value)
             val selectedResult=visibleResults.getOrNull(selected.coerceIn(0,(visibleResults.size-1).coerceAtLeast(0)))
             LaunchedEffect(selectedResult?.id,navigating,menu) {
-                if(!menu && navigating && selectedResult?.category=="Archivos" && selectedResult.mime!=DocumentsContract.Document.MIME_TYPE_DIR)preview=selectedResult
+                if(!menu && navigating) {
+                    if(selectedResult?.category=="Archivos" &&
+                        selectedResult.mime!=DocumentsContract.Document.MIME_TYPE_DIR) {
+                        preview=selectedResult
+                    } else if(preview?.id!=selectedResult?.id) {
+                        // Switching from a PDF to another row must not leave
+                        // the former file's inspector in the new selection.
+                        preview=null
+                    }
+                }
             }
             if(app.diagnostics.searchTracingEnabled)app.diagnostics.traceSearch("pane-raw-${resultsState.value.size}",searchScope?.section,searchGeneration,visibleResults.size)
             val compact = maxWidth < 560.dp
@@ -655,19 +768,91 @@ fun SpotlightPanel(
                         ?: (LocalConfiguration.current.screenHeightDp * (1f - config.position) -
                             24f))
                     .dp
+            val inspectorWidthAvailable = dev.bautista.spotlight.overlay.OverlayLayoutPolicy.resolve(
+                maxWidth.value, viewport.value, LocalDensity.current.fontScale * config.textScale
+            ).split
             val actionSheetWidth=if(maxWidth<560.dp)maxWidth else minOf(360.dp,maxWidth)
-            val richPreview=PreviewPresentation.needsInspector(preview)
-            val widePreview=config.adaptive && maxWidth>=600.dp && richPreview
+            // Compact Raycast inspector: only show it on wide overlays when a
+            // real app is selected or when the user explicitly requests actions.
+            // Never reserve an empty pane on narrow screens.
+            LaunchedEffect(selectedResult?.id,inspectorPinned) {
+                if(!inspectorPinned && !inspectorTaskActive() && applicationPreviewId!=null) {
+                    preview=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
+                    applicationPreviewId=preview?.id
+                }
+            }
+            val mediaCandidate=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
+            val inspectorItem=if(inspectorPinned)pinnedPreview else preview ?: mediaCandidate
+            val inspectorPackage=(inspectorItem?.action as? Action.Launch)?.intent?.component?.packageName
+                ?.takeIf{PreviewPresentation.isApplication(inspectorItem) && !inspectorTaskActive()}
+            var mediaDismissed by remember(selectedResult?.id,query){mutableStateOf(false)}
+            val mediaFlow=remember(context,inspectorPackage){
+                inspectorPackage?.let{MediaControl.inspect(context,it)} ?: kotlinx.coroutines.flow.flowOf(null)
+            }
+            val mediaSnapshot by mediaFlow.collectAsState(initial=null)
+            val mediaInspector=inspectorPackage!=null && !mediaDismissed &&
+                (mediaSnapshot?.packageName==inspectorPackage || inspectorPinned)
+            val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
+            val richPreview=PreviewPresentation.needsInspector(inspectorItem)
+            val applicationPreview=PreviewPresentation.isApplication(inspectorItem) &&
+                !inspectorTaskActive() && (applicationPreviewId==inspectorItem?.id || inspectorPinned)
+            val taskInspector=inspectorTaskActive()
+            LaunchedEffect(inspectorPinned,pinnedPreview?.id,pinnedCard,taskInspector){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
+            val hasInspector=richPreview || applicationPreview || inspectorCard!=null || taskInspector || mediaInspector
+            val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
+            fun dismissInspector() {
+                mediaDismissed=true
+                applicationPreviewId=null
+                inspectorPinned=false;pinnedPreview=null;pinnedCard=null
+                preview=null;card=null;expandedPreview=false;menu=false
+                clearForms();noteEditor=false;aiJob?.cancel();showAi=false
+                runCatching{focus.requestFocus()}
+            }
+            val inspectorToolbar:@Composable ()->Unit = {
+                Row(Modifier.fillMaxWidth().padding(start=16.dp,end=4.dp).testTag("inspector-toolbar"),verticalAlignment=Alignment.CenterVertically) {
+                    Text(if(inspectorPinned)"Inspector fijado" else "Inspector",Modifier.weight(1f),style=MaterialTheme.typography.labelMedium,maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurfaceVariant)
+                    // A pinned inspector can refer to a different app than the result dock.
+                    // Retain its explicit opener without duplicating the normal primary action.
+                    inspectorItem?.takeIf { item->
+                        inspectorPinned && PreviewPresentation.isApplication(item) &&
+                            (item.action as? Action.Launch)?.intent?.component !=
+                            (selectedResult?.action as? Action.Launch)?.intent?.component
+                    }?.let { pinnedApplication->
+                        IconButton(onClick={execute(pinnedApplication)},modifier=Modifier.size(48.dp).testTag("open-pinned-application")) {
+                            Icon(androidx.compose.ui.res.painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_open),
+                                "Abrir aplicación fijada: ${pinnedApplication.title}",Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+                        }
+                    }
+                    IconToggleButton(checked=inspectorPinned,onCheckedChange={next->
+                        if(next){pinnedPreview=inspectorItem;pinnedCard=inspectorCard}
+                        else {pinnedPreview=null;pinnedCard=null}
+                        inspectorPinned=next
+                    },modifier=Modifier.size(48.dp).testTag("inspector-pin")) {
+                        Icon(androidx.compose.ui.res.painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_pin),if(inspectorPinned)"Desfijar inspector" else "Fijar inspector",Modifier.size(18.dp))
+                    }
+                    IconButton(onClick={dismissInspector()},modifier=Modifier.size(48.dp)) {
+                        Icon(androidx.compose.ui.res.painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_close),"Cerrar inspector",Modifier.size(18.dp))
+                    }
+                }
+            }
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
-            val panelLimit = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceIn(0.dp, config.maxHeight.dp)
+            val availableBody = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceAtLeast(0.dp)
+            // maxHeight is a results-list preference. A contextual inspector may
+            // use the remaining viewport, shrinking naturally to its content.
+            val adaptiveSearch = query.isNotBlank() && !config.compactSearchResults
+            val panelLimit = if(adaptiveSearch)(viewport - 84.dp - extraHeaders.dp).coerceAtLeast(0.dp)
+                else if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
-            val resultLimit = (panelLimit - if(homeLayout)48.dp else 90.dp).coerceAtLeast(0.dp)
-            val columns = (maxWidth.value / 96f).toInt().coerceIn(3, 7)
-            Column(
+            val optionsInHeader=(homeLayout && visibleResults.isEmpty()) || systemPage!=null || messageForm!=null || searchForm!=null
+            val resultLimit = (panelLimit - if(adaptiveSearch)52.dp else if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
+            val splitPanelHeight = resultLimit
+            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else .62f
+            val inlineResultRows=!compact && (!widePreview || maxWidth*resultsFraction>=384.dp)
+            Box(
                 Modifier.fillMaxWidth()
                     .glassSurface(config,legibleBackdrop=true)
                     .onPreviewKeyEvent { event ->
-                    if(event.type==KeyEventType.KeyDown)pointerSelecting=false
+                    if(event.type==KeyEventType.KeyDown){pointerSelecting=false;touchedResultId=null}
                     if (event.type != KeyEventType.KeyDown) false
                     else if (
                         noteEditor &&
@@ -676,11 +861,11 @@ fun SpotlightPanel(
                     ) {
                         saveDraft()
                         true
-                    } else if(menu && event.key !in listOf(Key.Escape,Key.Back) && !((event.isCtrlPressed || event.isMetaPressed) && event.key==Key.K)) false
-                    else if ((noteEditor || systemPage!=null || messageForm!=null || searchForm!=null || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null) && event.key !in listOf(Key.Escape, Key.Back)) false
+                    } else if(menu && !(KeyboardBindings.matches(config,"actions",event.nativeKeyEvent))) false
+                    else if ((noteEditor || systemPage!=null || messageForm!=null || searchForm!=null || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null) && !searchFocused && !resultsFocused && event.key !in listOf(Key.Escape, Key.Back)) false
                     else if(searchFocused && event.key in listOf(Key.DirectionLeft,Key.DirectionRight,Key.MoveHome,Key.MoveEnd)) false
                     else if(searchFocused && event.isShiftPressed && event.key in listOf(Key.DirectionUp,Key.DirectionDown)) false
-                    else if(!searchFocused && !resultsFocused && event.key !in listOf(Key.Escape,Key.Back) && !((event.isCtrlPressed || event.isMetaPressed) && event.key==Key.K)) false
+                    else if(!searchFocused && !resultsFocused && event.key !in listOf(Key.Escape,Key.Back) && !(KeyboardBindings.matches(config,"actions",event.nativeKeyEvent))) false
                     else if (
                         (event.isCtrlPressed || event.isMetaPressed) &&
                             event.key in listOf(Key.One, Key.Two, Key.Three, Key.Four)
@@ -690,15 +875,15 @@ fun SpotlightPanel(
                         preview = null
                         menu = false
                         true
-                    } else if ((event.isCtrlPressed || event.isMetaPressed) && ((config.clipboardShortcut=="ctrl_shift_v" && event.isShiftPressed && event.key==Key.V) || (config.clipboardShortcut=="ctrl_p" && !event.isShiftPressed && event.key==Key.P))) {selectMode("Portapapeles",true);true
-                    } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.K) {
-                        selectedResult?.let {
+                    } else if (KeyboardBindings.matches(config,"clipboard",event.nativeKeyEvent)) {selectMode("Portapapeles",true);true
+                    } else if (KeyboardBindings.matches(config,"actions",event.nativeKeyEvent)) {
+                        present(resultsState.value).getOrNull(selected)?.let {
                             preview=it
                             menu=!menu
                             navigating=true
                         }
                         true
-                    } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.M && searchScope==null && category=="Todo") {
+                    } else if (KeyboardBindings.matches(config,"expand",event.nativeKeyEvent) && searchScope==null && category=="Todo") {
                         toggleMoreResults()
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.F) {
@@ -713,7 +898,7 @@ fun SpotlightPanel(
                                 ?: query
                         )
                         true
-                    } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.Spacebar && suggestion!=null && searchFocused) {
+                    } else if (KeyboardBindings.matches(config,"complete",event.nativeKeyEvent) && suggestion!=null && searchFocused) {
                         acceptSuggestion()
                         true
                     } else if ((event.isCtrlPressed || event.isMetaPressed) && event.key == Key.B) {
@@ -727,9 +912,9 @@ fun SpotlightPanel(
                             Key.Escape,
                             Key.Back -> {
                                 if(searchOptions){searchOptions=false;focus.requestFocus()}
-                                else if(menu){menu=false;if(!richPreview)preview=null;focus.requestFocus()}
+                                else if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}
                                 else if(expandedPreview){expandedPreview=false;focus.requestFocus()}
-                                else if (preview != null) {preview=null;focus.requestFocus()}
+                                else if (hasInspector) {dismissInspector()}
                                 else if(moreResults){toggleMoreResults()}
                                 else if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || history.isNotEmpty())back()
                                 else if (noteEditor) noteEditor = false
@@ -737,12 +922,13 @@ fun SpotlightPanel(
                                 true
                             }
                             Key.Tab -> {
+                                val liveSelection=present(resultsState.value).getOrNull(selected)
                                 if (searchFocused && canAutocomplete && suggestion!=null && !event.isShiftPressed) {
                                     acceptSuggestion()
-                                } else if (selectedResult != null) {
+                                } else if (liveSelection != null) {
                                     // Hide while the query still owns its native input connection.
                                     hideKeyboardForActions()
-                                    preview = selectedResult
+                                    preview = liveSelection
                                     menu = true
                                     navigating = true
                                 }
@@ -755,63 +941,26 @@ fun SpotlightPanel(
                                     true
                                 } else false
                             }
-                            Key.DirectionDown -> {
-                                selected =
-                                    if (category == "Apps")
-                                        dev.bautista.spotlight.control.CommandCenter.moveGrid(
-                                            selected,
-                                            true,
-                                            columns,
-                                            recentCount,
-                                            visibleResults.size,
-                                        )
-                                    else
-                                        (selected + 1).coerceAtMost(
-                                            (visibleResults.size - 1).coerceAtLeast(0)
-                                        )
-                                navigating = true
-                                true
-                            }
-                            Key.DirectionUp -> {
-                                selected =
-                                    if (category == "Apps")
-                                        dev.bautista.spotlight.control.CommandCenter.moveGrid(
-                                            selected,
-                                            false,
-                                            columns,
-                                            recentCount,
-                                            visibleResults.size,
-                                        )
-                                    else (selected - 1).coerceAtLeast(0)
-                                navigating = true
-                                true
-                            }
-                            Key.DirectionLeft,
-                            Key.DirectionRight -> {
-                                if (category == "Apps" && navigating) {
-                                    selected =
-                                        (selected + if (event.key == Key.DirectionRight) 1 else -1)
-                                            .coerceIn(0, (visibleResults.size - 1).coerceAtLeast(0))
-                                    true
-                                } else false
-                            }
+                            Key.DirectionDown -> { selected=(selected+1).coerceAtMost((visibleResults.size-1).coerceAtLeast(0));navigating=true;true }
+                            Key.DirectionUp -> { selected=(selected-1).coerceAtLeast(0);navigating=true;true }
+                            Key.DirectionLeft,Key.DirectionRight -> false
                             Key.Enter,
                             Key.NumPadEnter -> {
-                                selectedResult?.let { execute(it) }
+                                present(resultsState.value).getOrNull(selected)?.let { execute(it) }
                                 true
                             }
                             else -> false
                         }
                 }
             ) {
+                val header:@Composable ()->Unit = {
                 SpotlightBar(
                     query,
                     { next ->
                         // Selection/focus changes can report the same text. They must not
                         // clear results: snapshotFlow only searches when text actually changes.
                         if(next!=query) {
-                            showAi=false
-                            clearForms()
+                            if(!inspectorPinned){showAi=false;clearForms()}
                             query = next
                             selected=0
                             navigating = false
@@ -826,18 +975,21 @@ fun SpotlightPanel(
                         selectMode(it)
                     },
                     {
-                        history.clear();clearForms();searchScope=null;query = ""
+                        history.clear();if(!inspectorPinned)clearForms();searchScope=null;query = ""
                         card = null
-                        aiText = ""
+                        if(!inspectorPinned)aiText = ""
                         category = "Todo"
                     },
-                    { selectedResult?.let { execute(it) } },
+                    { present(resultsState.value).getOrNull(selected)?.let { execute(it) } },
                     focus,
                     config.opacity,
                     compact,
                     suggestion,
                     { acceptSuggestion() },
                     motionEnabled,
+                    autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
+                    contextAccent=rememberCommandAccent(selectedResult),
+                    showOptionsButton=optionsInHeader,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
                     optionsOpen=searchOptions,
@@ -846,13 +998,14 @@ fun SpotlightPanel(
                     onAutocompleteAvailabilityChanged={canAutocomplete=it},
                     quickMenu={
                         GlassQuickMenu(config,{next->app.scope.launch{runCatching{app.preferences.update(next)}.onFailure{error="No se pudo guardar la preferencia. Reintentá."}}},
-                            {launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))},
+                            {group->searchOptions=false;launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group))},
                             {mode->searchOptions=false;selectMode(mode)})
                     },
                     optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
+                    onBack=if(searchScope!=null || history.isNotEmpty())({preview=null;menu=false;back()}) else null,
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
                     onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},
-                    onDictate={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))},
+                    onDictate=if(dictationAvailable)({launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))}) else null,
                 )
                 if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
                 if(activeContext!=null && !searchOptions)ContextChip(app,activeContext!!){action->execute(Result("context:active","","","Contexto",0,action))}
@@ -861,7 +1014,24 @@ fun SpotlightPanel(
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))},
                     onCancel={bufferExtraction.cancel()})
                 if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
+                if(homeLayout && systemPage==null && history.isEmpty() && !hasInspector && !menu &&
+                    !inspectorTaskActive() && !searchOptions && activeContext==null &&
+                    fileBuffer.items.isEmpty() && visibleResults.isEmpty() && !loading) {
+                    Text(if(config.suggestions)"Tus favoritos y acciones recientes aparecerán acá." else "Las sugerencias están desactivadas en Ajustes → General.",
+                        Modifier.fillMaxWidth().testTag("home-suggestion-hint").padding(horizontal=20.dp,vertical=12.dp),
+                        fontSize=11.sp,color=colors.onSurfaceVariant)
+                }
+                }
                 val expanded = showAi || systemPage!=null || query.isNotBlank() || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || category != "Todo" || noteEditor || (config.suggestions && visibleResults.isNotEmpty())
+                fun selectApplication(item:Result,index:Int) {
+                    selected=index
+                    navigating=true
+                    pointerSelecting=true
+                    hideKeyboardForActions()
+                    preview=item
+                    applicationPreviewId=item.id
+                    menu=false
+                }
                 val resultList:@Composable ()->Unit = {
                             LazyColumn(
                                 state = listState,
@@ -869,15 +1039,16 @@ fun SpotlightPanel(
                                     Modifier.fillMaxWidth().onFocusChanged{resultsFocused=it.hasFocus}.focusGroup()
                                         .heightIn(
                                             max =
-                                                if (richPreview && !widePreview) resultLimit * .45f
-                                                else minOf(resultLimit,if(query.isBlank() && searchScope==null && category=="Todo")
-                                                    (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size + (visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp
-                                                else (if(compact)56.dp else GlassTokens.rowHeight(config))*visibleResults.size+40.dp)
+                                                if ((richPreview || mediaInspector) && !widePreview) resultLimit * .35f
+                                                else resultLimit
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
+                                if(query.isNotBlank() && visibleResults.isNotEmpty()) item("results-heading") {
+                                    Text(if(visibleResults.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(visibleResults.first()) else "Resultados",Modifier.padding(start=12.dp,top=8.dp,bottom=8.dp),
+                                        fontSize=11.sp,lineHeight=14.sp,fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
+                                }
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
-                                    if(query.isNotBlank() && searchScope==null && category=="Todo" && i==0)Text("Mejor coincidencia",Modifier.padding(horizontal=12.dp,vertical=8.dp),style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
                                     val section=ResultSections.category(item)
                                     if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section,first=i==0 && homeLayout)
                                     ResultRow(
@@ -885,9 +1056,16 @@ fun SpotlightPanel(
                                         i == selected,
                                         if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned,
                                         {
+                                            val confirmed=touchedResultId==item.id && selected==i
                                             selected = i
-                                            if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
-                                            else execute(item)
+                                            touchedResultId=item.id
+                                            if(confirmed){touchedResultId=null;execute(item)}
+                                            else if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
+                                            else if(PreviewPresentation.isApplication(item)) {
+                                                // Touch selects/inspects; Enter remains the primary action.
+                                                selectApplication(item,i)
+                                            }
+                                            else {navigating=true;pointerSelecting=true}
                                         },
                                         {
                                             selected = i
@@ -896,41 +1074,60 @@ fun SpotlightPanel(
                                             navigating = true
                                         },
                                         { toggleFavorite(item) },
+                                        inline=inlineResultRows,
                                         animations=motionEnabled,
-                                        onInteraction={pointerSelecting=true;selected=i;navigating=true},
+                                        onInteraction={pointerSelecting=true;navigating=true},
                                         playing=(item.action as? Action.Launch)?.intent?.component?.packageName in playingPackages,
                                     )
                                     if(query.isBlank() && searchScope==null && category=="Todo")Spacer(Modifier.height(3.dp))
                                 }
                             }
                 }
-                val details:@Composable ()->Unit = {
-                        preview?.let { item ->
-                            if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(horizontal=12.dp,vertical=12.dp)) {
-                                if(richPreview) {
+                val details:@Composable (Boolean)->Unit = { actionsOnly ->
+                        (if(actionsOnly)preview else inspectorItem)?.let { item ->
+                            if(item.action is Action.ReadNotification)NotificationPreview(item.action.key,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{preview=null;menu=false}) else Column(Modifier.fillMaxWidth().padding(if(actionsOnly)PaddingValues(0.dp) else PaddingValues(horizontal=18.dp,vertical=12.dp))) {
+                                val appPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
+                                var mediaCommands by remember(appPackage,playingPackages) { mutableStateOf(emptyList<String>()) }
+                                LaunchedEffect(appPackage,playingPackages) {
+                                    mediaCommands=if(appPackage!=null) withContext(Dispatchers.IO) {
+                                        val primary=if(appPackage in playingPackages)"pause" else "play"
+                                        listOf(primary,"next","previous").filter { MediaControl.availableForPackage(app,appPackage,it) }
+                                    } else emptyList()
+                                }
+                                fun sendMediaCommand(command:String) {
+                                    val target=appPackage ?: return
+                                    scope.launch {
+                                        try {
+                                            withContext(Dispatchers.IO) { MediaControl.executeForPackage(app,target,command) }
+                                            app.toolAudit.record("control_media","requested")
+                                        } catch(e:CancellationException) { throw e }
+                                        catch(e:Exception) { error=e.message ?: "El reproductor no aceptó la acción." }
+                                    }
+                                }
+                                if(!actionsOnly && (richPreview || PreviewPresentation.isApplication(item))) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    ResultIcon(item,Modifier.size(GlassTokens.glyph),colors.onSurfaceVariant);Spacer(Modifier.width(12.dp))
-                                    Text(
-                                        item.title,
-                                        Modifier.weight(1f),
-                                        fontSize = if(item.category=="Calculadora")32.sp else 17.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                    )
-                                    IconButton(
-                                        onClick = {
-                                            preview = null
-                                            menu = false
-                                        },
-                                        modifier = Modifier.size(GlassTokens.hit),
-                                    ) {
-                                        Icon(
-                                            CommandIcons.Close,
-                                            "Cerrar vista rápida",
-                                            Modifier.size(17.dp),
+                                    ResultIcon(item,Modifier.size(if(PreviewPresentation.isApplication(item))40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+                                    Spacer(Modifier.width(12.dp))
+                                    Column(Modifier.weight(1f)) {
+                                        Text(
+                                            item.title,
+                                            fontSize = if(item.category=="Calculadora")26.sp else 16.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                        Text(
+                                            if(PreviewPresentation.isApplication(item))"Aplicación instalada" else item.category,
+                                            style=MaterialTheme.typography.labelSmall,
+                                            color=colors.onSurfaceVariant
                                         )
                                     }
+
+                                }
+                                if(PreviewPresentation.isApplication(item)) {
+                                    val pkg=(item.action as? Action.Launch)?.intent?.component?.packageName
+                                    if(pkg!=null && pkg in playingPackages)
+                                        Text("En reproducción",style=MaterialTheme.typography.labelSmall,color=colors.primary)
                                 }
                                 if (
                                     item.category == "Archivos" &&
@@ -938,7 +1135,10 @@ fun SpotlightPanel(
                                         item.action is Action.Launch && item.action.intent.data != null
                                 ) {
                                     TextButton(onClick={expandedPreview=!expandedPreview}){Text(if(expandedPreview)"Volver al panel lateral" else "Ampliar vista previa")}
-                                    FilePreview(context, item,expandedPreview,previewPages[item.id] ?: 0,{previewPages[item.id]=it})
+                                    AuthorizedFilePreview(context, item,expandedPreview,previewPages[item.id] ?: 0,{page->
+                                        previewPages.remove(item.id);previewPages[item.id]=page
+                                        while(previewPages.size>8)previewPages.remove(previewPages.keys.first())
+                                    })
                                     TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
                                 }
                                 SelectionContainer {
@@ -951,26 +1151,47 @@ fun SpotlightPanel(
                                     )
                                 }
                                 QuickLookMetadata(item)
-                                }
-                                if(menu) {
-                                    val actions=mutableListOf<ContextAction>()
-                                    fun add(title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,perform:()->Unit){actions+=ContextAction(title,description,icon,perform)}
-                                    add(when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(item.category in setOf("Aplicaciones","Archivos"))"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
-                                    if(item.id.startsWith("suggest:")) {
-                                        add(if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
-                                        add("Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
+                                if(appPackage!=null) {
+                                    SelectionContainer {
+                                        Text("Paquete · $appPackage",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
                                     }
-                                    if(item.category=="Aplicaciones")add("Acciones de ${item.title}","Capacidades públicas disponibles",CommandIcons.Apps){execute(Result("app:actions",item.title,"","Acciones",0,Action.RestoreQuery(item.title)))}
-                                    if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add(if(favoriteId(item) in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
-                                    if(item.action !is Action.Copy)add("Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
-                                    if(query.isNotBlank())add(if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
-                                    if(item.category in setOf("Archivos","Notas","Portapapeles","Textos frecuentes"))add("Compartir","Selector de aplicaciones Android",CommandIcons.Share){share(item)}
-                                    if(item.category=="Archivos")add("Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
-                                    if(item.parentUri!=null)add("Mostrar carpeta","Ubicación del archivo",CommandIcons.Folder){locate(item)}
-                                    if(item.category=="Aplicaciones")add("Permisos y componentes públicos","Consulta local · administración opcional con Shizuku",CommandIcons.Shield){execute(item.copy(action=Action.SystemPanel("app",item.id.substringBefore('/'))))}
-                                    if(item.category=="Aplicaciones")add("Información de la app","Permisos y almacenamiento",CommandIcons.Info){launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+item.id.substringBefore('/'))))}
-                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add(if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
-                                    if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add(
+                                }
+                                }
+                                if(actionsOnly) {
+                                    val actions=mutableListOf<ContextAction>()
+                                    fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,state:ContextActionState=ContextActionState.Available,risk:dev.bautista.spotlight.ai.ToolRisk=dev.bautista.spotlight.ai.ToolRisk.READ,perform:()->Unit){actions+=ContextAction(title,description,icon,{menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus();perform()},id=id,group=group,state=state,risk=risk)}
+                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
+                                    if(item.id.startsWith("suggest:")) {
+                                        add("suggestion.pin",ContextActionGroup.Organize,if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
+                                        add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
+                                    }
+                                    if(PreviewPresentation.isApplication(item)) {
+                                        ActionCatalog.applicationActions(appPackage.orEmpty()).forEach { target -> add("app.intent:${target.id}",ContextActionGroup.Communicate,target.title,target.subtitle,CommandIcons.ChatBubbleOutline,
+                                            risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)} }
+                                        if(appPackage!=null)add("app.copy-package",ContextActionGroup.Text,"Copiar paquete","Identificador de Android",CommandIcons.ContentCopy){copy(appPackage)}
+                                    }
+                                    mediaCommands.forEach{command->
+                                        add("media:$command",ContextActionGroup.Open,when(command){"pause"->"Pausar";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
+                                            "MediaSession autorizada de la aplicación seleccionada",CommandIcons.Bolt){sendMediaCommand(command)}
+                                    }
+                                    if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))add("favorite.toggle",ContextActionGroup.Organize,if(favoriteId(item) in favorites)"Quitar favorita" else "Añadir favorita","Acceso desde la búsqueda principal",CommandIcons.Star){toggleFavorite(item)}
+                                    if(item.action !is Action.Copy)add("text.copy",ContextActionGroup.Text,"Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
+                                    if(query.isNotBlank())add("query.pin",ContextActionGroup.Organize,if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
+                                    if(item.category in setOf("Archivos","Notas","Portapapeles","Textos frecuentes"))add("share",ContextActionGroup.Share,"Compartir","Selector de aplicaciones Android",CommandIcons.Share,state=ContextActionState.External){share(item)}
+                                    if(item.category=="Archivos")add("file.copy-name",ContextActionGroup.Text,"Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
+                                    if(item.parentUri!=null)add("file.reveal",ContextActionGroup.Open,"Mostrar carpeta","Ubicación del archivo",CommandIcons.Folder){locate(item)}
+                                    if(PreviewPresentation.isApplication(item)) {
+                                        val targetPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
+                                            ?: item.id.removePrefix("suggest:app:").substringBefore('/')
+                                        add("app.permissions",ContextActionGroup.System,"Permisos y componentes públicos","Consulta local · administración opcional con Shizuku",CommandIcons.Shield){
+                                            execute(item.copy(action=Action.SystemPanel("app",targetPackage)))
+                                        }
+                                        add("app.info",ContextActionGroup.System,"Información de la app","Permisos y almacenamiento",CommandIcons.Info,state=ContextActionState.External){
+                                            launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+targetPackage)))
+                                        }
+                                    }
+                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.selection",ContextActionGroup.Organize,if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
+                                    if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add("file.extract",ContextActionGroup.Text,
                                         if(documentExtraction.running)"Cancelar extracción" else "Extraer texto",
                                         if(documentExtraction.running)"Procesamiento local en curso" else "PDF, Office, imagen o texto · procesamiento local",
                                         CommandIcons.FindInPage,
@@ -988,33 +1209,40 @@ fun SpotlightPanel(
                                             }, { extracted -> preview=item.copy(preview=extracted.text);menu=true }, { e -> error=e.message ?: "No se pudo extraer texto" })
                                         }
                                     }
-                                    if(item.category=="Portapapeles") {val clip=item.preview ?: (item.action as? Action.Copy)?.text.orEmpty();add("Editar texto","Modificar el historial temporal",CommandIcons.EditNote){execute(item.copy(action=Action.EditClipboard(clip)))};add(if(clip in clipFavorites)"Quitar favorito temporal" else "Favorito temporal","Se elimina al caducar o cerrar el proceso",CommandIcons.Star){app.local.toggleClipFavorite(clip);preview=null;menu=false}}
-                                    if(item.category=="Portapapeles")add("Eliminar del historial","Eliminar solo de Spotlight",CommandIcons.Delete){app.local.deleteClip(item.preview ?: (item.action as? Action.Copy)?.text.orEmpty());preview=null}
+                                    if(item.category=="Portapapeles") {val clip=item.preview ?: (item.action as? Action.Copy)?.text.orEmpty();add("clipboard.edit",ContextActionGroup.Text,"Editar texto","Modificar el historial temporal",CommandIcons.EditNote){execute(item.copy(action=Action.EditClipboard(clip)))};add("clipboard.favorite",ContextActionGroup.Organize,if(clip in clipFavorites)"Quitar favorito temporal" else "Favorito temporal","Se elimina al caducar o cerrar el proceso",CommandIcons.Star){app.local.toggleClipFavorite(clip);preview=null;menu=false}}
+                                    if(item.category=="Portapapeles")add("clipboard.delete",ContextActionGroup.Management,"Eliminar del historial","Eliminar solo de Spotlight",CommandIcons.Delete){app.local.deleteClip(item.preview ?: (item.action as? Action.Copy)?.text.orEmpty());preview=null}
                                     val text=item.preview ?: (item.action as? Action.Copy)?.text
                                     if(!text.isNullOrBlank()) {
-                                        add("Guardar como nota","Guardar texto en el dispositivo",CommandIcons.EditNote){scope.launch{app.local.saveNote(text)}}
-                                        add("Traducir texto","Elegir idioma y procesar localmente",CommandIcons.Language){execute(Result("translate:text","","","Herramientas",0,Action.RestoreQuery("traducir en a es: "+text)))}
-                                        listOf("Explicar" to "Explicá", "Resumir" to "Resumí").forEach{(label,prompt)->add("$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome){execute(Result("ai:text",label,"","IA",0,Action.Ask(prompt+" este texto:\n"+text,true)))}}
+                                        add("text.save",ContextActionGroup.Text,"Guardar como nota","Guardar texto en el dispositivo",CommandIcons.EditNote){scope.launch{app.local.saveNote(text)}}
+                                        add("text.translate",ContextActionGroup.Text,"Traducir texto","Elegir idioma y procesar localmente",CommandIcons.Language){execute(Result("translate:text","","","Herramientas",0,Action.RestoreQuery("traducir en a es: "+text)))}
+                                        listOf("Explicar" to "Explicá", "Resumir" to "Resumí").forEach{(label,prompt)->add("ai:$prompt",ContextActionGroup.Text,"$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome,state=if(ai.configured(config))ContextActionState.Available else ContextActionState.ConfigurationRequired,risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(Result("ai:text",label,"","IA",0,Action.Ask(prompt+" este texto:\n"+text,true)))}}
                                     }
-                                    if(item.id.startsWith("note:"))add("Eliminar nota","Revisar antes de eliminar",CommandIcons.Delete){clearForms();deletingNote=item;preview=null;menu=false}
-                                    ActionPanelView(actions,actionFocus,onClose=if(richPreview)null else {{preview=null;menu=false;focus.requestFocus()}})
+                                    if(item.id.startsWith("note:"))add("note.delete",ContextActionGroup.Management,"Eliminar nota","Revisar antes de eliminar",CommandIcons.Delete){clearForms();deletingNote=item;preview=null;menu=false}
+                                    val copyChoices=actions.filter{it.id in setOf("text.copy","file.copy-name","file.copy-uri","app.copy-package")}
+                                    if(copyChoices.size>1) {
+                                        actions.removeAll(copyChoices.toSet())
+                                        actions+=ContextAction("Copiar…","Elegir formato",CommandIcons.ContentCopy,{},id="copy.formats",group=ContextActionGroup.Text,children=copyChoices)
+                                    }
+                                    ActionPanelView(actions,actionFocus,actionsKey=KeyboardBindings.resolve(config,"actions")!!,onClose={menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()},contextResult=item)
                                 }
                             }
                         }
                 }
+                Column(Modifier.fillMaxWidth()) {
+                header()
                 if (!searchOptions && expanded && panelLimit >= 100.dp) {
                     Column(
                         Modifier.fillMaxWidth()
                             .testTag("spotlight-results")
                             .heightIn(max = panelLimit)
-                            .verticalScroll(rememberScrollState())
+                            .then(if(widePreview && !expandedPreview)Modifier else Modifier.verticalScroll(rememberScrollState()))
                     ) {
                         Box(Modifier.fillMaxWidth().height(2.dp)) {
                             if (loading || cardLoading || bufferBusy)
                                 LinearProgressIndicator(Modifier.fillMaxWidth())
                         }
                         HorizontalDivider(color=colors.outlineVariant)
-                        if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || category!="Todo" || noteEditor || history.isNotEmpty()) Row(
+                        if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor)) Row(
                             Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -1043,6 +1271,7 @@ fun SpotlightPanel(
                                 fontSize = 12.sp,
                             )
                         if(searchScope?.section=="files" && !loading && visibleResults.isEmpty())Text("No se encontraron archivos de este tipo. Probá otro filtro o actualizá el índice en Opciones.",Modifier.padding(horizontal=18.dp,vertical=12.dp),fontSize=13.sp,color=colors.onSurfaceVariant)
+                        val contextBody:@Composable ()->Unit = {
                         if(pendingAsk!=null)aiReview()
                         else if(pendingWorkflow!=null)WorkflowRunner(pendingWorkflow!!,app.local,onAction={action->execute(Result("routine:prepared","","","Acciones",0,action))}){pendingWorkflow=null}
                         else if(clipEditing!=null)ClipboardEditor(clipEditing!!,{app.local.editClip(clipEditing!!,it);back()},{back()})
@@ -1052,12 +1281,12 @@ fun SpotlightPanel(
                         else if(snippetText!=null)snippetEditor()
                         else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.updateAi(config,next)}}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
                         else if(notificationKey!=null)NotificationPreview(notificationKey!!,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{back()})
-                        else if(systemPage!=null) {if(systemPage!!.page=="calendar")CalendarPanel(app,systemPage!!.packageName){action->execute(Result("calendar:action","","","Agenda",0,action))} else if(systemPage!!.page=="saved-command")SavedCommandPanel(app,config,systemPage!!.packageName){action->execute(Result("command:action","","","Comandos",0,action))} else if(systemPage!!.page=="saved")SavedPanel(app,config){action->execute(Result("saved:action","","","Guardados",0,action))} else if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->val page=systemPage!!.page;app.scope.launch{runCatching{when(page){"preferences:ai"->app.preferences.updateAi(config,next);"preferences:appearance"->app.preferences.updateAppearance(next);else->app.preferences.update(next)}}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,query){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
+                        else if(systemPage!=null) {if(systemPage!!.page=="calendar")CalendarPanel(app,systemPage!!.packageName){action->execute(Result("calendar:action","","","Agenda",0,action))} else if(systemPage!!.page=="saved-command")SavedCommandPanel(app,config,systemPage!!.packageName){action->execute(Result("command:action","","","Comandos",0,action))} else if(systemPage!!.page=="saved")SavedPanel(app,config){action->execute(Result("saved:action","","","Guardados",0,action))} else if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->val page=systemPage!!.page;app.scope.launch{runCatching{when(page){"preferences:ai"->app.preferences.updateAi(config,next);"preferences:appearance"->app.preferences.updateAppearance(next);else->app.preferences.update(next)}}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,systemPage!!.packageName){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
                         else if(messageForm!=null)MessageEditor(messageForm!!,{launch(it)},{pending->launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access","contacts").putExtra("query",pending))},{back()})
                         else if(searchForm!=null)SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
                         else if(audioPanel)AudioControl {back()}
                         else if (noteEditor)
-                            Column(Modifier.padding(18.dp)) {
+                            Column(Modifier.heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {
                                 Text(if(editingNoteId==null) "Nueva nota" else "Editar nota");if(editingNoteId==null)TextButton(onClick={launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix","nota ").putExtra("fallback","nota $draft"))}){Text("Dictar nota · revisar antes de guardar")}
                                 OutlinedTextField(
                                     draft,
@@ -1067,7 +1296,8 @@ fun SpotlightPanel(
                                         .focusRequester(editorFocus),
                                     label = { Text("Texto de la nota") },
                                 )
-                                Row {
+                                FlowRow {
+                                    if(editingNoteId!=null)TextButton(onClick={editingNoteId=null;saveDraft()},enabled=draft.isNotBlank()){Text("Guardar como nota nueva")}
                                     TextButton(
                                         onClick = { saveDraft() },
                                         enabled = draft.isNotBlank(),
@@ -1079,20 +1309,20 @@ fun SpotlightPanel(
                                     }
                                 }
                             }
-                        else if (activeCard != null)
+                        else if (inspectorCard != null)
                             InfoCardView(
-                                activeCard,
-                                { copy(activeCard.copyText) },
+                                inspectorCard,
+                                { copy(inspectorCard.copyText) },
                                 {
-                                    activeCard.url?.let {
+                                    inspectorCard.url?.let {
                                         launch(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
                                     }
                                 },
-                                {launch(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,activeCard.copyText),"Compartir resultado"))},
+                                {launch(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,inspectorCard.copyText),"Compartir resultado"))},
                             )
                         else if (
                             category in setOf("Todo", "Acciones", "IA") &&
-                                (aiLoading || aiText.isNotBlank()) &&
+                                (aiLoading || aiText.isNotBlank() || aiSaveStatus.isNotBlank()) &&
                                 showAi
                         )
                             Column(
@@ -1102,19 +1332,19 @@ fun SpotlightPanel(
                             ) {
                                 Text(if(config.aiProvider=="gemini")"Gemini · Inteligencia artificial" else "Inteligencia artificial", fontWeight = FontWeight.SemiBold)
                                 SelectionContainer {
-                                    if(aiText.isBlank())Text("Pensando…",lineHeight=23.sp) else AiMarkdown(aiText)
+                                    if(aiText.isBlank())Text(if(aiLoading)"Pensando…" else "No se recibió una respuesta. Podés revisar y volver a enviar tu pregunta.",lineHeight=23.sp) else AiMarkdown(aiText)
                                 }
                                 OutlinedTextField(followUp,{followUp=it},label={Text("Continuar conversación")},modifier=Modifier.fillMaxWidth())
-                                TextButton(enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }
+                                TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=!aiLoading && followUp.isNotBlank(),onClick={val prompt=followUp;followUp="";execute(Result("ai:followup","","","IA",0,AiRequestPolicy.question(prompt,continuation=true)))}){Text("Enviar") }
                                 if(aiMessageTarget.isNotBlank() && aiText.isNotBlank() && !aiLoading)TextButton(onClick={execute(Result("ai:message","Preparar mensaje","","Comunicación",0,Action.ComposeMessage(config.messageApp,aiMessageTarget,aiText)))}){Text("Preparar mensaje para $aiMessageTarget")}
-                                Row {
-                                    TextButton(enabled=aiText.isNotBlank() && !aiLoading && !aiSaving && conversation.lastOrNull()==("assistant" to aiText),onClick={val frozen=conversation.toList();aiSaving=true;scope.launch{try{app.contexts.saveConversation(frozen);aiSaveStatus="Conversación guardada localmente."}catch(e:CancellationException){throw e}catch(e:Exception){aiSaveStatus=e.message ?: "No se pudo guardar la conversación."}finally{aiSaving=false}}}){Text("Guardar conversación")}
-                                    TextButton(onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
-                                    TextButton(onClick = { copy(aiText) }) { Text("Copiar") }
-                                    TextButton(
+                                FlowRow(horizontalArrangement=Arrangement.spacedBy(4.dp)) {
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=aiText.isNotBlank() && !aiLoading && !aiSaving && conversation.lastOrNull()==("assistant" to aiText),onClick={val frozen=conversation.toList();aiSaving=true;scope.launch{try{app.contexts.saveConversation(frozen);aiSaveStatus="Conversación guardada localmente."}catch(e:CancellationException){throw e}catch(e:Exception){aiSaveStatus=e.message ?: "No se pudo guardar la conversación."}finally{aiSaving=false}}}){Text("Guardar conversación")}
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),onClick={share(Result("ai:share","Respuesta","","IA",0,Action.Copy(aiText),preview=aiText))}){Text("Compartir")}
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),onClick = { copy(aiText) }) { Text("Copiar") }
+                                    TextButton(modifier=Modifier.heightIn(min=48.dp),
                                         onClick = {
                                             aiJob?.cancel()
-                                            if(!aiLoading){aiText="";conversation.clear();aiMessageTarget=""}
+                                            if(!aiLoading){aiSessions.remove(aiSessionKey);aiText="";conversation.clear();aiMessageTarget="";aiSessionKey=""}
                                         }
                                     ) {
                                         Text(if (aiLoading) "Detener" else "Nueva conversación")
@@ -1122,103 +1352,68 @@ fun SpotlightPanel(
                                 }
                                 if(aiSaveStatus.isNotBlank())Text(aiSaveStatus,style=MaterialTheme.typography.bodySmall)
                             }
-                        else if (category == "Apps")
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(columns),
-                                state = gridState,
-                                modifier =
-                                    Modifier.fillMaxWidth()
-                                        .height(
-                                            minOf(
-                                                resultLimit,
-                                                (maxOf(
-                                                        1,
-                                                        ((visibleResults.size - recentCount + columns -
-                                                            1) / columns) +
-                                                            if (recentCount > 0)
-                                                                (recentCount + columns - 1) /
-                                                                    columns
-                                                            else 0,
-                                                    ) * 96)
-                                                    .dp + (if (recentCount > 0) 56.dp else 28.dp),
-                                            )
-                                        )
-                                        .padding(horizontal = 12.dp),
-                                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                verticalArrangement = Arrangement.spacedBy(6.dp),
-                            ) {
-                                visibleResults.forEachIndexed { i, item ->
-                                    if (i == 0 || (recentCount > 0 && i == recentCount)) {
-                                        item(
-                                            key = "heading:$i",
-                                            span = { GridItemSpan(maxLineSpan) },
-                                        ) {
-                                            Text(
-                                                if (recentCount > 0 && i == 0) "Recientes · hasta 5"
-                                                else "Todas las aplicaciones · A–Z",
-                                                fontSize = 12.sp,
-                                                fontWeight = FontWeight.SemiBold,
-                                                modifier =
-                                                    Modifier.padding(top = 8.dp, bottom = 4.dp),
-                                            )
-                                        }
+                        else if(mediaInspector || applicationPreview) {
+                            val observed=mediaSnapshot?.takeIf{it.packageName==inspectorPackage}
+                            inspectorItem?.let { application -> Column(Modifier.padding(start=18.dp,end=18.dp,bottom=12.dp)) {
+                                val player: @Composable () -> Unit = {
+                                    if(observed!=null) {
+                                var mediaStatus by remember(inspectorPackage){mutableStateOf("")}
+                                MediaInspector(observed,onCommand={command->
+                                    scope.launch {
+                                        try {
+                                            mediaStatus=withContext(Dispatchers.IO){MediaControl.executeForPackage(app,observed.packageName,command)}
+                                            app.toolAudit.record("control_media","requested")
+                                        } catch(e:CancellationException){throw e} catch(e:Exception){mediaStatus=e.message ?: "No se pudo solicitar la acción."}
                                     }
-                                    item(key = "$i:${item.id}") {
-                                        Column(
-                                            Modifier.clip(RoundedCornerShape(14.dp))
-                                                .background(
-                                                    if (i == selected && navigating)
-                                                        colors.primary.copy(alpha = .12f)
-                                                    else Color.Transparent
-                                                )
-                                                .combinedClickable(
-                                                    onClick = {
-                                                        selected = i
-                                                        execute(item)
-                                                    },
-                                                    onLongClick = {
-                                                        selected = i
-                                                        preview = item
-                                                        menu = true
-                                                        navigating = true
-                                                    },
-                                                )
-                                                .padding(vertical = 12.dp, horizontal = 4.dp),
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                        ) {
-                                            ResultIcon(item, Modifier.size(42.dp))
-                                            Spacer(Modifier.height(8.dp))
-                                            Text(
-                                                item.title,
-                                                fontSize = 12.sp,
-                                                lineHeight = 16.sp,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
-                                            )
-                                            if (item.id in favorites)
-                                                Icon(
-                                                    CommandIcons.Star,
-                                                    "Favorita",
-                                                    Modifier.size(12.dp),
-                                                    tint = colors.primary,
-                                                )
-                                        }
+                                },onSeek={position->
+                                    scope.launch {
+                                        try {mediaStatus=withContext(Dispatchers.IO){MediaControl.seekForPackage(app,observed.packageName,position,observed.token)}}
+                                        catch(e:CancellationException){throw e} catch(e:Exception){mediaStatus=e.message ?: "No se pudo solicitar la posición."}
+                                    }
+                                })
+                                if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
                                     }
                                 }
+                                ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
+                                    observed?.playing==true,emptyList(),onOpen={execute(application)},
+                                    onFavorite={toggleFavorite(application)},
+                                    onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
+                                    onActions={preview=application;menu=true;navigating=true},onMedia={},
+                                    mediaContent=if(observed==null)null else player,embedded=true,
+                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
+                                if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
+                            } }
+                        }
+                        else if(richPreview)details(false)
+                        }
+                        val pane:@Composable ()->Unit = {
+                            inspectorHost {
+                                val accentPackage=InspectorAccent.destination(inspectorItem,messageForm,searchForm,systemPage,taskInspector)
+                                val accentIcon=inspectorItem?.takeIf {
+                                    PreviewPresentation.isApplication(it) &&
+                                        (it.action as? Action.Launch)?.intent?.component?.packageName==accentPackage
+                                }?.icon
+                                InspectorTheme(accentPackage,accentIcon) {
+                                Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
+                                    if(!widePreview || expandedPreview)inspectorToolbar()
+                                    val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
+                                        ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
+                                        ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"
+                                    ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                }
+                                }
                             }
-                        else if(expandedPreview && richPreview)details()
-                        else if(widePreview) ContextSplitPanel(minOf(resultLimit,400.dp),{resultList()},{details()})
-                        else if(menu && preview!=null && !richPreview) {
-                            // A single continuous window: keep the selected value on the
-                            // left and reveal a bounded action sheet on the right, on demand.
-                            Box(Modifier.fillMaxWidth()) {
-                                resultList()
-                                Box(Modifier.align(Alignment.TopEnd).width(actionSheetWidth)
-                                    .background(colors.surface)
-                                    .border(.5.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(12.dp))
-                                    .clip(RoundedCornerShape(12.dp))) { details() }
-                            }
-                        } else resultList()
+                        }
+                        if(widePreview && !expandedPreview)ContextSplitPanel(splitPanelHeight,{resultList()},{pane()},scrollInspector=true,initialFraction=resultsFraction,
+                            inspectorKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
+                                ?: systemPage?.let{"page:$it"} ?: inspectorItem?.id,
+                            inspectorHeader=inspectorToolbar)
+                        else if(hasInspector) {
+                            if(!taskInspector && inspectorCard==null && !expandedPreview)resultList()
+                            pane()
+                        }
+                        else if(systemPage!=null || category=="IA" && query.isBlank())contextBody()
+                        else resultList()
                         if (visibleResults.isEmpty() && activeCard == null && !loading && !noteEditor && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null && snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null && category!="IA" && searchScope?.section!="files" && !showAi)
                             Text(
                                 if(query.isBlank() && category=="Todo")"Escribí lo que querés encontrar o hacer." else when (category) {
@@ -1236,7 +1431,6 @@ fun SpotlightPanel(
                                 fontSize = 13.sp,
                                 color = colors.onSurfaceVariant,
                             )
-                        if(richPreview && !expandedPreview && (!widePreview || category=="Apps"))details()
                         if (category == "Archivos" && (indexStatus.truncated || indexStatus.busy))
                             Text(
                                 indexStatus.message,
@@ -1244,18 +1438,12 @@ fun SpotlightPanel(
                                 fontSize = 10.sp,
                                 color = colors.onSurfaceVariant,
                             )
-                        if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
+                        val expandable=if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
                             val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
-                            if(full.all.size>full.initial.size || moreResults) TextButton(
-                                onClick={toggleMoreResults()},modifier=Modifier.align(Alignment.End).height(32.dp).testTag("results-expand"),
-                                contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp)) {
-                                Text(if(moreResults)"Ver menos resultados" else "Ver más resultados",fontSize=11.sp)
-                                Text("  Ctrl+M",fontSize=10.sp,color=colors.onSurfaceVariant)
-                            }
-                        }
-                        HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
-                        if(systemPage!=null || messageForm!=null || searchForm!=null || menu)
-                            Text(if(menu)"↵ ejecutar acción   esc volver a resultados" else "Tab siguiente campo   esc volver",
+                            full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
+                        } else false
+                        if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
+                            Text("Tab siguiente campo   esc volver",
                                 Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
                         else GlassContextFooter(
                             suggestion=suggestion!=null,enabled=selectedResult!=null,
@@ -1269,10 +1457,19 @@ fun SpotlightPanel(
                                 else->"Ejecutar"
                             },
                             onExecute={selectedResult?.let{execute(it)}},
-                            onActions={hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true},
-                            autocomplete=canAutocomplete && searchFocused && suggestion!=null)
+                            onActions={if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
+                            autocomplete=canAutocomplete && searchFocused && suggestion!=null,
+                            actionsOpen=menu,
+                            actionsKeyLabel=KeyboardBindings.resolve(config,"actions")!!.label,
+                            onOptions=if(optionsInHeader)null else ({searchOptions=!searchOptions}),
+                            scopeLabel=searchScope?.label ?: if(category=="Todo")"Spotlight" else category,
+                            expandLabel=if(moreResults)"Ver menos resultados" else "Ver más resultados",
+                            onExpand=if(expandable)({toggleMoreResults()}) else null)
                     }
                 }
+                }
+                if(menu && preview!=null) ContextActionSurface(viewport,onDismiss={menu=false;if(!richPreview && !applicationPreview)preview=null;runCatching{focus.requestFocus()}}) { details(true) }
             }
         }
     }
+

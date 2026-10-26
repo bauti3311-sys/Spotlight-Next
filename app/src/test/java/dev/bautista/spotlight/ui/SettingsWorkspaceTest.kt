@@ -22,9 +22,9 @@ class SettingsWorkspaceTest {
  private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()}}
  private fun capture(name:String){ui.waitForIdle();ui.onRoot().captureRoboImage("build/settings-integral/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
  @Test fun tabletHasSevenAreasAndIndependentDetailsPane(){
-  ready();ui.onNodeWithText("Avanzado").assertDoesNotExist();ui.onNodeWithText("Más opciones").performClick();ui.onNodeWithText("Avanzado").assertExists();ui.onNodeWithText("Integraciones").performClick()
+  ready();SettingsGroups.names.forEach{ui.onNodeWithTag("settings-area:$it").assertExists()};ui.onNodeWithText("Avanzado").assertExists();ui.onNodeWithTag("settings-area:Permisos y accesos").performClick()
   val rail=ui.onNodeWithText("Avanzado").fetchSemanticsNode().boundsInRoot
-  ui.onNodeWithText("Shizuku · integración avanzada opcional").performScrollTo()
+  ui.onNodeWithText("Shizuku").performScrollTo().assertIsDisplayed()
   Assert.assertEquals(rail,ui.onNodeWithText("Avanzado").fetchSemanticsNode().boundsInRoot)
   ui.onNodeWithText("Tasker · automatización externa").assertDoesNotExist()
   ui.onNodeWithText("Rutinas y automatizaciones").assertDoesNotExist()
@@ -32,7 +32,10 @@ class SettingsWorkspaceTest {
   capture("tablet-integrations")
  }
  @Test fun appearanceHasOneWidthAndResetRequiresConfirmation(){
-  ready();ui.onNodeWithText("Apariencia").performClick()
+  ready()
+  val app=ui.activity.application as SpotlightApp
+  runBlocking{val current=app.preferences.config.first();app.preferences.updateAppearance(current.copy(theme="dark",preset="raycast"))}
+  ui.onNodeWithText("Apariencia").performClick()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
   ui.onNodeWithText("Ancho horizontal").assertDoesNotExist()
   capture("tablet-appearance")
@@ -73,7 +76,7 @@ class SettingsWorkspaceTest {
   ready();val app=ui.activity.application as SpotlightApp
   runBlocking{val current=app.preferences.config.first();app.preferences.updateAppearance(current.copy(theme="dark",preset="glass"))}
   ui.onNodeWithText("Integraciones").performClick()
-  ui.onNodeWithText("Integraciones · capacidades disponibles").performScrollTo().performClick()
+  ui.onNodeWithText("Integraciones · capacidades disponibles").performScrollTo().assertIsDisplayed()
   ui.waitUntil(15000){ui.onAllNodesWithText("Buscar contactos").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithText("Buscar contactos").assertExists()
   capture("tablet-obsidian-capabilities")

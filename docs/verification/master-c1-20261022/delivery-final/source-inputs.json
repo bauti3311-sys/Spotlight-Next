@@ -1,0 +1,18 @@
+{
+  "source_sha": "f497f8b06b357ebc0ad8474e8fd46e28c69e1f5a",
+  "compiled_production_sha": "ce46279d9dc834182f3e45dd6cd3d797bd3338cb",
+  "production_inputs_identical": 193,
+  "source_entries_verified": 1067,
+  "files": [
+    {
+      "name": "Spotlight-Next-Raycast-Preview-35-f497f8b.apk",
+      "size": 86539680,
+      "sha256": "52c646eadac0f548463e20b1e1a8be8f1e270144ecd7b8f0e37e5eb16baea5bd"
+    },
+    {
+      "name": "Spotlight-Next-source-f497f8b.zip",
+      "size": 8170369,
+      "sha256": "b60f959092c2b6332f347f3cbdee956e32062f05f1ff522dada3e4e21a7f2cce"
+    }
+  ]
+}

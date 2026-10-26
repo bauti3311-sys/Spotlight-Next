@@ -557,3 +557,28 @@ Código Android `f987a0e`, sobre `2de8b52`: lectura validada de ContextStore, co
 Verificación nueva: 572 pruebas / 121 suites, cero fallos, tres lint sin errores, Release/R8 y compilación instrumentada correctos (BUILD SUCCESSFUL in 11m 19s); 21 comparaciones estrictas intactas. Las 328 entradas compiladas coinciden con Git. Los 40 dirigidos no se suman. Evidencia: `docs/verification/context-recovery-20261017/summary.json`.
 
 Instrumentación nativa no ejecutada por ausencia de dispositivo/KVM. Release interno sin firma, no instalable ni entregado; ninguna clave de firma nueva, APK parcial, Actions, main/PR16 o presupuesto modificado. Matriz 40 aún parcial. Detalle, regresiones y próximo bloque semántico local: `docs/HANDOFF-INTEGRAL-20261017.md` y `docs/CONTEXTO-RECUPERACION-20261017.md`.
+
+
+### Raycast Preview — checkpoint de entrega20/10
+Fuente a2ef090:65/65dirigidas,lint0errores/10advertencias/1informativa y APK independiente verificados localmente. Inspector compacto corregido, QuickLook/teclado/MediaSession conservados. Evidencia y hashes: docs/RAYCAST-BUILD-20261020.md y docs/verification/raycast-preview-20261020/final. Decisiones9/10/18/20/34/35 conservan alcance parcial: sin instalación OneUI, servicios/proveedor reales ni validación integral. Sin CI/main/merges. Prioridad siguiente: prueba física de esta entrega.
+
+
+### Refinamiento de producto — Preview30
+Fuente fc7f885,101pruebas dirigidas,lint0errores/11advertencias/1informativa,APK ARM64/firma/versionCode30/ZIP exacto verificados. Geometría por mínimos400/280, divisor acotado, filas48dp, inspector extraído con acción principal y grupos/IDs explícitos. Capturas antes/después nativas en docs/verification/design-review-20261020. APK86,5MB vs258MB (66,5%menos), no medición de RAM/batería. Firma885838aa preservada y respaldo privado persistente; CI preparado exige secreto dedicado aún no configurado, sin ejecución. Informe y límites: docs/PRODUCT-DESIGN-REVIEW-20261020.md. OneUI y referencia visual pendiente;40decisiones siguen parciales, disponibilidad/riesgo continúan en los ejecutores existentes.
+
+
+### Fidelidad visual A/B — cierre del código20/10
+Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0errores/11advertencias/1informativa y assembleRaycastPreview correctos. Capturas nativas comparadas contra B adjunta; barra inset, filas apiladas/tipo alineado, inspector jerárquico y rail azul de Ajustes. Preview31/ARM64/certificado885838aa conservado. Documentación final y capturas se incluyen en checkpoint posterior con las mismas entradas compilables; APK/ZIP exactos se verifican al entregarlos. Sin CI/main/dependencias nuevas.9/10/18/20/34/35 siguen parciales; OneUI/servicios reales/rendimiento físico pendientes. Ver docs/VISUAL-FIDELITY-20261020.md.
+
+Entrega visual: APK+ZIP fuente exactos2642739 verificados (373inputs,Preview31,certificado885838aa,ARM64,zipalign16KB).112pruebas y lint0errores sobre código f56f665 idéntico; assemble final2642739 correcto. Ver informe VISUAL-FIDELITY-20261020 y verificación final. No hay ejecución pendiente ni CI. Revisión física del usuario es el siguiente paso; no repetir suites sin cambios.
+
+
+### ActionPanel · cobertura adicional21/10
+Checkpoint8e54047 conservó tres tests nuevos antes de ejecutar. Suite de teclado6casos:5aprobados y1caso corregido solo en selectores (texto duplicado y placeholder); reintento final1/1aprobado38s. Se verifican filtro/CtrlF/CtrlK, identidad ante actualización asíncrona y puente Back/submenú/disposición. Evidencia de las tres rondas en docs/verification/action-navigation-20261021. Producción idéntica a Preview33/560608f, APK/fuente y certificado comprobados nuevamente; sin nuevo lint/assemble/APK ni CI. OneUI/IME/rotación/InputDispatcher físicos siguen pendientes.
+
+
+### Raycast Dark Glass ·21/10 ·código verificado
+Diseño definitivo03/04 implementado sobre base5cb4a1, código2ffe81e. Material compartido, opacidad real70–100%/nuevo80% sin alterar valores guardados, slider nativo refinado, ActionPanel superpuesto contextual y Ajustes completos8áreas con lógica/claves conservadas.56casos únicos aprobados en rondas31retenidos+24afectados+1nuevo; última revisión geométrica3/3. Capturas tablet/teléfono y contraste controlado; XML/logs en verification/dark-glass-20261021. Lint/APK34/ZIP/firma final pendientes; no afirmar entrega ni física. Sin CI/main/permisos/dependencias nuevos.
+
+
+Raycast Dark Glass ·entrega34: APK/ZIP exactoscc1c28d verificados (193inputs/1016blobs,ARM64,paquete independiente,certificado885838aa,zipalign16KB). Lint0errores/15avisos/1info,assemble3m18s.56casos únicos en rondas; último teléfono1/1/17s para renovar cinco capturas. Sin nuevos tests integrales/CI/física ni procesos activos. Evidencias e identidad en RAYCAST-DARK-GLASS-20261021.md. Siguiente paso: prueba física Preview34/OneUI, no más cambios visuales sin feedback.

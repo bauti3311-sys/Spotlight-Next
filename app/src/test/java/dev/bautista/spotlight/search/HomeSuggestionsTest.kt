@@ -11,7 +11,7 @@ import org.robolectric.annotation.Config
 @Config(sdk=[33],application=android.app.Application::class)
 class HomeSuggestionsTest {
     private val context get()=RuntimeEnvironment.getApplication()
-    @Test fun noHistoryOrUnavailableProvidersLeakIntoHome(){val rows=HomeSuggestions.results(context,AppConfig(files=false,actionRecent=listOf("Privado"),recent=listOf("old/app")),false,false);assertTrue(rows.size in 0..4);assertTrue(rows.none{it.title=="Privado" || it.id=="suggest:ai" || it.id=="suggest:files"});assertEquals(rows.size,rows.distinctBy{it.id}.size)}
+    @Test fun noHistoryOrUnavailableProvidersLeakIntoHome(){val rows=HomeSuggestions.results(context,AppConfig(files=false,actionRecent=listOf("Privado"),recent=listOf("old/app")),false,false);assertTrue(rows.size in 0..3);assertTrue(rows.none{it.title=="Privado" || it.id=="suggest:ai" || it.id=="suggest:files"});assertEquals(rows.size,rows.distinctBy{it.id}.size)}
     @Test fun hideAndPinAreAppliedToAvailableCommands(){val rows=HomeSuggestions.results(context,AppConfig(files=false,hiddenSuggestions=setOf("suggest:note"),pinnedSuggestions=setOf("suggest:commands")),false,false);assertTrue(rows.none{it.id=="suggest:commands"});assertTrue(rows.none{it.id=="suggest:note"})}
     @Test fun disabledSuggestionsReturnNothing(){assertTrue(HomeSuggestions.results(context,AppConfig(suggestions=false),true,true).isEmpty())}
     @Test fun freshInstallHasRealLaunchableAppsWithoutLearningOrUsageAccess() {
@@ -27,5 +27,11 @@ class HomeSuggestionsTest {
         val favoriteRows=HomeSuggestions.results(context,AppConfig(learning=false,files=false,favorites=setOf("fixture.home1/fixture.home1.Main","fixture.home2/fixture.home2.Main")),false,false)
         assertEquals(listOf("Spotify"),favoriteRows.filter{it.action is Action.Launch}.map{it.title})
         assertTrue(favoriteRows.none{it.subtitle.contains("frecuente") || it.subtitle.contains("reciente")})
+    }
+    @Test fun currentVolumeActionAppearsWithoutInventingAnApplication() {
+        val rows=HomeSuggestions.results(context,AppConfig(files=false,actionRecent=listOf("volumen 40%")),false,false)
+        assertTrue(rows.any{it.action is dev.bautista.spotlight.search.Action.Device})
+        assertTrue(rows.none{it.action is dev.bautista.spotlight.search.Action.Launch})
+        assertTrue(rows.size<=3)
     }
 }

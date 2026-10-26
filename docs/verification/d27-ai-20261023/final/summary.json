@@ -1,0 +1,29 @@
+{
+  "code_checkpoint": "6639a421cc08b9724ab435842efde8ce9aee2b49",
+  "fixture_commit": "cc6b4f65d1a7b7cd5574f72c394c0a751ed22897",
+  "administrative_initial_lease": "9ddf781a841760621f1045f7f2aacc7c8d89a40a",
+  "owner": "work-admin-20261023-58a89fd0-a03f-4918-8a41-056edbc1fa34",
+  "editor_round_passed": 11,
+  "relative_round_passed": 20,
+  "unique_editor_and_relative_cases": 20,
+  "final_cancellation_rechecks": 2,
+  "fixture_cases_passed": 3,
+  "admin_local_tests_historical": 9,
+  "admin_tests_repeated": false,
+  "lint_preview": {
+    "errors": 0,
+    "warnings": 15,
+    "information": 1,
+    "duration": "2m57s"
+  },
+  "lint_debug": "blocked by uncached androidTest dependencies in offline mode; full failure preserved",
+  "production_inputs_match": 235,
+  "matrix": {
+    "complete": 8,
+    "implemented_insufficient_tests": 25,
+    "partial": 7
+  },
+  "D27": "partial",
+  "preview44_rebuilt": false,
+  "physical_validation": false
+}

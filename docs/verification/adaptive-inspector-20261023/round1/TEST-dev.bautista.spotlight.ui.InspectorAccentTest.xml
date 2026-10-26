@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.InspectorAccentTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-23T13:39:56" hostname="9f6790b53762" time="2.825">
+  <properties/>
+  <testcase name="darkAndLightAccentsKeepReadableControlsWithoutChangingErrorOrSurface" classname="dev.bautista.spotlight.ui.InspectorAccentTest" time="2.613"/>
+  <testcase name="formDestinationWinsAndUnrelatedTasksNeverInheritSelectedApplication" classname="dev.bautista.spotlight.ui.InspectorAccentTest" time="0.046"/>
+  <testcase name="unknownAppsUseBoundedIconColorAndDoNotMutateSharedDrawable" classname="dev.bautista.spotlight.ui.InspectorAccentTest" time="0.135"/>
+  <testcase name="identityIsExactAndNeverGuessedFromResultTitleOrQuery" classname="dev.bautista.spotlight.ui.InspectorAccentTest" time="0.03"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.PlanReviewProjectionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-23T18:28:06" hostname="801452d05747" time="0.041">
+  <properties/>
+  <testcase name="reorderedStepsUseTheNewPrecedingTarget" classname="dev.bautista.spotlight.ui.PlanReviewProjectionTest" time="0.034"/>
+  <testcase name="unavailableStepsAreNeverUsedAsDependencies" classname="dev.bautista.spotlight.ui.PlanReviewProjectionTest" time="0.004"/>
+  <testcase name="projectionIsIdempotentAcrossRepeatedSelectionChanges" classname="dev.bautista.spotlight.ui.PlanReviewProjectionTest" time="0.001"/>
+  <testcase name="omittedPredecessorsDoNotAffectTheReviewedTarget" classname="dev.bautista.spotlight.ui.PlanReviewProjectionTest" time="0.0"/>
+  <testcase name="brightnessTracksItsOwnSelectedStepsAndRetainsRawMinimum" classname="dev.bautista.spotlight.ui.PlanReviewProjectionTest" time="0.001"/>
+  <testcase name="relativeVolumeIsClampedAtBothEnds" classname="dev.bautista.spotlight.ui.PlanReviewProjectionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

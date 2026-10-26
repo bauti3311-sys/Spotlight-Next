@@ -1,0 +1,10 @@
+test_default_runs_only_ui_regressions_offline_without_apk_or_publish (test_directed_runner.DirectedRunnerTest.test_default_runs_only_ui_regressions_offline_without_apk_or_publish) ... ok
+test_missing_distribution_is_not_downloaded (test_directed_runner.DirectedRunnerTest.test_missing_distribution_is_not_downloaded) ... ok
+test_missing_sdk_does_not_start_build (test_directed_runner.DirectedRunnerTest.test_missing_sdk_does_not_start_build) ... ok
+test_spotify_group_is_bounded_and_does_not_repeat_ui_or_historical_suites (test_directed_runner.DirectedRunnerTest.test_spotify_group_is_bounded_and_does_not_repeat_ui_or_historical_suites) ... ok
+test_unknown_group_never_invokes_runner (test_directed_runner.DirectedRunnerTest.test_unknown_group_never_invokes_runner) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.063s
+
+OK

@@ -1,0 +1,13 @@
+{
+  "description": "SHA256 por archivo para controlar integridad de especificación y referencias visuales",
+  "files": {
+    "MATRIZ_40_DECISIONES.csv": "fb7ffa8c9e1fb2616812ceb88b1ea2d3f3ef89ecf8ccac04757d7b3c2b19bc6d",
+    "ESPECIFICACION_MAESTRA_40_DECISIONES.md": "f0f22ff4db6c84215b840f826a9221f8a083405009d4edb7b36d8a599c13c432",
+    "LEEME_PRIMERO.md": "b6535e2f5d79fb216ca4b1c09b276dbbb819557dd99785e4292a5431d9c47be3",
+    "PROMPT_PARA_WORK.md": "62c3583d68b61f24ecedf501238b7b4fea8d3056903955cd80128e0a59b5b594",
+    "REFERENCIAS_VISUALES/04-Ajustes-Glass-APROBADO.png": "4fb2de617121ac5d88bbafd4a89eb250dc6a7110f914618e69b277b2162a5e07",
+    "REFERENCIAS_VISUALES/03-ActionPanel-Glass-APROBADO.png": "17e997f45811a9787b3752ba34150a6da8b8993c222f6fbbd3a14a607b5aa367",
+    "REFERENCIAS_VISUALES/02-Buscador-resultados.png": "763a508f811aacbbaa4b7e02e29a7560c3310b436376a270cc67f9a6ba29a832",
+    "REFERENCIAS_VISUALES/01-Buscador-inicio.png": "9d01fb133eb771d63594f44009f26e0d02a769905680ac118bc4cfa937ed541e"
+  }
+}

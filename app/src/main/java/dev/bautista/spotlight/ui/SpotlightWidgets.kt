@@ -30,18 +30,12 @@ fun ResultIcon(
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
 ) {
-    if(result.mime=="application/pdf") {
-        val dark=MaterialTheme.colorScheme.surface.luminance()<.5f
-        val blue=if(dark)Color(0xFF4DA7CB) else Color(0xFF237799)
-        Box(modifier.clip(RoundedCornerShape(6.dp)).background(blue.copy(alpha=.12f)).border(1.dp,blue.copy(alpha=.16f),RoundedCornerShape(6.dp)),contentAlignment=Alignment.Center) {
-            Icon(PhosphorIcons.Pdf,"Archivo PDF",Modifier.size(15.dp),tint=blue)
-        }
-    } else if (result.icon != null) {
+if (result.icon != null) {
         val bitmap =
             remember(result.id, result.icon) { result.icon.toBitmap(80, 80).asImageBitmap() }
         Image(bitmap, result.category, modifier.clip(RoundedCornerShape(7.dp)))
     } else
-        Icon(
+        IosCommandIcon(
             when {
                 result.mime=="application/pdf"->PhosphorIcons.Pdf
                 result.action is Action.WorkflowRun -> when(dev.bautista.spotlight.automation.Workflows.parse(LocalAppearance.current.routines).firstOrNull{it.id==result.action.id}?.icon){"bolt"->CommandIcons.Bolt;"sun"->CommandIcons.Sun;"music"->CommandIcons.MusicNote;else->CommandIcons.Layers}
@@ -85,14 +79,13 @@ fun ResultRow(
     animations: Boolean = true,
     onInteraction:()->Unit={},
     playing:Boolean=false,
+    inline:Boolean=true,
 ) {
     val colors = MaterialTheme.colorScheme
-    val usefulSubtitle = dev.bautista.spotlight.search.CompactResults.subtitle(result)
+    val metadata = if(playing)"En reproducción" else if(PreviewPresentation.isApplication(result))"Aplicación" else result.mime?.substringAfterLast('/')?.uppercase()?.take(12) ?: ResultSections.category(result).let{if(it=="Acciones y comandos")"Comando" else it}
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
-    BoxWithConstraints(Modifier.fillMaxWidth()) {
-    val inline=maxWidth>=560.dp
     val appearance=LocalAppearance.current
     val pad=if(inline)when(appearance.density){"compact"->2;"spacious"->6;else->4} else when(appearance.density){"compact"->4;"spacious"->10;else->6}
     val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")
@@ -100,11 +93,10 @@ fun ResultRow(
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.rowHeight(appearance) else 56.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
+        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else 60.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
-            .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
-            .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=amount*if(dark).14f else .10f),RoundedCornerShape(GlassTokens.rowRadius))
+            .background(colors.onSurface.copy(alpha=.09f*amount))
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
             // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
@@ -115,37 +107,28 @@ fun ResultRow(
     ) {
         // Native application artwork keeps its own identity. Utility glyphs have
         // one stroke treatment and no tinted tile or selection stripe.
-        ResultIcon(result,Modifier.size(if(result.icon!=null || result.mime=="application/pdf")26.dp else GlassTokens.glyph),colors.onSurfaceVariant)
+        ResultIcon(result,Modifier.size(if(result.icon!=null)28.dp else 20.dp),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
-        if(inline) Row(Modifier.weight(1f),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
-            Text(result.title,Modifier.weight(1f,fill=false),color=ink,
-                fontWeight=FontWeight.Normal,
-                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-            if(usefulSubtitle.isNotBlank()) Text(usefulSubtitle,Modifier.weight(1f),color=colors.onSurfaceVariant,
-                fontSize=GlassTokens.secondaryText*appearance.textScale,letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-        } else {
-        Column(Modifier.weight(1f)) {
-            Text(
-                result.title,
-                color = ink,
-                fontWeight = FontWeight.Medium,
-                fontSize = GlassTokens.resultText*LocalAppearance.current.textScale,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if(usefulSubtitle.isNotBlank()) Text(
-                usefulSubtitle,
-                color = colors.onSurfaceVariant,
-                fontSize = GlassTokens.secondaryText*LocalAppearance.current.textScale,
-                maxLines = if(result.id.startsWith("smart:") || result.id=="intent:local") 2 else 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+          Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+            Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
+                modifier=Modifier.weight(1f,fill=false),
+                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
+                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
+                Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+                maxLines=1,overflow=TextOverflow.Ellipsis)
+          }
+            val subtitle=if(PreviewPresentation.isApplication(result))"Aplicación" else result.subtitle.takeIf{it.isNotBlank()} ?: metadata
+            if(!inline)Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+                maxLines=1,overflow=TextOverflow.Ellipsis)
         }
-        }
-        if(playing) Text("En reproducción",Modifier.padding(start=6.dp).clip(RoundedCornerShape(5.dp))
-            .background(Color(0x2222C58B)).border(1.dp,Color(0x3322C58B),RoundedCornerShape(5.dp)).padding(horizontal=8.dp,vertical=3.dp),
-            color=if(dark)Color(0xFF8ED9BC) else Color(0xFF16684D),fontSize=10.sp,maxLines=1)
-        if (favorite)Icon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
+        if(inline && !playing)Text(metadata,
+            Modifier.padding(start=12.dp).widthIn(max=100.dp),color=colors.onSurfaceVariant,
+            fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
+        if(playing)Text("En reproducción",Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,
+            fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
+        if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
         if(selected || hovered) IconButton(onClick = {onInteraction();onDetails()}, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
@@ -159,10 +142,9 @@ fun ResultRow(
         }
     }
     }
-
-    }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun InfoCardView(card: InfoCard, onCopy: () -> Unit, onLink: () -> Unit,onShare:(()->Unit)?=null) {
     val colors = MaterialTheme.colorScheme
@@ -192,10 +174,11 @@ fun InfoCardView(card: InfoCard, onCopy: () -> Unit, onLink: () -> Unit,onShare:
                 Text(value, Modifier.weight(1f), fontSize = 13.sp)
             }
         }
-        Row {
-            TextButton(onClick = onCopy) { Text("Copiar") }
-            if(onShare!=null)TextButton(onClick=onShare){Text("Compartir")}
-            if (card.url != null) TextButton(onClick = onLink) { Text("Abrir fuente / mapa") }
+        FlowRow {
+            TextButton(modifier=Modifier.heightIn(min=48.dp),onClick = onCopy) { Text("Copiar") }
+            if(onShare!=null)TextButton(modifier=Modifier.heightIn(min=48.dp),onClick=onShare){Text("Compartir")}
+            if (card.url != null) TextButton(modifier=Modifier.heightIn(min=48.dp),onClick = onLink) { Text("Abrir fuente / mapa") }
         }
     }
 }
+

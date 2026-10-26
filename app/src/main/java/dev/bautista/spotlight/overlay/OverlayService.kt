@@ -9,6 +9,11 @@ import android.os.*
 import android.provider.Settings
 import android.view.*
 import android.widget.Toast
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
+import kotlinx.coroutines.flow.*
+import dev.bautista.spotlight.data.OverlaySnapshotCodec
+import dev.bautista.spotlight.ui.LocalTaskCheckpoint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
@@ -33,8 +38,24 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private var view: WindowFocusHost? = null
     private var composition: ComposeView? = null
     private var closing=false
+    private var actionsVisible=false
     private var focusSeen = false
     private var showJob: Job? = null
+    private var recoveryRegistry:SaveableStateRegistry?=null
+    private var recoveryJob:Job?=null
+    private var recoveryStorageBlocked=false
+    private var recoverySuppressed=false
+    private var recoveryLoaded=false
+    private var recoveryNotice=""
+    private suspend fun checkpointTask() {
+        val state=withContext(Dispatchers.Main.immediate){recoveryRegistry?.performSave()}
+        if(!config.privateMode && !recoverySuppressed && state!=null){app.contexts.saveOverlaySnapshot(state);recoveryStorageBlocked=false}
+    }
+    private fun clearRecovery() {
+        val pending=recoveryJob;pending?.cancel();recoveryJob=null
+        val owner=application as? SpotlightApp ?: return
+        owner.scope.launch {pending?.join();runCatching{owner.contexts.saveOverlaySnapshot(null)}}
+    }
     private val overlayContext: Context by lazy {
         // Android 11 may return a WindowContext after denying its token registration,
         // without throwing. Keep the service manager there; WindowMetrics still applies.
@@ -51,7 +72,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         get() = application as SpotlightApp
 
     private var config by androidx.compose.runtime.mutableStateOf(Config())
-    private var initialQuery = ""
+    private var initialQuery by mutableStateOf("")
+    private var incomingQueryRevision by mutableIntStateOf(0)
     private var invocation = "touch"
     private var contentExpanded=false
     private val widthTransition = OverlayWidthTransition()
@@ -161,10 +183,13 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 .build(),
         )
         if (view != null || showJob?.isActive == true) {
+            val requested=intent?.getStringExtra("query")?.take(4000).orEmpty()
+            if(requested.isNotBlank()){initialQuery=requested;incomingQueryRevision++;return START_NOT_STICKY}
             close()
             return START_NOT_STICKY
         }
         initialQuery = intent?.getStringExtra("query")?.take(4000) ?: ""
+        if(initialQuery.isNotBlank())incomingQueryRevision++
         invocation=intent?.getStringExtra("invocation") ?: "touch"
         app.diagnostics.beginOpening()
         showJob =
@@ -172,6 +197,14 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 app.preferences.config.collect { next ->
                     val old=config
                     config=next
+                    if(!recoveryLoaded){
+                        recoveryLoaded=true
+                        val restored=if(!next.privateMode)runCatching{app.contexts.overlaySnapshot()}.onFailure{recoveryStorageBlocked=true;recoveryNotice="La sesión guardada no pudo recuperarse. Se conservó el archivo."}.getOrNull() else null
+                        recoveryRegistry=SaveableStateRegistry(restored,OverlaySnapshotCodec::canSave)
+                        if(restored!=null)recoveryNotice="Sesión local recuperada. Revisá las operaciones interrumpidas antes de repetirlas."
+                        if(next.privateMode)app.contexts.saveOverlaySnapshot(null)
+                    }
+                    if(next.privateMode){recoverySuppressed=true;if(!old.privateMode)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(null)}}}
                     if(view==null && !closing)show()
                     else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
                         refreshWindowGeometry()
@@ -222,15 +255,19 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                 setViewTreeViewModelStoreOwner(this@OverlayService)
                 setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
                 setContent {
+                    CompositionLocalProvider(LocalSaveableStateRegistry provides recoveryRegistry,LocalTaskCheckpoint provides {checkpointTask()}) {
                     SpotlightPanel(
                         app,
                         config,
                         onClose = { close() },
                         initialQuery = initialQuery,
+                        incomingQueryRevision=incomingQueryRevision,
                         availableHeightDp = availableHeightDp,
                         invocation = invocation,
                         onContentExpansion={expanded->if(contentExpanded!=expanded){contentExpanded=expanded;refreshWindowGeometry(animateWidth = true)}},
+                        onActionsVisibility={actionsVisible=it},
                     )
+                    }
                 }
             }
         focusSeen = false
@@ -245,9 +282,31 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
             insets
         }
         try {
+            val openingMotion = motionAllowed()
+            OverlayWindowMotion.prepare(host, openingMotion)
             wm.addView(host, params(openingBounds))
+            OverlayWindowMotion.open(host, openingMotion)
             view = host
             composition = panel
+            if(recoveryNotice.isNotBlank())Toast.makeText(this,recoveryNotice,Toast.LENGTH_LONG).show()
+            recoveryJob=lifecycleScope.launch {
+                var previous:String?=null
+                // Only while the existing overlay is visible. No service/timer survives close.
+                // Sampling also catches providers registered by child compositions after a frame.
+                while(isActive && view===host){
+                    if(!config.privateMode && !recoverySuppressed && !recoveryStorageBlocked)try {
+                        val snapshot=recoveryRegistry?.performSave().orEmpty()
+                        if(snapshot.isNotEmpty()) {
+                            val encoded=withContext(Dispatchers.IO){OverlaySnapshotCodec.encode(snapshot).toString()}
+                            if(encoded!=previous){app.contexts.saveOverlaySnapshot(snapshot);previous=encoded}
+                        }
+                    }catch(e:CancellationException){throw e}catch(e:Exception){
+                        recoveryStorageBlocked=true
+                        Toast.makeText(this@OverlayService,e.message ?: "No se pudo conservar la sesión local.",Toast.LENGTH_LONG).show()
+                    }
+                    delay(750)
+                }
+            }
             ViewCompat.requestApplyInsets(host)
             host.viewTreeObserver.addOnDrawListener(object:android.view.ViewTreeObserver.OnDrawListener {
                 var reported=false
@@ -259,7 +318,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     }
                 }}
             })
-            // Visible on the first frame: no competing window/Compose entrance animations.
+            // Visible and focusable on the first frame; motion changes drawing properties only.
             clipboard.addPrimaryClipChangedListener(clipListener)
             host.postDelayed(
                 {
@@ -294,7 +353,9 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     internal fun createHost(panel: ComposeView): WindowFocusHost {
         return WindowFocusHost(
                 overlayContext,
-                onOutside = { close() },
+                // The bounded child owns outside-dismiss while open. Touching an action
+                // beyond the compact parent must not close the parent underneath it.
+                onOutside = { if(!actionsVisible)close() },
                 onFocus = { gained ->
                     if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
                         android.util.Log.d("SpotlightOverlay", "Window focus=$gained")
@@ -331,13 +392,13 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     private fun close() {
         if(closing) return
         closing=true
+        clearRecovery()
         widthTransition.cancel()
         clipboard.removePrimaryClipChangedListener(clipListener)
         showJob?.cancel()
         val host=view
         if(host!=null && host.isAttachedToWindow && motionAllowed()) {
-            host.animate().cancel()
-            host.animate().alpha(0f).scaleX(.99f).scaleY(.99f).translationY(-3f*resources.displayMetrics.density).setDuration(when(config.movement){"precise"->55L;"liquid_immersive"->115L;else->90L}).withEndAction {if(view===host)finishClose()}.start()
+            OverlayWindowMotion.close(host, true) { if(view===host)finishClose() }
         } else finishClose()
     }
     private fun finishClose() {
@@ -353,7 +414,19 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     override fun onDestroy() {
+        if(!closing){
+            // A child can register unsupported saveable state. Preserve the previous
+            // recovery file and finish cleanup; never log the rejected state contents.
+            val snapshot=runCatching { recoveryRegistry?.performSave() }
+                .onFailure { android.util.Log.e("SpotlightOverlay", "Could not capture overlay recovery; keeping the previous checkpoint.") }
+                .getOrNull()
+            recoveryJob?.cancel()
+            if(snapshot!=null && !recoverySuppressed)app.scope.launch {
+                runCatching { app.contexts.saveOverlaySnapshot(snapshot) }
+            }
+        }
         closing=true
+        recoveryJob?.cancel()
         widthTransition.cancel()
         view?.animate()?.cancel()
         clipboard.removePrimaryClipChangedListener(clipListener)

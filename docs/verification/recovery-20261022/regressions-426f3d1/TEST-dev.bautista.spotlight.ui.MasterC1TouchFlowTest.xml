@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-22T11:44:43" hostname="846daf2ba33b" time="1.761">
+  <properties/>
+  <testcase name="installedSpeechActivityMakesDictationAvailable" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.69"/>
+  <testcase name="unavailableDictationIsHiddenAndOptionsDoNotChangeQuery" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.285"/>
+  <testcase name="initialHighlightRequiresFirstTapThenSecondTapExecutes" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.241"/>
+  <testcase name="enterStillExecutesWithoutTouchConfirmation" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.241"/>
+  <testcase name="cancelledSecondTapDoesNotExecuteAndLongPressShowsActions" classname="dev.bautista.spotlight.ui.MasterC1TouchFlowTest" time="0.304"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

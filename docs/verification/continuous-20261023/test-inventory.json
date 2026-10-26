@@ -1,0 +1,21 @@
+{
+  "written_not_executed": {
+    "automation/CommandTemplatesTest.kt": 16,
+    "ui/CommandTemplateFlowTest.kt": 4,
+    "control/AppCapabilitiesTest.kt": 6,
+    "integrations/spotify/SpotifyPkceTest.kt": 6,
+    "integrations/spotify/SpotifySearchClientTest.kt": 6,
+    "integrations/cast/LocalMediaRequestPolicyTest.kt": 9,
+    "sharing/BoundedSharedCopyTest.kt": 4,
+    "ui/SharedImportPanelTest.kt": 1,
+    "overlay/DiagnosticsMeasurementTest.kt": 5,
+    "next/SourceFreshnessTest.kt": 2,
+    "ui/SportsAgendaMergeTest.kt": 2
+  },
+  "pending_total": 61,
+  "previous_d28": 17,
+  "new_this_run": 44,
+  "android_executed": 0,
+  "android_compiled": false,
+  "tooling_executed_unique": 5
+}

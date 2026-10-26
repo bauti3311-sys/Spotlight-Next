@@ -1,0 +1,52 @@
+{
+  "checked": "2026-10-24",
+  "projects": [
+    {
+      "repo": "WhiskeySockets/Baileys",
+      "sha": "0af2386292907f7d9742d8d41f830d8c48208fa1",
+      "pushed_at": "2026-10-21T15:47:12Z",
+      "license_detected": "MIT",
+      "latest_release": {
+        "tag": "v7.0.0-rc14",
+        "published_at": "2026-07-29T01:14:09Z"
+      }
+    },
+    {
+      "repo": "tulir/whatsmeow",
+      "sha": "b2b1e71d45e2ff171153b025b5a42f475bb30ef8",
+      "pushed_at": "2026-10-17T21:43:03Z",
+      "license_detected": "MPL-2.0",
+      "latest_release": null
+    },
+    {
+      "repo": "asternic/wuzapi",
+      "sha": "042f96b65697c60556c086da1028cb36cfe64f5a",
+      "pushed_at": "2026-10-20T23:08:22Z",
+      "license_detected": "MIT",
+      "latest_release": {
+        "tag": "v1.0.9",
+        "published_at": "2026-09-17T18:45:01Z"
+      }
+    },
+    {
+      "repo": "pedroantonnio/ChatRail",
+      "sha": "d10a56c2a92ec3db55402a771700445579fe3bc4",
+      "pushed_at": "2026-09-12T15:44:00Z",
+      "license_detected": "MIT",
+      "latest_release": {
+        "tag": "v1.0.1",
+        "published_at": "2026-09-12T15:44:00Z"
+      }
+    },
+    {
+      "repo": "evolution-foundation/evolution-api",
+      "sha": "fa09d37892cdbb1d65a250155d293d92230c5b30",
+      "pushed_at": "2026-07-14T19:50:55Z",
+      "license_detected": "NOASSERTION",
+      "latest_release": {
+        "tag": "2.3.7",
+        "published_at": "2025-12-05T14:29:49Z"
+      }
+    }
+  ]
+}

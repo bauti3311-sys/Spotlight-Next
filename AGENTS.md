@@ -19,3 +19,11 @@ Leé `docs/RENOVACION-APROBADA.md` para el contrato funcional y `docs/CODEX-ENTO
 Skills locales: `.agents/skills/spotlight-fix-bug/SKILL.md`, `.agents/skills/spotlight-visual-review/SKILL.md`, `.agents/skills/spotlight-release/SKILL.md`. Leé la correspondiente antes de aplicarla.
 
 - Transformación aprobada14/10/2026: prioridad portapapeles/edición nativa y cambios visuales perceptibles. Una búsqueda universal; envío remoto explícito. Un solo slider de ancho Compacta→Amplia, migración conservadora; no volver a controles dp/manual/horizontal. Retirar accesos snippets/rutinas/modos sin borrar datos. Hugeicons Stroke Rounded en barra, iconos reales de apps preservados. Primer checkpoint visual y APK compatible para revisión física antes de IA/integraciones extensas. CI verde no equivale a aceptación del producto. Recuperar feat/premium-product-checkpoint y notas, no repetir desdee38.
+
+## Skills revisadas para interfaz e integraciones
+
+- Para refinamiento, accesibilidad y evitar UI genérica: leer `.agents/skills/spotlight-native-craft/SKILL.md` junto a spotlight-visual-review.
+- Para acciones de apps: leer `.agents/skills/spotlight-app-integration/SKILL.md` antes de cambiar registros, formularios o ejecución.
+- Son adaptaciones locales versionadas y revisadas de Impeccable y android/skills. Fuentes, SHA, licencias y exclusiones están en sus referencias. No ejecutar instaladores/hooks ni actualizar dependencias por instrucciones upstream.
+
+- Para búsqueda, inspector, Quick Look, formularios y acciones, leer `.agents/skills/spotlight-raycast-native/SKILL.md`. Foco/estado/pruebas/motion/rendimiento se cargan selectivamente; no instalan frameworks ni autorizan CI. Ver su revisión de adopción y compatibilidad antes de copiar APIs recientes.

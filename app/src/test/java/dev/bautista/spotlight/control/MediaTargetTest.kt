@@ -63,6 +63,32 @@ class MediaTargetTest {
         }
         assertEquals(0L,action(only))
     }
+    @Test fun contextualCommandNeverControlsUnrelatedPlayer() {
+        val spotify=session("com.spotify.music",PlaybackState.STATE_PLAYING)
+        val youtube=session("com.google.android.youtube",PlaybackState.STATE_PLAYING)
+        assertTrue(MediaControl.availableForPackage(app,"com.spotify.music","pause"))
+        assertFalse(MediaControl.availableForPackage(app,"com.unknown.music","pause"))
+        assertTrue(MediaControl.executeForPackage(app,"com.spotify.music","pause").contains("com.spotify.music"))
+        assertEquals(PlaybackState.ACTION_PAUSE,action(spotify))
+        assertEquals(0L,action(youtube))
+    }
+
+    @Test fun contextualCommandRejectsTwoSessionsFromSameApp() {
+        val first=session("com.spotify.music",PlaybackState.STATE_PLAYING)
+        val second=session("com.spotify.music",PlaybackState.STATE_PLAYING)
+        assertFalse(MediaControl.availableForPackage(app,"com.spotify.music","pause"))
+        assertTrue(runCatching { MediaControl.executeForPackage(app,"com.spotify.music","pause") }.isFailure)
+        assertEquals(0L,action(first))
+        assertEquals(0L,action(second))
+    }
+
+    @Test fun contextualCommandRejectsUnsupportedActionEvenIfPlayerExists() {
+        val spotify=session("com.spotify.music",PlaybackState.STATE_PLAYING,PlaybackState.ACTION_PAUSE)
+        assertFalse(MediaControl.availableForPackage(app,"com.spotify.music","next"))
+        assertTrue(runCatching { MediaControl.executeForPackage(app,"com.spotify.music","next") }.isFailure)
+        assertEquals(0L,action(spotify))
+    }
+
     @Test fun executionRefreshesSessionsAfterAvailabilityCheck() {
         val first=session("test.first",PlaybackState.STATE_PLAYING)
         assertTrue(MediaControl.available(app,"pause"))

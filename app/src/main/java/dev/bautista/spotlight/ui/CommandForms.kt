@@ -5,6 +5,7 @@ import android.media.AudioManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,8 +16,8 @@ import kotlinx.coroutines.*
 
 @Composable fun MessageEditor(draft:Action.ComposeMessage,onLaunch:(Intent)->Unit,onAccess:(String)->Unit,onCancel:()->Unit) {
     val context=LocalContext.current
-    var target by remember(draft){mutableStateOf(draft.target)}
-    var body by remember(draft){mutableStateOf(draft.text)}
+    var target by rememberSaveable(draft){mutableStateOf(draft.target)}
+    var body by rememberSaveable(draft){mutableStateOf(draft.text)}
     var choices by remember(draft){mutableStateOf(emptyList<Person>())}
     var selected by remember(draft){mutableStateOf<Person?>(null)}
     var address by remember(draft){mutableStateOf("")}
@@ -24,6 +25,7 @@ import kotlinx.coroutines.*
     var loading by remember(draft){mutableStateOf(false)}
     var sent by remember(draft){mutableStateOf(false)}
     var confirming by remember(draft){mutableStateOf(false)}
+    var approvedReply by remember(draft){mutableStateOf<ReplyTarget?>(null)}
     val permission=People.allowed(context)
     val reply=draft.replyKey!=null
     val notifications by Replies.targets.collectAsState()
@@ -60,7 +62,7 @@ import kotlinx.coroutines.*
                     choices.take(8).forEach { person -> TextButton(onClick={selected=person;address=person.address}){Text("${person.name} · ${person.address}")}}
                 }
                 if(selected!=null)Text("${selected!!.name} · ${selected!!.address}",fontSize=12.sp)
-                if(address.isNotBlank() || selected!=null || target.isNotBlank())OutlinedTextField(address,{address=it.take(100);confirming=false},label={Text(if(draft.channel=="email")"Email" else "Número de destino")},singleLine=true,modifier=Modifier.fillMaxWidth())
+                if(address.isNotBlank() || selected!=null || target.isNotBlank())OutlinedTextField(address,{address=it.take(100);selected=null;confirming=false},label={Text(if(draft.channel=="email")"Email" else "Número de destino")},singleLine=true,modifier=Modifier.fillMaxWidth())
             }
         }
         OutlinedTextField(body,{body=it.take(8000);sent=false;confirming=false},label={Text("Mensaje")},minLines=2,maxLines=5,modifier=Modifier.fillMaxWidth().then(if(focusBody)Modifier.focusRequester(focus) else Modifier))
@@ -71,13 +73,13 @@ import kotlinx.coroutines.*
             ElevatedCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(14.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                     Text("Confirmar · ${appName}",style=MaterialTheme.typography.titleSmall)
-                    Text("Para: ${selected?.name ?: target} ${if(reply) "" else address}")
+                    Text("Para: ${if(reply)approvedReply?.title.orEmpty() else selected?.let{"${it.name} · $address"} ?: address}")
                     if(reply && received!=null){Text("Mensaje recibido",style=MaterialTheme.typography.labelSmall);androidx.compose.foundation.text.selection.SelectionContainer{Text(received.visibleText.take(800),style=MaterialTheme.typography.bodySmall)}}
                     Text(body,style=MaterialTheme.typography.bodyMedium)
                     Row {
                         Button(onClick={
                             error="";confirming=false
-                            if(reply)runCatching {Replies.send(context,draft.replyKey!!,body)}.onSuccess{sent=true}.onFailure{error=it.message ?: "No se pudo responder"}
+                            if(reply)runCatching {Replies.send(context,draft.replyKey!!,body,requireNotNull(approvedReply){"Revisá la conversación nuevamente."})}.onSuccess{sent=true}.onFailure{error=it.message ?: "No se pudo responder"}
                             else {
                                 val intent=People.messageIntent(context,draft.channel,address,body)
                                 if(intent==null)error="Revisá el número, código de país y área." else onLaunch(intent)
@@ -89,14 +91,26 @@ import kotlinx.coroutines.*
             }
         }
         Row {
-            Button(enabled=body.isNotBlank()&&!sent&&(!reply || received?.action!=null)&&(reply||sharing||address.isNotBlank()),onClick={confirming=true}) {Text(if(reply)"Revisar respuesta" else "Revisar mensaje")}
+            Button(enabled=body.isNotBlank()&&!sent&&(!reply || received?.action!=null)&&(reply||sharing||address.isNotBlank()),onClick={approvedReply=received;confirming=true}) {Text(if(reply)"Revisar respuesta" else "Revisar mensaje")}
             TextButton(onClick=onCancel){Text("Volver")}
         }
     }
 }
 
 @Composable fun SearchEditor(draft:Action.ComposeSearch,onRun:(Action)->Unit,onCancel:()->Unit) {
-    var term by remember(draft){mutableStateOf(draft.query)}
+    val app=LocalContext.current.applicationContext as? dev.bautista.spotlight.SpotlightApp
+    if(draft.topic=="spotify" && app!=null) {
+        val spotifyState by app.spotify.state.collectAsState()
+        LaunchedEffect(Unit){app.spotify.inspect()}
+        if(spotifyState==dev.bautista.spotlight.integrations.spotify.SpotifyConnectionState.AUTHORIZED) {
+            Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                SpotifySearchPanel(app,draft.query)
+                TextButton(onClick=onCancel){Text("Volver")}
+            }
+            return
+        }
+    }
+    var term by rememberSaveable(draft){mutableStateOf(draft.query)}
     val focus=remember(draft){FocusRequester()}
     LaunchedEffect(draft){delay(60);focus.requestFocus()}
     Column(Modifier.fillMaxWidth().padding(16.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {

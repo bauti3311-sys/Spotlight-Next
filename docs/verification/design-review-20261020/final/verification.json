@@ -1,0 +1,24 @@
+{
+  "source_sha": "fc7f885a2517ed2563c59cdae7a0228a8ce12c66",
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "version_code": "30",
+  "version_name": "2.0.1-raycast-preview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "signing": "Android Debug, independent Raycast Preview",
+  "build_inputs_verified": 372,
+  "zipalign_16kb": true,
+  "device_installation_tested": false,
+  "one_ui_physical_tested": false,
+  "files": [
+    {
+      "name": "Spotlight-Next-Raycast-Preview-fc7f885.apk",
+      "size": 86506916,
+      "sha256": "532b2f27361b71cc1e21be2d30ea88e583b46119b14a4e7513cf1c7d53301e91"
+    },
+    {
+      "name": "Spotlight-Next-source-fc7f885.zip",
+      "size": 7359415,
+      "sha256": "fda92eea884409ca1ccb99eb2a057394712415ce2d48d5e47bc25460789b9511"
+    }
+  ]
+}

@@ -39,11 +39,13 @@ object ResultRanker {
         if(q.isEmpty())return 0
         val t=normalize(item.title.trim()).split(Regex("\\s+")).joinToString(" ")
         val installed=item.category=="Aplicaciones"
-        val words=q.split(' ')
+        val command=item.category in setOf("Comandos","Acciones") && item.action !is Action.Ask &&
+            item.action !is Action.Access && item.action !is Action.RestoreQuery &&
+            (item.action as? Action.SystemPanel)?.page!="extensions"
         return when {
-            installed && t==q->6
-            installed && t.startsWith(q)->5
-            installed && (t.contains(q) || words.all{word->t.split(Regex("[^\\p{L}\\p{N}]+")).any{it.startsWith(word)}})->4
+            (installed || command) && t==q->6
+            (installed || command) && t.startsWith(q)->5
+            (installed || command) && relevance(q,t)>0->4
             item.category in setOf("Calculadora","Conversión","Herramientas") && item.action is Action.Copy->4
             item.category=="Archivos" && item.semanticMatch->3
             item.category=="Web"->0

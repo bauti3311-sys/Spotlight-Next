@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-22T16:25:50" hostname="9f8b8cbf2200" time="4.287">
+  <properties/>
+  <testcase name="partialWorkflowOutputSurvivesRestoreWithoutContinuingSensitiveSteps" classname="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" time="4.287"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

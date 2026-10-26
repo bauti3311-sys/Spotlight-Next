@@ -54,6 +54,7 @@ class LocalStore(private val preferences: Preferences, private val scope: Corout
             val a = JSONArray(raw)
             val out = JSONArray()
             if(id != null) {
+                require((0 until a.length()).any{a.getJSONObject(it).getString("id")==id}){"La nota original ya no existe. Guardá el borrador como una nota nueva."}
                 for(i in 0 until a.length()) {
                     val note=a.getJSONObject(i)
                     if(note.getString("id")==id) note.put("text",text.take(8000)).put("modified",System.currentTimeMillis())

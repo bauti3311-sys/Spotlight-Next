@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
+import com.github.takahirom.roborazzi.*
 import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.data.Config as AppConfig
 import org.junit.Assert.assertTrue
@@ -25,7 +26,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-@OptIn(ExperimentalTestApi::class)
+@OptIn(ExperimentalTestApi::class, ExperimentalRoborazziApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33], qualifiers = "w1280dp-h800dp", application = SpotlightApp::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -64,7 +65,18 @@ class OverlayActionsImeTest {
         ui.waitForIdle()
         ui.runOnIdle { capture091(ui.activity, "f13-tablet-actions-ime") }
         ui.onNodeWithText("Copiar resultado").assertIsFocused()
-        ui.onNodeWithText("Acciones").assertIsDisplayed()
+        // Current action header is its search field and close target; the parent footer says Volver.
+        ui.onNodeWithTag("action-filter").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Cerrar acciones").assertIsDisplayed()
+            .assertWidthIsAtLeast(48.dp).assertHeightIsAtLeast(48.dp)
+        val surface=ui.onNodeWithTag("action-surface").getUnclippedBoundsInRoot()
+        val header=ui.onNodeWithTag("action-filter").getUnclippedBoundsInRoot()
+        assertTrue("Action header clipped above surface",header.top>=surface.top)
+        assertTrue("Action header clipped below surface",header.bottom<=surface.bottom)
+        ui.onNodeWithTag("context-footer").assertIsDisplayed()
+        ui.onNodeWithText("Volver").assertIsDisplayed()
+        ui.onNodeWithTag("action-surface").captureRoboImage("build/091-ui/f13-actions-ime-surface.png",
+            roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         ui.runOnIdle {
             assertTrue("Tab must release IME space for contextual actions", hides > previous)
             assertFalse("Native IME must hide before action focus replaces the query", Shadows.shadowOf(input).isSoftInputVisible)

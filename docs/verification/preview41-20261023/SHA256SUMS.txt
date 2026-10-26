@@ -1,0 +1,2 @@
+f8cc541bd8f0217ac22e8bca656035a2efff7efa8647ebf5993f41c69c0b9736  Spotlight-Next-Raycast-Preview-41-d30c7ad.apk
+5e117ccc4d8764e688ab351ddc4bb561fb000981d670ec31bf46fc1dfe95467b  Spotlight-Next-Preview-41-source-d30c7ad.zip

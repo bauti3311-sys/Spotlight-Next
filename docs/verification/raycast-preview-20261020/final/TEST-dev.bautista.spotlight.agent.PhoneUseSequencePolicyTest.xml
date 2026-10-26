@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T00:14:40" hostname="da76f105392b" time="2.657">
+  <properties/>
+  <testcase name="parsesStrictConfirmedSteps" classname="dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest" time="2.584"/>
+  <testcase name="rejectsUnknownOperationsAndUnexpectedFields" classname="dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest" time="0.035"/>
+  <testcase name="postconditionMustRepresentObservedTransition" classname="dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest" time="0.038"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

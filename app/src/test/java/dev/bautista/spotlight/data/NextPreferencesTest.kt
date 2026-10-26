@@ -14,6 +14,19 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],application=Application::class)
 class NextPreferencesTest {
+    @Test fun compactSearchSurvivesAppearanceSaveAndPortableRoundTrip():Unit=runBlocking {
+        val prefs=Preferences(RuntimeEnvironment.getApplication());val original=prefs.config.first()
+        prefs.updateAppearance(original.copy(compactSearchResults=true))
+        val saved=prefs.config.first()
+        assertTrue(saved.compactSearchResults)
+        assertTrue(ConfigTransfer.decode(ConfigTransfer.encode(saved),original).compactSearchResults)
+        val legacy=JSONObject(ConfigTransfer.encode(saved));legacy.getJSONObject("settings").remove("compactSearchResults")
+        assertFalse(ConfigTransfer.decode(legacy.toString(),original.copy(compactSearchResults=false)).compactSearchResults)
+        val merged=dev.bautista.spotlight.ui.AppearanceEdits.merge(original,saved)
+        assertTrue(merged.compactSearchResults)
+        prefs.updateAppearance(saved.copy(compactSearchResults=false));assertFalse(prefs.config.first().compactSearchResults)
+    }
+
     @Test fun newConfigRoundTripsWithoutSecrets():Unit=runBlocking {
         val prefs=Preferences(RuntimeEnvironment.getApplication());val original=prefs.config.first()
         val next=original.copy(aiProvider="gemini",aiModel="model-test",corner=27,textScale=1.15f,iconSize=33,maxHeight=550,adaptive=false,routines="[]",onboarded=true)

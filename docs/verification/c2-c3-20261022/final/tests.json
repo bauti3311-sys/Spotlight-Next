@@ -1,0 +1,202 @@
+{
+  "unique_cases": 38,
+  "rounds": [
+    {
+      "directory": "first-1161878",
+      "tests": 17,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "activity-first",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "regressions",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "captures",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "ai-recreation-red",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "directory": "final",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "cases": {
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#invalidImportIsAtomicAndLegacyPartialBackupKeepsNewFields": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.PortableImportTransactionTest.xml"
+    },
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#backupDoesNotContainAuthorizationOrPrivateHistory": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.PortableImportTransactionTest.xml"
+    },
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#fullGlassAndKeyboardRoundTripPreservesLocalConsentAndGrants": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.PortableImportTransactionTest.xml"
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.SettingsPersistenceTest.xml"
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#visibleAppearanceMergeDoesNotResetUnrelatedPreferences": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.SettingsPersistenceTest.xml"
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.SettingsPersistenceTest.xml"
+    },
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.data.SettingsPersistenceTest.xml"
+    },
+    "dev.bautista.spotlight.productivity.PortableConfigTest#focusPauseResumeAndCompletionCountOnlyOnce": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml"
+    },
+    "dev.bautista.spotlight.productivity.PortableConfigTest#legacyAutomaticWidthWithoutMemoryImportsAndInvalidWidthValuesStayAtomic": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml"
+    },
+    "dev.bautista.spotlight.productivity.PortableConfigTest#automaticAndLargeManualWidthsMustRoundTripWithoutLosingManualMemory": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml"
+    },
+    "dev.bautista.spotlight.productivity.PortableConfigTest#portableSettingsRoundTripAndDeviceAccessStaysLocal": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml"
+    },
+    "dev.bautista.spotlight.productivity.PortableConfigTest#invalidImportsAreAtomicAndNeverAcceptCredentialsOrPermissionFlags": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml"
+    },
+    "dev.bautista.spotlight.productivity.PortableConfigTest#rebootOrMonotonicResetDiscardsSessionAndStatsAreOptIn": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.productivity.PortableConfigTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ToolActivityRecoveryTest#activityRecreationKeepsEditedArgumentsAndCompletedResultWithoutReplay": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.ToolActivityRecoveryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#taskSwitchKeepsSeparateArguments": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.ui.ToolTaskRecoveryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#suspendedSensitiveOperationIsNotReplayedOrConfirmedAfterRestore": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.ui.ToolTaskRecoveryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.WorkflowConfirmationTest#volumeRequiresReviewAndCancelStopsRemainingSteps": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/first-1161878/TEST-dev.bautista.spotlight.ui.WorkflowConfirmationTest.xml"
+    },
+    "dev.bautista.spotlight.ui.SearchActivityRecoveryTest#activityRecreationRestoresTheActualInspectorFormAndQuery": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.SearchActivityRecoveryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#partialWorkflowOutputSurvivesRestoreWithoutContinuingSensitiveSteps": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.ToolTaskRecoveryTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#missingConfirmationNeverExecutes": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#failureBlocksRemainingSelectedChanges": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#dispatchFailureNeverChangesVolume": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#cancellationNeverStartsTheNextStep": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#skippedStepDoesNotBlockAndObservedStateIsRetained": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ai.PlanExecutionTest#existingSixStepLimitIsPreservedAndLargerPlansAreRejected": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ContextualDraftRestoreTest#editedPlanSurvivesContextSwitchAndRecreationWithoutExecuting": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.ContextualDraftRestoreTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ContextualDraftRestoreTest#searchDraftSurvivesLeavingItsContextAndRecreationWithoutRunning": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.ContextualDraftRestoreTest.xml"
+    },
+    "dev.bautista.spotlight.ui.LegacyPermissionRouteTest#legacyEntryRoutesToTheSinglePermissionCenterWithoutGrantToggles": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.LegacyPermissionRouteTest.xml"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.UnifiedInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C3SettingsCaptureTest#backupAndPermissionPagesUseTheExistingGlassWorkspaceWithoutRequestingAccess": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/captures/TEST-dev.bautista.spotlight.ui.C3SettingsCaptureTest.xml"
+    },
+    "dev.bautista.spotlight.control.MediaInspectorTest#observingRegistersOnlyTheTargetAndDisposalUnregistersCallbacks": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/ai-recreation-red/TEST-dev.bautista.spotlight.control.MediaInspectorTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AiActivityRecoveryTest#completedConversationSurvivesActivityRecreationWithoutResendingAndRetainsTurns": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/final/TEST-dev.bautista.spotlight.ui.AiActivityRecoveryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#unfinishedArgumentStillRestoresAsAnEditableDraftWithoutExecution": {
+      "status": "passed",
+      "xml": "docs/verification/c2-c3-20261022/final/TEST-dev.bautista.spotlight.ui.ToolTaskRecoveryTest.xml"
+    }
+  },
+  "counting": "Last result per actual class#method, no historical 48 added."
+}

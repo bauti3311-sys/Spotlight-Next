@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.DurableOverlayRecoveryTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-23T00:15:03" hostname="3e23142f4df9" time="0.188">
+  <properties/>
+  <testcase name="newStoreRestoresTypedDraftsAndDoesNotLoseSavedConversations" classname="dev.bautista.spotlight.data.DurableOverlayRecoveryTest" time="0.051"/>
+  <testcase name="unreadableStateCannotBeOverwrittenByAnEmptySession" classname="dev.bautista.spotlight.data.DurableOverlayRecoveryTest" time="0.03"/>
+  <testcase name="invalidAndOversizedValuesNeverReplaceTheLastGoodSnapshot" classname="dev.bautista.spotlight.data.DurableOverlayRecoveryTest" time="0.03"/>
+  <testcase name="ordinaryBackupDoesNotExportTaskStateAndPrivateModeClearsIt" classname="dev.bautista.spotlight.data.DurableOverlayRecoveryTest" time="0.042"/>
+  <testcase name="corruptRecoveryIsPreservedUntilExplicitDiscardWithoutLosingOtherRecords" classname="dev.bautista.spotlight.data.DurableOverlayRecoveryTest" time="0.035"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

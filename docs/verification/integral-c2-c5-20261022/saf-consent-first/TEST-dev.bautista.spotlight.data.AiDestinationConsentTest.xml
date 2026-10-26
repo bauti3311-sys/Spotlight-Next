@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.AiDestinationConsentTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-22T18:40:24" hostname="6641cfb4c601" time="0.111">
+  <properties/>
+  <testcase name="portableProviderChangeCannotInheritLocalConsentAndSameProviderPreservesIt" classname="dev.bautista.spotlight.data.AiDestinationConsentTest" time="0.057"/>
+  <testcase name="destinationEditsInvalidateInheritedConsentWhileExplicitNewReviewWorks" classname="dev.bautista.spotlight.data.AiDestinationConsentTest" time="0.053"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

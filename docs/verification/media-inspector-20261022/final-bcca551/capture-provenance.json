@@ -1,0 +1,34 @@
+[
+  {
+    "filename": "Preview37-Media-tablet.png",
+    "origin": "Spotlight-Next/app/build/media-inspector/tablet-session-fixture.png",
+    "sha256": "430d590ac87df547c2e0977c21bdc10e6c8c8eca3e20be006842bce0c33b6014",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "code_sha": "bcca55163a46e407d3899867f9c05507d479c5cb",
+    "caption": "Tablet 1280×800, paleta800dp. MediaSession Android simulada del paquete com.spotify.music: metadatos y bitmap de prueba; no reproducción de Spotify real."
+  },
+  {
+    "filename": "Preview37-Media-telefono.png",
+    "origin": "Spotlight-Next/app/build/media-inspector/phone-session-fixture.png",
+    "sha256": "f2c96d640464c9249b934d180069847a83a6c1743ffc301c9b78d95472b46e3a",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "code_sha": "bcca55163a46e407d3899867f9c05507d479c5cb",
+    "caption": "Teléfono390×844, paleta360dp. Controles48dp visibles, sin columna lateral. Misma sesión de prueba; no validación Motorola."
+  },
+  {
+    "filename": "Preview37-IA-tablet.png",
+    "origin": "Spotlight-Next/app/build/unified-inspector/tablet-pinned-ai-fixture.png",
+    "sha256": "7666475bf51630e664e13d62a885176834e3853458e219b19b7e2b38d0f991e1",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "code_sha": "bcca55163a46e407d3899867f9c05507d479c5cb",
+    "caption": "Tablet1280×800: IA fijada durante búsqueda local. Respuestas SSE de MockWebServer, sin proveedor real."
+  },
+  {
+    "filename": "Preview37-Formulario-telefono.png",
+    "origin": "Spotlight-Next/app/build/unified-inspector/phone-390-search-form-dark.png",
+    "sha256": "4d98e622200e9eb295fd08830f3afd7021e0f855244f7e64cb4f4316c3e88ff6",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "code_sha": "bcca55163a46e407d3899867f9c05507d479c5cb",
+    "caption": "Teléfono390×844: formulario de búsqueda fijado. Borrador local real del componente Compose; no envío a YouTube."
+  }
+]

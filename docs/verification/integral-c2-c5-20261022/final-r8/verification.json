@@ -1,0 +1,46 @@
+{
+  "code_sha": "6c897354c0c7e5d9668966ed2d582aa268d519ac",
+  "log": "integral-r8-gate.log",
+  "package_log": "integral-r8-package.log",
+  "tests": "129 unique cases passed in rounds; 30 Python tests; original failures retained",
+  "release_r8": true,
+  "versionCode": 40,
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "signature_v2": true,
+  "zipalign_16KB": true,
+  "minSdk": 26,
+  "targetSdk": 35,
+  "abi": [
+    "arm64-v8a"
+  ],
+  "native_libraries_match_original_aars": {
+    "libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+    "libdatastore_shared_counter.so": "d3e48717c9aa147e0ab21063ba0e8e0211cabf8bf40b222640829519edbf58e1",
+    "liblanguage_id_l2c_jni.so": "4479b044bbdad9a938fea15698dfa3473e73bd6bab9f8e0468fc3cc6069c137e",
+    "libmlkit_google_ocr_pipeline.so": "fa41d509a661e8aa8b3e3ac1a28541f8823f308414fcad733fe26d61feea2646",
+    "libmlkitcommonpipeline.so": "c146e1f60adeb21e7feb8062cdb446056ce619e430d3555c3872b3ff8a907c2f",
+    "libonnxruntime.so": "e40f09d07dc53726b8bfbf48a7907673b8f86718a057655a62790a39874a7302",
+    "libonnxruntime4j_jni.so": "2cc3f16ab527959a81b572adebcfb71a25ea4b8547c9b92d705b423e9c822d39",
+    "libtranslate_jni.so": "35b3d0366291347e3f25e80e809ee398d716aea49cd03278007fedd526a1496f"
+  },
+  "source_zip_verified_blobs": 1358,
+  "production_inputs": 206,
+  "lint": {
+    "Fatal": 0,
+    "Error": 0,
+    "Warning": 13,
+    "Information": 1
+  },
+  "physical_device": false,
+  "files": {
+    "Spotlight-Next-Raycast-Candidate-40-6c89735.apk": {
+      "size_bytes": 73189195,
+      "sha256": "99bd8c6de9bfc0ff78a1ea2e5abb6244592b3f58bc390a6362eb35d2c55882c7"
+    },
+    "Spotlight-Next-source-6c89735.zip": {
+      "size_bytes": 8669345,
+      "sha256": "1a2753962e7ac92704fcc3cc41a3a40001b8c45d6d60a6941e14590ca9a39c0b"
+    }
+  }
+}

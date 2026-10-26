@@ -69,7 +69,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
  LaunchedEffect(c,revision,connection,notificationConnection) {failed=false;try{features=settingsFeatures(app,c)}catch(e:kotlinx.coroutines.CancellationException){throw e}catch(_:Exception){failed=true}}
  BackHandler(center && step<0 && pending==null){center=false}
  val colors=MaterialTheme.colorScheme
- fun configure(id:String){when(id){"phone_use"->{app.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))};"gemini"->{center=false;onNavigate("Inteligencia artificial")};"shizuku"->{center=false;onNavigate("Integraciones")};else->onRequest(id)}}
+ fun configure(id:String){when(id){"phone_use"->{app.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))};"gemini"->{center=false;onNavigate("Inteligencia artificial")};"shizuku"->{center=false;onRequest("shizuku")};else->onRequest(id)}}
  Column(Modifier.fillMaxWidth().testTag(if(center)"settings-function-center" else "settings-home"),verticalArrangement=Arrangement.spacedBy(20.dp)) {
   if(center) {
    TextButton(onClick={center=false}){Text("Volver al inicio")}
@@ -92,23 +92,17 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
    }
    FilledTonalButton(onClick={queue=selected;step=0},enabled=selected.isNotEmpty(),modifier=Modifier.fillMaxWidth().testTag("guided-setup-start")){Text("Configurar selección · ${selected.size}")}
   } else {
-   Box(Modifier.fillMaxWidth().background(Brush.linearGradient(listOf(colors.onSurface.copy(alpha=.075f),colors.onSurface.copy(alpha=.025f))),RoundedCornerShape(20.dp)).padding(24.dp)) {
-    Column(verticalArrangement=Arrangement.spacedBy(12.dp)) {
-     Icon(CommandIcons.AutoAwesome,null,Modifier.size(26.dp),tint=colors.onSurfaceVariant)
-     Text("Tu espacio, a tu manera.",style=MaterialTheme.typography.headlineMedium)
-     Text("Una búsqueda. Solo las funciones que elegís.",style=MaterialTheme.typography.bodyMedium,color=colors.onSurfaceVariant)
-     Text(if(failed)"Estado no disponible" else if(features.isEmpty())"Comprobando configuración…" else "${features.count{it.ready}} accesos habilitados · IA bajo tu control",style=MaterialTheme.typography.labelMedium,color=colors.onSurfaceVariant)
-     FilledTonalButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){Icon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Funciones y permisos")}
-    }
+   SettingsGroupSurface {
+    Text("Configuración a tu medida",style=MaterialTheme.typography.titleSmall)
+    Text("Elegí funciones y revisá cada autorización por separado.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
+    Text(if(failed)"Estado no disponible" else if(features.isEmpty())"Comprobando configuración…" else "${features.count{it.ready}} accesos habilitados · IA bajo tu control",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
+    TextButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){Icon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Elegir funciones")}
    }
-   Text("A TU ALCANCE",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
-   Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
-    HomeShortcut("Conectar Gemini","Tu clave, tus decisiones",CommandIcons.AutoAwesome,Modifier.weight(1f)){onNavigate("Inteligencia artificial")}
-    HomeShortcut("Personalizar apariencia","Materiales y un único ancho",CommandIcons.Display,Modifier.weight(1f)){onNavigate("Apariencia")}
-   }
+   HomeDestination("Conectar Gemini","Tu clave, tus decisiones",CommandIcons.AutoAwesome){onNavigate("Inteligencia artificial")}
+   HomeDestination("Personalizar apariencia","Raycast Dark Glass y opacidad",CommandIcons.Display){onNavigate("Apariencia")}
    HomeDestination("Búsqueda y documentos","Carpetas, texto, OCR y significado local",CommandIcons.Folder){onNavigate("Búsqueda y archivos")}
    HomeDestination("Conectar tus apps","Mensajes, música y control del dispositivo",CommandIcons.Layers){onNavigate("Integraciones")}
-   HomeDestination("Privacidad","Tus datos y el contexto que compartís",CommandIcons.Shield){onNavigate("Permisos y privacidad")}
+   HomeDestination("Permisos y accesos","Todos los accesos Android reunidos y bajo tu control",CommandIcons.Shield){onNavigate("Permisos y accesos")}
    TextButton(onClick=onDetails){Text("Opciones de inicio y teclado")}
   }
  }

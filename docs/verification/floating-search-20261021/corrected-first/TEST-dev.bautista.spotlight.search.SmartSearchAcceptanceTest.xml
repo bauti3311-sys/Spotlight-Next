@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" tests="12" skipped="0" failures="1" errors="0" timestamp="2026-10-21T21:09:06" hostname="3f4aaaec44b7" time="1.279">
+  <properties/>
+  <testcase name="completionRequiresAnUnambiguousLiveCandidate" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.044"/>
+  <testcase name="selectedOrderSurvivesAsyncPeersButRemovedResultsDisappear" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.035"/>
+  <testcase name="exactCommandsBeatApplicationPrefixesEvenWithExtremeHistory" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.027"/>
+  <testcase name="volumePrefixesDoNotDisplaceAnInstalledApplicationPrefix" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.335"/>
+  <testcase name="absentAppsAndEmptyQueriesDoNotInventExecutions" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.109"/>
+  <testcase name="deniedContactsNeverBecomeAuthorizedResults" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.1"/>
+  <testcase name="partialInstalledAppsAreFirstWithoutRemoteAi" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.098">
+    <failure message="org.junit.ComparisonFailure: whats expected:&lt;WhatsApp[]&gt; but was:&lt;WhatsApp[ no está instalado]&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: whats expected:&lt;WhatsApp[]&gt; but was:&lt;WhatsApp[ no está instalado]&gt;
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at dev.bautista.spotlight.search.SmartSearchAcceptanceTest.partialInstalledAppsAreFirstWithoutRemoteAi(SmartSearchAcceptanceTest.kt:34)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="typoStillOffersTheMatchingInstalledApplication" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.102"/>
+  <testcase name="explicitOpenSpotifyResolvesLocallyAndNeverAsAnAiProposal" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.13"/>
+  <testcase name="aliasesKeepTheTargetApplicationEligibleAndAccentsAreNormalized" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.159"/>
+  <testcase name="relevantPartialApplicationBeatsGenericContextActionsInCompactView" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.061"/>
+  <testcase name="blankHomeDoesNotInventApplicationsOrWhatsAppContent" classname="dev.bautista.spotlight.search.SmartSearchAcceptanceTest" time="0.077"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

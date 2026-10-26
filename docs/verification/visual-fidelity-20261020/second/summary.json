@@ -1,0 +1,37 @@
+[
+  {
+    "name": "dev.bautista.spotlight.ui.VisualFidelityTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "dev.bautista.spotlight.ui.RaycastSettingsNavigationTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "dev.bautista.spotlight.ui.OverlayDesignReviewTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+    "tests": "7",
+    "failures": "1",
+    "errors": "0",
+    "skipped": "0"
+  }
+]

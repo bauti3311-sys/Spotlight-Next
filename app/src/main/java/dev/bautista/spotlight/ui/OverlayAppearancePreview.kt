@@ -20,7 +20,7 @@ import dev.bautista.spotlight.search.Result
 
 @Composable
 fun OverlayDensitySettings(c: Config, simple:Boolean=false, update: (Config) -> Unit) {
-    Surface(Modifier.fillMaxWidth().testTag("density-settings"), shape=RoundedCornerShape(16.dp), color=MaterialTheme.colorScheme.surfaceContainerLow) {
+    Surface(Modifier.fillMaxWidth().testTag("density-settings"), shape=RoundedCornerShape(16.dp), color=MaterialTheme.colorScheme.onSurface.copy(alpha=.025f)) {
         Column(Modifier.padding(16.dp), verticalArrangement=Arrangement.spacedBy(8.dp)) {
             Text("Espaciado de resultados", style=MaterialTheme.typography.titleSmall)
             if(!simple) Text("La densidad cambia el espacio dentro de las filas. No cambia el ancho de la ventana.", style=MaterialTheme.typography.bodySmall)

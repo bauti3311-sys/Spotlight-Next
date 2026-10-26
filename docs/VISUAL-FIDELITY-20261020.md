@@ -1,0 +1,56 @@
+# Corrección visual contra imágenes A/B
+
+Base: d831136ec079a0eb49093ca119e4f8996d47f83e, rama feat/raycast-sidebar-permissions-20261020. Las tres imágenes del usuario se abrieron realmente: Screenshot_20261020_234500(2).jpg (A, tablet con WhatsApp), Spotlight Next en modo oscuro(4).png (B, objetivo prioritario) y Screenshot_20261020_235105_Vivaldi(1).jpg (referencia adicional Raycast). No copiar recursos de terceros ni interfaces web.
+
+## Auditoría antes de implementar
+
+| Área | A: defecto observado | B: dirección que se implementa |
+|---|---|---|
+| Geometría | Franja de navegación entre búsqueda y lista; pie de expansión separado; inspector recortado | Una cabecera integrada, cuerpo 62/38 y pie único; más espacio útil para contenido |
+| Material | Fondo subyacente de Ajustes legible entre filas, superficies inconsistentes | Grafito azulado con gradiente suave, translucidez acotada, borde continuo y reflejo tenue; sin blur caro |
+| Espaciado | Identidad del inspector pegada a la lista y controles; filas con título y descripción compitiendo horizontalmente | Insets coherentes, identidad separada, título sobre subtítulo y tipo alineado a la derecha |
+| Jerarquía | Botón principal reconocible pero favorito aparece como otro botón azul centrado | Identidad con icono grande, principal azul con pista Enter, secundarias neutras alineadas, metadatos al final |
+| Densidad | Bandas de navegación consumen la altura; información lateral apenas visible | Controles de 48dp con contenido visual compacto, regiones continuas y scroll accesible |
+| Tipografía | Nombre y explicación en una misma línea crean ruido; etiquetas sin jerarquía | Inter existente, pesos moderados, subtítulos fríos, encabezados discretos |
+| Panel derecho | Pocas acciones visibles; ancho y altura efectiva pequeños | Primaria de ancho completo, secundarias en filas, propiedades reales en pares; nada destructivo arriba |
+| Comportamiento percibido | Rótulo ACCIONES y Volver hacen parecer otra pantalla | Búsqueda siempre presente, retorno accesible integrado; selección actualiza inspector sin ejecutar |
+| Calidad general | Mezcla de ajustes y overlay, banda inferior pesada | Material estable y unificado, separación fina y sombra exterior; Ajustes con rail azul discreto y menos cajas |
+
+La B es una composición visual: sus datos/atajos no acreditan capacidades Android. No inventar desarrollador, tamaño, nueva ventana ni atajos no registrados. Mantener solo acciones existentes y propiedades consultadas localmente. Conservar máximo tres resultados iniciales; no añadir resultados para imitar las cuatro filas de la B.
+
+## Plan y coordinación
+
+HEAD local/remoto coinciden, árbol limpio. Reserva remota 3427ec377eb99ee00a598edb7f03125255a991e9 del propietario de esta continuidad work-recovery-20261018-cd7b8fe1285c, checkpoint d831136. El script status no tiene autenticación Git por terminal (ls-remote exit128); lectura mediante conector GitHub confirma propietario y SHA. Publicar mediante avances normales y CAS, nunca force. No hay build anterior activo declarado.
+
+Implementación y pruebas todavía pendientes. Capturas Compose de estados equivalentes antes/después, revisión directa contra B, suites de gestos/teclado/MediaSession/PhoneUse/Gemini/permisos y Ajustes, lint y APK Preview independiente con mismo certificado. La translucidez real entre ventanas, instalación y rendimiento One UI requieren tablet; no sustituirlos con capturas Robolectric.
+
+## Checkpoint estructural parcial
+Cabecera inset de12dp, margen vertical10dp, radio20dp, material97% mínimo con gradiente sin blur, resultados apilados y tipo a derecha, inspector con icono46dp/Enter integrado/filas neutras/metadatos reales. Expansión integrada al pie; cuerpo automático mínimo208dp acotado por viewport. Ajustes conserva navegación y búsqueda global con rail transparente e iconos azules. Preview incrementa únicamente su versionCode a31. Código y pruebas aún no verificados; no APK entregada de este checkpoint.
+
+## Primera ronda real
+Checkpoint2bd04ac: producción Kotlin/Java compilada;25casos/4suites,23correctos/2fallidos. Regresión de altura compacta real por24dp exteriores+76dp cabecera+208dp cuerpo+pie: se corrige a184dp en anchos intermedios manteniendo aserción<340dp. En ventanas con contenido>=840dp se admite cuerpo340dp para presentar la jerarquía completa del inspector, siempre limitado al viewport.
+El segundo fallo era una expectativa anterior a PR18: SettingsWorkspaceTest buscaba Shizuku en Integraciones, pero la consolidación ya lo trasladó a Permisos y accesos. La prueba ahora navega al destino real y conserva la igualdad exacta de posición del rail después del scroll y ausencia de superficies retiradas. No se elimina ninguna prueba ni se rebaja el contrato de altura. XML de primera ronda preservados fuera del build. Cuatro nuevos casos nativos aún pendientes.
+
+## Segunda ronda y revisión directa
+Sobrea1479c5:29casos/5suites,28correctos y1fallido por selector de texto ambiguo en prueba SettingsWorkspace (tres destinos visibles llamados Permisos y accesos). Se agrega identificador estable al rail y se selecciona ese destino de forma inequívoca. Altura compacta,8casos de diseño y4casos nuevos de composición/callbacks correctos.
+Se abrieron las capturas tablet-whatsapp-on-settings y tablet-home-on-settings y se compararon con B: geometría overlay868/1280=67,8% del ancho frente a1143/1672=68,4% aproximado de B; fracción izquierda62% frente a~64% de B, regiones del inspector presentes y sin franja ACCIONES. Aún se distinguía texto del fondo con97% opacidad: se sube el mínimo legible a99,5%, conservando gradiente y borde. No hay blur entre ventanas; se prioriza legibilidad sobre translucidez literal de una composición no ejecutable. Iconos de apps suben a32dp; controles48dp y altura compacta intactos. Revisión posterior y gate pendientes. Los iconos Android por defecto de los fixtures se documentan; producción sigue usando artwork real de PackageManager.
+
+## Revisión visual y pruebas de código cerradas
+Fuente f56f665:112pruebas/22suites,0fallos/errores/omitidas. Se abrieron realmente after-whatsapp-on-settings, after-selected-app y after-phone-actions, además de las capturas de la ronda anterior, y se compararon con B. Evidencia nativa antes/después, tema claro y teléfono en verification/visual-fidelity-20261020/visual.
+Resultado: ancho y62/38 cercanos a referencia; cabecera integrada; título/subtítulo/tipo separados; selección gris azulada sin tarjeta adicional; iconos32dp/identidad46dp; acción principal conEnter y secundarias neutras; versión/paquete solo si hay datos reales; rail de Ajustes azul y contenedor menos pesado. Fondo subyacente deja de ser legible en la composición oscura con99,5% mínimo. No se añadieron desenfoque, dependencias ni acciones de nueva ventana inexistentes.
+Diferencias deliberadas con B: máximo3resultados reales (sin relleno), solo metadatos disponibles, áreas táctiles48dp; cuerpo184dp en ancho intermedio y340dp en ancho amplio, limitados por viewport y con scroll. Pie contextual existente conservado. No se afirma copia píxel a píxel ni rendimiento medido. Los iconos de Android de los fixtures no sustituyen los iconos de apps reales en producción. OneUI/IME real/teclado físico/instalación/transparencia y servicios externos pendientes. Lint y empaquetado aún activos al guardar este checkpoint.
+
+## Gate local completo
+Sobre código f56f665: BUILD SUCCESSFUL in4m29s,112/112casos únicos de22suites; lintRaycastPreview0errores/11advertencias/1informativa; assembleRaycastPreview correcto. No se suman casos de rondas anteriores. Se conservan las advertencias previas, sin supresiones. Pruebas con workaround C1 limitado a JVM Test para el crash conocido de Robolectric; no pruebas desactivadas.
+APK inspeccionada: paquete dev.bautista.spotlight.next.raycastpreview, versionCode31, versionName2.0.1-raycast-preview, min26/target35, ARM64. apksigner y zipalign16KB correctos, certificado885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba idéntico a Preview anterior. Firma principal/Review intactas.
+Se publica este checkpoint de evidencia y se vuelve a invocar únicamente assemble desde él para que APK y git archive incluyan exactamente el mismo commit y la documentación de resultados. Las entradas de app son idénticas a f56f665; no hace falta repetir las112pruebas por documentación/capturas. Hashes y entrega se registran por separado después de verificar archivos. Sin Actions, merges, gastos ni cambios de dependencias.
+
+### Límites y revisión física siguiente
+La composición se revisó contra B; no es equivalencia píxel a píxel ni blur del compositor. El mínimo de opacidad legible es deliberadamente alto para no mostrar texto nítido de otra ventana. Los iconos de apps se cargan realmente de PackageManager, aunque los fixtures de laboratorio usan el icono Android por defecto. No se inventan desarrollador/tamaño/permisos ni acciones que falten en Android. El inspector se desplaza cuando no cabe; anchos intermedios mantienen formato compacto.
+En TabA9+ probar inicio/WhatsApp/Spotify reales, cambio de selección, información de app, permisos, pulsación prolongada, arrastrePDF, Enter/Tab/Escape/Ctrl+M, IME y rotación. No hay dispositivo conectado ni KVM; no instalación, mediciones deRAM/batería/jank ni proveedorGemini/servicios externos reales acreditados aquí. Las40decisiones permanecen parciales.
+
+## Entrega exacta verificada
+APK y ZIP fuente corresponden a264273936028b9fa333d684e3a1d2cd2d8c333cb. Assemble del checkpoint de evidencia: BUILD SUCCESSFUL in10s,37tareas up-to-date, mismas373entradas de app verificadas contra Git, sin archivos de compilación adicionales.112pruebas y lint pertenecen a f56f665 con esas mismas entradas compilables. ZIP creado por git archive de2642739, integridad correcta y sin claves/cachés/credenciales.
+APK:Spotlight-Next-Raycast-Preview-2642739.apk,86.506.916bytes, SHA2569070e33f30373b602c5efe44e97e81021b0f1290fd601eb3a73ec75dd1027e0a.
+Fuente:Spotlight-Next-source-2642739.zip,7.863.697bytes,SHA25647656de025a45d3d6e7b72824da15fde0c5356f84e3035630a082a52c1dcd25f.
+Package/firma/versionCode31/ARM64/apksigner/zipalign16KB verificados. Instalar sobre Preview anterior es compatible estáticamente; la instalación y conservación real de datos en OneUI no se probaron aquí. Los checkpoints posteriores a2642739 solo registran entrega y no cambian el código del APK.

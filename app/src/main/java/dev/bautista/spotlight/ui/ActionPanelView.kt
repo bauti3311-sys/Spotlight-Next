@@ -3,79 +3,166 @@ package dev.bautista.spotlight.ui
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.*
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.ui.semantics.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.focus.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.*
+import dev.bautista.spotlight.ai.ToolRisk
 import dev.bautista.spotlight.search.normalize
 
-data class ContextAction(val title:String,val description:String,val icon:ImageVector,val perform:()->Unit,val shortcut:String="") {
-    val group:String get()=when{title.startsWith("Eliminar")->"Gestión";title.contains("Permisos")||title.contains("Shizuku")||title.contains("componentes")->"Sistema";title.contains("favorita")||title.contains("consulta")||title.contains("sugerencia")->"Organizar";title.startsWith("Copiar")||title.startsWith("Guardar")||title.contains("IA")||title.startsWith("Traducir")->"Texto";else->"Más acciones"}
+enum class ContextActionGroup(val label:String) {
+    Primary("Principal"), Open("Más acciones"), Communicate("Comunicar"), Share("Compartir"),
+    Organize("Organizar"), Text("Texto"), System("Sistema"), Management("Gestión")
 }
+/** Presentation of an existing executor's capability, not a second capability registry. */
+enum class ContextActionState(val label:String,val executable:Boolean=true) {
+    Available(""), PermissionRequired("Requiere permiso"), ConfigurationRequired("Requiere configuración"),
+    External("Intervención en Android"), Unsupported("No compatible",false), Unavailable("No disponible actualmente",false)
+}
+data class ContextAction(
+    val title:String,val description:String,val icon:ImageVector,val perform:()->Unit,
+    val shortcut:String="",val id:String="",val group:ContextActionGroup=ContextActionGroup.Open,
+    val children:List<ContextAction> = emptyList(),val state:ContextActionState=ContextActionState.Available,
+    val risk:ToolRisk=ToolRisk.READ,
+) { val identity:String get()=id.ifBlank{title} }
+private data class ActionMenuFrame(val id:String,val filter:String,val selectedId:String?)
+
 @OptIn(ExperimentalFoundationApi::class)
-@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null) {
-    var searching by remember {mutableStateOf(false)}
-    var filter by remember {mutableStateOf("")};var selected by remember{mutableIntStateOf(0)};var filterFocused by remember{mutableStateOf(false)}
-    val distinct=actions.distinctBy{it.title};val all=distinct.take(1)+distinct.drop(1).sortedBy{listOf("Texto","Organizar","Más acciones","Sistema","Gestión").indexOf(it.group)};val visible=all.filter{normalize(it.title+" "+it.description).contains(normalize(filter))}
-    val requests=remember(visible.map{it.title}){List(visible.size){if(it==0)focus else FocusRequester()}}
-    LaunchedEffect(filter){selected=0}
-    LaunchedEffect(selected,filterFocused,visible.map{it.title}){if(!filterFocused){withFrameNanos{ };runCatching{requests.getOrNull(selected)?.requestFocus()}}}
-    Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).onPreviewKeyEvent{e->
-        if(e.type!=KeyEventType.KeyDown || e.isCtrlPressed || e.isMetaPressed)false else when(e.key){
-            Key.Tab->{filterFocused=false;selected=if(visible.isEmpty())0 else Math.floorMod(selected+if(e.isShiftPressed)-1 else 1,visible.size);true}
-            Key.DirectionDown->{filterFocused=false;selected=(selected+1).coerceAtMost((visible.size-1).coerceAtLeast(0));true}
-            Key.DirectionUp->{filterFocused=false;selected=(selected-1).coerceAtLeast(0);true}
-            Key.Enter,Key.NumPadEnter->{visible.getOrNull(selected)?.perform?.invoke();true}
-            else->false
+@Composable fun ActionPanelView(actions:List<ContextAction>,focus:FocusRequester,onClose:(()->Unit)?=null,contextResult:dev.bautista.spotlight.search.Result?=null,actionsKey:dev.bautista.spotlight.input.KeyChord=dev.bautista.spotlight.input.KeyChord(android.view.KeyEvent.KEYCODE_K)) {
+    val path=remember {mutableStateListOf<ActionMenuFrame>()}
+    var filter by remember {mutableStateOf("")}
+    var selectedId by remember {mutableStateOf<String?>(null)}
+    var filterFocused by remember {mutableStateOf(false)}
+    val filterFocus=remember {FocusRequester()}
+    fun orderedLevel()=path.fold(actions) { choices,frame -> choices.firstOrNull{it.identity==frame.id}?.children.orEmpty() }
+        .distinctBy{it.identity}.let { it.take(1)+it.drop(1).sortedBy{a->a.group.ordinal} }
+    val all=orderedLevel()
+    fun matches(a:ContextAction):Boolean = normalize(a.title+" "+a.description+" "+a.state.label+" "+a.children.joinToString(" "){it.title}).contains(normalize(filter))
+    val visible=all.filter{matches(it)}
+    val currentId=selectedId?.takeIf{key->visible.any{it.identity==key}} ?: visible.firstOrNull()?.identity
+    val requests=remember(visible.map{it.identity}) { visible.mapIndexed { i,a->a.identity to if(i==0)focus else FocusRequester() }.toMap() }
+    fun back() {
+        if(path.isNotEmpty()) { val frame=path.removeAt(path.lastIndex);filter=frame.filter;selectedId=frame.selectedId;filterFocused=false }
+        else onClose?.invoke()
+    }
+    val backNavigation=LocalActionBackNavigation.current
+    SideEffect {backNavigation?.back={back()}}
+    DisposableEffect(backNavigation){onDispose{backNavigation?.back=null}}
+    fun activate(action:ContextAction?) {
+        if(action==null || !action.state.executable)return
+        if(action.children.isNotEmpty()) {path+=ActionMenuFrame(action.identity,filter,action.identity);filter="";selectedId=null;filterFocused=false}
+        else action.perform()
+    }
+    // Key events can arrive in the same frame: resolve live filter/path/ID, not captured indices.
+    fun visibleNow()=orderedLevel().filter{matches(it)}
+    fun currentAction()=visibleNow().let { choices -> choices.firstOrNull{it.identity==selectedId} ?: choices.firstOrNull() }
+    fun move(delta:Int) {
+        filterFocused=false
+        val choices=visibleNow()
+        if(choices.isNotEmpty()) {
+            val index=choices.indexOfFirst{it.identity==selectedId}.coerceAtLeast(0)
+            selectedId=choices[Math.floorMod(index+delta,choices.size)].identity
         }
-    },verticalArrangement=Arrangement.spacedBy(8.dp)){
-        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-            Text("Acciones",Modifier.weight(1f),style=MaterialTheme.typography.titleSmall)
-            onClose?.let { close -> IconButton(onClick=close,modifier=Modifier.size(GlassTokens.hit)) {
-                Icon(HugeIcons.Close,"Cerrar acciones",Modifier.size(18.dp))
-            } }
+    }
+    LaunchedEffect(currentId,filterFocused,path.map{it.id},visible.map{it.identity}) {
+        if(!filterFocused) {
+            withFrameNanos { }
+            if(currentId!=null)runCatching { requests[currentId]?.requestFocus() }
+            else runCatching { filterFocus.requestFocus() }
         }
-        if(!searching) TextButton(onClick={searching=true}) { Icon(HugeIcons.Search,null,Modifier.size(15.dp));Spacer(Modifier.width(8.dp));Text("Buscar acciones",style=MaterialTheme.typography.labelMedium) }
-        if(searching) BasicTextField(filter,{filter=it.take(120)},singleLine=true,
-            textStyle=TextStyle(color=MaterialTheme.colorScheme.onSurface,fontFamily=Inter,fontSize=13.sp),
-            modifier=Modifier.fillMaxWidth().onFocusChanged{filterFocused=it.isFocused},
-            decorationBox={field->Row(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.onSurface.copy(alpha=.04f),RoundedCornerShape(8.dp)).padding(12.dp),verticalAlignment=Alignment.CenterVertically){
-                Icon(HugeIcons.Search,null,Modifier.size(16.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant);Spacer(Modifier.width(10.dp));Box { if(filter.isEmpty())Text("Filtrar acciones",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant);field() }
-            }})
-        Column(Modifier.fillMaxWidth().weight(1f, fill=false).heightIn(max=240.dp).verticalScroll(rememberScrollState())){
-            var previous=""
-            visible.forEachIndexed{i,action->
-                val group=if(all.firstOrNull()==action)"Principal" else action.group
-                if(group!=previous){if(previous.isNotBlank())Spacer(Modifier.height(6.dp));previous=group}
-                val bring=remember(action.title){BringIntoViewRequester()}
-                LaunchedEffect(selected,filterFocused){if(!filterFocused && selected==i)bring.bringIntoView()}
-                Surface(color=if(!filterFocused && i==selected)GlassTokens.selection() else MaterialTheme.colorScheme.surface.copy(alpha=0f),shape=RoundedCornerShape(10.dp)){
-                    val perform by rememberUpdatedState(action.perform)
-                    val active=!filterFocused && i==selected
-                    Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
-                        .focusRequester(requests[i]).onFocusChanged{if(it.isFocused){selected=i;filterFocused=false}}.focusable()
-                        .semantics(mergeDescendants=true){role=Role.Button;this.selected=active;onClick(action.title){perform();true}}
-                        .pointerInput(action.title,i){detectTapGestures(onTap={selected=i;filterFocused=false;perform()})}
-                        .bringIntoViewRequester(bring).padding(horizontal=12.dp,vertical=8.dp),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically){
-                        Icon(action.icon,null,Modifier.size(19.dp));Spacer(Modifier.width(12.dp));Column(Modifier.weight(1f)){Text(action.title,modifier=Modifier.fillMaxWidth(),fontSize=14.sp,fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium);if(active) Text(action.description,modifier=Modifier.fillMaxWidth(),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}
-                        val key=action.shortcut.ifBlank{if(all.firstOrNull()==action)"Enter" else ""};if(key.isNotBlank())Text(key,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
+    }
+    val colors=MaterialTheme.colorScheme
+    val commandAccent=rememberCommandAccent(contextResult)
+    Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).padding(12.dp).testTag("context-action-panel")
+        .onPreviewKeyEvent { e ->
+            if(e.type!=KeyEventType.KeyDown)false
+            else if(actionsKey.matches(e.nativeKeyEvent)){onClose?.invoke();true}
+            else if((e.isCtrlPressed || e.isMetaPressed) && e.key==Key.F){filterFocus.requestFocus();true}
+            else if(e.isCtrlPressed || e.isMetaPressed)false
+            else when(e.key) {
+                Key.Escape,Key.Back->{back();true}
+                Key.Tab->{move(if(e.isShiftPressed)-1 else 1);true}
+                Key.DirectionDown->{move(1);true}
+                Key.DirectionUp->{move(-1);true}
+                Key.Enter,Key.NumPadEnter->{activate(currentAction());true}
+                else->{
+                    val character=e.nativeKeyEvent.unicodeChar
+                    if(!filterFocused && !e.isAltPressed && character>=32 && Character.isValidCodePoint(character)) {
+                        filter=(filter+String(Character.toChars(character))).take(120)
+                        filterFocused=true
+                        filterFocus.requestFocus()
+                        true
+                    } else false
                 }
             }
-            if(visible.isEmpty())Text("No hay acciones con ese nombre.",style=MaterialTheme.typography.bodySmall)
+        }) {
+        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(10.dp)).border(1.dp,colors.onSurface.copy(alpha=.12f),RoundedCornerShape(10.dp)),verticalAlignment=Alignment.CenterVertically) {
+            if(path.isNotEmpty())IconButton(onClick={back()},modifier=Modifier.size(48.dp)) {
+                IosCommandIcon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
+            } else IosCommandIcon(CommandIcons.Search,null,Modifier.padding(start=8.dp,end=10.dp).size(17.dp),tint=colors.onSurfaceVariant)
+            BasicTextField(filter,{filter=it.take(120)},singleLine=true,
+                textStyle=TextStyle(fontFamily=Inter,fontSize=13.sp,color=colors.onSurface),
+                modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
+                decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
+                    if(filter.isBlank())Text(contextResult?.let{"Buscar acciones de ${it.title}…"} ?: "Buscar acciones…",fontSize=12.sp,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+                    field()
+                }})
+            IconButton(onClick={onClose?.invoke()},modifier=Modifier.size(48.dp)){IosCommandIcon(CommandIcons.Close,"Cerrar acciones",Modifier.size(17.dp))}
         }
-        Text("Tab siguiente · Shift+Tab anterior",style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(8.dp))
+        Column(Modifier.fillMaxWidth().weight(1f,fill=false).verticalScroll(rememberScrollState())) {
+            var previous:ContextActionGroup?=null
+            visible.forEachIndexed { i,action ->
+                val appContext=contextResult?.let{PreviewPresentation.isApplication(it)}==true
+                val group=if(i==0 && action==all.firstOrNull())ContextActionGroup.Primary else if(appContext)when(action.group) {
+                    ContextActionGroup.Open,ContextActionGroup.Communicate->ContextActionGroup.Primary
+                    ContextActionGroup.Text->ContextActionGroup.Organize
+                    else->action.group
+                } else action.group
+                if(group!=previous && filter.isBlank()) {
+                    if(previous!=null)HorizontalDivider(Modifier.padding(vertical=6.dp),color=colors.onSurface.copy(alpha=.08f))
+                    Text(group.label.uppercase(java.util.Locale.ROOT),Modifier.padding(start=10.dp,top=4.dp,bottom=4.dp),
+                        fontSize=10.sp,lineHeight=14.sp,color=colors.onSurfaceVariant,letterSpacing=0.sp)
+                    previous=group
+                }
+                val active=action.identity==currentId
+                val bring=remember(action.identity) { BringIntoViewRequester() }
+                LaunchedEffect(active,filterFocused){if(active && !filterFocused)bring.bringIntoView()}
+                Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
+                    .background(if(active)colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(10.dp))
+                    .focusRequester(requests.getValue(action.identity)).onFocusChanged{if(it.isFocused){selectedId=action.identity;filterFocused=false}}.focusable()
+                    .semantics(mergeDescendants=true) { role=Role.Button;selected=active;stateDescription=action.state.label
+                        if(!action.state.executable)disabled()
+                        onClick(action.title){activate(action);action.state.executable} }
+                    .clickable(enabled=action.state.executable){selectedId=action.identity;activate(action)}
+                    .bringIntoViewRequester(bring).padding(horizontal=10.dp,vertical=6.dp),
+                    verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
+                    IosCommandIcon(if(i==0 && path.isEmpty() && action==all.firstOrNull())CommandIcons.Arrow else action.icon,
+                        null,Modifier.size(20.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else if(i==0 && path.isEmpty())commandAccent ?: colors.onSurfaceVariant else colors.onSurfaceVariant)
+                    Column(Modifier.weight(1f)) {
+                        Text(action.title,fontSize=13.sp,fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
+                            maxLines=1,overflow=TextOverflow.Ellipsis)
+                        val detail=if(action.state!=ContextActionState.Available)action.state.label else action.description.takeIf{it.isNotBlank() && it!=action.group.label && it!="Principal"}.orEmpty()
+                        if(detail.isNotBlank() && (LocalAppearance.current.preset=="glass" || action.state!=ContextActionState.Available))Text(detail,fontSize=11.sp,lineHeight=14.sp,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+                    }
+                    val key=action.shortcut.ifBlank { if(action==all.firstOrNull())"Enter" else "" }
+                    if(action.children.isNotEmpty())IosCommandIcon(CommandIcons.Chevron,null,Modifier.size(16.dp),tint=colors.onSurfaceVariant)
+                    else if(key.isNotEmpty())GlassKeycap(key)
+                }
+            }
+            if(visible.isEmpty())Text("No hay acciones con ese nombre.",Modifier.padding(10.dp),fontSize=12.sp,color=colors.onSurfaceVariant)
+        }
+
     }
 }

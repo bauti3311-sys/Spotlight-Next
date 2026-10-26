@@ -1,0 +1,86 @@
+{
+  "tested_source_sha": "ac370d9820c1d7eed49da6b0aa44c9988b802835",
+  "purpose": "Experimental official local Spotify playback and native UI refinement",
+  "real_spotify_account_tested": false,
+  "physical_device_tested": false,
+  "reported_audio_interruption_resolved": false,
+  "tests": {
+    "total": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration": "5m5s",
+    "groups": {
+      "SpotifyLocalPlayerTest": 4,
+      "SpotifyLocalConsentTest": 2,
+      "SpotifyResultRowTest": 2,
+      "SpotifyIntegrationFlowTest": 2,
+      "SpotifyOverlayRecoveryRegressionTest": 4
+    }
+  },
+  "sdk": {
+    "version": "0.8.0",
+    "source_commit": "5aa4d62465f61a0677081ae9a3108177d0365fc3",
+    "git_blob": "ec49aad33b631e3b1066be6ccecb2da528fcc9b9",
+    "new_permissions": 0
+  },
+  "screenshots": "Controlled native component fixtures, Inter/Graphite; not physical screenshots",
+  "preview_version_code": 51,
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "build": "VERIFIED",
+  "matrix": "9/25/6 unchanged",
+  "github_actions_used": false,
+  "source_sha": "fe325812d32a83395c7882ff762f513526d9ae69",
+  "build_duration": "12m24s",
+  "lint": {
+    "errors": 0,
+    "warnings": 14
+  },
+  "identity_checks": {
+    "package": true,
+    "version_code": 51,
+    "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+    "non_debuggable": true,
+    "zipalign_16k": true,
+    "source_archive_same_commit": true
+  },
+  "delivery": {
+    "release_id": 423602894,
+    "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-df0471cf57ce4d3a8cef",
+    "private": true,
+    "draft": true,
+    "assets": [
+      {
+        "name": "README.txt",
+        "size": 1247,
+        "digest": "sha256:cc6688e1b59cb34e99d9db8a55f92a253354dce46c3bc35ab3b48a943dda2809"
+      },
+      {
+        "name": "SHA256SUMS",
+        "size": 318,
+        "digest": "sha256:5f8acaa59eb69b8d1c6c751152972047f2a90a1b22cfcafa5efc56edc4b9c190"
+      },
+      {
+        "name": "SOURCE_COMMIT",
+        "size": 41,
+        "digest": "sha256:a00d834ac6bf6a5b4da53bde3c4a549f7ae71feecd722c0b84647745155a6b01"
+      },
+      {
+        "name": "Spotlight-Next-Preview51-evidence.zip",
+        "size": 27538,
+        "digest": "sha256:5eed437789dbb219e348443cd9fdcf36e08d166a7cfc1fde660329412a7aa94f"
+      },
+      {
+        "name": "Spotlight-Next-Raycast-Preview-51-fe325812.apk",
+        "size": 73385641,
+        "digest": "sha256:7bbef2a7daf4f925714a6f4b2503e4ecfd8533a88ea299afb92c6a22f363eb80"
+      },
+      {
+        "name": "Spotlight-Next-source-fe325812.zip",
+        "size": 9391638,
+        "digest": "sha256:97e9bb12f62ed3dcc5551dce2291b45940af3f364688e2501bf18bc7feedcd01"
+      }
+    ]
+  }
+}

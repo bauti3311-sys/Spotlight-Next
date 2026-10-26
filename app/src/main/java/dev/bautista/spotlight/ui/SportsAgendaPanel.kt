@@ -12,9 +12,10 @@ import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
 import org.json.JSONObject
 
-data class SportsAgendaEntry(val json:JSONObject,val fetchedAt:Long,val stale:Boolean)
+data class SportsAgendaEntry(val json:JSONObject,val fetchedAt:Long,val stale:Boolean,val fromCache:Boolean=false)
 object SportsAgendaOrder {
-    fun merge(items:List<SportsAgendaEntry>)=items.distinctBy{it.json.optString("idEvent").ifBlank{it.json.optString("strEvent")+it.json.optString("dateEvent")}}.sortedBy{it.json.optString("dateEvent").ifBlank{"9999"}+it.json.optString("strTime")}
+    fun merge(items:List<SportsAgendaEntry>)=items.groupBy{it.json.optString("idEvent").ifBlank{it.json.optString("strEvent")+it.json.optString("dateEvent")}}.values
+        .map{duplicates->duplicates.maxWith(compareBy<SportsAgendaEntry>{it.fetchedAt}.thenBy{!it.stale})}.sortedBy{it.json.optString("dateEvent").ifBlank{"9999"}+it.json.optString("strTime")}
     fun live(item:JSONObject)=normalize(item.optString("strStatus")) in setOf("in progress","live","1h","2h","ht","q1","q2","q3","q4")
 }
 @Composable fun SportsAgendaPanel(app:SpotlightApp,initial:String,onAction:(Action)->Unit) {
@@ -34,7 +35,7 @@ object SportsAgendaOrder {
         val relevant=favorites.filter{request?.entity.isNullOrBlank() || normalize(it.name).contains(normalize(request!!.entity))}
         for((index,entity) in relevant.withIndex()){
             ensureActive();progress="Consultando favorito ${index+1} de ${relevant.size}"
-            try{val data=repo.sportsEntity(entity,true,revision>0);rows=SportsAgendaOrder.merge(rows+SportsFavorites.events(entity,data.json).map{SportsAgendaEntry(it,data.fetchedAt,data.stale)})}catch(e:CancellationException){throw e}catch(e:Exception){error="Una fuente no respondió. Se conservan los encuentros disponibles."}
+            try{val data=repo.sportsEntity(entity,true,revision>0);rows=SportsAgendaOrder.merge(rows+SportsFavorites.events(entity,data.json).map{SportsAgendaEntry(it,data.fetchedAt,data.stale,data.fromCache)})}catch(e:CancellationException){throw e}catch(e:Exception){error="Una fuente no respondió. Se conservan los encuentros disponibles."}
         }
     }finally{busy=false;progress=""}}
     if(manage){Column{SportsFavoritesPanel(app,request.entity.ifBlank{initial},onAction);TextButton(onClick={favorites=store.list();if(favorites.isNotEmpty()){manage=false;revision++;error=""}else error="Elegí al menos un favorito para consultar su agenda."}){Text("Ver agenda de favoritos")};if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)};return}
@@ -48,19 +49,21 @@ object SportsAgendaOrder {
             TextButton(onClick={detail=null}){Text("Volver a la agenda")}
             Text(event.optString("strEvent").ifBlank{"Encuentro"},style=MaterialTheme.typography.titleLarge)
             Text(ProviderValues.score(event),style=MaterialTheme.typography.headlineMedium)
+            SourceFreshnessLabel(SourceFreshness("TheSportsDB",item.fetchedAt,item.fromCache,item.stale))
             listOf("strLeague" to "Competición","strSport" to "Deporte","strStatus" to "Estado","dateEvent" to "Fecha","strTime" to "Hora del proveedor","strVenue" to "Lugar","intRound" to "Ronda").forEach{(key,label)->event.optString(key).takeUnless{it.isBlank()||it=="null"}?.let{Text("$label: $it")}}
             Text("Solo se muestran datos publicados por la fuente. Desglose de goles, cuartos o sets no disponible aquí.",style=MaterialTheme.typography.bodySmall)
             TextButton(onClick={onAction(Action.ComposeSearch("sofascore","com.sofascore.results",event.optString("strEvent")))}){Text("Más detalles en Sofascore")}
         } ?: visible.forEach{item->TextButton(onClick={detail=item},modifier=Modifier.fillMaxWidth()){Column(Modifier.fillMaxWidth()){
             Text(item.json.optString("strEvent").ifBlank{"Encuentro"})
             Text(ProviderValues.score(item.json),style=MaterialTheme.typography.bodySmall)
+            SourceFreshnessLabel(SourceFreshness("TheSportsDB",item.fetchedAt,item.fromCache,item.stale))
             Text(item.json.optString("strStatus").takeUnless{it.isBlank() || it=="null"} ?: "Estado no informado",style=MaterialTheme.typography.bodySmall)
             item.json.optString("dateEvent").takeUnless{it.isBlank() || it=="null"}?.let{Text(it,style=MaterialTheme.typography.bodySmall)}
         }}}
         if(visible.isEmpty() && !busy)Text(if(request?.live==true)"No hay encuentros en curso informados para tus favoritos. La cobertura puede ser incompleta." else "No hay encuentros disponibles para esta consulta. Probá otro favorito o revisá la cobertura del proveedor.")
         if(busy){LinearProgressIndicator(Modifier.fillMaxWidth());Text(progress,style=MaterialTheme.typography.labelSmall)}
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
-        rows.maxOfOrNull{it.fetchedAt}?.let{Text("TheSportsDB · Consulta ${java.text.DateFormat.getDateTimeInstance().format(java.util.Date(it))}",style=MaterialTheme.typography.labelSmall)}
+        if(rows.isNotEmpty())Text("Cada fila conserva su hora de consulta. El estado publicado no garantiza seguimiento en vivo.",style=MaterialTheme.typography.labelSmall)
         if(rows.any{it.stale})Text("Algunos datos provienen de la caché sin poder actualizarse.",style=MaterialTheme.typography.bodySmall)
     }
 }

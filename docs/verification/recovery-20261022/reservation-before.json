@@ -1,0 +1,55 @@
+{
+  "previous": {
+    "sha": "c0d1808002ef6504d4ba6f9815a8e4b6d71038b4",
+    "node_id": "C_kwDOVFFLBdoAKGMwZDE4MDgwMDJlZjY1MDRkNGJhNmY5ODE1YThlNGI2ZDcxMDM4YjQ",
+    "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/git/commits/c0d1808002ef6504d4ba6f9815a8e4b6d71038b4",
+    "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/commit/c0d1808002ef6504d4ba6f9815a8e4b6d71038b4",
+    "author": {
+      "name": "bauti3311-sys",
+      "email": "bauti3311@gmail.com",
+      "date": "2026-10-22T03:25:48Z"
+    },
+    "committer": {
+      "name": "bauti3311-sys",
+      "email": "bauti3311@gmail.com",
+      "date": "2026-10-22T03:25:48Z"
+    },
+    "tree": {
+      "sha": "c2d7a745157555f3ad234472aa37349c15f39895",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/git/trees/c2d7a745157555f3ad234472aa37349c15f39895"
+    },
+    "message": "{\"owner\":\"work-recovery-20261018-cd7b8fe1285c\",\"branch\":\"feat/raycast-sidebar-permissions-20261020\",\"checkpoint\":\"910754d5f08a97f8cbd4b0939cd51b1236f1f586\",\"state\":\"docs(release): deliver compatible Preview35 with matching source, native evidence and remaining master decisions\",\"date\":\"2026-10-22T03:25:48.106Z\"}",
+    "parents": [
+      {
+        "sha": "fddf0deabbfdf2d5e7b61ac01605f004eb30d483",
+        "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/git/commits/fddf0deabbfdf2d5e7b61ac01605f004eb30d483",
+        "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/commit/fddf0deabbfdf2d5e7b61ac01605f004eb30d483"
+      }
+    ],
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "branch": {
+    "ref": "refs/heads/feat/raycast-sidebar-permissions-20261020",
+    "node_id": "REF_kwDOVFFLBdoANHJlZnMvaGVhZHMvZmVhdC9yYXljYXN0LXNpZGViYXItcGVybWlzc2lvbnMtMjAyNjEwMjA",
+    "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/git/refs/heads/feat/raycast-sidebar-permissions-20261020",
+    "object": {
+      "sha": "910754d5f08a97f8cbd4b0939cd51b1236f1f586",
+      "type": "commit",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/git/commits/910754d5f08a97f8cbd4b0939cd51b1236f1f586"
+    }
+  },
+  "pr": {
+    "number": 18,
+    "draft": true,
+    "head": "910754d5f08a97f8cbd4b0939cd51b1236f1f586"
+  },
+  "active_workflows": [],
+  "user_authorization": "2026-10-22: explicit transfer of c0d18080; user confirms automation paused and only this session is intended",
+  "observations": "Local restored tree clean; previous compile completed; earlier environment pruned. No build process identified. Task read inaccessible in this context; prior successful pause receipt plus current user statement are available."
+}

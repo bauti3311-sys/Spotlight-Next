@@ -1,0 +1,34 @@
+[
+  {
+    "file": "Preview38-Propuesta-restaurada.png",
+    "sha256": "1184af402a829220ebc0c5d6a0d4ab03304c9a117b45da3aa7cb524f78caa0e0",
+    "source": "Spotlight-Next/app/build/task-recovery/activity-tool-restored.png",
+    "capture_source_sha": "463a35f735cc2c51716fdfcec9da8ec4927a6f58",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "caption": "Componente de propuestas restaurado tras ActivityScenario.recreate: resultado parcial y argumento editado. Fixture sin proveedor; no es la ventana WindowManager."
+  },
+  {
+    "file": "Preview38-Formulario-restaurado.png",
+    "sha256": "61fe05a29358f036e3925845236ea779ef4a3ba8b920cb07e0f350857e69def9",
+    "source": "Spotlight-Next/app/build/task-recovery/activity-form-restored.png",
+    "capture_source_sha": "463a35f735cc2c51716fdfcec9da8ec4927a6f58",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "caption": "Inspector real de SpotlightPanel después de recrear Activity: consulta y borrador conservados. Viewport1000×900, paleta800dp."
+  },
+  {
+    "file": "Preview38-Ajustes-respaldo.png",
+    "sha256": "8c352a883b34d2afe7af257829f281f2ed8abb1ae2c065f4a742842fa705d419",
+    "source": "Spotlight-Next/app/build/task-recovery/settings-backup.png",
+    "capture_source_sha": "463a35f735cc2c51716fdfcec9da8ec4927a6f58",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "caption": "MainActivity real: Avanzado y respaldo, entorno Robolectric1280×800. No se exportaron datos privados."
+  },
+  {
+    "file": "Preview38-Permisos.png",
+    "sha256": "9adc56bad290baeb398db899b5ad8c4a472deacd2ddd3b2de704481c5fddd9cb",
+    "source": "Spotlight-Next/app/build/task-recovery/settings-permissions.png",
+    "capture_source_sha": "463a35f735cc2c51716fdfcec9da8ec4927a6f58",
+    "renderer": "Robolectric API33 GraphicsMode.NATIVE",
+    "caption": "MainActivity real: centro único de permisos. Estados consultados mediante APIs Android del fixture; no permisos otorgados en OneUI."
+  }
+]

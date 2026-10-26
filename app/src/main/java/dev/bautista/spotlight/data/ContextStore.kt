@@ -22,6 +22,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private var started=false
     private var loadJob:Job?=null
     private var storageReady=false
+    private var overlayReadable=true
     private val mutableStorageIssue=MutableStateFlow<String?>(null)
     val storageIssue=mutableStorageIssue.asStateFlow()
     private var original=JSONObject()
@@ -109,6 +110,7 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         val suppliedMime=context.contentResolver.getType(uri).orEmpty()
         val title=runCatching{context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME),null,null,null)?.use{if(it.moveToFirst())it.getString(0) else null}}.getOrNull() ?: "Documento autorizado"
         val mime=dev.bautista.spotlight.index.OfficeText.mime(title,suppliedMime).orEmpty()
+        currentCoroutineContext().ensureActive()
         SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
     }
     suspend fun text(item:SharedContext):String=withContext(Dispatchers.IO) {
@@ -185,6 +187,38 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         root.put("contexts",JSONArray().apply{contexts.forEach{put(JSONObject(contextRecords[it.id]?.toString() ?: "{}").put("id",it.id).put("title",it.title).put("kind",it.kind).put("text",it.text).put("uri",it.uri).put("mime",it.mime).put("created",it.created).put("ownedFile",it.ownedFile))}})
         root.put("conversations",JSONArray().apply{mutableConversations.value.forEach{item->put(JSONObject(conversationRecords[item.id]?.toString() ?: "{}").put("id",item.id).put("title",item.title).put("text",item.text).put("created",item.created).apply{if(item.turns.isNotEmpty())put("turns",ConversationHistory.encode(item.turns))})}})
         val out=file.startWrite();try{out.write(root.toString().toByteArray());file.finishWrite(out)}catch(e:Exception){file.failWrite(out);throw e}
+    }
+    /** Overlay recovery shares this private, atomic store; it is never in portable exports. */
+    suspend fun overlaySnapshot():Map<String,List<Any?>>?=withContext(Dispatchers.IO) {
+        start();loadJob?.join()
+        if(!preferences.ready)preferences.config.first()
+        lock.withLock {
+            check(storageReady){"No se pudo leer la recuperación local. Los datos anteriores se conservaron."}
+            if(preferences.isPrivate)return@withLock null
+            try{if(original.has("overlayRecovery"))OverlaySnapshotCodec.decode(original.getJSONObject("overlayRecovery")) else null}
+            catch(e:Exception){overlayReadable=false;throw e}
+        }
+    }
+    suspend fun saveOverlaySnapshot(state:Map<String,List<Any?>>?)=withContext(Dispatchers.IO) {
+        start();loadJob?.join()
+        lock.withLock {
+            check(storageReady){"No se pudo guardar la recuperación local. No se autorizó la operación."}
+            check(overlayReadable || preferences.isPrivate){"La sesión anterior es incompatible. Descartala explícitamente desde Ajustes antes de reemplazarla."}
+            val encoded=if(state==null || preferences.isPrivate)null else OverlaySnapshotCodec.encode(state)
+            val previous=original
+            original=JSONObject(original.toString()).apply{if(encoded==null)remove("overlayRecovery") else put("overlayRecovery",encoded)}
+            try{withContext(NonCancellable){save()}}catch(e:Exception){original=previous;throw e}
+        }
+    }
+    suspend fun discardOverlaySnapshot()=withContext(Dispatchers.IO) {
+        start();loadJob?.join()
+        lock.withLock {
+            check(storageReady){"No se pudo leer el archivo de contextos. Se conservó intacto."}
+            val previous=original;val priorReadable=overlayReadable
+            original=JSONObject(original.toString()).apply{remove("overlayRecovery")}
+            try{withContext(NonCancellable){save()};overlayReadable=true}
+            catch(e:Exception){original=previous;overlayReadable=priorReadable;throw e}
+        }
     }
     fun results(query:String):List<Result> {
         val contexts=mutablePinned.value.mapNotNull{item->val score=relevance(query,item.title);if(score==0)null else Result("context:${item.id}",item.title,"Contexto fijado · activar y revisar","Contexto",score+450,Action.SystemPanel("context",item.id))}

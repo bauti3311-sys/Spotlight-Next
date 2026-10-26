@@ -1,0 +1,9 @@
+# Ajustes, acentos y sugerencias ·23/10/2026
+
+Continuación autorizada desdePreview42/be76e8e; HEADdocumental00c2c42. El usuario aprueba SolidGraphite y solicita Ajustes,acento porapp yverificación delinicio. Las40decisiones NO están completas. C2recuperación/IA/multimedia,C3respaldos/ajustes,C4integraciones/rendimiento yC5físico mantienen pendientes funcionales ydevalidación: verSTATUS, sinporcentaje ficticio.
+
+CheckpointPARCIAL antesdepruebas. Ajustes reutiliza elSettingsLayout ytodosloscallbacks: navegación conIcons8iOS/selección de acento tenue, marca discreta,padding ygrupos grafito;Theme.raycast alinea surface conGlassTokens. No nueva rutadepermisos ni controles. PerfilDarkGlass yclaro se conservan. Acentoporidentidad real deapp/destino reutilizaInspectorAccent; ahora colorea búsquedacursor/glyph yacciónprincipal delpanel, sinteñirfondos/seleccióngris/Ajustes/errores. Al cambiar a notaoIAse limpia; elinspector fijado conserva su identidad propia.
+
+SugerenciasYAimplementadas:HomeSuggestions→SearchEngine,inicio≤3/unaapp, favoritos/recientes/hábitos/contexto conTTL ypermisos. Sinseñalreal devuelvevacío; esto no se sustituye porappalfabética ni mensajesinventados. Pista explícita eninicio sinseñales oconopción desactivada. No cambio de ranking/permisos/proveedores. Nuevos tests para acento realdeglyph, identidad/contexto yhomefavorito/historialdevolumen; capturas nuevas de todaslasáreas deAjustes tablet/teléfono medianteActivitynativa. Todavía NO ejecutados alpublicar.
+
+El testhistórico DarkGlassSettings cambia únicamenteeltexto esperadodelbotónRestablecer alrótulo vigente ypermite capturarSolidGraphite, conservandolasaserciones84/92/94 del perfilGlass, sliders, persistencia,recreación,navegación yausenciadesolicitudesdepermisos. Preview43 preparada; no APK verificadahasta gates/firma.

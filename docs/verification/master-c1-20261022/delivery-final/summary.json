@@ -1,0 +1,30 @@
+{
+  "final_production_sha": "ce46279d9dc834182f3e45dd6cd3d797bd3338cb",
+  "unit_tests": "71 unique verified across directed rounds; 2 affected dictation cases repeated on final code",
+  "lint": {
+    "Warning": 13,
+    "Information": 1
+  },
+  "lint_ids": {
+    "ScopedStorage": 1,
+    "DiscouragedPrivateApi": 1,
+    "ExifInterface": 1,
+    "RedundantLabel": 1,
+    "ChromeOsAbiSupport": 2,
+    "TrustAllX509TrustManager": 3,
+    "DataExtractionRules": 1,
+    "AutoboxingStateCreation": 1,
+    "ViewConstructor": 2,
+    "ClickableViewAccessibility": 1
+  },
+  "build": "BUILD SUCCESSFUL in 3m 6s",
+  "tasks": "52 actionable:16 executed,36 up-to-date",
+  "tasks_requested": [
+    ":app:testRaycastPreviewUnitTest (2 dictation selectors)",
+    ":app:lintRaycastPreview",
+    ":app:assembleRaycastPreview"
+  ],
+  "preview_variant": "debug-derived ARM64; not Release/R8",
+  "physical_device": false,
+  "github_actions_runs_on_branch": 0
+}

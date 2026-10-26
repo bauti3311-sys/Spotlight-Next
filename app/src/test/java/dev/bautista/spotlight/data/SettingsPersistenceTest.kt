@@ -47,9 +47,9 @@ class SettingsPersistenceTest {
   assertEquals(current.copy(aiProvider="gemini",aiModel="fixture-reviewed-model",aiRootConsent=!draft.aiRootConsent),actual)
  }
  @Test fun legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries() {
-  assertEquals(7,SettingsGroups.names.distinct().size)
-  assertEquals("General",SettingsGroups.canonical("Invocación"))
-  assertEquals("Permisos y privacidad",SettingsGroups.canonical("Privacidad y sistema"))
+  assertEquals(8,SettingsGroups.names.distinct().size)
+  assertEquals("Atajos",SettingsGroups.canonical("Invocación"))
+  assertEquals("Permisos y accesos",SettingsGroups.canonical("Privacidad y sistema"))
   assertEquals("Inteligencia artificial",SettingsGroups.canonical("Inteligencia"))
   assertEquals("Búsqueda y archivos",SettingsGroups.canonical("Búsqueda"))
   assertFalse(SettingsGroups.visible("Tasker · automatización externa"))

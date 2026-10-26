@@ -20,7 +20,7 @@ object NativeCommands {
  }
  fun isNative(w:Workflow)=w.kind==KIND && Workflows.validate(w)==null
  fun result(w:Workflow)=Result("command:${w.id}",w.name,"${w.steps.size} pasos nativos · revisar antes de ejecutar","Comandos",1800,Action.SystemPanel("saved-command",w.id))
- fun results(raw:String)=Workflows.parse(raw).filter(::isNative).map(::result)
+ fun results(raw:String)=Workflows.parse(raw).filter(::isNative).map(::result)+CommandTemplates.parse(raw).map(CommandTemplates::result)
  data class Review(val plan:LocalPlan,val calls:List<ToolCall>)
  fun step(call:ToolCall,label:(String)->String):PlanStep {
   require(accepts(call)){"Acción no compatible."}

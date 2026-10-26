@@ -1,0 +1,81 @@
+{
+  "source_commit": "be76e8ed54177a44df14930d627009c953ef7f7d",
+  "runtime": "Compose/Robolectric API33 NATIVE",
+  "physical": false,
+  "installed_apps": "Fixture package registration; generic PackageManager icons, no real Spotify account/session",
+  "before_source": "Preview41 production; prefix spot;1280x800 host",
+  "after_source": "Solid Graphite same prefix/host plus exact Spotify scene",
+  "reference_panel_crop": [
+    876,
+    195,
+    1415,
+    779
+  ],
+  "actual_panel_crop_from_all_windows_capture": [
+    499,
+    76,
+    843,
+    584
+  ],
+  "node_capture_limit": "Node-only subwindow capture selected the host root; excluded from visual comparison. ROI is cropped from real captureScreenRoboImage output.",
+  "reference_uniform_scale_to_actual": 0.6382189239332097,
+  "comparison_limit": "Different real available actions/content; padding used to align extents. Difference map is diagnostic, not a fidelity score. Host has no real OneUI wallpaper/cross-window composition. No fake playlist or runtime status added.",
+  "files": [
+    {
+      "name": "Solid-Graphite-Compose-telefono.png",
+      "sha256": "ebd4858473da21004e9c1bb99351d2f43cff7330225276415922d42ad6534b7d",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "Solid-Graphite-Spotify-Compose-tablet.png",
+      "sha256": "b58b058b593ac7ad9ebc8c3ccce0683986cc4c2a61a4af39a133b198762e2f4f",
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "name": "Solid-Graphite-antes-despues.png",
+      "sha256": "0d33fecb11029c9e1e98be646abe3462ea9c5d7c513bb794973861a2515add81",
+      "size": [
+        2560,
+        846
+      ]
+    },
+    {
+      "name": "Solid-Graphite-diferencias.png",
+      "sha256": "73aa2ced4f28e44cc9909fdc72c56f7907ad2168c2d5197670993a649a9e057e",
+      "size": [
+        344,
+        508
+      ]
+    },
+    {
+      "name": "Solid-Graphite-panel-real.png",
+      "sha256": "06c995a6d21c400142b2a99a5108c2abcb6172d43d9443a1af9ac80e9bc77068",
+      "size": [
+        344,
+        508
+      ]
+    },
+    {
+      "name": "Solid-Graphite-referencia-compose.png",
+      "sha256": "1d992c3844cbdc6afda77af982bb6c79e1797125ca512cf3bab36ef8bd0b986b",
+      "size": [
+        688,
+        556
+      ]
+    },
+    {
+      "name": "Solid-Graphite-superposicion-50.png",
+      "sha256": "3d9a15a5cdc9670b18274de464a812a021d7a3d85824ce9a61bffeead423d26d",
+      "size": [
+        344,
+        508
+      ]
+    }
+  ]
+}

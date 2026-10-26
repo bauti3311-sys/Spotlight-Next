@@ -1,0 +1,15 @@
+{
+  "python_tests": 17,
+  "failed": 0,
+  "real_accounts_connected": 0,
+  "real_messages_sent": 0,
+  "upstream_client_executed": false,
+  "android_compiled": false,
+  "new_permissions": false,
+  "apk_changed": false,
+  "files": {
+    "bridge.py": "414e9206ed00e661abb2ced7331ed35850fbe156976bd8f65bca97b2081508da",
+    "test_bridge.py": "c0a65cd872761614fc2268eff60b9136f6db60607762ede1043cdab1481ffd27",
+    "android/WhatsAppMessagingProvider.kt": "cfd98d926dfc3076de8b9418f4804f8cc7bf1374e70b6f33de86d6425da63a2d"
+  }
+}

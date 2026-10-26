@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.MasterC1MaterialTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-22T03:12:44" hostname="cbc8d00fe6ba" time="2.169">
+  <properties/>
+  <testcase name="bothBackupsRoundTripRolesAndLegacyBackupsKeepCurrentValues" classname="dev.bautista.spotlight.ui.MasterC1MaterialTest" time="1.845"/>
+  <testcase name="freshDefaultsAndIndependentRoleAlpha" classname="dev.bautista.spotlight.ui.MasterC1MaterialTest" time="0.043"/>
+  <testcase name="migrationPreservesLegacyAlphaAndUnrelatedPrivateFields" classname="dev.bautista.spotlight.ui.MasterC1MaterialTest" time="0.28"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

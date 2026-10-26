@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-21T23:31:24" hostname="1869f135b6a6" time="6.271">
+  <properties/>
+  <testcase name="phoneCloseTargetDoesNotCloseOverlayOrClearQuery" classname="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" time="5.911"/>
+  <testcase name="tabletCloseTargetDoesNotCloseOverlayOrClearQuery" classname="dev.bautista.spotlight.ui.QuickLookTouchTargetTest" time="0.36"/>
+  <system-out><![CDATA[View.captureToImage Could not find window for view. Falling back to View#draw instead of PixelCopy(If you are using Material3 dialogs, this is expected).
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+View.captureToImage Could not find window for view. Falling back to View#draw instead of PixelCopy(If you are using Material3 dialogs, this is expected).
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

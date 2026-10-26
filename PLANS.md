@@ -499,3 +499,204 @@ PDF: 17/17 pruebas y lintDebug 0 errores/10 advertencias/1 informativa sobre 1d8
 ## 19/10 · Continuación recuperada y multimedia
 
 HEAD inicial df97608 y reserva propia 515323b confirmados. XML de 21 pruebas recuperados/publicados en 8ae0908; runtime /tmp perdido, restaurado con mismas versiones. LintDebug completado (0 errores/10 advertencias/1 informativa), cierre Gemini b8e213e. Multimedia: tests parciales a527a7c, reproducción 4 fallos/6 casos, corrección 4c72b3f y 28/28 verificaciones dirigidas aprobadas. XML preservados, lint posterior aprobado: 0 errores/10 advertencias/1 informativa. Sin APK, suite integral, Actions, proveedor/dispositivo real. Mantener UI y firmas; continuar matriz con bloques terminables.
+
+
+### Raycast Preview — checkpoint de entrega20/10
+Fuente a2ef090:65/65dirigidas,lint0errores/10advertencias/1informativa y APK independiente verificados localmente. Inspector compacto corregido, QuickLook/teclado/MediaSession conservados. Evidencia y hashes: docs/RAYCAST-BUILD-20261020.md y docs/verification/raycast-preview-20261020/final. Decisiones9/10/18/20/34/35 conservan alcance parcial: sin instalación OneUI, servicios/proveedor reales ni validación integral. Sin CI/main/merges. Prioridad siguiente: prueba física de esta entrega.
+
+
+### Refinamiento de producto — Preview30
+Fuente fc7f885,101pruebas dirigidas,lint0errores/11advertencias/1informativa,APK ARM64/firma/versionCode30/ZIP exacto verificados. Geometría por mínimos400/280, divisor acotado, filas48dp, inspector extraído con acción principal y grupos/IDs explícitos. Capturas antes/después nativas en docs/verification/design-review-20261020. APK86,5MB vs258MB (66,5%menos), no medición de RAM/batería. Firma885838aa preservada y respaldo privado persistente; CI preparado exige secreto dedicado aún no configurado, sin ejecución. Informe y límites: docs/PRODUCT-DESIGN-REVIEW-20261020.md. OneUI y referencia visual pendiente;40decisiones siguen parciales, disponibilidad/riesgo continúan en los ejecutores existentes.
+
+
+### Corrección visual A/B — checkpoint de pruebas20/10
+Código f56f665:112/112 dirigidas en22suites, capturas nativas comparadas con las tres imágenes reales del usuario; geometría, material, jerarquía de inspector y rail de Ajustes corregidos. Lint/assemble activos al guardar; no afirmar entrega aún. Ver docs/VISUAL-FIDELITY-20261020.md. Firma/paquete históricos sin cambios, Preview31 independiente preparada.
+
+
+### Fidelidad visual A/B — cierre del código20/10
+Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0errores/11advertencias/1informativa y assembleRaycastPreview correctos. Capturas nativas comparadas contra B adjunta; barra inset, filas apiladas/tipo alineado, inspector jerárquico y rail azul de Ajustes. Preview31/ARM64/certificado885838aa conservado. Documentación final y capturas se incluyen en checkpoint posterior con las mismas entradas compilables; APK/ZIP exactos se verifican al entregarlos. Sin CI/main/dependencias nuevas.9/10/18/20/34/35 siguen parciales; OneUI/servicios reales/rendimiento físico pendientes. Ver docs/VISUAL-FIDELITY-20261020.md.
+
+Entrega visual: APK+ZIP fuente exactos2642739 verificados (373inputs,Preview31,certificado885838aa,ARM64,zipalign16KB).112pruebas y lint0errores sobre código f56f665 idéntico; assemble final2642739 correcto. Ver informe VISUAL-FIDELITY-20261020 y verificación final. No hay ejecución pendiente ni CI. Revisión física del usuario es el siguiente paso; no repetir suites sin cambios.
+
+### Native Palette — pruebas cerradas21/10
+Fuente61a6339, producción idéntica a a2f6537:123casos únicos verificados en rondas (122de23suites +1reintento dirigido). Se conservan fallos iniciales y correcciones; no se repiten122aprobadas. Paleta de una columna, Actions flotante, submenús/filtro/foco y cierres48dp cubiertos; integra regresiones de teclado, gestos, Gemini, PhoneUse y multimedia. Lint/APK siguen activos, no afirmar entrega aún. Ver RAYCAST-NATIVE-PALETTE-20261021.md. OneUI/IME/servicios y rendimiento físicos pendientes; sin CI/main/dependencias/funciones nuevas.
+
+Native Palette61a6339:lintRaycastPreview aprobado realmente (0errores/12advertencias/1informativa), evidencia XML junto al único reintento1/1.123casos únicos verificados en rondas; misma ejecución continúa assembleRaycastPreview, sin reiniciar ni cambiar producción. APK/firma/ZIP aún pendientes de cierre.
+
+### Native Palette — entrega local verificada21/10
+Fuente APK/ZIP61a63399aeef4e57bc4e285899c7b2fd2085cb26;123casos únicos correctos en rondas122+1, lint0errores/12avisos/1informativa y assembleRaycastPreview correcto.375inputs exactos, paquete independiente/Preview32/ARM64, certificado885838aa y zipalign16KB comprobados; fuente Git del mismo SHA, sin secretos. Evidencia/hashes y límites en RAYCAST-NATIVE-PALETTE-20261021.md. Documentación posterior no cambia producción. Proceso Gradle terminado; no continuar rediseño/funciones antes de entregar estos archivos y revisión física. OneUI/IME/PDF/servicios y rendimiento reales pendientes. Sin CI/main/force/nueva firma.
+
+### ActionPanel superpuesto y búsqueda inteligente ·21/10
+
+Código6af47a0: paleta visual compacta conservada, acciones en hijo acotado unido al token del overlay, toque exterior no modal y navegación/filtro/submenús restaurables. Ranking léxico coherente entre motor/presentación, alias y typo elegibles, Tab solo con candidato vivo no ambiguo, Enter sobre selección actual, sin autoscroll por llegada de proveedores. Home conserva una app y señales locales; no WhatsApp sin contenido, permisos documentales reales y sin afirmar reproducción por recencia. Business fuera de alcance.
+
+Reproducción nueva8casos/5fallos de búsqueda y3casos/1fallo de menú; corrección71casos únicos aprobados en rondas23+48, no ejecución completa nueva. Diez escenas antes/después API33/Robolectric. Lint/APK33 pendientes al guardar. Firma885838aa recuperada y comprobada, principal/Review intactas; sin CI/main/force. Ver FLOATING-ACTIONS-SMART-SEARCH-20261021.md. Próximo: lint/assemble/identidad/ZIP exacto y entrega, sin nuevas funciones.
+
+ActionPanel+búsqueda ·entrega cerrada:APK/ZIP560608f verificados, Preview33/certificado885838aa/ARM64/zipalign16KB. Lint0errores/13avisos/1informativa y assemble correctos4m33s.71casos únicos en rondas23+48; capturas reales equivalentes antes/después. Sin dispositivo/OneUI/IME real ni rendimiento medido. Proceso terminado; entregar APK+fuente+reporte visual. Ver FLOATING-ACTIONS-SMART-SEARCH-20261021.md y delivery/verification.json. Código listo para revisión física, sin nuevas funciones.
+
+
+### ActionPanel · cobertura adicional21/10
+Checkpoint8e54047 conservó tres tests nuevos antes de ejecutar. Suite de teclado6casos:5aprobados y1caso corregido solo en selectores (texto duplicado y placeholder); reintento final1/1aprobado38s. Se verifican filtro/CtrlF/CtrlK, identidad ante actualización asíncrona y puente Back/submenú/disposición. Evidencia de las tres rondas en docs/verification/action-navigation-20261021. Producción idéntica a Preview33/560608f, APK/fuente y certificado comprobados nuevamente; sin nuevo lint/assemble/APK ni CI. OneUI/IME/rotación/InputDispatcher físicos siguen pendientes.
+
+
+### Raycast Dark Glass ·21/10 ·código verificado
+Diseño definitivo03/04 implementado sobre base5cb4a1, código2ffe81e. Material compartido, opacidad real70–100%/nuevo80% sin alterar valores guardados, slider nativo refinado, ActionPanel superpuesto contextual y Ajustes completos8áreas con lógica/claves conservadas.56casos únicos aprobados en rondas31retenidos+24afectados+1nuevo; última revisión geométrica3/3. Capturas tablet/teléfono y contraste controlado; XML/logs en verification/dark-glass-20261021. Lint/APK34/ZIP/firma final pendientes; no afirmar entrega ni física. Sin CI/main/permisos/dependencias nuevos.
+
+
+Raycast Dark Glass ·entrega34: APK/ZIP exactoscc1c28d verificados (193inputs/1016blobs,ARM64,paquete independiente,certificado885838aa,zipalign16KB). Lint0errores/15avisos/1info,assemble3m18s.56casos únicos en rondas; último teléfono1/1/17s para renovar cinco capturas. Sin nuevos tests integrales/CI/física ni procesos activos. Evidencias e identidad en RAYCAST-DARK-GLASS-20261021.md. Siguiente paso: prueba física Preview34/OneUI, no más cambios visuales sin feedback.
+
+
+## Maestro definitivo40 ·C0/C1 ·22/10UTC
+Usuarioaprueba nuevo maestro; autoridad docs/master-40-20261021. Recuperados82blobs/árbol exacto115acc4 desde snapshotlocal091, referencia previa preservada. Inventario STATUS_40_DECISIONES.md distingue evidencia histórica56casos de verificaciones nuevas. C1 tests MasterC1ResultsTest conservados antes de corregir; rondaRED activa, sin resultados aún. JDK17.0.20.1/Gradle8.10.2/SDK35restaurados con hashes; sin CI ni firma nueva.
+
+
+## C1.1 ·código verificado22/10Argentina
+Código5c892537,71casos únicos correctos en rondas (34retenidosprimera+38segundacon3solapados+2nuevoscorregidos). Ver docs/MASTER-C1-20261022.md y verification/master-c1-20261022/tests.json para conteo exacto, fallos y límites. Material84/92/94/previewinmediato, filas1línea,consulta6/home3,segundotoque,dictadocondicional y⋯4accesos. Lint/APK35 activos, sin afirmar entrega aún. Reserva propia, PR18borrador, sinCI/main/force. Automatización creada pero PAUSADA por no poder verificar ejecutorWork; ningún reset de créditos inicia trabajo garantizado.
+
+C1.1gatesfinales:ce46279publicaestadoasíncronoconremember+LaunchedEffect después deProduceStateDoesNotAssignValue.2/2casosdedictado,lint0errores/13avisos/1infoyassembleRaycastPreviewcorrectos3m6.71casosúnicosenrondas, no71ejecutadosdenuevo. ADBsin dispositivos/Actionsrama0. EmpaquetarAPK35+ZIPcheckpointdocumentalcon193inputsidénticos ycertificado885838aa. No máscambiosdeproducciónantesdeentrega.
+
+Preview35entregaverificada:fuenteAPK/ZIPf497f8b06b357ebc0ad8474e8fd46e28c69e1f5a,193inputs/1067blobsZIP,paqueteindependiente35/certificado885838aa/zipalign16KB.71casosúnicos,lint0/13+1,assemble3m6. VerMASTER-C1-20261022.mdparaSHA256/capturas/límites. SinActions/main/force/nuevafirma. Automatizaciónpausada;continuaciónsoloenunasesiónreal.
+
+
+###22/10 ·C1.2/C2.1 y Preview36
+Recuperación1073blobs/árbol910754d5 y transferencia explícita con CAS/FFdelpropietarioanterior a work-master-recovery-20261022-cc97a1bd, respaldo delregistro/historia intactos. Producto7d9994b:motion140/100/foco/reducción, inspectorunificadofijable, formularioadaptativosinperderborrador, IAconversacionalpreservadaalbuscar, ActionPanelconselecciónactual, cierrescontextuales yaccionesIA48dp/FlowRow.59casos únicos dirigidos/0pendientes finales, lint0/13+1, assemble3m35s yreempaquetado12s sin recompilar. APK/ZIPexactos7d9994b/Preview36/certificado885838aa/zipalign16KB/ARM64verificados; fuente1102blobs/195inputs,8libscoincidenconAAR. SinActions/main/force/firmaprincipalnueva/R8 ni hardware. Ver RECOVERY-C2-20261022.md y final-7d9994b/tests.json. Siguiente: MediaSessionmetadata/progresoreal yeditoratajosconflictos; no repetir71dePreview35 ni59nuevossincambio.
+
+
+### Preview37 ·multimedia/contexto/teclado22/10
+Base eb0a85ab → códigoAPK/ZIPbcca55163a46e407d3899867f9c05507d479c5cb. MediaSessionmetadata/bitmap/progresocallbacks/controlespaqueteexacto, borradoresdeformularios/planesconrevalidación,cacheRAMdeIAportarea,yeditor4atajosconconflictos/persistencia/backups.48casos únicoscorrectosenrondasdirigidas;primerrojoréalcontrolesfueradeviewportteléfonocorregido,fixturesdesincronización/selectoretiquetacorregidos. Lint0/13+1yassemble4m28s;APK37certificado885838aa/ARM64/zipalign16KB,1128blobs/201inputs. Sin repetir59históricos, sinActions/main/force/firmasnuevas. CapturasRobolectricNATIVEAPI33;OneUI/Moto/IME/rotación/proveedor/serviciosrealesyrecuperacióndeherramientascompletapendientes. Ver PREVIEW37-INSPECTOR-20261022.md y verification/media-inspector-20261022/tests.json; entregarAPK/ZIPygalería. Reserva propia conservada; no trabajo en segundo plano al cerrar el hito.
+
+
+### Preview38 ·recuperación contextual y C3 ·22/10Argentina
+Base07fd823;productoAPK/ZIPe83b99d5fc594fd89f2e760266e1f30ad4ea9339. Propuestas/argumentos/resultadosyworkflowparcialguardables,sinreplay;ActivityScenario verificópropuesta/formulario/IA yse corrigió queryinicialqueocultabaconversaciónrestaurada. Borradoresincompletosseconservan,sin omitirsevalidaciónantesdeejecutar. Centroúnicoenrutalegacy;importaciónDataStoreatómicay8camposdeGlass/tecladofaltantesenbackup,consentimientos/grants/historialintactos.38casos únicoscorrectosenrondas,nose suman48dePreview37. Gatefinal3m42s,lint0/13+1,assemble38/firmapreview885838aa/zipalign16KB/ARM64/1170blobs/202inputs verificados. SecorrigieronfixturesdeActivity/relojvirtualyambigüedaddeimport;reintentodecachéfallidosin iniciargateporcierreprevio registrado. CapturasAPI33conprocedenciaexacta,sinhardware/servicios/proveedorreal/R8. Ver PREVIEW38-C2-C3-20261022.md yverification/c2-c3-20261022. Pendientecompletarrecursosdocumentales/tarjetas,muerte deproceso,SAF/temas ycertificaciónfísica;preservarreservaPR18ycheckpoints.
+
+
+### Preview39 · código dirigido listo para gates
+29casos únicos correctos; recuperación documental y de tarjetas, scope/revisión sensible y respaldo de temas visuales en almacenamiento existente. Fuente/bitmaps/grants no se confunden; revalidación de foco también cubre LifecycleService. Fixtures de alias/JSON/semántica y registro Activity corregidos, fallo de recomposición off-thread conservado y caso con mismas aserciones migrado a ActivityScenario.recreate. Lint/assemble pendiente, sin APK39 entregada todavía. OverlayService sin snapshot durable sigue limitación explícita de C2; no afirmar proceso muerto ni hardware real. Ver STATUS y verification/preview39-20261022.
+
+
+Preview39 · entrega verificada: código6b433ff/29casos únicos,lint0/13+1,assemble1m3s,APK39/certificado885838aa/V2/zipalign16KB/204inputs/1238blobs. APK y ZIP exactos, capturas nativas con procedencia, sin nuevo build tras documentación. C2: snapshotdurableOverlayService y todoslosrecursoslocales siguen pendientes; C3: SAF/proveedores/updatefísico. No afirmar proceso muerto/PDFinstrumentado/OneUI/serviciosreales. SinActions/main/force/firmas nuevas. Ver PREVIEW39-RECOVERY-SETTINGS-20261022.md.
+
+### Continuación integral C2–C5 ·22/10
+Terminal recuperada. HEAD documental69455b8 sincronizado conservando los cambios locales. Reserva propia comprobada por GitHub API y sin ejecución Java previa; runtime temporal desaparecido, restaurado JDK17/Gradle8.10.2/SDK35 en spotlight-runtime fuera del repo, caché también fuera del repo y de/tmp. Artefacto build-tools descargado otra vez tras detectar ZIP truncado y validar SHA1 oficial. No versión de dependencia modificada.
+Recuperado fixture SAF con dispatchResult+dump y validación estricta del codec; se publica como checkpoint PARCIAL antes de pruebas. Último resultado comprobado previo6/7; repetición actual únicamente PortableSafFlowTest en integral-saf-recovered.log, no declarada correcta todavía. Fuente nueva y evidencia saf-consent-first preservadas. Política vigente: continuar hacia candidata C5 sin Previews intermedias; no repetir suites correctas sin causa.
+
+C2/C3 privacidad: el observador de preferencias existente en SpotlightApp ahora descarta el snapshot recuperable al entrar en modo privado incluso con OverlayService cerrado, sin borrar conversaciones guardadas explícitamente. PrivateRecoveryPolicyTest añade el contrato; NO ejecutado aún. NativePaletteFlowTest añade captura de prefijo spot/Spotify y geometría flotante sin cambiar expectativas de los casos históricos. Firma885838aa recuperada y cotejada con keytool, no generada. Primera ronda SAF sigue compilando con caché reconstruida; no iniciar otra Gradle concurrente.
+
+C5 candidata40 preparada, todavía SIN compilar/verificar: raycastPreview no debuggable y R8/shrinkResources con reglas existentes, versionCode40; firma885838aa intacta y principal/Review sin cambios. Prueba privada1/1correcta y Python30/30. SAF sigue fallando en el fixture aunque UI informa éxito; customshadow/proveedor y canarios main/IO bajo diagnóstico, sin quitar aserciones. Logs de intentos conservados. Gate31suites pertinentes preparado para C2–C5, sin repetir baterías visuales históricas por comodidad. Matriz física específica nueva, todos los dispositivos/servicios marcados pendientes.
+
+SAF1/1correcto: causa del fixture confirmada por canarios main/IO y bytes2314 escritos: waitUntil sobre File no drena la cola Android pausada de Robolectric, mientras acceso semántico sí. Se eliminaron adaptadores experimentales y se volvió al proveedor/suppliers original; ahora espera el estado real de UI y conserva assertFile.exists/length/JSON/temas/alias/grants y preview/confirmación. Sin corrección especulativa de producción ni aserciones reducidas. Logs de intentos conservados, último verde saf-green. C5 gate31suites+lint+R8 a continuación; no APK certificada aún.
+
+Gate C5 dirigido finalizó:129casos en31clases,122correctos y7fallidos (2expectativas antiguas del filtro inferior en NativePaletteFlowTest;5AppNotIdle de Espresso en SAF/ToolTaskRecovery al ejecutarlos juntos). Lint/assemble no se ejecutaron porque Gradle se detuvo al fallar Test. No declarar129/129 ni APK nueva. Se corrigen las2expectativas para el filtro superior aprobado, manteniendo/refozando clipping/tamaño táctil/selección, y la evidencia ahora captura también el popup como raíz Android distinta. En curso solamente las3clases afectadas, con JVM nueva por clase (forkEvery1 en initScript del laboratorio) para verificar interferencia de sandboxes nativos sin cambiar tiempos límite ni suprimir aserciones. No se repiten las28clases correctas.
+
+C5:3clases afectadas17/17correctas con JVMporclase; consolidado129casosúnicoscorrectos en rondas+30Python, no129ejecutadosnuevamente.28clases correctas no repetidas. Se conservaron7fallos iniciales (2contrato antiguo/filtro y5EspressoAppNotIdle de ejecución conjunta). Capturas actuales de popup completo y componente explícito, sin sustituir fondo/íconos fixture por renders. R8/lint/assemble todavía pendientes; siguiente gate solo esas tareas, sin repetir tests.
+
+Entrega integral candidata40 (sin Previews intermedias): códigoAPK/ZIP6c89735,129casosúnicos en rondas+30Python,lint0/13+1,R8/noDebuggable/shrinkResources+assemble correctos4m45s. Gateposterior13s2tareas/49up-to-date, sin repetirtests/R8. Paqueteindependiente40/certificado885838aa/V2/zipalign16KB/8nativeAAR/1358blobs/206inputs verificados. APKsha99bd8c6de9bfc0ff78a1ea2e5abb6244592b3f58bc390a6362eb35d2c55882c7;ZIPsha1a2753962e7ac92704fcc3cc41a3a40001b8c45d6d60a6941e14590ca9a39c0b.12capturasRoboAPI33/NATIVE conSHAs yproducciónidéntica; nohumano/hardware/Spotify/Gemini reales. Matriz40 ymatrizfísica/auditoría/evidencias/R8mapping entregables, C5parcialhastaOneUI/Moto. PR18borrador yreserva work-master-recovery-20261022-cc97a1bd conservados, noActions/main/force. Siguiente: validación física descrita, después solo fallos demostrados/limitaciones compatibles; no repetir129casos ni reconstruir SDK/cache persistidos fuera de/tmp sin comprobar. SesiónsinGradleactivo al cerrar, no hay desarrollo de fondo prometido.
+
+
+##23/10 ·Inspector Obsidian/Atelier adaptativo ·PARCIAL
+Usuarioaprueba aplicar a la app real el diseño combinado y el acento por aplicación, sin APK obligatoria en este bloque. Base4bb1b70 recuperada exactamente1373blobs/treef3acfdda, sin trabajo local anterior perdido. Reserva propia194f094→8bdcb33 medianteCAS+FFsinforce; automatizacionespausadas y sinJava/Gradleprevio. InspectorTheme local en el inspector existente, color por identidad/destino y extracción bounded32px para apps desconocidas; contraste oscuro/claro, búsqueda/ActionPanel/errores conservados. ApplicationInspector antes desconectado ahora integra identidad/acciones/reproductor real; tapselecciona, noejecuta. PruebasnuevasInspectorAccentTest/AdaptiveInspectorFlowTest ESCRITAS, aún NO ejecutadas. SDK35/buildtools35/Gradle8.10.2 con hashesoficiales recuperados; módulojavac17presente, launcherrestaurado. Compilacióndirigida en adaptive-compile.log; sinresultadoalpublicar. SinAPK/nuevafirma/CI/main. Próximo: resolvererroresreales, pruebasdirigidas/lint/capturasnativas; no repetir129casoshistóricos.
+
+Inspector23/10: primercompilefalló porinferenciadebloqueComposable; corregido conlambda explícitatipada. Segundo intento abortóenconfiguración por metadata.bin temporal de caché; canariogradlehelp/stacktrace13s correcto sinborrar cachés ni cambiarversiones. Gate focalizado27casos planeados(7nuevos+20regresiones) ahoracompila/ejecuta; noresultadosaún. Icons8iOS reales50px en ficha/reproductor/toolbar delinspector, NOTICEyatribuciónenAjustes; iconosPMreales conservados. Selección nofijada sigueapp actual ycerrarActionPanel conserva ficha. SinAPK/firma/CI/main.
+
+Primera ronda dirigida27casos:23correctos/4fallos. InspectorAccent4/4,MediaInspector3/3,UnifiedInspector5/5 conservados. Adaptive2/3:PixelCopy no soportado porRobolectric; captura nativaRoborazzi reemplaza el mecanismo manteniendoassertRGB. NativePalette9/12:CtrlK activaba fichaApp yredimensionaba la paleta; corregido conidentidad explícitadeinspección UIguardable, sin afectarAppfijada. Repeticiónsolo15casos de2clases no llegóapruebas porCouldnotdeletekotlin-classes. Runtime/fuenteaislados fuera deraízWorksync; mismafuente/caché retenida y sincompilacionesconcurrentes. Gate15casosactivoen/workspace/spotlight-native-runtime-20261023/adaptive-tests-isolated.log; noverificadoaún.
+
+
+### Inspector adaptativo · 23/10 · verificación cerrada
+Código821ea952:27casos únicos correctos en rondas,12retenidos y15afectados repetidos correctamente(1m59s). Compilación Kotlin/Java Debug yRaycastPreview correctas; lintRaycastPreview0errores/13advertencias/1informativa(4m24s).436entradas idénticas entre fuente ybuild aislado. Tres capturas nativas Robolectric33/NATIVE con paquetesfixture, sin hardware ni servicios reales. Informe legible y continuidad exacta:docs/INSPECTOR-APP-ACCENT-20261023.md. Fuente/runtime aislados fuera de la raíz sincronizada; el Git local sigue en4bb1b70 con cambios, pero los checkpoints remotos ya los conservan: no descartarlos ni publicar la base por error. SinAPK/R8/firmas/Actions/main. C5físico sigue pendiente. Próximo: revisión de capturas o APK solicitada con certificado histórico, sin repetir suites no afectadas.
+
+
+Preview41 ·23/10: APK/ZIP código d30c7ad entregables; inspector adaptativo nativo/Icons8.27casos únicos previamente verificados reutilizados sin repetición injustificada; lint actual {"Warning": 13, "Information": 1}; R8/recursos reducidos/assemble correctos2m19s. Paquete41/certificadohistórico885838aa/V2/zipalign16KB verificados;1412blobsZIP/436inputs/8nativeAAR cotejados. C5 siguePARCIAL:sinADB/OneUI/Moto/servicios físicos. Detalle yhashes:docs/PREVIEW41-INSPECTOR-20261023.md. NoActions/main/force/firma nueva.
+
+
+23/10 ·SolidGraphite aprobado sustituye el default visual anterior: códigoAPK/ZIPbe76e8e,Preview42. D01/D02/D07/D09:barra60dp,material98/100/99 seleccionable,DarkGlasshistóricoopcional,filas título/subtítulo yActionPanelopaco conaccioneshabituales visibles.34casos únicos correctosenrondas20+18+13;lint0/14+1;R8/assemble5m54scorrectos;certificadohistórico/V2/zipalign16KB/1435blobs/449inputsverificados. Capturasantes/después,comparaciónROI/superposición50%/diferencias API33/NATIVEconfixtures. Datos físicos/servicios/fidelidadfinal/Ajustescompletos/migraciónicónicaespecializada siguenPARCIALES;C5no cerrado. Preferenciasguardadas preservadas: elegirApariencia→SolidGraphite paraaplicar nuevo perfil. Informeexacto:docs/SOLID-GRAPHITE-20261023.md. NoCI/main/force/permisos/firma nueva.
+
+
+##23/10 ·continuación funcional D27/D32
+Base remota d740a112 recuperada por cotejo GitSHA1; sin cambios productivos locales posteriores. Runtime JDK17/Gradle8.10.2/SDK35 recuperado; conservar17XML/APK43 sin afirmar entrega ni firma. Reserva propia work-master-recovery-20261022-cc97a1bd/CAS; GitCLI sin auth, GitHubAPI autenticado. Reproducción64168b6, fixba025c2, evidencia876408c, compartir5f8bec5. D27 relativo40+10 preparaba10: ahora50; selección/orden/ausentes/clamps probados, añadir paso validado/saveable hasta6. Ronda23:22correctos/1timeout porque test heredado esperaba ejecutar con primer toque. Fixture fortalecido; solo ese método repetido y correcto junto8SharedInputTest. D32ClipData/dedup/validación integrada a ShareContextActivity, sin nuevos permisos ni motores. Auditoría funcional40 actualizada con cinco estados; tareas externas/hardware no se declaran probadas. Gate Activity/capturas/lint/assemble44 activo; preservar resultado antes de nuevas tareas. SinActions/main/force/firmas nuevas.
+
+
+## 23/10 ·recuperación administrativa y D27 IA
+Autorización excepcional de propietario y alternativa explícita de conector condicional. Transferencia inicial9ddf781a con padreb7788d6a intacto, propietariowork-admin-20261023-58a89fd0-a03f-4918-8a41-056edbc1fa34. create_commit + update_ref(expected_sha,force=false) verificados en remoto, no GitCLI autenticado ni negociación terminal afirmada. Notasf6cb4e3f intactas, PR18borrador, sinmain/force/releaseajeno. Fixturecc6b4f65 publicado y3/3nuevamente correctos. EditorIAbaf996a0 11/11correctos: añadir/quitar/subir/bajar/omitir/argumentos/restauración; estructura protegida después de ejecutar. Extensión relativa20/20correctos(incluye11previos),volumen40+10→50,dependencia exigeVERIFIED,omisión/reordenamiento/baseline/clamps/cancelación/sinreplay. Gatefinal2/2regresionescorrectas;lintDebugofflinebloqueadopordependenciasAndroidTestnocacheadas,lintRaycastPreview0errores/15avisos/1infoen2m57s;sinassemble.Noseredujoelcontrol. Matriz8/25/7sin elevarD27, faltan resultados/dependencias generales/relativosdeotrosajustes. Preview44 ya cerradaenbf674880 conR8/firma885838aa/zipalign16KB,conservada sinrecompilar; no atribuirle funciones nuevas. Verdocs/D27-AI-CONTINUITY-20261023.md.
+
+CierreD27código6639a421:235inputsproductivosidénticosaremoto;20casosúnicoscorrectos+3fixture,2repeticionesdecancelaciónsincontardoble. GateDebuglintofflinebloqueadoconlogpreservado;lintPreviewcorrecto. Preview44APKshaoriginalconservado,ningunaAPKposterior.Siguiente:dependenciastipadasderesultadosentreherramientas.D27parcial,matriz8/25/7.
+
+
+##23/10 ·D27 cierre funcional y Preview45
+Base d3c221b9; core5fc672e4, inspector/grafo/disco/relativos39430eb2. DependenciasNUMBER/TEXTregistradas,sin interpretar texto; remapeo/missing/ciclos/tipos/omitidos; secuencial conconfirmaciónporacción,estadosexplícitos,fallo/cancelación,sinreplay,fencedurableyrecuperacióndesdedisco. Brillo20–255/volumen0–100relativosconbaseválida/observaciones/permisosrevalidados.60casosúnicoscorrectos(20previos+28nuevos+12regresiones),no sumarrondas. PrimerfalloJSONObjectenJVMcorregidoconRobolectric;fixturedecompilaciónparéntesiscorregido,logs/XMLconservados. Gatesoftware/R8/lint0errores15avisos1info/assemble4m32correctos. APK45/ZIPexactos39430eb2:1514blobs/237inputs,certificado885838aa/V2/zipalign16KB/noDebuggable/ARM64,8libsidénticasa44;mappingguardadoenevidencia. Preview44intacta,sinCI/main/force/permisos/dependenciasnuevos. Matriz9completas/25implementadasinsuficientes/6parciales: D27completaporcontratosoftware;D40físicopendiente. D22avanzada:noteconfirmadayregistroIDnuevotextoexactoverificadoantesdeVERIFIED;cadena nativa realRobolectric texto→nota→cálculosinreplayprobada. EfectosexternosPREPARED/REQUESTEDparan,noautoéxito. Estado,hashes,límitesenD27-FUNCTIONAL-CLOSURE-20261023.md. Siguientebloquefuncional:D22postcondicionesobservablesporcapacidad,distinguirsolicituddeefecto;seguirD26sin AppFunctionsficticio ni permisosnuevos. PR18borradoryreservapropiaconservados.
+
+
+## 2026-10-23 — UI fixes awaiting restored runtime
+Source changes and four new regression cases prepared for split-inspector height and the home hint in Saved. See docs/UI-INSPECTOR-HOME-FIXES-20261023.md. Android execution blocked before Gradle: prior runtime helper/SDK/caches absent. No new passing test, no APK, matrix unchanged9/25/6. Next: run ContextSplitHeightTest, ProductEntryPointsTest, MediaInspectorFlowTest and SpotlightPanelLayoutTest in Android environment; finish global scroll/footer validation, then D28.
+
+
+## 23/10 — Ampliación aprobada: integraciones y Chromecast
+Orden vigente: validar errores08f19055 → D28 → D26 → Spotify Search/reproducción → Google Cast/Remote v2 experimental → D35/D36/D37 y las25 decisiones con pruebas insuficientes → cierre real de las40. Alcance y límites en docs/PRIORIDADES-INTEGRACIONES-20261023.md. Una configuración externa de Spotify/Chromecast no bloquea trabajo independiente; primero siguen siendo obligatorias las regresiones UI. Runtime Android anterior aún ausente; sin nuevas ejecuciones ni promociones, matriz9/25/6 y Preview44/45 conservadas.
+
+
+## 23/10 — Gate #54: test compilation correction, no CI rerun
+Single authorized directed-tests run40048431940 on b0252a94: production Kotlin/Java compiled; unit-test Kotlin failed on five DpRect.height references in ContextSplitHeightTest. Replaced with bottom-top helper, preserving assertions and thresholds. Static review found no other occurrence across243 test sources. No Android tests executed; quota prevented artifact upload, original GitHub/local job logs preserved. Evidence: docs/verification/mandatory-gate-20261023/gate-54-failure.md. No production changes, new CI/APK or matrix promotion;9/25/6 unchanged. Next gate only with new explicit authorization.
+
+
+## Preview 50 — diagnóstico Spotify y entrega bloqueada (2026-10-25)
+
+- Fuente APK/ZIP `965646a9c53717075708c81a885556b2f02fd374`; 20/20 casos dirigidos, lint0errores14advertencias y Raycast R8 correcto; paquete50/certificado histórico/16KiB/hashes verificados.
+- El corte físico al confirmar NO está resuelto. Se corrigió solamente el descarte del motivo de error. Sin cuenta real ni Actions.
+- APK, ZIP y evidencia en `/workspaces/.spotlight-tools/delivery50`; entrega NO realizada por `Debugger unattached`. Codespace aún sin parada confirmada. Recuperar publicación existente sin recompilar ni duplicar; ver `docs/verification/preview50-diagnostics.md` y `.json`.
+
+
+### Preview 50 — entrega recuperada (2026-10-25)
+
+Publicación privada completada una vez desde el mismo Codespace vía navegador de Work, sin recompilar: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-91aa708fe2bc7c721410. Seis assets uploaded y hashes del servidor cotejados. Fuente APK/ZIP965646a9, 20/20 casos y lint0E14W; el corte de reproducción real sigue pendiente. Ver docs/verification/preview50-diagnostics.md para límites y procedencia. Conservar Preview49, PR18borrador y matriz9/25/6.
+
+
+## 25/10 — Preview 51 entregada; refinamiento visual nativo
+
+APK/ZIP exactos fe325812d32a83395c7882ff762f513526d9ae69 publicados una sola vez en Release privada borrador423602894: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-df0471cf57ce4d3a8cef. SDK oficial App Remote0.8.0 y consentimiento/cancelación, sin exigir activar dispositivo Web API para cada canción. 14/14 pruebas dirigidas sobre Kotlin ac370d98; código Kotlin idéntico en APK51. R8/lint correctos12m24s,0E14W, paquete independiente51/certificado histórico885838aa/16KiB/noDebuggable/hash servidor verificados. Primer fallo R8 de mapper Jackson opcional/anotación invisible corregido solo con tres reglas exactas; primer log conservado. Guarda ZIP corregida por falso positivo de nombres de informes secrets-*.log; rutas y archivos privados siguen rechazados. Sin cuenta real/dispositivo ni solución física del corte de música afirmada, sinActions. Preview50/49 intactas, PR18borrador y matriz9/25/6. Skills nativas seleccionadas/adaptadas con licencias, referencias y compatibilidad; no instaladores/hooks ni framework. Próxima iteración: reproducir geometría de filtros Spotify a240dp/font1.5 con componente real, capturar antes/después y corregir solo defecto demostrado.
+
+
+## 25/10 — Iteración visual nativa verificada
+
+FlowRowSpotifye1080965 corrige filtroLista fuera de240dp/font1.5; capturas comparables reales en docs/verification/native-visual-20261025. 28casosUI únicos correctos en cohortes, sin sumar repeticiones. Foco de fixture corregido con modoKeyboard oficial; IME6719bd55 revisa headerreal/Volver48dp+ocultación nativa, sin alterar producto por textoobsoleto. Lint0E14W9m8s; sin dispositivo/cuenta real ni promoción9/25/6. Preview51fe325812 entregada intacta. Preview52 preparada con Kotlinproductivo idéntico al probado, solo versionCode52 y evidencia añadidos; compilación/firma/entrega52 pendientes. NoActions/main/force/permisosnuevos.
+
+
+## Preview52 — entrega verificada (continuidad 25/10/2026)
+
+- Fuente congelada APK/ZIP: `ffbb89d173a41492d21bb20431b993b3ddc59db1`. Kotlin productivo idéntico al de las regresiones publicadas; sólo versión52 y evidencia posterior.
+- Entrega privada en borrador: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-55ad4906530fdbaeb3da. Seis archivos subidos y cotejados con los digests del servidor. Preview51 preservada.
+- `:app:lintRaycastPreview :app:assembleRaycastPreview --offline`: BUILD SUCCESSFUL,13m32s; lint0 errores/14 advertencias. Paquete independiente/versionCode52/certificado885838aa…/no debuggable/alineación16KiB/ZIP mismo SHA comprobados.
+- 28 pruebas UI únicas aprobadas en cohortes dirigidas,0 fallos/errores/omitidas; no se suman repeticiones. Capturas reales antes/después del filtro estrecho con fuente1.5 en docs/verification/native-visual-20261025. No son capturas de dispositivo físico.
+- Skills propias/adaptadas versionadas; revisión auxiliar independiente no ejecutada por límite de uso de plataforma, sin aprobación inventada.
+- No validación física/cuenta Spotify real ni garantía de solución del corte de audio. Sin mensajes WhatsApp reales, proveedor vinculado desactivado. Sin Actions, main o force; PR18 borrador y matriz9/25/6 intactos.
+- Siguiente validación: instalar Preview52 en Tab A9+, autorizar App Remote y comprobar reproducción con Spotify en segundo plano, apertura/cierre/restauración y geometría con IME. No volver a compilar idéntico SHA.
+
+
+## Preview53 — ventana Raycast corregida, fuente por congelar
+
+Publicado b44c154: fondo de trabajo legible sin borrar preferencias; altura de lista medida, selección plana y metadatos discretos; inspector con encabezado fijo y scroll propio por destino.34 UI únicas correctas,5m26s; baseline3 casos/2 fallos guardado. Pulido787b476: Información/Favorita compactas, acceso duplicado a acciones retirado sólo del inspector integrado, Ctrl+K/footer conservados;11 regresiones repetidas correctas,4m36s, exigida visibilidad de Buscar en Spotify. Total34 únicos, no45. Capturas completas equivalentes en docs/verification/raycast-window-20261025. Primer fallo de compilación y logs originales retenidos. Versión Preview53 preparada; lint/ensamblado/firma/entrega pendientes. Mecanismos Spotify intactos, fallo de reproducción no certificado resuelto. Sin pruebas físicas/Actions/main/force, PR18 borrador, matriz9/25/6 inalterada.
+
+
+## Preview53 — entrega privada verificada
+
+Fuente APK/ZIP `543dc630dca70f6d9ad3ced8bbd96a58d8298d1b`. `:app:lintRaycastPreview :app:assembleRaycastPreview --offline`: BUILD SUCCESSFUL15m54s, lint0 errores/15 advertencias. Verificados paquete independiente,versionCode53,certificado885838aa… histórico,no debuggable,alineación16KiB y ZIP del mismo SHA sin rutas privadas. Seis archivos subidos y digests del servidor cotejados en https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-7583868bdcb62b572b6e.34 UI únicas en cohortes, última ronda11 repetidos correctos; no sumar45. Originales de fallos y mapping R8 incluidos en evidencia. Capturas nativas completas comparables versionadas, sin cuenta Spotify real ni dispositivo físico; la reproducción Spotify sigue pendiente. No Actions/main/force ni nuevos permisos. PR18 borrador y matriz9/25/6 conservados. Checkout persistente a sincronizar y Codespace a detener después de la entrega. Próxima comprobación: escena del propietario en Tab A9+, scroll/IME/acciones de app y error real de reproducción Spotify; no reconstruir idéntico SHA.
+
+
+## Preview54 — composición nativa congelada para entrega
+
+UI `129541fde87919cc8661ba8dc5dedb223f7f4d94`: barra integrada, resultados con metadatos en línea, cápsula de comandos inferior derecha, búsqueda en sidebar de Ajustes y vista de archivos con proporción42/58 y tabla seleccionable.66 casos únicos con XML consolidado sin fallos/errores/omitidos en cohortes; no contarlos como una ejecución única. Últimas rondas28/28(1m44) y5/5(53s), originales de fallos preservados. Capturas reales API33 NATIVE; rechazo visual de filas estiradas corregido y cubierto por geometría/etiquetas/texto150%. Ver docs/verification/preview54-reference-composition.json. Siguiente operación autorizada: lint y assembleRaycastPreview desde este commit congelado,versionCode54 y certificado885838aa…; registrar entrega solo después de verificarla. Spotify real y dispositivo físico pendientes, proveedor WhatsApp no oficial desactivado. No Actions/main/force/permisos/dependencias; PR18 borrador y matriz9/25/6 conservados.
+
+
+### Preview54 — reserva de acción del inspector fijado
+
+En revisión final se conservó el abridor explícito de una app fijada cuando la selección pasa a otra aplicación, sin duplicar el principal normal. Fuente probada `bbef6f31ce85cbe703438fed0f11f3db3e07a268`:12/12 correctos(2m23),67 casos únicos consolidados0 fallos/errores/omitidos. Captura de búsqueda idéntica por hash; no repetir rondas aprobadas. Se canceló solo el build propio de a6f7d0f4 durante lint(exit143), antes de generar o entregar APK; log conservado. Reanudar lint/assemble desde este nuevo commit congelado, manteniendo versionCode54 aún no distribuida, paquete y certificado históricos. Sin Actions/main/force ni nuevas capacidades.
+
+
+### Preview54 — perfil experimental explícito por bloqueo R8
+
+Dos intentos de la fuente0989f3c3 perdieron el daemon en minifyRaycastPreviewWithR8 (heap2GiB y3GiB/in-process). Kotlin/Java compilaron; lint0 errores/16 advertencias,67 UI únicas conservadas. Sin causa de memoria confirmada ni falta de disco registrada. Se añade solo para Raycast Preview `-Pspotlight.preview.optimize=false`: sin R8/shrink, sufijo experimental, mismo paquete/versionCode54/certificado y no debuggable. El perfil normal y Release conservan R8 activado. Mantener los fallos y declarar el perfil; no presentarlo como build R8 aprobado. Los fuentes app/src permanecen idénticos al checkpoint probado bbef6f31.
+
+
+## Preview54 — entrega experimental verificada (26/10/2026)
+
+APK y ZIP fuente exactos `ecbfdc8a927c4442135542090ad2c755fa03a1fc`: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-2770747db701386cd5bc. Seis assets uploaded y digests del servidor comprobados. Ensamblado offline experimental correcto2m43s(10 tareas ejecutadas/40al día), sin R8/shrink; mismo paquete independiente/versionCode54/certificado885838aa…/no debuggable/16KiB y ZIP sin rutas privadas. Lint existente del mismo SHA0E16W;67 UI únicas correctas en cohortes, sin repetir ni sumar ejecuciones. APK SHA256e8e8e5d0074c8b1ae4448397bfffd87d2c36af0f99d2163315ee3a4951f69372; ZIP907f7599b779e91b36245e6b05979d21f37b05e426df7d1ede5f4dd0add20319.
+
+Se conservaron los dos fallos R8 y el primer fallo experimental en mergeDex. El ensamblado separado de lint, heap2GiB/SerialGC/worker1 y proceso desacoplado terminó; esto no demuestra la causa de los daemons perdidos. Perfil optimizado continúa BLOCKED. Falta inicial de /usr/bin/time bloqueó solo el lanzador, antes de Gradle; medidor builtin utilizado. No nuevas funciones/rediseños, Actions, permisos, dependencia ni firma nueva. Sin dispositivo/cuenta Spotify real, reproducción pendiente; WhatsApp vinculado desactivado. PR18 borrador y matriz9/25/6 conservados. Cierre solicitado para Antigravity: publicar evidencia, preparar notas y liberar únicamente reserva propia mediante script/protocolo; comprobar remoto y detener Codespace.

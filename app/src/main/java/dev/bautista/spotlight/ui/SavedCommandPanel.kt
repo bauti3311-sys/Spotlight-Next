@@ -12,6 +12,8 @@ import dev.bautista.spotlight.search.Action
 import kotlinx.coroutines.*
 
 @Composable fun SavedCommandPanel(app:SpotlightApp,c:Config,id:String,onAction:(Action)->Unit) {
+ val template=remember(c.routines,id){CommandTemplates.parse(c.routines).singleOrNull{it.id==id}}
+ if(template!=null){SavedTemplatePanel(app,c,template,onAction);return}
  val command=remember(c.routines,id){Workflows.parse(c.routines).singleOrNull{it.id==id && NativeCommands.isNative(it)}}
  var review by remember(command){mutableStateOf<NativeCommands.Review?>(null)}
  val scope=rememberCoroutineScope()

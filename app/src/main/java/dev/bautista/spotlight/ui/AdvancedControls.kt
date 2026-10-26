@@ -61,6 +61,7 @@ import kotlinx.coroutines.*
                 if(!confirm)TextButton(onClick={confirm=true}){Text("Detener aplicación · Shizuku")}
                 else Surface(color=MaterialTheme.colorScheme.errorContainer,shape=MaterialTheme.shapes.medium){Column(Modifier.padding(12.dp)){Text("Detener ${d.label}");Text("Se detendrán servicios y notificaciones; puede perderse estado sin guardar. Volvé a abrirla para reanudarla. Los paquetes esenciales están protegidos.");Row{TextButton(enabled=!busy,onClick={confirm=false;scope.launch{busy=true;try{app.advancedBackend.stop(d.packageName,true);error="La solicitud de detención se completó."}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message.orEmpty()}finally{busy=false}}}){Text("Confirmar detención")};TextButton(onClick={confirm=false}){Text("Cancelar")}}}}
             }
+            AppCapabilityActions(d.packageName,onAction)
             HorizontalDivider()
             TextButton(onClick={permissionsExpanded=!permissionsExpanded}){Text("Permisos declarados · ${d.permissions.size}")}
             if(permissionsExpanded){if(d.permissions.isEmpty())Text("No declara permisos.");d.permissions.take(80).forEach{(permission,granted)->Text("${permission.substringAfterLast('.')} · ${if(granted)"concedido" else "no concedido"}",style=MaterialTheme.typography.bodySmall)}}

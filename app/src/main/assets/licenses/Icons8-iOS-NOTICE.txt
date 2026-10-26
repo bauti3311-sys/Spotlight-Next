@@ -1,0 +1,16 @@
+Inspector icons: Icons8 iOS Style
+https://icons8.com/icons/ios
+https://icons8.com/license
+
+PNG 50x50 supplied by Icons8 via https://img.icons8.com/ios/50/e7e9ef/ on 2026-10-23.
+Used with attribution and an in-app link in Settings. These icons are not licensed under the MIT/ISC licenses of other icon families in this project. Do not redistribute them as a standalone icon pack.
+
+Source names: skip-to-start, end, play, pause, info, star, pin, external-link, settings, delete-sign.
+Original application icons are still loaded from Android PackageManager, not replaced by these action glyphs.
+
+Palette additions on 2026-10-23, same source/license/attribution: search--v1, microphone, bookmark-ribbon, ellipsis, copy, link, chevron-right, reply-arrow, share.
+Common commands migrated; specialist glyphs outside this scene retain their existing licensed artwork.
+
+Additional same-source scene controls: security-checked, speech-bubble.
+
+Settings navigation additions on 2026-10-23: monitor, keyboard, squared-menu, sparkling, horizontal-settings-mixer--v1. Same Icons8 iOS50 source and attribution.

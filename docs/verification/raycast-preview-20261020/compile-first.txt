@@ -1,0 +1,49 @@
+
+Welcome to Gradle 8.10.2!
+
+Here are the highlights of this release:
+ - Support for Java 23
+ - Faster configuration cache
+ - Better configuration cache reports
+
+For more details see https://docs.gradle.org/8.10.2/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl
+> Task :app:checkRaycastPreviewAarMetadata
+> Task :app:generateRaycastPreviewResValues
+> Task :app:mapRaycastPreviewSourceSetPaths
+> Task :app:generateRaycastPreviewResources
+> Task :app:mergeRaycastPreviewResources
+> Task :app:packageRaycastPreviewResources
+> Task :app:parseRaycastPreviewLocalResources
+> Task :app:createRaycastPreviewCompatibleScreenManifests
+> Task :app:extractDeepLinksRaycastPreview
+> Task :app:processRaycastPreviewMainManifest
+> Task :app:processRaycastPreviewManifest
+> Task :app:processRaycastPreviewManifestForPackage
+> Task :app:processRaycastPreviewResources
+> Task :app:compileRaycastPreviewKotlin
+e: file:///tmp/spotlight-raycast-build/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt:889:44 'val maxWidth: Dp' cannot be called in this context with an implicit receiver. Use an explicit receiver if necessary.
+
+> Task :app:compileRaycastPreviewKotlin FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileRaycastPreviewKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7m 2s
+15 actionable tasks: 15 executed

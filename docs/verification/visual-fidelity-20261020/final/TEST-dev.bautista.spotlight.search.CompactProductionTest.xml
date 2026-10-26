@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.CompactProductionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T03:06:34" hostname="e37c7bc9f734" time="0.264">
+  <properties/>
+  <testcase name="pdfPermissionRequirementRemainsVisibleWithNoStorageGrant" classname="dev.bautista.spotlight.search.CompactProductionTest" time="0.036"/>
+  <testcase name="naturalActionsAndExplicitAiComeFromProductionWithoutExecuting" classname="dev.bautista.spotlight.search.CompactProductionTest" time="0.093"/>
+  <testcase name="everyWhatsAppSnapshotKeepsExactAppWithoutAutomaticDefinitions" classname="dev.bautista.spotlight.search.CompactProductionTest" time="0.135"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

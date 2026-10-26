@@ -1,0 +1,103 @@
+{
+  "purpose": "Experimental native visual iteration with official local Spotify playback",
+  "tested_product_source_sha": "e1080965a5622016261d6f47e855632c3c0cb2c2",
+  "tested_ime_fixture_sha": "6719bd557630f7418fe55e824e00d501d570bd1c",
+  "build": "VERIFIED",
+  "preview_version_code": 52,
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "ui_tests": {
+    "unique": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "groups": {
+      "SpotifyFilterGeometryTest": 3,
+      "SpotifyOverlayRecoveryRegressionTest": 4,
+      "AppActionsSectionTest": 3,
+      "ApplicationInspectorAccessibilityTest": 1,
+      "AdaptiveResultsGeometryTest": 5,
+      "ContextSplitHeightTest": 2,
+      "ProductEntryPointsTest": 4,
+      "AdaptiveInspectorFlowTest": 3,
+      "QuickLookTouchTargetTest": 2,
+      "OverlayActionsImeTest": 1
+    },
+    "cohorts": "3 final filter cases + 8 unchanged-production cases + 16 surface cases + 1 corrected IME case; repeated cases counted once"
+  },
+  "base_sdk_tests": {
+    "count": 14,
+    "source": "ac370d9820c1d7eed49da6b0aa44c9988b802835",
+    "overlap_with_ui": 4,
+    "not_a_single_new_42_case_run": true
+  },
+  "lint_on_e108": {
+    "errors": 0,
+    "warnings": 14,
+    "gate_duration": "9m8s"
+  },
+  "physical_device_tested": false,
+  "real_spotify_account_tested": false,
+  "reported_audio_interruption_resolved": false,
+  "whatsapp_messages_sent": false,
+  "github_actions_used": false,
+  "matrix": "9/25/6 unchanged",
+  "source_sha": "ffbb89d173a41492d21bb20431b993b3ddc59db1",
+  "build_duration": "13m32s",
+  "lint": {
+    "errors": 0,
+    "warnings": 14
+  },
+  "identity_checks": {
+    "package": true,
+    "version_code": 52,
+    "historical_certificate": true,
+    "non_debuggable": true,
+    "zipalign_16k": true,
+    "source_archive_same_commit": true,
+    "no_private_source_paths": true
+  },
+  "release": {
+    "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-55ad4906530fdbaeb3da",
+    "draft": true,
+    "assets": [
+      {
+        "name": "README.txt",
+        "sha256": "44802cb47e1415f83554080b657a23255327344d4e319e0aa207f220a9c84575",
+        "bytes": 1381,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-55ad4906530fdbaeb3da/README.txt"
+      },
+      {
+        "name": "SHA256SUMS",
+        "sha256": "0c5ef78c6f64626649e27c81a2878165935f4d5807c003ff7362262330a0c8fb",
+        "bytes": 318,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-55ad4906530fdbaeb3da/SHA256SUMS"
+      },
+      {
+        "name": "SOURCE_COMMIT",
+        "sha256": "adb8b0363cd29c58debdb2c5604e24639b6a1ba759660151ad913608bd86e694",
+        "bytes": 41,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-55ad4906530fdbaeb3da/SOURCE_COMMIT"
+      },
+      {
+        "name": "Spotlight-Next-Preview52-evidence.zip",
+        "sha256": "2cbc2734977a547093947183067b7e08945906719d9b0fead704031afa9f99ff",
+        "bytes": 5473164,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-55ad4906530fdbaeb3da/Spotlight-Next-Preview52-evidence.zip"
+      },
+      {
+        "name": "Spotlight-Next-Raycast-Preview-52-ffbb89d1.apk",
+        "sha256": "4d9d32fbeb6e427b0fbf48613f5af3fc2d1fe99daa6d8e14c9b929fcbe8b2858",
+        "bytes": 73385641,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-55ad4906530fdbaeb3da/Spotlight-Next-Raycast-Preview-52-ffbb89d1.apk"
+      },
+      {
+        "name": "Spotlight-Next-source-ffbb89d1.zip",
+        "sha256": "8d05a4b706b4f3f7afd5b184f64219652075a2e024afef63ed863c6916aa415f",
+        "bytes": 9459026,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-55ad4906530fdbaeb3da/Spotlight-Next-source-ffbb89d1.zip"
+      }
+    ]
+  },
+  "independent_skill_forward_review": "Not executed: auxiliary agent reached platform usage limit; no pass claimed."
+}

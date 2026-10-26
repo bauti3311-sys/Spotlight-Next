@@ -14,9 +14,15 @@ import dev.bautista.spotlight.data.WindowSizePolicy
 @Composable fun WindowSizeSettings(c:Config,update:(Config)->Unit) {
     val screen=LocalConfiguration.current
     Column(Modifier.fillMaxWidth().testTag("window-size-settings"),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Text("Resultados de búsqueda",style=MaterialTheme.typography.titleSmall)
+        Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            FilterChip(!c.compactSearchResults,{update(c.copy(compactSearchResults=false))},label={Text("Adaptativa")})
+            FilterChip(c.compactSearchResults,{update(c.copy(compactSearchResults=true))},label={Text("Compacta")})
+        }
+        Text("La búsqueda crece con las coincidencias y el espacio disponible. El inicio conserva tres sugerencias.",style=MaterialTheme.typography.bodySmall)
         Text("Ancho de la ventana",style=MaterialTheme.typography.titleSmall)
         Text("Se adapta a la orientación y al espacio disponible.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-        Slider(WindowSizePolicy.displayScale(c,screen.screenWidthDp,screen.screenWidthDp>screen.screenHeightDp),
+        GlassSlider(WindowSizePolicy.displayScale(c,screen.screenWidthDp,screen.screenWidthDp>screen.screenHeightDp),
             {update(c.copy(windowScale=it.coerceIn(0f,1f)))},
             Modifier.testTag("window-width-slider").semantics{contentDescription="Ancho de la ventana"},valueRange=0f..1f)
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) { Text("Compacta",style=MaterialTheme.typography.labelSmall);Text("Amplia",style=MaterialTheme.typography.labelSmall) }

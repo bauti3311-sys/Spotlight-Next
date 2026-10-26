@@ -97,3 +97,35 @@ Decisiones 4, 16, 18 y 20: se mantiene estado parcial. ToolProtocol exige finali
 Gemini b8e213e: 21 pruebas verificadas y lintDebug sin errores. Multimedia 4c72b3f: evita elegir la primera sesión arbitrariamente; prioriza única compatible reproduciendo, o única compatible pausada. Ambigüedad impide enviar; consulta dinámica en cada acción. 4 fallos previos reproducidos; 28 pruebas dirigidas correctas incluyendo protocolo Gemini/planes/capacidades. Decisiones 16, 20, 27 y 38 siguen parciales: falta selector explícito de reproductor y validación real. Detalle en MEDIA-TARGET-20261019.md.
 
 Lint Debug de multimedia aprobado: 0 errores, 10 advertencias y 1 informativa; evidencia preservada junto a las 28 pruebas.
+
+
+### Raycast Preview — checkpoint de entrega20/10
+Fuente a2ef090:65/65dirigidas,lint0errores/10advertencias/1informativa y APK independiente verificados localmente. Inspector compacto corregido, QuickLook/teclado/MediaSession conservados. Evidencia y hashes: docs/RAYCAST-BUILD-20261020.md y docs/verification/raycast-preview-20261020/final. Decisiones9/10/18/20/34/35 conservan alcance parcial: sin instalación OneUI, servicios/proveedor reales ni validación integral. Sin CI/main/merges. Prioridad siguiente: prueba física de esta entrega.
+
+
+### Refinamiento de producto — Preview30
+Fuente fc7f885,101pruebas dirigidas,lint0errores/11advertencias/1informativa,APK ARM64/firma/versionCode30/ZIP exacto verificados. Geometría por mínimos400/280, divisor acotado, filas48dp, inspector extraído con acción principal y grupos/IDs explícitos. Capturas antes/después nativas en docs/verification/design-review-20261020. APK86,5MB vs258MB (66,5%menos), no medición de RAM/batería. Firma885838aa preservada y respaldo privado persistente; CI preparado exige secreto dedicado aún no configurado, sin ejecución. Informe y límites: docs/PRODUCT-DESIGN-REVIEW-20261020.md. OneUI y referencia visual pendiente;40decisiones siguen parciales, disponibilidad/riesgo continúan en los ejecutores existentes.
+
+
+### Fidelidad visual A/B — cierre del código20/10
+Fuente f56f665:112dirigidas/22suites sin fallos/errores/omisiones,lintPreview0errores/11advertencias/1informativa y assembleRaycastPreview correctos. Capturas nativas comparadas contra B adjunta; barra inset, filas apiladas/tipo alineado, inspector jerárquico y rail azul de Ajustes. Preview31/ARM64/certificado885838aa conservado. Documentación final y capturas se incluyen en checkpoint posterior con las mismas entradas compilables; APK/ZIP exactos se verifican al entregarlos. Sin CI/main/dependencias nuevas.9/10/18/20/34/35 siguen parciales; OneUI/servicios reales/rendimiento físico pendientes. Ver docs/VISUAL-FIDELITY-20261020.md.
+
+### Native Palette21/10 — verificación local
+Decisiones9/10/18/26/29/35 siguen parciales. Fuente61a6339:123casos únicos correctos en rondas dirigidas (122+1); lista de una columna, Actions flotante por demanda, filtro independiente, selección por ID, submenús/retorno y controles48dp; regresiones de arrastre/cancelación, teclado, herramientas y multimedia conservadas. Lint/APK aún en ejecución al registrar; OneUI/IME/servicios y rendimiento físicos no verificados. No se declara cierre de las40decisiones ni integración nueva.
+
+Native Palette61a6339:lintRaycastPreview completado,0errores/12avisos/1informativa; se conservan estados parciales y límites físicos. Ensamblado aún en curso al guardar este checkpoint.
+
+Native Palette — entrega21/10: APK/ZIP exactos61a6339 verificados, Preview32/ARM64/firma885838aa/zipalign16KB,123casos únicos correctos en rondas y lint0errores/12avisos/1informativa.9/10/18/26/29/35 siguen parciales por validación física y servicios. Sin funciones nuevas en el cierre; siguiente prioridad revisar esta Preview físicamente. Ver RAYCAST-NATIVE-PALETTE-20261021.md y verification/native-palette-20261021/delivery.
+
+21/10 · ActionPanel superpuesto y búsqueda, código6af47a0: avances en3/9/10/12/18/26/29/35. Se conservan motores/registro/ejecutor; ranking exacto/prefijo/fuzzy/alias, sugerencias locales, autocompletado no ambiguo y superficie hija de acciones sin reordenar la base.71casos únicos verificados en rondas23+48 y capturas nativas API33. Siguen parciales: falta física OneUI, servicios reales, latencia/RAM/jank medidos; no se declaran completas40decisiones. Lint/APK33 aún pendientes en este checkpoint.
+
+Cierre del bloque21/10:lint0errores/13avisos/1informativa y APKRaycastPreview33/ZIP fuente exacto560608f verificados;191inputs y969archivos fuente, firma885838aa conservada. Evidencia y límites en FLOATING-ACTIONS-SMART-SEARCH-20261021.md. Las decisiones citadas siguen parciales por validación física/servicios/rendimiento pendientes; no cambia su estado global por la entrega.
+
+
+Continuación21/10: decisiones10/18/26/29 conservan estado parcial. Tres contratos Compose adicionales aprobados en rondas: CtrlF/filtro/Enter/CtrlK, identidad ante reordenamiento y eliminación, y Back del submenú con restauración/liberación. Sin funciones ni producción nuevas; no sustituye OneUI/IME/rotación/toque exterior físicos. Evidencia action-navigation-20261021; APK33/560608f sigue vigente.
+
+
+Raycast Dark Glass21/10: decisiones9/10/18/19/20/29/35 permanecen parciales, con nuevo material/configuración de opacidad persistente, ajustes8áreas y ActionPanel con foco/gestos conservados.56casos únicos verificados en rondas; no implica prueba OneUI, proveedor, permisos reales o rendimiento físico. Ver RAYCAST-DARK-GLASS-20261021.md. Lint/entregaPreview34 pendientes en este checkpoint.
+
+
+Entrega Glass34: cc1c28d APK/fuente,lint0errores/15advertencias/1info y56casos únicos acreditados por rondas; cifras no acreditan OneUI/proveedor/rendimiento físico. Decisiones siguen parciales; controles reales y privacidad preservados. Ver informeGlass y evidencia final.

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-22T17:07:25" hostname="9f8b8cbf2200" time="2.289">
+  <properties/>
+  <testcase name="switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests" classname="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" time="0.534"/>
+  <testcase name="phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn" classname="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" time="0.297"/>
+  <testcase name="pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout" classname="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" time="0.523"/>
+  <testcase name="pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection" classname="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" time="0.49"/>
+  <testcase name="pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp" classname="dev.bautista.spotlight.ui.UnifiedInspectorFlowTest" time="0.445"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+View.captureToImage Could not find window for view. Falling back to View#draw instead of PixelCopy(If you are using Material3 dialogs, this is expected).
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+View.captureToImage Could not find window for view. Falling back to View#draw instead of PixelCopy(If you are using Material3 dialogs, this is expected).
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+View.captureToImage Could not find window for view. Falling back to View#draw instead of PixelCopy(If you are using Material3 dialogs, this is expected).
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

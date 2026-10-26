@@ -1,0 +1,732 @@
+{
+  "unique_cases": 129,
+  "latest_status": {
+    "dev.bautista.spotlight.ai.TargetMediaToolTest#explicitlyConfirmedTargetNeverControlsAnotherApplication": "passed",
+    "dev.bautista.spotlight.ai.TargetMediaToolTest#missingTargetDoesNotFallBackToAnotherPlayer": "passed",
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest#realSessionMetadataIsContextualAndPinSurvivesSearchAndWidthChange": "passed",
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest#absentSessionDoesNotCreateAnEmptyInspector": "passed",
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest#phonePlayerFitsAndEscapeRestoresQuery": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection": "passed",
+    "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp": "passed",
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData": "passed",
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#visibleAppearanceMergeDoesNotResetUnrelatedPreferences": "passed",
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries": "passed",
+    "dev.bautista.spotlight.data.SettingsPersistenceTest#staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint": "passed",
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#invalidImportIsAtomicAndLegacyPartialBackupKeepsNewFields": "passed",
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#backupDoesNotContainAuthorizationOrPrivateHistory": "passed",
+    "dev.bautista.spotlight.data.PortableImportTransactionTest#fullGlassAndKeyboardRoundTripPreservesLocalConsentAndGrants": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#completionRequiresAnUnambiguousLiveCandidate": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#configurationWarningsNeverOutrankALiveApplicationPrefix": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#selectedOrderSurvivesAsyncPeersButRemovedResultsDisappear": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#exactCommandsBeatApplicationPrefixesEvenWithExtremeHistory": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#volumePrefixesDoNotDisplaceAnInstalledApplicationPrefix": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#absentAppsAndEmptyQueriesDoNotInventExecutions": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#deniedContactsNeverBecomeAuthorizedResults": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#partialInstalledAppsAreFirstWithoutRemoteAi": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#typoStillOffersTheMatchingInstalledApplication": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#explicitOpenSpotifyResolvesLocallyAndNeverAsAnAiProposal": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#aliasesKeepTheTargetApplicationEligibleAndAccentsAreNormalized": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#relevantPartialApplicationBeatsGenericContextActionsInCompactView": "passed",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#blankHomeDoesNotInventApplicationsOrWhatsAppContent": "passed",
+    "dev.bautista.spotlight.semantic.SemanticPolicyTest#fragmentOffsetsStayInOriginalTextAndCoverageIsExplicitlyLimited": "passed",
+    "dev.bautista.spotlight.semantic.SemanticPolicyTest#corruptVectorsAreRefusedAndSerializationIsNormalized": "passed",
+    "dev.bautista.spotlight.semantic.SemanticPolicyTest#devicePressureAndUnknownStateNeverAdmitEmbedding": "passed",
+    "dev.bautista.spotlight.semantic.SemanticPolicyTest#semanticNeverRelaxesLiteralBooleanOrUnknownFilters": "passed",
+    "dev.bautista.spotlight.semantic.SemanticPolicyTest#casedWordPieceMatchesRealHuggingFaceTokensForSpanishCorpus": "passed",
+    "dev.bautista.spotlight.semantic.SemanticPolicyTest#controlsAndSurrogatesCannotProduceInvalidOffsets": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#recoveredCardActionsFitNarrowPhoneAtLargeFontScale": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#scopeAndSensitiveReviewRestoreWithoutAnAuthorization": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume": "passed",
+    "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme": "passed",
+    "dev.bautista.spotlight.ai.ToolCapabilityTest#volumeReportsTheObservedPlatformLevel": "passed",
+    "dev.bautista.spotlight.ai.ToolCapabilityTest#permissionsAreRecheckedBeforeExecution": "passed",
+    "dev.bautista.spotlight.ai.ToolCapabilityTest#disabledMediaIsNotAdvertisedBySearchOrTools": "passed",
+    "dev.bautista.spotlight.ai.ToolCapabilityTest#staleFolderGrantDoesNotAdvertiseAvailableFileSearch": "passed",
+    "dev.bautista.spotlight.index.SharedStorageTest#sharedFilesWithoutSelectedFoldersRespectRevocationAndDeletion": "passed",
+    "dev.bautista.spotlight.data.AiDestinationConsentTest#portableProviderChangeCannotInheritLocalConsentAndSameProviderPreservesIt": "passed",
+    "dev.bautista.spotlight.data.AiDestinationConsentTest#destinationEditsInvalidateInheritedConsentWhileExplicitNewReviewWorks": "passed",
+    "dev.bautista.spotlight.data.PortablePriorityTest#rankingPreferencesRoundTripWhileLegacyAndInvalidBackupsPreserveData": "passed",
+    "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#newStoreRestoresTypedDraftsAndDoesNotLoseSavedConversations": "passed",
+    "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#unreadableStateCannotBeOverwrittenByAnEmptySession": "passed",
+    "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#invalidAndOversizedValuesNeverReplaceTheLastGoodSnapshot": "passed",
+    "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#ordinaryBackupDoesNotExportTaskStateAndPrivateModeClearsIt": "passed",
+    "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#corruptRecoveryIsPreservedUntilExplicitDiscardWithoutLosingOtherRecords": "passed",
+    "dev.bautista.spotlight.ui.C3SettingsCaptureTest#backupAndPermissionPagesUseTheExistingGlassWorkspaceWithoutRequestingAccess": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#missingConfirmationNeverExecutes": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#failureBlocksRemainingSelectedChanges": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#dispatchFailureNeverChangesVolume": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#cancellationNeverStartsTheNextStep": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#skippedStepDoesNotBlockAndObservedStateIsRetained": "passed",
+    "dev.bautista.spotlight.ai.PlanExecutionTest#existingSixStepLimitIsPreservedAndLargerPlansAreRejected": "passed",
+    "dev.bautista.spotlight.data.PrivateRecoveryPolicyTest#privateModeClearsSuspendedOverlayWithoutDeletingExplicitSavedConversations": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#geminiStructuredCallsAndThoughtsAreHandled": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#providerProposalsRemainUnexecutedAndNeedAppConfirmation": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#missingPermissionAndDisconnectedAdvancedCapabilitiesCannotExecute": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#requestsUseStrictSchemasAndNeverPutKeysInUrls": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#unknownCommandsAndInjectedAuthorizationAreRejected": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#geminiRequiresACompletedProposalBeforeOfferingTools": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#geminiPromptBlockCannotBeOverriddenByAnApparentlyCompleteCandidate": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#providerFailureNeverEchoesApiKey": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#incompleteResponsesAndTooManyCallsAreRejected": "passed",
+    "dev.bautista.spotlight.ai.ToolProtocolTest#geminiThoughtPartsNeverBecomeToolActions": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#accessibilityClickKeepsTheSameSelectionAndPrimaryContract": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#touchDownAndCancelledGestureDoNotSelectOrOpenPdf": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#longPressShowsActionsWithoutInvokingPrimaryCallback": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything": "passed",
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest#fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#malformedThemeRollsBackEntireTransaction": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#legacyBackupPreservesExistingThemes": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#themesAndPersonalCommandsRoundTripWithoutRestoringGrants": "passed",
+    "dev.bautista.spotlight.data.PortableThemeCollectionTest#duplicateIdsWrongTypesAndExcessCollectionsAreRejected": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#compactHomeHasNoAutomaticInspector": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#enterFromSearchLaunchesTheRealPrimaryIntent": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#briefTapSelectsWhileLongPressOpensActionsWithoutLaunching": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#lightSearchAndActionsUseSameStructure": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#unavailableActionCannotExecuteAndFilteringPreservesIdentity": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#phoneUsesSameFloatingActionsAndCanReachLastEntry": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#copySubmenuReturnsToSameRootSelectionBeforeClosing": "passed",
+    "dev.bautista.spotlight.ui.NativePaletteFlowTest#spotifyPrefixShowsActualInstalledResultAndFloatingActions": "passed",
+    "dev.bautista.spotlight.ui.PortableSafFlowTest#actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit": "passed",
+    "dev.bautista.spotlight.ui.AiRecoveryPrivacyTest#completedAndInterruptedContextSnapshotsRemainSeparateAfterSerialization": "passed",
+    "dev.bautista.spotlight.ui.AiRecoveryPrivacyTest#changingDestinationRequiresReviewOfAllPriorContext": "passed",
+    "dev.bautista.spotlight.ui.DurableTaskRegistryTest#persistedRunningMarkerAndArgumentsRestoreWithoutReplayingTheEffect": "passed",
+    "dev.bautista.spotlight.ui.DurableTaskRegistryTest#failedDurableFlushBlocksTheSensitiveExecutor": "passed",
+    "dev.bautista.spotlight.ui.InspectorDescriptorPersistenceTest#localNoteRecoveryContainsOnlyItsIdentityForRevalidation": "passed",
+    "dev.bautista.spotlight.ui.InspectorDescriptorPersistenceTest#selectedDocumentsPersistAsDescriptorsWithoutExtractedTextOrGrants": "passed",
+    "dev.bautista.spotlight.ui.AiActivityRecoveryTest#completedConversationSurvivesActivityRecreationWithoutResendingAndRetainsTurns": "passed",
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#malformedOrDuplicateEntriesAreRejected": "passed",
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#backupCannotBypassReservedOrConflictingCombinations": "passed",
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#newBindingReplacesOnlyItsOwnEntryAndModifiersMatchExactly": "passed",
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#configuredBindingsPersistInTheExistingDataStore": "passed",
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#defaultsAndLegacyClipboardPreferenceRemainCompatible": "passed",
+    "dev.bautista.spotlight.input.KeyboardBindingsTest#conflictsIncludeOtherCommandsGlobalAndTextEditing": "passed",
+    "dev.bautista.spotlight.search.AliasTemplateRankingTest#templateArgumentsAreLiteralAndMissingArgumentsNeverExecute": "passed",
+    "dev.bautista.spotlight.search.AliasTemplateRankingTest#exactInstalledApplicationCannotBeReplacedByAnAlias": "passed",
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#partialWorkflowOutputSurvivesRestoreWithoutContinuingSensitiveSteps": "passed",
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#unfinishedArgumentStillRestoresAsAnEditableDraftWithoutExecution": "passed",
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#taskSwitchKeepsSeparateArguments": "passed",
+    "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#suspendedSensitiveOperationIsNotReplayedOrConfirmedAfterRestore": "passed",
+    "dev.bautista.spotlight.control.IntegrationRegistryTest#privateAndPermissionProtectedActivitiesAreNotAdvertisedAsExecutable": "passed",
+    "dev.bautista.spotlight.control.IntegrationRegistryTest#appHubUsesCanonicalLauncherIdentityForFavoritesAndRecents": "passed",
+    "dev.bautista.spotlight.index.DocumentTextSafetyTest#nativePdfUsesActualBoundedSnapshotWithoutStartingOcr": "passed",
+    "dev.bautista.spotlight.index.DocumentTextSafetyTest#oversizedAndCorruptPdfFailWithoutKeepingAdmissionOrPrivateSnapshots": "passed",
+    "dev.bautista.spotlight.index.DocumentTextSafetyTest#abandonedSnapshotCleanupTouchesOnlyOwnedOldSessionFiles": "passed",
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback": "passed",
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose": "passed",
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction": "passed",
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#tabCyclesAndEnterRunsOnlyFocusedContextAction": "passed",
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#actionGroupsHaveVisibleHeadingsWithoutExecutingItems": "passed",
+    "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#groupsAndIdentityDoNotDependOnTheVisibleTitle": "passed"
+  },
+  "rounds": [
+    {
+      "directory": "gate-first",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.ai.TargetMediaToolTest#explicitlyConfirmedTargetNeverControlsAnotherApplication",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.TargetMediaToolTest#missingTargetDoesNotFallBackToAnotherPlayer",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.MediaInspectorFlowTest#realSessionMetadataIsContextualAndPinSurvivesSearchAndWidthChange",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.MediaInspectorFlowTest#absentSessionDoesNotCreateAnEmptyInspector",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.MediaInspectorFlowTest#phonePlayerFitsAndEscapeRestoresQuery",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#switchingAiTasksRestoresOnlyTheirOwnCompletedConversationWithoutNewRequests",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#phoneFormFitsItsViewportAndDoesNotCreateAnEmptySideColumn",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedSearchFormPreservesDraftAndResultsAcrossResponsiveLayout",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedLocalPreviewSurvivesQueryAndActionsKeepTheCurrentSelection",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.UnifiedInspectorFlowTest#pinnedAiKeepsAuthorizedConversationAcrossLocalSearchAndFollowUp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.SettingsPersistenceTest#appearanceWritePreservesConcurrentPrivacySourcesAndLegacyData",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.SettingsPersistenceTest#visibleAppearanceMergeDoesNotResetUnrelatedPreferences",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.SettingsPersistenceTest#legacyNavigationMapsToSevenRealAreasWithoutRetiredEntries",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.SettingsPersistenceTest#staleAiDraftDoesNotOverwritePrivacyAppearanceOrConcurrentEndpoint",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableImportTransactionTest#invalidImportIsAtomicAndLegacyPartialBackupKeepsNewFields",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableImportTransactionTest#backupDoesNotContainAuthorizationOrPrivateHistory",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableImportTransactionTest#fullGlassAndKeyboardRoundTripPreservesLocalConsentAndGrants",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#completionRequiresAnUnambiguousLiveCandidate",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#configurationWarningsNeverOutrankALiveApplicationPrefix",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#selectedOrderSurvivesAsyncPeersButRemovedResultsDisappear",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#exactCommandsBeatApplicationPrefixesEvenWithExtremeHistory",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#volumePrefixesDoNotDisplaceAnInstalledApplicationPrefix",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#absentAppsAndEmptyQueriesDoNotInventExecutions",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#deniedContactsNeverBecomeAuthorizedResults",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#partialInstalledAppsAreFirstWithoutRemoteAi",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#typoStillOffersTheMatchingInstalledApplication",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#explicitOpenSpotifyResolvesLocallyAndNeverAsAnAiProposal",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#aliasesKeepTheTargetApplicationEligibleAndAccentsAreNormalized",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#relevantPartialApplicationBeatsGenericContextActionsInCompactView",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#blankHomeDoesNotInventApplicationsOrWhatsAppContent",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.semantic.SemanticPolicyTest#fragmentOffsetsStayInOriginalTextAndCoverageIsExplicitlyLimited",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.semantic.SemanticPolicyTest#corruptVectorsAreRefusedAndSerializationIsNormalized",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.semantic.SemanticPolicyTest#devicePressureAndUnknownStateNeverAdmitEmbedding",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.semantic.SemanticPolicyTest#semanticNeverRelaxesLiteralBooleanOrUnknownFilters",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.semantic.SemanticPolicyTest#casedWordPieceMatchesRealHuggingFaceTokensForSpanishCorpus",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.semantic.SemanticPolicyTest#controlsAndSurrogatesCannotProduceInvalidOffsets",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#descriptorDoesNotRestoreIntentExtrasGrantsOrExtractedBody",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#recoveredCardActionsFitNarrowPhoneAtLargeFontScale",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#revokedDocumentIsInvalidatedOnResumeWithoutOpeningExternalApp",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#scopeAndSensitiveReviewRestoreWithoutAnAuthorization",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#restoredDocumentAndPageKeepIdentityAndRecheckAccess",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#overlayWindowFocusRevalidatesEvenWhenLifecycleDoesNotResume",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorResourceRecoveryTest#savedCardDoesNotRestoreUnsupportedExternalScheme",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolCapabilityTest#volumeReportsTheObservedPlatformLevel",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolCapabilityTest#permissionsAreRecheckedBeforeExecution",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolCapabilityTest#disabledMediaIsNotAdvertisedBySearchOrTools",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolCapabilityTest#staleFolderGrantDoesNotAdvertiseAvailableFileSearch",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.index.SharedStorageTest#sharedFilesWithoutSelectedFoldersRespectRevocationAndDeletion",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.AiDestinationConsentTest#portableProviderChangeCannotInheritLocalConsentAndSameProviderPreservesIt",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.AiDestinationConsentTest#destinationEditsInvalidateInheritedConsentWhileExplicitNewReviewWorks",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortablePriorityTest#rankingPreferencesRoundTripWhileLegacyAndInvalidBackupsPreserveData",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#newStoreRestoresTypedDraftsAndDoesNotLoseSavedConversations",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#unreadableStateCannotBeOverwrittenByAnEmptySession",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#invalidAndOversizedValuesNeverReplaceTheLastGoodSnapshot",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#ordinaryBackupDoesNotExportTaskStateAndPrivateModeClearsIt",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.DurableOverlayRecoveryTest#corruptRecoveryIsPreservedUntilExplicitDiscardWithoutLosingOtherRecords",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.C3SettingsCaptureTest#backupAndPermissionPagesUseTheExistingGlassWorkspaceWithoutRequestingAccess",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#missingConfirmationNeverExecutes",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#failureBlocksRemainingSelectedChanges",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#dispatchFailureNeverChangesVolume",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#cancellationNeverStartsTheNextStep",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#lateExecutorResultAfterCancellationNeverDispatchesOrStartsNextStep",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#skippedStepDoesNotBlockAndObservedStateIsRetained",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.PlanExecutionTest#existingSixStepLimitIsPreservedAndLargerPlansAreRejected",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PrivateRecoveryPolicyTest#privateModeClearsSuspendedOverlayWithoutDeletingExplicitSavedConversations",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#geminiStructuredCallsAndThoughtsAreHandled",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#providerProposalsRemainUnexecutedAndNeedAppConfirmation",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#missingPermissionAndDisconnectedAdvancedCapabilitiesCannotExecute",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#requestsUseStrictSchemasAndNeverPutKeysInUrls",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#unknownCommandsAndInjectedAuthorizationAreRejected",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#geminiRequiresACompletedProposalBeforeOfferingTools",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#geminiPromptBlockCannotBeOverriddenByAnApparentlyCompleteCandidate",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#providerFailureNeverEchoesApiKey",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#incompleteResponsesAndTooManyCallsAreRejected",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ai.ToolProtocolTest#geminiThoughtPartsNeverBecomeToolActions",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#accessibilityClickKeepsTheSameSelectionAndPrimaryContract",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#touchDownAndCancelledGestureDoNotSelectOrOpenPdf",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#longPressShowsActionsWithoutInvokingPrimaryCallback",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ResultTouchScrollTest#fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#malformedThemeRollsBackEntireTransaction",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#legacyBackupPreservesExistingThemes",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#themesAndPersonalCommandsRoundTripWithoutRestoringGrants",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.data.PortableThemeCollectionTest#duplicateIdsWrongTypesAndExcessCollectionsAreRejected",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#compactHomeHasNoAutomaticInspector",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#enterFromSearchLaunchesTheRealPrimaryIntent",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#briefTapSelectsWhileLongPressOpensActionsWithoutLaunching",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#lightSearchAndActionsUseSameStructure",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#unavailableActionCannotExecuteAndFilteringPreservesIdentity",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#phoneUsesSameFloatingActionsAndCanReachLastEntry",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#copySubmenuReturnsToSameRootSelectionBeforeClosing",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#spotifyPrefixShowsActualInstalledResultAndFloatingActions",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.PortableSafFlowTest#actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AiRecoveryPrivacyTest#completedAndInterruptedContextSnapshotsRemainSeparateAfterSerialization",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AiRecoveryPrivacyTest#changingDestinationRequiresReviewOfAllPriorContext",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.DurableTaskRegistryTest#persistedRunningMarkerAndArgumentsRestoreWithoutReplayingTheEffect",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.DurableTaskRegistryTest#failedDurableFlushBlocksTheSensitiveExecutor",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorDescriptorPersistenceTest#localNoteRecoveryContainsOnlyItsIdentityForRevalidation",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.InspectorDescriptorPersistenceTest#selectedDocumentsPersistAsDescriptorsWithoutExtractedTextOrGrants",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.AiActivityRecoveryTest#completedConversationSurvivesActivityRecreationWithoutResendingAndRetainsTurns",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.input.KeyboardBindingsTest#malformedOrDuplicateEntriesAreRejected",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.input.KeyboardBindingsTest#backupCannotBypassReservedOrConflictingCombinations",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.input.KeyboardBindingsTest#newBindingReplacesOnlyItsOwnEntryAndModifiersMatchExactly",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.input.KeyboardBindingsTest#configuredBindingsPersistInTheExistingDataStore",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.input.KeyboardBindingsTest#defaultsAndLegacyClipboardPreferenceRemainCompatible",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.input.KeyboardBindingsTest#conflictsIncludeOtherCommandsGlobalAndTextEditing",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.AliasTemplateRankingTest#templateArgumentsAreLiteralAndMissingArgumentsNeverExecute",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.search.AliasTemplateRankingTest#exactInstalledApplicationCannotBeReplacedByAnAlias",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#partialWorkflowOutputSurvivesRestoreWithoutContinuingSensitiveSteps",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#unfinishedArgumentStillRestoresAsAnEditableDraftWithoutExecution",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#taskSwitchKeepsSeparateArguments",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#suspendedSensitiveOperationIsNotReplayedOrConfirmedAfterRestore",
+          "status": "failed"
+        },
+        {
+          "case": "dev.bautista.spotlight.control.IntegrationRegistryTest#privateAndPermissionProtectedActivitiesAreNotAdvertisedAsExecutable",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.control.IntegrationRegistryTest#appHubUsesCanonicalLauncherIdentityForFavoritesAndRecents",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.index.DocumentTextSafetyTest#nativePdfUsesActualBoundedSnapshotWithoutStartingOcr",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.index.DocumentTextSafetyTest#oversizedAndCorruptPdfFailWithoutKeepingAdmissionOrPrivateSnapshots",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.index.DocumentTextSafetyTest#abandonedSnapshotCleanupTouchesOnlyOwnedOldSessionFiles",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#tabCyclesAndEnterRunsOnlyFocusedContextAction",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#actionGroupsHaveVisibleHeadingsWithoutExecutingItems",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest#groupsAndIdentityDoNotDependOnTheVisibleTitle",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "directory": "gate-isolated",
+      "cases": [
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#compactHomeHasNoAutomaticInspector",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#filteringActionsNeverChangesQueryOrExecutesAndEscapeRestoresFocus",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#searchIsSingleColumnAndOpeningActionsDoesNotResizeOrLaunch",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#enterFromSearchLaunchesTheRealPrimaryIntent",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#briefTapSelectsWhileLongPressOpensActionsWithoutLaunching",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#lightSearchAndActionsUseSameStructure",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#localNoteDetailAppearsOnlyOnExplicitPreviewAndPreservesQuery",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#unavailableActionCannotExecuteAndFilteringPreservesIdentity",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#constrainedImeBudgetKeepsActionFilterAndCloseInsideWindow",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#phoneUsesSameFloatingActionsAndCanReachLastEntry",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#copySubmenuReturnsToSameRootSelectionBeforeClosing",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.NativePaletteFlowTest#spotifyPrefixShowsActualInstalledResultAndFloatingActions",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.PortableSafFlowTest#actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#partialWorkflowOutputSurvivesRestoreWithoutContinuingSensitiveSteps",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#unfinishedArgumentStillRestoresAsAnEditableDraftWithoutExecution",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#taskSwitchKeepsSeparateArguments",
+          "status": "passed"
+        },
+        {
+          "case": "dev.bautista.spotlight.ui.ToolTaskRecoveryTest#suspendedSensitiveOperationIsNotReplayedOrConfirmedAfterRestore",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "python_tests": 30,
+  "note": "129 unique cases passed in rounds, not a single green full-suite run. Initial 7 failures retained; 17 cases from 3 affected classes passed with separate JVMs. No timeouts increased or assertions removed."
+}

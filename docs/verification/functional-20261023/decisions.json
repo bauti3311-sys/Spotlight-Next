@@ -1,0 +1,362 @@
+[
+  {
+    "id": "D01",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Selección gris",
+    "source": "GlassTokens.kt; SettingsNavigation.kt; ActionPanelView.kt",
+    "tests": "SolidGraphiteTest; DarkGlassSettingsTest",
+    "remaining": "Sin brecha funcional conocida; capturas NATIVE históricas, no certificación física.",
+    "physical": "Contraste/TalkBack en One UI y Motorola."
+  },
+  {
+    "id": "D02",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Superficies y opacidad",
+    "source": "GlassTokens.kt; GlassAppearance.kt; Preferences.kt",
+    "tests": "MasterC1MaterialTest; SettingsPersistenceTest; DarkGlassSettingsTest",
+    "remaining": "Perfiles y tres opacidades persistentes/preview implementados. Solid Graphite 98/100/99 aprobado posteriormente; Glass 84/92/94 opcional.",
+    "physical": "Compositor/legibilidad real, blur condicionado por Android."
+  },
+  {
+    "id": "D03",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Altura adaptativa",
+    "source": "CompactResults.kt; SpotlightPanel.kt; OverlayService.kt",
+    "tests": "MasterC1ResultsTest; CompactResultsTest; OverlayImeHeightTest",
+    "remaining": "Inicio hasta3 y consulta hasta6/expansión implementados; no una lista limitada a3 para siempre.",
+    "physical": "IME, orientación y fuentes en ambos dispositivos."
+  },
+  {
+    "id": "D04",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "ActionPanel superpuesto",
+    "source": "ContextActionSurface.kt; ActionPopupHost.kt; ActionPanelView.kt",
+    "tests": "ActionPopupHostTest; FloatingSearchFlowTest; ActionPanelKeyboardContractTest",
+    "remaining": "Popup, filtro y teclado existentes sin reflujo; pruebas no certifican InputDispatcher físico.",
+    "physical": "Clipping, insets, IME y toques exteriores One UI/Motorola."
+  },
+  {
+    "id": "D05",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Ajustes adaptables",
+    "source": "SettingsNavigation.kt; MainActivity.kt",
+    "tests": "DarkGlassSettingsTest; RaycastSettingsNavigationTest; C3SettingsCaptureTest",
+    "remaining": "8 áreas reales y navegación adaptable; refinamiento nativo d740a112 aún no entregado como APK43.",
+    "physical": "Tablet/teléfono, fuentes/TalkBack y retorno de pantallas del sistema."
+  },
+  {
+    "id": "D06",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Filas compactas",
+    "source": "SpotlightWidgets.kt",
+    "tests": "ResultRowGeometryRegressionTest; NativePaletteFlowTest",
+    "remaining": "Dos líneas aprobadas después del maestro; título/metadato/truncado y hit48. No volver a una línea por error de versión del contrato.",
+    "physical": "Capturas automatizadas, no hardware."
+  },
+  {
+    "id": "D07",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Iconografía real",
+    "source": "SpotlightWidgets.kt; CommandIcons.kt",
+    "tests": "NativePaletteFlowTest; InspectorAccentTest",
+    "remaining": "PM conserva iconos originales, utilidades Icons8iOS con atribución; no artwork ficticio como dato real.",
+    "physical": "Verificación de apariencia con apps realmente instaladas."
+  },
+  {
+    "id": "D08",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Pie contextual",
+    "source": "GlassContextFooter.kt",
+    "tests": "FloatingSearchFlowTest; KeyboardHintsTest",
+    "remaining": "Acciones táctiles y pistas de teclado implementadas, no meras etiquetas sin callback.",
+    "physical": "Escalas grandes y teclado físico."
+  },
+  {
+    "id": "D09",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Inicio inteligente",
+    "source": "HomeSuggestions.kt; SpotlightPanel.kt",
+    "tests": "HomeSuggestionsTest; NativePaletteFlowTest",
+    "remaining": "Hasta3, máximo1app, ranking local y multimedia disponible. Se puede mostrar menos si faltan datos reales; 5 pruebas Home recuperadas correctas en d740a112.",
+    "physical": "Datos de uso/sesión reales; no rellenar con playlists inventadas."
+  },
+  {
+    "id": "D10",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Entrada contextual",
+    "source": "SpotlightWidgets.kt",
+    "tests": "MasterC1TouchFlowTest; SpotlightBarTest",
+    "remaining": "Resolver de dictado real, borrar y menú; sin llamada IA por tecla.",
+    "physical": "Proveedor de voz instalado en dispositivos."
+  },
+  {
+    "id": "D11",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Geometría",
+    "source": "OverlayLayoutPolicy.kt; OverlayService.kt",
+    "tests": "OverlayLayoutPolicyTest; OverlayViewportTest; OverlayImeHeightTest",
+    "remaining": "Política de ventana/anclaje implementada; geometría calculada no equivale a WindowManager físico.",
+    "physical": "One UI, IME, multiventana y Motorola."
+  },
+  {
+    "id": "D12",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Microanimaciones",
+    "source": "OverlayWindowMotion.kt; OverlayService.kt",
+    "tests": "OverlayWindowMotionTest; OverlayStartupTest",
+    "remaining": "140/100ms, foco temprano y reducción implementados; no FPS físico medido.",
+    "physical": "Jank/latencia con Galaxy Tab A9+."
+  },
+  {
+    "id": "D13",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Contorno",
+    "source": "GlassTokens.kt",
+    "tests": "SolidGraphiteTest; DarkGlassMaterialTest",
+    "remaining": "Radios/bordes/sombra implementados y capturas nativas; perfil sólido aprobado conserva jerarquía.",
+    "physical": "Aceptación estética física pendiente, sin bloque funcional conocido."
+  },
+  {
+    "id": "D14",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Tipografía y accesibilidad",
+    "source": "Theme.kt; SpotlightWidgets.kt",
+    "tests": "ResultRowGeometryRegressionTest; QuickLookTouchTargetTest",
+    "remaining": "Inter, jerarquía, truncado y objetivos48dp; no afirmar todas las escalas y TalkBack cubiertos.",
+    "physical": "Fuente130–200%, lector de pantalla y contraste real."
+  },
+  {
+    "id": "D15",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Quick Look",
+    "source": "ContextSplitPanel.kt; InspectorRecovery.kt",
+    "tests": "InspectorResourceRecoveryTest; InspectorDescriptorPersistenceTest; ResultTouchScrollTest",
+    "remaining": "Descriptores/revalidación/recursos y selección sin apertura externa existentes.",
+    "physical": "SAF revocado, PDF instrumentado real y gestos One UI."
+  },
+  {
+    "id": "D16",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Multimedia",
+    "source": "MediaControl.kt; MediaInspector.kt",
+    "tests": "MediaInspectorFlowTest; MediaTargetTest; TargetMediaToolTest",
+    "remaining": "Metadatos/portada/progreso/controles solo del paquete elegido, sin fallback a otra app.",
+    "physical": "Spotify/YouTube/otros clientes con MediaSession y notificaciones autorizadas."
+  },
+  {
+    "id": "D17",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "IA contextual",
+    "source": "AiToolPanel.kt; InspectorAiSessions.kt; ToolTaskState.kt",
+    "tests": "ToolTaskRecoveryTest; AiRecoveryPrivacyTest; ToolProtocolTest",
+    "remaining": "Streaming/propuestas/argumentos/cancelación y fence durable existentes. Edición avanzada del plan es brecha D27, no nueva pestaña.",
+    "physical": "API key/cuota y respuesta real del proveedor; proceso físico."
+  },
+  {
+    "id": "D18",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Fijación y persistencia",
+    "source": "ContextualDraftHost.kt; ContextStore.kt; OverlaySnapshotCodec.kt",
+    "tests": "DurableTaskRegistryTest; DurableOverlayRecoveryTest; ContextualDraftRestoreTest",
+    "remaining": "Snapshot en AtomicFile, borradores por contexto y fijación implementados. No garantiza guardar cada última tecla ante corte abrupto.",
+    "physical": "Muerte del proceso, recreación de servicio, permisos perdidos en dispositivos."
+  },
+  {
+    "id": "D19",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Menú esencial",
+    "source": "GlassQuickMenu.kt",
+    "tests": "RaycastQuickMenuComposeTest; MasterC1TouchFlowTest",
+    "remaining": "Cuatro rutas reales separadas de Acciones.",
+    "physical": "Accesibilidad física pendiente C5."
+  },
+  {
+    "id": "D20",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Permisos centralizados",
+    "source": "MainActivity.kt; PermissionActivity.kt; SettingsAccessSummary.kt",
+    "tests": "LegacyPermissionRouteTest; AndroidCapabilityTest",
+    "remaining": "Rutas heredadas al centro único, estados de APIs reales; no concede permisos desde un toggle ficticio.",
+    "physical": "Conceder/revocar SAF, notificaciones, accesibilidad y Shizuku opcionales."
+  },
+  {
+    "id": "D21",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Formularios",
+    "source": "CommandForms.kt; LocalToolForms.kt; ContextSplitPanel.kt",
+    "tests": "ContextualDraftRestoreTest; UnifiedInspectorFlowTest",
+    "remaining": "Argumentos contextuales editables/guardables; revalidación al ejecutar.",
+    "physical": "Apps destino, contactos autorizados y rotación real."
+  },
+  {
+    "id": "D22",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Confirmación y resultados",
+    "source": "ToolExecutor.kt; ToolCapability.kt; AiRequestPolicy.kt; PhoneUsePolicy.kt",
+    "tests": "PlanExecutionTest; ToolProtocolTest; PhoneUsePolicyTest; StructuredToolAdapterTest; StructuredNativePlanFlowTest; DurablePlanSequenceTest",
+    "remaining": "Políticas de riesgo y estados prepared/requested/verified existentes; no reportar apertura solicitada como éxito externo. Nueva nota requiere confirmación eIDpersistido nuevo/texto exacto antes deVERIFIED; cadena nativa texto→nota→cálculo sin duplicación probada. Validación global externa sigue insuficiente.",
+    "physical": "Mensajería y servicios externos reales; permisos mínimos."
+  },
+  {
+    "id": "D23",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Gestos y selección",
+    "source": "SpotlightWidgets.kt; SpotlightPanel.kt",
+    "tests": "ResultTouchScrollTest; MasterC1TouchFlowTest; ActionPanelKeyboardContractTest",
+    "remaining": "Toque selecciona/segundo confirma, largo acciones, drag/cancel no ejecutan; regresiones históricas preservadas.",
+    "physical": "One UI y Motorola físicos pendientes; fixturesPDF no certifican un proveedor real."
+  },
+  {
+    "id": "D24",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Cierre contextual",
+    "source": "SpotlightPanel.kt",
+    "tests": "UnifiedInspectorFlowTest; MasterC1TouchFlowTest",
+    "remaining": "Cierre condicionado al resultado/inspector fijado implementado, sin cerrar errores/tareas pendientes.",
+    "physical": "Lanzamientos externos y retorno al overlay con IME real."
+  },
+  {
+    "id": "D25",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Ranking universal",
+    "source": "SearchEngine.kt; CompactResults.kt; Preferences.kt",
+    "tests": "SmartSearchAcceptanceTest; AliasTemplateRankingTest; HomeSuggestionsTest",
+    "remaining": "Exacta/prefijo/alias/fuzzy y selección estable locales; historia no desplaza coincidencia exacta.",
+    "physical": "Latencia con índice real y apps instaladas, no servicios IA por tecla."
+  },
+  {
+    "id": "D26",
+    "state": "PARCIAL",
+    "decision": "Integraciones por capacidades",
+    "source": "IntegrationRegistry.kt; ToolRegistry.kt; ToolExecutor.kt; AppCapabilities.kt; AppCapabilityActions.kt",
+    "tests": "IntegrationRegistryTest; TargetMediaToolTest; PhoneUseSequencePolicyTest; AppCapabilitiesTest (6 nuevos NO ejecutados)",
+    "remaining": "Adaptadores públicos de búsqueda/compartir conectados al inspector y revalidados por paquete. Falta compilar/ejecutar regresiones y validar destinos reales; APIs autenticadas y AppFunctions reales no cerrados. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
+    "physical": "Apps deben publicar APIs/shortcuts; rol launcher para shortcuts y autorizaciones opcionales."
+  },
+  {
+    "id": "D27",
+    "state": "COMPLETA Y PROBADA",
+    "decision": "Planes encadenados",
+    "source": "AiToolPanel.kt; ToolPlanEditing.kt; StructuredToolResults.kt; ToolSequenceExecution.kt; ToolTaskState.kt; EditablePlanPanel.kt; PlanExecution.kt",
+    "tests": "60 casos únicos dirigidos, incluidos los20anteriores; docs/verification/d27-completion-20261023/tests.json; DurablePlanSequenceTest; StructuredNativePlanFlowTest; ToolSequenceExecutionTest",
+    "remaining": "Contrato funcional de software completo y probado: edición, dependencias NUMBER/TEXT registradas, ciclos/tipos/omitidos/remapeo, secuencia con confirmación por riesgo, estados, fallo/cancelación, persistencia durable/sin replay y relativos volumen/brillo. Adaptadores externos PREPARED/REQUESTED detienen la secuencia hasta revisión; no se inventa verificación. Otros adaptadores sin esquema no ofrecen enlaces ficticios.",
+    "physical": "OneUI/Moto/Shizuku y Gemini reales pendientes deD40; no equivalen a losfixtures Robolectric. Límites por capacidad documentados en D27-FUNCTIONAL-CLOSURE-20261023.md."
+  },
+  {
+    "id": "D28",
+    "state": "PARCIAL",
+    "decision": "Comandos y alias",
+    "source": "NativeCommands.kt; PersonalCommands.kt; Preferences.kt; CommandTemplates.kt; CommandTemplatePanel.kt; CommandTemplates.kt; CommandTemplatePanel.kt",
+    "tests": "NativeCommandsTest; PersonalCommandsTest; AliasTemplateRankingTest; NativeCommandFlowTest; CommandTemplatesTest (13 nuevos NO ejecutados); CommandTemplateFlowTest (4 nuevos NO ejecutados); CommandTemplatesTest (16); CommandTemplateFlowTest (4): NO ejecutados",
+    "remaining": "Formularios por esquema, parámetros, revisión/edición/persistencia/conflictos y carga D27 implementados; lectura tolera registros futuros sin borrarlos. Falta compilar y probar permisos/recuperación real. No se guardan todavía semánticas relativas ni omisiones como plantilla. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
+    "physical": "Aplicaciones disponibles/permisos revalidados; sin scripts arbitrarios."
+  },
+  {
+    "id": "D29",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Invocación",
+    "source": "ShortcutService.kt; InvokeActivity.kt; SpotlightTile.kt",
+    "tests": "InvocationTest; ProductEntryPointsTest",
+    "remaining": "Accesos Android y combinaciones globales limitadas implementados, no hotkey universal.",
+    "physical": "OS/teclado y servicio opcional autorizado en cada dispositivo."
+  },
+  {
+    "id": "D30",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Atajos configurables",
+    "source": "KeyboardBindings.kt; KeyboardShortcutEditor.kt; SpotlightPanel.kt",
+    "tests": "KeyboardBindingsTest; KeyboardShortcutEditorTest; ActionPanelKeyboardContractTest",
+    "remaining": "4 bindings locales, conflictos y preferencias/backup; flechas/Tab/Enter/Escape preservados.",
+    "physical": "Teclados físicos y restricciones OS; no prometer todos los globales."
+  },
+  {
+    "id": "D31",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Índice y OCR local",
+    "source": "FileIndex.kt; DocumentText.kt; SemanticPolicy.kt",
+    "tests": "AdaptiveIndexTest; DocumentRetrievalTest; DocumentTextSafetyTest; SemanticPolicyTest",
+    "remaining": "ensure/refresh/search/semanticSearch, límites y OCR opcional existentes; no todos los formatos ilimitados.",
+    "physical": "SAF y modelo local válido, documentos grandes/escaneados y consumo físico."
+  },
+  {
+    "id": "D32",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Compartir contexto",
+    "source": "ShareContextActivity.kt; ContextStore.kt",
+    "tests": "SharedInputTest; SharedInputActivityTest; SharedStorageTest; ContextRecoveryTest",
+    "remaining": "SEND/MULTIPLE/ClipData unificados, deduplicados y acotados; 8casos de entrada correctos. Flujo Activity→ContextStore 3/3 aprobado; fixture cc6b4f65; permisos de proveedor todavía simulados.",
+    "physical": "Grants y revocación desde proveedores Android reales; no se restauran grants por backup."
+  },
+  {
+    "id": "D33",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Sesiones IA",
+    "source": "ContextStore.kt; ContextPanel.kt; ContextualDraftHost.kt",
+    "tests": "ConversationPersistenceTest; AiRecoveryPrivacyTest; ToolTaskRecoveryTest",
+    "remaining": "saveConversation/deleteConversation, follow-ups y recuperación aislados por contexto existentes.",
+    "physical": "Proveedor remoto real y muerte abrupta física; no envío automático al restaurar."
+  },
+  {
+    "id": "D34",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Proveedores modulares",
+    "source": "DirectAi.kt; ToolAgent.kt; CredentialVault.kt",
+    "tests": "AiDestinationConsentTest; AiTransportTest; ToolProtocolTest",
+    "remaining": "Gemini/OpenAI/backend, credenciales y consentimiento por destino existentes; no motor duplicado.",
+    "physical": "Credenciales/cuota/conexión externa; Plus/Pro no equivale a acceso API."
+  },
+  {
+    "id": "D35",
+    "state": "PARCIAL",
+    "decision": "Resultados vivos",
+    "source": "NativeProviders.kt; NextPanel.kt; OnlineTools.kt; SourceFreshness.kt; SourceFreshnessLabel.kt; NativeProviders.kt; SportsAgendaPanel.kt",
+    "tests": "NativeProviderTest; OnlineDataTest; OfflineHttpContractTest; CalculatorTest; SourceFreshnessTest; SportsAgendaMergeTest (4 nuevos NO ejecutados); NativeProviderTest ampliado",
+    "remaining": "Procedencia/hora de consulta/caché por resultado y merge de observación más reciente implementados. No implica datos en vivo ni actualización del proveedor. Compilación, regresiones y otros resultados contextuales pendientes. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
+    "physical": "Disponibilidad/cuotas/fuentes externas; fixtures HTTP no son una consulta real."
+  },
+  {
+    "id": "D36",
+    "state": "PARCIAL",
+    "decision": "Microestados",
+    "source": "SpotlightPanel.kt; ContextPanel.kt; ShareContextActivity.kt; ShareContextActivity.kt; BoundedSharedCopy.kt; SharedImportPanel.kt",
+    "tests": "ContextStorageStatusFlowTest; ToolTaskRecoveryTest; PlanExecutionTest; BoundedSharedCopyTest; SharedImportPanelTest (5 nuevos NO ejecutados)",
+    "remaining": "Importación compartida con progreso/cancelación y protección de publicación implementada. Falta regresión Activity→ContextStore y comprobación UI/errores/servicios; no cierre. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
+    "physical": "Interrupciones y revocación reales, sin falso éxito externo."
+  },
+  {
+    "id": "D37",
+    "state": "PARCIAL",
+    "decision": "Rendimiento",
+    "source": "FileIndex.kt; DocumentText.kt; SearchEngine.kt; Diagnostics.kt",
+    "tests": "AdaptiveIndexTest; OcrBudgetTest; OverlayStartupTest; DiagnosticsMeasurementTest (5 nuevos NO ejecutados)",
+    "remaining": "Instrumentación corregida: primera apertura no equivale a arranque frío; heap Java no es RAM/PSS. Sin benchmark físico, jank, CPU o indexación medidos. Compilar/probar antes de cualquier aceptación. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
+    "physical": "Tab A9+ y Moto; no deducir rendimiento físico de tests JVM."
+  },
+  {
+    "id": "D38",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Privacidad",
+    "source": "ContextStore.kt; CredentialVault.kt; Preferences.kt; AiRequestPolicy.kt",
+    "tests": "PrivateRecoveryPolicyTest; AiDestinationConsentTest; PersonalStorageTest",
+    "remaining": "Borrados separados, vault y consentimiento explícito; snapshot privado descartable, sin vigilancia continua indiscriminada.",
+    "physical": "Keystore/revocación/almacenamiento físico; no exportar secretos."
+  },
+  {
+    "id": "D39",
+    "state": "IMPLEMENTADA SIN PRUEBAS SUFICIENTES",
+    "decision": "Respaldo y migraciones",
+    "source": "Preferences.kt; MainActivity.kt",
+    "tests": "PortableImportTransactionTest; PortableThemeCollectionTest; PortablePriorityTest; PortableSafFlowTest",
+    "remaining": "importPortable transaccional, preview/temas/alias/atajos; índice reconstruible y sin tokens/grants.",
+    "physical": "Proveedor SAF físico y actualización con certificado885838aa; conservar datos existentes."
+  },
+  {
+    "id": "D40",
+    "state": "PARCIAL",
+    "decision": "Calidad integral",
+    "source": "AGENTS.md; STATUS_40_DECISIONES.md; scripts/test-d28-directed.sh; scripts/test_directed_runner.py",
+    "tests": "docs/verification/integral-c2-c5-20261022; docs/verification/solid-graphite-20261023; DirectedRunnerTest 5/5 ejecutados (solo tooling); todas las nuevas Android pendientes",
+    "remaining": "Runner por grupos, offline/sin descarga/APK/Actions comprobado con stub. No acredita ninguna prueba Android, integración externa ni validación física. UI08f19055, D28 e integraciones siguen pendientes. Evidencia: docs/verification/continuous-20261023/STATUS.md.",
+    "physical": "One UI/Moto, proceso, IME, servicios externos, seguridad y rendimiento físicos obligatorios."
+  }
+]

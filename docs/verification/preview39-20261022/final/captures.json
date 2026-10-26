@@ -1,0 +1,56 @@
+[
+  {
+    "file": "Preview39-Documento-restaurado.png",
+    "source": "app/build/preview39/document-restored-tablet.png",
+    "capture_source_sha": "6b433ff328df57ed28183bcb7dc977e5e1f97ab9",
+    "sha256": "a3b58c4efd1660d29f9e3bdb8b46c46e725331c246b49b357a3878ac36a6b7cc",
+    "runtime": "Robolectric API33 / GraphicsMode.NATIVE",
+    "physical_device": false,
+    "caption": "Documento restaurado · Activity de prueba con los componentes reales; no representa el WindowManager completo."
+  },
+  {
+    "file": "Preview39-Tarjeta-telefono-130.png",
+    "source": "app/build/preview39/card-phone-font130.png",
+    "capture_source_sha": "6b433ff328df57ed28183bcb7dc977e5e1f97ab9",
+    "sha256": "1ae6149304f52eef1506ed10558396e9d0e8610fd020ff704100dce9bfae2bd4",
+    "runtime": "Robolectric API33 / GraphicsMode.NATIVE",
+    "physical_device": false,
+    "caption": "Tarjeta contextual real · viewport 412×915, componente de 280dp y escala de fuente130%; acciones envueltas, 48dp."
+  },
+  {
+    "file": "Preview39-Formulario-tablet.png",
+    "source": "app/build/unified-inspector/tablet-search-form.png",
+    "capture_source_sha": "7c25d6a303bf59ec3033b3268f8e157b2ca16527",
+    "sha256": "05f23ba5924b1d362c41ccc75a0a48f1002d1cb85736ad6649fc128790a7e92f",
+    "runtime": "Robolectric API33 / GraphicsMode.NATIVE",
+    "physical_device": false,
+    "caption": "SpotlightPanel real · formulario contextual en tablet. Datos de prueba locales."
+  },
+  {
+    "file": "Preview39-Formulario-telefono.png",
+    "source": "app/build/unified-inspector/phone-390-search-form-dark.png",
+    "capture_source_sha": "7c25d6a303bf59ec3033b3268f8e157b2ca16527",
+    "sha256": "4d98e622200e9eb295fd08830f3afd7021e0f855244f7e64cb4f4316c3e88ff6",
+    "runtime": "Robolectric API33 / GraphicsMode.NATIVE",
+    "physical_device": false,
+    "caption": "SpotlightPanel real · formulario en ancho390dp. El cambio posterior de guardia de acceso no modifica esta geometría."
+  },
+  {
+    "file": "Preview39-Ajustes-Avanzado.png",
+    "source": "app/build/task-recovery/settings-backup.png",
+    "capture_source_sha": "7c25d6a303bf59ec3033b3268f8e157b2ca16527",
+    "sha256": "8c352a883b34d2afe7af257829f281f2ed8abb1ae2c065f4a742842fa705d419",
+    "runtime": "Robolectric API33 / GraphicsMode.NATIVE",
+    "physical_device": false,
+    "caption": "MainActivity real · Avanzado, mostrando prioridades. Esta captura no muestra el selector SAF ni un respaldo importado."
+  },
+  {
+    "file": "Preview39-Ajustes-Permisos.png",
+    "source": "app/build/task-recovery/settings-permissions.png",
+    "capture_source_sha": "7c25d6a303bf59ec3033b3268f8e157b2ca16527",
+    "sha256": "9adc56bad290baeb398db899b5ad8c4a472deacd2ddd3b2de704481c5fddd9cb",
+    "runtime": "Robolectric API33 / GraphicsMode.NATIVE",
+    "physical_device": false,
+    "caption": "MainActivity real · centro único; estados de Robolectric, no accesos concedidos en hardware."
+  }
+]

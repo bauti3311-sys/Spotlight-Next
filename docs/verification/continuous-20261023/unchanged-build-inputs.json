@@ -1,0 +1,9 @@
+{
+  "reference": "Preview45 source39430eb2",
+  "unchanged": {
+    "app/src/main/AndroidManifest.xml": true,
+    "app/build.gradle.kts": true,
+    "release.properties": true,
+    "gradle/wrapper/gradle-wrapper.properties": true
+  }
+}

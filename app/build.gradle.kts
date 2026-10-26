@@ -4,12 +4,20 @@ val releaseIdentity = Properties().apply {
     rootProject.file("release.properties").inputStream().use { load(it) }
 }
 
+// Opt-in diagnostic profile only; standard Preview/Release builds keep R8 enabled.
+val optimizeRaycastPreview = providers.gradleProperty("spotlight.preview.optimize").orElse("true").get().let {
+ require(it == "true" || it == "false") { "spotlight.preview.optimize must be true or false" }
+ it == "true"
+}
+
 android {
  namespace = "dev.bautista.spotlight"
  compileSdk = 35
  buildToolsVersion = "35.0.0"
  defaultConfig { testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"; applicationId = "dev.bautista.spotlight.next"; minSdk = 26; targetSdk = 35; versionCode = releaseIdentity.getProperty("version.code").toInt(); versionName = releaseIdentity.getProperty("version.name") }
  testOptions { unitTests.isIncludeAndroidResources = true }
+ // Compile the isolated WhatsApp provider against Android in tests only; never package it.
+ sourceSets.getByName("test").java.srcDir(rootProject.file("experiments/whatsapp/android"))
  buildFeatures { compose = true; aidl = true }
  compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
  kotlinOptions { jvmTarget = "17" }
@@ -27,6 +35,22 @@ android {
   }
  }
  buildTypes { getByName("debug") { if (hasPrivateSigning) signingConfig = signingConfigs.getByName("projectPrivate") }; release { isMinifyEnabled = true; isShrinkResources = true; ndk { abiFilters += "arm64-v8a" }; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") }
+  // Independent Raycast candidate; preserve its recovered historical certificate.
+  // Never replaces the production or Review packages.
+  create("raycastPreview") {
+   initWith(getByName("debug"))
+   isDebuggable = false
+   isMinifyEnabled = optimizeRaycastPreview
+   isShrinkResources = optimizeRaycastPreview
+   proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+   ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
+   applicationIdSuffix = ".raycastpreview"
+   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview" else "-raycast-preview-experimental"
+   // Never substitute a generated debug certificate for the historical Preview identity.
+   // CI/tests can configure the project without a key; that case yields unsigned output.
+   signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null
+   matchingFallbacks += listOf("debug")
+  }
   // Independent, release-optimized preview. Never an update of the historically signed app.
   create("preview") {
    initWith(getByName("release"))
@@ -62,11 +86,16 @@ android {
 }
 // Review updates keep their original certificate and advance independently of production.
 androidComponents {
+ onVariants(selector().withBuildType("raycastPreview")) { variant ->
+  variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 25) }
+ }
  onVariants(selector().withBuildType("review")) { variant ->
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
  }
 }
 dependencies {
+ implementation("com.spotify.android:app-remote:0.8.0@aar")
+ implementation("com.google.code.gson:gson:2.11.0")
  implementation("com.microsoft.onnxruntime:onnxruntime-android:1.23.2")
  androidTestImplementation("androidx.test.ext:junit:1.2.1")
  androidTestImplementation("androidx.test:runner:1.6.2")
@@ -98,6 +127,7 @@ dependencies {
  testImplementation("org.robolectric:robolectric:4.14.1")
  testImplementation("androidx.compose.ui:ui-test-junit4")
  debugImplementation("androidx.compose.ui:ui-test-manifest")
+ add("raycastPreviewImplementation", "androidx.compose.ui:ui-test-manifest")
 }
 
 // Robolectric fetches its Android runtime inside the test JVM, outside Gradle's repositories.

@@ -9,7 +9,7 @@ private val Context.store by preferencesDataStore("spotlight")
 
 data class Config(
     val theme: String = "auto",
-    val opacity: Float = .96f,
+    val opacity: Float = .98f,
     val width: Int = 640,
     val position: Float = .16f,
     val contacts: Boolean = false,
@@ -43,7 +43,7 @@ data class Config(
     val corner:Int=22, val textScale:Float=1f, val iconSize:Int=30, val maxHeight:Int=480, val adaptive:Boolean=true,
     val routines:String="[]", val onboarded:Boolean=false, val clipLimit:Int=20, val clipRetention:Int=15,
     val suggestions:Boolean=true, val hiddenSuggestions:Set<String> = emptySet(), val pinnedSuggestions:Set<String> = emptySet(),
-    val preset:String="glass", val clipboardShortcut:String="ctrl_shift_v",
+    val preset:String="raycast", val clipboardShortcut:String="ctrl_shift_v",
     val privateMode:Boolean=false, val autoKeyboard:String="adaptive",
     val glassIntensity:Float=.45f, val surfaceTone:String="neutral", val borderWidth:Float=1f,
     val shadowSize:Float=12f, val typeface:String="inter", val selectionStyle:String="glass",
@@ -53,6 +53,9 @@ data class Config(
     val manualWidth:Int=if(width>0)width else 640,
     val windowScale:Float=-1f, // -1 preserves legacy geometry until the user changes the new slider
     val semanticSearch:Boolean=false,
+    val actionOpacity:Float=1f, val settingsOpacity:Float=.99f,
+    val keyBindings:Set<String> = emptySet(),
+    val compactSearchResults:Boolean=false,
 
 )
 
@@ -111,11 +114,13 @@ class Preferences(private val context: Context) {
     private val iconSize = intPreferencesKey("iconSize")
     private val maxHeight = intPreferencesKey("maxHeight")
     private val adaptive = booleanPreferencesKey("adaptive")
+    private val compactSearchResults = booleanPreferencesKey("compactSearchResults")
     private val routines = stringPreferencesKey("routines")
     private val onboarded = booleanPreferencesKey("onboarded")
     private val clipLimit = intPreferencesKey("clipLimit")
     private val clipRetention = intPreferencesKey("clipRetention")
     private val preset = stringPreferencesKey("preset")
+    private val keyboardBindings=stringSetPreferencesKey("keyboard_bindings")
     private val clipboardShortcut=stringPreferencesKey("clipboard_shortcut")
     private val suggestions = booleanPreferencesKey("suggestions")
     private val hiddenSuggestions = stringSetPreferencesKey("hiddenSuggestions")
@@ -130,11 +135,13 @@ class Preferences(private val context: Context) {
     val config: Flow<Config> =
         context.store.data
             .catch { emit(emptyPreferences()) }
-            .map { p ->
+            .map { p -> readConfig(p) }
+
+    private fun readConfig(p:androidx.datastore.preferences.core.Preferences):Config {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")} .getOrDefault(org.json.JSONObject())
-                Config(
+                return Config(
                     p[theme] ?: "auto",
-                    p[opacity] ?: .96f,
+                    p[opacity] ?: .98f,
                     p[width] ?: 0,
                     p[position] ?: .16f,
                     p[contacts] ?: false,
@@ -167,8 +174,8 @@ class Preferences(private val context: Context) {
                     p[aiModel] ?: "gpt-4.1-mini", p[learning] ?: true, p[usageData] ?: "{}",
                     p[corner] ?: 22, p[textScale] ?: 1f, p[iconSize] ?: 30, p[maxHeight] ?: 480, p[adaptive] ?: true,
                     p[routines] ?: "[]", p[onboarded] ?: false, p[clipLimit] ?: 20, p[clipRetention] ?: 15,
-                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "glass"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
-                ).copy(privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
+                    p[suggestions] ?: true,p[hiddenSuggestions] ?: emptySet(),p[pinnedSuggestions] ?: emptySet(),p[preset] ?: when { p[appearance]==null && p[accent]==null && p[theme]==null && p[corner]==null -> "raycast"; p[appearance]=="raycast" -> "raycast"; p[accent]=="graphite" -> "graphite"; p[theme]=="light" && (p[corner] ?: 22)>=28 -> "ios"; else -> "macos" },p[clipboardShortcut] ?: "ctrl_shift_v",
+                ).copy(compactSearchResults=p[compactSearchResults] ?: false,keyBindings=p[keyboardBindings]?.takeIf{dev.bautista.spotlight.input.KeyboardBindings.validEntries(it)} ?: emptySet(),privateMode=p[privateFlag] ?: false,semanticSearch=p[semanticFlag] ?: false,
                     autoKeyboard=extra.optString("autoKeyboard","adaptive").takeIf{it in setOf("adaptive","always","never")} ?: "adaptive",
                     glassIntensity=extra.optDouble("glassIntensity",.45).toFloat().coerceIn(0f,1f),
                     surfaceTone=extra.optString("surfaceTone","neutral"),borderWidth=extra.optDouble("borderWidth",1.0).toFloat().coerceIn(0f,2f),
@@ -177,19 +184,25 @@ class Preferences(private val context: Context) {
                     landscapePosition=extra.optDouble("landscapePosition",-1.0).toFloat(),customThemes=extra.optString("customThemes","[]"),
                     sourcePriority=extra.optString("sourcePriority","{}"),captureContext=extra.optBoolean("captureContext",false),learnedSequences=p[sequences] ?: "{}",aiRootConsent=extra.optBoolean("aiRootConsent",false),movement=extra.optString("movement","liquid_precision"),
                     manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
-                    windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f
+                    windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f,
+                    actionOpacity=extra.optDouble("actionOpacity",1.0).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: 1f,
+                    settingsOpacity=extra.optDouble("settingsOpacity",.99).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .99f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
-            }
+    }
 
     /** A settings edit must not overwrite habits, privacy, files or concurrent changes. */
     suspend fun updateAppearance(c: Config) {
         context.store.edit { p ->
             p[theme] = c.theme
+            p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .98f
             p[animations] = c.animations
             p[density] = c.density
+            p[compactSearchResults] = c.compactSearchResults
             p[accent] = c.accent
             p[stringPreferencesKey("preset")] = c.preset
             val extra = runCatching { org.json.JSONObject(p[next20] ?: "{}") }.getOrDefault(org.json.JSONObject())
+            extra.put("actionOpacity",c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: 1f)
+            extra.put("settingsOpacity",c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .99f)
             extra.put("windowScale", c.windowScale.takeIf { it.isFinite() && it in 0f..1f } ?: -1f)
             p[next20] = extra.toString()
         }
@@ -198,12 +211,14 @@ class Preferences(private val context: Context) {
     /** Persist only the AI fields actually edited, preserving concurrent privacy/history/source changes. */
     suspend fun updateAi(before:Config,after:Config) {
         context.store.edit { p ->
+            val destinationChanged=(before.aiProvider!=after.aiProvider && p[aiProvider]!=after.aiProvider) ||
+                (before.endpoint!=after.endpoint && p[endpoint]!=after.endpoint)
             if(before.aiProvider!=after.aiProvider)p[aiProvider]=after.aiProvider
             if(before.aiModel!=after.aiModel)p[aiModel]=after.aiModel
             if(before.endpoint!=after.endpoint)p[endpoint]=after.endpoint
-            if(before.aiRootConsent!=after.aiRootConsent) {
+            if(before.aiRootConsent!=after.aiRootConsent || destinationChanged) {
                 val extra=runCatching{org.json.JSONObject(p[next20] ?: "{}")}.getOrDefault(org.json.JSONObject())
-                extra.put("aiRootConsent",after.aiRootConsent);p[next20]=extra.toString()
+                extra.put("aiRootConsent",after.aiRootConsent && (!destinationChanged || !before.aiRootConsent));p[next20]=extra.toString()
             }
         }
     }
@@ -213,8 +228,27 @@ class Preferences(private val context: Context) {
         context.store.edit { p ->
             val current=runCatching{org.json.JSONArray(p[routines] ?: "[]")}.getOrElse{error("No se pudieron leer los comandos existentes. Exportá la configuración antes de repararlos.")}
             check(current.length()<30){"Se alcanzó el límite de 30 elementos guardados. No se borró contenido anterior."}
+            val keys=listOf(command.name,command.alias).filter{it.isNotBlank()}.map{dev.bautista.spotlight.search.normalize(it)}.toSet()
+            check((p[aliases] ?: emptySet()).none{dev.bautista.spotlight.search.normalize(it.substringBefore('|')) in keys}){"El nombre o alias coincide con un alias existente."}
+            for(i in 0 until current.length()) {
+                val old=current.optJSONObject(i) ?: continue
+                check(old.optString("id")!=command.id && listOf(old.optString("name"),old.optString("alias")).filter{it.isNotBlank()}.none{dev.bautista.spotlight.search.normalize(it) in keys}){"El nombre, alias o identificador ya existe."}
+            }
             val item=org.json.JSONArray(dev.bautista.spotlight.automation.Workflows.encode(listOf(command))).getJSONObject(0)
             current.put(item);p[routines]=current.toString()
+        }
+    }
+
+    suspend fun saveCommandTemplate(template:dev.bautista.spotlight.automation.CommandTemplate,expectedRevision:Int?=null) {
+        context.store.edit { p ->
+            p[routines]=dev.bautista.spotlight.automation.CommandTemplates.upsert(
+                p[routines] ?: "[]",template,expectedRevision,p[aliases] ?: emptySet())
+        }
+    }
+
+    suspend fun deleteCommandTemplate(id:String,expectedRevision:Int) {
+        context.store.edit { p ->
+            p[routines]=dev.bautista.spotlight.automation.CommandTemplates.delete(p[routines] ?: "[]",id,expectedRevision)
         }
     }
 
@@ -231,17 +265,79 @@ class Preferences(private val context: Context) {
         }
     }
 
+    /** Validate before writing, merge against the transaction's current values; never import grants or secrets. */
+    suspend fun importPortable(raw:String) {
+        context.store.edit { p ->
+            val previous=readConfig(p)
+            val c=ConfigTransfer.decode(raw,previous)
+            p[theme]=c.theme
+            p[opacity]=c.opacity
+            p[width]=c.width
+            p[position]=c.position
+            p[animations]=c.animations
+            p[engine]=c.engine
+            p[favorites]=c.favorites
+            p[blur]=c.blur
+            p[shortcut]=c.shortcut
+            p[quickLinks]=c.quickLinks
+            p[aliases]=c.aliases
+            p[snippets]=c.snippets
+            p[pins]=c.pins
+            p[accent]=c.accent
+            p[appearance]=c.appearance
+            p[density]=c.density
+            p[messageApp]=c.messageApp
+            p[aiProvider]=c.aiProvider
+            p[aiModel]=c.aiModel
+            p[corner]=c.corner
+            p[textScale]=c.textScale
+            p[iconSize]=c.iconSize
+            p[maxHeight]=c.maxHeight
+            p[adaptive]=c.adaptive
+            p[compactSearchResults]=c.compactSearchResults
+            p[routines]=c.routines
+            p[clipLimit]=c.clipLimit
+            p[clipRetention]=c.clipRetention
+            p[suggestions]=c.suggestions
+            p[hiddenSuggestions]=c.hiddenSuggestions
+            p[pinnedSuggestions]=c.pinnedSuggestions
+            p[preset]=c.preset
+            p[clipboardShortcut]=c.clipboardShortcut
+            p[keyboardBindings]=c.keyBindings
+            val extra=org.json.JSONObject(p[next20] ?: "{}")
+            // A portable file cannot authorize sending data to a different provider.
+            if(previous.aiProvider!=c.aiProvider)extra.put("aiRootConsent",false)
+            extra.put("sourcePriority",c.sourcePriority)
+            extra.put("customThemes",c.customThemes)
+            extra.put("autoKeyboard",c.autoKeyboard)
+            extra.put("glassIntensity",c.glassIntensity)
+            extra.put("surfaceTone",c.surfaceTone)
+            extra.put("borderWidth",c.borderWidth)
+            extra.put("shadowSize",c.shadowSize)
+            extra.put("typeface",c.typeface)
+            extra.put("selectionStyle",c.selectionStyle)
+            extra.put("movement",c.movement)
+            extra.put("manualWidth",c.manualWidth)
+            extra.put("windowScale",c.windowScale)
+            extra.put("actionOpacity",c.actionOpacity)
+            extra.put("settingsOpacity",c.settingsOpacity)
+            p[next20]=extra.toString()
+        }
+    }
+
     suspend fun update(c: Config) {
         val previousPrivate=isPrivate;val previousRevision=privacyRevision
         val revision=maxOf(System.currentTimeMillis(),privacyRevision+1);privacyRevision=revision;isPrivate=c.privateMode
         try {context.store.edit { p ->
+            val prior=readConfig(p)
+            val rootConsent=c.aiRootConsent && (!prior.aiRootConsent || (prior.aiProvider==c.aiProvider && prior.endpoint==c.endpoint))
             p[privateVersion]=revision
             p[privateFlag]=c.privateMode
             p[next20]=org.json.JSONObject().put("autoKeyboard",c.autoKeyboard).put("glassIntensity",c.glassIntensity.toDouble())
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
                 .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
-                .put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",c.aiRootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
+                .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",rootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width
@@ -281,12 +377,14 @@ class Preferences(private val context: Context) {
             p[iconSize] = c.iconSize
             p[maxHeight] = c.maxHeight
             p[adaptive] = c.adaptive
+            p[compactSearchResults] = c.compactSearchResults
             p[routines] = c.routines
             p[onboarded] = c.onboarded
             p[clipLimit] = c.clipLimit
             p[clipRetention] = c.clipRetention
             p[preset]=c.preset
             p[clipboardShortcut]=c.clipboardShortcut
+            p[keyboardBindings]=c.keyBindings
             p[suggestions]=c.suggestions
             p[hiddenSuggestions]=c.hiddenSuggestions
             p[pinnedSuggestions]=c.pinnedSuggestions

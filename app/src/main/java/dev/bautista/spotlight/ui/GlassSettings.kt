@@ -20,7 +20,7 @@ import org.json.JSONObject
 @Composable fun PrivacySettings(app:SpotlightApp,c:Config,update:(Config)->Unit) {
  val scope=rememberCoroutineScope()
  Row{Text("Modo privado",Modifier.weight(1f));Switch(c.privateMode,{update(c.copy(privateMode=it))})}
- Text("Suspende nuevas capturas y aprendizaje sin borrar datos. Las consultas manuales de IA se revisan antes de enviarse.",style=MaterialTheme.typography.bodySmall)
+ Text("Suspende capturas, aprendizaje y recuperación durable de esta ventana. Descarta su recuperación temporal; los guardados explícitos se conservan. Las consultas manuales de IA se revisan antes de enviarse.",style=MaterialTheme.typography.bodySmall)
  Row{Text("Ofrecer contexto del portapapeles al abrir",Modifier.weight(1f));Switch(c.captureContext,{update(c.copy(captureContext=it))},enabled=!c.privateMode)}
  Text("Solo con Spotlight enfocado. El contenido marcado sensible no se captura.",style=MaterialTheme.typography.bodySmall)
  val data=runCatching{JSONObject(c.usageData)}.getOrDefault(JSONObject())
@@ -38,7 +38,7 @@ import org.json.JSONObject
  Text("Teclado virtual",style=MaterialTheme.typography.titleSmall)
  Row(Modifier.horizontalScroll(rememberScrollState())){listOf("adaptive" to "Según invocación","always" to "Automático","never" to "Manual").forEach{(key,label)->FilterChip(c.autoKeyboard==key,{update(c.copy(autoKeyboard=key))},label={Text(label)})}}
  Text("La invocación táctil muestra primero la barra. El atajo físico enfoca el campo sin esperar al IME.",style=MaterialTheme.typography.bodySmall)
- Text("Posición horizontal");Slider((if(c.landscapePosition<0)c.position else c.landscapePosition).coerceIn(.04f,.35f),{update(c.copy(landscapePosition=it))},valueRange=.04f..0.35f)
+ Text("Posición horizontal");GlassSlider((if(c.landscapePosition<0)c.position else c.landscapePosition).coerceIn(.04f,.35f),{update(c.copy(landscapePosition=it))},valueRange=.04f..0.35f)
  TextButton(onClick={update(c.copy(landscapePosition=-1f))}){Text("Usar la posición general en ambas orientaciones")}
  Text("Gesto lateral compatible",style=MaterialTheme.typography.titleSmall)
  Text("Para no competir con Volver, elegí «Spotlight · Buscar» como aplicación de un gesto de One Hand Operation+, si su selector permite elegir actividades. Allí configurás lado, zona, sensibilidad y apps excluidas; Spotlight no agrega una burbuja ni una capa invisible permanente.",style=MaterialTheme.typography.bodySmall)
@@ -48,7 +48,7 @@ import org.json.JSONObject
 @Composable fun SearchTuning(c:Config,update:(Config)->Unit) {
  val priorities=runCatching{JSONObject(c.sourcePriority)}.getOrDefault(JSONObject())
  Text("Prioridades de fuentes",style=MaterialTheme.typography.titleSmall);Text("Ajustes moderados: las coincidencias exactas conservan prioridad.",style=MaterialTheme.typography.bodySmall)
- listOf("Aplicaciones","Archivos","Contactos","Comandos","IA").forEach{source->Text("$source · ${priorities.optInt(source,0)}");Slider(priorities.optInt(source,0).toFloat(),{value->val next=JSONObject(priorities.toString());next.put(source,value.toInt().coerceIn(-150,150));update(c.copy(sourcePriority=next.toString()))},valueRange=-150f..150f)}
+ listOf("Aplicaciones","Archivos","Contactos","Comandos","IA").forEach{source->Text("$source · ${priorities.optInt(source,0)}");GlassSlider(priorities.optInt(source,0).toFloat(),{value->val next=JSONObject(priorities.toString());next.put(source,value.toInt().coerceIn(-150,150));update(c.copy(sourcePriority=next.toString()))},valueRange=-150f..150f)}
 }
 @Composable fun DiagnosticsPanel(app:SpotlightApp) {
  val state by app.shizuku.state.collectAsState();val writeCapability by app.shizuku.writeCapability.collectAsState();val notifications by dev.bautista.spotlight.control.Replies.connected.collectAsState();val openings by app.diagnostics.openings.collectAsState();val index by app.index.status.collectAsState()

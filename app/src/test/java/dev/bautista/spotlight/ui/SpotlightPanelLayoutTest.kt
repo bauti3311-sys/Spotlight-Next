@@ -5,9 +5,11 @@ import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
 import android.content.pm.ResolveInfo
 import androidx.compose.runtime.*
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import dev.bautista.spotlight.SpotlightApp
+import dev.bautista.spotlight.input.KeyboardBindings
 import dev.bautista.spotlight.data.Config as AppConfig
 import org.junit.Assert.*
 import org.junit.Rule
@@ -19,9 +21,16 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@OptIn(ExperimentalTestApi::class)
 @Config(sdk = [33], qualifiers = "w1280dp-h800dp", application = SpotlightApp::class)
 class SpotlightPanelLayoutTest {
     @get:Rule val ui = createComposeRule()
+
+    private fun toggleApps() {
+        ui.onNode(hasSetTextAction()).performClick().performKeyInput {
+            keyDown(Key.CtrlLeft); pressKey(Key.One); keyUp(Key.CtrlLeft)
+        }
+    }
 
     @Test
     fun gridOpensMultipleRowsAndStopsResizingAcrossFrames() {
@@ -32,19 +41,20 @@ class SpotlightPanelLayoutTest {
                 ActivityInfo().apply {
                     packageName = "fixture.app$n"
                     name = "fixture.app$n.Main"
-                    nonLocalizedLabel = "Fixture $n"
+                    nonLocalizedLabel = "Fixture ${n.toString().padStart(2, '0')}"
                     applicationInfo = ApplicationInfo().apply { packageName = "fixture.app$n" }
                 }
             shadowOf(app.packageManager)
                 .addResolveInfoForIntent(launcher, ResolveInfo().apply { activityInfo = activity })
         }
+        app.search.invalidateApps()
         var viewport by mutableStateOf(560f)
         ui.setContent {
             SpotlightPanel(app, AppConfig(files = false), {}, availableHeightDp = viewport)
         }
-        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        toggleApps()
         ui.waitUntil(15000) {
-            ui.onAllNodesWithText("Fixture 2").fetchSemanticsNodes().isNotEmpty()
+            ui.onAllNodesWithText("Fixture 02").fetchSemanticsNodes().isNotEmpty()
         }
         val height = ui.onNodeWithTag("spotlight-results").fetchSemanticsNode().boundsInRoot.height
         val density = app.resources.displayMetrics.density
@@ -75,11 +85,11 @@ class SpotlightPanelLayoutTest {
         ui.runOnIdle { viewport = 280f }
         ui.waitForIdle()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
-        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        toggleApps()
         // Search runs asynchronously; popup/resize animations used to hide this race.
         ui.waitUntil(15000) { ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty() }
         ui.onNodeWithText("Crear una nota").assertDoesNotExist();ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
-        ui.onNodeWithContentDescription("Fuentes de búsqueda").performClick();ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").performClick()
+        toggleApps()
         ui.onNodeWithTag("spotlight-results").assertIsDisplayed()
     }
 
@@ -87,6 +97,17 @@ class SpotlightPanelLayoutTest {
     @Test
     fun explicitShortcutAcceptsSuggestionWhileRightArrowOnlyEdits() {
         val app = RuntimeEnvironment.getApplication() as SpotlightApp
+        val activity = ActivityInfo().apply {
+            packageName="com.google.android.youtube"
+            name="com.google.android.youtube.Main"
+            nonLocalizedLabel="YouTube"
+            applicationInfo=ApplicationInfo().apply { packageName="com.google.android.youtube" }
+        }
+        shadowOf(app.packageManager).addResolveInfoForIntent(
+            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+            ResolveInfo().apply { activityInfo=activity },
+        )
+        app.search.invalidateApps()
         ui.setContent {
             SpotlightPanel(
                 app,
@@ -96,7 +117,7 @@ class SpotlightPanelLayoutTest {
                 availableHeightDp = 500f,
             )
         }
-        ui.waitUntil(15000) { ui.onAllNodesWithText("⌃Space").fetchSemanticsNodes().isNotEmpty() }
+        ui.waitUntil(15000) { ui.onAllNodesWithText(KeyboardBindings.resolve(AppConfig(files=false),"complete")!!.label).fetchSemanticsNodes().isNotEmpty() }
         ui.onNode(hasSetTextAction()).performClick()
         ui.onNode(hasSetTextAction()).performKeyInput {
             pressKey(androidx.compose.ui.input.key.Key.DirectionRight)
@@ -107,8 +128,8 @@ class SpotlightPanelLayoutTest {
             pressKey(androidx.compose.ui.input.key.Key.Spacebar)
             keyUp(androidx.compose.ui.input.key.Key.CtrlLeft)
         }
-        ui.onNode(hasSetTextAction()).assertTextEquals("youtube ").assertIsFocused()
-        ui.onNode(hasSetTextAction()).performTextInput("x")
+        ui.onNode(hasSetTextAction()).assertTextEquals("youtube").assertIsFocused()
+        ui.onNode(hasSetTextAction()).performTextInput(" x")
         ui.onNode(hasSetTextAction()).assertTextEquals("youtube x").assertIsFocused()
         ui.onAllNodesWithText("Menú de acciones").assertCountEquals(0)
     }
@@ -129,6 +150,8 @@ class SpotlightPanelLayoutTest {
             ui.onAllNodesWithText("Crear nota").fetchSemanticsNodes().isNotEmpty()
         }
         ui.onNodeWithText("Crear nota").performClick()
+        ui.onNodeWithText("Texto de la nota").assertDoesNotExist()
+        ui.onNode(hasSetTextAction()).performKeyInput { pressKey(Key.Enter) }
         ui.onNodeWithText("Texto de la nota").assertIsDisplayed()
         ui.onAllNodes(hasSetTextAction())[1].performTextInput("Una nota de prueba")
         ui.onNodeWithText("Guardar").performClick()

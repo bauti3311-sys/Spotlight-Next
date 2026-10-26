@@ -1,0 +1,118 @@
+{
+  "signature.txt": {
+    "bytes": 955,
+    "sha256": "975d3c33331b6cd5c416fff07a46b62cf370f15d72236c6bc6cb045a85efad45"
+  },
+  "04-Filtro-acciones.png": {
+    "bytes": 38625,
+    "sha256": "851e47c0aa30df0fcc3edf89c92f49450676736714335ba586b35cbce5e7b462"
+  },
+  "integral-r8-package.log": {
+    "bytes": 3695,
+    "sha256": "52e2ac842d2a4b3d91f00f2d19ba5c74b18add2f219e118d5a3434f6d62f8c11"
+  },
+  "zipalign.txt": {
+    "bytes": 34337,
+    "sha256": "4bd26ded5af53d135ac9869c6f75730bc8a28d40492eb9dd97208eb500891bb3"
+  },
+  "06-ActionPanel-telefono.png": {
+    "bytes": 43642,
+    "sha256": "7e371b84500c8a5d5a1e829c48cf3e4c65352eac758e53962cdc590e9028197d"
+  },
+  "Spotlight-Next-Raycast-Candidate-40-6c89735.apk": {
+    "bytes": 73189195,
+    "sha256": "99bd8c6de9bfc0ff78a1ea2e5abb6244592b3f58bc390a6362eb35d2c55882c7"
+  },
+  "11-Formulario-tablet.png": {
+    "bytes": 55677,
+    "sha256": "05f23ba5924b1d362c41ccc75a0a48f1002d1cb85736ad6649fc128790a7e92f"
+  },
+  "tests.json": {
+    "bytes": 42093,
+    "sha256": "3b0224ba78a3b23b5c75e06ab9c1c0db1b868f807f92b46544fbb3ce13e8b5b0"
+  },
+  "packaging.json": {
+    "bytes": 68,
+    "sha256": "ae1573215bd3766d206997bf40855fcaac5f756b87e86fcc128ee0cbbfb16275"
+  },
+  "05-Submenu.png": {
+    "bytes": 44259,
+    "sha256": "69f85569ce20fb087f2d193092fdda36644371ee61d0c538e39436703d817491"
+  },
+  "Spotlight-Next-Candidata40-evidencias.zip": {
+    "bytes": 7672011,
+    "sha256": "f0fd341b227966d6db62ab4aee44fbe5b4e9c7ef37fe523cd5d63e7fbbc88137"
+  },
+  "02-Spot-Spotify.png": {
+    "bytes": 52575,
+    "sha256": "d1b45cd283404ede2cd296ce9d3d01d4c15f90310550ca839ee82262af0943c8"
+  },
+  "Spotlight-Next-Candidata40-informe.md": {
+    "bytes": 23442,
+    "sha256": "62481307e9daef117dd29e292543b87f3e02738ae3531eefb7bad768f9f0302a"
+  },
+  "10-Ajustes-Avanzado.png": {
+    "bytes": 90016,
+    "sha256": "8c352a883b34d2afe7af257829f281f2ed8abb1ae2c065f4a742842fa705d419"
+  },
+  "Spotlight-Next-source-6c89735.zip": {
+    "bytes": 8669345,
+    "sha256": "1a2753962e7ac92704fcc3cc41a3a40001b8c45d6d60a6941e14590ca9a39c0b"
+  },
+  "08-Media-telefono.png": {
+    "bytes": 49478,
+    "sha256": "f2c96d640464c9249b934d180069847a83a6c1743ffc301c9b78d95472b46e3a"
+  },
+  "07-Media-tablet.png": {
+    "bytes": 75032,
+    "sha256": "430d590ac87df547c2e0977c21bdc10e6c8c8eca3e20be006842bce0c33b6014"
+  },
+  "03-ActionPanel-tablet.png": {
+    "bytes": 80376,
+    "sha256": "44966e4bcbed8144bef8f1acd0958074b5578486b00dffaa8f2e721d93807b9b"
+  },
+  "01-Inicio-tablet.png": {
+    "bytes": 33382,
+    "sha256": "f44a26a1b9e31386a9fabdcb5fef58eea1087f81f2946fd8a6b6dcac3771adab"
+  },
+  "package.txt": {
+    "bytes": 8046,
+    "sha256": "6314063644fd649a0a0febede54e27df12c5fa7e58ac58d6f1a7b6586e587caa"
+  },
+  "12-Formulario-telefono.png": {
+    "bytes": 26637,
+    "sha256": "4d98e622200e9eb295fd08830f3afd7021e0f855244f7e64cb4f4316c3e88ff6"
+  },
+  "integral-r8-gate.log": {
+    "bytes": 4198,
+    "sha256": "cd3c1f5913463bcbe398bae53b5d09bd695490ac6d27096857335138d2083437"
+  },
+  "source-inputs.json": {
+    "bytes": 23208,
+    "sha256": "02a48ba9e0592b6210f08f9fe3f61dfbb5ac2e7c50337b9b96e14d1ef2524bc8"
+  },
+  "Spotlight-Next-Candidata40-capturas.html": {
+    "bytes": 963266,
+    "sha256": "1ced4765a62c5a7d18d5011a1c16f3f4204cbb814e1f30b6cf63d78f3228c733"
+  },
+  "verification.json": {
+    "bytes": 1932,
+    "sha256": "a00afd8a294cdafbcf2064f95166f01aba10564721ec4ba6e354bdd890ff6172"
+  },
+  "r8.json": {
+    "bytes": 664,
+    "sha256": "146cdb0108fdd078156a0086b9a6964effa560aa42782917b604faf2dd83c188"
+  },
+  "09-Permisos.png": {
+    "bytes": 129164,
+    "sha256": "9adc56bad290baeb398db899b5ad8c4a472deacd2ddd3b2de704481c5fddd9cb"
+  },
+  "Spotlight-Next-Candidata40-matriz.md": {
+    "bytes": 11066,
+    "sha256": "b158d6cca2c05c7e008895523545052778ac35de16d1c4bace93d95d2b481809"
+  },
+  "captures.json": {
+    "bytes": 6671,
+    "sha256": "f75d18f989fbc85543c1b9cb3b4b8f7a472a2a62b67117c02209ec0f8414a55c"
+  }
+}

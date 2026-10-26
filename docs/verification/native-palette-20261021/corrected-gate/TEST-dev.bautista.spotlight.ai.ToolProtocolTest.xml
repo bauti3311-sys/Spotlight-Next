@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ai.ToolProtocolTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-21T14:11:28" hostname="e4f928177bdc" time="3.901">
+  <properties/>
+  <testcase name="geminiStructuredCallsAndThoughtsAreHandled" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.349"/>
+  <testcase name="providerProposalsRemainUnexecutedAndNeedAppConfirmation" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.184"/>
+  <testcase name="missingPermissionAndDisconnectedAdvancedCapabilitiesCannotExecute" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.17"/>
+  <testcase name="requestsUseStrictSchemasAndNeverPutKeysInUrls" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.608"/>
+  <testcase name="unknownCommandsAndInjectedAuthorizationAreRejected" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.156"/>
+  <testcase name="geminiRequiresACompletedProposalBeforeOfferingTools" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.5"/>
+  <testcase name="geminiPromptBlockCannotBeOverriddenByAnApparentlyCompleteCandidate" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.311"/>
+  <testcase name="providerFailureNeverEchoesApiKey" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.777"/>
+  <testcase name="incompleteResponsesAndTooManyCallsAreRejected" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.657"/>
+  <testcase name="geminiThoughtPartsNeverBecomeToolActions" classname="dev.bautista.spotlight.ai.ToolProtocolTest" time="0.182"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

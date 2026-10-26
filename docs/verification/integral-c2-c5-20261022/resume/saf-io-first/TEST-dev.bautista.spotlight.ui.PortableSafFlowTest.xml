@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.PortableSafFlowTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2026-10-23T00:08:24" hostname="3e23142f4df9" time="3.372">
+  <properties/>
+  <testcase name="actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit" classname="dev.bautista.spotlight.ui.PortableSafFlowTest" time="3.372">
+    <failure message="java.lang.UnsupportedOperationException: main looper can only be controlled from main thread" type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException: main looper can only be controlled from main thread
+	at org.robolectric.shadows.ShadowPausedLooper.executeOnLooper(ShadowPausedLooper.java:691)
+	at org.robolectric.shadows.ShadowPausedLooper.idle(ShadowPausedLooper.java:104)
+	at org.robolectric.android.internal.RoboMonitoringInstrumentation.waitForIdleSync(RoboMonitoringInstrumentation.java:86)
+	at androidx.test.core.app.ActivityScenario.onActivity(ActivityScenario.java:801)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt.getActivityFromTestRule(AndroidComposeTestRule.android.kt:357)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt.access$getActivityFromTestRule(AndroidComposeTestRule.android.kt:1)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt$createAndroidComposeRule$1.invoke(AndroidComposeTestRule.android.kt:116)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt$createAndroidComposeRule$1.invoke(AndroidComposeTestRule.android.kt:116)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$special$$inlined$AndroidComposeUiTestEnvironment$1.getActivity(ComposeUiTest.android.kt:573)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.getActivity(ComposeUiTest.android.kt:395)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.getActivity(AndroidComposeTestRule.android.kt:265)
+	at dev.bautista.spotlight.ui.PortableSafFlowTest$actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit$3$1.invokeSuspend(PortableSafFlowTest.kt:62)
+	at _COROUTINE._BOUNDARY._(CoroutineDebugging.kt:42)
+	at dev.bautista.spotlight.ui.PortableSafFlowTest$actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit$3.invokeSuspend(PortableSafFlowTest.kt:62)
+Caused by: java.lang.UnsupportedOperationException: main looper can only be controlled from main thread
+	at org.robolectric.shadows.ShadowPausedLooper.executeOnLooper(ShadowPausedLooper.java:691)
+	at org.robolectric.shadows.ShadowPausedLooper.idle(ShadowPausedLooper.java:104)
+	at org.robolectric.android.internal.RoboMonitoringInstrumentation.waitForIdleSync(RoboMonitoringInstrumentation.java:86)
+	at androidx.test.core.app.ActivityScenario.onActivity(ActivityScenario.java:801)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt.getActivityFromTestRule(AndroidComposeTestRule.android.kt:357)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt.access$getActivityFromTestRule(AndroidComposeTestRule.android.kt:1)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt$createAndroidComposeRule$1.invoke(AndroidComposeTestRule.android.kt:116)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule_androidKt$createAndroidComposeRule$1.invoke(AndroidComposeTestRule.android.kt:116)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$special$$inlined$AndroidComposeUiTestEnvironment$1.getActivity(ComposeUiTest.android.kt:573)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.getActivity(ComposeUiTest.android.kt:395)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.getActivity(AndroidComposeTestRule.android.kt:265)
+	at dev.bautista.spotlight.ui.PortableSafFlowTest$actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit$3$1.invokeSuspend(PortableSafFlowTest.kt:62)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+</failure>
+  </testcase>
+  <system-out><![CDATA[Provider output: content://portable-backup/document/config thread=SDK 33 Main Thread file=/tmp/robolectric-PortableSafFlowTest_actualExportAndImportCallbacksUseSafWithPreviewAndExplicitCommit1132267128174662616/dev.bautista.spotlight.next.raycastpreview-dataDir/cache/portable-saf.json
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

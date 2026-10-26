@@ -1,101 +1,247 @@
-name: Build Debug APK
+name: Spotlight Android gate or Preview (manual)
 
-# Explicit delivery branch only; already-tested source. No device tests.
+# Manual only. Select feat/raycast-sidebar-permissions-20261020 in the Actions UI.
+# This file also exists on main, so GitHub can show its Run workflow button.
 on:
-  push:
-    branches: [fix/debug-delivery-f21]
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'directed-tests: compile + directed unit tests, no APK. preview: existing delivery flow.'
+        type: choice
+        options: [directed-tests, preview]
+        default: directed-tests
+        required: true
+      source_sha:
+        description: 'Exact 40-character source SHA. Initial functional gate: 085142ea.'
+        type: string
+        default: '085142ea35bd7d19085d45118ee1776b1c80d721'
+        required: true
 
 permissions:
   contents: read
 
 concurrency:
-  group: debug-delivery-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  SOURCE_SHA: 58ac0a2d4cb4f96c9fbef46da4f4104475c251ae
+  group: raycast-preview-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  debug:
-    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/fix/debug-delivery-f21'
+  directed-gate:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' && inputs.mode == 'directed-tests'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 30
+    env:
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      SPOTLIGHT_GRADLE_BIN: gradle
     steps:
-      - uses: actions/checkout@v4
+      - name: Validate exact source request
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo '::error::A full lowercase source SHA is required.'; exit 2; }
+          test "$GITHUB_REF" = 'refs/heads/feat/raycast-sidebar-permissions-20261020'
+
+      - name: Checkout exact source SHA
+        uses: actions/checkout@v4
         with:
-          ref: ${{ env.SOURCE_SHA }}
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
           persist-credentials: false
-      - name: Verify exact source
-        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
-      - uses: actions/setup-java@v4
+
+      - name: Verify source ancestry and preserve identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git merge-base --is-ancestor "$SOURCE_SHA" refs/remotes/origin/feat/raycast-sidebar-permissions-20261020
+          mkdir -p gate-evidence
+          git rev-parse HEAD > gate-evidence/SOURCE_SHA.txt
+          printf '%s\n' "${GITHUB_WORKFLOW_SHA:-$GITHUB_SHA}" > gate-evidence/WORKFLOW_SHA.txt
+          printf '%s\n' "$GITHUB_WORKFLOW_REF" > gate-evidence/WORKFLOW_REF.txt
+          test -f scripts/test-d28-directed.sh
+          test -f scripts/directed-tests.init.gradle
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v4
+
+      - name: Reuse Android SDK installation
+        uses: android-actions/setup-android@v4
         with:
           packages: 'platform-tools'
-      - name: Install build packages
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Ensure only required Android compile packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -f "$ANDROID_HOME/platforms/android-35/android.jar" || ! -x "$ANDROID_HOME/build-tools/35.0.0/aapt2" ]]; then
+            sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+          fi
+
+      - name: Restore Gradle 8.10.2 and dependency caches
+        uses: gradle/actions/setup-gradle@v4
         with:
+          gradle-version: '8.10.2'
           cache-read-only: false
-      - name: Build debug only
-        run: bash gradlew :app:assembleDebug --build-cache --no-daemon --max-workers=2 --console=plain
-      - name: Package and verify APK and matching source
+
+      - name: Compile production and unit test sources once
+        id: compile
+        shell: bash
         run: |
-          mkdir -p delivery/apk delivery/source
-          cp app/build/outputs/apk/debug/app-debug.apk delivery/apk/Spotlight-Next-debug-58ac0a2.apk
-          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs delivery/apk/Spotlight-Next-debug-58ac0a2.apk > delivery/apk/certificate.txt
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging delivery/apk/Spotlight-Next-debug-58ac0a2.apk > delivery/apk/package.txt
-          "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 delivery/apk/Spotlight-Next-debug-58ac0a2.apk
-          grep -Fq "package: name='dev.bautista.spotlight.next' versionCode='28' versionName='2.0.1'" delivery/apk/package.txt
-          grep -Fq "sdkVersion:'26'" delivery/apk/package.txt
-          grep -q "native-code:.*'arm64-v8a'" delivery/apk/package.txt
-          git archive --format=zip --prefix=Spotlight-Next-58ac0a2/ --output=delivery/source/Spotlight-Next-source-58ac0a2.zip "$SOURCE_SHA"
-          unzip -t delivery/source/Spotlight-Next-source-58ac0a2.zip > /dev/null
-          (cd delivery/apk && sha256sum Spotlight-Next-debug-58ac0a2.apk > SHA256SUMS)
-          (cd delivery/source && sha256sum Spotlight-Next-source-58ac0a2.zip > SHA256SUMS)
-          printf '%s\n' "$SOURCE_SHA" > delivery/apk/SOURCE_COMMIT
-          printf '%s\n' "$SOURCE_SHA" > delivery/source/SOURCE_COMMIT
-          {
-            echo '### APK debug de prueba; no release ni firma histórica'
-            echo "Fuente exacta: $SOURCE_SHA"
-            echo 'La APK se recompila en este runner: hash y certificado debug pueden diferir de los archivos locales.'
-            echo 'Android mínimo8.0/API26; ARM64 verificado; Android16/API36 cumple requisitos estáticos. OneUI físico y F1.3 frío pendientes.'
-            echo 'Certificado histórico de referencia: 11B0B3B37544BD95B128DE52798FA7FFB7489F94819614B1ADA383BD4EE7A6CF.'
-            echo 'Esta entrega usa Android Debug: si difiere del certificado instalado, Android rechazará actualizar. No desinstalar para eludir el conflicto.'
-            cat delivery/apk/certificate.txt
-            echo '```text'
-            stat -c '%n: %s bytes' delivery/apk/*.apk delivery/source/*.zip
-            cat delivery/apk/SHA256SUMS delivery/source/SHA256SUMS
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Upload APK
-        id: apk
-        uses: actions/upload-artifact@v4
-        with:
-          name: Spotlight-Next-debug-58ac0a2
-          path: delivery/apk/
-          if-no-files-found: error
-          retention-days: 7
-          compression-level: 0
-      - name: Upload complete source ZIP
-        id: source
-        uses: actions/upload-artifact@v4
-        with:
-          name: Spotlight-Next-source-58ac0a2
-          path: delivery/source/
-          if-no-files-found: error
-          retention-days: 7
-          compression-level: 0
-      - name: Browser download links
+          set -euo pipefail
+          java -version 2>&1 | tee gate-evidence/java.log
+          gradle --version | tee gate-evidence/gradle.log
+          gradle :app:compileDebugUnitTestKotlin :app:warmDirectedTestRuntime -I scripts/directed-tests.init.gradle \
+            --no-daemon --max-workers=1 --console=plain --stacktrace \
+            2>&1 | tee gate-evidence/compile.log
+
+      - name: Directed groups UI then D28 and integrations
+        id: directed
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Compile/warmup above may download missing dependencies. Tests use the
+          # source's existing offline runner; Robolectric may fetch its own runtime.
+          for group in ui d28 capabilities spotify cast imports metrics sources; do
+            touch "gate-evidence/$group.started"
+            # Do not attribute a previous group's XML to a runner that fails early.
+            rm -f app/build/test-results/testDebugUnitTest/*.xml
+            if bash scripts/test-d28-directed.sh "$group" 2>&1 | tee "gate-evidence/$group.log"; then
+              result=0
+            else
+              result=$?
+            fi
+            # Gradle replaces this directory on the next test invocation.
+            mkdir -p "gate-evidence/results/$group"
+            if [[ -d app/build/test-results/testDebugUnitTest ]]; then
+              find app/build/test-results/testDebugUnitTest -maxdepth 1 -type f -name '*.xml' -exec cp -t "gate-evidence/results/$group/" {} +
+            fi
+            printf '%s\n' "$result" > "gate-evidence/$group.exit-code"
+            if (( result != 0 )); then exit "$result"; fi
+          done
+
+      - name: Retain last failing test results and verify no APK was generated
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p gate-evidence
+          if [[ -d app/build/test-results/testDebugUnitTest ]]; then
+            mkdir -p gate-evidence/results-last
+            find app/build/test-results/testDebugUnitTest -maxdepth 1 -type f -name '*.xml' -exec cp -t gate-evidence/results-last/ {} +
+          fi
+          if find app/build/outputs -type f -name '*.apk' -print -quit 2>/dev/null | grep -q .; then
+            echo '::error::Unexpected APK output; gate must not assemble or sign APKs.'
+            exit 1
+          fi
+
+      # Temporarily no artifact upload in directed-tests: storage quota exhausted.
+      # Full Gradle/runner output remains in the GitHub Actions job logs.
+      - name: Summarize compilation and directed test results
+        if: always()
+        shell: bash
         env:
-          APK_URL: ${{ steps.apk.outputs.artifact-url }}
-          SOURCE_URL: ${{ steps.source.outputs.artifact-url }}
+          COMPILE_RESULT: ${{ steps.compile.outcome }}
+          GROUPS_RESULT: ${{ steps.directed.outcome }}
+        run: python3 scripts/summarize-directed-gate.py
+
+  raycast-preview:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' && inputs.mode == 'preview'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify selected revision
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
         run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$GITHUB_REF" = 'refs/heads/feat/raycast-sidebar-permissions-20261020'
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git merge-base --is-ancestor "$SOURCE_SHA" refs/remotes/origin/feat/raycast-sidebar-permissions-20261020
+          printf 'Building source SHA: '
+          git rev-parse HEAD
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Restore persistent Raycast Preview signing identity
+        env:
+          PREVIEW_KEYSTORE_BASE64: ${{ secrets.RAYCAST_PREVIEW_KEYSTORE_BASE64 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$PREVIEW_KEYSTORE_BASE64" ]]; then
+            echo '::error::Dedicated Raycast Preview signing backup must be configured before CI delivery.'
+            exit 1
+          fi
+          install -d -m 700 "$HOME/.android"
+          printf '%s' "$PREVIEW_KEYSTORE_BASE64" | base64 --decode > "$HOME/.android/debug.keystore"
+          chmod 600 "$HOME/.android/debug.keystore"
+          keytool -J-Duser.language=en -list -v -keystore "$HOME/.android/debug.keystore" -storepass android |
+            grep -F 'SHA256: 88:58:38:AA:97:0E:0D:4B:A1:68:A2:B5:F3:E8:F1:A6:E7:33:42:63:C3:4C:9C:BC:88:8F:5C:70:38:1A:52:BA'
+
+      - name: Prepare Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+
+      - name: Install Android 35 build packages
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+
+      - name: Gradle dependency cache
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
+      - name: Build ONLY independent Raycast Preview
+        run: bash gradlew :app:assembleRaycastPreview --no-daemon --max-workers=2 --console=plain
+
+      - name: Verify installed identity, signature and hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          apk='app/build/outputs/apk/raycastPreview/app-raycastPreview.apk'
+          test -s "$apk"
+          mkdir -p delivery
+          cp "$apk" delivery/Spotlight-Next-Raycast-Preview.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs "$apk" > delivery/signature.txt
+          grep -Fq '885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba' delivery/signature.txt
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" > delivery/package.txt
+          "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 "$apk"
+          grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview'" delivery/package.txt
+          git rev-parse HEAD > delivery/SOURCE_SHA.txt
+          # The matching source ZIP is generated from exactly this checked-out SHA.
+          # Git archive excludes untracked SDK caches, signing keys and local credentials.
+          git archive --format=zip --prefix="Spotlight-Next-Raycast-Preview-source/" \
+            --output=delivery/Spotlight-Next-Raycast-Preview-source.zip HEAD
+          unzip -t delivery/Spotlight-Next-Raycast-Preview-source.zip >/dev/null
+          (cd delivery && sha256sum Spotlight-Next-Raycast-Preview.apk Spotlight-Next-Raycast-Preview-source.zip > SHA256SUMS)
           {
-            echo "[Descargar APK debug (ZIP de artefacto)]($APK_URL)"
-            echo "[Descargar ZIP fuente (ZIP de artefacto)]($SOURCE_URL)"
-            echo 'Requiere sesión en GitHub con acceso al repositorio privado. Extraer ZIP del artefacto para obtener archivo.'
+            echo '### Spotlight Next · Raycast Preview'
+            echo 'Build independiente y firmado con certificado Android Debug; NO actualiza el APK principal.'
+            echo 'Si ya tenés instalada otra copia Raycast Preview con otra firma, no la sobrescribas para conservar sus datos.'
+            echo "Código fuente: $(cat delivery/SOURCE_SHA.txt)"
+            echo 'No se ejecutaron pruebas instrumentadas en tablet.'
+            echo 'APK, ZIP fuente del mismo SHA, hashes y certificado dentro del artefacto privado.'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload ONLY verified preview APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Spotlight-Next-Raycast-Preview-${{ github.run_number }}
+          path: delivery/
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0

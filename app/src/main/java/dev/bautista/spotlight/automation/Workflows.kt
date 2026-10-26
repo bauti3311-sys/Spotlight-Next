@@ -40,10 +40,26 @@ object Workflows {
             if(s.value.length>8000)return "El texto supera 8000 caracteres."
         };if(branches.isNotEmpty())return "Cerrá las condiciones con Fin.";return null
     }
-    fun parse(raw:String):List<Workflow> = runCatching {val a=JSONArray(raw);(0 until minOf(a.length(),30)).map{i->val j=a.getJSONObject(i);val steps=j.getJSONArray("steps");Workflow(j.getString("id"),j.getString("name"),j.optString("alias"),(0 until steps.length()).map{k->val s=steps.getJSONObject(k);WorkflowStep(s.getString("type"),s.optString("value"),s.optString("onError","stop"))},j.optString("icon","layers").takeIf{it in setOf("layers","bolt","sun","music")} ?: "layers",j.optString("kind",""))}.filter{validate(it)==null}}.getOrDefault(emptyList())
+    fun parse(raw:String):List<Workflow> = runCatching {
+        val a=JSONArray(raw)
+        (0 until minOf(a.length(),30)).mapNotNull { i ->
+            val j=a.optJSONObject(i) ?: return@mapNotNull null
+            if(j.optString("kind")==CommandTemplates.KIND)return@mapNotNull null
+            // Reading one unknown/future record must not hide compatible commands.
+            // The original raw array is retained by every transactional storage method.
+            runCatching {
+                val steps=j.getJSONArray("steps");require(steps.length() in 1..12)
+                Workflow(j.getString("id"),j.getString("name"),j.optString("alias"),
+                    (0 until steps.length()).map { k ->val step=steps.getJSONObject(k)
+                        WorkflowStep(step.getString("type"),step.optString("value"),step.optString("onError","stop"))
+                    },j.optString("icon","layers").takeIf{it in setOf("layers","bolt","sun","music")} ?: "layers",j.optString("kind",""))
+                    .takeIf{validate(it)==null}
+            }.getOrNull()
+        }
+    }.getOrDefault(emptyList())
     fun encode(items:List<Workflow>)=JSONArray().apply {items.take(30).forEach{w->put(JSONObject().put("id",w.id).put("name",w.name).put("alias",w.alias).put("icon",w.icon).apply{if(w.kind.isNotEmpty())put("kind",w.kind)}.put("steps",JSONArray().apply{w.steps.forEach{s->put(JSONObject().put("type",s.type).put("value",s.value).put("onError",s.onError))}}))}}.toString()
     fun results(query:String,raw:String,favorites:Set<String>):List<Result> {
-        val q=normalize(query.trim());return parse(raw).filter{q in setOf("rutinas","workflows") || q.isBlank() && (if(NativeCommands.isNative(it))"command:${it.id}" else "routine:${it.id}") in favorites || q.isNotBlank() && (relevance(q,it.name)>0 || it.alias.isNotBlank() && q==normalize(it.alias))}.map{if(NativeCommands.isNative(it))NativeCommands.result(it) else Result("routine:${it.id}",it.name,"${it.steps.size} pasos · revisar y ejecutar","Acciones",1800,Action.WorkflowRun(it.id))}
+        val q=normalize(query.trim());return parse(raw).filter{q in setOf("rutinas","workflows") || q.isBlank() && (if(NativeCommands.isNative(it))"command:${it.id}" else "routine:${it.id}") in favorites || q.isNotBlank() && (relevance(q,it.name)>0 || it.alias.isNotBlank() && q==normalize(it.alias))}.map{if(NativeCommands.isNative(it))NativeCommands.result(it) else Result("routine:${it.id}",it.name,"${it.steps.size} pasos · revisar y ejecutar","Acciones",1800,Action.WorkflowRun(it.id))}+CommandTemplates.results(query,raw,favorites)
     }
     fun toolCall(raw:String):ToolCall {val j=JSONObject(raw);require(j.keys().asSequence().toSet()==setOf("name","arguments"));return ToolCall(j.getString("name"),ToolRegistry.parseArguments(j.getJSONObject("arguments")))}
     fun encodeTool(call:ToolCall)=JSONObject().put("name",call.name).put("arguments",JSONObject(call.arguments)).toString()

@@ -1,0 +1,12 @@
+{
+  "name": "Spotlight Android 35",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bookworm",
+  "remoteEnv": {
+    "ANDROID_HOME": "/workspaces/.spotlight-tools/android-sdk",
+    "ANDROID_SDK_ROOT": "/workspaces/.spotlight-tools/android-sdk",
+    "GRADLE_USER_HOME": "/workspaces/.spotlight-tools/gradle-home",
+    "SPOTLIGHT_GRADLE_BIN": "/workspaces/.spotlight-tools/gradle-8.10.2/bin/gradle"
+  },
+  "postCreateCommand": "mkdir -p /workspaces/.spotlight-tools/gradle-home",
+  "shutdownAction": "stopContainer"
+}

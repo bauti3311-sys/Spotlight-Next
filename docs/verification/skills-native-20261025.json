@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-25",
+  "base": "da17167987a054e52fa36bb6df6ebf7d3089dbac",
+  "installed": "Two repository-local text-only adaptations, not upstream executables or APK integrations",
+  "sources": [
+    {
+      "repo": "pbakaus/impeccable",
+      "sha": "9fa16a06d8957fde5687984629fd028c9f2abf10",
+      "license": "Apache-2.0"
+    },
+    {
+      "repo": "android/skills",
+      "sha": "4ebabf2b0fd6c04b7150023c8b612f80592a6226",
+      "license": "Apache-2.0"
+    }
+  ],
+  "validation": {
+    "quick_validate": "2/2 passed",
+    "forward_review": "4/4 scenarios checked by isolated read-only agent; clarified fallback confirmation and icon scopes",
+    "metadata": "2/2 skills checked: short-description length, exact skill invocation, local references and no TODO placeholders"
+  },
+  "excluded": [
+    "Impeccable engine, automatic downloads and hooks",
+    "Unadapted AppFunctions requiring target36/compile37",
+    "SDK/dependency updates",
+    "New sensitive permissions",
+    "Account access or real external actions"
+  ],
+  "limitations": [
+    "Does not fix unresolved physical Spotify audio interruption",
+    "No new UI appearance validated by installing skills",
+    "Matrix unchanged:9/25/6",
+    "No new APK built; existing Preview50 retains its original source965646a9",
+    "XML/logs preserved in persistent Codespace; no upload-artifact/Actions used"
+  ],
+  "reviewedNotInstalled": [
+    {
+      "skill": "android/skills device-ai/appfunctions",
+      "reason": "Requires target36/compile37; current build remains35. Guidance only, no runtime integration."
+    },
+    {
+      "skill": "android/skills jetpack-compose-performance",
+      "reason": "Version-sensitive modern APIs and broad audit are outside this scoped refinement; not blindly installed."
+    }
+  ],
+  "productCheckpoint": "1b68165bc4c704a6630ef31c0f222e3ce4790825",
+  "productChanges": [
+    "ApplicationInspector: secondary actionable rows expose Role.Button; appearance and 48dp targets retained",
+    "IntegrationRegistry: suspended external applications do not pass capability resolution"
+  ],
+  "directed": {
+    "status": "passed",
+    "exit": 0,
+    "duration": "6m23s",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "newCases": 3,
+    "sourceSha": "1b68165bc4c704a6630ef31c0f222e3ce4790825",
+    "environment": "Persistent ubiquitous-waffle Codespace, JDK17 / Gradle8.10.2 / AndroidSDK35",
+    "offline": true,
+    "classes": [
+      {
+        "name": "dev.bautista.spotlight.ui.ApplicationInspectorAccessibilityTest",
+        "tests": 1,
+        "xmlGitObjectHash": "55e46cc9fdf8c856c5ce18cbae9b5a6b8ac33105"
+      },
+      {
+        "name": "dev.bautista.spotlight.ui.AppActionsSectionTest",
+        "tests": 3,
+        "xmlGitObjectHash": "f216aac2b9bc6ce54d5be20bf208c827155217dc"
+      },
+      {
+        "name": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+        "tests": 8,
+        "xmlGitObjectHash": "c37f3160dcb69749b7ef871ca18a3c3960630f82"
+      },
+      {
+        "name": "dev.bautista.spotlight.control.IntegrationRegistryTest",
+        "tests": 2,
+        "xmlGitObjectHash": "9d932846a609f8107ed7a42da131a2462fa2561d"
+      }
+    ],
+    "evidenceDirectory": "/workspaces/.spotlight-tools/evidence-skills-native",
+    "command": "\"$SPOTLIGHT_GRADLE_BIN\" :app:testDebugUnitTest -I scripts/directed-tests.init.gradle -PspotlightDirectedClasses=dev.bautista.spotlight.ui.ApplicationInspectorAccessibilityTest,dev.bautista.spotlight.ui.AppActionsSectionTest,dev.bautista.spotlight.control.AppCapabilitiesTest,dev.bautista.spotlight.control.IntegrationRegistryTest --tests dev.bautista.spotlight.ui.ApplicationInspectorAccessibilityTest --tests dev.bautista.spotlight.ui.AppActionsSectionTest --tests dev.bautista.spotlight.control.AppCapabilitiesTest --tests dev.bautista.spotlight.control.IntegrationRegistryTest --offline --no-daemon --max-workers=1 --console=plain -Pkotlin.compiler.execution.strategy=in-process \"-Dorg.gradle.jvmargs=-Xmx2048m -XX:+UseSerialGC -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=128m -XX:ActiveProcessorCount=1 -Dfile.encoding=UTF-8\""
+  },
+  "lint": {
+    "offline": {
+      "status": "blocked",
+      "exit": 1,
+      "reason": "Missing cached dependency metadata/artifacts including androidx.core:core:1.13.0 and androidx.collection:collection-jvm:1.4.0; preserved lint-offline.log and lint-offline.exit"
+    },
+    "online": {
+      "status": "passed",
+      "exit": 0,
+      "duration": "5m41s",
+      "errors": 0,
+      "warnings": 24,
+      "xmlGitObjectHash": "9b2ad85e4f4fb077e2041e17b53e2e66a6975208",
+      "command": ":app:lintDebug --no-daemon --max-workers=1 --console=plain; same bounded JVM/compiler flags as directed tests",
+      "repositories": [
+        "https://dl.google.com/android/maven2",
+        "Maven Central"
+      ],
+      "dependencyVersionsChanged": false,
+      "scope": "Debug; not compared numerically to historical RaycastPreview lint",
+      "changedFileWarnings": "No report locations matched the four changed Kotlin files"
+    }
+  },
+  "publication": {
+    "skillsCommit": "94fe4a49025d0e3637fb875d7a9a50597bb04ca8",
+    "testedProductCommit": "1b68165bc4c704a6630ef31c0f222e3ce4790825",
+    "branch": "feat/raycast-sidebar-permissions-20261020",
+    "pr": 18,
+    "draft": true,
+    "conditionalUpdates": true,
+    "force": false
+  }
+}

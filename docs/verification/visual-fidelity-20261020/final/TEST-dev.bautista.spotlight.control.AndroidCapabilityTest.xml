@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.AndroidCapabilityTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-21T03:06:29" hostname="e37c7bc9f734" time="0.264">
+  <properties/>
+  <testcase name="dialArgumentsRejectCodesUrisAndInjectedParameters" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.019"/>
+  <testcase name="appFunctionsDiagnosticIsAvailableInUniversalSearch" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.035"/>
+  <testcase name="confirmedToolOnlyPreparesDialerAndRequiresUserCall" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.049"/>
+  <testcase name="unavailableDialerIsNotAdvertisedAndCannotExecute" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.035"/>
+  <testcase name="appFunctionsPrerequisitesNeverAdvertiseImplementedExecution" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.022"/>
+  <testcase name="missingDialerOffersCopyRatherThanFalseLaunch" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.023"/>
+  <testcase name="explicitNumberUsesLocalSearchWithoutContactsPermission" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.027"/>
+  <testcase name="diagnosticRunsLocallyWithoutExternalAction" classname="dev.bautista.spotlight.control.AndroidCapabilityTest" time="0.054"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

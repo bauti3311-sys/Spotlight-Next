@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.productivity.PortableConfigTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-22T17:07:20" hostname="9f8b8cbf2200" time="0.223">
+  <properties/>
+  <testcase name="focusPauseResumeAndCompletionCountOnlyOnce" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.087"/>
+  <testcase name="legacyAutomaticWidthWithoutMemoryImportsAndInvalidWidthValuesStayAtomic" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.028"/>
+  <testcase name="automaticAndLargeManualWidthsMustRoundTripWithoutLosingManualMemory" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.027"/>
+  <testcase name="portableSettingsRoundTripAndDeviceAccessStaysLocal" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.029"/>
+  <testcase name="invalidImportsAreAtomicAndNeverAcceptCredentialsOrPermissionFlags" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.022"/>
+  <testcase name="rebootOrMonotonicResetDiscardsSessionAndStatsAreOptIn" classname="dev.bautista.spotlight.productivity.PortableConfigTest" time="0.028"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

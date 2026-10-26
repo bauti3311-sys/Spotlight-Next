@@ -1,0 +1,113 @@
+{
+  "preview": 48,
+  "source_commit": "ba94db3e91f38e6e5d554e8bb7eaadb2485c622d",
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "version_code": 48,
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "tests": {
+    "unique_passed": 51,
+    "new_cases": 24,
+    "executions": 55,
+    "rounds": [
+      {
+        "log": "spotify-core.log",
+        "tests": 24,
+        "failures": 0
+      },
+      {
+        "log": "ui-whatsapp.log",
+        "tests": 23,
+        "failures": 1,
+        "failed_case": "MediaInspectorFlowTest.tallViewportShowsBottomActionsWithoutScrolling",
+        "resolution": "Product fix: Spotify search expands only via header action; no permanent inspector height."
+      },
+      {
+        "log": "final-directed.log",
+        "tests": 7,
+        "failures": 1,
+        "failed_case": "ExperimentalConsentFlowTest.bothAcknowledgementsAreRequiredAndAccountLinkingRemainsSeparate",
+        "resolution": "Test waits for async rendered state as well as persisted preferences; displayed assertion retained."
+      },
+      {
+        "log": "consent-repair.log",
+        "tests": 1,
+        "failures": 0
+      }
+    ],
+    "physical_device": false,
+    "real_accounts": false
+  },
+  "limits": [
+    "App Remote SDK not yet integrated",
+    "Library/device picker/Web API volume/search artwork pending",
+    "Linked-device engine not included in production; consent alone cannot link",
+    "No real WhatsApp sends, account linking, Spotify authorization or Cast device tests"
+  ],
+  "matrix": "9/25/6 unchanged",
+  "actions_used": false,
+  "build": {
+    "assemble": "passed",
+    "duration": "15m42s",
+    "lint": {
+      "variant": "raycastPreview",
+      "errors": 0,
+      "warnings": 14
+    },
+    "apksigner": "passed; historical certificate verified",
+    "zipalign": "passed (-c -P 16 4)",
+    "non_debuggable": true,
+    "source_zip": "git archive exact source commit; commit comment and exclusion of signing material verified",
+    "experimental_isolation": "compiled only in test source set; absent from production R8 mapping",
+    "upload_verification": "all six asset sizes and server SHA-256 digests matched local files"
+  },
+  "release": {
+    "id": 423008703,
+    "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-ee1111ede17a7d5f8c2a",
+    "draft": true,
+    "assets": [
+      {
+        "name": "README.txt",
+        "bytes": 1900,
+        "sha256": "a6e1761420abbb67679c03a7dce1ab8d9a0b49a27c7fe06ccce5409a73b365ad",
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-ee1111ede17a7d5f8c2a/README.txt"
+      },
+      {
+        "name": "SHA256SUMS",
+        "bytes": 318,
+        "sha256": "a7fea62e5a4d1c2666fe83a51a006e9c9d752b3fb668813d22b8f740a5b0671f",
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-ee1111ede17a7d5f8c2a/SHA256SUMS"
+      },
+      {
+        "name": "SOURCE_COMMIT",
+        "bytes": 41,
+        "sha256": "ff08e7829338718043fe842c726884dfca97af9567eb4d83dc00a9bace53c84c",
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-ee1111ede17a7d5f8c2a/SOURCE_COMMIT"
+      },
+      {
+        "name": "Spotlight-Next-Preview48-evidence.zip",
+        "bytes": 339998,
+        "sha256": "2c3d4b014369911c60884ca77b3739ada40000d1211ead4a82c34757b6c8c3af",
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-ee1111ede17a7d5f8c2a/Spotlight-Next-Preview48-evidence.zip"
+      },
+      {
+        "name": "Spotlight-Next-Raycast-Preview-48-ba94db3e.apk",
+        "bytes": 73315030,
+        "sha256": "e455ba62b1e65036fab9d12fc3437a9bfe9f23672dca725208c3cd1387929879",
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-ee1111ede17a7d5f8c2a/Spotlight-Next-Raycast-Preview-48-ba94db3e.apk"
+      },
+      {
+        "name": "Spotlight-Next-source-ba94db3e.zip",
+        "bytes": 9261755,
+        "sha256": "3ebc8b734e757788121d52d2591f8efee8d7f5bfd9846f342bd6649afcd5e1f1",
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-ee1111ede17a7d5f8c2a/Spotlight-Next-source-ba94db3e.zip"
+      }
+    ]
+  },
+  "codespace": {
+    "name": "ubiquitous-waffle-7vgr7gxxgjrw3x7qv",
+    "persistent": true,
+    "last_process_check": "No Gradle build or test JVM remained; editor language servers only.",
+    "stop_status": "Unconfirmed: browser stopped responding before a stop action could be executed. Two browser calls timed out; no further retries.",
+    "storage": "APK/source/evidence uploaded and verified before loss of browser control; persistent tools/caches/signing were not removed."
+  }
+}

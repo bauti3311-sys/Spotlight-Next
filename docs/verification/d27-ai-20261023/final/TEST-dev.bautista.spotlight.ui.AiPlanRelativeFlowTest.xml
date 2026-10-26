@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.AiPlanRelativeFlowTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-23T19:28:08" hostname="801452d05747" time="4.791">
+  <properties/>
+  <testcase name="cancelledPredecessorNeverUnlocksOrReplaysItsDependent" classname="dev.bautista.spotlight.ui.AiPlanRelativeFlowTest" time="4.791"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

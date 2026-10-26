@@ -2,6 +2,7 @@ package dev.bautista.spotlight.control
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
 import android.os.Process
 import dev.bautista.spotlight.search.*
@@ -14,7 +15,13 @@ data class Capability(val title: String, val state: CapabilityState, val explana
 /** Android is the authority. Only exported, resolvable activities and public
  * shortcuts are exposed; no inferred private app automation. */
 class IntegrationRegistry(private val context: Context) {
-    fun resolves(intent: Intent): Boolean = context.packageManager.resolveActivity(intent, 0) != null
+    fun resolves(intent: Intent): Boolean = runCatching {
+        val activity=context.packageManager.resolveActivity(intent,0)?.activityInfo ?: return@runCatching false
+        if(intent.`package`!=null && activity.packageName!=intent.`package`)return@runCatching false
+        activity.enabled && activity.applicationInfo?.let { it.enabled && (it.flags and ApplicationInfo.FLAG_SUSPENDED)==0 }!=false &&
+            (activity.packageName==context.packageName || activity.exported) &&
+            (activity.permission.isNullOrBlank() || androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)==android.content.pm.PackageManager.PERMISSION_GRANTED)
+    }.getOrDefault(false)
     fun capabilities(packageName: String): List<Capability> {
         val launcher = context.getSystemService(LauncherApps::class.java)
         val base=listOf(
@@ -22,7 +29,7 @@ class IntegrationRegistry(private val context: Context) {
             Capability("Buscar dentro de la app", if(resolves(Intent(Intent.ACTION_SEARCH).setPackage(packageName))) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Actividad pública de búsqueda"),
             Capability("Accesos directos publicados", if(launcher?.hasShortcutHostPermission() == true) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Android los reserva al lanzador predeterminado; Spotlight conserva tu lanzador actual")
         )
-        val documented=if(packageName in setOf("com.spotify.music","com.google.android.youtube","com.google.android.apps.maps","com.sofascore.results"))listOf(Capability("Búsqueda documentada",CapabilityState.AVAILABLE,"Abrir búsqueda mediante enlace compatible o respaldo web; no controlar datos internos")) else emptyList()
+        val documented=if(AppCapabilities(context).available(packageName).any{it.mechanism==AppCapabilityMechanism.DOCUMENTED_LINK} && packageName in setOf("com.spotify.music","com.google.android.youtube","com.google.android.apps.maps","com.sofascore.results"))listOf(Capability("Búsqueda documentada",CapabilityState.AVAILABLE,"Abrir búsqueda mediante enlace compatible o respaldo web; no controlar datos internos")) else emptyList()
         return base + documented + if(packageName in setOf("com.whatsapp","com.whatsapp.w4b")) listOf(
             Capability("Elegir contactos",if(People.allowed(context)) CapabilityState.AVAILABLE else CapabilityState.PERMISSION_REQUIRED,"READ_CONTACTS se solicita al elegir un nombre"),
             Capability("Responder notificaciones",if(Replies.connected.value) CapabilityState.AVAILABLE else CapabilityState.PERMISSION_REQUIRED,"Acceso especial a notificaciones; solo respuestas que la app publica")

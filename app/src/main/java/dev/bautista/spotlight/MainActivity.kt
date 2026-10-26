@@ -98,6 +98,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Public wallpaper-backed activity. No screen capture or wallpaper read permission.
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER)
+        window.setFormat(android.graphics.PixelFormat.TRANSLUCENT)
+        window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        if(Build.VERSION.SDK_INT>=34)window.attributes=window.attributes.apply{setWallpaperTouchEventsEnabled(false)}
         setContent {
             val loadedConfig by app.preferences.config.collectAsState(initial=null)
             if(loadedConfig==null) {
@@ -111,50 +116,74 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(requestedSettingsGroup) { requestedSettingsGroup?.let { settingsGroup=SettingsGroups.canonical(it);requestedSettingsGroup=null } }
             val notificationAccess by dev.bautista.spotlight.control.Replies.connected.collectAsState()
             var endpointError by remember { mutableStateOf("") }
+            var showShizukuAccess by remember { mutableStateOf(false) }
             fun update(c: dev.bautista.spotlight.data.Config) {
                 scope.launch { app.preferences.update(c) }
             }
             fun updateAi(c: dev.bautista.spotlight.data.Config) {
                 scope.launch { app.preferences.updateAi(config,c) }
             }
+            // One route for all Android access requests. Never pretend a special
+            // permission was granted by toggling local Compose state.
+            fun configureAccess(access:String) {
+                when(access) {
+                    "overlay"->startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
+                    "files"->folder.launch(null)
+                    "storage_broad"->if(Build.VERSION.SDK_INT>=30) {
+                        runCatching{startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,Uri.parse("package:$packageName")))}
+                            .onFailure{startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))}
+                    } else settingsGroup="Búsqueda y archivos"
+                    "contacts","calendar","location"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access",access).putExtra("reopen",false))
+                    "notifications"->startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                    "post_notifications"->if(Build.VERSION.SDK_INT>=33)notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    "usage"->startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                    "keyboard","phone_use"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                    "shizuku"->{settingsGroup="Permisos y accesos";showShizukuAccess=true}
+                }
+            }
             SpotlightTheme(config.theme, config) {
                 val colors = MaterialTheme.colorScheme
-                Surface(Modifier.fillMaxSize(), color = colors.background) {
+                Surface(Modifier.fillMaxSize(), color = androidx.compose.ui.graphics.Color.Transparent) {
                     Column(
                         Modifier.fillMaxSize()
                             .statusBarsPadding()
                             .navigationBarsPadding()
-                            .padding(horizontal = 20.dp, vertical = 16.dp),
+                            .padding(horizontal = 12.dp, vertical = if(androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp>=760)32.dp else 12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Column(Modifier.widthIn(max = 1100.dp).fillMaxSize()) {
-                            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    Text("Ajustes",style=MaterialTheme.typography.headlineSmall)
-                                    Text("Spotlight Next",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
-                                }
-                                TextButton(onClick={
-                                    if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
-                                    else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
-                                }){Text(if(overlayGranted)"Abrir Spotlight" else "Permitir ventana")}
-                            }
-                            Spacer(Modifier.height(20.dp))
-                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),overview={details->
-                                SettingsHome(app,config,permissionRevision,{settingsGroup=it},{feature->
-                                    when(feature) {
-                                        "overlay"->startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
-                                        "files"->if(config.files)folder.launch(null) else{settingsGroup="Búsqueda y archivos"}
-                                        "contacts"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","contacts").putExtra("reopen",false))
-                                        "calendar"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","calendar").putExtra("reopen",false))
-                                        "location"->startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","location").putExtra("reopen",false))
-                                        "notifications"->startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-                                        "keyboard"->startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                                    }
-                                },details)
+                        Column(Modifier.widthIn(max = 960.dp).fillMaxSize().glassSurface(config.copy(opacity=GlassTokens.settingsOpacity(config)))) {
+                            SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),onInvoke={
+                                if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
+                                else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
+                            },overview={details->
+                                SettingsHome(app,config,permissionRevision,{settingsGroup=it},{access->configureAccess(access)},details)
                             }){
                             CompositionLocalProvider(LocalSettingsGroup provides settingsGroup){
                             Section("Contexto autorizado · Inteligencia") { Text("Elegí documentos, fijá contextos y guardá conversaciones manualmente.");TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","contextos"))}){Text("Gestionar contexto")} }
-                            Section("Permisos opcionales") { SettingsAccessSummary(app,permissionRevision) }
+                            Section("Permisos y accesos") {
+                                SettingsAccessSummary(app,config,permissionRevision){access->configureAccess(access)}
+                                if(config.trees.isNotEmpty()) ConfirmedSettingsButton(
+                                    "Revocar acceso a carpetas",
+                                    "Se revocarán las carpetas autorizadas en Spotlight. No se borrarán archivos."
+                                ) {
+                                    config.trees.forEach { tree ->
+                                        runCatching { contentResolver.releasePersistableUriPermission(
+                                            Uri.parse(tree),Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                        ) }
+                                    }
+                                    update(config.copy(trees=emptySet()))
+                                }
+                                if(showShizukuAccess) {
+                                    TextButton(onClick={showShizukuAccess=false}){Text("Ocultar configuración de Shizuku")}
+                                    dev.bautista.spotlight.ui.AdvancedPanel(app,"shizuku")
+                                }
+                                Toggle("Buscar contactos dentro de Spotlight",config.contacts){enabled->
+                                    if(!enabled)update(config.copy(contacts=false))
+                                    else if(checkSelfPermission(Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED)
+                                        update(config.copy(contacts=true))
+                                    else contactPermission.launch(Manifest.permission.READ_CONTACTS)
+                                }
+                            }
                             Section("Privacidad · Spotlight Glass") { PrivacySettings(app,config,::update) }
                             Section("Invocación · teclado y posición") { InvocationSettings(config,::update) }
                             Section("Búsqueda · prioridades") { SearchTuning(config,::update) }
@@ -166,12 +195,15 @@ class MainActivity : ComponentActivity() {
                             Section("Clima y agenda deportiva") { Text("Clima de Open-Meteo y agenda gratuita de TheSportsDB, consultados directamente desde la barra.");Row{OutlinedButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","clima"))}){Text("Clima")};TextButton(onClick={startActivity(Intent(this@MainActivity,InvokeActivity::class.java).putExtra("query","deportes"))}){Text("Deportes")}} }
                             Section("Extensiones e integraciones") { dev.bautista.spotlight.ui.ExtensionPanel(app,config) }
                             Section("Integraciones · capacidades disponibles") { CapabilitySettings(app,config,permissionRevision) }
-                            Section("Shizuku · integración avanzada opcional") { dev.bautista.spotlight.ui.AdvancedPanel(app,"shizuku") }
+                            Section("Integraciones · Spotify") { SpotifySettings(app) }
                             Section("Transferir configuración") {
                                 Text("Preferencias, favoritos y alias. Los datos heredados se conservan; las claves, historiales, permisos y accesos a archivos permanecen en cada dispositivo.")
                                 Row{OutlinedButton(onClick={configExport.launch("Spotlight-configuracion.json")}){Text("Exportar")};TextButton(onClick={configImport.launch(arrayOf("application/json","text/plain"))}){Text("Importar")}}
+                                ConfirmedSettingsButton("Descartar sesión recuperable guardada","Elimina solo la recuperación del overlay. No elimina tus contextos, conversaciones guardadas ni preferencias; la tarea abierta se conserva.") {
+                                    scope.launch {runCatching{app.contexts.discardOverlaySnapshot()}.onSuccess{transferMessage="Sesión recuperable descartada."}.onFailure{transferMessage=it.message ?: "No se pudo descartar la sesión."}}
+                                }
                                 if(transferMessage.isNotBlank())Text(transferMessage)
-                                importPreview?.let{raw->run{Text("Revisar importación");Text(importSummary);Row{Button(onClick={scope.launch{runCatching{val current=app.preferences.config.first();val imported=withContext(Dispatchers.Default){dev.bautista.spotlight.data.ConfigTransfer.decode(raw,current)};app.preferences.update(imported)}.onSuccess{transferMessage="Configuración importada. Revisá las apps disponibles en este dispositivo.";importPreview=null}.onFailure{transferMessage=it.message.orEmpty()}}}){Text("Confirmar importación")};TextButton(onClick={importPreview=null}){Text("Cancelar")}}}}
+                                importPreview?.let{raw->run{Text("Revisar importación");Text(importSummary);Row{Button(onClick={scope.launch{runCatching{app.preferences.importPortable(raw)}.onSuccess{transferMessage="Configuración importada. Revisá las apps disponibles en este dispositivo.";importPreview=null}.onFailure{transferMessage=it.message.orEmpty()}}}){Text("Confirmar importación")};TextButton(onClick={importPreview=null}){Text("Cancelar")}}}}
                             }
                             Section("General · inicio") {
                                 Toggle("Mostrar sugerencias",config.suggestions){update(config.copy(suggestions=it))}
@@ -180,9 +212,9 @@ class MainActivity : ComponentActivity() {
                             }
                             Section("WhatsApp y notificaciones") {
                                 Text(if(notificationAccess)"Acceso a notificaciones activo. Los mensajes visibles permanecen solo en memoria." else "Acceso a notificaciones desactivado. Podés habilitarlo para leer y responder mensajes disponibles.")
-                                OutlinedButton(onClick={startActivity(Intent(this@MainActivity,PermissionActivity::class.java).putExtra("access","contacts").putExtra("reopen",false))}){Text("Permitir contactos")}
-                                OutlinedButton(onClick={startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))}){Text("WhatsApp · acceso a notificaciones")}
+                                TextButton(onClick={settingsGroup="Permisos y accesos"}){Text("Gestionar contactos y notificaciones →")}
                                 Text("Android separa contactos, calendario, archivos y notificaciones. Las respuestas directas funcionan con mensajes que tengan una notificación compatible; una conversación nueva se prepara y se envía desde WhatsApp.",fontSize=12.sp,color=colors.onSurfaceVariant)
+                                WhatsAppExperimentalSettings()
                             }
                             Section("Acceso rápido") {
                                 Text(
@@ -199,15 +231,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 if (Build.VERSION.SDK_INT >= 33)
-                                    TextButton(
-                                        onClick = {
-                                            notificationPermission.launch(
-                                                Manifest.permission.POST_NOTIFICATIONS
-                                            )
-                                        }
-                                    ) {
-                                        Text("Permitir notificación para cerrar")
-                                    }
+                                    TextButton(onClick={settingsGroup="Permisos y accesos"}) {Text("Configurar avisos de Spotlight →")}
                                 Text(
                                     "El atajo global requiere teclado físico y activar el servicio optativo de Accesibilidad. Su disponibilidad depende de One UI y de otros servicios de accesibilidad.",
                                     fontSize = 12.sp,
@@ -215,88 +239,20 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             Section("Teclado físico · acceso global optativo") {
-                                Text("Portapapeles dentro de la barra")
-                                Row(Modifier.horizontalScroll(rememberScrollState())){listOf("ctrl_shift_v" to "Ctrl/⌘+Shift+V","ctrl_p" to "Ctrl/⌘+P","off" to "Sin atajo").forEach{(key,label)->FilterChip(config.clipboardShortcut==key,{update(config.copy(clipboardShortcut=key))},label={Text(label)})}}
-                                Row(
-                                    Modifier.horizontalScroll(rememberScrollState()),
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                ) {
-                                    listOf(
-                                            "ctrl_alt" to "Ctrl+Alt+Espacio",
-                                            "alt" to "Alt+Espacio",
-                                            "ctrl" to "Ctrl+Espacio",
-                                        )
-                                        .forEach { (key, label) ->
-                                            FilterChip(
-                                                config.shortcut == key,
-                                                { update(config.copy(shortcut = key)) },
-                                                label = { Text(label, fontSize = 11.sp) },
-                                            )
-                                        }
-                                }
+                                KeyboardShortcutEditor(config,::update)
+                                GlobalKeyboardShortcutOptions(config,::update)
                                 Text(
                                     "Para reconocer el atajo, Android entrega eventos de teclas al servicio. Spotlight no guarda lo escrito, no recibe eventos de contenido y no lee pantallas. El servicio solo se usa si lo activás manualmente.",
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
-                                var disclose by remember { mutableStateOf(false) }
-                                OutlinedButton(onClick = { disclose = true }) {
-                                    Text("Configurar acceso de teclado")
+                                OutlinedButton(onClick={settingsGroup="Permisos y accesos"}) {
+                                    Text("Configurar servicio de teclado en Permisos →")
                                 }
-                                if (disclose)
-                                    AlertDialog(
-                                        onDismissRequest = { disclose = false },
-                                        title = { Text("Acceso de teclado optativo") },
-                                        text = {
-                                            Text(
-                                                "El servicio recibe eventos del teclado para detectar tu atajo. No registra teclas ni recupera contenido de otras apps. Podés desactivarlo en Ajustes → Accesibilidad."
-                                            )
-                                        },
-                                        confirmButton = {
-                                            TextButton(
-                                                onClick = {
-                                                    disclose = false
-                                                    startActivity(
-                                                        Intent(
-                                                            Settings.ACTION_ACCESSIBILITY_SETTINGS
-                                                        )
-                                                    )
-                                                }
-                                            ) {
-                                                Text("Abrir ajustes")
-                                            }
-                                        },
-                                        dismissButton = {
-                                            TextButton(onClick = { disclose = false }) {
-                                                Text("Cancelar")
-                                            }
-                                        },
-                                    )
                             }
                             Section("Apariencia") { GlassAppearance(config,update={draft->scope.launch{app.preferences.updateAppearance(draft)}},showHeading=false) }
                             Section("Aprendizaje local") {
                                 Toggle("Aprender del uso · solo en este dispositivo",config.learning){update(config.copy(learning=it))}
-                            }
-                            Section("Contactos autorizados") {
-                                Toggle("Contactos", config.contacts) { enabled ->
-                                    if (enabled) {
-                                        if (
-                                            checkSelfPermission(
-                                                Manifest.permission.READ_CONTACTS
-                                            ) == PackageManager.PERMISSION_GRANTED
-                                        )
-                                            update(config.copy(contacts = true))
-                                        else
-                                            contactPermission.launch(
-                                                Manifest.permission.READ_CONTACTS
-                                            )
-                                    } else update(config.copy(contacts = false))
-                                }
-                                Text(
-                                    "Los contactos se consultan en el dispositivo. WhatsApp requiere un número con código de país (+54…). El mensaje se prepara para que lo envíes vos.",
-                                    fontSize = 12.sp,
-                                    color = colors.onSurfaceVariant,
-                                )
                             }
                             Section("Portapapeles temporal") {
                                 Toggle("Historial de portapapeles · optativo", config.clipboard) {
@@ -308,8 +264,8 @@ class MainActivity : ComponentActivity() {
                                     fontSize = 12.sp,
                                     color = colors.onSurfaceVariant,
                                 )
-                                Text("Límite · ${config.clipLimit} elementos");Slider(config.clipLimit.toFloat(),{update(config.copy(clipLimit=it.toInt()))},valueRange=5f..50f)
-                                Text("Retención · ${config.clipRetention} minutos");Slider(config.clipRetention.toFloat(),{update(config.copy(clipRetention=it.toInt()))},valueRange=1f..60f)
+                                Text("Límite · ${config.clipLimit} elementos");GlassSlider(config.clipLimit.toFloat(),{update(config.copy(clipLimit=it.toInt()))},valueRange=5f..50f)
+                                Text("Retención · ${config.clipRetention} minutos");GlassSlider(config.clipRetention.toFloat(),{update(config.copy(clipRetention=it.toInt()))},valueRange=1f..60f)
                                 ConfirmedSettingsButton("Vaciar portapapeles de Spotlight","Se borrará únicamente el historial temporal de Spotlight."){app.local.clearClips()}
                             }
                             Section("Búsqueda y archivos") {
@@ -321,53 +277,10 @@ class MainActivity : ComponentActivity() {
                                     else "Acceso amplio: pendiente de permiso",
                                     fontSize = 12.sp,
                                 )
-                                TextButton(
-                                    onClick = {
-                                        if (Build.VERSION.SDK_INT >= 30)
-                                            runCatching {
-                                                    startActivity(
-                                                        Intent(
-                                                            Settings
-                                                                .ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                                                            Uri.parse("package:$packageName"),
-                                                        )
-                                                    )
-                                                }
-                                                .onFailure {
-                                                    startActivity(
-                                                        Intent(
-                                                            Settings
-                                                                .ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-                                                        )
-                                                    )
-                                                }
-                                    }
-                                ) {
-                                    Text("Acceso a todo el almacenamiento compartido")
-                                }
-                                Text(
-                                    "Incluye documentos, descargas, fotos y SD. Activá el permiso y actualizá el índice. Android protege los datos privados de otras apps.",
-                                    fontSize = 12.sp,
-                                )
-                                TextButton(
-                                    onClick = {
-                                        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                                    }
-                                ) {
-                                    Text("Permitir recientes de todo el dispositivo")
-                                }
-                                Text(
-                                    "Sin acceso de uso se muestran las últimas apps abiertas desde Spotlight; con acceso se usa la actividad del dispositivo.",
-                                    fontSize = 12.sp,
-                                )
-                                Row {
-                                    TextButton(onClick = { folder.launch(null) }) {
-                                        Text("Elegir carpeta")
-                                    }
-                                    ConfirmedSettingsButton("Quitar accesos","Se revocarán las carpetas autorizadas. No se borrarán archivos.") {
-                                        config.trees.forEach { tree -> runCatching { contentResolver.releasePersistableUriPermission(Uri.parse(tree),Intent.FLAG_GRANT_READ_URI_PERMISSION) } }
-                                        update(config.copy(trees=emptySet()))
-                                    }
+                                Text("El acceso a carpetas, almacenamiento ampliado y uso de apps se gestiona en Permisos y accesos.",fontSize=12.sp,color=colors.onSurfaceVariant)
+                                TextButton(onClick={settingsGroup="Permisos y accesos"}){Text("Abrir permisos de archivos y actividad →")}
+                                TextButton(onClick={settingsGroup="Permisos y accesos"}) {
+                                    Text("Gestionar acceso a carpetas →")
                                 }
                                 Text(
                                     "${config.trees.size} carpetas autorizadas. Índice de hasta 200.000 entradas y 64 niveles; se avisa si queda parcial.",
@@ -683,6 +596,9 @@ class MainActivity : ComponentActivity() {
                                 fontSize = 12.sp,
                                 color = colors.onSurfaceVariant,
                             )
+                            TextButton(onClick={runCatching{startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://icons8.com/icons/ios")))}}) {
+                                Text("Iconos iOS del inspector · Icons8",fontSize=12.sp)
+                            }
                         }
                     }
                 }
@@ -731,8 +647,8 @@ private fun Section(title: String, content: @Composable ColumnScope.() -> Unit) 
 
 @Composable
 private fun Toggle(title: String, value: Boolean, onChange: (Boolean) -> Unit) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Text(title, Modifier.weight(1f))
+    Row(Modifier.fillMaxWidth().heightIn(min=48.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(title, Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium)
         Switch(value, onChange)
     }
 }

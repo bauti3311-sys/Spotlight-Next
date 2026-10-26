@@ -1,0 +1,206 @@
+{
+  "purpose": "Native composition based on the five user-supplied Raycast screenshots",
+  "ui_source": "bbef6f31ce85cbe703438fed0f11f3db3e07a268",
+  "tests": {
+    "unique": 67,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cohorts": [
+      {
+        "source": "a4cc0c1cea5ba5db0afea25a4308b5208434ad9c",
+        "scope": "Unchanged passing cases from round2; failed classes replaced by later results"
+      },
+      {
+        "source": "e9b210de8711637cd75ccb7058a13bdb95fe2616",
+        "scope": "Passing compatibility/gesture cases from round3; failed Gemini class replaced"
+      },
+      {
+        "source": "aad1a972c902356718e9527bd1711d4a35154776",
+        "tests": 5,
+        "failures": 0,
+        "duration": "53s",
+        "scope": "GeminiPresentationTest, scoped main search distinct from action filter"
+      },
+      {
+        "source": "129541fde87919cc8661ba8dc5dedb223f7f4d94",
+        "tests": 28,
+        "failures": 0,
+        "duration": "1m44s",
+        "scope": "Final visual geometry, settings, input, large text, legibility"
+      },
+      {
+        "source": "bbef6f31ce85cbe703438fed0f11f3db3e07a268",
+        "tests": 12,
+        "failures": 0,
+        "duration": "2m23s",
+        "scope": "Pinned app opener retains original component exactly once after selecting Gmail; normal window/saved routes repeated"
+      }
+    ],
+    "duplicates_counted": false,
+    "consolidation": "Latest XML replaces earlier results by class.67 unique cases across cohorts; not a single run of all67."
+  },
+  "captures": {
+    "renderer": "API33 Robolectric NATIVE",
+    "physical_device": false,
+    "search": {
+      "width_dp": 940,
+      "available_height_dp": 510,
+      "font_scale": 1,
+      "query": "Spotify",
+      "theme": "Solid Graphite",
+      "requested_opacity": 0.7,
+      "before_ui_source": "543dc630dca70f6d9ad3ced8bbd96a58d8298d1b",
+      "before_blob": "4ced8e68ee5fcd834fb6b4e695d5223da734275a",
+      "after_blob": "ccd98a0475b1799694eda6e263d729c3e3d73e3d",
+      "fixtures": "Controlled Android packages/icons; no real Spotify account",
+      "after_ui_source": "bbef6f31ce85cbe703438fed0f11f3db3e07a268",
+      "pixel_hash_unchanged_after_pinned_fix": true
+    },
+    "settings": {
+      "scene": "Appearance, actual MainActivity",
+      "theme": "dark/graphite",
+      "after_blob": "30466e78181b899c464f9d246bb7d955e13ec93d"
+    },
+    "metadata": {
+      "scene": "Standalone metadata fixture,500dp",
+      "after_blob": "55480fb615847875c7a5585d6d799c3f8187a3a4",
+      "large_text_case": "320dp, font scale1.5, long name wraps without clipping"
+    }
+  },
+  "original_failures_preserved": [
+    "Compile: maxWidth receiver",
+    "First UI round: two relocated Saved entry selectors, one merged-semantics geometry selector",
+    "Second round: composable compatibility and stale copy-close expectation",
+    "Third round: main search selector matched action filter too",
+    "Unpublished metadata capture stretched rows despite content assertions; natural table layout plus height/label checks fixed it",
+    "Test API: assertHeightIsAtMost unavailable; equivalent Dp edge bound assertion retained"
+  ],
+  "build_evidence": "This record covers tests and captures. APK identity, build, lint and delivery are verified separately in release verified54.json.",
+  "spotify_real_playback_verified": false,
+  "whatsapp_real_message_sent": false,
+  "unofficial_linked_device_provider": "disabled",
+  "github_actions_used": false,
+  "matrix": "9/25/6 unchanged",
+  "cancelled_build": {
+    "source": "a6f7d0f4583b10893827cf58205b15060ba48a27",
+    "exit_code": 143,
+    "phase": "lintAnalyzeRaycastPreview",
+    "reason": "Own build cancelled after detecting a lost pinned-app opener during final review; no APK or release published."
+  },
+  "r8_status": {
+    "status": "BLOCKED",
+    "attempts": [
+      {
+        "source": "0989f3c35cb4ed12204956c9dc1ea396431fb58a",
+        "heap_mb": 2048,
+        "result": "Gradle daemon disappeared during minifyRaycastPreviewWithR8, after lint passed"
+      },
+      {
+        "source": "0989f3c35cb4ed12204956c9dc1ea396431fb58a",
+        "heap_mb": 3072,
+        "kotlin_strategy": "in-process",
+        "result": "Gradle daemon disappeared during minifyRaycastPreviewWithR8"
+      }
+    ],
+    "root_cause_verified": false
+  },
+  "experimental_build_profile": {
+    "property": "spotlight.preview.optimize=false",
+    "r8_enabled": false,
+    "resource_shrinking": false,
+    "debuggable": false,
+    "standard_profile_unchanged": true,
+    "version_code": 54,
+    "version_name_suffix": "-raycast-preview-experimental",
+    "app_sources_unchanged_from": "bbef6f31ce85cbe703438fed0f11f3db3e07a268"
+  },
+  "delivery": {
+    "source_sha": "ecbfdc8a927c4442135542090ad2c755fa03a1fc",
+    "build": {
+      "result": "BUILD SUCCESSFUL",
+      "duration": "2m43s",
+      "command": ":app:assembleRaycastPreview -Pspotlight.preview.optimize=false --offline --no-daemon --max-workers=1 --console=plain --stacktrace -Dorg.gradle.jvmargs='-Xmx2048m -XX:+UseSerialGC -Dfile.encoding=UTF-8' -Pkotlin.compiler.execution.strategy=in-process",
+      "jdk": 17,
+      "gradle": "8.10.2",
+      "sdk": 35,
+      "profile": "experimental-unoptimized",
+      "tasks": {
+        "executed": 10,
+        "up_to_date": 40
+      },
+      "lint": {
+        "errors": 0,
+        "warnings": 16,
+        "source_sha": "ecbfdc8a927c4442135542090ad2c755fa03a1fc",
+        "report": "evidence.zip/lint.xml",
+        "reused": true
+      },
+      "new_test_runs": 0
+    },
+    "recovery": {
+      "previous_experimental_attempt": "Gradle daemon disappeared at mergeDexRaycastPreview with 3GiB heap and lint/assemble in same invocation; original log retained.",
+      "controlled_change": "Assemble isolated from completed lint; heap2048m, SerialGC, worker1, detached shell. No app/dependency change.",
+      "root_cause_verified": false,
+      "optimized_r8_status": "BLOCKED",
+      "preflight": "A missing optional /usr/bin/time utility prevented the first launcher from invoking Gradle; replaced with shell builtin."
+    },
+    "identity": {
+      "package_id": "dev.bautista.spotlight.next.raycastpreview",
+      "version_code": 54,
+      "version_name_suffix": "-raycast-preview-experimental",
+      "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+      "apksigner_verified": true,
+      "non_debuggable": true,
+      "zipalign_16k": true,
+      "source_zip": "git archive of exact source SHA; private signing/credentials/local.properties paths rejected"
+    },
+    "release": {
+      "id": 424599462,
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-2770747db701386cd5bc",
+      "private_repository": true,
+      "draft": true,
+      "prerelease": true,
+      "server_digests_verified": true,
+      "assets": [
+        {
+          "name": "README.txt",
+          "bytes": 1562,
+          "sha256": "d0018ec678dd6ba75805898544ade6e2d2de89ec0e3cb29f444b824688d27350"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 318,
+          "sha256": "bc683ac5ddb798f005be26b0a931840378abb2332f5aeb6f590cae221dcf454b"
+        },
+        {
+          "name": "SOURCE_COMMIT",
+          "bytes": 41,
+          "sha256": "10aa3b94c7fdbabc7c5bc3efb6337286339b99e096652eb1d04cde89c4c13acd"
+        },
+        {
+          "name": "Spotlight-Next-Preview54-evidence.zip",
+          "bytes": 689370,
+          "sha256": "c6323d0b6408a3dfece8ca93785956a48f44096a9b9b9f753d8b350d6e68b918"
+        },
+        {
+          "name": "Spotlight-Next-Raycast-Preview-54-ecbfdc8a.apk",
+          "bytes": 82669237,
+          "sha256": "e8e8e5d0074c8b1ae4448397bfffd87d2c36af0f99d2163315ee3a4951f69372"
+        },
+        {
+          "name": "Spotlight-Next-source-ecbfdc8a.zip",
+          "bytes": 9724686,
+          "sha256": "907f7599b779e91b36245e6b05979d21f37b05e426df7d1ede5f4dd0add20319"
+        }
+      ]
+    },
+    "limitations": [
+      "Experimental APK: no R8/resource shrinking; normal optimized build remains blocked.",
+      "67 unique tests are consolidated latest XML across recorded cohorts, not a new single run.",
+      "No physical device validation or real Spotify playback verification.",
+      "Unofficial WhatsApp linked-device provider remains disabled."
+    ],
+    "handoff": "Final evidence checkpoint; release only own reservation via scripts/autonomy_lock.py release --publish-notes after remote verification. Do not alter main or PR18 draft."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "preview": 47,
+  "source_commit": "069d35893246aed4d1e0c5ea8255a67e91e072ff",
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "version_code": 47,
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "checks": {
+    "assembleRaycastPreview": "passed; R8 and variant lint included; 9m36s controlled retry",
+    "apksigner": "passed; historical certificate matched",
+    "zipalign": "passed (-c -P 16 4)",
+    "source_zip": "git archive of exact source commit; commit comment verified; signing files excluded",
+    "uploaded_assets": "server SHA-256 and size match local files",
+    "android_unique_cases_passed": 37,
+    "python_runner_checks_passed": 6,
+    "physical_device": "not performed",
+    "matrix": "9/25/6 unchanged"
+  },
+  "release_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-6bda82c02ea09810f4e9",
+  "release_draft": true,
+  "assets": [
+    {
+      "name": "README.txt",
+      "bytes": 1171,
+      "sha256": "ce74c0c24dea35117c73f171f4041694824ee88cf3da5f3fc5bf16f37e82bab4",
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-6bda82c02ea09810f4e9/README.txt"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 318,
+      "sha256": "d260156164e3d7a496eac78840d1240151cb1b4ec3870b66a0e965c1602fb8ea",
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-6bda82c02ea09810f4e9/SHA256SUMS"
+    },
+    {
+      "name": "SOURCE_COMMIT",
+      "bytes": 41,
+      "sha256": "ec3c2b4ad6a3afceac7fac6e35812b2514457c328c9ffd657214a6ff37215cdd",
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-6bda82c02ea09810f4e9/SOURCE_COMMIT"
+    },
+    {
+      "name": "Spotlight-Next-Preview47-evidence.zip",
+      "bytes": 410640,
+      "sha256": "26bfa48f3b1f227d26a2fc8d44093ad4776eeea02e142f49667e025a852a63a5",
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-6bda82c02ea09810f4e9/Spotlight-Next-Preview47-evidence.zip"
+    },
+    {
+      "name": "Spotlight-Next-Raycast-Preview-47-069d3589.apk",
+      "bytes": 73298646,
+      "sha256": "3bd42c4d0344913722ebdeb64c06919859bc02f1d7a49f56b48decd0eb669791",
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-6bda82c02ea09810f4e9/Spotlight-Next-Raycast-Preview-47-069d3589.apk"
+    },
+    {
+      "name": "Spotlight-Next-source-069d3589.zip",
+      "bytes": 9232611,
+      "sha256": "1b4897673c078090a381147a109f78530cbce0f29b912cb476a51b109b146ddf",
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-6bda82c02ea09810f4e9/Spotlight-Next-source-069d3589.zip"
+    }
+  ]
+}

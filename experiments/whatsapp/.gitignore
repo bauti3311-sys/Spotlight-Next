@@ -1,0 +1,11 @@
+.state/
+sessions/
+auth_info*/
+.env
+*.db
+*.db-*
+*.sqlite*
+*.key
+*.pem
+logs/
+__pycache__/

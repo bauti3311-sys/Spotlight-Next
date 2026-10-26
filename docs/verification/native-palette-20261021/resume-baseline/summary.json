@@ -1,0 +1,38 @@
+[
+  {
+    "suite": "dev.bautista.spotlight.ui.OverlayDesignReviewTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+    "tests": 7,
+    "failures": 1,
+    "errors": 0
+  },
+  {
+    "suite": "dev.bautista.spotlight.ui.NativePaletteFlowTest",
+    "tests": 11,
+    "failures": 2,
+    "errors": 0
+  },
+  {
+    "suite": "dev.bautista.spotlight.ui.VisualFidelityTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "suite": "dev.bautista.spotlight.ui.QuickLookTouchTargetTest",
+    "tests": 2,
+    "failures": 2,
+    "errors": 0
+  },
+  {
+    "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+    "tests": 3,
+    "failures": 1,
+    "errors": 0
+  }
+]

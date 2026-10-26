@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-22T18:03:09" hostname="6641cfb4c601" time="2.78">
+  <properties/>
+  <testcase name="partialWorkflowOutputSurvivesRestoreWithoutContinuingSensitiveSteps" classname="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" time="2.006"/>
+  <testcase name="unfinishedArgumentStillRestoresAsAnEditableDraftWithoutExecution" classname="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" time="0.373"/>
+  <testcase name="taskSwitchKeepsSeparateArguments" classname="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" time="0.204"/>
+  <testcase name="suspendedSensitiveOperationIsNotReplayedOrConfirmedAfterRestore" classname="dev.bautista.spotlight.ui.ToolTaskRecoveryTest" time="0.197"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.semantic.SemanticPolicyTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-23T00:15:06" hostname="3e23142f4df9" time="0.236">
+  <properties/>
+  <testcase name="fragmentOffsetsStayInOriginalTextAndCoverageIsExplicitlyLimited" classname="dev.bautista.spotlight.semantic.SemanticPolicyTest" time="0.083"/>
+  <testcase name="corruptVectorsAreRefusedAndSerializationIsNormalized" classname="dev.bautista.spotlight.semantic.SemanticPolicyTest" time="0.024"/>
+  <testcase name="devicePressureAndUnknownStateNeverAdmitEmbedding" classname="dev.bautista.spotlight.semantic.SemanticPolicyTest" time="0.017"/>
+  <testcase name="semanticNeverRelaxesLiteralBooleanOrUnknownFilters" classname="dev.bautista.spotlight.semantic.SemanticPolicyTest" time="0.015"/>
+  <testcase name="casedWordPieceMatchesRealHuggingFaceTokensForSpanishCorpus" classname="dev.bautista.spotlight.semantic.SemanticPolicyTest" time="0.04"/>
+  <testcase name="controlsAndSurrogatesCannotProduceInvalidOffsets" classname="dev.bautista.spotlight.semantic.SemanticPolicyTest" time="0.057"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

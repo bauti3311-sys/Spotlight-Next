@@ -1,0 +1,209 @@
+{
+  "sha": "cb8b9c56656198e2ad7c2b72787c9b6123a0deb4",
+  "tests": 65,
+  "failures": 21,
+  "suites": [
+    {
+      "suite": "dev.bautista.spotlight.ai.ToolProtocolTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.control.AndroidCapabilityTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.agent.PhoneUsePolicyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.RaycastSettingsNavigationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.agent.PhoneUseSequencePolicyTest",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": [
+        {
+          "test": "parsesStrictConfirmedSteps",
+          "message": "java.lang.RuntimeException: Method length in org.json.JSONArray not mocked. See https://developer.android.com/r/studio-ui/build/not-mocked for details."
+        }
+      ]
+    },
+    {
+      "suite": "dev.bautista.spotlight.control.MediaTargetTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.PreviewPresentationContractTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.MinimalistSearchFlowTest",
+      "tests": 7,
+      "failures": 7,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": [
+        {
+          "test": "tabletLightCapture",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "rightArrowAtTextBoundaryNeverFocusesMicrophoneAndTabCompletes",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "compactExpansionAndCollapseKeepQueryFocusAndSelectedIdentity",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "tabletGraphiteCapture",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "escapeCollapsesExpandedResultsBeforeClosingSearch",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "tabletCaptureAndCompactHeight",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "tabWithCaretInsideQueryKeepsNativeTextAndOpensActions",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        }
+      ]
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.QuickLookTouchTargetTest",
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": [
+        {
+          "test": "phoneCloseTargetDoesNotCloseOverlayOrClearQuery",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "tabletCloseTargetDoesNotCloseOverlayOrClearQuery",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        }
+      ]
+    },
+    {
+      "suite": "dev.bautista.spotlight.control.MediaPlaybackTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "tests": 7,
+      "failures": 7,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": [
+        {
+          "test": "accessibilityClickKeepsTheSameSelectionAndPrimaryContract",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "touchDownAndCancelledGestureDoNotSelectOrOpenPdf",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "longPressShowsActionsWithoutInvokingPrimaryCallback",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        }
+      ]
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.RaycastQuickMenuComposeTest",
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": [
+        {
+          "test": "appearanceAndSearchShortcutsStayFunctional",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "permissionsShortcutOpensUnifiedSection",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        }
+      ]
+    },
+    {
+      "suite": "dev.bautista.spotlight.ai.ToolCapabilityTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": []
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "failure_details": [
+        {
+          "test": "tabCyclesAndEnterRunsOnlyFocusedContextAction",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        },
+        {
+          "test": "actionGroupsHaveVisibleHeadingsWithoutExecutingItems",
+          "message": "java.lang.RuntimeException: Unable to resolve activity for Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=dev.bautista.spotlight.next.raycastpreview/androidx.activity.ComponentActivity } -- see https://github.com/robolectric/robolectric/pull/4736 for details"
+        }
+      ]
+    }
+  ]
+}
