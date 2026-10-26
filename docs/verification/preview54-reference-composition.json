@@ -1,0 +1,76 @@
+{
+  "purpose": "Native composition based on the five user-supplied Raycast screenshots",
+  "ui_source": "129541fde87919cc8661ba8dc5dedb223f7f4d94",
+  "tests": {
+    "unique": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cohorts": [
+      {
+        "source": "a4cc0c1cea5ba5db0afea25a4308b5208434ad9c",
+        "scope": "Unchanged passing cases from round2; failed classes replaced by later results"
+      },
+      {
+        "source": "e9b210de8711637cd75ccb7058a13bdb95fe2616",
+        "scope": "Passing compatibility/gesture cases from round3; failed Gemini class replaced"
+      },
+      {
+        "source": "aad1a972c902356718e9527bd1711d4a35154776",
+        "tests": 5,
+        "failures": 0,
+        "duration": "53s",
+        "scope": "GeminiPresentationTest, scoped main search distinct from action filter"
+      },
+      {
+        "source": "129541fde87919cc8661ba8dc5dedb223f7f4d94",
+        "tests": 28,
+        "failures": 0,
+        "duration": "1m44s",
+        "scope": "Final visual geometry, settings, input, large text, legibility"
+      }
+    ],
+    "duplicates_counted": false,
+    "consolidation": "Latest XML replaces earlier results by class. Not a single run of all66."
+  },
+  "captures": {
+    "renderer": "API33 Robolectric NATIVE",
+    "physical_device": false,
+    "search": {
+      "width_dp": 940,
+      "available_height_dp": 510,
+      "font_scale": 1,
+      "query": "Spotify",
+      "theme": "Solid Graphite",
+      "requested_opacity": 0.7,
+      "before_ui_source": "543dc630dca70f6d9ad3ced8bbd96a58d8298d1b",
+      "before_blob": "4ced8e68ee5fcd834fb6b4e695d5223da734275a",
+      "after_blob": "ccd98a0475b1799694eda6e263d729c3e3d73e3d",
+      "fixtures": "Controlled Android packages/icons; no real Spotify account"
+    },
+    "settings": {
+      "scene": "Appearance, actual MainActivity",
+      "theme": "dark/graphite",
+      "after_blob": "30466e78181b899c464f9d246bb7d955e13ec93d"
+    },
+    "metadata": {
+      "scene": "Standalone metadata fixture,500dp",
+      "after_blob": "55480fb615847875c7a5585d6d799c3f8187a3a4",
+      "large_text_case": "320dp, font scale1.5, long name wraps without clipping"
+    }
+  },
+  "original_failures_preserved": [
+    "Compile: maxWidth receiver",
+    "First UI round: two relocated Saved entry selectors, one merged-semantics geometry selector",
+    "Second round: composable compatibility and stale copy-close expectation",
+    "Third round: main search selector matched action filter too",
+    "Unpublished metadata capture stretched rows despite content assertions; natural table layout plus height/label checks fixed it",
+    "Test API: assertHeightIsAtMost unavailable; equivalent Dp edge bound assertion retained"
+  ],
+  "build_evidence": "This record covers tests and captures. APK identity, build, lint and delivery are verified separately in release verified54.json.",
+  "spotify_real_playback_verified": false,
+  "whatsapp_real_message_sent": false,
+  "unofficial_linked_device_provider": "disabled",
+  "github_actions_used": false,
+  "matrix": "9/25/6 unchanged"
+}
