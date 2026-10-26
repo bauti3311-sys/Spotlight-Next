@@ -657,3 +657,14 @@ APK/ZIP exactos fe325812d32a83395c7882ff762f513526d9ae69 publicados una sola vez
 ## 25/10 — Iteración visual nativa verificada
 
 FlowRowSpotifye1080965 corrige filtroLista fuera de240dp/font1.5; capturas comparables reales en docs/verification/native-visual-20261025. 28casosUI únicos correctos en cohortes, sin sumar repeticiones. Foco de fixture corregido con modoKeyboard oficial; IME6719bd55 revisa headerreal/Volver48dp+ocultación nativa, sin alterar producto por textoobsoleto. Lint0E14W9m8s; sin dispositivo/cuenta real ni promoción9/25/6. Preview51fe325812 entregada intacta. Preview52 preparada con Kotlinproductivo idéntico al probado, solo versionCode52 y evidencia añadidos; compilación/firma/entrega52 pendientes. NoActions/main/force/permisosnuevos.
+
+
+## Preview52 — entrega verificada (continuidad 25/10/2026)
+
+- Fuente congelada APK/ZIP: `ffbb89d173a41492d21bb20431b993b3ddc59db1`. Kotlin productivo idéntico al de las regresiones publicadas; sólo versión52 y evidencia posterior.
+- Entrega privada en borrador: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-55ad4906530fdbaeb3da. Seis archivos subidos y cotejados con los digests del servidor. Preview51 preservada.
+- `:app:lintRaycastPreview :app:assembleRaycastPreview --offline`: BUILD SUCCESSFUL,13m32s; lint0 errores/14 advertencias. Paquete independiente/versionCode52/certificado885838aa…/no debuggable/alineación16KiB/ZIP mismo SHA comprobados.
+- 28 pruebas UI únicas aprobadas en cohortes dirigidas,0 fallos/errores/omitidas; no se suman repeticiones. Capturas reales antes/después del filtro estrecho con fuente1.5 en docs/verification/native-visual-20261025. No son capturas de dispositivo físico.
+- Skills propias/adaptadas versionadas; revisión auxiliar independiente no ejecutada por límite de uso de plataforma, sin aprobación inventada.
+- No validación física/cuenta Spotify real ni garantía de solución del corte de audio. Sin mensajes WhatsApp reales, proveedor vinculado desactivado. Sin Actions, main o force; PR18 borrador y matriz9/25/6 intactos.
+- Siguiente validación: instalar Preview52 en Tab A9+, autorizar App Remote y comprobar reproducción con Spotify en segundo plano, apertura/cierre/restauración y geometría con IME. No volver a compilar idéntico SHA.
