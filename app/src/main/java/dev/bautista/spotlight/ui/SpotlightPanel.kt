@@ -811,6 +811,18 @@ fun SpotlightPanel(
             val inspectorToolbar:@Composable ()->Unit = {
                 Row(Modifier.fillMaxWidth().padding(start=16.dp,end=4.dp).testTag("inspector-toolbar"),verticalAlignment=Alignment.CenterVertically) {
                     Text(if(inspectorPinned)"Inspector fijado" else "Inspector",Modifier.weight(1f),style=MaterialTheme.typography.labelMedium,maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurfaceVariant)
+                    // A pinned inspector can refer to a different app than the result dock.
+                    // Retain its explicit opener without duplicating the normal primary action.
+                    inspectorItem?.takeIf { item->
+                        inspectorPinned && PreviewPresentation.isApplication(item) &&
+                            (item.action as? Action.Launch)?.intent?.component !=
+                            (selectedResult?.action as? Action.Launch)?.intent?.component
+                    }?.let { pinnedApplication->
+                        IconButton(onClick={execute(pinnedApplication)},modifier=Modifier.size(48.dp).testTag("open-pinned-application")) {
+                            Icon(androidx.compose.ui.res.painterResource(dev.bautista.spotlight.R.drawable.inspector_ios_open),
+                                "Abrir aplicación fijada: ${pinnedApplication.title}",Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+                        }
+                    }
                     IconToggleButton(checked=inspectorPinned,onCheckedChange={next->
                         if(next){pinnedPreview=inspectorItem;pinnedCard=inspectorCard}
                         else {pinnedPreview=null;pinnedCard=null}

@@ -106,5 +106,22 @@ class AdaptiveInspectorFlowTest {
         search().assertTextEquals("Spotify").assertIsFocused()
         assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
     }
+    @Test fun pinnedApplicationKeepsItsOwnExplicitOpenerAfterAnotherResultIsSelected() {
+        show()
+        ui.onNodeWithTag("result:com.spotify.music/Main").performClick()
+        ui.onNodeWithContentDescription("Fijar inspector").performClick()
+        ui.onNodeWithTag("open-pinned-application").assertDoesNotExist()
+        search().performClick().performTextReplacement("Gmail");awaitResult("com.google.android.gm")
+        ui.onNodeWithTag("result:com.google.android.gm/Main").performClick()
+        ui.onNodeWithTag("inspector-title").assertTextEquals("Spotify")
+        ui.onNodeWithTag("open-pinned-application").assertIsDisplayed()
+            .assertWidthIsAtLeast(48.dp).assertHeightIsAtLeast(48.dp).performClick()
+        val opened=Shadows.shadowOf(ui.activity).nextStartedActivity
+        assertNotNull(opened)
+        assertEquals("com.spotify.music",opened.component?.packageName)
+        assertNull("The opener must not also launch the newly selected Gmail result",Shadows.shadowOf(ui.activity).nextStartedActivity)
+        search().assertTextEquals("Gmail")
+        ui.onNodeWithTag("inspector-title").assertTextEquals("Spotify")
+    }
 }
 
