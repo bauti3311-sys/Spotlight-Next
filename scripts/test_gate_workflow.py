@@ -2,15 +2,109 @@
 from pathlib import Path
 import subprocess
 import unittest
-import yaml
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / '.github/workflows/build-apk.yml'
 
+
+def _parse_scalar(value):
+    value = value.strip()
+    if value.startswith('[') and value.endswith(']'):
+        return [_parse_scalar(part) for part in value[1:-1].split(',') if part.strip()]
+    if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
+        return value[1:-1]
+    return value
+
+
+def _load_workflow_fallback(raw):
+    raw_lines = raw.splitlines()
+    idx = 0
+
+    def next_significant(pos):
+        if pos is None:
+            return None, -1, ''
+        while pos < len(raw_lines):
+            stripped = raw_lines[pos].strip()
+            if stripped and not stripped.startswith('#'):
+                return pos, len(raw_lines[pos]) - len(raw_lines[pos].lstrip(' ')), stripped
+            pos += 1
+        return None, -1, ''
+
+    def parse_block(pos, min_indent):
+        pos0, indent, stripped = next_significant(pos)
+        if pos0 is None:
+            return {}, len(raw_lines)
+        if indent < min_indent:
+            return {}, pos0
+        pos = pos0
+        if stripped.startswith('- '):
+            items = []
+            while True:
+                pos, cur_indent, stripped = next_significant(pos)
+                if pos is None or cur_indent < indent or not stripped.startswith('- '):
+                    break
+                rest = stripped[2:].strip()
+                pos += 1
+                item = {}
+                if rest:
+                    k, _, v = rest.partition(':')
+                    item[k.strip()] = _parse_scalar(v)
+                sub, pos = parse_block(pos, cur_indent + 1)
+                if isinstance(sub, dict):
+                    item.update(sub)
+                items.append(item)
+            return items, pos
+        mapping = {}
+        while True:
+            pos, cur_indent, stripped = next_significant(pos)
+            if pos is None or cur_indent < indent or stripped.startswith('- '):
+                break
+            key, _, rest = stripped.partition(':')
+            key = key.strip()
+            rest = rest.strip()
+            pos += 1
+            if rest == '|':
+                block_lines = []
+                block_indent = None
+                while pos < len(raw_lines):
+                    line = raw_lines[pos]
+                    if not line.strip():
+                        block_lines.append('')
+                        pos += 1
+                        continue
+                    line_indent = len(line) - len(line.lstrip(' '))
+                    if line_indent <= cur_indent:
+                        break
+                    if block_indent is None:
+                        block_indent = line_indent
+                    block_lines.append(line[block_indent:])
+                    pos += 1
+                mapping[key] = '\n'.join(block_lines) + '\n'
+            elif rest == '':
+                sub, pos = parse_block(pos, cur_indent + 1)
+                mapping[key] = sub
+            else:
+                mapping[key] = _parse_scalar(rest)
+        return mapping, pos
+
+    doc, _ = parse_block(0, 0)
+    return doc
+
+
+def load_workflow(text):
+    if yaml is not None:
+        return yaml.load(text, Loader=yaml.BaseLoader)
+    return _load_workflow_fallback(text)
+
+
 class GateWorkflowTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.doc = yaml.load(WORKFLOW.read_text(), Loader=yaml.BaseLoader)
+        cls.doc = load_workflow(WORKFLOW.read_text())
         cls.gate = cls.doc['jobs']['directed-gate']
     def test_manual_only_default_gate_and_separate_preview(self):
         self.assertEqual({'workflow_dispatch'}, set(self.doc['on']))
@@ -20,6 +114,17 @@ class GateWorkflowTest(unittest.TestCase):
         self.assertIn("inputs.mode == 'directed-tests'", self.gate['if'])
         self.assertIn("inputs.mode == 'preview'", self.doc['jobs']['raycast-preview']['if'])
         self.assertEqual({'contents': 'read'}, self.doc['permissions'])
+    def test_directed_gate_allows_tablet_branch_while_preview_stays_restricted(self):
+        self.assertIn("refs/heads/feat/raycast-sidebar-permissions-20261020", self.gate['if'])
+        self.assertIn("refs/heads/feat/antigravity-tablet-20261026", self.gate['if'])
+        gate_text = '\n'.join(s.get('run', '') for s in self.gate['steps'])
+        self.assertIn('refs/heads/feat/antigravity-tablet-20261026', gate_text)
+        self.assertIn('git merge-base --is-ancestor "$SOURCE_SHA" "refs/remotes/origin/$target_branch"', gate_text)
+        preview = self.doc['jobs']['raycast-preview']
+        self.assertIn("github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020'", preview['if'])
+        self.assertNotIn('feat/antigravity-tablet-20261026', preview['if'])
+        preview_text = '\n'.join(s.get('run', '') for s in preview['steps'])
+        self.assertNotIn('feat/antigravity-tablet-20261026', preview_text)
     def test_exact_source_and_safe_checkout(self):
         checkouts = [s for s in self.gate['steps'] if s.get('uses', '').startswith('actions/checkout@')]
         self.assertEqual(1, len(checkouts))

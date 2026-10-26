@@ -16,11 +16,17 @@ class DirectedRunnerTest(unittest.TestCase):
         self.root = Path(self.temp.name)
         sdk = self.root / 'sdk'
         (sdk / 'platforms/android-35').mkdir(parents=True)
+        bin_dir = self.root / 'bin'
+        bin_dir.mkdir(parents=True)
+        java_stub = bin_dir / 'java'
+        java_stub.write_text('#!/usr/bin/env sh\nexit 0\n')
+        java_stub.chmod(0o700)
         self.log = self.root / 'arguments.json'
         fake = self.root / 'gradle-stub'
         fake.write_text('#!/usr/bin/env python3\nimport json,os,sys\nfrom pathlib import Path\nPath(os.environ["SPOTLIGHT_TEST_ARGUMENT_LOG"]).write_text(json.dumps(sys.argv[1:]))\n')
         fake.chmod(0o700)
         self.env = dict(os.environ, ANDROID_HOME=str(sdk), ANDROID_SDK_ROOT=str(sdk),
+                        PATH=f"{bin_dir}:{os.environ.get('PATH', '')}",
                         SPOTLIGHT_GRADLE_BIN=str(fake), SPOTLIGHT_TEST_ARGUMENT_LOG=str(self.log),
                         GRADLE_USER_HOME=str(self.root / 'empty-cache'))
     def run_group(self, *args, env=None):
@@ -52,7 +58,8 @@ class DirectedRunnerTest(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         args = self.arguments()
         names = [args[i + 1] for i, value in enumerate(args) if value == '--tests']
-        self.assertEqual(2, len(names))
+        self.assertEqual(6, len(names))
+        self.assertIn('dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest', names)
         self.assertTrue(all('.integrations.spotify.' in name for name in names))
     def test_unknown_group_never_invokes_runner(self):
         result = self.run_group('deploy')
