@@ -133,11 +133,7 @@ import kotlinx.coroutines.launch
                 Button(enabled = !busy, onClick = { action { message = connection.playback("play", item) } }) { Text("Confirmar reproducción") }
                 TextButton(enabled = !busy, onClick = { action {
                     val observed = connection.observe()
-                    message = when {
-                        observed == null -> "Spotify no informó un dispositivo activo."
-                        observed.playing && (observed.trackUri == item.uri || observed.contextUri == item.uri) -> "Spotify confirmó reproducción del contenido seleccionado."
-                        else -> "Spotify no confirmó la reproducción del contenido seleccionado."
-                    }
+                    message = observed?.diagnose(item) ?: "Spotify no informó un dispositivo activo."
                 } }) { Text("Comprobar reproducción") }
             }
         }

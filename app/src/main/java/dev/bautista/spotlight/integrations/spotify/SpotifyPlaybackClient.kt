@@ -10,7 +10,32 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class SpotifyPlaybackObservation(val playing: Boolean, val trackUri: String?, val contextUri: String?, val observedAt: Long)
+data class SpotifyPlaybackObservation(
+    val playing: Boolean,
+    val trackUri: String?,
+    val contextUri: String?,
+    val observedAt: Long,
+    val trackName: String? = null,
+    val artistName: String? = null,
+) {
+    fun matches(item: SpotifySearchItem): Boolean =
+        trackUri == item.uri || contextUri == item.uri
+
+    fun diagnose(item: SpotifySearchItem): String = when {
+        playing && matches(item) ->
+            "Spotify confirmó reproducción del contenido seleccionado."
+        !playing && matches(item) ->
+            "Spotify cargó el contenido seleccionado, pero el reproductor está en pausa."
+        playing && item.type != SpotifyItemType.TRACK && contextUri.isNullOrBlank() && !trackUri.isNullOrBlank() ->
+            "Spotify está reproduciendo en este momento, pero el cliente local no informó el contexto para verificar si corresponde a la selección."
+        !playing && item.type != SpotifyItemType.TRACK && contextUri.isNullOrBlank() && !trackUri.isNullOrBlank() ->
+            "Spotify está en pausa y el cliente local no informó el contexto para verificar si corresponde a la selección."
+        playing && (!trackUri.isNullOrBlank() || !contextUri.isNullOrBlank()) ->
+            "Spotify sigue reproduciendo otro contenido; aún no confirmó el cambio a la selección."
+        else ->
+            "Spotify no confirmó la reproducción del contenido seleccionado."
+    }
+}
 
 /** Official Connect API. Successful commands are requests, never claims of verified playback. */
 class SpotifyPlaybackClient internal constructor(client: OkHttpClient, private val base: HttpUrl) {

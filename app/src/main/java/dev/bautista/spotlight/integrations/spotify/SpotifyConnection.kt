@@ -3,6 +3,7 @@ package dev.bautista.spotlight.integrations.spotify
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import dev.bautista.spotlight.SpotlightApp
 import dev.bautista.spotlight.ai.CredentialVault
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ class SpotifyConnection(context: Context) {
         override fun save(tokens: SpotifyTokens) = vault.save("spotify", tokens.encode())
         override fun clear() = vault.delete("spotify")
     })
-    private val localPlayer=SpotifyLocalPlayer(OfficialSpotifyRemote(app))
+    private val localPlayer = SpotifyLocalPlayer(OfficialSpotifyRemote(app), (app as? SpotlightApp)?.scope)
     val localPlaybackEnabled: Boolean get()=settings.getBoolean("local-playback-consent",false)
     suspend fun authorizeLocalPlayback() {
         localPlayer.authorize(clientId)
