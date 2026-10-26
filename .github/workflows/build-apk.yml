@@ -152,7 +152,7 @@ jobs:
         run: python3 scripts/summarize-directed-gate.py
 
   raycast-preview:
-    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' && inputs.mode == 'preview'
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && (github.ref == 'refs/heads/feat/raycast-sidebar-permissions-20261020' || github.ref == 'refs/heads/feat/antigravity-tablet-20261026') && inputs.mode == 'preview'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -169,9 +169,14 @@ jobs:
         run: |
           set -euo pipefail
           [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
-          test "$GITHUB_REF" = 'refs/heads/feat/raycast-sidebar-permissions-20261020'
+          case "$GITHUB_REF" in
+            refs/heads/feat/raycast-sidebar-permissions-20261020|refs/heads/feat/antigravity-tablet-20261026) ;;
+            *) echo '::error::Unsupported workflow branch for raycast-preview.'; exit 2 ;;
+          esac
           test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
-          git merge-base --is-ancestor "$SOURCE_SHA" refs/remotes/origin/feat/raycast-sidebar-permissions-20261020
+          target_branch="${GITHUB_REF#refs/heads/}"
+          test "$target_branch" != "$GITHUB_REF"
+          git merge-base --is-ancestor "$SOURCE_SHA" "refs/remotes/origin/$target_branch"
           printf 'Building source SHA: '
           git rev-parse HEAD
 
@@ -187,15 +192,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          set +x
           if [[ -z "$PREVIEW_KEYSTORE_BASE64" ]]; then
             echo '::error::Dedicated Raycast Preview signing backup must be configured before CI delivery.'
             exit 1
           fi
+          umask 077
           install -d -m 700 "$HOME/.android"
           printf '%s' "$PREVIEW_KEYSTORE_BASE64" | base64 --decode > "$HOME/.android/debug.keystore"
+          unset PREVIEW_KEYSTORE_BASE64
           chmod 600 "$HOME/.android/debug.keystore"
           keytool -J-Duser.language=en -list -v -keystore "$HOME/.android/debug.keystore" -storepass android |
             grep -F 'SHA256: 88:58:38:AA:97:0E:0D:4B:A1:68:A2:B5:F3:E8:F1:A6:E7:33:42:63:C3:4C:9C:BC:88:8F:5C:70:38:1A:52:BA'
+          if [[ "$GITHUB_REF" == 'refs/heads/feat/antigravity-tablet-20261026' ]]; then
+            install -d -m 700 signing
+            cp -f "$HOME/.android/debug.keystore" signing/spotlight-debug.keystore
+            chmod 600 signing/spotlight-debug.keystore
+            cat > signing/credentials.properties <<'EOF'
+          storePassword=android
+          keyAlias=androiddebugkey
+          keyPassword=android
+          EOF
+            chmod 600 signing/credentials.properties
+          fi
 
       - name: Prepare Android SDK
         uses: android-actions/setup-android@v4
@@ -211,12 +230,32 @@ jobs:
           cache-read-only: true
 
       - name: Build ONLY independent Raycast Preview
-        run: bash gradlew :app:assembleRaycastPreview --no-daemon --max-workers=2 --console=plain
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" == 'refs/heads/feat/antigravity-tablet-20261026' ]]; then
+            bash gradlew :app:assembleRaycastPreview -Pspotlight.preview.optimize=false \
+              --no-daemon --max-workers=1 --console=plain --stacktrace \
+              -Dorg.gradle.jvmargs="-Xmx2048m -XX:+UseSerialGC -Dfile.encoding=UTF-8" \
+              -Pkotlin.compiler.execution.strategy=in-process
+          else
+            bash gradlew :app:assembleRaycastPreview --no-daemon --max-workers=2 --console=plain
+          fi
+
+      - name: Clean up temporary signing files
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f "$HOME/.android/debug.keystore" signing/spotlight-debug.keystore signing/credentials.properties
 
       - name: Verify installed identity, signature and hashes
         shell: bash
         run: |
           set -euo pipefail
+          ! test -e "$HOME/.android/debug.keystore"
+          ! test -e signing/spotlight-debug.keystore
+          ! test -e signing/credentials.properties
           apk='app/build/outputs/apk/raycastPreview/app-raycastPreview.apk'
           test -s "$apk"
           mkdir -p delivery
@@ -224,22 +263,64 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs "$apk" > delivery/signature.txt
           grep -Fq '885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba' delivery/signature.txt
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" > delivery/package.txt
-          "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 "$apk"
-          grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview'" delivery/package.txt
+          if [[ "$GITHUB_REF" == 'refs/heads/feat/antigravity-tablet-20261026' ]]; then
+            "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -P 16 -v 4 "$apk" > delivery/zipalign.txt
+            grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='55' versionName='2.0.1-raycast-preview-experimental'" delivery/package.txt
+            ! grep -Fq 'application-debuggable' delivery/package.txt
+            grep -Fq "native-code: 'arm64-v8a'" delivery/package.txt
+            python3 - "$apk" > delivery/elf-alignment.txt <<'PY'
+          import struct
+          import sys
+          import zipfile
+
+          apk_path = sys.argv[1]
+          with zipfile.ZipFile(apk_path, "r") as zf:
+              so_infos = [info for info in zf.infolist() if info.filename.startswith("lib/arm64-v8a/") and info.filename.endswith(".so")]
+              if not so_infos:
+                  raise SystemExit("No arm64-v8a native libraries found in APK")
+              for info in so_infos:
+                  if info.compress_type != zipfile.ZIP_STORED:
+                      raise SystemExit(f"{info.filename} is compressed (compress_type={info.compress_type}); expected ZIP_STORED")
+                  data = zf.read(info.filename)
+                  if len(data) < 64 or data[:4] != b"\x7fELF" or data[4] != 2 or data[5] != 1:
+                      raise SystemExit(f"{info.filename} is not a valid 64-bit little-endian ELF binary")
+                  e_machine, e_phoff, e_phentsize, e_phnum = struct.unpack_from("<H", data, 18)[0], struct.unpack_from("<Q", data, 32)[0], struct.unpack_from("<H", data, 54)[0], struct.unpack_from("<H", data, 56)[0]
+                  if e_machine != 183 or e_phnum == 0 or e_phentsize < 56:
+                      raise SystemExit(f"{info.filename} invalid AArch64 program header metadata")
+                  load_Count = 0
+                  for idx in range(e_phnum):
+                      off = e_phoff + idx * e_phentsize
+                      p_type, p_flags, p_offset, p_vaddr, p_paddr, p_filesz, p_memsz, p_align = struct.unpack_from("<IIQQQQQQ", data, off)
+                      if p_type == 1:
+                          load_Count += 1
+                          if p_align < 16384 or (p_align & (p_align - 1)) != 0:
+                              raise SystemExit(f"{info.filename} PT_LOAD[{idx}] p_align={hex(p_align)} (< 16 KiB)")
+                          if (p_vaddr - p_offset) % p_align != 0:
+                              raise SystemExit(f"{info.filename} PT_LOAD[{idx}] p_vaddr/p_offset not congruent mod {hex(p_align)}")
+                          print(f"{info.filename} PT_LOAD[{idx}] p_offset={hex(p_offset)} p_vaddr={hex(p_vaddr)} p_align={hex(p_align)}")
+                  if load_Count == 0:
+                      raise SystemExit(f"{info.filename} has no PT_LOAD segments")
+          PY
+          else
+            "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c 4 "$apk"
+            grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview'" delivery/package.txt
+          fi
           git rev-parse HEAD > delivery/SOURCE_SHA.txt
           # The matching source ZIP is generated from exactly this checked-out SHA.
           # Git archive excludes untracked SDK caches, signing keys and local credentials.
           git archive --format=zip --prefix="Spotlight-Next-Raycast-Preview-source/" \
             --output=delivery/Spotlight-Next-Raycast-Preview-source.zip HEAD
           unzip -t delivery/Spotlight-Next-Raycast-Preview-source.zip >/dev/null
+          ! unzip -Z1 delivery/Spotlight-Next-Raycast-Preview-source.zip | grep -Eq '(^|/)(signing/|.*\.(keystore|jks)$|local\.properties$)'
           (cd delivery && sha256sum Spotlight-Next-Raycast-Preview.apk Spotlight-Next-Raycast-Preview-source.zip > SHA256SUMS)
           {
-            echo '### Spotlight Next · Raycast Preview'
-            echo 'Build independiente y firmado con certificado Android Debug; NO actualiza el APK principal.'
-            echo 'Si ya tenés instalada otra copia Raycast Preview con otra firma, no la sobrescribas para conservar sus datos.'
+            echo '### Spotlight Next · Raycast Preview 55 (Experimental)'
+            echo 'Build independiente (`dev.bautista.spotlight.next.raycastpreview`, `versionCode=55`, `-Pspotlight.preview.optimize=false`); NO actualiza el APK principal.'
+            echo 'Firmado con el certificado histórico de Raycast Preview (`885838aa...`); compatible para actualizar sobre Preview 54.'
             echo "Código fuente: $(cat delivery/SOURCE_SHA.txt)"
+            echo "SHA256SUMS:"
+            cat delivery/SHA256SUMS
             echo 'No se ejecutaron pruebas instrumentadas en tablet.'
-            echo 'APK, ZIP fuente del mismo SHA, hashes y certificado dentro del artefacto privado.'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload ONLY verified preview APK
