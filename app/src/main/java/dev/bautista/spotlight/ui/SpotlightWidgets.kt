@@ -96,8 +96,7 @@ fun ResultRow(
         Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else 60.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
-            .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
-            .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=amount*if(dark).12f else .10f),RoundedCornerShape(GlassTokens.rowRadius))
+            .background(colors.onSurface.copy(alpha=.09f*amount))
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
             // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
@@ -115,9 +114,12 @@ fun ResultRow(
                 fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
                 letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             val subtitle=if(PreviewPresentation.isApplication(result))"Aplicación" else result.subtitle.takeIf{it.isNotBlank()} ?: metadata
-            Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+            if(!inline || !PreviewPresentation.isApplication(result))Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
                 maxLines=1,overflow=TextOverflow.Ellipsis)
         }
+        if(inline && !playing && PreviewPresentation.isApplication(result))Text(metadata,
+            Modifier.padding(start=12.dp).widthIn(max=100.dp),color=colors.onSurfaceVariant,
+            fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
         if(playing)Text("En reproducción",Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,
             fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
@@ -173,3 +175,4 @@ fun InfoCardView(card: InfoCard, onCopy: () -> Unit, onLink: () -> Unit,onShare:
         }
     }
 }
+

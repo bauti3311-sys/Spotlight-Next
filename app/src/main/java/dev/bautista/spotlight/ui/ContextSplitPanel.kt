@@ -13,7 +13,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.*
 
-@Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit,scrollInspector:Boolean=false) {
+@Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit,scrollInspector:Boolean=false,
+    inspectorKey:Any?=null,inspectorHeader:(@Composable ()->Unit)?=null) {
     var fraction by remember{mutableFloatStateOf(.62f)}
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val width=with(LocalDensity.current){maxWidth.toPx()}.coerceAtLeast(1f)
@@ -32,9 +33,14 @@ import androidx.compose.ui.unit.*
                 Box(Modifier.width(1.dp).fillMaxHeight().background(MaterialTheme.colorScheme.onSurface.copy(alpha=.07f)))
                 Box(Modifier.width(3.dp).height(32.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha=.18f)))
             }
-            Column(Modifier.testTag("context-inspector")
-                .then(if(scrollInspector)Modifier.heightIn(max=height).verticalScroll(rememberScrollState()) else Modifier)
-                ){right()}
+            Column(Modifier.testTag("context-inspector").heightIn(max=height)) {
+                inspectorHeader?.invoke()
+                key(inspectorKey) {
+                    if(scrollInspector)Column(Modifier.weight(1f,fill=false).fillMaxWidth()
+                        .testTag("inspector-scroll").verticalScroll(rememberScrollState())) { right() }
+                    else right()
+                }
+            }
         }) { measurables, constraints ->
             val dividerWidth=12.dp.roundToPx().coerceAtMost(constraints.maxWidth)
             val usable=(constraints.maxWidth-dividerWidth).coerceAtLeast(0)
@@ -54,3 +60,4 @@ import androidx.compose.ui.unit.*
         }
     }
 }
+

@@ -65,10 +65,10 @@ import kotlinx.coroutines.withContext
             TextButton(onClick={spotifySearch=false}) { Text("Cerrar búsqueda de Spotify") }
         }
         Button(onClick=onOpen,shape=RoundedCornerShape(10.dp),
-            colors=ButtonDefaults.buttonColors(containerColor=colors.primary,contentColor=colors.onPrimary),
+            colors=ButtonDefaults.buttonColors(containerColor=colors.onSurface.copy(alpha=.07f),contentColor=colors.onSurface),
             contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp),
             modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("inspector-primary-action")) {
-            Icon(painterResource(R.drawable.inspector_ios_open),null,Modifier.size(18.dp))
+            Icon(painterResource(R.drawable.inspector_ios_open),null,Modifier.size(18.dp),tint=colors.primary)
             Spacer(Modifier.width(10.dp))
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=14.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
@@ -122,3 +122,4 @@ import kotlinx.coroutines.withContext
         }
     }
 }
+

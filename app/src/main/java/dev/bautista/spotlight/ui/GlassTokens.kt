@@ -34,8 +34,11 @@ object GlassTokens {
     const val minimumOpacity=.70f
     const val defaultOpacity=.98f
     fun opacity(c:Config)=c.opacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: defaultOpacity
-    fun windowColors(c:Config,dark:Boolean):List<Color> {
-        val alpha=opacity(c)
+    fun windowColors(c:Config,dark:Boolean,legibleBackdrop:Boolean=false):List<Color> {
+        // Keep the stored preference intact. The working search surface must not
+        // let another window's text compete with results and editable fields.
+        val alpha=if(legibleBackdrop && c.preset=="raycast")1f
+            else if(legibleBackdrop)maxOf(.96f,opacity(c)) else opacity(c)
         return if(dark && c.preset!="glass") listOf(Color(0xFF1B1B20).copy(alpha=alpha),Color(0xFF17171C).copy(alpha=alpha))
         else if(dark) listOf(Color(0xFF20212B).copy(alpha=alpha),Color(0xFF171921).copy(alpha=alpha))
         else listOf(Color(0xFFFAFAFC).copy(alpha=alpha),Color(0xFFF1F2F7).copy(alpha=alpha))
@@ -54,7 +57,7 @@ object GlassTokens {
     val colors=MaterialTheme.colorScheme
     val shape=RoundedCornerShape(GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
-    val material=GlassTokens.windowColors(c,dark)
+    val material=GlassTokens.windowColors(c,dark,legibleBackdrop)
     return shadow(24.dp,shape,clip=false,
             ambientColor=Color.Black.copy(alpha=.24f),spotColor=Color.Black.copy(alpha=.40f))
         .clip(shape)
@@ -74,3 +77,4 @@ object GlassTokens {
         Text(detail,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
+

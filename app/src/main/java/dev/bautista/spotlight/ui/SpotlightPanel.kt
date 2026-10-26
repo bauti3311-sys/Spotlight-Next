@@ -832,9 +832,6 @@ fun SpotlightPanel(
                 else if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
             val resultLimit = (panelLimit - if(adaptiveSearch)52.dp else if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
-            val resultListHeight = minOf(resultLimit,
-                GlassTokens.resultRowHeight(config)*visibleResults.size +
-                    if(homeLayout)(visibleResults.size*3+visibleResults.map{ResultSections.category(it)}.distinct().size*35+12).dp else 44.dp)
             val splitPanelHeight = resultLimit
             val inlineResultRows=!compact && (!widePreview || maxWidth*.62f>=384.dp)
             Box(
@@ -1028,7 +1025,7 @@ fun SpotlightPanel(
                                         .heightIn(
                                             max =
                                                 if ((richPreview || mediaInspector) && !widePreview) resultLimit * .35f
-                                                else if(adaptiveSearch)resultLimit else resultListHeight
+                                                else resultLimit
                                         )
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
@@ -1223,7 +1220,7 @@ fun SpotlightPanel(
                         Modifier.fillMaxWidth()
                             .testTag("spotlight-results")
                             .heightIn(max = panelLimit)
-                            .verticalScroll(rememberScrollState())
+                            .then(if(widePreview && !expandedPreview)Modifier else Modifier.verticalScroll(rememberScrollState()))
                     ) {
                         Box(Modifier.fillMaxWidth().height(2.dp)) {
                             if (loading || cardLoading || bufferBusy)
@@ -1368,7 +1365,7 @@ fun SpotlightPanel(
                                     onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
                                     onActions={preview=application;menu=true;navigating=true},onMedia={},
                                     mediaContent=if(observed==null)null else player,
-                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
+                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
                                 if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
                             } }
                         }
@@ -1383,7 +1380,7 @@ fun SpotlightPanel(
                                 }?.icon
                                 InspectorTheme(accentPackage,accentIcon) {
                                 Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
-                                    inspectorToolbar()
+                                    if(!widePreview || expandedPreview)inspectorToolbar()
                                     val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
                                         ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
                                         ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"
@@ -1392,7 +1389,10 @@ fun SpotlightPanel(
                                 }
                             }
                         }
-                        if(widePreview && !expandedPreview)ContextSplitPanel(splitPanelHeight,{resultList()},{pane()},scrollInspector=true)
+                        if(widePreview && !expandedPreview)ContextSplitPanel(splitPanelHeight,{resultList()},{pane()},scrollInspector=true,
+                            inspectorKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
+                                ?: systemPage?.let{"page:$it"} ?: inspectorItem?.id,
+                            inspectorHeader=inspectorToolbar)
                         else if(hasInspector) {
                             if(!taskInspector && inspectorCard==null && !expandedPreview)resultList()
                             pane()
@@ -1456,3 +1456,4 @@ fun SpotlightPanel(
             }
         }
     }
+

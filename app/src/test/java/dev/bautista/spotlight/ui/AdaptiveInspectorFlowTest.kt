@@ -57,7 +57,7 @@ class AdaptiveInspectorFlowTest {
         awaitResult("com.spotify.music")
     }
     private fun awaitResult(pkg:String) {ui.waitUntil(15000){ui.onAllNodesWithTag("result:$pkg/Main").fetchSemanticsNodes().isNotEmpty()}}
-    private fun assertButtonColor(expected:Color) {
+    private fun assertNeutralAction(brand:Color) {
         val file=java.io.File("build/adaptive-inspector/primary-color-probe.png")
         ui.onNodeWithTag("inspector-primary-action").captureRoboImage(file.absolutePath,
             roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
@@ -65,14 +65,16 @@ class AdaptiveInspectorFlowTest {
         assertNotNull("Native button capture must decode",image)
         try {
             val actual=Color(image.getPixel(image.width/2,4))
-            assertEquals(expected.red,actual.red,.02f);assertEquals(expected.green,actual.green,.02f);assertEquals(expected.blue,actual.blue,.02f)
+            assertNotEquals("A primary action must not become an entire brand-color tile",brand,actual)
+            val channels=listOf(actual.red,actual.green,actual.blue)
+            assertTrue("Action surface must remain neutral: $actual",channels.maxOrNull()!!-channels.minOrNull()!!<.08f)
         } finally {image.recycle()}
     }
     @Test fun selectedInstalledAppsUseRealInspectorAndPinRetainsItsOwnColor() {
         show()
         ui.onNodeWithTag("result:com.spotify.music/Main").performClick()
         ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
-        assertButtonColor(InspectorAccent.brand("com.spotify.music")!!)
+        assertNeutralAction(InspectorAccent.brand("com.spotify.music")!!)
         captureScreenRoboImage("build/adaptive-inspector/tablet-spotify-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         val before=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
         search().performKeyInput{keyDown(Key.CtrlLeft);pressKey(Key.K);keyUp(Key.CtrlLeft)}
@@ -85,10 +87,10 @@ class AdaptiveInspectorFlowTest {
         search().performClick().performTextReplacement("Gmail");awaitResult("com.google.android.gm")
         ui.onNodeWithTag("result:com.google.android.gm/Main").performClick()
         ui.onNodeWithTag("inspector-title").assertTextEquals("Spotify")
-        assertButtonColor(InspectorAccent.brand("com.spotify.music")!!)
+        assertNeutralAction(InspectorAccent.brand("com.spotify.music")!!)
         ui.onNodeWithContentDescription("Desfijar inspector").performClick()
         ui.onNodeWithTag("inspector-title").assertTextEquals("Gmail")
-        assertButtonColor(InspectorAccent.brand("com.google.android.gm")!!)
+        assertNeutralAction(InspectorAccent.brand("com.google.android.gm")!!)
         captureScreenRoboImage("build/adaptive-inspector/tablet-gmail-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
     }
@@ -105,3 +107,4 @@ class AdaptiveInspectorFlowTest {
         assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
     }
 }
+
