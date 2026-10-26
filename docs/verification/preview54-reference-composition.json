@@ -114,5 +114,93 @@
     "version_code": 54,
     "version_name_suffix": "-raycast-preview-experimental",
     "app_sources_unchanged_from": "bbef6f31ce85cbe703438fed0f11f3db3e07a268"
+  },
+  "delivery": {
+    "source_sha": "ecbfdc8a927c4442135542090ad2c755fa03a1fc",
+    "build": {
+      "result": "BUILD SUCCESSFUL",
+      "duration": "2m43s",
+      "command": ":app:assembleRaycastPreview -Pspotlight.preview.optimize=false --offline --no-daemon --max-workers=1 --console=plain --stacktrace -Dorg.gradle.jvmargs='-Xmx2048m -XX:+UseSerialGC -Dfile.encoding=UTF-8' -Pkotlin.compiler.execution.strategy=in-process",
+      "jdk": 17,
+      "gradle": "8.10.2",
+      "sdk": 35,
+      "profile": "experimental-unoptimized",
+      "tasks": {
+        "executed": 10,
+        "up_to_date": 40
+      },
+      "lint": {
+        "errors": 0,
+        "warnings": 16,
+        "source_sha": "ecbfdc8a927c4442135542090ad2c755fa03a1fc",
+        "report": "evidence.zip/lint.xml",
+        "reused": true
+      },
+      "new_test_runs": 0
+    },
+    "recovery": {
+      "previous_experimental_attempt": "Gradle daemon disappeared at mergeDexRaycastPreview with 3GiB heap and lint/assemble in same invocation; original log retained.",
+      "controlled_change": "Assemble isolated from completed lint; heap2048m, SerialGC, worker1, detached shell. No app/dependency change.",
+      "root_cause_verified": false,
+      "optimized_r8_status": "BLOCKED",
+      "preflight": "A missing optional /usr/bin/time utility prevented the first launcher from invoking Gradle; replaced with shell builtin."
+    },
+    "identity": {
+      "package_id": "dev.bautista.spotlight.next.raycastpreview",
+      "version_code": 54,
+      "version_name_suffix": "-raycast-preview-experimental",
+      "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+      "apksigner_verified": true,
+      "non_debuggable": true,
+      "zipalign_16k": true,
+      "source_zip": "git archive of exact source SHA; private signing/credentials/local.properties paths rejected"
+    },
+    "release": {
+      "id": 424599462,
+      "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-2770747db701386cd5bc",
+      "private_repository": true,
+      "draft": true,
+      "prerelease": true,
+      "server_digests_verified": true,
+      "assets": [
+        {
+          "name": "README.txt",
+          "bytes": 1562,
+          "sha256": "d0018ec678dd6ba75805898544ade6e2d2de89ec0e3cb29f444b824688d27350"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 318,
+          "sha256": "bc683ac5ddb798f005be26b0a931840378abb2332f5aeb6f590cae221dcf454b"
+        },
+        {
+          "name": "SOURCE_COMMIT",
+          "bytes": 41,
+          "sha256": "10aa3b94c7fdbabc7c5bc3efb6337286339b99e096652eb1d04cde89c4c13acd"
+        },
+        {
+          "name": "Spotlight-Next-Preview54-evidence.zip",
+          "bytes": 689370,
+          "sha256": "c6323d0b6408a3dfece8ca93785956a48f44096a9b9b9f753d8b350d6e68b918"
+        },
+        {
+          "name": "Spotlight-Next-Raycast-Preview-54-ecbfdc8a.apk",
+          "bytes": 82669237,
+          "sha256": "e8e8e5d0074c8b1ae4448397bfffd87d2c36af0f99d2163315ee3a4951f69372"
+        },
+        {
+          "name": "Spotlight-Next-source-ecbfdc8a.zip",
+          "bytes": 9724686,
+          "sha256": "907f7599b779e91b36245e6b05979d21f37b05e426df7d1ede5f4dd0add20319"
+        }
+      ]
+    },
+    "limitations": [
+      "Experimental APK: no R8/resource shrinking; normal optimized build remains blocked.",
+      "67 unique tests are consolidated latest XML across recorded cohorts, not a new single run.",
+      "No physical device validation or real Spotify playback verification.",
+      "Unofficial WhatsApp linked-device provider remains disabled."
+    ],
+    "handoff": "Final evidence checkpoint; release only own reservation via scripts/autonomy_lock.py release --publish-notes after remote verification. Do not alter main or PR18 draft."
   }
 }
