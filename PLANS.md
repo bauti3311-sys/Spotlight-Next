@@ -668,3 +668,8 @@ FlowRowSpotifye1080965 corrige filtroLista fuera de240dp/font1.5; capturas compa
 - Skills propias/adaptadas versionadas; revisión auxiliar independiente no ejecutada por límite de uso de plataforma, sin aprobación inventada.
 - No validación física/cuenta Spotify real ni garantía de solución del corte de audio. Sin mensajes WhatsApp reales, proveedor vinculado desactivado. Sin Actions, main o force; PR18 borrador y matriz9/25/6 intactos.
 - Siguiente validación: instalar Preview52 en Tab A9+, autorizar App Remote y comprobar reproducción con Spotify en segundo plano, apertura/cierre/restauración y geometría con IME. No volver a compilar idéntico SHA.
+
+
+## Preview53 — ventana Raycast corregida, fuente por congelar
+
+Publicado b44c154: fondo de trabajo legible sin borrar preferencias; altura de lista medida, selección plana y metadatos discretos; inspector con encabezado fijo y scroll propio por destino.34 UI únicas correctas,5m26s; baseline3 casos/2 fallos guardado. Pulido787b476: Información/Favorita compactas, acceso duplicado a acciones retirado sólo del inspector integrado, Ctrl+K/footer conservados;11 regresiones repetidas correctas,4m36s, exigida visibilidad de Buscar en Spotify. Total34 únicos, no45. Capturas completas equivalentes en docs/verification/raycast-window-20261025. Primer fallo de compilación y logs originales retenidos. Versión Preview53 preparada; lint/ensamblado/firma/entrega pendientes. Mecanismos Spotify intactos, fallo de reproducción no certificado resuelto. Sin pruebas físicas/Actions/main/force, PR18 borrador, matriz9/25/6 inalterada.

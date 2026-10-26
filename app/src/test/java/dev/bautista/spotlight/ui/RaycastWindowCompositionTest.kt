@@ -56,6 +56,9 @@ class RaycastWindowCompositionTest {
     }
     @Test fun tabletInspectorHeaderDoesNotScrollAwayAndNewSelectionStartsAtTop() {
         show();capture("tablet-initial")
+        ui.onNode(hasText("Buscar en Spotify") and hasAnyAncestor(hasTestTag("app-capabilities"))).assertIsDisplayed()
+        ui.onNodeWithText("Ver acciones contextuales").assertDoesNotExist()
+        ui.onNodeWithTag("inspector-utility-actions").assertHeightIsAtLeast(48.dp)
         val top=ui.onNodeWithTag("inspector-toolbar").getUnclippedBoundsInRoot().top
         ui.onNodeWithTag("context-inspector").performTouchInput{swipeUp()}
         ui.onNodeWithTag("inspector-toolbar").assertIsDisplayed()

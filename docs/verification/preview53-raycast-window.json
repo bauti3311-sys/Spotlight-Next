@@ -1,0 +1,55 @@
+{
+  "purpose": "Native Raycast window correction, experimental Preview53",
+  "tested_window_source": "b44c1540c58cd33bca3df7aab3e544491d6e2edf",
+  "tested_inspector_polish_source": "787b476463a80500dbb9b54a43a2d511612d5627",
+  "build": "pending",
+  "version_code": 53,
+  "package_id": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "ui_tests": {
+    "unique": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "original_round": {
+      "tests": 34,
+      "duration": "5m26s"
+    },
+    "final_inspector_round": {
+      "tests": 11,
+      "duration": "4m36s",
+      "already_counted": true
+    },
+    "cohorts": "Final inspector 11 replace the same cases from34. Other23 contracts unchanged."
+  },
+  "baseline": {
+    "source": "2104dbb32df72e447e9dd29e4f5005c8f0193e74",
+    "tests": 3,
+    "failures": 2,
+    "duration": "2m56s",
+    "failure": "Inspector header not displayed after scrolling, including reduced keyboard budget."
+  },
+  "first_compile_failure": {
+    "source": "9f6055fa59236117293b1b28881503724e2ba1c4",
+    "duration": "1m17s",
+    "cause": "Legacy positional AppCapabilityActions call; compatible overload restored."
+  },
+  "capture": {
+    "api": 33,
+    "renderer": "Robolectric NATIVE graphics",
+    "width_dp": 940,
+    "available_height_dp": 510,
+    "font_scale": 1,
+    "query": "Spotify",
+    "theme": "Solid Graphite",
+    "requested_opacity": 0.7,
+    "before_blob": "44f7488101890f486e145992a82d554f688035e8",
+    "after_blob": "4ced8e68ee5fcd834fb6b4e695d5223da734275a",
+    "fixtures": "Controlled packages/icons, no installed real Spotify account"
+  },
+  "physical_device_tested": false,
+  "real_spotify_account_tested": false,
+  "spotify_playback_fix_verified": false,
+  "github_actions_used": false,
+  "matrix": "9/25/6 unchanged"
+}

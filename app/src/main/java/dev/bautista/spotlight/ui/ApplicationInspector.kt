@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
     onMedia: (String) -> Unit,
     mediaContent: (@Composable () -> Unit)? = null,
     capabilitiesContent: (@Composable () -> Unit)? = null,
+    embedded: Boolean = false,
 ) {
     val colors=MaterialTheme.colorScheme
     val context=LocalContext.current
@@ -73,16 +74,23 @@ import kotlinx.coroutines.withContext
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=14.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
+        if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo,modifier=Modifier.weight(1f))
+            InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
+                R.drawable.inspector_ios_star,onClick=onFavorite,modifier=Modifier.weight(1f))
+        }
         Column(Modifier.fillMaxWidth()) {
+            if(!embedded) {
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite)
+            }
             mediaCommands.forEach { command ->
                 InspectorActionRow(when(command){"pause"->"Pausar reproducción";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
                     when(command){"pause"->R.drawable.inspector_ios_pause;"play"->R.drawable.inspector_ios_play;"next"->R.drawable.inspector_ios_next;else->R.drawable.inspector_ios_previous},
                     onClick={onMedia(command)})
             }
-            InspectorActionRow("Ver acciones contextuales",R.drawable.inspector_ios_actions,"Ctrl+K",onActions)
+            if(!embedded)InspectorActionRow("Ver acciones contextuales",R.drawable.inspector_ios_actions,"Ctrl+K",onActions)
         }
         capabilitiesContent?.invoke()
         if(packageName!=null) {
@@ -95,9 +103,9 @@ import kotlinx.coroutines.withContext
     }
 }
 
-@Composable private fun InspectorActionRow(label:String,icon:Int,hint:String?=null,onClick:()->Unit) {
+@Composable private fun InspectorActionRow(label:String,icon:Int,hint:String?=null,onClick:()->Unit,modifier:Modifier=Modifier) {
     val colors=MaterialTheme.colorScheme
-    Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClick=onClick).padding(horizontal=2.dp),
+    Row(modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClick=onClick).padding(horizontal=2.dp),
         verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
         Icon(painterResource(icon),null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
         Text(label,Modifier.weight(1f),fontSize=12.sp,maxLines=2,overflow=TextOverflow.Ellipsis)

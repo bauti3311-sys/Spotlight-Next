@@ -1364,7 +1364,7 @@ fun SpotlightPanel(
                                     onFavorite={toggleFavorite(application)},
                                     onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
                                     onActions={preview=application;menu=true;navigating=true},onMedia={},
-                                    mediaContent=if(observed==null)null else player,
+                                    mediaContent=if(observed==null)null else player,embedded=true,
                                     capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
                                 if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
                             } }
