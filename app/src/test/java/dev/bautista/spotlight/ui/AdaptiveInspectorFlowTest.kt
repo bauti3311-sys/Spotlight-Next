@@ -59,13 +59,13 @@ class AdaptiveInspectorFlowTest {
     private fun awaitResult(pkg:String) {ui.waitUntil(15000){ui.onAllNodesWithTag("result:$pkg/Main").fetchSemanticsNodes().isNotEmpty()}}
     private fun assertNeutralAction(brand:Color) {
         val file=java.io.File("build/adaptive-inspector/primary-color-probe.png")
-        ui.onNodeWithTag("inspector-primary-action").captureRoboImage(file.absolutePath,
+        ui.onNodeWithTag("command-dock-actions").captureRoboImage(file.absolutePath,
             roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         val image=android.graphics.BitmapFactory.decodeFile(file.absolutePath)
         assertNotNull("Native button capture must decode",image)
         try {
             val actual=Color(image.getPixel(image.width/2,4))
-            assertNotEquals("A primary action must not become an entire brand-color tile",brand,actual)
+            assertNotEquals("The shared action dock must not become an entire brand-color tile",brand,actual)
             val channels=listOf(actual.red,actual.green,actual.blue)
             assertTrue("Action surface must remain neutral: $actual",channels.maxOrNull()!!-channels.minOrNull()!!<.08f)
         } finally {image.recycle()}
@@ -73,7 +73,7 @@ class AdaptiveInspectorFlowTest {
     @Test fun selectedInstalledAppsUseRealInspectorAndPinRetainsItsOwnColor() {
         show()
         ui.onNodeWithTag("result:com.spotify.music/Main").performClick()
-        ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithTag("command-dock-actions").assertIsDisplayed().assertHeightIsAtLeast(48.dp)
         assertNeutralAction(InspectorAccent.brand("com.spotify.music")!!)
         captureScreenRoboImage("build/adaptive-inspector/tablet-spotify-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         val before=ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot
@@ -81,7 +81,7 @@ class AdaptiveInspectorFlowTest {
         ui.onNodeWithTag("action-surface").assertIsDisplayed()
         assertEquals(before,ui.onNodeWithTag("spotlight-root").fetchSemanticsNode().boundsInRoot)
         ui.onNodeWithTag("action-filter").performKeyInput{pressKey(Key.Escape)}
-        ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed()
+        ui.onNodeWithTag("command-dock-actions").assertIsDisplayed()
         search().assertTextEquals("Spotify")
         ui.onNodeWithContentDescription("Fijar inspector").performClick()
         search().performClick().performTextReplacement("Gmail");awaitResult("com.google.android.gm")
@@ -99,7 +99,7 @@ class AdaptiveInspectorFlowTest {
         show(360)
         ui.onNodeWithTag("result:com.spotify.music/Main").performClick()
         ui.onNodeWithTag("context-inspector").assertDoesNotExist()
-        ui.onNodeWithTag("inspector-primary-action").assertIsDisplayed()
+        ui.onNodeWithTag("command-dock-actions").assertIsDisplayed()
         captureScreenRoboImage("build/adaptive-inspector/phone-spotify-fixture.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
         ui.onNodeWithContentDescription("Cerrar inspector").performClick()
         ui.onNodeWithTag("inspector-content").assertDoesNotExist()

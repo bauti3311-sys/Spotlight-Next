@@ -65,7 +65,7 @@ import kotlinx.coroutines.withContext
             (context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.let { SpotifySearchPanel(it) }
             TextButton(onClick={spotifySearch=false}) { Text("Cerrar búsqueda de Spotify") }
         }
-        Button(onClick=onOpen,shape=RoundedCornerShape(10.dp),
+        if(!embedded)Button(onClick=onOpen,shape=RoundedCornerShape(10.dp),
             colors=ButtonDefaults.buttonColors(containerColor=colors.onSurface.copy(alpha=.07f),contentColor=colors.onSurface),
             contentPadding=PaddingValues(horizontal=12.dp,vertical=0.dp),
             modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("inspector-primary-action")) {

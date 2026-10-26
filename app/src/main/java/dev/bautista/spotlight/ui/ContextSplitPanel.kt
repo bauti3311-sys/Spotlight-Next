@@ -15,7 +15,12 @@ import androidx.compose.ui.unit.*
 
 @Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit,scrollInspector:Boolean=false,
     inspectorKey:Any?=null,inspectorHeader:(@Composable ()->Unit)?=null) {
-    var fraction by remember{mutableFloatStateOf(.62f)}
+    ContextSplitPanel(height,left,right,scrollInspector,inspectorKey,inspectorHeader,initialFraction=.62f)
+}
+
+@Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit,scrollInspector:Boolean=false,
+    inspectorKey:Any?=null,inspectorHeader:(@Composable ()->Unit)?=null,initialFraction:Float) {
+    var fraction by remember(initialFraction){mutableFloatStateOf(initialFraction.takeIf{it.isFinite()}?.coerceIn(.2f,.8f) ?: .62f)}
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val width=with(LocalDensity.current){maxWidth.toPx()}.coerceAtLeast(1f)
         val layout=dev.bautista.spotlight.overlay.OverlayLayoutPolicy.resolve(

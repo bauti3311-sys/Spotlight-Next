@@ -82,7 +82,7 @@ fun ResultRow(
     inline:Boolean=true,
 ) {
     val colors = MaterialTheme.colorScheme
-    val metadata = if(playing)"En reproducción" else if(PreviewPresentation.isApplication(result))"Aplicación" else result.mime?.substringAfterLast('/')?.uppercase()?.take(12) ?: ResultSections.category(result)
+    val metadata = if(playing)"En reproducción" else if(PreviewPresentation.isApplication(result))"Aplicación" else result.mime?.substringAfterLast('/')?.uppercase()?.take(12) ?: ResultSections.category(result).let{if(it=="Acciones y comandos")"Comando" else it}
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
@@ -110,14 +110,20 @@ fun ResultRow(
         ResultIcon(result,Modifier.size(if(result.icon!=null)28.dp else 20.dp),colors.onSurfaceVariant)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+          Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
+                modifier=Modifier.weight(1f,fill=false),
                 fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
                 letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
+                Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+                maxLines=1,overflow=TextOverflow.Ellipsis)
+          }
             val subtitle=if(PreviewPresentation.isApplication(result))"Aplicación" else result.subtitle.takeIf{it.isNotBlank()} ?: metadata
-            if(!inline || !PreviewPresentation.isApplication(result))Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+            if(!inline)Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
                 maxLines=1,overflow=TextOverflow.Ellipsis)
         }
-        if(inline && !playing && PreviewPresentation.isApplication(result))Text(metadata,
+        if(inline && !playing)Text(metadata,
             Modifier.padding(start=12.dp).widthIn(max=100.dp),color=colors.onSurfaceVariant,
             fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
         if(playing)Text("En reproducción",Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,

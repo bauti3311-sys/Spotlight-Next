@@ -32,7 +32,10 @@ class SettingsWorkspaceTest {
   capture("tablet-integrations")
  }
  @Test fun appearanceHasOneWidthAndResetRequiresConfirmation(){
-  ready();ui.onNodeWithText("Apariencia").performClick()
+  ready()
+  val app=ui.activity.application as SpotlightApp
+  runBlocking{val current=app.preferences.config.first();app.preferences.updateAppearance(current.copy(theme="dark",preset="raycast"))}
+  ui.onNodeWithText("Apariencia").performClick()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
   ui.onNodeWithText("Ancho horizontal").assertDoesNotExist()
   capture("tablet-appearance")

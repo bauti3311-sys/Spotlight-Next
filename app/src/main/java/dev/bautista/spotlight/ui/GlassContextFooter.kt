@@ -17,23 +17,42 @@ import androidx.compose.ui.unit.*
   fontSize=10.sp,lineHeight=14.sp,color=colors.onSurfaceVariant,maxLines=1)
 }
 
-/** Shared keycaps; hints describe actual Android contracts and retain 48dp touch targets. */
+/** A single command dock; every label retains its existing executor and 48dp target. */
 @Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit,
  autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false,actionsKeyLabel:String="Ctrl+K") {
+ GlassContextFooter(suggestion,enabled,primaryLabel,onExecute,onActions,autocomplete,expandLabel,onExpand,actionsOpen,actionsKeyLabel,onOptions=null)
+}
+
+@Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit,
+ autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false,actionsKeyLabel:String="Ctrl+K",
+ onOptions:(()->Unit)?,scopeLabel:String="Spotlight") {
  val colors=MaterialTheme.colorScheme
  BoxWithConstraints(Modifier.fillMaxWidth().testTag("context-footer")) {
-  val wide=maxWidth>=560.dp
-  Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=10.dp),verticalAlignment=Alignment.CenterVertically) {
-   if(enabled)TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=6.dp),modifier=Modifier.weight(1f)) {
-    GlassKeycap("Enter");Spacer(Modifier.width(8.dp));Text(if(actionsOpen)"Ejecutar" else primaryLabel,fontSize=11.sp,maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurface)
-   } else Spacer(Modifier.weight(1f))
+  val wide=maxWidth>=700.dp
+  Row(Modifier.fillMaxWidth().heightIn(min=56.dp).padding(horizontal=10.dp,vertical=4.dp),verticalAlignment=Alignment.CenterVertically) {
+   onOptions?.let { options ->
+    IconButton(onClick=options,modifier=Modifier.size(48.dp).testTag("command-dock-menu")) {
+     IosCommandIcon(CommandIcons.MoreHoriz,"Opciones de Spotlight",Modifier.size(20.dp),tint=colors.onSurfaceVariant)
+    }
+   }
+   if(wide)Text(scopeLabel,Modifier.widthIn(max=160.dp),fontSize=11.sp,color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+   if(wide || !enabled)Spacer(Modifier.weight(1f))
    if(onExpand!=null)TextButton(onClick=onExpand,modifier=Modifier.testTag("results-expand"),contentPadding=PaddingValues(horizontal=6.dp)) {
     Text(if(wide)expandLabel else if(expandLabel.startsWith("Ver menos"))"Menos" else "Más",fontSize=11.sp,color=colors.onSurfaceVariant)
    }
-   if(enabled)TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=6.dp),modifier=Modifier.heightIn(min=48.dp)) {
-    GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel);Spacer(Modifier.width(8.dp));Text(if(actionsOpen)"Volver" else "Acciones",fontSize=11.sp,color=colors.onSurfaceVariant)
+   if(autocomplete && !actionsOpen && wide)Row(Modifier.padding(horizontal=10.dp),verticalAlignment=Alignment.CenterVertically){Text("Autocompletar",fontSize=11.sp,color=colors.onSurfaceVariant);Spacer(Modifier.width(8.dp));GlassKeycap("Tab")}
+   if(enabled)Row(Modifier.then(if(wide)Modifier else Modifier.weight(1f)).testTag("command-dock-actions").background(colors.onSurface.copy(alpha=.045f),RoundedCornerShape(24.dp))
+    .border(1.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(24.dp)),verticalAlignment=Alignment.CenterVertically) {
+    TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=12.dp),modifier=Modifier.then(if(wide)Modifier.widthIn(max=220.dp) else Modifier.weight(1f)).heightIn(min=48.dp)) {
+     Text(if(actionsOpen)"Ejecutar" else primaryLabel,fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurface)
+     if(wide){Spacer(Modifier.width(8.dp));GlassKeycap("Enter")}
+    }
+    Box(Modifier.width(1.dp).height(18.dp).background(colors.onSurface.copy(alpha=.12f)))
+    TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=12.dp),modifier=Modifier.heightIn(min=48.dp)) {
+     Text(if(actionsOpen)"Volver" else "Acciones",fontSize=12.sp,color=colors.onSurfaceVariant)
+     if(wide){Spacer(Modifier.width(8.dp));GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel)}
+    }
    }
-   if(autocomplete && !actionsOpen && wide)Row(Modifier.padding(start=10.dp),verticalAlignment=Alignment.CenterVertically){GlassKeycap("Tab");Spacer(Modifier.width(8.dp));Text("Autocompletar",fontSize=11.sp,color=colors.onSurfaceVariant)}
   }
  }
 }

@@ -831,9 +831,11 @@ fun SpotlightPanel(
             val panelLimit = if(adaptiveSearch)(viewport - 84.dp - extraHeaders.dp).coerceAtLeast(0.dp)
                 else if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
+            val optionsInHeader=(homeLayout && visibleResults.isEmpty()) || systemPage!=null || messageForm!=null || searchForm!=null
             val resultLimit = (panelLimit - if(adaptiveSearch)52.dp else if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
             val splitPanelHeight = resultLimit
-            val inlineResultRows=!compact && (!widePreview || maxWidth*.62f>=384.dp)
+            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else .62f
+            val inlineResultRows=!compact && (!widePreview || maxWidth*resultsFraction>=384.dp)
             Box(
                 Modifier.fillMaxWidth()
                     .glassSurface(config,legibleBackdrop=true)
@@ -975,6 +977,7 @@ fun SpotlightPanel(
                     motionEnabled,
                     autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
                     contextAccent=rememberCommandAccent(selectedResult),
+                    showOptionsButton=optionsInHeader,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
                     optionsOpen=searchOptions,
@@ -1030,8 +1033,8 @@ fun SpotlightPanel(
                                         .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
                             ) {
                                 if(query.isNotBlank() && visibleResults.isNotEmpty()) item("results-heading") {
-                                    Text("RESULTADOS",Modifier.padding(start=12.dp,top=8.dp,bottom=8.dp),
-                                        fontSize=10.sp,lineHeight=12.sp,fontWeight=FontWeight.SemiBold,color=colors.onSurfaceVariant)
+                                    Text(if(visibleResults.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(visibleResults.first()) else "Resultados",Modifier.padding(start=12.dp,top=8.dp,bottom=8.dp),
+                                        fontSize=11.sp,lineHeight=14.sp,fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
                                 }
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
                                     val section=ResultSections.category(item)
@@ -1389,7 +1392,7 @@ fun SpotlightPanel(
                                 }
                             }
                         }
-                        if(widePreview && !expandedPreview)ContextSplitPanel(splitPanelHeight,{resultList()},{pane()},scrollInspector=true,
+                        if(widePreview && !expandedPreview)ContextSplitPanel(splitPanelHeight,{resultList()},{pane()},scrollInspector=true,initialFraction=resultsFraction,
                             inspectorKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
                                 ?: systemPage?.let{"page:$it"} ?: inspectorItem?.id,
                             inspectorHeader=inspectorToolbar)
@@ -1427,7 +1430,6 @@ fun SpotlightPanel(
                             val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
                             full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
                         } else false
-                        HorizontalDivider(color = colors.onSurface.copy(alpha = .07f))
                         if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
                             Text("Tab siguiente campo   esc volver",
                                 Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
@@ -1447,6 +1449,8 @@ fun SpotlightPanel(
                             autocomplete=canAutocomplete && searchFocused && suggestion!=null,
                             actionsOpen=menu,
                             actionsKeyLabel=KeyboardBindings.resolve(config,"actions")!!.label,
+                            onOptions=if(optionsInHeader)null else ({searchOptions=!searchOptions}),
+                            scopeLabel=searchScope?.label ?: if(category=="Todo")"Spotlight" else category,
                             expandLabel=if(moreResults)"Ver menos resultados" else "Ver más resultados",
                             onExpand=if(expandable)({toggleMoreResults()}) else null)
                     }

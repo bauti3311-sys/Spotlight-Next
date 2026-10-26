@@ -16,9 +16,9 @@ object GlassTokens {
     val actionPanelMaxHeight=560.dp
     val actionSurface=Color(0xFF19191D);val actionSelected=Color(0xFF333338)
     val indigo=Color(0xFF7275E8);val tertiary=Color(0xFF777B8D)
-    val windowRadius=16.dp;val searchHeight=52.dp;val listInset=12.dp
+    val windowRadius=22.dp;val searchHeight=56.dp;val listInset=10.dp
     val rowRadius=11.dp;val rowMinimum=42.dp;val glyph=20.dp
-    val searchText=18.sp;val compactSearchText=18.sp
+    val searchText=21.sp;val compactSearchText=18.sp
     val resultText=14.sp;val secondaryText=12.5.sp;val metadataText=11.sp
     val graphite=Color(0xFF1C1C21);val paper=Color(0xFFFAFAFC)
     val darkInk=Color(0xFFF5F5F8);val lightInk=Color(0xFF18181B)
@@ -39,7 +39,7 @@ object GlassTokens {
         // let another window's text compete with results and editable fields.
         val alpha=if(legibleBackdrop && c.preset=="raycast")1f
             else if(legibleBackdrop)maxOf(.96f,opacity(c)) else opacity(c)
-        return if(dark && c.preset!="glass") listOf(Color(0xFF1B1B20).copy(alpha=alpha),Color(0xFF17171C).copy(alpha=alpha))
+        return if(dark && c.preset!="glass") listOf(Color(0xFF222222).copy(alpha=alpha),Color(0xFF181818).copy(alpha=alpha))
         else if(dark) listOf(Color(0xFF20212B).copy(alpha=alpha),Color(0xFF171921).copy(alpha=alpha))
         else listOf(Color(0xFFFAFAFC).copy(alpha=alpha),Color(0xFFF1F2F7).copy(alpha=alpha))
     }

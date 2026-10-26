@@ -25,7 +25,8 @@ class ProductEntryPointsTest {
         val app=RuntimeEnvironment.getApplication() as SpotlightApp
         ui.setContent { SpotlightPanel(app,AppConfig(files=false,animations=false,pins=setOf("pdf de ayer")),{},initialQuery="2+2") }
         ui.onNodeWithContentDescription("Opciones de búsqueda").assertDoesNotExist()
-        ui.onNodeWithContentDescription("Abrir Guardados").assertIsDisplayed().performClick()
+        ui.onNodeWithContentDescription("Opciones de Spotlight").assertIsDisplayed().performClick()
+        ui.onNodeWithText("Abrir Guardados").assertIsDisplayed().performClick()
         ui.onNodeWithText("pdf de ayer").assertExists()
         ui.onNode(hasSetTextAction() and hasText("2+2")).assertExists()
         ui.onNodeWithContentDescription("Opciones de Spotlight").performClick()
@@ -42,7 +43,8 @@ class ProductEntryPointsTest {
         ui.onNodeWithTag("home-suggestion-hint").assertIsDisplayed()
         assertTrue(ui.onNodeWithTag("home-suggestion-hint").getUnclippedBoundsInRoot().top >=
             ui.onNodeWithTag("spotlight-bar").getUnclippedBoundsInRoot().bottom)
-        ui.onNodeWithContentDescription("Abrir Guardados").performClick()
+        ui.onNodeWithContentDescription("Opciones de Spotlight").performClick()
+        ui.onNodeWithText("Abrir Guardados").performClick()
         ui.onNodeWithTag("home-suggestion-hint").assertDoesNotExist()
         ui.onNodeWithText("Volver").performClick()
         ui.waitUntil(15000) { runCatching { ui.onNodeWithTag("home-suggestion-hint").assertIsDisplayed() }.isSuccess }
@@ -74,3 +76,4 @@ class ProductEntryPointsTest {
         ui.onNodeWithText("Guardar texto frecuente").assertDoesNotExist()
     }
 }
+

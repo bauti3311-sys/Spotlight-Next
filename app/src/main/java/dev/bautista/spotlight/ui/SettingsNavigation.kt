@@ -104,23 +104,26 @@ object SettingsGroups {
  }
  val category:@Composable (String)->Unit={group->
   Row(Modifier.fillMaxWidth().testTag("settings-area:$group").selectable(selected==group,onClick={query="";onSelect(group);chooser=false;generalDetails=true},role=Role.Tab)
-   .background(if(selected==group)colors.primary.copy(alpha=.12f) else Color.Transparent,RoundedCornerShape(9.dp))
+   .background(if(selected==group)colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(9.dp))
    .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-   IosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.primary)
-   Text(SettingsGroups.label(group),Modifier.weight(1f),fontSize=13.sp,fontWeight=if(selected==group)FontWeight.Medium else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
+   IosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.onSurfaceVariant)
+   Text(group,Modifier.weight(1f),fontSize=13.sp,fontWeight=if(selected==group)FontWeight.Medium else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
   }
  }
  CompositionLocalProvider(LocalSettingsQuery provides query) {
   BoxWithConstraints(modifier.fillMaxWidth().onPreviewKeyEvent{it.type==KeyEventType.KeyDown && it.key==Key.Escape && back()}) {
    val wide=maxWidth>=760.dp
+   val settingsSearch:@Composable ()->Unit={
+      OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("settings-search"),singleLine=true,
+       textStyle=MaterialTheme.typography.bodySmall,placeholder={Text("Buscar ajustes…",fontSize=12.sp)},leadingIcon={IosCommandIcon(CommandIcons.Search,null,Modifier.size(17.dp))},
+       trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){IosCommandIcon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(10.dp),
+       colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=colors.onSurface.copy(alpha=.10f),unfocusedContainerColor=colors.onSurface.copy(alpha=.025f)))
+   }
    val detail:@Composable ()->Unit={
      Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(10.dp)) {
       Text(if(query.isNotBlank())"Resultados de ajustes" else if(!generalDetails && selected=="General")"Configuración guiada" else SettingsGroups.label(selected),fontSize=20.sp,fontWeight=FontWeight.SemiBold)
       Text(if(query.isNotBlank())"Controles disponibles en todas las secciones." else SettingsGroups.description(selected),fontSize=12.sp,color=colors.onSurfaceVariant)
-      OutlinedTextField(query,{query=it.take(100)},modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("settings-search"),singleLine=true,
-       textStyle=MaterialTheme.typography.bodySmall,placeholder={Text("Buscar en todos los ajustes",fontSize=12.sp)},leadingIcon={IosCommandIcon(CommandIcons.Search,null,Modifier.size(17.dp))},
-       trailingIcon={if(query.isNotEmpty())IconButton(onClick={query=""}){IosCommandIcon(CommandIcons.Close,"Limpiar búsqueda",Modifier.size(18.dp))}},shape=RoundedCornerShape(10.dp),
-       colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=colors.onSurface.copy(alpha=.10f),unfocusedContainerColor=colors.onSurface.copy(alpha=.025f)))
+      if(!wide)settingsSearch()
       HorizontalDivider(Modifier.padding(vertical=4.dp),color=colors.onSurface.copy(alpha=.10f))
       holder.SaveableStateProvider(if(query.isBlank())selected else "search") {
        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("settings-details"),verticalArrangement=Arrangement.spacedBy(10.dp)) {
@@ -135,11 +138,10 @@ object SettingsGroups {
      }
    }
    if(wide)Row(Modifier.fillMaxSize()) {
-    Column(Modifier.width(224.dp).fillMaxHeight().background(colors.onSurface.copy(alpha=.015f)).padding(12.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
-     brand();Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(4.dp)){groups.forEach{category(it)}}
+    Column(Modifier.width(248.dp).fillMaxHeight().padding(8.dp).background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(16.dp)).border(1.dp,colors.onSurface.copy(alpha=.08f),RoundedCornerShape(16.dp)).padding(10.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+     settingsSearch();brand();Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(4.dp)){groups.forEach{category(it)}}
      onInvoke?.let{TextButton(onClick=it,modifier=Modifier.fillMaxWidth()){Text("Abrir Spotlight",fontSize=12.sp)}}
     }
-    VerticalDivider(color=colors.onSurface.copy(alpha=.10f))
     Box(Modifier.weight(1f).fillMaxHeight().padding(horizontal=28.dp,vertical=24.dp)){detail()}
    } else Column(Modifier.fillMaxSize().padding(16.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
     Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Box(Modifier.weight(1f)){brand()};onInvoke?.let{IconButton(onClick=it){IosCommandIcon(CommandIcons.Search,"Abrir Spotlight",Modifier.size(20.dp))}}}
@@ -174,7 +176,8 @@ object SettingsGroups {
 
 @Composable fun SettingsGroupSurface(content:@Composable ColumnScope.()->Unit) {
  Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(12.dp),color=MaterialTheme.colorScheme.surfaceVariant.copy(alpha=.30f),
-  border=BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.075f)),tonalElevation=0.dp) {
+  tonalElevation=0.dp) {
   Column(Modifier.padding(horizontal=14.dp,vertical=10.dp),verticalArrangement=Arrangement.spacedBy(10.dp),content=content)
  }
 }
+
