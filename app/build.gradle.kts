@@ -4,6 +4,12 @@ val releaseIdentity = Properties().apply {
     rootProject.file("release.properties").inputStream().use { load(it) }
 }
 
+// Opt-in diagnostic profile only; standard Preview/Release builds keep R8 enabled.
+val optimizeRaycastPreview = providers.gradleProperty("spotlight.preview.optimize").orElse("true").get().let {
+ require(it == "true" || it == "false") { "spotlight.preview.optimize must be true or false" }
+ it == "true"
+}
+
 android {
  namespace = "dev.bautista.spotlight"
  compileSdk = 35
@@ -34,12 +40,12 @@ android {
   create("raycastPreview") {
    initWith(getByName("debug"))
    isDebuggable = false
-   isMinifyEnabled = true
-   isShrinkResources = true
+   isMinifyEnabled = optimizeRaycastPreview
+   isShrinkResources = optimizeRaycastPreview
    proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
    ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
    applicationIdSuffix = ".raycastpreview"
-   versionNameSuffix = "-raycast-preview"
+   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview" else "-raycast-preview-experimental"
    // Never substitute a generated debug certificate for the historical Preview identity.
    // CI/tests can configure the project without a key; that case yields unsigned output.
    signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null

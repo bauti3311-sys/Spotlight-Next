@@ -688,3 +688,8 @@ UI `129541fde87919cc8661ba8dc5dedb223f7f4d94`: barra integrada, resultados con m
 ### Preview54 — reserva de acción del inspector fijado
 
 En revisión final se conservó el abridor explícito de una app fijada cuando la selección pasa a otra aplicación, sin duplicar el principal normal. Fuente probada `bbef6f31ce85cbe703438fed0f11f3db3e07a268`:12/12 correctos(2m23),67 casos únicos consolidados0 fallos/errores/omitidos. Captura de búsqueda idéntica por hash; no repetir rondas aprobadas. Se canceló solo el build propio de a6f7d0f4 durante lint(exit143), antes de generar o entregar APK; log conservado. Reanudar lint/assemble desde este nuevo commit congelado, manteniendo versionCode54 aún no distribuida, paquete y certificado históricos. Sin Actions/main/force ni nuevas capacidades.
+
+
+### Preview54 — perfil experimental explícito por bloqueo R8
+
+Dos intentos de la fuente0989f3c3 perdieron el daemon en minifyRaycastPreviewWithR8 (heap2GiB y3GiB/in-process). Kotlin/Java compilaron; lint0 errores/16 advertencias,67 UI únicas conservadas. Sin causa de memoria confirmada ni falta de disco registrada. Se añade solo para Raycast Preview `-Pspotlight.preview.optimize=false`: sin R8/shrink, sufijo experimental, mismo paquete/versionCode54/certificado y no debuggable. El perfil normal y Release conservan R8 activado. Mantener los fallos y declarar el perfil; no presentarlo como build R8 aprobado. Los fuentes app/src permanecen idénticos al checkpoint probado bbef6f31.

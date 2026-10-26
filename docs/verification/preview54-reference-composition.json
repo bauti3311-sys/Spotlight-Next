@@ -87,5 +87,32 @@
     "exit_code": 143,
     "phase": "lintAnalyzeRaycastPreview",
     "reason": "Own build cancelled after detecting a lost pinned-app opener during final review; no APK or release published."
+  },
+  "r8_status": {
+    "status": "BLOCKED",
+    "attempts": [
+      {
+        "source": "0989f3c35cb4ed12204956c9dc1ea396431fb58a",
+        "heap_mb": 2048,
+        "result": "Gradle daemon disappeared during minifyRaycastPreviewWithR8, after lint passed"
+      },
+      {
+        "source": "0989f3c35cb4ed12204956c9dc1ea396431fb58a",
+        "heap_mb": 3072,
+        "kotlin_strategy": "in-process",
+        "result": "Gradle daemon disappeared during minifyRaycastPreviewWithR8"
+      }
+    ],
+    "root_cause_verified": false
+  },
+  "experimental_build_profile": {
+    "property": "spotlight.preview.optimize=false",
+    "r8_enabled": false,
+    "resource_shrinking": false,
+    "debuggable": false,
+    "standard_profile_unchanged": true,
+    "version_code": 54,
+    "version_name_suffix": "-raycast-preview-experimental",
+    "app_sources_unchanged_from": "bbef6f31ce85cbe703438fed0f11f3db3e07a268"
   }
 }
