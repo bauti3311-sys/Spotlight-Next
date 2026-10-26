@@ -1,8 +1,8 @@
 {
   "purpose": "Native composition based on the five user-supplied Raycast screenshots",
-  "ui_source": "129541fde87919cc8661ba8dc5dedb223f7f4d94",
+  "ui_source": "bbef6f31ce85cbe703438fed0f11f3db3e07a268",
   "tests": {
-    "unique": 66,
+    "unique": 67,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -28,10 +28,17 @@
         "failures": 0,
         "duration": "1m44s",
         "scope": "Final visual geometry, settings, input, large text, legibility"
+      },
+      {
+        "source": "bbef6f31ce85cbe703438fed0f11f3db3e07a268",
+        "tests": 12,
+        "failures": 0,
+        "duration": "2m23s",
+        "scope": "Pinned app opener retains original component exactly once after selecting Gmail; normal window/saved routes repeated"
       }
     ],
     "duplicates_counted": false,
-    "consolidation": "Latest XML replaces earlier results by class. Not a single run of all66."
+    "consolidation": "Latest XML replaces earlier results by class.67 unique cases across cohorts; not a single run of all67."
   },
   "captures": {
     "renderer": "API33 Robolectric NATIVE",
@@ -46,7 +53,9 @@
       "before_ui_source": "543dc630dca70f6d9ad3ced8bbd96a58d8298d1b",
       "before_blob": "4ced8e68ee5fcd834fb6b4e695d5223da734275a",
       "after_blob": "ccd98a0475b1799694eda6e263d729c3e3d73e3d",
-      "fixtures": "Controlled Android packages/icons; no real Spotify account"
+      "fixtures": "Controlled Android packages/icons; no real Spotify account",
+      "after_ui_source": "bbef6f31ce85cbe703438fed0f11f3db3e07a268",
+      "pixel_hash_unchanged_after_pinned_fix": true
     },
     "settings": {
       "scene": "Appearance, actual MainActivity",
@@ -72,5 +81,11 @@
   "whatsapp_real_message_sent": false,
   "unofficial_linked_device_provider": "disabled",
   "github_actions_used": false,
-  "matrix": "9/25/6 unchanged"
+  "matrix": "9/25/6 unchanged",
+  "cancelled_build": {
+    "source": "a6f7d0f4583b10893827cf58205b15060ba48a27",
+    "exit_code": 143,
+    "phase": "lintAnalyzeRaycastPreview",
+    "reason": "Own build cancelled after detecting a lost pinned-app opener during final review; no APK or release published."
+  }
 }
