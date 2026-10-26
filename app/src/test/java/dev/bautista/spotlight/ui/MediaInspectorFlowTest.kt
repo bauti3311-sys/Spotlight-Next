@@ -69,7 +69,9 @@ class MediaInspectorFlowTest {
     }
     @Test @Config(qualifiers="w1280dp-h1100dp") fun tallViewportShowsBottomActionsWithoutScrolling() {
         show(availableHeight=1000f)
-        ui.onNodeWithText("Ver acciones contextuales").assertIsDisplayed()
+        ui.onNodeWithText("Ver acciones contextuales").assertDoesNotExist()
+        ui.onNodeWithTag("inspector-utility-actions").assertIsDisplayed()
+        ui.onNodeWithTag("command-dock-actions").assertIsDisplayed()
         ui.onNodeWithText("com.spotify.music").assertIsDisplayed()
         val bottom=ui.onNodeWithText("com.spotify.music").getUnclippedBoundsInRoot().bottom
         val inspector=ui.onNodeWithTag("context-inspector").getUnclippedBoundsInRoot()
