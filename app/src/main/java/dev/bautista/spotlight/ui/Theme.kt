@@ -76,21 +76,22 @@ fun SpotlightTheme(theme: String = "auto", config: Config = Config(theme=theme),
         else->base
     }.let{p->p.copy(primary=accent,onPrimary=if(accent.luminance()>.179f)Color(0xFF12151B) else Color.White,primaryContainer=lerp(p.surface,accent,if(dark).18f else .10f),onPrimaryContainer=p.onSurface,secondary=accent,onSecondary=if(accent.luminance()>.179f)Color(0xFF12151B) else Color.White,secondaryContainer=lerp(p.surface,accent,if(dark).12f else .08f),onSecondaryContainer=p.onSurface,tertiary=accent,onTertiary=p.background,tertiaryContainer=lerp(p.surface,accent,.08f),onTertiaryContainer=p.onSurface,outline=p.onSurface.copy(alpha=.24f),outlineVariant=p.onSurface.copy(alpha=.10f),surfaceTint=accent,surfaceContainerLowest=p.background,surfaceContainerLow=lerp(p.surface,p.background,.35f),surfaceContainer=p.surface,surfaceContainerHigh=lerp(p.surface,p.surfaceVariant,.5f),surfaceContainerHighest=p.surfaceVariant)}
     val font=when(config.typeface){"system"->FontFamily.Default;"mono"->FontFamily.Monospace;else->Inter}
-    val typography=SpotlightTypography.copy(displayLarge=SpotlightTypography.displayLarge.copy(fontFamily=font,fontSize=SpotlightTypography.displayLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-displayMedium=SpotlightTypography.displayMedium.copy(fontFamily=font,fontSize=SpotlightTypography.displayMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-displaySmall=SpotlightTypography.displaySmall.copy(fontFamily=font,fontSize=SpotlightTypography.displaySmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-headlineLarge=SpotlightTypography.headlineLarge.copy(fontFamily=font,fontSize=SpotlightTypography.headlineLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-headlineMedium=SpotlightTypography.headlineMedium.copy(fontFamily=font,fontSize=SpotlightTypography.headlineMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-headlineSmall=SpotlightTypography.headlineSmall.copy(fontFamily=font,fontSize=SpotlightTypography.headlineSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-titleLarge=SpotlightTypography.titleLarge.copy(fontFamily=font,fontSize=SpotlightTypography.titleLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-titleMedium=SpotlightTypography.titleMedium.copy(fontFamily=font,fontSize=SpotlightTypography.titleMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-titleSmall=SpotlightTypography.titleSmall.copy(fontFamily=font,fontSize=SpotlightTypography.titleSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-bodyLarge=SpotlightTypography.bodyLarge.copy(fontFamily=font,fontSize=SpotlightTypography.bodyLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-bodyMedium=SpotlightTypography.bodyMedium.copy(fontFamily=font,fontSize=SpotlightTypography.bodyMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-bodySmall=SpotlightTypography.bodySmall.copy(fontFamily=font,fontSize=SpotlightTypography.bodySmall.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-labelLarge=SpotlightTypography.labelLarge.copy(fontFamily=font,fontSize=SpotlightTypography.labelLarge.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=SpotlightTypography.labelMedium.fontSize*config.textScale.coerceIn(.9f,1.3f)),
-labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*config.textScale.coerceIn(.9f,1.3f)))
+    val scale=GlassTokens.textScale(config)
+    val typography=SpotlightTypography.copy(displayLarge=SpotlightTypography.displayLarge.copy(fontFamily=font,fontSize=SpotlightTypography.displayLarge.fontSize*scale),
+displayMedium=SpotlightTypography.displayMedium.copy(fontFamily=font,fontSize=SpotlightTypography.displayMedium.fontSize*scale),
+displaySmall=SpotlightTypography.displaySmall.copy(fontFamily=font,fontSize=SpotlightTypography.displaySmall.fontSize*scale),
+headlineLarge=SpotlightTypography.headlineLarge.copy(fontFamily=font,fontSize=SpotlightTypography.headlineLarge.fontSize*scale),
+headlineMedium=SpotlightTypography.headlineMedium.copy(fontFamily=font,fontSize=SpotlightTypography.headlineMedium.fontSize*scale),
+headlineSmall=SpotlightTypography.headlineSmall.copy(fontFamily=font,fontSize=SpotlightTypography.headlineSmall.fontSize*scale),
+titleLarge=SpotlightTypography.titleLarge.copy(fontFamily=font,fontSize=SpotlightTypography.titleLarge.fontSize*scale),
+titleMedium=SpotlightTypography.titleMedium.copy(fontFamily=font,fontSize=SpotlightTypography.titleMedium.fontSize*scale),
+titleSmall=SpotlightTypography.titleSmall.copy(fontFamily=font,fontSize=SpotlightTypography.titleSmall.fontSize*scale),
+bodyLarge=SpotlightTypography.bodyLarge.copy(fontFamily=font,fontSize=SpotlightTypography.bodyLarge.fontSize*scale),
+bodyMedium=SpotlightTypography.bodyMedium.copy(fontFamily=font,fontSize=SpotlightTypography.bodyMedium.fontSize*scale),
+bodySmall=SpotlightTypography.bodySmall.copy(fontFamily=font,fontSize=SpotlightTypography.bodySmall.fontSize*scale),
+labelLarge=SpotlightTypography.labelLarge.copy(fontFamily=font,fontSize=SpotlightTypography.labelLarge.fontSize*scale),
+labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=SpotlightTypography.labelMedium.fontSize*scale),
+labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*scale))
     val tone=when(config.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->palette.surface}
     val toned=palette.copy(onSurfaceVariant=GlassTokens.secondary(config,dark),surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
     MaterialTheme(colorScheme = toned, typography=typography) {

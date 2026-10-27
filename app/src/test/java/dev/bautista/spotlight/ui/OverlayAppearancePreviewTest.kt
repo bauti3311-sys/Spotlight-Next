@@ -52,18 +52,18 @@ class OverlayAppearancePreviewTest {
         show(AppConfig(width=0,landscapeWidth=460,animations=false));check(460,"horizontal específico","phone-horizontal")
         ui.onNodeWithText("Calculadora · resultado local").performScrollTo().assertIsDisplayed()
     }
-    @Test fun widthDraftUpdatesPreviewAndRestoresWithoutSaving() {
-        val saved=AppConfig(width=820,landscapeWidth=460,manualWidth=820,animations=false)
+    @Test fun widthDraftUpdatesPreviewAndRestoresOnUndo() {
+        var saved by mutableStateOf(AppConfig(width=820,landscapeWidth=460,manualWidth=820,animations=false))
         ui.setContent{SpotlightTheme("dark",saved){Surface{
             Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp)){
-                GlassAppearance(saved){fail("Previewing must not save preferences")}
+                GlassAppearance(saved){saved=it}
             }
         }}}
         ui.onNodeWithTag("appearance-preview-window").performScrollTo().assertWidthIsEqualTo(460.dp)
         ui.onNodeWithTag("window-width-slider").performScrollTo().performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress){it(.7f)}
         val expected=dev.bautista.spotlight.data.WindowSizePolicy.width(1280f,.7f).dp
         ui.onNodeWithTag("appearance-preview-window").performScrollTo().assertWidthIsEqualTo(expected)
-        ui.onNodeWithText("Descartar cambios").performScrollTo().performClick()
+        ui.onNodeWithText("Deshacer cambios de esta visita").performScrollTo().performClick()
         ui.onNodeWithTag("appearance-preview-window").performScrollTo().assertWidthIsEqualTo(460.dp)
         ui.runOnIdle{assertEquals(820,saved.width);assertEquals(460,saved.landscapeWidth);assertEquals(820,saved.manualWidth);assertEquals(-1f,saved.windowScale)}
     }
@@ -71,28 +71,71 @@ class OverlayAppearancePreviewTest {
         val c=AppConfig(width=0,landscapeWidth=460,density="auto",animations=false)
         ui.setContent{SpotlightTheme("dark",c){OverlayDensitySettings(c){fail("Rendering must not save preferences")}}}
         ui.onNodeWithText("Actual: automático según el tamaño de pantalla.").assertIsDisplayed()
-        listOf("Compacta","Equilibrada","Espaciosa").forEach{ui.onNodeWithText(it).assertIsNotSelected()}
+        ui.onNodeWithTag("text-scale-value").assertTextEquals("100%")
+        ui.onNodeWithTag("ui-density-value").assertTextEquals("100%")
     }
-    @Test fun densityChangesRowsButNeverWindowWidthOrSavedDraft() {
+    @Test fun textScaleAndDensitySlidersSnapInFivePercentStepsAndResetWithoutChangingWindowWidth() {
         var saved by mutableStateOf(AppConfig(width=820,landscapeWidth=460,manualWidth=820,pins=setOf("apuntes"),animations=false,density="compact"))
         lateinit var pageScroll:androidx.compose.foundation.ScrollState
         ui.setContent{SpotlightTheme("dark",saved){Surface{
             Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState().also{pageScroll=it}).padding(16.dp)){GlassAppearance(saved){saved=it}}
         }}}
-        // Compare the whole selectable row, not text size (density only affects padding).
         fun selectedRowHeight():Float {ui.onNodeWithTag("appearance-preview-viewport").performScrollTo();ui.onNodeWithText("2 + 2 = 4").assertIsDisplayed();val bounds=ui.onNode(isSelected() and hasText("2 + 2 = 4")).getUnclippedBoundsInRoot();return bounds.bottom.value-bounds.top.value}
         val compact=selectedRowHeight()
-        // Scroll the outer card first: the chips have their own horizontal scroll parent.
         ui.onNodeWithTag("density-settings").performScrollTo()
-        ui.onNodeWithText("Espaciosa").performClick().assertIsSelected()
-        ui.runOnIdle{assertEquals("compact",saved.density);assertEquals(820,saved.width);assertEquals(460,saved.landscapeWidth)}
+        ui.onNodeWithTag("ui-density-value").assertTextEquals("85%")
+        ui.onNodeWithTag("text-scale-slider").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress){it(1.13f)}
+        ui.onNodeWithTag("ui-density-slider").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress){it(1.14f)}
+        ui.runOnIdle{
+            assertEquals(1.15f,saved.textScale,.001f)
+            assertEquals(1.15f,saved.uiDensityScale,.001f)
+            assertEquals("spacious",saved.density)
+            assertEquals(820,saved.width)
+            assertEquals(460,saved.landscapeWidth)
+            assertEquals(setOf("apuntes"),saved.pins)
+        }
         val spacious=selectedRowHeight()
         ui.runOnIdle{pageScroll.dispatchRawDelta(-pageScroll.value.toFloat())}
         ui.waitForIdle()
         ui.runOnIdle{capture091(ui.activity,"f12-density-draft-spacious")}
         assertTrue("Spacious rows must add vertical room: $compact -> $spacious",spacious>compact)
         ui.onNodeWithTag("appearance-preview-window").assertWidthIsEqualTo(460.dp)
-        ui.onNodeWithText("Aplicar apariencia").performScrollTo().performClick()
-        ui.runOnIdle{assertEquals("spacious",saved.density);assertEquals(820,saved.width);assertEquals(820,saved.manualWidth);assertEquals(460,saved.landscapeWidth);assertEquals(setOf("apuntes"),saved.pins)}
+        ui.onNodeWithTag("reset-scale-density").performScrollTo().performClick()
+        ui.runOnIdle{
+            assertEquals(1f,saved.textScale,.001f)
+            assertEquals(1f,saved.uiDensityScale,.001f)
+            assertEquals("balanced",saved.density)
+        }
+    }
+    @Test fun scales85And100And115RespectAndroidFontScaleTouchTargetsAndAvoidClipping() {
+        var config by mutableStateOf(AppConfig(theme="dark",preset="raycast",textScale=.85f,uiDensityScale=.85f,density="compact",animations=false))
+        var fontScale by mutableStateOf(1f)
+        ui.setContent {
+            val baseDensity=androidx.compose.ui.platform.LocalDensity.current
+            CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(baseDensity.density,fontScale)) {
+                SpotlightTheme("dark",config) {
+                    Surface(Modifier.width(760.dp)) {
+                        Column(Modifier.padding(12.dp)) {
+                            OverlayAppearancePreview(config,simple=true)
+                        }
+                    }
+                }
+            }
+        }
+        listOf(.85f to .85f, 1f to 1f, 1.15f to 1.15f, .85f to 1.15f, 1.15f to .85f).forEach { (tScale, dScale) ->
+            for (sysFont in listOf(1f, 1.25f)) {
+                ui.runOnIdle {
+                    fontScale=sysFont
+                    config=config.copy(textScale=tScale,uiDensityScale=dScale,density=GlassTokens.densityKeyForScale(dScale))
+                }
+                ui.waitForIdle()
+                val windowBounds=ui.onNodeWithTag("appearance-preview-window").getUnclippedBoundsInRoot()
+                val row0=ui.onNodeWithTag("result:preview:calculator").assertIsDisplayed().getUnclippedBoundsInRoot()
+                val row1=ui.onNodeWithTag("result:preview:note").assertIsDisplayed().getUnclippedBoundsInRoot()
+                assertTrue("Row 0 touch target must be >= 48dp at text=$tScale density=$dScale fontScale=$sysFont", (row0.bottom-row0.top) >= 48.dp)
+                assertTrue("Row 1 touch target must be >= 48dp at text=$tScale density=$dScale fontScale=$sysFont", (row1.bottom-row1.top) >= 48.dp)
+                assertTrue("Row 0 must not overflow preview window horizontally", row0.left >= windowBounds.left && row0.right <= windowBounds.right)
+            }
+        }
     }
 }

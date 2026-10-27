@@ -129,7 +129,7 @@ class GateWorkflowTest(unittest.TestCase):
         self.assertIn('git merge-base --is-ancestor "$SOURCE_SHA" "refs/remotes/origin/$target_branch"', preview_text)
         self.assertIn('signing/spotlight-debug.keystore', preview_text)
         self.assertIn('-Pspotlight.preview.optimize=false', preview_text)
-        self.assertIn("package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='55' versionName='2.0.1-raycast-preview-experimental'", preview_text)
+        self.assertIn("package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='56' versionName='2.0.1-raycast-preview-experimental'", preview_text)
         self.assertIn('885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba', preview_text)
         self.assertIn('zipalign" -c -P 16 -v 4 "$apk"', preview_text)
         self.assertIn('p_align < 16384', preview_text)

@@ -48,17 +48,15 @@ import kotlin.math.roundToInt
             RoleOpacityControl("ActionPanel",GlassTokens.actionOpacity(draft),"action"){edit(draft.copy(actionOpacity=it))}
             RoleOpacityControl("Ajustes",GlassTokens.settingsOpacity(draft),"settings"){edit(draft.copy(settingsOpacity=it))}
             TextButton(onClick={edit(draft.copy(opacity=if(draft.preset=="glass").84f else .98f,actionOpacity=if(draft.preset=="glass").92f else 1f,settingsOpacity=if(draft.preset=="glass").94f else .99f))}){Text("Restablecer opacidades del material")}
-            var preview by remember{mutableStateOf(false)}
-            TextButton(onClick={preview=!preview}){Text(if(preview)"Ocultar vista previa" else "Vista previa en vivo")}
-            // The complete settings surface updates immediately; this optional sample uses the same renderer.
-            if(preview)SpotlightTheme(draft.theme,draft){OverlayAppearancePreview(draft,simple=true)}
+            // Compact live preview stays visible permanently so scale, density, width and opacity can be verified immediately.
+            SpotlightTheme(draft.theme,draft){OverlayAppearancePreview(draft,simple=true)}
         }
+        OverlayDensitySettings(draft,simple=true){edit(it)}
         WindowSizeSettings(draft){edit(it)}
         Text("Acento",style=MaterialTheme.typography.titleSmall)
         SettingsOptions { listOf("blue" to "Azul","purple" to "Lila","rose" to "Rosa","green" to "Verde","graphite" to "Neutro").forEach { (key,label)->
             FilterChip(draft.accent==key,{edit(draft.copy(accent=key))},label={Text(label)})
         } }
-        OverlayDensitySettings(draft,simple=true){edit(it)}
         Row(Modifier.fillMaxWidth()) { Column(Modifier.weight(1f)) {
             Text("Reducir movimiento",style=MaterialTheme.typography.titleSmall)
             Text("También respeta la preferencia del sistema.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
@@ -66,7 +64,7 @@ import kotlin.math.roundToInt
         Text("La altura se adapta al contenido, al teclado y al espacio disponible.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         Text("Los cambios se guardan y se muestran al instante.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         TextButton(onClick={edit(AppearanceEdits.merge(c,opening))}){Text("Deshacer cambios de esta visita")}
-        ConfirmedSettingsButton("Restablecer apariencia","Restablece tema, opacidad, acento, densidad, movimiento y ancho. Tus datos y otras preferencias se conservan.") { edit(AppearanceEdits.merge(c,Config(windowScale=.5f))) }
+        ConfirmedSettingsButton("Restablecer apariencia","Restablece tema, opacidad, acento, escala, densidad, movimiento y ancho. Tus datos y otras preferencias se conservan.") { edit(AppearanceEdits.merge(c,Config(windowScale=.5f,textScale=1f,uiDensityScale=1f,density="balanced"))) }
     }
 }
 

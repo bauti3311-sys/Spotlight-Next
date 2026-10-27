@@ -10,15 +10,39 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import dev.bautista.spotlight.data.Config
+import kotlin.math.roundToInt
 
 object GlassTokens {
     val small=8.dp;val gap=12.dp;val inset=18.dp;val hit=48.dp
+    val contentAxis=22.dp
+    const val minScale=.85f
+    const val maxScale=1.15f
+    const val scaleStep=.05f
+    fun snapScale(raw:Float):Float=(((raw.coerceIn(minScale,maxScale)/scaleStep).roundToInt()*5).coerceIn(85,115))/100f
+    fun textScale(c:Config):Float=c.textScale.takeIf{it.isFinite()}?.coerceIn(minScale,1.3f) ?: 1f
+    fun uiTextScale(c:Config):Float=snapScale(textScale(c))
+    fun densityScale(c:Config):Float=c.uiDensityScale.takeIf{it.isFinite() && it in minScale..maxScale}?.let(::snapScale)
+        ?: when(c.density){"compact"->.85f;"spacious"->1.15f;else->1f}
+    fun densityKeyForScale(scale:Float):String=when{
+        scale<=.90f->"compact"
+        scale>=1.10f->"spacious"
+        else->"balanced"
+    }
+    fun scaledSp(base:TextUnit,c:Config,minSp:Float=10f):TextUnit=(base.value*textScale(c)).coerceAtLeast(minSp).sp
+    fun listHorizontalInset(c:Config)=(10f*densityScale(c)).dp
+    fun rowHorizontalPadding(c:Config)=(12f*densityScale(c)).dp
+    fun rowVerticalPadding(c:Config,inline:Boolean=true)=((if(inline)4f else 6f)*densityScale(c)).dp
+    fun appIconSize(c:Config)=(26f*densityScale(c)).coerceIn(22f,31f).dp
+    fun glyphSize(c:Config)=(20f*densityScale(c)).coerceIn(17f,24f).dp
+    fun iconSlotWidth(c:Config)=maxOf(appIconSize(c),glyphSize(c))
+    fun inspectorPadding(c:Config)=(16f*densityScale(c)).dp
+    fun inspectorGap(c:Config)=(8f*densityScale(c)).dp
     val actionPanelMaxHeight=560.dp
     val actionSurface=Color(0xFF19191D);val actionSelected=Color(0xFF333338)
     val indigo=Color(0xFF7275E8);val tertiary=Color(0xFF777B8D)
     val windowRadius=22.dp;val searchHeight=56.dp;val listInset=10.dp
-    val rowRadius=11.dp;val rowMinimum=42.dp;val glyph=20.dp
-    val searchText=21.sp;val compactSearchText=18.sp
+    val rowRadius=10.dp;val rowMinimum=42.dp;val glyph=20.dp
+    val searchText=20.sp;val compactSearchText=18.sp
     val resultText=14.sp;val secondaryText=12.5.sp;val metadataText=11.sp
     val graphite=Color(0xFF1C1C21);val paper=Color(0xFFFAFAFC)
     val darkInk=Color(0xFFF5F5F8);val lightInk=Color(0xFF18181B)
@@ -27,10 +51,13 @@ object GlassTokens {
     @Composable fun hover()=MaterialTheme.colorScheme.onSurface.copy(alpha=.04f)
     const val glyphStroke=1.5f
     const val selectionMs=90
-    fun rowHeight(c:Config)=when(c.density){"compact"->36.dp;"spacious"->48.dp;else->42.dp}
+    fun rowHeight(c:Config):Dp {
+        val d=densityScale(c)
+        return if(d>1f)(48f*d).dp else (42f*d).dp
+    }
     // 44dp visual rhythm, with at least 48dp allocated to each accessible touch target.
     fun resultRowHeight(c:Config)=maxOf(hit,rowHeight(c))
-    fun rowText(c:Config)=when(c.density){"compact"->13.sp;"spacious"->15.sp;else->14.sp}
+    fun rowText(c:Config)=14.sp
     const val minimumOpacity=.70f
     const val defaultOpacity=.98f
     fun opacity(c:Config)=c.opacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: defaultOpacity

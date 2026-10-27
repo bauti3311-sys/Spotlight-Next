@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.*
 
 /** Material's slider keeps native gestures, keyboard, range and accessibility semantics. */
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable fun GlassSlider(value:Float,onValueChange:(Float)->Unit,modifier:Modifier=Modifier,valueRange:ClosedFloatingPointRange<Float> = 0f..1f) {
+@Composable fun GlassSlider(value:Float,onValueChange:(Float)->Unit,modifier:Modifier=Modifier,valueRange:ClosedFloatingPointRange<Float> = 0f..1f,steps:Int=0) {
  val colors=MaterialTheme.colorScheme
  val rtl=LocalLayoutDirection.current==LayoutDirection.Rtl
- Slider(value=value,onValueChange=onValueChange,modifier=modifier.heightIn(min=48.dp),valueRange=valueRange,
+ Slider(value=value,onValueChange=onValueChange,modifier=modifier.heightIn(min=48.dp),valueRange=valueRange,steps=steps,
   thumb={Box(Modifier.size(18.dp).background(Color.White,CircleShape).border(1.dp,Color.Black.copy(alpha=.09f),CircleShape))},
   track={state->Canvas(Modifier.fillMaxWidth().height(4.dp)) {
    val fraction=((state.value-valueRange.start)/(valueRange.endInclusive-valueRange.start)).coerceIn(0f,1f)

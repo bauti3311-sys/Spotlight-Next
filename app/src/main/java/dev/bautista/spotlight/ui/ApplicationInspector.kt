@@ -38,6 +38,8 @@ import kotlinx.coroutines.withContext
     embedded: Boolean = false,
 ) {
     val colors=MaterialTheme.colorScheme
+    val appearance=LocalAppearance.current
+    val d=GlassTokens.densityScale(appearance)
     val context=LocalContext.current
     var version by remember(packageName) { mutableStateOf<String?>(null) }
     var spotifySearch by remember(packageName) { mutableStateOf(false) }
@@ -46,14 +48,14 @@ import kotlinx.coroutines.withContext
             runCatching { context.packageManager.getPackageInfo(pkg,0).versionName }.getOrNull()
         } }
     }
-    Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
-        Row(Modifier.fillMaxWidth().heightIn(min=52.dp),verticalAlignment=Alignment.CenterVertically,
-            horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-            ResultIcon(item,Modifier.size(46.dp))
-            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
-                Text(item.title,Modifier.testTag("inspector-title"),fontSize=17.sp,
+    Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
+        Row(Modifier.fillMaxWidth().heightIn(min=(46f*d).coerceAtLeast(40f).dp),verticalAlignment=Alignment.CenterVertically,
+            horizontalArrangement=Arrangement.spacedBy((12f*d).dp)) {
+            ResultIcon(item,Modifier.size((42f*d).coerceIn(36f,48f).dp))
+            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+                Text(item.title,Modifier.testTag("inspector-title"),fontSize=GlassTokens.scaledSp(16.sp,appearance),
                     fontWeight=FontWeight.SemiBold,maxLines=1,overflow=TextOverflow.Ellipsis)
-                Text(if(playing)"En reproducción" else "Aplicación instalada",fontSize=12.sp,
+                Text(if(playing)"En reproducción" else "Aplicación instalada",fontSize=GlassTokens.scaledSp(12.sp,appearance),
                     color=colors.onSurfaceVariant)
             }
             if(packageName=="com.spotify.music")IconButton(onClick={spotifySearch=!spotifySearch}) {
@@ -71,10 +73,10 @@ import kotlinx.coroutines.withContext
             modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("inspector-primary-action")) {
             Icon(painterResource(R.drawable.inspector_ios_open),null,Modifier.size(18.dp),tint=colors.primary)
             Spacer(Modifier.width(10.dp))
-            Text("Abrir aplicación",Modifier.weight(1f),fontSize=14.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+            Text("Abrir aplicación",Modifier.weight(1f),fontSize=GlassTokens.scaledSp(14.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
-        if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+        if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy((8f*d).dp)) {
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo,modifier=Modifier.weight(1f))
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite,modifier=Modifier.weight(1f))
@@ -95,7 +97,7 @@ import kotlinx.coroutines.withContext
         capabilitiesContent?.invoke()
         if(packageName!=null) {
             HorizontalDivider(color=colors.onSurface.copy(alpha=.10f))
-            Column(Modifier.fillMaxWidth().testTag("inspector-metadata"),verticalArrangement=Arrangement.spacedBy(10.dp)) {
+            Column(Modifier.fillMaxWidth().testTag("inspector-metadata"),verticalArrangement=Arrangement.spacedBy((6f*d).dp)) {
                 version?.let { InspectorProperty("Versión",it) }
                 InspectorProperty("Paquete",packageName)
             }
@@ -105,27 +107,31 @@ import kotlinx.coroutines.withContext
 
 @Composable private fun InspectorActionRow(label:String,icon:Int,hint:String?=null,onClick:()->Unit,modifier:Modifier=Modifier) {
     val colors=MaterialTheme.colorScheme
+    val appearance=LocalAppearance.current
+    val d=GlassTokens.densityScale(appearance)
     Row(modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClick=onClick).padding(horizontal=2.dp),
-        verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
-        Icon(painterResource(icon),null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
-        Text(label,Modifier.weight(1f),fontSize=12.sp,maxLines=2,overflow=TextOverflow.Ellipsis)
+        verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((8f*d).dp)) {
+        Icon(painterResource(icon),null,Modifier.size((18f*d).coerceIn(16f,20f).dp),tint=colors.onSurfaceVariant)
+        Text(label,Modifier.weight(1f),fontSize=GlassTokens.scaledSp(12.sp,appearance),maxLines=2,overflow=TextOverflow.Ellipsis)
         if(hint!=null)InspectorKeyHint(hint)
     }
 }
 
 @Composable private fun InspectorKeyHint(label:String) {
     val colors=MaterialTheme.colorScheme
+    val appearance=LocalAppearance.current
     Text(label,Modifier.background(colors.onSurface.copy(alpha=.07f),RoundedCornerShape(5.dp))
-        .border(.5.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(5.dp)).padding(horizontal=6.dp,vertical=3.dp),
-        fontSize=10.sp,color=LocalContentColor.current.copy(alpha=.8f))
+        .border(.5.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(5.dp)).padding(horizontal=6.dp,vertical=2.dp),
+        fontSize=GlassTokens.scaledSp(10.sp,appearance),color=LocalContentColor.current.copy(alpha=.8f))
 }
 
 @Composable private fun InspectorProperty(label:String,value:String) {
-    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.Top,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-        Text(label,fontSize=11.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
+    val appearance=LocalAppearance.current
+    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.Top,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+        Text(label,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.weight(1f))
         SelectionContainer(Modifier.weight(2f)) {
-            Text(value,Modifier.fillMaxWidth(),fontSize=11.sp,maxLines=2,overflow=TextOverflow.Ellipsis,
+            Text(value,Modifier.fillMaxWidth(),fontSize=GlassTokens.scaledSp(11.sp,appearance),maxLines=2,overflow=TextOverflow.Ellipsis,
                 textAlign=androidx.compose.ui.text.style.TextAlign.End,color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }

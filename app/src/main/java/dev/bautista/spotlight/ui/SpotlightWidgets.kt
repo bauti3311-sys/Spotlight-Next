@@ -87,13 +87,15 @@ fun ResultRow(
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
     val appearance=LocalAppearance.current
-    val pad=if(inline)when(appearance.density){"compact"->2;"spacious"->6;else->4} else when(appearance.density){"compact"->4;"spacious"->10;else->6}
+    val d=GlassTokens.densityScale(appearance)
+    val pad=GlassTokens.rowVerticalPadding(appearance,inline)
+    val hPad=GlassTokens.rowHorizontalPadding(appearance)
     val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")
     val dark=colors.surface.luminance()<.5f
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
-        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else 60.dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
+        Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else (60f*d).coerceAtLeast(48f).dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
             .background(colors.onSurface.copy(alpha=.09f*amount))
@@ -102,33 +104,35 @@ fun ResultRow(
             // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
             .hoverable(interaction).combinedClickable(interactionSource=interaction,indication=LocalIndication.current,
                 onClick={onInteraction();onOpen()},onLongClick={onInteraction();onDetails()})
-            .padding(start = 12.dp, end = 8.dp, top = pad.dp, bottom = pad.dp),
+            .padding(start = hPad, end = (8f*d).dp, top = pad, bottom = pad),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Native application artwork keeps its own identity. Utility glyphs have
-        // one stroke treatment and no tinted tile or selection stripe.
-        ResultIcon(result,Modifier.size(if(result.icon!=null)28.dp else 20.dp),colors.onSurfaceVariant)
-        Spacer(Modifier.width(12.dp))
+        // Native application artwork keeps its own identity. Utility glyphs share
+        // the same centered slot width so all row titles align to a single vertical axis.
+        Box(Modifier.size(GlassTokens.iconSlotWidth(appearance)), contentAlignment = Alignment.Center) {
+            ResultIcon(result,Modifier.size(if(result.icon!=null)GlassTokens.appIconSize(appearance) else GlassTokens.glyphSize(appearance)),colors.onSurfaceVariant)
+        }
+        Spacer(Modifier.width((10f*d).dp))
         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
-          Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+          Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((10f*d).dp)) {
             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
                 modifier=Modifier.weight(1f,fill=false),
-                fontSize=GlassTokens.rowText(appearance)*appearance.textScale,
+                fontSize=GlassTokens.scaledSp(GlassTokens.rowText(appearance),appearance),
                 letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
-                Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+                Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.scaledSp(GlassTokens.secondaryText,appearance),
                 maxLines=1,overflow=TextOverflow.Ellipsis)
           }
             val subtitle=if(PreviewPresentation.isApplication(result))"Aplicación" else result.subtitle.takeIf{it.isNotBlank()} ?: metadata
-            if(!inline)Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.secondaryText*appearance.textScale,
+            if(!inline)Text(subtitle,color=colors.onSurfaceVariant,fontSize=GlassTokens.scaledSp(GlassTokens.secondaryText,appearance),
                 maxLines=1,overflow=TextOverflow.Ellipsis)
         }
         if(inline && !playing)Text(metadata,
-            Modifier.padding(start=12.dp).widthIn(max=100.dp),color=colors.onSurfaceVariant,
-            fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
-        if(playing)Text("En reproducción",Modifier.padding(start=12.dp).widthIn(max=120.dp),color=colors.onSurfaceVariant,
-            fontSize=GlassTokens.metadataText*appearance.textScale,maxLines=1,overflow=TextOverflow.Ellipsis)
-        if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=8.dp).size(14.dp),tint=colors.primary)
+            Modifier.padding(start=(10f*d).dp).widthIn(max=104.dp),color=colors.onSurfaceVariant,
+            fontSize=GlassTokens.scaledSp(GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
+        if(playing)Text("En reproducción",Modifier.padding(start=(10f*d).dp).widthIn(max=124.dp),color=colors.onSurfaceVariant,
+            fontSize=GlassTokens.scaledSp(GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
+        if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=6.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
         if(selected || hovered) IconButton(onClick = {onInteraction();onDetails()}, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {

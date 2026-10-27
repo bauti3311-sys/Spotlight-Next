@@ -103,17 +103,19 @@ fun SpotlightBar(
     val options=optionsOpen ?: localOptions
     fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}
 
+    val appearance = LocalAppearance.current
+    val inputFontSize = GlassTokens.scaledSp(if (compact) GlassTokens.compactSearchText else GlassTokens.searchText, appearance)
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
         Row(
             fieldModifier
                 .height(GlassTokens.searchHeight)
-                .padding(start = 4.dp, end = 0.dp),
+                .padding(start = 2.dp, end = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if(onBack!=null) IconButton(onClick=onBack,modifier=Modifier.size(48.dp)) {
                 IosCommandIcon(CommandIcons.Reply,"Volver a resultados",Modifier.size(20.dp),tint=colors.onSurfaceVariant)
             } else Box(Modifier.size(48.dp),contentAlignment=Alignment.Center) {
-                IosCommandIcon(CommandIcons.Search,null,Modifier.size(21.dp).semantics{testTag="search-context-accent"},tint=contextAccent ?: colors.onSurfaceVariant)
+                IosCommandIcon(CommandIcons.Search,null,Modifier.size(20.dp).semantics{testTag="search-context-accent"},tint=contextAccent ?: colors.onSurfaceVariant)
             }
             Spacer(Modifier.width(4.dp))
             BasicTextField(
@@ -138,7 +140,7 @@ fun SpotlightBar(
                 }.focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText),
+                    TextStyle(color = colors.onSurface, fontFamily=when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = inputFontSize),
                 cursorBrush = SolidColor(contextAccent ?: colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -147,7 +149,7 @@ fun SpotlightBar(
                         if (query.isEmpty())
                             Text(
                                 when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar aplicaciones y comandos…"},
-                                fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText,
+                                fontSize = inputFontSize,
                                 color = colors.onSurface.copy(alpha = .52f),letterSpacing=0.sp,
                                 maxLines = 1,
                             )
@@ -159,9 +161,9 @@ fun SpotlightBar(
                                 },
                                 modifier = Modifier.clearAndSetSemantics { },
                                 maxLines = 1,
-                                fontSize = if (compact) GlassTokens.compactSearchText else GlassTokens.searchText,
+                                fontSize = inputFontSize,
                                 color = colors.onSurface.copy(alpha = .30f),
-                                style=TextStyle(fontFamily=when(LocalAppearance.current.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
+                                style=TextStyle(fontFamily=when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
                             )
                         inner()
@@ -171,7 +173,7 @@ fun SpotlightBar(
             if (suggestion != null)
                 Text(
                     autocompleteKeyLabel,
-                    fontSize = 10.sp,
+                    fontSize = GlassTokens.scaledSp(10.sp, appearance),
                     color = colors.onSurfaceVariant,
                     modifier =
                         Modifier.clickable(onClick = onAcceptSuggestion).padding(horizontal = 6.dp),
@@ -186,15 +188,13 @@ fun SpotlightBar(
     // A service overlay cannot safely host an Activity-style popup window.
     // Keep options in the same window/token as the editor.
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-    val showAiShortcut=maxWidth>=600.dp
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
-        Row(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=4.dp), verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().padding(horizontal=6.dp), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))
-            Row(Modifier.padding(end=8.dp),verticalAlignment=Alignment.CenterVertically) {
-                if(showAiShortcut && category!="IA")TextButton(onClick={onCategoryChange("IA")},modifier=Modifier.heightIn(min=48.dp),contentPadding=PaddingValues(horizontal=10.dp)) {
-                    Text("Preguntar a IA",fontSize=12.sp,color=colors.onSurfaceVariant)
+            if(showOptionsButton) {
+                Row(Modifier.padding(end=4.dp),verticalAlignment=Alignment.CenterVertically) {
+                    IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) { IosCommandIcon(CommandIcons.MoreHoriz,"Opciones de Spotlight",Modifier.size(20.dp),tint=colors.onSurfaceVariant) }
                 }
-                if(showOptionsButton)IconButton(onClick={setOptions(!options)},modifier=Modifier.size(48.dp)) { IosCommandIcon(CommandIcons.MoreHoriz,"Opciones de Spotlight",Modifier.size(20.dp),tint=colors.onSurfaceVariant) }
             }
         }
         if(options) {

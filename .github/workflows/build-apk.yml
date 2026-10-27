@@ -265,7 +265,7 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" > delivery/package.txt
           if [[ "$GITHUB_REF" == 'refs/heads/feat/antigravity-tablet-20261026' ]]; then
             "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -P 16 -v 4 "$apk" > delivery/zipalign.txt
-            grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='55' versionName='2.0.1-raycast-preview-experimental'" delivery/package.txt
+            grep -Fq "package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='56' versionName='2.0.1-raycast-preview-experimental'" delivery/package.txt
             ! grep -Fq 'application-debuggable' delivery/package.txt
             grep -Fq "native-code: 'arm64-v8a'" delivery/package.txt
             python3 - "$apk" > delivery/elf-alignment.txt <<'PY'
@@ -314,9 +314,9 @@ jobs:
           ! unzip -Z1 delivery/Spotlight-Next-Raycast-Preview-source.zip | grep -Eq '(^|/)(signing/|.*\.(keystore|jks)$|local\.properties$)'
           (cd delivery && sha256sum Spotlight-Next-Raycast-Preview.apk Spotlight-Next-Raycast-Preview-source.zip > SHA256SUMS)
           {
-            echo '### Spotlight Next · Raycast Preview 55 (Experimental)'
-            echo 'Build independiente (`dev.bautista.spotlight.next.raycastpreview`, `versionCode=55`, `-Pspotlight.preview.optimize=false`); NO actualiza el APK principal.'
-            echo 'Firmado con el certificado histórico de Raycast Preview (`885838aa...`); compatible para actualizar sobre Preview 54.'
+            echo '### Spotlight Next · Raycast Preview 56 (Experimental)'
+            echo 'Build independiente (`dev.bautista.spotlight.next.raycastpreview`, `versionCode=56`, `-Pspotlight.preview.optimize=false`); NO actualiza el APK principal.'
+            echo 'Firmado con el certificado histórico de Raycast Preview (`885838aa...`); compatible para actualizar sobre Preview 54 / 55.'
             echo "Código fuente: $(cat delivery/SOURCE_SHA.txt)"
             echo "SHA256SUMS:"
             cat delivery/SHA256SUMS

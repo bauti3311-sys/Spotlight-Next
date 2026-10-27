@@ -1042,11 +1042,11 @@ fun SpotlightPanel(
                                                 if ((richPreview || mediaInspector) && !widePreview) resultLimit * .35f
                                                 else resultLimit
                                         )
-                                        .padding(horizontal = GlassTokens.listInset, vertical = 4.dp),
+                                        .padding(horizontal = GlassTokens.listHorizontalInset(config), vertical = (3f*GlassTokens.densityScale(config)).dp),
                             ) {
                                 if(query.isNotBlank() && visibleResults.isNotEmpty()) item("results-heading") {
-                                    Text(if(visibleResults.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(visibleResults.first()) else "Resultados",Modifier.padding(start=12.dp,top=8.dp,bottom=8.dp),
-                                        fontSize=11.sp,lineHeight=14.sp,fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
+                                    Text(if(visibleResults.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(visibleResults.first()) else "Resultados",Modifier.padding(start=GlassTokens.rowHorizontalPadding(config),top=(6f*GlassTokens.densityScale(config)).dp,bottom=(4f*GlassTokens.densityScale(config)).dp),
+                                        fontSize=GlassTokens.scaledSp(11.sp,config),lineHeight=GlassTokens.scaledSp(14.sp,config,minSp=12f),fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
                                 }
                                 itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
                                     val section=ResultSections.category(item)
@@ -1354,7 +1354,7 @@ fun SpotlightPanel(
                             }
                         else if(mediaInspector || applicationPreview) {
                             val observed=mediaSnapshot?.takeIf{it.packageName==inspectorPackage}
-                            inspectorItem?.let { application -> Column(Modifier.padding(start=18.dp,end=18.dp,bottom=12.dp)) {
+                            inspectorItem?.let { application -> Column(Modifier.padding(start=GlassTokens.inspectorPadding(config),end=GlassTokens.inspectorPadding(config),bottom=(10f*GlassTokens.densityScale(config)).dp)) {
                                 val player: @Composable () -> Unit = {
                                     if(observed!=null) {
                                 var mediaStatus by remember(inspectorPackage){mutableStateOf("")}

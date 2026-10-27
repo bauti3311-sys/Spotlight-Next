@@ -56,7 +56,7 @@ data class Config(
     val actionOpacity:Float=1f, val settingsOpacity:Float=.99f,
     val keyBindings:Set<String> = emptySet(),
     val compactSearchResults:Boolean=false,
-
+    val uiDensityScale:Float=-1f, // -1 preserves legacy density ("compact"/"balanced"/"spacious"/"auto") until slider is adjusted
 )
 
 class Preferences(private val context: Context) {
@@ -186,7 +186,8 @@ class Preferences(private val context: Context) {
                     manualWidth=extra.optInt("manualWidth",(p[width] ?: 0).takeIf{it>0} ?: 640).coerceIn(300,1100),
                     windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f,
                     actionOpacity=extra.optDouble("actionOpacity",1.0).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: 1f,
-                    settingsOpacity=extra.optDouble("settingsOpacity",.99).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .99f
+                    settingsOpacity=extra.optDouble("settingsOpacity",.99).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .99f,
+                    uiDensityScale=extra.optDouble("uiDensityScale",-1.0).toFloat().takeIf{it.isFinite() && it in .85f..1.15f} ?: -1f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
     }
 
@@ -197,6 +198,7 @@ class Preferences(private val context: Context) {
             p[opacity] = c.opacity.takeIf { it.isFinite() }?.coerceIn(.70f,1f) ?: .98f
             p[animations] = c.animations
             p[density] = c.density
+            p[textScale] = c.textScale.takeIf { it.isFinite() }?.coerceIn(.85f,1.3f) ?: 1f
             p[compactSearchResults] = c.compactSearchResults
             p[accent] = c.accent
             p[stringPreferencesKey("preset")] = c.preset
@@ -204,6 +206,7 @@ class Preferences(private val context: Context) {
             extra.put("actionOpacity",c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: 1f)
             extra.put("settingsOpacity",c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .99f)
             extra.put("windowScale", c.windowScale.takeIf { it.isFinite() && it in 0f..1f } ?: -1f)
+            extra.put("uiDensityScale", c.uiDensityScale.takeIf { it.isFinite() && it in .85f..1.15f } ?: -1f)
             p[next20] = extra.toString()
         }
     }
@@ -319,6 +322,7 @@ class Preferences(private val context: Context) {
             extra.put("movement",c.movement)
             extra.put("manualWidth",c.manualWidth)
             extra.put("windowScale",c.windowScale)
+            extra.put("uiDensityScale",c.uiDensityScale)
             extra.put("actionOpacity",c.actionOpacity)
             extra.put("settingsOpacity",c.settingsOpacity)
             p[next20]=extra.toString()
@@ -337,7 +341,7 @@ class Preferences(private val context: Context) {
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
                 .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
-                .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",rootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
+                .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("uiDensityScale",c.uiDensityScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",rootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
             p[theme] = c.theme
             p[opacity] = c.opacity
             p[width] = c.width

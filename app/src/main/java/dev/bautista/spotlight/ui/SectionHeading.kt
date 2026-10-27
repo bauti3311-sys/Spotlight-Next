@@ -32,7 +32,9 @@ fun sectionIcon(name: String): ImageVector = when(name) {
 }
 
 @Composable fun SectionHeading(name: String,first:Boolean=false) {
-    Row(Modifier.fillMaxWidth().padding(start=10.dp,end=8.dp,top=if(first)7.dp else 14.dp,bottom=6.dp),verticalAlignment=Alignment.CenterVertically) {
-        Text(name,fontSize=11.sp,lineHeight=15.sp,letterSpacing=0.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
+    val appearance=LocalAppearance.current
+    val d=GlassTokens.densityScale(appearance)
+    Row(Modifier.fillMaxWidth().padding(start=GlassTokens.rowHorizontalPadding(appearance),end=8.dp,top=((if(first)4f else 10f)*d).dp,bottom=(4f*d).dp),verticalAlignment=Alignment.CenterVertically) {
+        Text(name,fontSize=GlassTokens.scaledSp(11.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance,minSp=12f),letterSpacing=0.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
