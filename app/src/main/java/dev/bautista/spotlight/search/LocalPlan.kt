@@ -21,7 +21,7 @@ data class LocalPlan(val steps:List<PlanStep>) {
    if(q in setOf("siguiente cancion","siguiente tema"))return PlanStep.Media("next")
    if(q in setOf("cancion anterior","tema anterior"))return PlanStep.Media("previous")
    Regex("^(?:abrir|iniciar) (.+)$").matchEntire(q)?.let{return PlanStep.Open(it.groupValues[1])}
-   val m=Regex("^(?:(bajar|subir|ajustar|poner|cambiar) )?(?:el )?(brillo|volumen)(?: (al|a|en))? (\\d{1,3})\\s*%?$").matchEntire(q) ?: return null
+   val m=Regex("^(?:(bajar|subir|ajustar|poner|cambiar) )?(?:el )?(brillo|volumen)(?: (al|a|en|un))? (\\d{1,3})\\s*%?$").matchEntire(q) ?: return null
    val value=m.groupValues[4].toInt();if(value !in 0..100)return null
    val relative=m.groupValues[1] in setOf("bajar","subir") && m.groupValues[3] !in setOf("al","a")
    val delta=if(m.groupValues[1]=="bajar")-value else value

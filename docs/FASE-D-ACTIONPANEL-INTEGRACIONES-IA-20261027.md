@@ -49,3 +49,22 @@ Esta entrega completa los tres pilares de la **Fase D** sobre la base aprobada d
 - `UniversalIntelligenceArchitectureTest.phase7_expandedCompoundAndContextualAiPreserveExplicitConsentAndPrivateOrigin`
 - `ActionPanelKeyboardContractTest.densityAndTextScalePreserveMinimum48dpTouchTargetsInActionPanel`
 - `HybridIntelligenceTest.correctionAndPdfSummaryRequireExplicitReviewWithoutAutomaticRead`
+- `ReplyConfirmationTest.naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget`
+- `ContextExtractionFlowTest.contextQuickActionsPrepareBoundedSummaryAndKeyPointsWithPrivateOrigin`
+- `HybridIntelligenceTest.messageEditorSwitchesToCompatibleRemoteInputAndRequiresExplicitConfirmation`
+
+---
+
+## 5. Segunda iteración (recorridos completos WhatsApp, Documentos y ActionPanel)
+
+1. **Prioridad 1 — WhatsApp (`ReplyService.kt`, `IntentRouter.kt`, `UniversalIntentEngine.kt`, `SearchEngine.kt`, `CommandForms.kt`, `NotificationPreview.kt`)**:
+   - `Replies.parseReplyQuery` extrae destinatario y borrador en consultas naturales (`"responderle a Juan diciendo: Ya salgo para allá"`, `"contestar por whatsapp a Ana"`) preservando mayúsculas y signos del borrador.
+   - `Replies.results` admite búsqueda unificada entre `com.whatsapp` y `com.whatsapp.w4b` cuando `packageName` es vacío, precargando `draftText` en `Action.ComposeMessage` con `replyKey` sin enviar automáticamente; si no hay notificación activa del contacto, `SearchEngine` ofrece un fallback directo a `Action.ComposeMessage(c.messageApp, term, draftBody)`.
+   - `Replies.findCompatibleReply` e integración en `MessageEditor`: cuando se redacta un mensaje normal a un contacto que tiene una notificación activa con `RemoteInput`, `MessageEditor` ofrece cambiar explícitamente a `RemoteInput` (`"Responder notificación activa · RemoteInput (...)"`) y muestra el mecanismo Android concreto (`RemoteInput` vs. `wa.me` / `ACTION_SENDTO` / `ACTION_SEND`) tanto en el formulario como en la tarjeta de confirmación.
+   - `NotificationPreview` protege `"Resumir con IA"` y `"Sugerir respuesta con IA"` mediante `AiRequestPolicy.prepare(..., origin = AiInputOrigin.PRIVATE_CONTEXT)`, vinculando `messageTarget = target.title`.
+2. **Prioridad 2 — Documentos (`SpotlightPanel.kt`, `ContextPanel.kt`)**:
+   - El inspector Quick Look (`details(false)`) incorpora acciones directas para `"Extraer texto local"` (con cancelación cooperativa y caché en `FileIndex`), `"Usar como contexto IA"` (`app.contexts.setDocument`) y, cuando el documento tiene texto extraído o vista previa, `"Resumir con IA"` y `"Explicar con IA"` mediante `AiRequestPolicy.prepare(..., origin = AiInputOrigin.PRIVATE_CONTEXT)`.
+   - El `ActionPanel` (`Ctrl+K`) suma `"Usar como contexto IA"` (`file.context`) para archivos con URI Android, y `ContextPanel` añade accesos directos `"Resumir documento"` y `"Puntos clave"` pasando por el mismo flujo de extracción local y revisión previa al envío.
+3. **Prioridad 3 — IA y ActionPanel (`SpotlightPanel.kt`, `LocalPlan.kt`)**:
+   - Se elimina la duplicación de `"Información de la app"` en el `ActionPanel` filtrando `ACTION_APPLICATION_DETAILS_SETTINGS` de `ActionCatalog.applicationActions` (conservando la entrada canónica `app.info` en `ContextActionGroup.System`) y asignando iconos/grupos específicos para `Action.Navigate` (`ContextActionGroup.Open`, `CommandIcons.Folder`) y `Action.ComposeSearch` (`CommandIcons.Search`).
+   - `LocalPlan.step` reconoce variaciones naturales con `"un"` en pasos relativos (`"bajar el volumen un 20% y abrir Spotify"`).

@@ -43,7 +43,24 @@ object Replies {
     }
     @Synchronized fun remove(key:String){entries.remove(key);publish()}
     @Synchronized fun clear(){entries.clear();mutable.value=emptyList();connected.value=false}
-    fun results(query:String="",packageName:String="com.whatsapp",reply:Boolean=false):List<Result> = targets.value.filter{it.packageName==packageName && (query.isBlank() || normalize(it.title).contains(normalize(query)) || normalize(it.visibleText).contains(normalize(query)))}.map{t->Result("reply:${t.key}",t.title,if(t.group)"Grupo · notificación actual" else "WhatsApp · notificación actual","Mensajes",2200,if(reply && t.action!=null)Action.ComposeMessage(if(packageName=="com.whatsapp.w4b")"whatsapp_business" else "whatsapp",t.title,replyKey=t.key) else Action.ReadNotification(t.key),preview=t.visibleText.ifBlank{"La notificación no contiene texto accesible."})}
+    fun parseReplyQuery(raw:String):Pair<String,String>? {
+        val text=raw.trim().take(8000);val norm=normalize(text)
+        if(norm=="responder el ultimo mensaje visible de whatsapp")return "" to ""
+        Regex("^(?:responder(?:le)?|contestar(?:le)?)(?: un?(?: mensaje| whatsapp)?)?(?: por whatsapp)?(?: a)? (.+?)(?: que | diciendo |: ?)(.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
+            return it.groupValues[1].trim() to it.groupValues[2].trim()
+        }
+        Regex("^(?:responder(?:le)?|contestar(?:le)?)(?: un?(?: mensaje| whatsapp)?)?(?: por whatsapp)?(?: a)? (.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
+            return it.groupValues[1].trim() to ""
+        }
+        return null
+    }
+    fun findCompatibleReply(channel:String,contactQuery:String):ReplyTarget? {
+        if(!connected.value || contactQuery.isBlank())return null
+        val pkg=when(channel){"whatsapp"->"com.whatsapp";"whatsapp_business"->"com.whatsapp.w4b";else->return null}
+        val q=normalize(contactQuery)
+        return targets.value.filter{it.packageName==pkg && !it.group && it.action!=null && normalize(it.title)==q}.singleOrNull()
+    }
+    fun results(query:String="",packageName:String="com.whatsapp",reply:Boolean=false,draftText:String=""):List<Result> = targets.value.filter{(packageName.isBlank() || it.packageName==packageName) && (query.isBlank() || normalize(it.title).contains(normalize(query)) || normalize(it.visibleText).contains(normalize(query)))}.map{t->val channel=if(t.packageName=="com.whatsapp.w4b")"whatsapp_business" else "whatsapp";Result("reply:${t.key}",t.title,if(t.group)"Grupo · notificación actual" else "${if(channel=="whatsapp_business")"WhatsApp Business" else "WhatsApp"} · notificación actual","Mensajes",2200,if(reply && t.action!=null)Action.ComposeMessage(channel,t.title,text=draftText,replyKey=t.key) else Action.ReadNotification(t.key),preview=t.visibleText.ifBlank{"La notificación no contiene texto accesible."})}
     @Synchronized fun send(context:Context,key:String,text:String,expected:ReplyTarget?=null) {
         require(text.isNotBlank() && text.length<=8000)
         check(connected.value){"El servicio de notificaciones está desconectado. Revisá el acceso antes de responder."}

@@ -67,4 +67,14 @@ class ContextExtractionFlowTest {
         val ask=actions.single() as Action.Ask
         assertTrue(ask.prompt.endsWith("Texto elegido explícitamente"));assertTrue(AiRequestPolicy.requiresReview(ask))
     }
+    @Test fun contextQuickActionsPrepareBoundedSummaryAndKeyPointsWithPrivateOrigin() {
+        app.contexts.setText("Contenido de estudio sobre rehabilitación vestibular")
+        val actions=CopyOnWriteArrayList<Action>();show{actions+=it}
+        ui.onNodeWithText("Puntos clave").performClick();ui.waitUntil(10000){actions.size==1}
+        val first=actions.single() as Action.Ask
+        assertEquals(AiInputOrigin.PRIVATE_CONTEXT,first.origin)
+        assertTrue(AiRequestPolicy.requiresReview(first))
+        assertTrue(first.prompt.startsWith("Extraé los puntos clave de este documento"))
+        assertTrue(first.prompt.endsWith("Contenido de estudio sobre rehabilitación vestibular"))
+    }
 }

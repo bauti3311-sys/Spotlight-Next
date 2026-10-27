@@ -43,4 +43,18 @@ class ReplyConfirmationTest {
         Replies.connected.value = true; Replies.remove(reviewed.key)
         assertThrows(IllegalStateException::class.java) { Replies.send(context, reviewed.key, "Texto aprobado", reviewed) }
     }
+    @Test fun naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget() {
+        val parsed = Replies.parseReplyQuery("responderle a Juan diciendo: Ya salgo para allá")
+        assertEquals("Juan" to "Ya salgo para allá", parsed)
+        assertEquals("Ana" to "", Replies.parseReplyQuery("contestar por whatsapp a Ana"))
+        val reviewed = put(title = "Juan", conversation = "juan-1", requestCode = 7)
+        assertEquals(reviewed.key, Replies.findCompatibleReply("whatsapp", "juan")?.key)
+        assertNull(Replies.findCompatibleReply("whatsapp_business", "juan"))
+        val rows = Replies.results("juan", packageName = "", reply = true, draftText = "Ya salgo para allá")
+        val compose = rows.single().action as dev.bautista.spotlight.search.Action.ComposeMessage
+        assertEquals("whatsapp", compose.channel)
+        assertEquals("Juan", compose.target)
+        assertEquals("Ya salgo para allá", compose.text)
+        assertEquals(reviewed.key, compose.replyKey)
+    }
 }

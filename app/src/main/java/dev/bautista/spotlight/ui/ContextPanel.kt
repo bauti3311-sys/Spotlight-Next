@@ -58,20 +58,27 @@ import kotlinx.coroutines.*
         Text(if(page=="context-ai")"Revisar contexto para IA" else "Contexto autorizado",style=MaterialTheme.typography.titleMedium)
         Text("Temporal durante 10 minutos; fijar guarda una referencia o el texto local. Nada se envía al escribir.",style=MaterialTheme.typography.bodySmall)
         current?.let{item->
+            fun prepareReview(instruction:String) {
+                error="";val owner=contextKey
+                extraction.start(scope,isCurrent={app.contexts.active.value?.id==item.id && latestKey==owner},extract={
+                    try{app.contexts.text(item)}catch(e:TimeoutCancellationException){currentCoroutineContext().ensureActive();throw IllegalStateException("La extracción local agotó su tiempo. Probá con un documento más pequeño.",e)}
+                },publish={content->
+                    val target=Regex("(?:preparar|mandar|enviar).*?para (.+)$",RegexOption.IGNORE_CASE).find(payload)?.groupValues?.get(1).orEmpty()
+                    latestAction(AiRequestPolicy.prepare(Action.Ask(instruction+"\n\n"+content,true,target,origin=AiInputOrigin.PRIVATE_CONTEXT)))
+                },failure={error=it.message ?: "No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."})
+            }
             Text(item.title,style=MaterialTheme.typography.titleSmall)
             if(item.text.isNotBlank())SelectionContainer{Text(item.text.take(2000))}
             Row{TextButton(onClick={scope.launch{try{app.contexts.pinActive();error=""}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo fijar el contexto."}}}){Text(if(item.pinned)"Contexto fijado" else "Fijar")};TextButton(onClick={app.contexts.clearActive()}){Text("Quitar")}}
-            TextButton(onClick={
-                if(busy)extraction.cancel() else {
-                    error="";val owner=contextKey
-                    extraction.start(scope,isCurrent={app.contexts.active.value?.id==item.id && latestKey==owner},extract={
-                        try{app.contexts.text(item)}catch(e:TimeoutCancellationException){currentCoroutineContext().ensureActive();throw IllegalStateException("La extracción local agotó su tiempo. Probá con un documento más pequeño.",e)}
-                    },publish={content->
-                        val target=Regex("(?:preparar|mandar|enviar).*?para (.+)$",RegexOption.IGNORE_CASE).find(payload)?.groupValues?.get(1).orEmpty()
-                        latestAction(Action.Ask((if(payload.isBlank())"Resumí este contenido" else payload)+"\n\n"+content,true,target,origin=AiInputOrigin.PRIVATE_CONTEXT))
-                    },failure={error=it.message ?: "No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."})
+            Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
+                TextButton(onClick={
+                    if(busy)extraction.cancel() else prepareReview(if(payload.isBlank())"Resumí este contenido" else payload)
+                }){Text(if(busy)"Cancelar preparación" else "Revisar envío a IA")}
+                if(!busy) {
+                    TextButton(onClick={prepareReview("Resumí este documento en español")}){Text("Resumir documento")}
+                    TextButton(onClick={prepareReview("Extraé los puntos clave de este documento")}){Text("Puntos clave")}
                 }
-            }){Text(if(busy)"Cancelar preparación" else "Revisar envío a IA")}
+            }
         }
         TextButton(onClick={onAction(Action.Launch(Intent(app,dev.bautista.spotlight.ContextPickerActivity::class.java).putExtra("query",payload)))}){Text("Elegir documento con Android")}
         OutlinedTextField(text,{text=it.take(16000)},label={Text("Texto o enlace")},modifier=Modifier.fillMaxWidth(),minLines=2)

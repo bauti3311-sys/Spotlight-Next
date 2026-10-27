@@ -142,4 +142,28 @@ class HybridIntelligenceTest {
         )
     }
 
+    @Test fun messageEditorSwitchesToCompatibleRemoteInputAndRequiresExplicitConfirmation() {
+        dev.bautista.spotlight.control.Replies.clear()
+        dev.bautista.spotlight.control.Replies.connected.value=true
+        try {
+            val pi=android.app.PendingIntent.getBroadcast(app,41,android.content.Intent("reply.hybrid.41"),android.app.PendingIntent.FLAG_MUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT)
+            val action=android.app.Notification.Action.Builder(null,"Responder",pi).addRemoteInput(android.app.RemoteInput.Builder("reply_text").build()).build()
+            val n=android.app.Notification.Builder(app,"test").setSmallIcon(android.R.drawable.ic_dialog_info).setContentTitle("Juan").setContentText("¿Llegás a las 19?").setShortcutId("juan-chat").addAction(action).build()
+            dev.bautista.spotlight.control.Replies.put(android.service.notification.StatusBarNotification("com.whatsapp","com.whatsapp",41,null,1000,0,0,n,android.os.Process.myUserHandle(),1700000000041))
+            var launched=0
+            ui.setContent{SpotlightTheme{MessageEditor(Action.ComposeMessage("whatsapp","Juan","Sí, llego en 10"),{launched++},{},{})}}
+            ui.onNodeWithText("Responder notificación activa · RemoteInput (Juan)").assertExists().performClick()
+            ui.onNodeWithText("Mecanismo Android: RemoteInput de notificación activa (com.whatsapp)").assertExists()
+            ui.onNodeWithText("Revisar respuesta").performClick()
+            assertEquals(1,dev.bautista.spotlight.control.Replies.targets.value.size)
+            ui.onNodeWithText("Enviar respuesta").performClick()
+            ui.waitUntil(5000){dev.bautista.spotlight.control.Replies.targets.value.isEmpty()}
+            assertEquals(0,launched)
+            val sent=Shadows.shadowOf(app).broadcastIntents.last{it.action=="reply.hybrid.41"}
+            assertEquals("Sí, llego en 10",android.app.RemoteInput.getResultsFromIntent(sent)!!.getCharSequence("reply_text"))
+        } finally {
+            dev.bautista.spotlight.control.Replies.clear()
+        }
+    }
+
 }

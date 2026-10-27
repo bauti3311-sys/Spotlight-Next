@@ -257,10 +257,18 @@ class SearchEngine(
             send(listOf(Result("tool:${definition.id}",definition.title,status,"Sistema",2400,Action.Copy(status),preview=status)))
             return@channelFlow
         }
-        val replyMatch=Regex("^responder(?: a)? (.+)$").matchEntire(normalized)
+        val parsedReply=Replies.parseReplyQuery(input)
+        val replyMatch=parsedReply ?: Regex("^responder(?: a)? (.+)$").matchEntire(normalized)?.let{it.groupValues[1] to ""}
         if(normalized in setOf("mensajes","mensajes pendientes","mostrar mensajes pendientes","notificaciones de whatsapp","notificaciones","responder el ultimo mensaje visible de whatsapp") || replyMatch!=null){
             if(!Replies.connected.value)send(listOf(Result("reply:access","Permitir leer notificaciones","Acceso especial de Android · opcional","Acciones",2400,Action.Access("notifications"))))
-            else {val term=replyMatch?.groupValues?.get(1)?.takeUnless{normalized.contains("ultimo mensaje")}.orEmpty();val items=Replies.results(term,reply=replyMatch!=null);send(if(normalized.contains("ultimo mensaje"))items.take(1) else items)}
+            else {
+                val term=replyMatch?.first?.takeUnless{normalized.contains("ultimo mensaje")}.orEmpty()
+                val draftBody=replyMatch?.second.orEmpty()
+                val items=Replies.results(term,packageName="",reply=replyMatch!=null,draftText=draftBody)
+                val resolved=if(normalized.contains("ultimo mensaje"))items.take(1) else items
+                if(resolved.isNotEmpty() || term.isBlank())send(resolved)
+                else send(listOf(Result("reply:fallback:compose","Preparar mensaje a $term","Sin notificación activa · buscar contacto y abrir en ${ActionCatalog.displayName(c.messageApp)}","Mensajes",2200,Action.ComposeMessage(c.messageApp,term,draftBody))))
+            }
             return@channelFlow
         }
         NaturalIntents.callName(query)?.let{send(NaturalIntents.calls(context,it));return@channelFlow}

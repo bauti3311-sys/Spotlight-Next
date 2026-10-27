@@ -9,10 +9,16 @@ object IntentRouter {
 
     fun route(raw:String,messageApp:String="whatsapp"):Action? {
         val text=raw.trim().take(8000);val q=normalize(text)
-        Regex("^(?:m[aá]ndale|mandarle|mandar|mand[aá]|enviar|env[ií]a|enviarle)(?: un)? (?:mensaje(?: por)? |)(?:whatsapp|mensaje)(?: a)? (.+?)(?: que | diciendo |: ?)(.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
-            return Action.ComposeMessage(if(normalize(text.substring(0,it.groups[1]!!.range.first)).contains("whatsapp"))"whatsapp" else messageApp,it.groupValues[1].trim(),it.groupValues[2].trim())
+        Regex("^(?:m[aá]ndale|mandarle|mandar|mand[aá]|enviar|env[ií]a|enviarle|escrib[ií]le|escribirle|escribir)(?: un)? (?:mensaje(?: por)? |)(?:whatsapp business|whatsapp|wa|mensaje)(?: a)? (.+?)(?: que | diciendo |: ?)(.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
+            val prefix=normalize(text.substring(0,it.groups[1]!!.range.first))
+            val ch=when{"whatsapp business" in prefix->"whatsapp_business";"whatsapp" in prefix || Regex("\\bwa\\b").containsMatchIn(prefix)->"whatsapp";else->messageApp}
+            return Action.ComposeMessage(ch,it.groupValues[1].trim(),it.groupValues[2].trim())
         }
-        Regex("^(?:m[aá]ndale|mandarle|mandar|mand[aá]|enviar|env[ií]a)(?: un)? (?:whatsapp|mensaje)(?: a)? (.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {return Action.ComposeMessage(if(normalize(text.substring(0,it.groups[1]!!.range.first)).contains("whatsapp"))"whatsapp" else messageApp,it.groupValues[1].trim())}
+        Regex("^(?:m[aá]ndale|mandarle|mandar|mand[aá]|enviar|env[ií]a|escrib[ií]le|escribirle|escribir)(?: un)? (?:whatsapp business|whatsapp|wa|mensaje)(?: a)? (.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
+            val prefix=normalize(text.substring(0,it.groups[1]!!.range.first))
+            val ch=when{"whatsapp business" in prefix->"whatsapp_business";"whatsapp" in prefix || Regex("\\bwa\\b").containsMatchIn(prefix)->"whatsapp";else->messageApp}
+            return Action.ComposeMessage(ch,it.groupValues[1].trim())
+        }
         Regex("^(?:(?:poner |ajustar |cambiar )?(?:el )?brillo(?: al| a)?|baja|baja el|baja brillo|baja el brillo|baja brillo al|baja el brillo al|bajar el brillo al|subi el brillo al|pone el brillo al) (\\d{1,3})\\s*%?$").matchEntire(q)?.let { val n=it.groupValues[1].toInt();if(n in 0..100)return Action.SystemPanel("display-review","screen_brightness:${(n*255/100).coerceAtLeast(20)}") }
         if(q in setOf("mostrame apps","mostrar aplicaciones","mis aplicaciones","mostrame las aplicaciones"))return Action.SelectMode("Apps",true)
         Regex("^(?:activa|activar|prepara|preparar) (?:el )?modo (estudio|lectura|concentracion|multimedia)$").matchEntire(q)?.let{return Action.SystemPanel("profiles",it.groupValues[1])}

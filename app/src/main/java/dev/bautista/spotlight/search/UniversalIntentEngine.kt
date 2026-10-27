@@ -443,9 +443,11 @@ object UniversalIntentEngine {
             )
         }
 
-        // 6. Communication ("Mandale un WhatsApp a Juan")
+        // 6. Communication ("Mandale un WhatsApp a Juan", "Responder a Juan: ya salgo")
+        val parsedReply = dev.bautista.spotlight.control.Replies.parseReplyQuery(clean)
         val msgAction = (IntentRouter.route(clean, config.messageApp) as? Action.ComposeMessage)
             ?: ActionCatalog.message(clean, config.messageApp)
+            ?: parsedReply?.let { (target, body) -> Action.ComposeMessage(config.messageApp, target, body) }
         if (msgAction != null) {
             val entities = buildList {
                 add(ExtractedEntity(EntityType.MESSAGE_CHANNEL, msgAction.channel))

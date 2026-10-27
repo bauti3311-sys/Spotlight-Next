@@ -1134,12 +1134,35 @@ fun SpotlightPanel(
                                         item.mime != DocumentsContract.Document.MIME_TYPE_DIR &&
                                         item.action is Action.Launch && item.action.intent.data != null
                                 ) {
+                                    val quickUri=item.action.intent.data!!
                                     TextButton(onClick={expandedPreview=!expandedPreview}){Text(if(expandedPreview)"Volver al panel lateral" else "Ampliar vista previa")}
                                     AuthorizedFilePreview(context, item,expandedPreview,previewPages[item.id] ?: 0,{page->
                                         previewPages.remove(item.id);previewPages[item.id]=page
                                         while(previewPages.size>8)previewPages.remove(previewPages.keys.first())
                                     })
-                                    TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
+                                    Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
+                                        TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
+                                        TextButton(onClick={
+                                            if(documentExtraction.running)documentExtraction.cancel()
+                                            else {
+                                                val owner=extractionContext()
+                                                documentExtraction.start(scope,{extractionContext()==owner},{
+                                                    val extracted=dev.bautista.spotlight.index.DocumentText.extractDetailed(context,quickUri,dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime))
+                                                    currentCoroutineContext().ensureActive()
+                                                    check(extracted.text.isNotBlank()){"No se encontró texto legible dentro de los límites locales."}
+                                                    app.index.cacheExtraction(quickUri.toString(),extracted,app.preferences.config.first())
+                                                    extracted
+                                                },{extracted->preview=item.copy(preview=extracted.text);menu=false},{e->error=e.message ?: "No se pudo extraer texto"})
+                                            }
+                                        }){Text(if(documentExtraction.running)"Cancelar extracción" else "Extraer texto local")}
+                                        TextButton(onClick={scope.launch{runCatching{app.contexts.setDocument(quickUri);error=""}.onFailure{error=it.message ?: "No se pudo fijar el documento como contexto."}}}){Text("Usar como contexto IA")}
+                                    }
+                                    if(!item.preview.isNullOrBlank()) {
+                                        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
+                                            TextButton(onClick={execute(Result("ai:quicklook:summary","Resumir","","IA",0,dev.bautista.spotlight.search.AiRequestPolicy.prepare(Action.Ask("Resumí este documento (${item.title}):\n"+item.preview,true,origin=dev.bautista.spotlight.search.AiInputOrigin.PRIVATE_CONTEXT))))}){Text("Resumir con IA")}
+                                            TextButton(onClick={execute(Result("ai:quicklook:explain","Explicar","","IA",0,dev.bautista.spotlight.search.AiRequestPolicy.prepare(Action.Ask("Explicá este documento (${item.title}):\n"+item.preview,true,origin=dev.bautista.spotlight.search.AiInputOrigin.PRIVATE_CONTEXT))))}){Text("Explicar con IA")}
+                                        }
+                                    }
                                 }
                                 SelectionContainer {
                                     Text(
@@ -1167,8 +1190,13 @@ fun SpotlightPanel(
                                     }
                                     if(PreviewPresentation.isApplication(item)) {
                                         val catalogActions=ActionCatalog.applicationActions(appPackage.orEmpty())
-                                        catalogActions.forEach { target -> add("app.intent:${target.id}",ContextActionGroup.Communicate,target.title,target.subtitle,CommandIcons.ChatBubbleOutline,
-                                            risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)} }
+                                            .filterNot { (it.action as? Action.Launch)?.intent?.action == android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS }
+                                        catalogActions.forEach { target ->
+                                            val group=if(target.action is Action.Navigate)ContextActionGroup.Open else ContextActionGroup.Communicate
+                                            val icon=when(target.action){is Action.Navigate->CommandIcons.Folder;is Action.ComposeSearch->CommandIcons.Search;else->CommandIcons.ChatBubbleOutline}
+                                            add("app.intent:${target.id}",group,target.title,target.subtitle,icon,
+                                                risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)}
+                                        }
                                         if(appPackage!=null) {
                                             dev.bautista.spotlight.control.AppCapabilities(context).available(appPackage)
                                                 .filterNot { cap ->
@@ -1193,7 +1221,10 @@ fun SpotlightPanel(
                                     if(item.category=="Archivos") {
                                         add("file.copy-name",ContextActionGroup.Text,"Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
                                         val fileUri=(item.action as? Action.Launch)?.intent?.data
-                                        if(fileUri!=null)add("file.copy-uri",ContextActionGroup.Text,"Copiar URI","Identificador de documento Android",CommandIcons.ContentCopy){copy(fileUri.toString())}
+                                        if(fileUri!=null) {
+                                            add("file.copy-uri",ContextActionGroup.Text,"Copiar URI","Identificador de documento Android",CommandIcons.ContentCopy){copy(fileUri.toString())}
+                                            if(item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.context",ContextActionGroup.Organize,"Usar como contexto IA","Fijar documento temporalmente para consultas",CommandIcons.Description){scope.launch{runCatching{app.contexts.setDocument(fileUri);error=""}.onFailure{error=it.message ?: "No se pudo fijar el documento como contexto."}}}
+                                        }
                                     }
                                     if(item.parentUri!=null)add("file.reveal",ContextActionGroup.Open,"Mostrar carpeta","Ubicación del archivo",CommandIcons.Folder){locate(item)}
                                     if(PreviewPresentation.isApplication(item)) {

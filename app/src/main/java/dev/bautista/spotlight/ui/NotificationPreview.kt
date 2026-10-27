@@ -12,7 +12,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import kotlinx.coroutines.*
 import dev.bautista.spotlight.control.*
-import dev.bautista.spotlight.search.Action
+import dev.bautista.spotlight.search.*
 import java.text.DateFormat
 import java.util.Date
 
@@ -37,7 +37,7 @@ import java.util.Date
         else{
             ReceivedMessages(target)
             Row{Button(enabled=target.action!=null,onClick={onAction(Action.ComposeMessage(if(target.packageName=="com.whatsapp.w4b")"whatsapp_business" else "whatsapp",target.title,replyKey=key))}){Text("Responder")};TextButton(enabled=target.open!=null,onClick={runCatching{target.open?.send(context,0,null)}.onSuccess{onClose()}.onFailure{error="La acción para abrir la conversación venció."}}){Text("Abrir")}}
-            Row{TextButton(enabled=target.messages.isNotEmpty(),onClick={onCopy(target.visibleText)}){Text("Copiar mensaje")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(Action.Ask("Resumí estos mensajes de WhatsApp en español:\n"+target.visibleText,true))}){Text("Resumir con IA")};TextButton(onClick=onClose){Text("Volver")}}
+            Row{TextButton(enabled=target.messages.isNotEmpty(),onClick={onCopy(target.visibleText)}){Text("Copiar mensaje")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Resumí estos mensajes de WhatsApp en español:\n"+target.visibleText,true,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Resumir con IA")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Redactá una respuesta breve y natural en español para estos mensajes de WhatsApp:\n"+target.visibleText,true,messageTarget=target.title,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Sugerir respuesta con IA")};TextButton(onClick=onClose){Text("Volver")}}
             if(target.action==null)Text("WhatsApp no publicó una acción de respuesta directa.",style=MaterialTheme.typography.bodySmall)
             if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
         }

@@ -26,16 +26,25 @@ import kotlinx.coroutines.*
     var sent by remember(draft){mutableStateOf(false)}
     var confirming by remember(draft){mutableStateOf(false)}
     var approvedReply by remember(draft){mutableStateOf<ReplyTarget?>(null)}
+    var activeReplyKey by rememberSaveable(draft){mutableStateOf(draft.replyKey)}
     val permission=People.allowed(context)
-    val reply=draft.replyKey!=null
+    val reply=activeReplyKey!=null
     val notifications by Replies.targets.collectAsState()
-    val received=notifications.firstOrNull{it.key==draft.replyKey}
+    val received=notifications.firstOrNull{it.key==activeReplyKey}
+    val compatibleReply=if(!reply && draft.channel in setOf("whatsapp","whatsapp_business"))Replies.findCompatibleReply(draft.channel,selected?.name ?: target) else null
     val sharing=draft.channel=="telegram" || draft.channel.startsWith("share:")
     val appName=if(draft.channel.startsWith("share:"))draft.target else ActionCatalog.displayName(draft.channel)
+    val mechanismLabel=when{
+        reply->"RemoteInput de notificación activa (${received?.packageName ?: appName})"
+        draft.channel in setOf("whatsapp","whatsapp_business")->"Enlace oficial wa.me · se abre en $appName para confirmar el envío"
+        draft.channel=="sms"->"Intent ACTION_SENDTO (smsto:) · se abre en SMS"
+        draft.channel=="email"->"Intent ACTION_SENDTO (mailto:) · se abre en correo"
+        else->"Intent ACTION_SEND (text/plain) · se abre en $appName"
+    }
     val focus=remember(draft){FocusRequester()}
     val focusBody=reply || draft.target.isNotBlank() || sharing
     LaunchedEffect(draft){delay(60);focus.requestFocus()}
-    LaunchedEffect(target,draft.channel,permission) {
+    LaunchedEffect(target,draft.channel,permission,reply) {
         if(reply||sharing)return@LaunchedEffect
         selected=null;address="";loading=permission && target.isNotBlank()
         try {
@@ -51,6 +60,8 @@ import kotlinx.coroutines.*
     }
     Column(Modifier.fillMaxWidth().padding(16.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         if(!reply && !sharing)TextButton(onClick={onLaunch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix","${draft.channel} a $target: ").putExtra("fallback","${draft.channel} a $target: $body"))}){Text("Dictar mensaje · revisar borrador")};Text(if(reply)"Responder en WhatsApp" else "Mensaje · ${appName}",style=MaterialTheme.typography.titleMedium)
+        if(compatibleReply!=null)TextButton(onClick={activeReplyKey=compatibleReply.key;confirming=false;error=""}){Text("Responder notificación activa · RemoteInput (${compatibleReply.title})")}
+        if(reply && draft.replyKey==null)TextButton(onClick={activeReplyKey=null;confirming=false;error=""}){Text("Usar contacto o enlace wa.me")}
         if(reply){if(received!=null)ReceivedMessages(received) else Text(if(sent)"La respuesta se envió a la acción de WhatsApp." else "La notificación ya no está disponible.",color=MaterialTheme.colorScheme.onSurfaceVariant)}
         if(!sharing && !reply) {
             OutlinedTextField(target,{target=it.take(100);sent=false;confirming=false},label={Text(if(reply)"Conversación de la notificación" else "Contacto o número")},singleLine=true,readOnly=reply,modifier=Modifier.fillMaxWidth().then(if(!focusBody)Modifier.focusRequester(focus) else Modifier))
@@ -67,6 +78,7 @@ import kotlinx.coroutines.*
         }
         OutlinedTextField(body,{body=it.take(8000);sent=false;confirming=false},label={Text("Mensaje")},minLines=2,maxLines=5,modifier=Modifier.fillMaxWidth().then(if(focusBody)Modifier.focusRequester(focus) else Modifier))
         Text(if(reply)"La respuesta se envía mediante la acción de esta notificación." else "Contacto y enlace se resuelven automáticamente. El envío final se completa en la app receptora.",fontSize=12.sp)
+        Text("Mecanismo Android: $mechanismLabel",fontSize=11.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error,fontSize=12.sp)
         if(sent)Text("Respuesta enviada a la app. La entrega depende de WhatsApp y la conexión.",fontSize=12.sp)
         if(confirming) {
@@ -74,12 +86,13 @@ import kotlinx.coroutines.*
                 Column(Modifier.padding(14.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                     Text("Confirmar · ${appName}",style=MaterialTheme.typography.titleSmall)
                     Text("Para: ${if(reply)approvedReply?.title.orEmpty() else selected?.let{"${it.name} · $address"} ?: address}")
+                    Text("Mecanismo Android: $mechanismLabel",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                     if(reply && received!=null){Text("Mensaje recibido",style=MaterialTheme.typography.labelSmall);androidx.compose.foundation.text.selection.SelectionContainer{Text(received.visibleText.take(800),style=MaterialTheme.typography.bodySmall)}}
                     Text(body,style=MaterialTheme.typography.bodyMedium)
                     Row {
                         Button(onClick={
                             error="";confirming=false
-                            if(reply)runCatching {Replies.send(context,draft.replyKey!!,body,requireNotNull(approvedReply){"Revisá la conversación nuevamente."})}.onSuccess{sent=true}.onFailure{error=it.message ?: "No se pudo responder"}
+                            if(reply)runCatching {Replies.send(context,activeReplyKey!!,body,requireNotNull(approvedReply){"Revisá la conversación nuevamente."})}.onSuccess{sent=true}.onFailure{error=it.message ?: "No se pudo responder"}
                             else {
                                 val intent=People.messageIntent(context,draft.channel,address,body)
                                 if(intent==null)error="Revisá el número, código de país y área." else onLaunch(intent)
