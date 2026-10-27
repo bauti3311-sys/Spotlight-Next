@@ -43,6 +43,11 @@ class ReplyConfirmationTest {
         Replies.connected.value = true; Replies.remove(reviewed.key)
         assertThrows(IllegalStateException::class.java) { Replies.send(context, reviewed.key, "Texto aprobado", reviewed) }
     }
+    @Test fun replySeparatorsKeepTheRecipientAndDraftUnchanged() {
+        for (separator in listOf(" diciendo ", " diciendo: ", ": ", " que ")) {
+            assertEquals("Juan" to "Ya salgo, ¿me esperás?", Replies.parseReplyQuery("responderle a Juan" + separator + "Ya salgo, ¿me esperás?"))
+        }
+    }
     @Test fun naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget() {
         val parsed = Replies.parseReplyQuery("responderle a Juan diciendo: Ya salgo para allá")
         assertEquals("Juan" to "Ya salgo para allá", parsed)

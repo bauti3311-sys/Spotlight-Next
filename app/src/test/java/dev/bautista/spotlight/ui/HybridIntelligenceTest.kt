@@ -30,7 +30,8 @@ class HybridIntelligenceTest {
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false),{},"bajar el brillo al 35% y volumen al 60%",700f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("Revisar interpretación").fetchSemanticsNodes().isNotEmpty()}
         assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
-        ui.onNodeWithText("Revisar interpretación").performClick()
+        // First tap selects; second tap explicitly activates the reviewed result.
+        ui.onNodeWithText("Revisar interpretación").performClick().performClick()
         ui.waitUntil(15000){ui.onAllNodes(hasText("Confirmar pasos seleccionados") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
         ui.onNodeWithText("Conexión pendiente · Shizuku",substring=true).assertExists()
         assertEquals(initial,audio.getStreamVolume(AudioManager.STREAM_MUSIC))
@@ -65,7 +66,8 @@ class HybridIntelligenceTest {
     @Test fun unconfiguredAiReviewStaysLocalAndOffersSettings() {
         ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false,aiProvider="backend",endpoint=""),{},"traducí este texto",700f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("Revisar interpretación").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Revisar interpretación").performClick()
+        // First tap selects; second tap explicitly activates the reviewed result.
+        ui.onNodeWithText("Revisar interpretación").performClick().performClick()
         ui.onNodeWithText("Texto").performTextInput("hello")
         ui.onNodeWithText("Revisar traducción con IA").performClick()
         ui.onNodeWithText("hello",substring=true).assertExists()
@@ -74,7 +76,7 @@ class HybridIntelligenceTest {
     @Test fun lightHybridHasUnifiedSuggestionsWithoutCategoryCircles() {
         ui.setContent{SpotlightPanel(app,AppConfig(theme="light",files=false,animations=false),{},availableHeightDp=700f)}
         ui.waitUntil(15000){ui.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithContentDescription("Fuentes de búsqueda").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Opciones de Spotlight").assertIsDisplayed()
         ui.onNodeWithContentDescription("Aplicaciones · Ctrl/⌘+1").assertDoesNotExist()
         ui.onNodeWithText("SUGERENCIAS").assertDoesNotExist()
         ui.runOnIdle{capture091(ui.activity,"hybrid-light-home")}
@@ -82,7 +84,8 @@ class HybridIntelligenceTest {
     @Test fun darkHybridPreservesTouchActionsAndUsefulStudyChoices() {
         ui.setContent{SpotlightPanel(app,AppConfig(theme="dark",files=false,animations=false),{},"quiero estudiar sin distracciones",700f)}
         ui.waitUntil(15000){ui.onAllNodesWithText("Revisar interpretación").fetchSemanticsNodes().isNotEmpty()}
-        ui.onNodeWithText("Revisar interpretación").performClick()
+        // First tap selects; second tap explicitly activates the reviewed result.
+        ui.onNodeWithText("Revisar interpretación").performClick().performClick()
         ui.onNodeWithText("Preparar temporizador de 25 minutos").assertIsDisplayed()
         ui.runOnIdle{capture091(ui.activity,"hybrid-dark-study")}
     }
@@ -101,7 +104,8 @@ class HybridIntelligenceTest {
             ui.setContent{SpotlightPanel(app,AppConfig(files=false,animations=false,online=false,aiProvider="backend",endpoint="http://127.0.0.1:${server.localPort}"),{},"traducí este texto",700f)}
             ui.waitUntil(15000){ui.onAllNodesWithText("Revisar interpretación").fetchSemanticsNodes().isNotEmpty()}
             assertEquals(0,requests.get())
-            ui.onNodeWithText("Revisar interpretación").performClick()
+            // First tap selects; second tap explicitly activates the reviewed result.
+        ui.onNodeWithText("Revisar interpretación").performClick().performClick()
             ui.onNodeWithText("Texto").performTextInput("private test text")
             ui.onNodeWithText("Revisar traducción con IA").performClick()
             ui.onNodeWithText("Enviar").assertIsEnabled()

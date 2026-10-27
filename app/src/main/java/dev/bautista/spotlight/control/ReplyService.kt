@@ -46,7 +46,7 @@ object Replies {
     fun parseReplyQuery(raw:String):Pair<String,String>? {
         val text=raw.trim().take(8000);val norm=normalize(text)
         if(norm=="responder el ultimo mensaje visible de whatsapp")return "" to ""
-        Regex("^(?:responder(?:le)?|contestar(?:le)?)(?: un?(?: mensaje| whatsapp)?)?(?: por whatsapp)?(?: a)? (.+?)(?: que | diciendo |: ?)(.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
+        Regex("^(?:responder(?:le)?|contestar(?:le)?)(?: un?(?: mensaje| whatsapp)?)?(?: por whatsapp)?(?: a)? (.+?)(?: que | diciendo:? |: ?)(.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {
             return it.groupValues[1].trim() to it.groupValues[2].trim()
         }
         Regex("^(?:responder(?:le)?|contestar(?:le)?)(?: un?(?: mensaje| whatsapp)?)?(?: por whatsapp)?(?: a)? (.+)$",RegexOption.IGNORE_CASE).matchEntire(text)?.let {

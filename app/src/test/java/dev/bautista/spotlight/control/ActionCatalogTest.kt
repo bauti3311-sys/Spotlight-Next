@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.first
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33],application=Application::class)
 class ActionCatalogTest {
+    @org.junit.After fun clearNotificationFixture() { Replies.clear() }
     @Test fun businessRepliesStayInsideSelectedApplication():Unit=runBlocking {
         val context=RuntimeEnvironment.getApplication();Replies.clear()
         fun notification(pkg:String,title:String,id:Int){
@@ -118,7 +119,7 @@ class ActionCatalogTest {
         val remote=RemoteInput.Builder("reply_text").setLabel("Responder").build()
         val notification=Notification.Builder(context,"test").setSmallIcon(android.R.drawable.ic_dialog_info).setContentTitle("Ene").addAction(Notification.Action.Builder(null,"Responder",pi).addRemoteInput(remote).build()).build()
         val sbn=StatusBarNotification("com.whatsapp","com.whatsapp",1,null,1000,0,0,notification,android.os.Process.myUserHandle(),0)
-        Replies.put(sbn);assertEquals(1,Replies.targets.value.size)
+        Replies.put(sbn);Replies.connected.value=true;assertEquals(1,Replies.targets.value.size)
         Replies.send(context,sbn.key,"Hola Ene")
         val sent=Shadows.shadowOf(context).broadcastIntents.last{it.action=="test.reply"}
         assertEquals("Hola Ene",RemoteInput.getResultsFromIntent(sent)!!.getCharSequence("reply_text"))

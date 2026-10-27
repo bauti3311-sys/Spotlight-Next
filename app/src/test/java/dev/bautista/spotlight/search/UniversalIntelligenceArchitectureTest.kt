@@ -214,7 +214,8 @@ class UniversalIntelligenceArchitectureTest {
         val appRows = rows.filter { it.id.startsWith("suggest:app:") }
         assertEquals(1, appRows.size)
         assertEquals("Spotify", appRows.single().title)
-        assertTrue(appRows.single().subtitle.contains("Continuar escuchando música"))
+        assertEquals("Aplicación multimedia reciente", appRows.single().subtitle)
+        assertFalse(appRows.single().subtitle.contains("En reproducción"))
 
         // 3. Stale usage older than 14 days expires and is not suggested
         val staleTime = now - 20L * 86_400_000L
