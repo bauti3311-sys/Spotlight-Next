@@ -134,7 +134,7 @@ class ActionPanelKeyboardContractTest {
         ui.setContent {
             SpotlightTheme(
                 "dark",
-                appearance=OverlayAppearance(preset="glass",textScale=1.15f,uiDensityScale=0.85f),
+                config=dev.bautista.spotlight.data.Config(preset="glass",textScale=1.15f,uiDensityScale=0.85f),
             ) {
                 ActionPanelView(
                     listOf(

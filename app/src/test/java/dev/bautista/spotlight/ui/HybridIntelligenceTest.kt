@@ -2,6 +2,8 @@ package dev.bautista.spotlight.ui
 
 import android.media.AudioManager
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import dev.bautista.spotlight.SpotlightApp
