@@ -19,6 +19,8 @@ class AppCapabilities(private val context:Context) {
     private val searches=mapOf(
         "com.spotify.music" to ("spotify" to "https://open.spotify.com/search/consulta"),
         "com.google.android.youtube" to ("youtube" to "https://www.youtube.com/results?search_query=consulta"),
+        "com.google.android.apps.maps" to ("mapas" to "https://www.google.com/maps/search/?api=1&query=consulta"),
+        "com.sofascore.results" to ("sofascore" to "https://www.sofascore.com/"),
         "com.android.chrome" to ("chrome" to "https://www.google.com/search?q=consulta"),
         "com.vivaldi.browser" to ("vivaldi" to "https://www.google.com/search?q=consulta"),
     )

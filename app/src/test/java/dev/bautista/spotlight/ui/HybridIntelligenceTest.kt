@@ -125,4 +125,21 @@ class HybridIntelligenceTest {
         } finally {observation.cancel()}
     }
 
+    @Test fun correctionAndPdfSummaryRequireExplicitReviewWithoutAutomaticRead() {
+        var action:Action?=null
+        var step by androidx.compose.runtime.mutableStateOf("resumí este PDF")
+        ui.setContent{SpotlightTheme{InterpretationPanel(app,AppConfig(files=false),step){action=it}}}
+        ui.onNodeWithText("Elegí primero el PDF").assertExists()
+        ui.runOnIdle{step="corregí este texto"}
+        ui.onNodeWithText("Texto para corregir").assertExists()
+        ui.onNodeWithText("Revisar corrección con IA").assertIsNotEnabled()
+        assertNull(action)
+        ui.onNodeWithText("Texto").performTextInput("borrador inicial")
+        ui.onNodeWithText("Revisar corrección con IA").performClick()
+        assertEquals(
+            Action.Ask("Corregí y mejorá este texto:\nborrador inicial",true,origin=AiInputOrigin.PRIVATE_CONTEXT),
+            action,
+        )
+    }
+
 }

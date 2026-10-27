@@ -17,8 +17,8 @@ object ActionCatalog {
     fun canonical(query:String):String {
         Regex("^buscar videos(?: de)? (.+)$",RegexOption.IGNORE_CASE).matchEntire(query.trim())?.let{return "youtube "+it.groupValues[1]}
         val q=query.trim().replace(Regex("^abrir ajustes de ",RegexOption.IGNORE_CASE), "")
-        Regex("^buscar(?: en)? (youtube|spotify|sofascore|google|mapas)[: ]+(.*)$",RegexOption.IGNORE_CASE).matchEntire(q)?.let{return normalize(it.groupValues[1])+" "+it.groupValues[2]}
-        Regex("^buscar (.+) en (youtube|spotify|sofascore|google|mapas)$",RegexOption.IGNORE_CASE).matchEntire(q)?.let{return normalize(it.groupValues[2])+" "+it.groupValues[1]}
+        Regex("^(?:buscar|busca|buscame)(?: en)? (youtube|spotify|sofascore|google|mapas|chrome|vivaldi)[: ]+(.*)$",RegexOption.IGNORE_CASE).matchEntire(q)?.let{return normalize(it.groupValues[1])+" "+it.groupValues[2]}
+        Regex("^(?:buscar|busca|buscame) (.+) en (youtube|spotify|sofascore|google|mapas|chrome|vivaldi)$",RegexOption.IGNORE_CASE).matchEntire(q)?.let{return normalize(it.groupValues[2])+" "+it.groupValues[1]}
         return q
     }
     fun settings(query: String): Intent? {

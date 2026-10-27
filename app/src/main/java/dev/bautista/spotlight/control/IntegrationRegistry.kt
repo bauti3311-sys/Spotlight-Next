@@ -41,7 +41,7 @@ class IntegrationRegistry(private val context: Context) {
         val rows = ActionCatalog.menu(topic, launch, packageName).filter { row ->
             when(val action = row.action) {
                 is Action.ComposeMessage -> action.channel !in setOf("whatsapp","whatsapp_business","telegram") || installed
-                is Action.ComposeSearch -> topic in setOf("youtube", "spotify", "mapas", "google", "chrome", "sofascore") || packageName != null && resolves(Intent(Intent.ACTION_SEARCH).setPackage(packageName))
+                is Action.ComposeSearch -> topic in setOf("youtube", "spotify", "mapas", "google", "chrome", "vivaldi", "sofascore") || packageName != null && resolves(Intent(Intent.ACTION_SEARCH).setPackage(packageName))
                 is Action.Navigate -> action.scope.section!="replies" || installed
                 is Action.Launch -> resolves(action.intent)
                 else -> true

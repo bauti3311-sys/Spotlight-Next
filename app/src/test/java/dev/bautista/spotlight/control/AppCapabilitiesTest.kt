@@ -85,4 +85,21 @@ class AppCapabilitiesTest {
         assertTrue(runCatching{AppCapabilities(context).prepare(pkg,"share-text")}.isFailure)
         assertNull(Shadows.shadowOf(context).nextStartedActivity)
     }
+    @Test fun mapsAndSofascoreDocumentedSearchCapabilitiesMatchIntegrationRegistry() {
+        val mapsPkg="com.google.android.apps.maps"
+        val mapsIntent=Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com/maps/search/?api=1&query=consulta")).setPackage(mapsPkg)
+        expose(mapsIntent,mapsPkg)
+        val mapsCap=AppCapabilities(context).available(mapsPkg).single()
+        assertEquals(AppCapabilityMechanism.DOCUMENTED_LINK,mapsCap.mechanism)
+        assertEquals(Action.ComposeSearch("mapas",mapsPkg),mapsCap.action)
+        assertTrue(IntegrationRegistry(context).capabilities(mapsPkg).any{it.title=="Búsqueda documentada" && it.state==CapabilityState.AVAILABLE})
+
+        val sofaPkg="com.sofascore.results"
+        val sofaIntent=Intent(Intent.ACTION_VIEW,Uri.parse("https://www.sofascore.com/")).setPackage(sofaPkg)
+        expose(sofaIntent,sofaPkg)
+        val sofaCap=AppCapabilities(context).available(sofaPkg).single()
+        assertEquals(AppCapabilityMechanism.DOCUMENTED_LINK,sofaCap.mechanism)
+        assertEquals(Action.ComposeSearch("sofascore",sofaPkg),sofaCap.action)
+        assertTrue(IntegrationRegistry(context).capabilities(sofaPkg).any{it.title=="Búsqueda documentada" && it.state==CapabilityState.AVAILABLE})
+    }
 }

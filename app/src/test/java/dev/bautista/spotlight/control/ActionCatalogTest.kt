@@ -83,6 +83,8 @@ class ActionCatalogTest {
     }
     @Test fun publicSearchUsesEncodedQueryAndPreferredApp() {
         assertEquals("youtube Perros en la playa",ActionCatalog.canonical("buscar Perros en la playa en youtube"))
+        assertEquals("vivaldi Kotlin Compose",ActionCatalog.canonical("buscame Kotlin Compose en vivaldi"))
+        assertEquals("chrome Android 15",ActionCatalog.canonical("busca en chrome: Android 15"))
         val action=ActionCatalog.searchAction("youtube","com.google.android.youtube","a&b fútbol") as Action.InApp
         assertEquals(Intent.ACTION_VIEW,action.intent.action)
         assertEquals("com.google.android.youtube",action.intent.`package`)

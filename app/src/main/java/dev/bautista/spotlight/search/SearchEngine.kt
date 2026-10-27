@@ -94,7 +94,7 @@ class SearchEngine(
                     }
                 }
                 PrimaryIntentKind.CONTEXT_AI -> {
-                    val explicitForm=normalize(input) in setOf("explicame este pdf","explica este pdf","traduci este texto","traducir este texto","traduce este texto")
+                    val explicitForm=normalize(input) in setOf("explicame este pdf","explica este pdf","resumi este pdf","resumir este pdf","analiza este pdf","traduci este texto","traducir este texto","traduce este texto","corregi este texto","corregir este texto","corregime este texto")
                     send(listOf(Result("universal:context",if(explicitForm)"Revisar interpretación" else spec.primaryTitle,spec.primarySubtitle,"IA",4100,Action.SystemPanel(if(explicitForm)"interpret" else if(normalize(input).contains("estos"))"selection-ai" else "context-ai",input))))
                     return@channelFlow
                 }
@@ -266,7 +266,7 @@ class SearchEngine(
         NaturalIntents.callName(query)?.let{send(NaturalIntents.calls(context,it));return@channelFlow}
         NaturalIntents.event(query)?.let{send(listOf(Result("event:natural","Crear evento","Revisar en Calendario","Acciones",2400,Action.Launch(it))));return@channelFlow}
         ActionCatalog.message(query,c.messageApp)?.let { it ->send(listOf(Result("message:compose","Enviar mensaje a ${it.target}","Completar y elegir destinatario","Acciones",2400,it)));return@channelFlow}
-        Regex("^(youtube|spotify|sofascore|google|mapas|chrome) (.+)$",RegexOption.IGNORE_CASE).matchEntire(query)?.let { match ->
+        Regex("^(youtube|spotify|sofascore|google|mapas|chrome|vivaldi) (.+)$",RegexOption.IGNORE_CASE).matchEntire(query)?.let { match ->
             val topic=normalize(match.groupValues[1]);val term=match.groupValues[2]
             val pkg=ActionCatalog.packages[topic].orEmpty()
             val installed=pkg.isNotBlank() && context.packageManager.getLaunchIntentForPackage(pkg)!=null

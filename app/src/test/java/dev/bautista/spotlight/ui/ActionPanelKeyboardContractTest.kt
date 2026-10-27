@@ -8,6 +8,7 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.dp
 import org.junit.*
 import org.junit.Assert.*
 import org.junit.runner.RunWith
@@ -126,5 +127,31 @@ class ActionPanelKeyboardContractTest {
         ui.onNodeWithText("Abrir").assertIsFocused()
         ui.onNodeWithText("Abrir").performKeyInput{pressKey(Key.DirectionDown);pressKey(Key.Enter)}
         ui.runOnIdle{assertEquals("share",action)}
+    }
+
+    @Test fun densityAndTextScalePreserveMinimum48dpTouchTargetsInActionPanel() {
+        val focus=FocusRequester()
+        ui.setContent {
+            SpotlightTheme(
+                "dark",
+                appearance=OverlayAppearance(preset="glass",textScale=1.15f,uiDensityScale=0.85f),
+            ) {
+                ActionPanelView(
+                    listOf(
+                        ContextAction("Abrir","Abrir documento",CommandIcons.Chevron,{},id="open"),
+                        ContextAction("Copiar…","Elegir formato",CommandIcons.ContentCopy,{},id="copy.formats",group=ContextActionGroup.Text,children=listOf(
+                            ContextAction("Copiar nombre","Nombre del archivo",CommandIcons.Description,{},id="file.copy-name"),
+                            ContextAction("Copiar URI","Identificador de documento Android",CommandIcons.ContentCopy,{},id="file.copy-uri")
+                        )),
+                        ContextAction("Corregir con IA","Revisar antes de enviar al proveedor",CommandIcons.AutoAwesome,{},id="ai:corregir",group=ContextActionGroup.Text)
+                    ),
+                    focus,
+                )
+            }
+        }
+        ui.onNodeWithText("Abrir").assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithText("Copiar…").assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithText("Corregir con IA").assertHeightIsAtLeast(48.dp)
+        ui.onNodeWithText("Revisar antes de enviar al proveedor").assertExists()
     }
 }

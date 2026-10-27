@@ -170,7 +170,7 @@ object UniversalIntentEngine {
         if (raw.length > 4000 || raw.contains('"')) return null
         val trimmed = raw.trim().replace(Regex("\\s+"), " ")
         val splitRegex = Regex(
-            "^(.+?)\\s+(?:y|luego|despu[eé]s)\\s+((?:explic(?:a|ame|[aá])|resum(?:i|ime|ir|[ií])|analiz(?:a|ame|[aá])|traduc(?:i|ime|ir|[ií])|contame|decime|respond(?:e|eme|[eé])|busc(?:a|ame|[aá])\\s+en\\s+el\\s+documento)\\b.+)$",
+            "^(.+?)\\s+(?:y|luego|despu[eé]s)\\s+((?:explic(?:a|ame|[aá])|resum(?:i|ime|ir|[ií])|analiz(?:a|ame|[aá])|traduc(?:i|ime|ir|[ií])|correg(?:i|ime|ir|[ií])|extra(?:e|eme|er|[eé])|compar(?:a|ame|ar|[aá])|sintetiz(?:a|ame|ar|[aá])|contame|decime|respond(?:e|eme|[eé])|busc(?:a|ame|[aá])\\s+en\\s+el\\s+documento)\\b.+)$",
             RegexOption.IGNORE_CASE,
         )
         val match = splitRegex.matchEntire(trimmed) ?: return null
@@ -361,7 +361,20 @@ object UniversalIntentEngine {
                 norm.contains("este documento") ||
                 norm.contains("este pdf") ||
                 norm.contains("este texto") ||
-                norm in setOf("explicame esto", "resumir esto", "resumi esto", "traducir esto", "traduci esto", "traduce este texto") ||
+                norm.contains("este portapapeles") ||
+                norm in setOf(
+                    "explicame esto",
+                    "resumir esto",
+                    "resumi esto",
+                    "traducir esto",
+                    "traduci esto",
+                    "traduce este texto",
+                    "corregi esto",
+                    "corregir esto",
+                    "corregime esto",
+                    "analiza esto",
+                    "analizame esto",
+                ) ||
                 Regex("\\bestos(?: +\\d{1,2})? +(documentos|archivos|pdfs)\\b").containsMatchIn(norm)
         ) {
             return IntentResolution(

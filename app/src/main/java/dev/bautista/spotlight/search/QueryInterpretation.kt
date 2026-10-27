@@ -41,7 +41,7 @@ object QueryInterpreter {
         if(raw.contains('"') || raw.contains(':') || Regex("\\b(AND|OR|NOT)\\b").containsMatchIn(raw))return null
         val norm=normalize(raw.trim()).replace(Regex("\\s+")," ")
         // Do not treat a compound document+AI query as a plain file list.
-        if(Regex("\\s+(?:y|luego|despues)\\s+(?:explic|resum|analiz|traduc|contame|decime)\\w*\\b").containsMatchIn(norm))return null
+        if(Regex("\\s+(?:y|luego|despues)\\s+(?:explic|resum|analiz|traduc|correg|extra|compar|sintetiz|contame|decime)\\w*\\b").containsMatchIn(norm))return null
         var q=norm.replace(Regex("^(?:buscar|busca|buscame|mostrame|mostrar|muestrame|ver)(?:me)?(?: todos| todas)?(?: mis| los| las| un| una| el| la)? "),"")
             .replace(Regex("^(?:mis|todos mis|todos los|todas las) "),"")
         // Normalize compound file nouns like "archivos pdf" or "documentos pdf" -> "pdf"

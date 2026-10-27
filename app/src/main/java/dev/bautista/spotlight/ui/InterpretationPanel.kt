@@ -211,11 +211,20 @@ internal suspend fun resolvePlan(app:SpotlightApp,c:Config,plan:LocalPlan,boundC
                 TextButton(onClick={onAction(Action.TimerForm(25))}){Text("Preparar temporizador de 25 minutos")}
                 TextButton(onClick={onAction(Action.Launch(Intent(android.provider.Settings.ACTION_SOUND_SETTINGS)))}){Text("Revisar sonido en Android")}
             }
-            "explicame este pdf","explica este pdf"->{
+            "explicame este pdf","explica este pdf","resumi este pdf","resumir este pdf","analiza este pdf"->{
                 Text("Elegí primero el PDF",style=MaterialTheme.typography.titleMedium)
                 Text("Buscá un archivo autorizado, abrí sus acciones, elegí Extraer texto y después Explicar con IA. Revisá el texto antes de enviarlo. No se lee ningún documento al escribir esta consulta.")
                 val allowed=c.files && (app.index.broadAllowed() || c.trees.isNotEmpty())
                 TextButton(onClick={onAction(if(allowed)Action.RestoreQuery("kind:pdf ") else Action.Access("files","kind:pdf "))}){Text(if(allowed)"Buscar un PDF" else "Autorizar búsqueda de archivos")}
+            }
+            "corregi este texto","corregir este texto","corregime este texto"->{
+                var text by remember(raw){mutableStateOf("")}
+                Text("Texto para corregir",style=MaterialTheme.typography.titleMedium)
+                Text("Pegá el texto que querés revisar. No se lee el portapapeles automáticamente.")
+                OutlinedTextField(text,{text=it.take(8000)},Modifier.fillMaxWidth(),label={Text("Texto")},minLines=3)
+                TextButton(enabled=text.isNotBlank(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Corregí y mejorá este texto:\n$text",true,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Revisar corrección con IA")}
+                TextButton(onClick={onAction(Action.SystemPanel("agent",raw))}){Text("Proponer plan de herramientas con ${UniversalIntentEngine.aiProviderLabel(c)}")}
+                Text("Requiere configurar el proveedor de IA; se revisa el envío antes de consultar.",style=MaterialTheme.typography.bodySmall)
             }
             else->{
                 var text by remember(raw){mutableStateOf("")}

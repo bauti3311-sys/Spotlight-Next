@@ -267,4 +267,30 @@ class UniversalIntelligenceArchitectureTest {
         assertTrue(section.excerpt.contains("maniobra de Epley"))
         assertFalse(section.excerpt.contains("Capítulo 1"))
     }
+
+    @Test
+    fun phase7_expandedCompoundAndContextualAiPreserveExplicitConsentAndPrivateOrigin() {
+        val compoundExtract = UniversalIntentEngine.parseDocumentAiCompound(
+            "Buscá el PDF de farmacología y extraé el punto 2",
+            day,
+            zone,
+        )
+        assertNotNull(compoundExtract)
+        assertEquals("pdf", compoundExtract!!.fileKind)
+        assertEquals("farmacologia", compoundExtract.searchTerms)
+        assertEquals("punto 2", compoundExtract.sectionTarget.lowercase())
+
+        for (query in listOf(
+            "Corregí este texto",
+            "Analizá este documento",
+            "Resumí este PDF",
+            "Compará estos 2 documentos",
+        )) {
+            val res = UniversalIntentEngine.resolve(query, AppConfig(aiProvider = "gemini"), day, zone)
+            assertEquals(PrimaryIntentKind.CONTEXT_AI, res.primaryIntent)
+            assertEquals(RemoteAiEscalation.EXPLICIT_WITH_CONTEXT_CONFIRMATION, res.aiEscalation)
+            assertTrue(res.requiresConfirmation)
+            assertTrue(RequiredPermission.AI_CONTEXT_CONSENT in res.permissions)
+        }
+    }
 }

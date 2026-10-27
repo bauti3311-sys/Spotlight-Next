@@ -1166,9 +1166,21 @@ fun SpotlightPanel(
                                         add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
                                     }
                                     if(PreviewPresentation.isApplication(item)) {
-                                        ActionCatalog.applicationActions(appPackage.orEmpty()).forEach { target -> add("app.intent:${target.id}",ContextActionGroup.Communicate,target.title,target.subtitle,CommandIcons.ChatBubbleOutline,
+                                        val catalogActions=ActionCatalog.applicationActions(appPackage.orEmpty())
+                                        catalogActions.forEach { target -> add("app.intent:${target.id}",ContextActionGroup.Communicate,target.title,target.subtitle,CommandIcons.ChatBubbleOutline,
                                             risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)} }
-                                        if(appPackage!=null)add("app.copy-package",ContextActionGroup.Text,"Copiar paquete","Identificador de Android",CommandIcons.ContentCopy){copy(appPackage)}
+                                        if(appPackage!=null) {
+                                            dev.bautista.spotlight.control.AppCapabilities(context).available(appPackage)
+                                                .filterNot { cap ->
+                                                    cap.id=="search" && catalogActions.any{it.action is Action.ComposeSearch} ||
+                                                        cap.id=="share-text" && catalogActions.any{it.action is Action.ComposeMessage}
+                                                }
+                                                .forEach { cap ->
+                                                    add("app.cap:${cap.id}",ContextActionGroup.Communicate,cap.title,cap.expectedResult,CommandIcons.Bolt,
+                                                        risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(Result("app-cap:$appPackage:${cap.id}",cap.title,cap.expectedResult,"Aplicaciones",0,cap.action))}
+                                                }
+                                            add("app.copy-package",ContextActionGroup.Text,"Copiar paquete","Identificador de Android",CommandIcons.ContentCopy){copy(appPackage)}
+                                        }
                                     }
                                     mediaCommands.forEach{command->
                                         add("media:$command",ContextActionGroup.Open,when(command){"pause"->"Pausar";"play"->"Reproducir";"next"->"Siguiente canción";else->"Canción anterior"},
@@ -1178,7 +1190,11 @@ fun SpotlightPanel(
                                     if(item.action !is Action.Copy)add("text.copy",ContextActionGroup.Text,"Copiar texto","Texto de este resultado",CommandIcons.ContentCopy){copy(item.preview ?: item.title)}
                                     if(query.isNotBlank())add("query.pin",ContextActionGroup.Organize,if(query.trim() in pinned)"Desfijar consulta" else "Fijar consulta","Guardar esta búsqueda",CommandIcons.StarBorder){scope.launch{app.preferences.togglePin(query.trim())};pinned=if(query.trim() in pinned)pinned-query.trim() else pinned+query.trim()}
                                     if(item.category in setOf("Archivos","Notas","Portapapeles","Textos frecuentes"))add("share",ContextActionGroup.Share,"Compartir","Selector de aplicaciones Android",CommandIcons.Share,state=ContextActionState.External){share(item)}
-                                    if(item.category=="Archivos")add("file.copy-name",ContextActionGroup.Text,"Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
+                                    if(item.category=="Archivos") {
+                                        add("file.copy-name",ContextActionGroup.Text,"Copiar nombre","Nombre del archivo",CommandIcons.Description){copy(item.title)}
+                                        val fileUri=(item.action as? Action.Launch)?.intent?.data
+                                        if(fileUri!=null)add("file.copy-uri",ContextActionGroup.Text,"Copiar URI","Identificador de documento Android",CommandIcons.ContentCopy){copy(fileUri.toString())}
+                                    }
                                     if(item.parentUri!=null)add("file.reveal",ContextActionGroup.Open,"Mostrar carpeta","Ubicación del archivo",CommandIcons.Folder){locate(item)}
                                     if(PreviewPresentation.isApplication(item)) {
                                         val targetPackage=(item.action as? Action.Launch)?.intent?.component?.packageName
@@ -1215,7 +1231,7 @@ fun SpotlightPanel(
                                     if(!text.isNullOrBlank()) {
                                         add("text.save",ContextActionGroup.Text,"Guardar como nota","Guardar texto en el dispositivo",CommandIcons.EditNote){scope.launch{app.local.saveNote(text)}}
                                         add("text.translate",ContextActionGroup.Text,"Traducir texto","Elegir idioma y procesar localmente",CommandIcons.Language){execute(Result("translate:text","","","Herramientas",0,Action.RestoreQuery("traducir en a es: "+text)))}
-                                        listOf("Explicar" to "Explicá", "Resumir" to "Resumí").forEach{(label,prompt)->add("ai:$prompt",ContextActionGroup.Text,"$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome,state=if(ai.configured(config))ContextActionState.Available else ContextActionState.ConfigurationRequired,risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(Result("ai:text",label,"","IA",0,Action.Ask(prompt+" este texto:\n"+text,true)))}}
+                                        listOf("Explicar" to "Explicá", "Resumir" to "Resumí", "Corregir" to "Corregí y mejorá", "Puntos clave" to "Extraé los puntos clave de").forEach{(label,prompt)->add("ai:$prompt",ContextActionGroup.Text,"$label con IA",if(ai.configured(config))"Revisar antes de enviar al proveedor" else "Requiere configurar API key",CommandIcons.AutoAwesome,state=if(ai.configured(config))ContextActionState.Available else ContextActionState.ConfigurationRequired,risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(Result("ai:text",label,"","IA",0,dev.bautista.spotlight.search.AiRequestPolicy.prepare(Action.Ask(prompt+" este texto:\n"+text,true,origin=dev.bautista.spotlight.search.AiInputOrigin.PRIVATE_CONTEXT))))}}
                                     }
                                     if(item.id.startsWith("note:"))add("note.delete",ContextActionGroup.Management,"Eliminar nota","Revisar antes de eliminar",CommandIcons.Delete){clearForms();deletingNote=item;preview=null;menu=false}
                                     val copyChoices=actions.filter{it.id in setOf("text.copy","file.copy-name","file.copy-uri","app.copy-package")}
