@@ -114,10 +114,10 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 IosCommandIcon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
             } else IosCommandIcon(CommandIcons.Search,null,Modifier.padding(start=(8f*d).dp,end=(10f*d).dp).size(17.dp),tint=colors.onSurfaceVariant)
             BasicTextField(filter,{filter=it.take(120)},singleLine=true,
-                textStyle=TextStyle(fontFamily=Inter,fontSize=GlassTokens.scaledSp(13f,appearance),color=colors.onSurface),
+                textStyle=TextStyle(fontFamily=Inter,fontSize=GlassTokens.scaledSp(13.sp,appearance),color=colors.onSurface),
                 modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
                 decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
-                    if(filter.isBlank())Text(contextResult?.let{"Buscar acciones de ${it.title}…"} ?: "Buscar acciones…",fontSize=GlassTokens.scaledSp(12f,appearance),color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+                    if(filter.isBlank())Text(contextResult?.let{"Buscar acciones de ${it.title}…"} ?: "Buscar acciones…",fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
                     field()
                 }})
             IconButton(onClick={onClose?.invoke()},modifier=Modifier.size(48.dp)){IosCommandIcon(CommandIcons.Close,"Cerrar acciones",Modifier.size(17.dp))}
@@ -135,7 +135,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=(6f*d).dp),color=colors.onSurface.copy(alpha=.08f))
                     Text(group.label.uppercase(java.util.Locale.ROOT),Modifier.padding(start=(10f*d).dp,top=(4f*d).dp,bottom=(4f*d).dp),
-                        fontSize=GlassTokens.scaledSp(10f,appearance),lineHeight=GlassTokens.scaledSp(14f,appearance),color=colors.onSurfaceVariant,letterSpacing=0.sp)
+                        fontSize=GlassTokens.scaledSp(10.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=0.sp)
                     previous=group
                 }
                 val active=action.identity==currentId
@@ -153,17 +153,17 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                     IosCommandIcon(if(i==0 && path.isEmpty() && action==all.firstOrNull())CommandIcons.Arrow else action.icon,
                         null,Modifier.size(20.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else if(i==0 && path.isEmpty())commandAccent ?: colors.onSurfaceVariant else colors.onSurfaceVariant)
                     Column(Modifier.weight(1f)) {
-                        Text(action.title,fontSize=GlassTokens.scaledSp(13f,appearance),fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
+                        Text(action.title,fontSize=GlassTokens.scaledSp(13.sp,appearance),fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
                             maxLines=1,overflow=TextOverflow.Ellipsis)
                         val detail=if(action.state!=ContextActionState.Available)action.state.label else action.description.takeIf{it.isNotBlank() && it!=action.group.label && it!="Principal"}.orEmpty()
-                        if(detail.isNotBlank() && (appearance.preset=="glass" || action.state!=ContextActionState.Available))Text(detail,fontSize=GlassTokens.scaledSp(11f,appearance),lineHeight=GlassTokens.scaledSp(14f,appearance),color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+                        if(detail.isNotBlank() && (appearance.preset=="glass" || action.state!=ContextActionState.Available))Text(detail,fontSize=GlassTokens.scaledSp(11.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance),color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
                     }
                     val key=action.shortcut.ifBlank { if(action==all.firstOrNull())"Enter" else "" }
                     if(action.children.isNotEmpty())IosCommandIcon(CommandIcons.Chevron,null,Modifier.size(16.dp),tint=colors.onSurfaceVariant)
                     else if(key.isNotEmpty())GlassKeycap(key)
                 }
             }
-            if(visible.isEmpty())Text("No hay acciones con ese nombre.",Modifier.padding((10f*d).dp),fontSize=GlassTokens.scaledSp(12f,appearance),color=colors.onSurfaceVariant)
+            if(visible.isEmpty())Text("No hay acciones con ese nombre.",Modifier.padding((10f*d).dp),fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant)
         }
 
     }

@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.bautista.spotlight.control.*
 import dev.bautista.spotlight.search.Action
 import kotlinx.coroutines.*
@@ -30,7 +31,7 @@ import kotlinx.coroutines.*
     LaunchedEffect(packageName){capabilities=withContext(Dispatchers.IO){runCatching{registry.available(packageName)}.getOrDefault(emptyList())}}
     Column(Modifier.fillMaxWidth().testTag("app-capabilities")) {
         HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant,modifier=Modifier.padding(bottom=(12f*d).dp))
-        Text("Acciones de app",style=MaterialTheme.typography.labelMedium,fontSize=GlassTokens.scaledSp(12f,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant,
+        Text("Acciones de app",style=MaterialTheme.typography.labelMedium,fontSize=GlassTokens.scaledSp(12.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant,
             modifier=Modifier.padding(bottom=(4f*d).dp))
         catalog.forEach { target ->
             TextButton(enabled=!busy,onClick={onAction(target.action)},
@@ -40,8 +41,8 @@ import kotlinx.coroutines.*
                 Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((10f*d).dp)) {
                     ResultIcon(target,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.primary)
                     Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy((3f*d).dp)) {
-                        Text(target.title,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12f,appearance))
-                        Text(target.subtitle,style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11f,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(target.title,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance))
+                        Text(target.subtitle,style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -58,13 +59,13 @@ import kotlinx.coroutines.*
                 contentPadding=PaddingValues(horizontal=(2f*d).dp,vertical=(8f*d).dp),
                 modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("app-capability-${capability.id}")) {
                 Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy((3f*d).dp)) {
-                    Text(capability.title,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12f,appearance))
-                    Text(capability.expectedResult,style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11f,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(capability.title,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance))
+                    Text(capability.expectedResult,style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
-        if(catalog.isEmpty() && extra.isEmpty())Text("La app no publica acciones adicionales compatibles.",style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12f,appearance))
-        if(error.isNotBlank())Text(error,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12f,appearance),color=MaterialTheme.colorScheme.error)
+        if(catalog.isEmpty() && extra.isEmpty())Text("La app no publica acciones adicionales compatibles.",style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance))
+        if(error.isNotBlank())Text(error,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance),color=MaterialTheme.colorScheme.error)
     }
 }
 

@@ -1,0 +1,39 @@
+{
+  "expected_old_lease": "5277fd79a76f5f6a0ed6224b8f0325588298cd14",
+  "old_record": {
+    "owner": "codex-cd2991d1-90b3-4ca6-96b8-ab7131a6d8aa",
+    "branch": "feat/antigravity-tablet-20261026",
+    "checkpoint": "21a60bb938e78198be2b122725b013a24c66dab1",
+    "state": "checkpoint-preview56-ux-scale-density",
+    "date": "2026-10-27T01:25:50.579250+00:00",
+    "timezone": "UTC"
+  },
+  "old_parents": "7531840428344302e476ad1364c5cb1804eac20b",
+  "source_sha": "483768cc9b62307e6fd44c0ce81049153e1a18b1",
+  "checked_status": {
+    "lease_sha": "5277fd79a76f5f6a0ed6224b8f0325588298cd14",
+    "reservation": {
+      "owner": "codex-cd2991d1-90b3-4ca6-96b8-ab7131a6d8aa",
+      "branch": "feat/antigravity-tablet-20261026",
+      "checkpoint": "21a60bb938e78198be2b122725b013a24c66dab1",
+      "state": "checkpoint-preview56-ux-scale-density",
+      "date": "2026-10-27T01:25:50.579250+00:00"
+    },
+    "validated_checkpoint": "e38eae8802c6633cb9e9cb0bcb33bb724cb3db0b",
+    "notes": "6390e024f6769ac136f4c9841b5b00c7e9490cdd"
+  },
+  "concurrent_builds": [],
+  "authorization": "Repository owner explicitly authorized this one exceptional administrative recovery in this chat on 2026-10-27; previous owner session stopped by quota. Conditional removal only of this exact stale lease, then normal acquire. No impersonation, foreign-owner release, code-branch force or age-based recovery.",
+  "mechanism": "Reservation.push(None, expected) preserves pre-push advertised-old-SHA and atomic receive checks; then Reservation.acquire with new UUID. No release(owner) call.",
+  "date": "2026-10-27T15:29:09.947465+00:00",
+  "new_record": {
+    "owner": "work-preview57-471c6243-1796-426a-a28a-5cc2ec987b16",
+    "branch": "feat/antigravity-tablet-20261026",
+    "checkpoint": "483768cc9b62307e6fd44c0ce81049153e1a18b1",
+    "state": "active",
+    "date": "2026-10-27T15:29:12.712215+00:00",
+    "timezone": "UTC",
+    "lease_sha": "a75ac6a4514d37f69b29ff1ceec54479bc1bfc89"
+  },
+  "remote_verified": true
+}
