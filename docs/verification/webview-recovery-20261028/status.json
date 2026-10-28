@@ -9,7 +9,7 @@
   "browser_errors": 0,
   "native_compilation": "PASS",
   "native_tests": {
-    "last_verified_source": "e5193a1a6c9b21132af94554ae76c7d3218aca8d",
+    "last_verified_source": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
     "tests": 7,
     "failures": 0,
     "errors": 0,
@@ -17,23 +17,21 @@
     "environment": "Robolectric Android33; fixtures only; not a device"
   },
   "lint": {
-    "last_result": "FAILED",
-    "errors": 1,
+    "last_result": "PASS on e5193a1",
+    "errors": 0,
     "warnings": 18,
-    "issue": "UnusedBoxWithConstraintsScope in SpotlightBar.kt:190",
-    "fix_source": "e5193a1a6c9b21132af94554ae76c7d3218aca8d",
-    "fix": "Replace unused outer BoxWithConstraints with Box; no frontend changes or lint suppression",
-    "rerun": "RUNNING"
+    "rereun_after_asset_packaging_fix": "RUNNING",
+    "previous_unused_scope_fix": "e5193a1"
   },
-  "apk": "ASSEMBLY_AND_SIGNATURE_VERIFICATION_PENDING; finish58.sh started normally",
+  "apk": "First signed e5193a1 APK rejected before publication: missing _nuxt assets. Corrected prototype-only packaging is being validated; no valid APK delivery claimed yet.",
   "android_screenshot": "NOT_AVAILABLE",
   "github_actions_runs_started": 0,
   "codespace_compile_log": "/workspaces/.spotlight-tools/evidence-recovery58/compile.log",
   "codespace_compile_exit": "/workspaces/.spotlight-tools/evidence-recovery58/compile.exit",
-  "last_observed_task": "finish58.sh e5193a1 lint gate",
+  "last_observed_task": "Verified finish58.sh started against 8c7128e after all8 targeted checks passed",
   "blocker": null,
   "recovered_from": "db200ec1ab05a76c36c7d2847960e42ce103edc7",
-  "source_freeze": "e5193a1a6c9b21132af94554ae76c7d3218aca8d",
+  "source_freeze": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
   "recovered_compile_exit": 0,
   "delivery_phase_file": "/workspaces/.spotlight-tools/evidence-recovery58/package58.phase",
   "delivery_result_file": "/workspaces/.spotlight-tools/evidence-recovery58/package58.exit",
@@ -50,7 +48,8 @@
     "skipped": 0,
     "environment": "Robolectric Android28",
     "method": "SpotlightBarTest.capsuleAcceptsTextAndClearButtonRunsAction",
-    "retry": "PASS; original combined build stopped during daemon shutdown, not an assertion failure"
+    "retry": "PASS; original combined build stopped during daemon shutdown, not an assertion failure",
+    "last_verified_source": "8c7128e75399ea4518e2df759a8a4caeab2e2073"
   },
   "targeted_android_checks": {
     "total": 8,
@@ -58,6 +57,15 @@
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "interrupted_log_preserved": true
+    "source": "8c7128e75399ea4518e2df759a8a4caeab2e2073"
+  },
+  "asset_packaging_fix": {
+    "source": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
+    "scope": "webviewPrototype only",
+    "failure": "Only three HTML assets were packaged; _nuxt modules missing",
+    "fix": "Variant-scoped ignoreAssetsPatterns retains underscore directories, preserving all other exclusions",
+    "frontend_rebuilt": false,
+    "rejected_apk_published": false,
+    "audit_file": "/workspaces/.spotlight-tools/evidence-recovery58/asset-audit-failure.json"
   }
 }
