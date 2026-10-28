@@ -7,14 +7,26 @@
   "frontend_generation": "PASS",
   "browser_contract_checks": 9,
   "browser_errors": 0,
-  "native_compilation": "STARTED_RESULT_UNCONFIRMED",
-  "native_tests": "NOT_RUN",
-  "lint": "NOT_RUN",
-  "apk": "NOT_VERIFIED",
+  "native_compilation": "PASS",
+  "native_tests": {
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "environment": "Robolectric Android33; Android package fixtures, not physical device"
+  },
+  "lint": "RUNNING",
+  "apk": "ASSEMBLY_AND_SIGNATURE_VERIFICATION_PENDING",
   "android_screenshot": "NOT_AVAILABLE",
   "github_actions_runs_started": 0,
   "codespace_compile_log": "/workspaces/.spotlight-tools/evidence-recovery58/compile.log",
   "codespace_compile_exit": "/workspaces/.spotlight-tools/evidence-recovery58/compile.exit",
-  "last_observed_task": ":app:compileWebviewPrototypeKotlin",
-  "blocker": "Confirmed Codespace UI screenshot shows 'Oh no, it looks like you are offline!' / 'Failed to fetch', after repeated Browser MCP timeouts. Existing compile result cannot be read. Local runtime has JDK17 but no Android SDK/ADB or authenticated private git clone."
+  "last_observed_task": ":app:lintWebviewPrototype",
+  "blocker": null,
+  "recovered_from": "db200ec1ab05a76c36c7d2847960e42ce103edc7",
+  "source_freeze": "d0c16a8c98bdcd32cfe8a3090ef32d03cf078209",
+  "recovered_compile_exit": 0,
+  "delivery_phase_file": "/workspaces/.spotlight-tools/evidence-recovery58/package58.phase",
+  "delivery_result_file": "/workspaces/.spotlight-tools/evidence-recovery58/finish58.exit",
+  "delivery_directory": "/workspaces/.spotlight-tools/delivery-webview58"
 }
