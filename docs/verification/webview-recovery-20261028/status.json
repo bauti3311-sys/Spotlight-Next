@@ -9,26 +9,76 @@
   "browser_errors": 0,
   "native_compilation": "PASS",
   "native_tests": {
-    "last_verified_source": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
     "tests": 7,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "environment": "Robolectric Android33; fixtures only; not a device"
+    "source": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
+    "environment": "Robolectric Android33; no physical device"
   },
   "lint": {
-    "last_result": "PASS on e5193a1",
+    "result": "PASS",
     "errors": 0,
     "warnings": 18,
-    "rereun_after_asset_packaging_fix": "RUNNING",
-    "previous_unused_scope_fix": "e5193a1"
+    "information": 1,
+    "duration": "5m53s"
   },
-  "apk": "First signed e5193a1 APK rejected before publication: missing _nuxt assets. Corrected prototype-only packaging is being validated; no valid APK delivery claimed yet.",
-  "android_screenshot": "NOT_AVAILABLE",
+  "apk": {
+    "result": "DELIVERED_PRIVATE_DRAFT",
+    "assembly": "BUILD SUCCESSFUL in1m58s",
+    "identity": {
+      "source_commit": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
+      "application_id": "dev.bautista.spotlight.next.webviewprototype",
+      "version_code": 58,
+      "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+      "certificate_matches_preview57": true,
+      "debuggable": false,
+      "profile": "existing explicit experimental profile; R8/shrink disabled",
+      "abi": "arm64-v8a",
+      "alignment_kib": 16,
+      "local_assets_checked": 14,
+      "production_inputs_checked": 279,
+      "native_tests": 7,
+      "compose_fallback_tests": 1,
+      "native_failures": 0,
+      "browser_contract_checks_previously_passed": 9,
+      "android_device_or_emulator_validation": "PENDING: no ADB or emulator available",
+      "real_android_overlay_screenshot": "PENDING",
+      "github_actions_runs": 0
+    },
+    "assets": [
+      {
+        "name": "Spotlight-Next-WebView-Prototype-58.apk",
+        "sha256": "ac159dd37e5db21ce14901cbbd4446528e36e9ec2e328368b5bb43d767c2e737",
+        "size": 82911017,
+        "server_verified": true,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-00429816da1e44df8406/Spotlight-Next-WebView-Prototype-58.apk"
+      },
+      {
+        "name": "Spotlight-Next-source-8c7128e.zip",
+        "sha256": "2dfdc7bb2fb78d350a334a4cb886f4049d03f86ae06c160980cf24cc7a5df16c",
+        "size": 10306485,
+        "server_verified": true,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-00429816da1e44df8406/Spotlight-Next-source-8c7128e.zip"
+      },
+      {
+        "name": "Spotlight-Next-WebView58-evidence.zip",
+        "sha256": "028f6b1a806100058efedfed2eba77a53959caea836a975c87ab7375e6ef6062",
+        "size": 42675,
+        "server_verified": true,
+        "url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/download/untagged-00429816da1e44df8406/Spotlight-Next-WebView58-evidence.zip"
+      }
+    ],
+    "release_url": "https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-00429816da1e44df8406",
+    "release_id": 427246004,
+    "uploaded_assets": 7,
+    "server_digests_verified": true
+  },
+  "android_screenshot": "PENDING: no ADB, emulator or device available",
   "github_actions_runs_started": 0,
   "codespace_compile_log": "/workspaces/.spotlight-tools/evidence-recovery58/compile.log",
   "codespace_compile_exit": "/workspaces/.spotlight-tools/evidence-recovery58/compile.exit",
-  "last_observed_task": "Verified finish58.sh started against 8c7128e after all8 targeted checks passed",
+  "last_observed_task": "All packaging/signature/integrity/source-ZIP/upload gates PASS",
   "blocker": null,
   "recovered_from": "db200ec1ab05a76c36c7d2847960e42ce103edc7",
   "source_freeze": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
@@ -40,24 +90,21 @@
   "current_test_exit": "/workspaces/.spotlight-tools/evidence-recovery58/bridge-tests.exit",
   "protected_packaging_script": "/workspaces/.spotlight-tools/evidence-recovery58/finish58.sh",
   "packaging_script_sha256": "9831c00729e0c6d92bb08f768a3631ca8fcaf75b04c67f94e1e37213691f87db",
-  "continuation": "After normal access is restored, read the existing test log/exit before starting anything. If all8 targeted checks passed, run the already prepared finish58.sh against source e5193a1a6c9b21132af94554ae76c7d3218aca8d. It gates lint, signing, assembly, identity/certificate/alignment/local-asset checks, exact source ZIP and private delivery. Otherwise correct only the demonstrated failure. No tests or lint checks may be disabled.",
+  "continuation": "Do not rebuild this SHA. Download the existing verified APK and exact source ZIP. Next action is physical Galaxy Tab A9+ validation: overlay, installed apps, keyboard/touch/actions/Escape, Compose recovery, focus/IME, rotation/insets, startup/memory and real overlay screenshot. Preserve main, previous previews and foreign reservation.",
   "compose_fallback_test": {
     "tests": 1,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "environment": "Robolectric Android28",
-    "method": "SpotlightBarTest.capsuleAcceptsTextAndClearButtonRunsAction",
-    "retry": "PASS; original combined build stopped during daemon shutdown, not an assertion failure",
-    "last_verified_source": "8c7128e75399ea4518e2df759a8a4caeab2e2073"
+    "source": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
+    "environment": "Robolectric Android28"
   },
   "targeted_android_checks": {
     "total": 8,
     "cohorts": 2,
     "failures": 0,
     "errors": 0,
-    "skipped": 0,
-    "source": "8c7128e75399ea4518e2df759a8a4caeab2e2073"
+    "skipped": 0
   },
   "asset_packaging_fix": {
     "source": "8c7128e75399ea4518e2df759a8a4caeab2e2073",
@@ -67,5 +114,6 @@
     "frontend_rebuilt": false,
     "rejected_apk_published": false,
     "audit_file": "/workspaces/.spotlight-tools/evidence-recovery58/asset-audit-failure.json"
-  }
+  },
+  "package_exit": 0
 }
