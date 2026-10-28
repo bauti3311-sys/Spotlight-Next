@@ -1,0 +1,20 @@
+{
+  "base_sha": "4fc33f2c918d3fe53a8bad7ac6571f2757630066",
+  "first_native_checkpoint": "4de95d5ddbeafe27ba0676f99e781233d0ec77b7",
+  "branch": "feat/nuxt-webview-recovery-20261028",
+  "foreign_reservation": "067da78b873f81433a97069923d9f26ea68c4761",
+  "reservation_changed": false,
+  "frontend_generation": "PASS",
+  "browser_contract_checks": 9,
+  "browser_errors": 0,
+  "native_compilation": "STARTED_RESULT_UNCONFIRMED",
+  "native_tests": "NOT_RUN",
+  "lint": "NOT_RUN",
+  "apk": "NOT_VERIFIED",
+  "android_screenshot": "NOT_AVAILABLE",
+  "github_actions_runs_started": 0,
+  "codespace_compile_log": "/workspaces/.spotlight-tools/evidence-recovery58/compile.log",
+  "codespace_compile_exit": "/workspaces/.spotlight-tools/evidence-recovery58/compile.exit",
+  "last_observed_task": ":app:compileWebviewPrototypeKotlin",
+  "blocker": "Repeated mcp__codex_apps__browser_js MCP request timeouts while accessing Codespace UI. Local execution lacks Android SDK/ADB and authenticated private git access."
+}

@@ -20,30 +20,30 @@ npm warn Unknown project config "shamefully-hoist". This will stop working in th
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/index.BoNmnn18.css        0.52 kB │ gzip:   0.21 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/error-500.CHLIJhcO.css    1.91 kB │ gzip:   0.73 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/error-404.uf7-JO-j.css    2.43 kB │ gzip:   0.86 kB
-ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/entry.CSiFb5Tb.css      146.53 kB │ gzip:  20.35 kB
+ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/entry.wzwWNKYJ.css      146.71 kB │ gzip:  20.46 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/JOBXMgZ9.js               0.50 kB │ gzip:   0.34 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/CovaaqXh.js               3.47 kB │ gzip:   1.54 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/CJlRBk1g.js               3.75 kB │ gzip:   1.68 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/DNyw625n.js               5.35 kB │ gzip:   2.38 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/AGPR8GhR.js              22.34 kB │ gzip:   8.40 kB
 ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/DoxmMnqq.js             190.25 kB │ gzip:  51.81 kB
-ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/C5wk68oH.js             340.61 kB │ gzip: 116.01 kB
-ℹ ✓ built in 4.93s
-✔ Client built in 4965ms
+ℹ ../node_modules/.cache/nuxt/.nuxt/dist/client/_nuxt/BpTUyjpn.js             340.61 kB │ gzip: 116.01 kB
+ℹ ✓ built in 5.02s
+✔ Client built in 5067ms
 ℹ Building server...
 ℹ vite v7.3.7 building ssr environment for production...
 ℹ transforming...
 ℹ ✓ 1 modules transformed.
 ℹ rendering chunks...
-ℹ ✓ built in 14ms
-✔ Server built in 20ms
+ℹ ✓ built in 11ms
+✔ Server built in 19ms
 [nitro] ℹ Initializing prerenderer
 [nitro] ℹ Prerendering 4 initial routes with crawler
-[nitro]   ├─ /404.html (21ms)
-[nitro]   ├─ / (21ms)
-[nitro]   ├─ /200.html (21ms)
-[nitro]   ├─ /index.html (22ms)
-[nitro] ℹ Prerendered 4 routes in 0.54 seconds
+[nitro]   ├─ /200.html (17ms)
+[nitro]   ├─ /404.html (17ms)
+[nitro]   ├─ /index.html (17ms)
+[nitro]   ├─ / (17ms)
+[nitro] ℹ Prerendered 4 routes in 0.557 seconds
 [nitro] ✔ Generated public .output/public
 [nitro] ✔ You can preview this build using npx serve .output/public
 │

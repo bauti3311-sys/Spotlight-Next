@@ -37,3 +37,11 @@ html, body, #__nuxt {
 /* The desktop wallpaper is deliberately absent; the palette surfaces stay original. */
 html, body, #__nuxt { background: transparent !important; }
 body { overflow: hidden; }
+
+/* Measured against the approved demo in dark mode (720 x 464, 2026-10-28).
+   UI 4 changes these defaults; keep the clone's exact surface and font stack. */
+:root, .dark {
+  --ui-bg: #161616;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+html { font-family: var(--font-sans); }

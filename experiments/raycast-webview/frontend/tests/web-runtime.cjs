@@ -32,6 +32,7 @@ const assert = require('node:assert/strict');
   window.postMessage('spotlight-native-v1',location.origin,[c.port2]);
  }, syntheticIcon);
  await page.getByRole('option').nth(1).waitFor();
+ fs.writeFileSync('/tmp/spotlight-prototype-metrics.json',JSON.stringify(await page.evaluate(()=>Object.fromEntries(['[role=dialog]','input','[role=option]','kbd'].map(sel=>{const el=document.querySelector(sel);const s=el&&getComputedStyle(el);return[sel,s&&Object.fromEntries(['backgroundColor','color','borderColor','borderWidth','borderRadius','height','fontFamily','fontSize','fontWeight','lineHeight','padding','boxShadow','backdropFilter'].map(k=>[k,s[k]]))]}))),null,2));
  assert.equal(await page.getByRole('option').count(),2); checks.push('native result packet renders through original command palette');
  const input=page.getByPlaceholder('Search for apps...');
  await input.press('ArrowDown'); await input.press('ArrowDown'); await input.press('Enter');

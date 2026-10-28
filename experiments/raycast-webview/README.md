@@ -44,13 +44,25 @@ Browser contract script: `node tests/web-runtime.cjs` (Playwright; optional `SPO
 Android gates to run when execution is restored:
 
 ```
-bash gradlew :app:compileWebviewPrototypeKotlin :app:testDebugUnitTest --tests '*LocalRaycastWebViewTest' --offline
+bash gradlew :app:compileWebviewPrototypeKotlin :app:testWebviewPrototypeUnitTest --tests '*LocalRaycastWebViewTest' --offline
 bash gradlew :app:lintWebviewPrototype :app:assembleWebviewPrototype -Pspotlight.preview.optimize=false --offline
 ```
 
 The unoptimized profile is the existing explicit experimental profile, not a claim of R8 success. Do not disable tests. Existing historical signing files must be available through the authorized protected mechanism; never generate a key. Verify `.webviewprototype`, version 58, non-debuggable, certificate and alignment before distributing. Freeze a source SHA and create APK/source ZIP from that same SHA.
 
 No Actions runs, merges, changes to main, key generation or earlier Preview updates were requested or performed.
+
+## Verified recovery checkpoint
+
+- Frontend static generation successful with Nuxt4.1.3/UI4.0.1 and no experimental dependency.
+- Nine browser contract checks pass, zero JavaScript errors, all observed resource URLs local. Browser tests use an explicit test adapter and are not Android/device evidence.
+- Reference demo captured in dark mode at720x464. Reference dialog measured672x400. Original shadow,24px backdrop blur,8px radius,48px search input,40px result rows and font stack were checked. Stable UI's changed font stack and#171717 surface were corrected to the reference stack and#161616/70%.
+- Native integration checkpoint4de95d5 was fetched into `/workspaces/.spotlight-tools/recovery58-4de95d5`. Offline `:app:compileWebviewPrototypeKotlin` was launched with JDK17,worker1,2GiB,SerialGC and the existing SDK/Gradle caches. Last observed task:compileWebviewPrototypeKotlin. Its result is UNCONFIRMED because Browser/Codespace tool calls repeatedly time out. No APK or signed artifact verified.
+- Detached launcher PID8835; log `/workspaces/.spotlight-tools/evidence-recovery58/compile.log`; exit status `compile.exit`. Inspect those before launching any other build. Never kill another session's process or reclaim its lock.
+- Two new Robolectric security/asset tests are written but NOT executed. They need `testWebviewPrototypeUnitTest` so variant assets are present. Full lint/assembly/signing, Android WebView rendering, actual installed apps, IME/focus/insets/rotation/recovery, timings/memory and actual overlay screenshots remain PENDING.
+- No main/merge/force/Actions/signing changes. Foreign reservation unchanged.
+
+Next: recover the existing compile result; resolve a demonstrated failure if present; run the directed native tests and lint; only after success, build/sign with existing historical credentials through the authorized protected mechanism. Freeze that source commit and package its exact source ZIP. Obtain actual Android overlay screenshots before certifying visual fidelity. Browser screenshots must remain labeled as browser evidence.
 
 ## Verified browser checkpoint
 
