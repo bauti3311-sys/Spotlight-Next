@@ -16,5 +16,5 @@
   "codespace_compile_log": "/workspaces/.spotlight-tools/evidence-recovery58/compile.log",
   "codespace_compile_exit": "/workspaces/.spotlight-tools/evidence-recovery58/compile.exit",
   "last_observed_task": ":app:compileWebviewPrototypeKotlin",
-  "blocker": "Repeated mcp__codex_apps__browser_js MCP request timeouts while accessing Codespace UI. Local execution lacks Android SDK/ADB and authenticated private git access."
+  "blocker": "Confirmed Codespace UI screenshot shows 'Oh no, it looks like you are offline!' / 'Failed to fetch', after repeated Browser MCP timeouts. Existing compile result cannot be read. Local runtime has JDK17 but no Android SDK/ADB or authenticated private git clone."
 }
