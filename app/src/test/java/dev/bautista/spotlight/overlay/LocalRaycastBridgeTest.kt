@@ -138,10 +138,7 @@ class LocalRaycastBridgeTest {
             override fun getMethod() = "GET"
             override fun getRequestHeaders() = emptyMap<String, String>()
         }
-        val error = object : WebResourceError() {
-            override fun getErrorCode() = -2
-            override fun getDescription(): CharSequence = "Test load error"
-        }
+        val error = android.webkit.LocalRaycastTestWebError()
         palette.webViewClient.onReceivedError(palette, request(false), error)
         ShadowLooper.idleMainLooper()
         assertEquals(0, recoveries)
