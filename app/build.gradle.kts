@@ -97,6 +97,11 @@ androidComponents {
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 28) }
  }
  onVariants(selector().withBuildType("webviewPrototype")) { variant ->
+  // AAPT drops underscore-prefixed asset directories by default; retain Nuxt modules.
+  // Apply only to this prototype so previous Preview variants keep their defaults.
+  variant.androidResources.ignoreAssetsPatterns.set(listOf(
+   "!.svn", "!.git", "!.ds_store", "!*.scc", ".*", "!CVS", "!thumbs.db", "!picasa.ini", "!*~"
+  ))
   variant.outputs.forEach { output -> output.versionCode.set(58) }
  }
  onVariants(selector().withBuildType("review")) { variant ->
