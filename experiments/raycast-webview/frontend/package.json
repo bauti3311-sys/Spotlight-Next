@@ -1,0 +1,40 @@
+{
+  "name": "raycast-nuxt-ui-clone",
+  "private": true,
+  "type": "module",
+  "description": "A Raycast command palette clone built with Nuxt UI to demonstrate component customization capabilities",
+  "author": "HugoRCD",
+  "funding": "https://github.com/sponsors/HugoRCD",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HugoRCD/raycast-nuxt-ui-clone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HugoRCD/raycast-nuxt-ui-clone/issues"
+  },
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@nuxt/ui": "4.0.1",
+    "@unhead/vue": "^2.1.13",
+    "@vueuse/core": "^13.9.0",
+    "@vueuse/nuxt": "13.9.0",
+    "nuxt": "4.1.3",
+    "vue": "3.5.22"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.148",
+    "@iconify-json/simple-icons": "^1.2.101",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

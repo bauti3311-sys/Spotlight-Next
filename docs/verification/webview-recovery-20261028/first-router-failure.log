@@ -1,0 +1,33 @@
+initial Connecting to Android…
+Open Application
+↵
+Actions
+Ctrl
+K [] [
+  'https://spotlight.local/',
+  'https://spotlight.local/_nuxt/entry.CSiFb5Tb.css',
+  'https://spotlight.local/_nuxt/C5wk68oH.js',
+  'https://spotlight.local/_nuxt/DNyw625n.js',
+  'https://spotlight.local/_nuxt/AGPR8GhR.js',
+  'https://spotlight.local/_nuxt/JOBXMgZ9.js',
+  'https://spotlight.local/_nuxt/error-404.uf7-JO-j.css',
+  'https://spotlight.local/_nuxt/CJlRBk1g.js',
+  'https://spotlight.local/_nuxt/error-500.CHLIJhcO.css',
+  'https://spotlight.local/_nuxt/CovaaqXh.js',
+  'https://spotlight.local/_nuxt/DoxmMnqq.js',
+  'https://spotlight.local/_nuxt/index.BoNmnn18.css',
+  'https://spotlight.local/_nuxt/DNyw625n.js',
+  'https://spotlight.local/_nuxt/AGPR8GhR.js'
+]
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+0 !== 1
+
+    at /workspace/scratch/378073a3682d/raycast-upstream/tests/web-runtime.cjs:39:9 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 0,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

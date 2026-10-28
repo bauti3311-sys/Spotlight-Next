@@ -37,6 +37,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     override val viewModelStore = ViewModelStore()
     private var view: WindowFocusHost? = null
     private var composition: ComposeView? = null
+    private var webPalette: LocalRaycastWebView? = null
+    private var webFallback = false
     private var closing=false
     private var actionsVisible=false
     private var focusSeen = false
@@ -92,6 +94,12 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
 
     private fun refreshWindowGeometry(animateWidth: Boolean = false) {
         val geometry = updateAvailableHeight()
+        webPalette?.let { palette ->
+            palette.layoutParams?.let { layout ->
+                layout.height = (minOf(464f, geometry.heightDp) * resources.displayMetrics.density).toInt().coerceAtLeast(1)
+                palette.layoutParams = layout
+            }
+        }
         if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0 && lastLoggedGeometry != geometry) {
             lastLoggedGeometry = geometry
             android.util.Log.d("SpotlightOverlay", "Geometry=$geometry bottom=$lastBottomInset system=$lastSystemBottomInset")
@@ -245,6 +253,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
     }
 
     private fun show() {
+        if (packageName.endsWith(".webviewprototype") && !webFallback) {
+            showWebPalette()
+            return
+        }
         val openingBounds = updateAvailableHeight()
         if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) android.util.Log.d("SpotlightOverlay", "Opening geometry=$openingBounds")
         val panel =
@@ -348,6 +360,46 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         }
     }
 
+    private fun showWebPalette() {
+        val geometry = updateAvailableHeight()
+        try {
+            val palette = LocalRaycastWebView(overlayContext, app, lifecycleScope, { config },
+                { close() }, { restoreComposePalette() })
+            val host = WindowFocusHost(overlayContext, { close() }, { gained ->
+                if (gained) focusSeen = true
+            }).apply {
+                addView(palette, android.widget.FrameLayout.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    (minOf(464f, geometry.heightDp) * resources.displayMetrics.density).toInt().coerceAtLeast(1)))
+            }
+            webPalette = palette
+            ViewCompat.setOnApplyWindowInsetsListener(host) { _, insets ->
+                lastSystemBottomInset = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()).bottom
+                lastBottomInset = maxOf(insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
+                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom)
+                refreshWindowGeometry()
+                insets
+            }
+            wm.addView(host, params(geometry))
+            view = host
+            ViewCompat.requestApplyInsets(host)
+            palette.requestFocus()
+        } catch (_: RuntimeException) {
+            restoreComposePalette()
+        }
+    }
+
+    private fun restoreComposePalette() {
+        if (closing || webFallback) return
+        webFallback = true
+        view?.let { runCatching { wm.removeViewImmediate(it) } }
+        view = null
+        webPalette?.dispose()
+        webPalette = null
+        Toast.makeText(this, "La interfaz web no pudo iniciarse. Se recuperó Compose.", Toast.LENGTH_LONG).show()
+        show()
+    }
+
     // WindowRecomposer is installed on the window root, so owners must be on the
     // host itself, not only on the ComposeView child.
     internal fun createHost(panel: ComposeView): WindowFocusHost {
@@ -409,6 +461,8 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         composition = null
         view?.let { runCatching { wm.removeViewImmediate(it) } }
         view = null
+        webPalette?.dispose()
+        webPalette = null
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
@@ -434,7 +488,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         composition = null
         view?.let { runCatching { wm.removeViewImmediate(it) } }
         view = null
+        webPalette?.dispose()
+        webPalette = null
         viewModelStore.clear()
         super.onDestroy()
     }
 }
+

@@ -1,0 +1,3 @@
+<template>
+  <CommandConsole />
+</template>

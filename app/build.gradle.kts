@@ -51,6 +51,13 @@ android {
    signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null
    matchingFallbacks += listOf("debug")
   }
+  // Isolated first WebView prototype; historical Preview packages remain untouched.
+  create("webviewPrototype") {
+   initWith(getByName("raycastPreview"))
+   applicationIdSuffix = ".webviewprototype"
+   versionNameSuffix = "-webview-prototype"
+   matchingFallbacks += listOf("raycastPreview", "debug")
+  }
   // Independent, release-optimized preview. Never an update of the historically signed app.
   create("preview") {
    initWith(getByName("release"))
@@ -88,6 +95,9 @@ android {
 androidComponents {
  onVariants(selector().withBuildType("raycastPreview")) { variant ->
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 28) }
+ }
+ onVariants(selector().withBuildType("webviewPrototype")) { variant ->
+  variant.outputs.forEach { output -> output.versionCode.set(58) }
  }
  onVariants(selector().withBuildType("review")) { variant ->
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
@@ -141,3 +151,4 @@ tasks.withType<Test>().configureEach {
   System.getProperty(key)?.let { systemProperty(key, it) }
  }
 }
+

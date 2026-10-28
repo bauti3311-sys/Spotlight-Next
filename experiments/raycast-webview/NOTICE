@@ -1,0 +1,5 @@
+Raycast Nuxt UI Clone — HugoRCD (https://github.com/HugoRCD/raycast-nuxt-ui-clone)
+Licensed under Apache License, Version 2.0; original LICENSE accompanies this adaptation.
+Modified 2026-10-28 for Spotlight Next: local static packaging, native MessagePort adapter,
+real Android application results, desktop wallpaper removal and original component API adaptation.
+Nuxt UI is MIT licensed. Bundled Lucide and Simple Icons retain their upstream licenses.

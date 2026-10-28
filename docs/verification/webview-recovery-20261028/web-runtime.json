@@ -1,0 +1,31 @@
+{
+  "environment": "Chromium browser with test-only MessagePort adapter; NOT Android WebView or installed apps",
+  "checks": [
+    "production has no simulated results without native host",
+    "native result packet renders through original command palette",
+    "arrows and Enter produce one allowlisted launch message",
+    "touch-style selection does not launch an application",
+    "ActionPanel routes Application Info to selected result",
+    "typing sends native query and replaces results",
+    "Escape dismisses ActionPanel before closing overlay",
+    "Escape sends close request",
+    "all observed runtime resources use the local origin"
+  ],
+  "errors": [],
+  "requests": [
+    "https://spotlight.local/",
+    "https://spotlight.local/_nuxt/entry.CSiFb5Tb.css",
+    "https://spotlight.local/_nuxt/C5wk68oH.js",
+    "https://spotlight.local/_nuxt/DNyw625n.js",
+    "https://spotlight.local/_nuxt/AGPR8GhR.js",
+    "https://spotlight.local/_nuxt/JOBXMgZ9.js",
+    "https://spotlight.local/_nuxt/error-404.uf7-JO-j.css",
+    "https://spotlight.local/_nuxt/CJlRBk1g.js",
+    "https://spotlight.local/_nuxt/error-500.CHLIJhcO.css",
+    "https://spotlight.local/_nuxt/CovaaqXh.js",
+    "https://spotlight.local/_nuxt/DoxmMnqq.js",
+    "https://spotlight.local/_nuxt/index.BoNmnn18.css",
+    "https://spotlight.local/_nuxt/DNyw625n.js",
+    "https://spotlight.local/_nuxt/AGPR8GhR.js"
+  ]
+}

@@ -1,0 +1,27 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+npm warn Unknown project config "shamefully-hoist". This will stop working in the next major version of npm.
+
+> generate
+> nuxt generate
+
+┌  Building Nuxt for production...
+│
+●  Nuxt 3.21.11 (with Nitro 2.13.5, Vite 7.3.7 and Vue 3.5.44)
+
+ WARN  [NUXT_B8013] Module @nuxt/ui is disabled due to incompatibility issues:
+ - [nuxt] Nuxt version >=4.0.0 is required but currently using 3.21.11
+╰▶ fix: Update the module to a version that supports the current Nuxt version, or set experimental.enforceModuleCompatibility to true to make this a fatal error.
+
+[nuxt] ℹ Running with compatibility version 4
+│
+●  Nitro preset: static
+ℹ Building client...
+ℹ vite v7.3.7 building client environment for production...
+ℹ transforming...
+ℹ ✓ 61 modules transformed.
+
+ ERROR  ✗ Build failed in 416ms
+
+│
+■  Nuxt build error: Error: [vite:css] [postcss] ENOENT: no such file or directory, open '/workspace/scratch/378073a3682d/raycast-upstream/node_modules/.cache/nuxt/.nuxt/ui.css'
+│  file: /workspace/scratch/378073a3682d/raycast-upstream/app/assets/css/index.css:undefined:NaN
