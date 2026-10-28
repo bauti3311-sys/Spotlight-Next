@@ -9,14 +9,12 @@
   "browser_errors": 0,
   "native_compilation": "PASS",
   "native_tests": {
-    "last_verified_source": "d0c16a8c98bdcd32cfe8a3090ef32d03cf078209",
+    "last_verified_source": "e5193a1a6c9b21132af94554ae76c7d3218aca8d",
     "tests": 7,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "environment": "Robolectric Android33; fixtures only; not a device",
-    "current_source_revalidation": "STARTED_RESULT_UNCONFIRMED",
-    "additional_compose_case": "SpotlightBarTest.capsuleAcceptsTextAndClearButtonRunsAction; started, result unconfirmed"
+    "environment": "Robolectric Android33; fixtures only; not a device"
   },
   "lint": {
     "last_result": "FAILED",
@@ -25,24 +23,41 @@
     "issue": "UnusedBoxWithConstraintsScope in SpotlightBar.kt:190",
     "fix_source": "e5193a1a6c9b21132af94554ae76c7d3218aca8d",
     "fix": "Replace unused outer BoxWithConstraints with Box; no frontend changes or lint suppression",
-    "rerun": "NOT_STARTED"
+    "rerun": "RUNNING"
   },
-  "apk": "NOT_VERIFIED; next packaging command was rejected and not executed",
+  "apk": "ASSEMBLY_AND_SIGNATURE_VERIFICATION_PENDING; finish58.sh started normally",
   "android_screenshot": "NOT_AVAILABLE",
   "github_actions_runs_started": 0,
   "codespace_compile_log": "/workspaces/.spotlight-tools/evidence-recovery58/compile.log",
   "codespace_compile_exit": "/workspaces/.spotlight-tools/evidence-recovery58/compile.exit",
-  "last_observed_task": "Native7 plus Compose1 revalidation started on e5193a1; result not read",
-  "blocker": "Automatic browser approval review rejected Codespace access because the session usage limit was reached. The next packaging/orchestration command was NOT executed. This is neither a compiler failure nor a safety determination. Resume only after normal access is restored; do not bypass this approval block.",
+  "last_observed_task": "finish58.sh e5193a1 lint gate",
+  "blocker": null,
   "recovered_from": "db200ec1ab05a76c36c7d2847960e42ce103edc7",
   "source_freeze": "e5193a1a6c9b21132af94554ae76c7d3218aca8d",
   "recovered_compile_exit": 0,
   "delivery_phase_file": "/workspaces/.spotlight-tools/evidence-recovery58/package58.phase",
-  "delivery_result_file": "/workspaces/.spotlight-tools/evidence-recovery58/finish58.exit",
+  "delivery_result_file": "/workspaces/.spotlight-tools/evidence-recovery58/package58.exit",
   "delivery_directory": "/workspaces/.spotlight-tools/delivery-webview58",
   "current_test_log": "/workspaces/.spotlight-tools/evidence-recovery58/bridge-tests.log",
   "current_test_exit": "/workspaces/.spotlight-tools/evidence-recovery58/bridge-tests.exit",
   "protected_packaging_script": "/workspaces/.spotlight-tools/evidence-recovery58/finish58.sh",
   "packaging_script_sha256": "9831c00729e0c6d92bb08f768a3631ca8fcaf75b04c67f94e1e37213691f87db",
-  "continuation": "After normal access is restored, read the existing test log/exit before starting anything. If all8 targeted checks passed, run the already prepared finish58.sh against source e5193a1a6c9b21132af94554ae76c7d3218aca8d. It gates lint, signing, assembly, identity/certificate/alignment/local-asset checks, exact source ZIP and private delivery. Otherwise correct only the demonstrated failure. No tests or lint checks may be disabled."
+  "continuation": "After normal access is restored, read the existing test log/exit before starting anything. If all8 targeted checks passed, run the already prepared finish58.sh against source e5193a1a6c9b21132af94554ae76c7d3218aca8d. It gates lint, signing, assembly, identity/certificate/alignment/local-asset checks, exact source ZIP and private delivery. Otherwise correct only the demonstrated failure. No tests or lint checks may be disabled.",
+  "compose_fallback_test": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "environment": "Robolectric Android28",
+    "method": "SpotlightBarTest.capsuleAcceptsTextAndClearButtonRunsAction",
+    "retry": "PASS; original combined build stopped during daemon shutdown, not an assertion failure"
+  },
+  "targeted_android_checks": {
+    "total": 8,
+    "cohorts": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "interrupted_log_preserved": true
+  }
 }
