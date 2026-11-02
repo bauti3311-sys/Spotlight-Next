@@ -1,0 +1,40 @@
+{
+  "base_sha": "4fc33f2c918d3fe53a8bad7ac6571f2757630066",
+  "component": "ActionPanelView",
+  "runtime": "Robolectric 4.14.1, API 33, NATIVE",
+  "physical_device": false,
+  "cases": {
+    "groups": "default Raycast/dark, same fixture and selection",
+    "compact-large-text": "Obsidian/dark, textScale=1.15, uiDensityScale=0.85, same fixture and selection"
+  },
+  "images": {
+    "after/compact-large-text.png": {
+      "sha256": "8220f6f658e3c8c225ab4e1a8fa8cb32deb4be611009ebbd6d12883f9c30a648",
+      "pixels": [
+        300,
+        260
+      ]
+    },
+    "after/groups.png": {
+      "sha256": "56b724ea3a9ed61f78b7cd54997d24bc7a898a1e0a4ec56cc84f94f6f24a1d01",
+      "pixels": [
+        296,
+        383
+      ]
+    },
+    "before/compact-large-text.png": {
+      "sha256": "e8ab00edf4d31b7cb4455d1111416d558f47f2bcb714c50c407af5ae8f4c3005",
+      "pixels": [
+        300,
+        256
+      ]
+    },
+    "before/groups.png": {
+      "sha256": "3234f29165b9b170156b9994ae685224d5bc66933fd37575e24961411d89afc7",
+      "pixels": [
+        296,
+        375
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+Checking the license for package Android SDK Platform-Tools in /workspace/scratch/android-sdk/licenses
+Warning: License for package Android SDK Platform-Tools not accepted.
+WARNING: platform-tools package is not installed. Please accept the installation licence to continue
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Could not determine the dependencies of task ':app:testDebugUnitTest'.
+> Could not create task ':app:compileDebugUnitTestJavaWithJavac'.
+   > Failed to calculate the value of task ':app:compileDebugUnitTestJavaWithJavac' property 'javaCompiler'.
+      > Toolchain installation '/usr/lib/jvm/java-21-openjdk-amd64' does not provide the required capabilities: [JAVA_COMPILER]
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 29s

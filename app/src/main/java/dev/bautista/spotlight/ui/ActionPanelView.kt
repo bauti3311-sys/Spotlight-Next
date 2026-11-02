@@ -134,8 +134,8 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 } else action.group
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=(6f*d).dp),color=colors.onSurface.copy(alpha=.08f))
-                    Text(group.label.uppercase(java.util.Locale.ROOT),Modifier.padding(start=(10f*d).dp,top=(4f*d).dp,bottom=(4f*d).dp),
-                        fontSize=GlassTokens.scaledSp(10.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=0.sp)
+                    Text(group.label,Modifier.padding(start=(10f*d).dp,top=(4f*d).dp,bottom=(4f*d).dp).semantics { heading() },
+                        fontSize=GlassTokens.scaledSp(12.sp,appearance,minSp=11f),lineHeight=GlassTokens.scaledSp(16.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=0.sp)
                     previous=group
                 }
                 val active=action.identity==currentId

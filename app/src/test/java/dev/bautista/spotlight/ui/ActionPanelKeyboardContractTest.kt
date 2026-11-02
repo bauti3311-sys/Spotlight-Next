@@ -9,6 +9,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
+import com.github.takahirom.roborazzi.*
 import org.junit.*
 import org.junit.Assert.*
 import org.junit.runner.RunWith
@@ -16,7 +17,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-@OptIn(ExperimentalTestApi::class)
+@OptIn(ExperimentalTestApi::class,ExperimentalRoborazziApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk=[33])
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -92,8 +93,8 @@ class ActionPanelKeyboardContractTest {
             ),FocusRequester())
         } }
         ui.onAllNodesWithText("Copiar").assertCountEquals(2)
-        ui.onNodeWithText("ORGANIZAR").assertExists()
-        ui.onNodeWithText("TEXTO").assertExists()
+        ui.onNodeWithText("Organizar").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        ui.onNodeWithText("Texto").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
     }
     @Test fun actionGroupsHaveVisibleHeadingsWithoutExecutingItems() {
         var action=""
@@ -108,10 +109,12 @@ class ActionPanelKeyboardContractTest {
                 ),focus)
             }
         }
-        ui.onNodeWithText("PRINCIPAL").assertExists()
-        ui.onNodeWithText("ORGANIZAR").assertExists()
-        ui.onNodeWithText("TEXTO").assertExists()
+        ui.onNodeWithText("Principal").assertIsDisplayed().assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        ui.onNodeWithText("Organizar").assertIsDisplayed().assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        ui.onNodeWithText("Texto").assertIsDisplayed().assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
         ui.runOnIdle { assertEquals("",action) }
+        ui.onNodeWithTag("context-action-panel").captureRoboImage(
+            "build/unslop-actions/groups.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
     }
 
     @Test fun tabCyclesAndEnterRunsOnlyFocusedContextAction(){
@@ -153,5 +156,7 @@ class ActionPanelKeyboardContractTest {
         ui.onNodeWithText("Copiar…").assertHeightIsAtLeast(48.dp)
         ui.onNodeWithText("Corregir con IA").assertHeightIsAtLeast(48.dp)
         ui.onNodeWithText("Revisar antes de enviar al proveedor").assertExists()
+        ui.onNodeWithTag("context-action-panel").captureRoboImage(
+            "build/unslop-actions/compact-large-text.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
     }
 }

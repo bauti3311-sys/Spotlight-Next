@@ -700,3 +700,22 @@ Dos intentos de la fuente0989f3c3 perdieron el daemon en minifyRaycastPreviewWit
 APK y ZIP fuente exactos `ecbfdc8a927c4442135542090ad2c755fa03a1fc`: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-2770747db701386cd5bc. Seis assets uploaded y digests del servidor comprobados. Ensamblado offline experimental correcto2m43s(10 tareas ejecutadas/40al día), sin R8/shrink; mismo paquete independiente/versionCode54/certificado885838aa…/no debuggable/16KiB y ZIP sin rutas privadas. Lint existente del mismo SHA0E16W;67 UI únicas correctas en cohortes, sin repetir ni sumar ejecuciones. APK SHA256e8e8e5d0074c8b1ae4448397bfffd87d2c36af0f99d2163315ee3a4951f69372; ZIP907f7599b779e91b36245e6b05979d21f37b05e426df7d1ede5f4dd0add20319.
 
 Se conservaron los dos fallos R8 y el primer fallo experimental en mergeDex. El ensamblado separado de lint, heap2GiB/SerialGC/worker1 y proceso desacoplado terminó; esto no demuestra la causa de los daemons perdidos. Perfil optimizado continúa BLOCKED. Falta inicial de /usr/bin/time bloqueó solo el lanzador, antes de Gradle; medidor builtin utilizado. No nuevas funciones/rediseños, Actions, permisos, dependencia ni firma nueva. Sin dispositivo/cuenta Spotify real, reproducción pendiente; WhatsApp vinculado desactivado. PR18 borrador y matriz9/25/6 conservados. Cierre solicitado para Antigravity: publicar evidencia, preparar notas y liberar únicamente reserva propia mediante script/protocolo; comprobar remoto y detener Codespace.
+
+## 2026-11-02 — pulido Unslop del menú sobre Preview 57
+
+Base real `4fc33f2c918d3fe53a8bad7ac6571f2757630066`, identificada por la nota de
+entrega de Preview57. Rama aislada `feat/preview57-unslop-20261102`; reserva
+adquirida normalmente después de verificar que estaba libre. Se conserva la
+implementación nativa: encabezados del menú con escritura original, 12/16sp,
+mínimo11sp y semántica de heading. Capturas del mismo componente/fixture antes
+y después, también densidad85%/texto115%, en
+`docs/verification/unslop-preview57-20261102/`.
+
+Siete casos del menú y cuatro de barra correctos en cohortes (once únicos, sin
+sumar las dos referencias iniciales). Lint detectó un BoxWithConstraints sin uso
+del scope ya presente en SpotlightBar; reemplazado por Box equivalente. Tres
+fallos de pruebas de barra por selector obsoleto conservados; selector actualizado
+al nombre real sin reducir aserciones. Lint final correcto2m24s,0errores/26advertencias/1info;
+XML y log conservados antes de publicar. No APK nueva, firma, Actions, merge ni cambios de main.
+Capturas Robolectric/API33 NATIVE del menú; pruebas de barra API28. No se afirma
+validación física de TalkBack/One UI/IME ni mejoras de rendimiento.
