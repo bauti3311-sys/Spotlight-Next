@@ -719,3 +719,23 @@ al nombre real sin reducir aserciones. Lint final correcto2m24s,0errores/26adver
 XML y log conservados antes de publicar. No APK nueva, firma, Actions, merge ni cambios de main.
 Capturas Robolectric/API33 NATIVE del menú; pruebas de barra API28. No se afirma
 validación física de TalkBack/One UI/IME ni mejoras de rendimiento.
+
+
+## 2026-11-02 — Hallmark y Jakub aplicados al menú nativo
+
+Continuación de PR19 desde39f5c35, misma rama aislada y reserva adquirida después
+de verificarla libre. Se aplican seis skills de Jakub (accesibilidad, layout,
+texto, tipografía, color y pulido) y criterios Hallmark compatibles con Compose.
+Nombre accesible estable del filtro, contorno de foco inmediato y borde por rol,
+títulos/detalles completos al200% y recuperación del estado sin coincidencias.
+Fallo de recorte reproducido sobre la base; cuatro pruebas nuevas y siete
+contratos previos del menú correctos (once únicos). Claro/oscuro,320dp,200%,RTL,
+Enter/Tab/Escape/Ctrl+F y callbacks comprobados; capturas equivalentes y contrastes
+medidos: foco mínimo12.141:1, borde mínimo3.291:1 en esos fixtures. Lint final
+correcto2m,0E/26W/1info. Detalles y límites en
+docs/verification/hallmark-jakub-preview57-20261102/README.md.
+
+Sloplint no soporta Kotlin: intento con código2 y log preservado, nunca declarado
+verde. .hallmark conserva preflight/log de la adaptación; no se incorpora web ni
+se generan estados ficticios. Sin APK nueva, firma, dependencia, Actions ni merge;
+TalkBack físico/OneUI/IME/transparencias/performance siguen no verificados.
