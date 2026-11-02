@@ -1,0 +1,172 @@
+{
+  "method": "WCAG 2 relative luminance from rendered flat pixels, Robolectric API33 NATIVE",
+  "pairs": [
+    {
+      "theme": "dark",
+      "pair": "focus/field",
+      "foreground": [
+        245,
+        245,
+        248
+      ],
+      "background": [
+        34,
+        36,
+        44
+      ],
+      "ratio": 14.225,
+      "minimum": 3.0
+    },
+    {
+      "theme": "dark",
+      "pair": "focus/surface",
+      "foreground": [
+        245,
+        245,
+        248
+      ],
+      "background": [
+        25,
+        28,
+        36
+      ],
+      "ratio": 15.653,
+      "minimum": 3.0
+    },
+    {
+      "theme": "dark",
+      "pair": "focus/selected-row",
+      "foreground": [
+        245,
+        245,
+        248
+      ],
+      "background": [
+        45,
+        48,
+        55
+      ],
+      "ratio": 12.141,
+      "minimum": 3.0
+    },
+    {
+      "theme": "dark",
+      "pair": "input-outline/field",
+      "foreground": [
+        140,
+        141,
+        146
+      ],
+      "background": [
+        34,
+        36,
+        44
+      ],
+      "ratio": 4.673,
+      "minimum": 3.0
+    },
+    {
+      "theme": "dark",
+      "pair": "input-outline/surface",
+      "foreground": [
+        140,
+        141,
+        146
+      ],
+      "background": [
+        25,
+        28,
+        36
+      ],
+      "ratio": 5.142,
+      "minimum": 3.0
+    },
+    {
+      "theme": "light",
+      "pair": "focus/field",
+      "foreground": [
+        24,
+        24,
+        27
+      ],
+      "background": [
+        242,
+        242,
+        244
+      ],
+      "ratio": 15.846,
+      "minimum": 3.0
+    },
+    {
+      "theme": "light",
+      "pair": "focus/surface",
+      "foreground": [
+        24,
+        24,
+        27
+      ],
+      "background": [
+        250,
+        250,
+        252
+      ],
+      "ratio": 16.995,
+      "minimum": 3.0
+    },
+    {
+      "theme": "light",
+      "pair": "focus/selected-row",
+      "foreground": [
+        24,
+        24,
+        27
+      ],
+      "background": [
+        229,
+        229,
+        231
+      ],
+      "ratio": 14.083,
+      "minimum": 3.0
+    },
+    {
+      "theme": "light",
+      "pair": "input-outline/field",
+      "foreground": [
+        133,
+        133,
+        136
+      ],
+      "background": [
+        242,
+        242,
+        244
+      ],
+      "ratio": 3.291,
+      "minimum": 3.0
+    },
+    {
+      "theme": "light",
+      "pair": "input-outline/surface",
+      "foreground": [
+        133,
+        133,
+        136
+      ],
+      "background": [
+        250,
+        250,
+        252
+      ],
+      "ratio": 3.529,
+      "minimum": 3.0
+    }
+  ],
+  "sample_coordinates": {
+    "focus_foreground": "after/{theme}-filter-focus.png at (24,1)",
+    "field_background": "after/{theme}-filter-focus.png at (24,3)",
+    "surface_background": "after/{theme}-filter-focus.png at (150,55)",
+    "selected_background": "after/{theme}-filter-focus.png at (280,130)",
+    "unfocused_outline": "after/{theme}-row-focus.png at (24,0)"
+  }
+}

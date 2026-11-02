@@ -1,0 +1,63 @@
+{
+  "base_sha": "39f5c35ec56e50aa7d497995cff9d82869aebfd7",
+  "physical_device": false,
+  "runtime": "Robolectric 4.14.1 API33 NATIVE",
+  "images": {
+    "after/dark-filter-focus.png": {
+      "sha256": "01e57536eb3d22cc78622800ce5f00575b99ad92caec9e504448ef3c3fc89ac0",
+      "size": [
+        296,
+        233
+      ]
+    },
+    "after/raycast-groups.png": {
+      "sha256": "3169e2871e33f3c12f93a305125ae259882a4659dba6bdc073aa02ff1f9b902f",
+      "size": [
+        296,
+        383
+      ]
+    },
+    "after/light-filter-focus.png": {
+      "sha256": "532cea8a02220df45dae03efa7edccc8000db923665edfa264e0f6841a81ea8a",
+      "size": [
+        296,
+        233
+      ]
+    },
+    "after/light-row-focus.png": {
+      "sha256": "59cc600c2f1a546c8e3c37fbcfc5beba69abd2384ec5a5d90546424aa4a2e8cd",
+      "size": [
+        296,
+        233
+      ]
+    },
+    "after/phone-large-text.png": {
+      "sha256": "935379dcdb00945b89f4cb20c280a10fa171bfd129d3011e85dfebc463fe6d42",
+      "size": [
+        296,
+        503
+      ]
+    },
+    "after/dark-row-focus.png": {
+      "sha256": "8e8d00bdbee75b79b6691144dbea351b42ad614891faadb15696ffb2cf8242b1",
+      "size": [
+        296,
+        233
+      ]
+    },
+    "before/raycast-groups.png": {
+      "sha256": "56b724ea3a9ed61f78b7cd54997d24bc7a898a1e0a4ec56cc84f94f6f24a1d01",
+      "size": [
+        296,
+        383
+      ]
+    },
+    "before/phone-large-text.png": {
+      "sha256": "de18bf6e91844da7eb35d38fe9673040fb471e28d5b159d42cef91df73d0b5c0",
+      "size": [
+        296,
+        279
+      ]
+    }
+  }
+}

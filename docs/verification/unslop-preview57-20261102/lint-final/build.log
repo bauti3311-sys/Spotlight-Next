@@ -1,0 +1,36 @@
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewKotlin
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:generateRaycastPreviewLintReportModel
+> Task :app:bundleRaycastPreviewClassesToCompileJar
+> Task :app:generateRaycastPreviewUnitTestLintModel
+> Task :app:lintAnalyzeRaycastPreview
+> Task :app:lintAnalyzeRaycastPreviewUnitTest
+
+> Task :app:lintReportRaycastPreview
+Wrote HTML report to file:///workspace/Spotlight-Next/app/build/reports/lint-results-raycastPreview.html
+
+> Task :app:lintRaycastPreview
+
+BUILD SUCCESSFUL in 2m 24s
+26 actionable tasks: 8 executed, 18 up-to-date

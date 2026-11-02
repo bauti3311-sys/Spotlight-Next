@@ -1,0 +1,24 @@
+[
+  {
+    "mode": "native-polish",
+    "scope": "app component",
+    "theme": "existing Spotlight system",
+    "hallmark_version": "2.0.0",
+    "applied_native_gates": [
+      "15: instant focus",
+      "26a: visible focus",
+      "39a: stable control geometry (native drawing)",
+      "40: measured focus/input contrast",
+      "48: role tokens"
+    ],
+    "not_applicable": [
+      "HTML/CSS lint",
+      "hero and marketing copy budget",
+      "theme draw",
+      "CSS stamp",
+      "web URL state",
+      "web nowrap rule: native action labels wrap to preserve names at 200% text"
+    ],
+    "report": "docs/verification/hallmark-jakub-preview57-20261102/README.md"
+  }
+]

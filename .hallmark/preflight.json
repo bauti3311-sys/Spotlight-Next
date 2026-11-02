@@ -1,0 +1,35 @@
+{
+  "scope": "native Android action menu",
+  "mode": "compatible criteria, polish",
+  "base_sha": "39f5c35ec56e50aa7d497995cff9d82869aebfd7",
+  "source": [
+    "app/src/main/java/dev/bautista/spotlight/ui/ActionPanelView.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassTokens.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/Theme.kt",
+    "AGENTS.md"
+  ],
+  "material": "real Compose component, local action fixtures, existing Inter/theme tokens",
+  "audience": "owner using keyboard and touch on Android",
+  "job": "find and execute an existing contextual action",
+  "character": [
+    "precise",
+    "quiet",
+    "operational"
+  ],
+  "preserved": [
+    "native Compose",
+    "Raycast/Obsidian palettes",
+    "Inter",
+    "48dp targets",
+    "action identities and callbacks",
+    "Enter/Tab/Escape contract"
+  ],
+  "introduced": [
+    "stable filter accessible name",
+    "immediate neutral focus indicators",
+    "readable multiline action text",
+    "empty-state recovery wording"
+  ],
+  "web_linter": "unsupported Kotlin; not a passed Hallmark web sweep",
+  "evidence": "docs/verification/hallmark-jakub-preview57-20261102"
+}

@@ -49,6 +49,9 @@ object GlassTokens {
     val darkSecondary=Color(0xFFBEC3D2);val lightSecondary=Color(0xFF52525B)
     @Composable fun selection()=MaterialTheme.colorScheme.onSurface.copy(alpha=.08f)
     @Composable fun hover()=MaterialTheme.colorScheme.onSurface.copy(alpha=.04f)
+    val focusStroke=2.dp
+    @Composable fun focusRing()=MaterialTheme.colorScheme.onSurface
+    @Composable fun inputOutline()=MaterialTheme.colorScheme.onSurface.copy(alpha=.50f)
     const val glyphStroke=1.5f
     const val selectionMs=90
     fun rowHeight(c:Config):Dp {
