@@ -1,0 +1,11 @@
+Cierre 2026-11-03 UTC — skills y contrato Kotlin/WebView, fase1.
+Propietario: codex-8d77575b-2cea-4cbb-8a31-ae4c34439825.
+Base inspeccionada dbfcf81858240964812c5977612fbca86fc0d2f6 en feat/nuxt-webview-recovery-20261028; rama propia feat/webview-contracts-20261102.
+Skills ZIP byte-identicas y auditoria instaladas en 54735009377027cca3da9954e5bbb1f296aa8d73.
+Fuente final 00fec133c6de9f286aab02239928ef309ec63cb0, publicada. PR borrador https://github.com/bauti3311-sys/Spotlight-Next/pull/20 contra la rama Nuxt, sin merge.
+Contrato v2 host/cliente: sesion, correlacion, validacion acotada, cancelacion/latest-query-wins, seleccion antes de efecto, deduplicacion/consumo de token, paquete/actividad revalidados, dispose idempotente. Operaciones futuras UNSUPPORTED.
+20 casos nativos unicos (11+7+2), cero fallos/errores/omitidos. 15 TS;16 controles Chromium. Gate final tests+lint BUILD SUCCESSFUL 2m09s; lint0 errores/28advertencias/1informacion. Evidencia completa y fallo inicial conservados en docs/verification/bridge-contracts-20261102/. Son pruebas Robolectric y navegador con adaptadores de laboratorio, NO prueba end-to-end fisica.
+Assets14 identicos a generate por hash, CSS identico, +4057 bytes sin comprimir. Comparativas navegador telefono0 y tablet30 pixeles de bordes rasterizados; sin rediseño. Sin dependencias nuevas ni servidores, APK nueva, firma, uploads de documentos o Actions.
+Checkpoints2 OpenUI/forms y3 documentos/RAGFlow solo planificados en docs/THREE-CAPABILITIES-CHECKPOINTS-20261102.md. FileIndex ya ofrece recuperacion semantica local; conservar, no duplicar. Proveedor remoto opcional requiere configuracion/autorizacion separada.
+Pendiente Android WebView real/IME/rotacion/teclado fisico/rendimiento. La APK58 previa (8c7128e) no contiene estos cambios.
+Main sigue47259ce2; baseNuxt sigue dbfcf818. Checkout previo /workspace/Spotlight-Next limpio en a622df75208e40826955e51cc84c65d7754f9f53; PR19 y checkpoints intactos. No afirmar validacion integral ni ampliar matriz historica. Reserva propia liberada con esta nota de cierre atomica.
