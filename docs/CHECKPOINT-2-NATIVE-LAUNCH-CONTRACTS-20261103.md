@@ -1,6 +1,8 @@
-# Checkpoint 2 preparado — contratos nativos de lanzamiento Android
+# Checkpoint 2 — contratos nativos de lanzamiento Android
 
-Estado: **plan de implementación, no implementado ni probado aún**. Preparado como
+Estado: **implementación autorizada y ejecutada**; evidencia y límites en
+[el informe](verification/native-launch-20261103/README.md). El texto siguiente
+conserva el plan de entrada y sus criterios. Preparado originalmente como
 seguimiento al checkpoint de recuperación selectiva del PR19, en la rama
 `feat/preview57-native-return-20261103` / PR21. Antes de empezar, consultar remoto,
 HEAD, notas y reserva otra vez; partir del último checkpoint publicado de esta
@@ -59,7 +61,8 @@ OpenUI, RAGFlow, temas ni dependencias como efecto secundario.
 
 ## Pruebas dirigidas propuestas
 
-No ejecutadas en este checkpoint. Elegir las clases mínimas después de definir
+Los resultados ejecutados se registran en el informe enlazado. Plan original:
+elegir las clases mínimas después de definir
 la pequeña frontera real; no añadir mocks que sólo repitan la implementación.
 
 - App instalada/ausente/deshabilitada, actividad privada, destino distinto y

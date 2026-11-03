@@ -1,0 +1,64 @@
+{
+  "base": "f952cd4a10d98558b4ef69852e6a9e5031ac80d8",
+  "finalDirectedUniqueTests": 52,
+  "suites": [
+    {
+      "name": "dev.bautista.spotlight.control.IntegrationRegistryTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.NativeCommandFlowTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.NativeLaunchFlowTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.FloatingSearchFlowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "lint": {
+    "Warning": 16,
+    "Information": 1
+  },
+  "gate": "BUILD SUCCESSFUL in 3m26s",
+  "sourceFrozenDuringGate": true,
+  "newApk": false,
+  "actionsDispatched": 0,
+  "physicalValidation": false
+}

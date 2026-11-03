@@ -762,3 +762,37 @@ Segundo checkpoint preparado, no implementado, en
  docs/CHECKPOINT-2-NATIVE-LAUNCH-CONTRACTS-20261103.md: evitar fallback automático,
 revalidar destinos/permisos, errores honestos y alternativa revisada explícitamente.
 Volver a comprobar reserva/remoto antes de ese siguiente bloque.
+
+
+## 2026-11-03 — checkpoint2 nativo de lanzamiento implementado
+
+Autorizado sobre f952cd4/PR21 en feat/preview57-native-return-20261103. Reserva libre
+adquirida normalmente con propietario propio; main/checkpoints/PR19/20 y módulos
+excluidos comprobados. API & Interface Design adaptada aplicada al límite Kotlin.
+Reproducción sobre panel/motor reales: al fallar paquete elegido se abría web sin
+confirmar; rojo preservado. Ahora launch/InApp no cambian destino desde un catch.
+IntegrationRegistry valida componente vivo/habilitado/exportado/suspensión/permisos
+y grants de URI solicitados; se fija el handler validado al pedir startActivity.
+
+Guarda de sesión alrededor del ejecutor existente, sin segundo motor/registro:
+snapshot acotado, ID/hash de propuesta de un uso, contexto vigente y comprobación
+otra vez al confirmar; cambio de handler/payload requiere revisar de nuevo.
+Resultado incierto no ofrece retry/fallback. Consulta/formularios/datos conservados;
+historia de app sólo después de solicitud aceptada. Alternativa en inspector nativo,
+foco seguro Volver, Tab/Enter/toque explícitos; Escape/Back/X cancelan sin cerrar todo.
+Restauración no autoriza ni ejecuta. Fence local, no exactly-once entre procesos.
+
+Gate final52 únicos correctos, cero fallos/errores/omisiones,3m26s; Lint0E16W1Info.
+Detalle y comandos docs/verification/native-launch-20261103/README.md. Regresiones
+IntegrationRegistry/AppCapabilities/ResultTouchScroll/NativeCommandFlow/FloatingSearch
+sin tocar fuentes/aserciones existentes. Fallos iniciales de fixture/import/opt-in,
+foco y dos rojos de X/grant escritura preservados. Demora9m28 en ronda dirigida por
+cgroup8GiB: daemon anterior IDLE cerrado, BUSY preservado, memoria~5.6GB y misma
+corrida continuó; no timeouts/aserciones relajados. No medición de rendimiento.
+
+Capturas antes/después comparables720dp/tema claro y Obsidian Glass teléfono320dp
+(sólo después), Compose/RobolectricAPI33 NATIVE. Sin APK/assemble/R8/firma, Actions,
+dependencia/permiso nuevo, servidor/cuenta/envío, main o promoción integral/matriz.
+Spotify/WhatsApp/OpenUI/RAGFlow/WebView, datos y ejecutores no se modifican como
+módulos. Pendientes OneUI/IME/TalkBack/grants y efectos externos físicos; no afirmar
+entrega/reproducción. Cierre con commit independiente, nota y sólo reserva propia.

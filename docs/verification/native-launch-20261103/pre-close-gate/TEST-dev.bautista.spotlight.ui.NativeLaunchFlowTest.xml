@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.NativeLaunchFlowTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-03T02:49:03" hostname="d72f3c82698f" time="12.658">
+  <properties/>
+  <testcase name="escapeCancelsReviewAndKeepsQueryWithoutLaunching" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="8.546"/>
+  <testcase name="phoneReviewAllowsExplicitTouchConfirmation" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="1.049"/>
+  <testcase name="failedSelectedActionNeverOpensFallbackOrClosesOverlay" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.639"/>
+  <testcase name="restoringReviewDoesNotRestoreConsentOrLaunch" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.467"/>
+  <testcase name="alternativeOnlyLaunchesAfterExplicitConfirmation" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.358"/>
+  <testcase name="installedApplicationStillLaunchesOnceFromEnter" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.575"/>
+  <testcase name="changingQueryDiscardsAlternativeWithoutLaunch" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.495"/>
+  <testcase name="enterOnDefaultReviewActionDoesNotConfirm" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.528"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

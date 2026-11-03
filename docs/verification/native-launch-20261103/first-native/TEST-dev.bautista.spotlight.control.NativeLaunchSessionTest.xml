@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.NativeLaunchSessionTest" tests="14" skipped="0" failures="2" errors="0" timestamp="2026-11-03T02:40:37" hostname="d72f3c82698f" time="3.72">
+  <properties/>
+  <testcase name="activityNotFoundAfterValidationOnlyOffersAlternative" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="2.922"/>
+  <testcase name="boundedIntentRejectsOversizedPayloadWithoutDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.087"/>
+  <testcase name="changedDefaultHandlerRequiresFreshReview" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.069"/>
+  <testcase name="fallbackRequiresCurrentProposalAndDispatchesOnce" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.045"/>
+  <testcase name="unknownOutcomeOffersNoAutomaticOrManualFallback" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.061"/>
+  <testcase name="removedPackageIsRevalidatedBeforeDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.032"/>
+  <testcase name="changedContextMakesOldApprovalStale" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.061"/>
+  <testcase name="cancelledAndDisposedProposalsNeverDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.033"/>
+  <testcase name="securityExceptionIsSanitizedAndNeverRetried" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.029"/>
+  <testcase name="revokedReadGrantBlocksDocumentLaunch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.104">
+    <failure message="java.lang.AssertionError" type="java.lang.AssertionError">java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertFalse(Assert.java:65)
+	at org.junit.Assert.assertFalse(Assert.java:75)
+	at dev.bautista.spotlight.control.NativeLaunchSessionTest.revokedReadGrantBlocksDocumentLaunch(NativeLaunchSessionTest.kt:140)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="revokedAlternativePermissionBlocksConfirmation" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.123"/>
+  <testcase name="reviewedPayloadIsAnIndependentSnapshot" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.044">
+    <failure message="java.lang.AssertionError" type="java.lang.AssertionError">java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at dev.bautista.spotlight.control.NativeLaunchSessionTest.reviewedPayloadIsAnIndependentSnapshot(NativeLaunchSessionTest.kt:130)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="exactInstalledActivityIsPinnedAndRequestedOnce" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.066"/>
+  <testcase name="disabledPrivateMissingAndRestrictedActivitiesNeverDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

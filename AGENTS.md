@@ -14,8 +14,11 @@ La auditoría inicial quedó publicada en1d58294. Continuación autorizada03/11:
 incorporar selectivamente correcciones de PR19 con pruebas nativas dirigidas,
 Lint y capturas; sin APK, Actions ni rediseño. Ver
 `docs/verification/native57-menu-20261103/README.md`. El segundo checkpoint de
-contratos Android queda preparado en `docs/CHECKPOINT-2-NATIVE-LAUNCH-CONTRACTS-20261103.md`,
-aún sin implementar. No implementar OpenUI/RAGFlow en este bloque.
+contratos Android fue autorizado y ejecutado; ver
+`docs/CHECKPOINT-2-NATIVE-LAUNCH-CONTRACTS-20261103.md` y
+`docs/verification/native-launch-20261103/README.md`. Mantener la revisión de
+alternativas sin fallback automático, validación antes del efecto y autorización
+no restaurable. No generalizar el fence local como garantía global de exactly-once. No implementar OpenUI/RAGFlow en este bloque.
 
 Tres skills recuperadas de PR20 y **adaptadas a nativo**, sin su implementación:
 

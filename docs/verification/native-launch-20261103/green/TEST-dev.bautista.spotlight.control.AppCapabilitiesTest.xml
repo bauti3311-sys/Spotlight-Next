@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.AppCapabilitiesTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-03T03:04:19" hostname="d72f3c82698f" time="6.896">
+  <properties/>
+  <testcase name="sharePreparationKeepsTheSelectedAppAndDoesNotSend" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="5.824"/>
+  <testcase name="mapsAndSofascoreDocumentedSearchCapabilitiesMatchIntegrationRegistry" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.374"/>
+  <testcase name="anotherPackageCannotSupplyTheSelectedAppsShareCapability" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.116"/>
+  <testcase name="revokedCapabilityIsRecheckedBeforeOpeningItsForm" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.096"/>
+  <testcase name="documentedSearchRequiresExportedResolvableExactPackage" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.104"/>
+  <testcase name="browserSearchRetainsChromeOrVivaldiInsteadOfUsingDefaultBrowser" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.105"/>
+  <testcase name="disabledOrSuspendedAppsDoNotPublishShareActions" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.094"/>
+  <testcase name="genericSearchIsOnlyExposedByItsPublicHandler" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.108"/>
+  <testcase name="absentCapabilitiesDoNotProduceActionButtons" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.073"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

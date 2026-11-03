@@ -69,6 +69,8 @@ fun SpotlightPanel(
         }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
+        val launchSession=remember(context){NativeLaunchSession(context)}
+        DisposableEffect(launchSession){onDispose{launchSession.dispose()}}
         var query by rememberSaveable { mutableStateOf(initialQuery) }
         var searchScope by rememberSaveable(stateSaver=SearchScopeSaver) { mutableStateOf<SearchScope?>(null) }
         var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
@@ -217,6 +219,7 @@ fun SpotlightPanel(
             if(listState.isScrollInProgress)touchedResultId=null
         }
         fun back() {
+            if(launchSession.issue!=null){launchSession.cancel();focus.requestFocus();return}
             inspectorPinned=false;pinnedPreview=null;pinnedCard=null
             aiJob?.cancel()
             showAi=false
@@ -269,7 +272,7 @@ fun SpotlightPanel(
                     )
                 }
         }
-        fun inspectorTaskActive() = showAi || pendingAsk!=null || pendingWorkflow!=null ||
+        fun inspectorTaskActive() = launchSession.issue!=null || showAi || pendingAsk!=null || pendingWorkflow!=null ||
             messageForm!=null || searchForm!=null || timerMinutes!=null || audioPanel ||
             notificationKey!=null || noteEditor || clipEditing!=null || snippetTemplate!=null ||
             snippetText!=null || deletingNote!=null || systemPage?.page in setOf(
@@ -333,24 +336,20 @@ fun SpotlightPanel(
                 .setPrimaryClip(ClipData.newPlainText("Spotlight", text))
             Toast.makeText(context, "Copiado", Toast.LENGTH_SHORT).show()
         }
-        fun launch(intent: Intent, close: Boolean = true) {
-            runCatching {
-                    val preferred = dev.bautista.spotlight.control.CommandCenter.preferred(intent)
-                    if (
-                        preferred == null ||
-                            runCatching {
-                                    context.startActivity(
-                                        preferred.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    )
-                                }
-                                .isFailure
-                    )
-                        context.startActivity(
-                            Intent(intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        )
-                    if (close && !keepSurface()) onClose()
+        fun launchOrigin():Any = listOf(query,category,searchScope,searchGeneration,selected,config.privateMode,config.files,config.contacts,config.trees,
+            present(resultsState.value).getOrNull(selected)?.let { item ->
+                item.id to when(val action=item.action) {
+                    is Action.Launch -> launchSession.signature(action.intent)
+                    is Action.InApp -> launchSession.signature(action.intent)+launchSession.signature(action.fallback)
+                    else -> action.toString()
                 }
-                .onFailure { error = "No hay una app disponible para esta acción." }
+            },preview?.id,pinnedPreview?.id,inspectorPinned,messageForm,searchForm,systemPage)
+        SideEffect { launchSession.synchronize(launchOrigin()) }
+        fun launch(intent: Intent, close: Boolean = true):Boolean {
+            val preferred=CommandCenter.preferred(intent)
+            val requested=launchSession.launch(preferred ?: intent,if(preferred!=null)intent else null,launchOrigin(),close)
+            if(requested){if(close && !keepSurface())onClose()}else menu=false
+            return requested
         }
         fun web() {
             if (query.isNotBlank())
@@ -459,7 +458,7 @@ fun SpotlightPanel(
             }
             val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)?.let{AiRequestPolicy.revalidateContinuation(it,aiContextDestination,aiDestination,conversation.toList())}
             if(ask!=null && (AiRequestPolicy.requiresReview(ask) || ask.origin==AiInputOrigin.USER_QUERY && !ai.configured(config))){clearForms();preview=null;menu=false;pendingAsk=ask;return}
-            if(query.isNotBlank() && (item.action is Action.Device || item.category=="Aplicaciones" && item.action is Action.Launch)) app.scope.launch { app.preferences.recordAction(query) }
+            if(query.isNotBlank() && item.action is Action.Device) app.scope.launch { app.preferences.recordAction(query) }
             if(item.action !is Action.Navigate && item.action !is Action.RestoreQuery && item.action !is Action.ReadNotification && (item.action as? Action.ComposeMessage)?.replyKey==null) app.scope.launch { app.preferences.recordSelection(item.id) }
             when (val action = item.action) {
                 is Action.SystemPanel -> {push();clearForms();systemPage=if(action.page=="agent" && action.packageName.isBlank())action.copy(packageName=query) else action;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
@@ -489,13 +488,9 @@ fun SpotlightPanel(
                     else -> launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))
                 }
                 is Action.InApp -> {
-                    runCatching {
-                            context.startActivity(
-                                Intent(action.intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            )
-                            if(!keepSurface())onClose()
-                        }
-                        .onFailure { launch(action.fallback) }
+                    if(launchSession.launch(action.intent,action.fallback,launchOrigin(),true)) {
+                        if(!keepSurface())onClose()
+                    }else menu=false
                 }
                 is Action.Device -> {
                     if(action.command.startsWith("volume:") || action.command !in setOf("volume_up","volume_down","mute","unmute")) {
@@ -535,8 +530,10 @@ fun SpotlightPanel(
                 }
                 is Action.Copy -> { copy(action.text); if(!keepSurface())onClose() }
                 is Action.Launch -> {
-                    launch(action.intent, close=item.category!="Archivos")
-                    app.scope.launch { app.preferences.record(action.intent.component?.let { "${it.packageName}/${it.className}" } ?: item.id) }
+                    if(launch(action.intent, close=item.category!="Archivos"))app.scope.launch {
+                        app.preferences.record(action.intent.component?.let { "${it.packageName}/${it.className}" } ?: item.id)
+                        if(query.isNotBlank() && item.category=="Aplicaciones")app.preferences.recordAction(query)
+                    }
                 }
                 is Action.RestoreQuery -> {
                     push();clearForms();searchScope=null;query=action.query;category="Todo";invalidateResults();selected=0;navigating=false;preview=null;menu=false
@@ -801,6 +798,7 @@ fun SpotlightPanel(
             val hasInspector=richPreview || applicationPreview || inspectorCard!=null || taskInspector || mediaInspector
             val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
             fun dismissInspector() {
+                if(launchSession.issue!=null){launchSession.cancel();focus.requestFocus();return}
                 mediaDismissed=true
                 applicationPreviewId=null
                 inspectorPinned=false;pinnedPreview=null;pinnedCard=null
@@ -854,6 +852,9 @@ fun SpotlightPanel(
                     .onPreviewKeyEvent { event ->
                     if(event.type==KeyEventType.KeyDown){pointerSelecting=false;touchedResultId=null}
                     if (event.type != KeyEventType.KeyDown) false
+                    else if(launchSession.issue!=null && event.key in listOf(Key.Escape,Key.Back)) {
+                        launchSession.cancel();focus.requestFocus();true
+                    }
                     else if (
                         noteEditor &&
                             (event.isCtrlPressed || event.isMetaPressed) &&
@@ -1319,7 +1320,12 @@ fun SpotlightPanel(
                             )
                         if(searchScope?.section=="files" && !loading && visibleResults.isEmpty())Text("No se encontraron archivos de este tipo. Probá otro filtro o actualizá el índice en Opciones.",Modifier.padding(horizontal=18.dp,vertical=12.dp),fontSize=13.sp,color=colors.onSurfaceVariant)
                         val contextBody:@Composable ()->Unit = {
-                        if(pendingAsk!=null)aiReview()
+                        val launchIssue=launchSession.issue
+                        if(launchIssue!=null)NativeLaunchReview(launchIssue,{id ->
+                            val close=launchSession.issue?.alternative?.close==true
+                            if(launchSession.confirm(id,launchOrigin()) && close && !keepSurface())onClose()
+                        },{launchSession.cancel();focus.requestFocus()})
+                        else if(pendingAsk!=null)aiReview()
                         else if(pendingWorkflow!=null)WorkflowRunner(pendingWorkflow!!,app.local,onAction={action->execute(Result("routine:prepared","","","Acciones",0,action))}){pendingWorkflow=null}
                         else if(clipEditing!=null)ClipboardEditor(clipEditing!!,{app.local.editClip(clipEditing!!,it);back()},{back()})
                         else if(snippetTemplate!=null)SnippetForm(snippetTemplate!!,{copy(it);back()},{back()})

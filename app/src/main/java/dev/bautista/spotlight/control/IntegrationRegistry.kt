@@ -22,6 +22,40 @@ class IntegrationRegistry(private val context: Context) {
             (activity.packageName==context.packageName || activity.exported) &&
             (activity.permission.isNullOrBlank() || androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)==android.content.pm.PackageManager.PERMISSION_GRANTED)
     }.getOrDefault(false)
+    internal data class LaunchAccess(val component:android.content.ComponentName?=null,val label:String="",val problem:LaunchProblem?=null)
+    /** Live resolution for dispatch, using the same exported/enabled/permission policy as discovery. */
+    internal fun launchAccess(intent:Intent):LaunchAccess = try {
+        val pm=context.packageManager
+        val resolved=pm.resolveActivity(intent,android.content.pm.PackageManager.MATCH_DISABLED_COMPONENTS)?.activityInfo
+        if(resolved==null)LaunchAccess(problem=LaunchProblem.UNAVAILABLE) else {
+            val component=android.content.ComponentName(resolved.packageName,resolved.name)
+            val activity=pm.getActivityInfo(component,android.content.pm.PackageManager.MATCH_DISABLED_COMPONENTS)
+            val app=pm.getApplicationInfo(component.packageName,android.content.pm.PackageManager.MATCH_DISABLED_COMPONENTS)
+            when {
+                intent.component?.let{it!=component}==true || intent.`package`?.let{it!=component.packageName}==true -> LaunchAccess(problem=LaunchProblem.UNAVAILABLE)
+                !activity.enabled || !app.enabled || app.flags and ApplicationInfo.FLAG_SUSPENDED!=0 -> LaunchAccess(problem=LaunchProblem.UNAVAILABLE)
+                component.packageName!=context.packageName && !activity.exported -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
+                !activity.permission.isNullOrBlank() && component.packageName!=context.packageName &&
+                    androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)!=android.content.pm.PackageManager.PERMISSION_GRANTED -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
+                !grantsAvailable(intent) -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
+                else -> LaunchAccess(component,"${activity.loadLabel(pm).toString().take(120)} · ${component.packageName}")
+            }
+        }
+    }catch(_:SecurityException){LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)}
+     catch(_:Exception){LaunchAccess(problem=LaunchProblem.UNAVAILABLE)}
+    private fun grantsAvailable(intent:Intent):Boolean {
+        val modes=listOf(Intent.FLAG_GRANT_READ_URI_PERMISSION,Intent.FLAG_GRANT_WRITE_URI_PERMISSION).filter{intent.flags and it!=0}
+        if(modes.isEmpty())return true
+        val uris=buildList<android.net.Uri> {
+            intent.data?.let(::add)
+            intent.clipData?.let{clip->repeat(clip.itemCount){clip.getItemAt(it).uri?.let(::add)}}
+            @Suppress("DEPRECATION")
+            (intent.getParcelableExtra<android.os.Parcelable>(Intent.EXTRA_STREAM) as? android.net.Uri)?.let(::add)
+        }
+        return uris.filter{it.scheme=="content"}.all { uri -> modes.all { mode ->
+            context.checkUriPermission(uri,android.os.Process.myPid(),android.os.Process.myUid(),mode)==android.content.pm.PackageManager.PERMISSION_GRANTED
+        } }
+    }
     fun capabilities(packageName: String): List<Capability> {
         val launcher = context.getSystemService(LauncherApps::class.java)
         val base=listOf(

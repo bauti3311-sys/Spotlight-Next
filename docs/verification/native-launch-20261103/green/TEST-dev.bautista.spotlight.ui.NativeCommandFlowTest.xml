@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.NativeCommandFlowTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-03T03:05:01" hostname="d72f3c82698f" time="21.538">
+  <properties/>
+  <testcase name="savedPanelContainsNativeCommandsAndKeepsLegacyRoutinesHidden" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="13.262"/>
+  <testcase name="deletingSavedCommandRequiresConfirmationAndDoesNotExecuteIt" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="3.507"/>
+  <testcase name="savingFromEditorCreatesSearchableNativeCommandWithoutExecuting" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="1.921"/>
+  <testcase name="searchOpensStoredReviewAndExplicitConfirmationChangesVolume" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="1.993"/>
+  <testcase name="reorderingIdenticallyNamedAppsPreservesTheirExactPackages" classname="dev.bautista.spotlight.ui.NativeCommandFlowTest" time="0.854"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
