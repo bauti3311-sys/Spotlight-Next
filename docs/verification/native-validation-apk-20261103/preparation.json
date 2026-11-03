@@ -1,0 +1,52 @@
+{
+  "status": "BLOCKED_HISTORICAL_SIGNER_UNAVAILABLE",
+  "apkProduced": false,
+  "apkAssembled": false,
+  "keysGenerated": false,
+  "actionsDispatched": 0,
+  "installedOrUninstalled": false,
+  "applicationSourceCommit": "f6644841bf3e1725a055c6fda19e29256485ffdf",
+  "applicationSourcesUnchanged": true,
+  "plannedCandidate": {
+    "package": "dev.bautista.spotlight.next.raycastpreview",
+    "versionCode": 60,
+    "minSdk": 26,
+    "targetSdk": 35,
+    "abi": "arm64-v8a",
+    "debuggable": false,
+    "certificateSha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+    "defaultProfile": "optimized; not built",
+    "conditionalFallback": "spotlight.preview.optimize=false only after a current justified failure"
+  },
+  "observedHistoricalApk": {
+    "releaseTag": "preview56-21a60bb",
+    "package": "dev.bautista.spotlight.next.raycastpreview",
+    "versionCode": 56,
+    "sha256": "280972d5aa4730ef4c71bd681c787b94d8c69778308713bb2ef985ec0716d50d",
+    "releaseChecksumMatched": true,
+    "certificateMatchesPreview57DeliveryNote": true,
+    "v2SignatureVerified": true
+  },
+  "signerChecks": {
+    "expectedLocalFilesPresent": false,
+    "workflowCredentialVariablesConfigured": false,
+    "cloudSecretBindings": 0,
+    "visibleCodespaces": 0
+  },
+  "r8History": [
+    {
+      "sourceArchive": "Spotlight-Next-Preview54-evidence.zip",
+      "sourceEntry": "daemon-failure-0989/build54.log",
+      "sha256": "d84627b8c9736d2e2881b71e0971c45ab72b5b377d6ff7c22012061d726e274a",
+      "result": "daemon disappeared during minifyRaycastPreviewWithR8; no cause proven"
+    },
+    {
+      "sourceArchive": "Spotlight-Next-Preview54-evidence.zip",
+      "sourceEntry": "r8-retry-daemon-failure-0989/build54.log",
+      "sha256": "c40ea93c48595fc9eb5981020e735c077bd3f0379f76742c6b30794f35640d7c",
+      "result": "daemon disappeared during minifyRaycastPreviewWithR8; no cause proven"
+    }
+  ],
+  "r8RunOnCurrentCandidate": false,
+  "deviceValidation": false
+}

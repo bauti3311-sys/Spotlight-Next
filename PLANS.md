@@ -796,3 +796,34 @@ dependencia/permiso nuevo, servidor/cuenta/envío, main o promoción integral/ma
 Spotify/WhatsApp/OpenUI/RAGFlow/WebView, datos y ejecutores no se modifican como
 módulos. Pendientes OneUI/IME/TalkBack/grants y efectos externos físicos; no afirmar
 entrega/reproducción. Cierre con commit independiente, nota y sólo reserva propia.
+
+
+## 2026-11-03 — APK física nativa: preparación bloqueada por firmador
+
+Solicitud sobre f664484/PR21. Reserva libre adquirida con propietario nuevo antes
+de editar. No main/merge/Actions. Código app/src, dependencias/permisos/manifiesto
+idénticos a f664484; sólo metadatos Raycast preparados: code60 y sufijo native57-v60
+(experimental explícito si llega a justificarse), mismo paquete .raycastpreview.
+Release.properties y demás variantes/identidades intactos. No código WebView/OpenUI/RAGFlow.
+
+Firma histórica Preview885838aa cotejada directamente con APK56 privada, SHA256
+280972d5aa4730ef4c71bd681c787b94d8c69778308713bb2ef985ec0716d50d y manifiesto servidor
+coincidentes; certificado v2 correcto y consistente con nota de57. No confundir con
+certificado11b0 de producción. No hay archivos de firma previstos en worktrees,
+variables de firma configuradas, secret bindings cloud ni Codespaces visibles.
+Se solicitó sólo referencia al firmador autorizado, nunca valores privados.
+**No APK nueva compilada/firmada/entregada; no claves nuevas.** No instalación/borrado.
+
+Logs originales54 recuperados: dos daemon desaparecidos en minifyR8, sin raíz
+OOM/crash del optimizador demostrada. No se infiere causa por memoria reciente de
+otras pruebas. Plan normal optimizado primero con margen/worker único; experimental
+existente sólo tras fallo actual investigado/justificado. Ningún R8/assemble ejecutado
+sin firmador. Protocolo y plan concreto docs/NATIVE57-PHYSICAL-VALIDATION-20261103.md.
+
+Validación actual: Gradle :app:help offline correcto9s, dos tests Python identidad
+principal correctos; no tests Android/lint repetidos. Evidencia en
+ docs/verification/native-validation-apk-20261103/. Los52 nativos/Lint0E16W1Info de
+f664484 y19 del checkpoint1 siguen históricos, no una nueva corrida. Estado de
+entrega BLOCKED_HISTORICAL_SIGNER_UNAVAILABLE. Reanudar tras acceso al firmador,
+verificar nuevamente reserva/remoto y certificado antes de producir una única APK.
+Cierre con checkpoint de preparación, sin promoción integral, y sólo reserva propia.
