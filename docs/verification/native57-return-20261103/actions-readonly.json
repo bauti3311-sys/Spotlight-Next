@@ -1,0 +1,53 @@
+{
+  "latest5": [
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-26T22:57:26Z",
+      "databaseId": 40416324441,
+      "headBranch": "feat/antigravity-tablet-20261026",
+      "headSha": "7faf5f1238d8e2553f20e09355686bd09d66becd",
+      "name": "Spotlight Android gate or Preview (manual)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-26T22:27:29Z",
+      "databaseId": 40412576073,
+      "headBranch": "feat/antigravity-tablet-20261026",
+      "headSha": "7faf5f1238d8e2553f20e09355686bd09d66becd",
+      "name": "Spotlight Android gate or Preview (manual)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-10-26T21:38:31Z",
+      "databaseId": 40406059281,
+      "headBranch": "feat/antigravity-tablet-20261026",
+      "headSha": "57ba76a3eb14bba66bd57ad39084d1233547080d",
+      "name": "Spotlight Android gate or Preview (manual)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-26T21:17:46Z",
+      "databaseId": 40403145204,
+      "headBranch": "feat/antigravity-tablet-20261026",
+      "headSha": "64947438499c9475def4dbb127c0bfca362c112d",
+      "name": "Spotlight Android gate or Preview (manual)",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-24T01:47:51Z",
+      "databaseId": 40051401930,
+      "headBranch": "feat/raycast-sidebar-permissions-20261020",
+      "headSha": "ff2c8aa5f24da13afd4e6fa65debf0c47489ab69",
+      "name": "Spotlight Android gate or Preview (manual)",
+      "status": "completed"
+    }
+  ],
+  "inProgress": [],
+  "queued": [],
+  "dispatchedByThisTask": 0,
+  "billingQuota": "not established; no billing request or quota estimate"
+}

@@ -1,0 +1,34 @@
+{
+  "description": "Illustrative native contract review; not runtime code, no visual bridge or migration required",
+  "existingTypes": [
+    "Action",
+    "ToolCall",
+    "ToolExecution",
+    "ExecutionState",
+    "ToolCapability"
+  ],
+  "operation": {
+    "intent": "prepare message",
+    "target": "native identity from permitted People/Replies data",
+    "arguments": [
+      "channel",
+      "recipient",
+      "body"
+    ],
+    "preconditions": [
+      "current target",
+      "permission",
+      "reviewed exact payload"
+    ],
+    "effect": "explicit confirm only"
+  },
+  "receipt": {
+    "state": "REQUESTED",
+    "meaning": "Android accepted a dispatch; delivery is not proven",
+    "automaticRetry": false
+  },
+  "validationFailure": {
+    "category": "STALE_TARGET",
+    "recovery": "review current target again"
+  }
+}

@@ -700,3 +700,36 @@ Dos intentos de la fuente0989f3c3 perdieron el daemon en minifyRaycastPreviewWit
 APK y ZIP fuente exactos `ecbfdc8a927c4442135542090ad2c755fa03a1fc`: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-2770747db701386cd5bc. Seis assets uploaded y digests del servidor comprobados. Ensamblado offline experimental correcto2m43s(10 tareas ejecutadas/40al día), sin R8/shrink; mismo paquete independiente/versionCode54/certificado885838aa…/no debuggable/16KiB y ZIP sin rutas privadas. Lint existente del mismo SHA0E16W;67 UI únicas correctas en cohortes, sin repetir ni sumar ejecuciones. APK SHA256e8e8e5d0074c8b1ae4448397bfffd87d2c36af0f99d2163315ee3a4951f69372; ZIP907f7599b779e91b36245e6b05979d21f37b05e426df7d1ede5f4dd0add20319.
 
 Se conservaron los dos fallos R8 y el primer fallo experimental en mergeDex. El ensamblado separado de lint, heap2GiB/SerialGC/worker1 y proceso desacoplado terminó; esto no demuestra la causa de los daemons perdidos. Perfil optimizado continúa BLOCKED. Falta inicial de /usr/bin/time bloqueó solo el lanzador, antes de Gradle; medidor builtin utilizado. No nuevas funciones/rediseños, Actions, permisos, dependencia ni firma nueva. Sin dispositivo/cuenta Spotify real, reproducción pendiente; WhatsApp vinculado desactivado. PR18 borrador y matriz9/25/6 conservados. Cierre solicitado para Antigravity: publicar evidencia, preparar notas y liberar únicamente reserva propia mediante script/protocolo; comprobar remoto y detener Codespace.
+
+
+## 2026-11-03 — dirección oficial: perfeccionar Preview57 nativa
+
+Usuario fija base exacta4fc33f2c918d3fe53a8bad7ac6571f2757630066 y descarta
+Preview58/59/PR20 como línea de desarrollo. GitHub verificado: main47259ce2,
+referencia nativa4fc33f2, PR19a622df7 y PR2000fec13 en borrador; puntero integral
+e38eae8 intacto. Reserva libre al inicio, adquirida con propietario único antes
+de editar. Worktree aislado /workspace/Spotlight-Next-native57, rama
+feat/preview57-native-return-20261103. Otros dos worktrees conservados limpios.
+
+Tres skills de PR20 recuperadas selectivamente y adaptadas a contratos/formularios
+Compose/documentos locales; siete archivos de origen registrados con blobs y
+SHA256. No cherry-pick de implementación, dependencias ni protocolo WebView.
+Dirección vigente y auditoría: docs/NATIVE-PREVIEW57-DIRECTION-20261103.md y
+docs/AUDITORIA-NATIVA-PREVIEW57-20261103.md. PR19 revisado, no incorporado:
+propuesta selectiva de foco/legibilidad/semántica/Box; fallos y límites históricos
+conservados como tales. UI, tests y configuración de app idénticos a Preview57.
+
+Auditoría por rutas: búsqueda universal/inspector, Android, Spotify, WhatsApp,
+SAF/OCR/QuickLook/semántica, IA, formularios y ajustes. Distingue inspección actual,
+XML/capturas de otro HEAD, nota de entrega57 y ausencia de validación física.
+Hallazgos: recorte/foco del menú y Lint con correcciones en19; fallback de InApp
+cambia destino automáticamente; deuda de contratos/errores; riesgo de tarjeta
+tardía por reproducir. No afirmar resueltos audio Spotify/OneUI ni entrega de
+mensajes. FileIndex ya recupera semánticamente; no duplicar su índice.
+
+Primero revisión de57 existente y bloques separados PR19/contrato nativo; después
+formularios Compose y citas locales. RAGFlow remoto sólo ante necesidad y
+consentimiento explícito. Verificación estática y procedencia reproducibles en
+docs/verification/native57-return-20261103/; sin Kotlin tests nuevos, Gradle,
+APK/firma, rediseño, servidor, envío, cuenta o Actions. Cuota actual no conocida;
+ningún cambio de presupuesto ni promoción de matriz/checkpoint integral.

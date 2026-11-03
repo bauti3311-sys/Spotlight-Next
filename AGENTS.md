@@ -1,5 +1,33 @@
 # Spotlight Next — instrucciones para Codex
 
+## Dirección vigente — Preview 57 nativa (decisión 2026-11-03)
+
+Leer primero [la decisión vigente](docs/NATIVE-PREVIEW57-DIRECTION-20261103.md)
+y [su auditoría funcional](docs/AUDITORIA-NATIVA-PREVIEW57-20261103.md).
+Base exacta `4fc33f2c918d3fe53a8bad7ac6571f2757630066`, referencia
+`feat/antigravity-tablet-20261026`; rama independiente
+`feat/preview57-native-return-20261103`. Esto prevalece sobre bases/prioridades
+históricas incompatibles, sin reescribir checkpoints. No continuar desde
+Preview58/59/PR20 ni incorporar Nuxt, assets web o WebView como interfaz.
+Conservar Kotlin/Compose y las funcionalidades, datos, firma e identidad de57.
+El primer entregable es auditoría/propuesta, sin cambios productivos, rediseño,
+compilaciones ni CI. Revisar PR19 para incorporación selectiva posterior.
+
+Tres skills recuperadas de PR20 y **adaptadas a nativo**, sin su implementación:
+
+- `.agents/skills/spotlight-api-contracts/SKILL.md`: contratos Kotlin, validación,
+  acciones tipadas, capacidades, cancelación y resultados/errores honestos.
+- `.agents/skills/spotlight-openui-forms/SKILL.md`: principios de formularios y
+  resultados contextuales en Compose existente; no instalar React/Vue/OpenUI.
+- `.agents/skills/spotlight-ragflow-documents/SKILL.md`: recuperar/citar primero
+  desde FileIndex/OCR/SAF/semántica local. Servidor/proveedor/subidas remotos sólo
+  con necesidad demostrada y consentimiento explícito separado.
+
+No crear registros, motores ni frameworks paralelos por aplicar una skill.
+Respetar reserva propia y presupuesto; no modificar main, ramas/PRs anteriores,
+worktrees ajenos ni el checkpoint integral. Las normas siguientes conservan su
+valor cuando son compatibles con la decisión vigente.
+
 Leé `docs/RENOVACION-APROBADA.md` para el contrato funcional y `docs/CODEX-ENTORNO-APROBADO.md` para la infraestructura aprobada. Usá `PLANS.md` para continuidad y `docs/ROADMAP-AUTONOMA-SPOTLIGHT-NEXT.md` como orden de hitos verificables y política de reanudación; nunca asumir que el reset de créditos dispara tareas.
 
 - Kotlin y Jetpack Compose nativos. Priorizar funcionamiento verificable; no agregar pantallas/modos redundantes ni dependencias en bloque.

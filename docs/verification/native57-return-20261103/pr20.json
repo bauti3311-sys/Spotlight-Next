@@ -1,0 +1,11 @@
+{
+  "baseRefName": "feat/nuxt-webview-recovery-20261028",
+  "body": "La búsqueda y las acciones del prototipo Nuxt/WebView usaban un contrato sin sesión, correlación ni protección de repetición. Este checkpoint migra host Kotlin y cliente a v2: valida envelopes, invalida resultados al cambiar consulta, descarta respuestas antiguas y separa seleccionar de ejecutar. El ejecutor nativo revalida paquete/actividad y consume el token antes de solicitar abrir la app o su información. No reintenta efectos.\n\nIncluye las tres skills del ZIP en .agents/skills/ y su auditoría, en commit independiente 5473500. Plan de tres checkpoints: [contrato, formularios y recuperación documental](../blob/feat/webview-contracts-20261102/docs/THREE-CAPABILITIES-CHECKPOINTS-20261102.md). Sólo se implementa el primero; OpenUI y RAGFlow quedan planificados, con recuperación local preservada y proveedor remoto opcional.\n\nValidación: 20 casos nativos Robolectric, 15 pruebas TypeScript y 16 controles Chromium aprobados; Lint sin errores, 28 advertencias y 1 información. Se conservan logs, XML, fallo inicial y comparativas en docs/verification/bridge-contracts-20261102/. CSS idéntico; teléfono 0 píxeles distintos, tablet 30 píxeles en bordes rasterizados. Assets +4057 bytes, sin dependencias nuevas.\n\nLos adaptadores de navegador y puertos de registro son exclusivos de tests. Falta la prueba end-to-end con WebView Android real, IME/rotación/teclado físico y mediciones de rendimiento. No se genera APK, instala servidor, sube documentos ni modifica main/PR19/checkpoints previos. Base: feat/nuxt-webview-recovery-20261028 (dbfcf818).",
+  "headRefName": "feat/webview-contracts-20261102",
+  "headRefOid": "00fec133c6de9f286aab02239928ef309ec63cb0",
+  "isDraft": true,
+  "number": 20,
+  "state": "OPEN",
+  "title": "Estabilizar contrato Kotlin–WebView e incorporar tres skills",
+  "url": "https://github.com/bauti3311-sys/Spotlight-Next/pull/20"
+}

@@ -1,0 +1,41 @@
+{
+  "executionToday": false,
+  "xmlReviewed": [
+    {
+      "path": "docs/verification/hallmark-jakub-preview57-20261102/before/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml",
+      "sourceCommit": "a622df75208e40826955e51cc84c65d7754f9f53",
+      "name": "dev.bautista.spotlight.ui.ActionPanelCraftTest",
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "path": "docs/verification/hallmark-jakub-preview57-20261102/after/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml",
+      "sourceCommit": "a622df75208e40826955e51cc84c65d7754f9f53",
+      "name": "dev.bautista.spotlight.ui.ActionPanelCraftTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "path": "docs/verification/hallmark-jakub-preview57-20261102/after/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml",
+      "sourceCommit": "a622df75208e40826955e51cc84c65d7754f9f53",
+      "name": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "path": "docs/verification/unslop-preview57-20261102/bar-final/TEST-dev.bautista.spotlight.ui.SpotlightBarTest.xml",
+      "sourceCommit": "a622df75208e40826955e51cc84c65d7754f9f53",
+      "name": "dev.bautista.spotlight.ui.SpotlightBarTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ]
+}

@@ -1,5 +1,17 @@
 # Spotlight Next — hoja de ruta maestra y continuidad autónoma
 
+## Dirección vigente 2026-11-03 — Preview57 nativa
+
+La [decisión del propietario](NATIVE-PREVIEW57-DIRECTION-20261103.md) establece
+base exacta4fc33f2, sin continuar Nuxt/WebView/Preview58/59/PR20. Rama separada
+feat/preview57-native-return-20261103. Primer entregable: [auditoría funcional y
+prioridades](AUDITORIA-NATIVA-PREVIEW57-20261103.md), sin modificación productiva.
+Próximos bloques recomendados: PR19 selectivo; contrato nativo de lanzamiento y
+resultado; corrección dirigida de fallos reproducidos; luego formularios Compose
+y citas locales. RAGFlow remoto sólo si es necesario y expresamente autorizado.
+Esto reemplaza prioridades/bases históricas incompatibles que se conservan abajo.
+No avanzar checkpoint integral ni repetir builds/Actions por esta auditoría.
+
 ## Prioridad vigente: transformación aprobada14/10/2026
 La especificación nueva sustituye controles técnicos de ancho y accesos snippets/rutinas/modos, conservando datos. Rama feat/premium-product-checkpoint desde Android58ac0a2 verificado. Correcciones críticas26095b3 publicadas; prototipo22e0921 recuperable, cierre integral/CI/entrega pendiente. Primero cerrar barra/resultados/inspector, apariencia simple y APK compatible29+ZIP exacto con capturas nativas; luego revisión física del usuario. No iniciar IA/integraciones extensas antes de ese checkpoint/revisión. F1.3 frío sigue incidencia conocida: solo hipótesis nueva dirigida; no bloquear producto. Resultado definitivo y próxima acción en notas/PR; checkpoint integral e38 se conserva.
 

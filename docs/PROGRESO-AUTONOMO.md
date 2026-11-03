@@ -1,5 +1,17 @@
 # Progreso autónomo de Spotlight Next
 
+## 2026-11-03 — retorno oficial a Preview57, auditoría sin cambios de app
+
+Rama independiente feat/preview57-native-return-20261103 desde4fc33f2 exacto.
+[Decisión vigente](NATIVE-PREVIEW57-DIRECTION-20261103.md) y
+[auditoría/prioridades](AUDITORIA-NATIVA-PREVIEW57-20261103.md). PR19 revisado y
+sin incorporar aún; sólo se recuperan tres skills/referencias de PR20, adaptadas
+a Kotlin/Compose. No se importa implementación WebView ni su protocolo.
+Producción, tests, dependencias, permisos y workflows idénticos a la base.
+Verificación actual de procedencia/alcance; XML/capturas/notas históricos leídos,
+sin presentarlos como pruebas recién ejecutadas. Sin Gradle/APK/CI/proveedor ni
+prueba física. La matriz y puntero integral históricos no se promueven.
+
 ## 2026-10-13 — inicio manual F1.1
 
 - Fecha/zona: 2026-10-13, America/Argentina/Buenos_Aires.

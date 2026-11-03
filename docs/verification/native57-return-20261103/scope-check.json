@@ -1,0 +1,42 @@
+{
+  "kind": "static provenance and scope only; no Kotlin/runtime tests executed",
+  "base": "4fc33f2c918d3fe53a8bad7ac6571f2757630066",
+  "workingBranch": "feat/preview57-native-return-20261103",
+  "appTreeIdenticalToBase": "3aedad11e261d8f84f7afb702672747dca279446",
+  "protectedSourceConfigDiff": [],
+  "bridgeHeadIsAncestor": false,
+  "recoveredSourceFiles": 7,
+  "adaptedFiles": [
+    {
+      "path": ".agents/skills/spotlight-api-contracts/SKILL.md",
+      "sha256": "8de2b5685609ff412df0e75acd5b58be5103cf7eb4c95d99386dd4c8e083243d"
+    },
+    {
+      "path": ".agents/skills/spotlight-api-contracts/references/native-contract.json",
+      "sha256": "bfbd5fd3a87358cedbe8222f5885fcbc75657adc3b5a2245c5ef6144e0955ce9"
+    },
+    {
+      "path": ".agents/skills/spotlight-api-contracts/references/test-matrix.md",
+      "sha256": "dbcf9d9a7c5e99490e364df0c78d90a60c6dc424c2273cabdacecae1656c41ba"
+    },
+    {
+      "path": ".agents/skills/spotlight-openui-forms/SKILL.md",
+      "sha256": "9fb1eb16350199b7c78771bcfc933dbf7fded922aeea6fa0013377ec4f73636b"
+    },
+    {
+      "path": ".agents/skills/spotlight-openui-forms/references/safe-components.md",
+      "sha256": "0a61ff800c36c13de7b78fbc05adbee842ae82bc7e9ecbf0c90c6b04399adc82"
+    },
+    {
+      "path": ".agents/skills/spotlight-ragflow-documents/SKILL.md",
+      "sha256": "8fb10f048090ffafada2e7111f2353c55bace9f638e458e703e5c51d9fdce8b0"
+    },
+    {
+      "path": ".agents/skills/spotlight-ragflow-documents/references/provider-contract.md",
+      "sha256": "aefcabb7292e7e4677facfc5242439953e4b37c69377d42b8f48c25800c6a36e"
+    }
+  ],
+  "gradleRuns": 0,
+  "apkBuilds": 0,
+  "actionsDispatched": 0
+}
