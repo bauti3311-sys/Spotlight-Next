@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 /workspace/Spotlight-Next-bridge/experiments/raycast-webview/frontend
+
+ ✓ tests/native-protocol.test.ts (15 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  00:05:50
+   Duration  264ms (transform 48ms, setup 0ms, collect 52ms, tests 6ms, environment 0ms, prepare 59ms)
+

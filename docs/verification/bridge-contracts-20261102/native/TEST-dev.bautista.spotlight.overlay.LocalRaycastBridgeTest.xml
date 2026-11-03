@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:22:37" hostname="d72f3c82698f" time="8.611">
+  <properties/>
+  <testcase name="installedPackageFlowsThroughExistingEngineToExplicitLaunch" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="6.495"/>
+  <testcase name="malformedPayloadsAndUnsupportedPreparationReturnErrorsWithoutEffects" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.092"/>
+  <testcase name="serializedNativeResultsAndPermissionErrorsUseTheActualTransport" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.157"/>
+  <testcase name="closeAndComposeRecoveryMessagesInvokeOnlyTheirCallbacks" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.048"/>
+  <testcase name="infoOnlyUsesTheSelectedInstalledPackageAndStaleTokensStopWorking" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.152"/>
+  <testcase name="rendererFailureRecoversComposeButSubresourceFailureDoesNot" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="1.047"/>
+  <testcase name="arbitraryTargetsUnknownOperationsAndInvalidEnvelopesCannotLaunchOrClose" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.093"/>
+  <testcase name="inspectDoesNotLaunchAndRepeatedOrFreshRequestCannotReuseConsumedTarget" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.169"/>
+  <testcase name="newestQueryWinsEvenWhenEarlierIconWorkWasStillPending" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.116"/>
+  <testcase name="cancellationAndDisposalRevokeTargetsAndIgnoreLateOperations" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.111"/>
+  <testcase name="removedActivitiesCannotBeLaunched" classname="dev.bautista.spotlight.overlay.LocalRaycastBridgeTest" time="0.128"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

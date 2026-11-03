@@ -1,6 +1,10 @@
 # Spotlight Next — recovered WebView experiment
 
-Status: integration checkpoint; Android compile, signed APK and real Android overlay validation PENDING.
+Current source checkpoint (2026-11-03): bridge v2, with native contract tests and
+browser validation; no new APK built for this change. The delivered Prototype58
+below is historical and uses its recorded source8c7128e. Actual Android overlay
+validation remains pending. See [v2 contract](../../docs/RAYCAST-BRIDGE-V2.md) and
+[current evidence](../../docs/verification/bridge-contracts-20261102/README.md).
 
 The user's 28 October 2026 instruction explicitly replaces the earlier native-only visual restriction for this experiment. Reuse HugoRCD's approved clone, keep OverlayService/WindowManager and existing Kotlin search, and retain Compose recovery. Do not merge or replace earlier Preview packages.
 
@@ -30,7 +34,14 @@ Only package suffix `.webviewprototype` uses LocalRaycastWebView inside the exis
 
 Frontend files are packaged in `app/src/webviewPrototype/assets/raycast-web`. WebView uses synthetic `https://spotlight.local/`, intercepts local asset reads, blocks file/content/network access and all navigation, and supplies a restrictive CSP. No addJavascriptInterface or privileged Android object is exposed.
 
-A MessagePort is transferred only to that exact origin. Protocol v1 permits `search`, `execute` (`open` or `info`), `close` and `recover`. Native search reuses SearchEngine's applications scope and accepts only explicit launcher activities. Results receive opaque per-query tokens; the frontend cannot supply arbitrary packages, components, intents or URLs. Queries and message lengths are bounded, previous queries cancel, stale tokens are removed, and result text is rendered through Vue escaping.
+A MessagePort is transferred only to that exact origin. Protocol v2 uses sessions,
+monotonic request IDs and typed envelopes. It permits search.query/cancel,
+result.inspect, action.execute (open/info) and overlay.close/recover. Kotlin
+revalidates installed launcher activities and consumes tokens before effects;
+repeated or stale requests never repeat an effect. The frontend validates bounded
+replies and ignores old sessions, query revisions and unknown IDs. Migration
+replaces both bundled client and host; v1 is rejected. Earlier verification
+sections below describe their historical checkpoints, not new APK validation.
 
 The WebView persists across queries/insets; service shutdown destroys it and closes the port. Existing window geometry/insets/preferences are reused. IME, focus, renderer recovery, rotation, memory and cold/warm timing still require Android execution.
 

@@ -8,6 +8,7 @@ const activate = () => { if (selected.value) native.execute(selected.value.id, '
 const groups = computed(() => [{ id: 'apps', label: 'Applications', ignoreFilter: true,
   items: native.rows.value.map(row => ({ ...row, onSelect: () => {
     highlightedItem.value = { value: row }
+    void native.inspect(row.id)
   } })) }])
 const settingsMenu = [{ id: 'settings', items: [
   { label: 'Use Compose recovery', icon: 'i-lucide-rotate-ccw', onSelect: () => native.recover() },
@@ -17,19 +18,28 @@ const actionsDropdownItems = computed(() => selected.value ? [
   { label: 'Open Application', icon: 'i-lucide-arrow-up-right', onSelect: activate },
   { label: 'Application Info', icon: 'i-lucide-info', onSelect: () => native.execute(selected.value.id, 'info') }
 ] : [])
-const handleHighlight = (payload: any) => { highlightedItem.value = payload }
+const handleHighlight = (payload: any) => {
+  highlightedItem.value = payload
+  if (payload?.value?.id) void native.inspect(payload.value.id)
+}
 const handleRightClick = (event: MouseEvent) => {
   event.preventDefault()
   if (selected.value) actionsDropdownOpen.value = true
 }
 function keyboard(event: KeyboardEvent) {
+  const fromResults = (event.target as HTMLElement)?.closest?.('input[placeholder="Search for apps..."],[role="option"]')
   if (event.key === 'Escape') {
     event.preventDefault(); event.stopImmediatePropagation()
     if (actionsDropdownOpen.value) actionsDropdownOpen.value = false
     else native.close()
   } else if (event.key.toLowerCase() === 'k' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault(); actionsDropdownOpen.value = !actionsDropdownOpen.value
-  } else if (event.key === 'Enter' && !event.isComposing && !actionsDropdownOpen.value) {
+  } else if (event.key === 'Tab' && !event.isComposing && actionsDropdownOpen.value) {
+    event.preventDefault(); event.stopImmediatePropagation()
+    document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: event.shiftKey ? 'ArrowUp' : 'ArrowDown', bubbles: true, cancelable: true }))
+  } else if (event.key === 'Tab' && !event.shiftKey && !event.isComposing && !actionsDropdownOpen.value && selected.value && fromResults) {
+    event.preventDefault(); event.stopImmediatePropagation(); actionsDropdownOpen.value = true
+  } else if (event.key === 'Enter' && !event.isComposing && !actionsDropdownOpen.value && fromResults) {
     event.preventDefault(); event.stopImmediatePropagation(); activate()
   }
 }

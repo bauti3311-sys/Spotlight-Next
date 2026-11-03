@@ -28,7 +28,7 @@ El motor privilegiado sigue siendo Kotlin y se conserva la recuperación Compose
 | Búsqueda | SearchEngine, scope de apps; tokens opacos por consulta | Preservar proveedores locales, cancelar e invalidar tokens antiguos |
 | Ejecución | Kotlin comprueba componente launcher instalado antes de startActivity | Consumir capacidades antes de solicitar el efecto, no reintentar automáticamente |
 | Nuxt | Vue recibe filas reales; sin host no inventa apps | Validar respuestas, correlacionar errores, invalidar UI desde el primer cambio de consulta |
-| Documentos | FileIndex/OCR/SAF, Quick Look y DirectAi existentes | No sustituirlos ni transmitir documentos por cada pulsación |
+| Documentos | FileIndex/OCR/SAF, Quick Look, DirectAi y búsqueda semántica local existentes | FileIndex ya conserva vectores/fragmentos, permisos y cancelación: no duplicarlos ni transmitir documentos por cada pulsación |
 | OpenUI | No instalado | La fase1 no requiere otro renderer ni gateway |
 | RAGFlow | No instalado/configurado | Sólo planificación; no servidor ni ingestión implícita |
 
@@ -82,6 +82,9 @@ teclado y scroll; tamaño de assets/APK y apertura medidos, sin resultados ficti
 ## Checkpoint 3 — recuperación documental (sólo planificado)
 
 Auditar FileIndex antes de definir un proveedor para no duplicar registros.
+La inspección confirmó `semantic_vectors`, `DocumentEmbedder` local,
+`semanticSource`, epoch de cancelación y extracción estructurada: reutilizar
+esos fragmentos y su validación de fuentes como primera alternativa local.
 Mantener búsqueda local y Quick Look sin Internet. Proveedor de prueba con PDF
 no privado: fragmento exacto, título/ID, origen local/remoto y página nullable;
 una página desconocida no se inventa. URI/grants permanecen en Kotlin.

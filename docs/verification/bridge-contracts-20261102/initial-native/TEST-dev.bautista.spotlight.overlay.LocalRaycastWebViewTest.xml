@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.LocalRaycastWebViewTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-02T23:53:14" hostname="d72f3c82698f" time="2.9">
+  <properties/>
+  <testcase name="localEntryLoadsWithNetworkAndFileAccessClosed" classname="dev.bautista.spotlight.overlay.LocalRaycastWebViewTest" time="2.805"/>
+  <testcase name="remoteTraversalAndUnexpectedMethodsNeverReachAssets" classname="dev.bautista.spotlight.overlay.LocalRaycastWebViewTest" time="0.094"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
