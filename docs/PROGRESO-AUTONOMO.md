@@ -1,5 +1,9 @@
 # Progreso autónomo de Spotlight Next
 
+## 2026-11-03 — APK60 nativa verificada
+
+Único intento autorizado de Actions 41581584988 correcto, perfil optimizado con R8. Fuente exacta e9647c1, workflow c6d481c, certificado Preview 885838aa, paquete raycastpreview / code60. [Entrega, hashes, verificación independiente y límites](NATIVE60-DELIVERY-20261103.md). Sin APK experimental, reruns, cambios productivos, main o PRs anteriores. Validación física pendiente.
+
 ## 2026-11-03 — retorno oficial a Preview57, auditoría sin cambios de app
 
 Rama independiente feat/preview57-native-return-20261103 desde4fc33f2 exacto.

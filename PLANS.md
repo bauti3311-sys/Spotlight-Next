@@ -1,5 +1,9 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-03 — APK60 nativa verificada
+
+Único intento autorizado de Actions 41581584988 correcto, perfil optimizado con R8. Fuente exacta e9647c1, workflow c6d481c, certificado Preview 885838aa, paquete raycastpreview / code60. [Entrega, hashes, verificación independiente y límites](docs/NATIVE60-DELIVERY-20261103.md). Sin APK experimental, reruns, cambios productivos, main o PRs anteriores. Validación física pendiente.
+
 Actualizado: 2026-10-13. Este archivo registra decisiones, evidencia y siguiente paso; no convierte trabajo pendiente en validado.
 
 ## Estado recuperable
@@ -806,7 +810,7 @@ idénticos a f664484; sólo metadatos Raycast preparados: code60 y sufijo native
 (experimental explícito si llega a justificarse), mismo paquete .raycastpreview.
 Release.properties y demás variantes/identidades intactos. No código WebView/OpenUI/RAGFlow.
 
-Firma histórica Preview885838aa cotejada directamente con APK56 privada, SHA256
+Firma histórica Preview 885838aa cotejada directamente con APK56 privada, SHA256
 280972d5aa4730ef4c71bd681c787b94d8c69778308713bb2ef985ec0716d50d y manifiesto servidor
 coincidentes; certificado v2 correcto y consistente con nota de57. No confundir con
 certificado11b0 de producción. No hay archivos de firma previstos en worktrees,
