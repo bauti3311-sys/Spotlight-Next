@@ -733,3 +733,32 @@ consentimiento explícito. Verificación estática y procedencia reproducibles e
 docs/verification/native57-return-20261103/; sin Kotlin tests nuevos, Gradle,
 APK/firma, rediseño, servidor, envío, cuenta o Actions. Cuota actual no conocida;
 ningún cambio de presupuesto ni promoción de matriz/checkpoint integral.
+
+
+## 2026-11-03 — primer checkpoint nativo: correcciones selectivas de PR19
+
+Continuación autorizada sobre1d58294 en feat/preview57-native-return-20261103/PR21.
+Remoto/reserva/notas/PR19 y21 comprobados; reserva libre adquirida normalmente con
+propietario nuevo. Se trasladan sólo ActionPanelView, GlassTokens y SpotlightBar
+revisados de a622df7, sin merge/cherry-pick global. Texto completo, heading,
+foco/borde por rol, filtro contextual accesible y recuperación vacía; Box equivalente
+resuelve Lint. Sin cambios de iconos/colores/paddings/máximos/ejecutores/datos.
+
+Reproducción actual del recorte al200% falla antes y pasa después. Primer intento
+incluye dos errores de fixture (ancho interior después de padding); originales
+preservados. Corrección sólo al contenedor medido, dos casos repetidos sobre fuente
+sin modificar:2/2. Cohorte final19 únicos (Craft5/Scroll3/Keyboard7/Bar4), sin fallos,
+errores u omisiones; gate tests+lint correcto2m35s,0E16W1Info. No sumar rondas previas.
+Capturas nativas Robolectric/API33 equivalentes antes/después; barra API28. Densidad
+85%/texto115% conserva filas48dp en320/720dp; alto fixture420→424 por encabezados.
+Caso12acciones/texto200%/escala115%/alto420: drag desplaza sin ejecutar, Tab alcanza
+última completa, ShiftTab/flechas conservados, Enter sólo ejecuta esa una vez.
+
+Evidencia docs/verification/native57-menu-20261103/README.md con XML/logs, primer fallo,
+hashes/procedencia y capturas sin retocar. Sin OneUI/IME/TalkBack físicos ni medición
+performance afirmados. Sin APK, R8/firma, Actions, dependencias, permisos, main,
+checkpoint integral, PRs previos o variantes WebView. OpenUI/RAGFlow sin implementar.
+Segundo checkpoint preparado, no implementado, en
+ docs/CHECKPOINT-2-NATIVE-LAUNCH-CONTRACTS-20261103.md: evitar fallback automático,
+revalidar destinos/permisos, errores honestos y alternativa revisada explícitamente.
+Volver a comprobar reserva/remoto antes de ese siguiente bloque.

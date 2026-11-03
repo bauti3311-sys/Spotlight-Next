@@ -1,0 +1,32 @@
+{
+  "parent": "1d582940bad2767b710d1e10e9ef93f78e8fb092",
+  "productionFiles": [
+    "app/src/main/java/dev/bautista/spotlight/ui/ActionPanelView.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassTokens.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt"
+  ],
+  "unchangedBuildWorkflowExperiments": true,
+  "existingExecutorsUnchanged": true,
+  "finalUniqueCases": 19,
+  "suites": [
+    {
+      "suite": "dev.bautista.spotlight.ui.ActionPanelScrollContractTest",
+      "tests": 3
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "tests": 7
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.SpotlightBarTest",
+      "tests": 4
+    },
+    {
+      "suite": "dev.bautista.spotlight.ui.ActionPanelCraftTest",
+      "tests": 5
+    }
+  ],
+  "result": "0 failures, errors or skipped",
+  "apkAssembled": false,
+  "ciDispatched": false
+}

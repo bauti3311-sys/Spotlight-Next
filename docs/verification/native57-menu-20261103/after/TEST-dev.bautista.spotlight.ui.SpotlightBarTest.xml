@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SpotlightBarTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-03T02:15:59" hostname="d72f3c82698f" time="10.18">
+  <properties/>
+  <testcase name="capsuleAcceptsTextAndClearButtonRunsAction" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="8.557"/>
+  <testcase name="optionalMenuSelectsExistingScopesAndReturnsToUniversal" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="1.102"/>
+  <testcase name="optionsRespectKeyboardBudgetAndReportVisibility" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="0.239"/>
+  <testcase name="optionsStayInComposeWindowAndToggleWithoutClearingQuery" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="0.281"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

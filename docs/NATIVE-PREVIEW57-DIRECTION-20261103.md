@@ -37,3 +37,13 @@ historial ni declara inválida la evidencia de aquellas ramas.
 Antes de la siguiente modificación productiva, volver a comprobar remoto y reserva,
 elegir un bloque pequeño de esa propuesta y probar el flujo concreto. No repetir
 un ensamblado de Preview57 sólo para recuperar una base que ya está en Git.
+
+
+## Continuación autorizada — recuperación selectiva del PR19
+
+La auditoría inicial se publicó en1d58294. El propietario autorizó después este
+primer checkpoint de código: tres archivos del menú/barra de PR19, pruebas nativas
+dirigidas, Lint y capturas comparables, sin APK/Actions. Resultado y límites en
+[el informe](verification/native57-menu-20261103/README.md). El
+[segundo checkpoint de contratos Android](CHECKPOINT-2-NATIVE-LAUNCH-CONTRACTS-20261103.md)
+se prepara sin implementar; OpenUI y RAGFlow siguen fuera de este alcance.
