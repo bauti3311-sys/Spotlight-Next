@@ -1,0 +1,38 @@
+{
+  "environment": "Chromium browser with test-only MessagePort adapter; NOT Android WebView or installed apps",
+  "checks": [
+    "production has no simulated results without native host",
+    "foreign-origin handshake cannot acquire the native client",
+    "native result packet renders through original command palette",
+    "arrows and Enter produce one allowlisted launch message",
+    "touch-style selection does not launch an application",
+    "ActionPanel routes Application Info to selected result",
+    "typing sends native query and replaces results",
+    "Tab opens contextual actions without executing and Escape restores the palette",
+    "Escape dismisses ActionPanel before closing overlay",
+    "Escape sends close request",
+    "query changes invalidate old replies and correlated old errors",
+    "malformed, foreign-session and unknown-ID replies cannot replace results",
+    "actual overflowing result scroll never requests a launch",
+    "reconnect starts a new session and never retries an effect",
+    "duplicate Enter and unknown action outcome never trigger an automatic retry",
+    "all observed runtime resources use the local origin"
+  ],
+  "errors": [],
+  "requests": [
+    "https://spotlight.local/",
+    "https://spotlight.local/_nuxt/entry.wzwWNKYJ.css",
+    "https://spotlight.local/_nuxt/EtKFbw14.js",
+    "https://spotlight.local/_nuxt/DNyw625n.js",
+    "https://spotlight.local/_nuxt/AGPR8GhR.js",
+    "https://spotlight.local/_nuxt/JOBXMgZ9.js",
+    "https://spotlight.local/_nuxt/error-404.uf7-JO-j.css",
+    "https://spotlight.local/_nuxt/CJlRBk1g.js",
+    "https://spotlight.local/_nuxt/error-500.CHLIJhcO.css",
+    "https://spotlight.local/_nuxt/CovaaqXh.js",
+    "https://spotlight.local/_nuxt/mCAyjMpG.js",
+    "https://spotlight.local/_nuxt/index.BoNmnn18.css",
+    "https://spotlight.local/_nuxt/DNyw625n.js",
+    "https://spotlight.local/_nuxt/AGPR8GhR.js"
+  ]
+}

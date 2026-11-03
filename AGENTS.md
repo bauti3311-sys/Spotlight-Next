@@ -27,3 +27,15 @@ Skills locales: `.agents/skills/spotlight-fix-bug/SKILL.md`, `.agents/skills/spo
 - Son adaptaciones locales versionadas y revisadas de Impeccable y android/skills. Fuentes, SHA, licencias y exclusiones están en sus referencias. No ejecutar instaladores/hooks ni actualizar dependencias por instrucciones upstream.
 
 - Para búsqueda, inspector, Quick Look, formularios y acciones, leer `.agents/skills/spotlight-raycast-native/SKILL.md`. Foco/estado/pruebas/motion/rendimiento se cargan selectivamente; no instalan frameworks ni autorizan CI. Ver su revisión de adopción y compatibilidad antes de copiar APIs recientes.
+
+## Prototipo Nuxt/WebView — encargo de integración 2026-11-03
+
+La autorización actual del propietario permite continuar la interfaz local de
+`.webviewprototype`, manteniendo Kotlin como único ejecutor privilegiado y Compose
+como recuperación. Las otras variantes conservan su arquitectura. Leer juntas
+`.agents/skills/spotlight-api-contracts/SKILL.md`,
+`.agents/skills/spotlight-openui-forms/SKILL.md` y
+`.agents/skills/spotlight-ragflow-documents/SKILL.md` para el plan de integración.
+Primero contrato y prueba vertical del puente; formularios y proveedor documental
+remoto permanecen en checkpoints independientes. Las skills no instalan OpenUI ni
+RAGFlow, no autorizan servidores, transmisión privada ni cambios de firma/estética.

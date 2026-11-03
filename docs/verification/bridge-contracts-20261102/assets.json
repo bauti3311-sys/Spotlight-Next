@@ -1,0 +1,24 @@
+{
+  "base_sha": "dbfcf81858240964812c5977612fbca86fc0d2f6",
+  "files": {
+    "404.html": "96f27045d91252858a8358d3ed5727cf03885b8cd7821f01f908a2e475c475d0",
+    "index.html": "96f27045d91252858a8358d3ed5727cf03885b8cd7821f01f908a2e475c475d0",
+    "200.html": "78e64f6db5b775da5cf7e8c9854b8c592b2ba7c22e34351b6d8f87b7a6da0466",
+    "_nuxt/error-500.CHLIJhcO.css": "325d58980cf9236b885a2922a562e13bf5ccc6595ee45c949d3269d70d3b479f",
+    "_nuxt/AGPR8GhR.js": "5ff7aca063f02451fe3411305027486bd9bc4e3349946f536804937bde85c676",
+    "_nuxt/index.BoNmnn18.css": "85328ace633efc2e2c3eea962d48e8316409ecbbc0fd63c20731ac4de6fc52c4",
+    "_nuxt/entry.wzwWNKYJ.css": "60d6a1ba8a6acf3192d83d1b1b540f7a792af1d988e1019f6ff87778842849ac",
+    "_nuxt/CovaaqXh.js": "473ddb16fa41d9f1685765f7db7a941ad5b408d3aa6d50e58b7e6cfbb93ca32b",
+    "_nuxt/DNyw625n.js": "b697526d873ae82384f688fa32cd171deedd6a9064fb959ff22d9c84b8889f84",
+    "_nuxt/JOBXMgZ9.js": "b057caf5fd35f6c5ece96b40739360dd64c6f1db939a6116c6d0344248d9ec94",
+    "_nuxt/mCAyjMpG.js": "660614e6a6d622625143a99dcb465023dc93aa9d961be541b11208791bb4c893",
+    "_nuxt/EtKFbw14.js": "41c996d8a980864f9ef65fbcda33e34e92cefea7d7b768724129fd5683364f08",
+    "_nuxt/CJlRBk1g.js": "5853acbaf8d9867cbd3adfa41cd58042c1b8f64b157b30105205249473703676",
+    "_nuxt/error-404.uf7-JO-j.css": "8351012b285956ded10c93674ae5c5e5112b519a68cf70aefa4ab8aa4297b235"
+  },
+  "before_bytes": 725292,
+  "after_bytes": 729349,
+  "css_byte_identical": true,
+  "new_dependencies": 0,
+  "new_apk": false
+}

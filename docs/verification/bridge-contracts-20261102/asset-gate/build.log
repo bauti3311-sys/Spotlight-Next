@@ -1,0 +1,40 @@
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preWebviewPrototypeBuild UP-TO-DATE
+> Task :app:compileWebviewPrototypeAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkWebviewPrototypeAarMetadata UP-TO-DATE
+> Task :app:generateWebviewPrototypeResValues UP-TO-DATE
+> Task :app:mapWebviewPrototypeSourceSetPaths UP-TO-DATE
+> Task :app:generateWebviewPrototypeResources UP-TO-DATE
+> Task :app:mergeWebviewPrototypeResources UP-TO-DATE
+> Task :app:packageWebviewPrototypeResources UP-TO-DATE
+> Task :app:parseWebviewPrototypeLocalResources UP-TO-DATE
+> Task :app:createWebviewPrototypeCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksWebviewPrototype UP-TO-DATE
+> Task :app:processWebviewPrototypeMainManifest UP-TO-DATE
+> Task :app:processWebviewPrototypeManifest UP-TO-DATE
+> Task :app:processWebviewPrototypeManifestForPackage UP-TO-DATE
+> Task :app:processWebviewPrototypeResources UP-TO-DATE
+> Task :app:compileWebviewPrototypeKotlin UP-TO-DATE
+> Task :app:javaPreCompileWebviewPrototype UP-TO-DATE
+> Task :app:compileWebviewPrototypeJavaWithJavac UP-TO-DATE
+> Task :app:bundleWebviewPrototypeClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleWebviewPrototypeClassesToCompileJar UP-TO-DATE
+> Task :app:compileWebviewPrototypeUnitTestKotlin UP-TO-DATE
+> Task :app:preWebviewPrototypeUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileWebviewPrototypeUnitTest UP-TO-DATE
+> Task :app:compileWebviewPrototypeUnitTestJavaWithJavac UP-TO-DATE
+> Task :app:mergeWebviewPrototypeShaders UP-TO-DATE
+> Task :app:compileWebviewPrototypeShaders NO-SOURCE
+> Task :app:generateWebviewPrototypeAssets UP-TO-DATE
+> Task :app:mergeWebviewPrototypeAssets
+> Task :app:packageWebviewPrototypeUnitTestForUnitTest
+> Task :app:generateWebviewPrototypeUnitTestConfig
+> Task :app:processWebviewPrototypeJavaRes UP-TO-DATE
+> Task :app:processWebviewPrototypeUnitTestJavaRes UP-TO-DATE
+> Task :app:testWebviewPrototypeUnitTest
+> Task :app:finalizeTestRoborazziWebviewPrototype SKIPPED
+
+BUILD SUCCESSFUL in 5s
+30 actionable tasks: 4 executed, 26 up-to-date

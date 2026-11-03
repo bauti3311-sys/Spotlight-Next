@@ -36,10 +36,18 @@ class LocalRaycastWebViewTest {
             assertFalse(view.settings.allowFileAccess)
             assertFalse(view.settings.allowContentAccess)
             assertTrue(view.settings.blockNetworkLoads)
+            assertEquals(android.webkit.WebSettings.LOAD_NO_CACHE,view.settings.cacheMode)
             val response = view.webViewClient.shouldInterceptRequest(view, request("https://spotlight.local/index.html"))!!
             assertEquals(200, response.statusCode)
             assertTrue(response.responseHeaders["Content-Security-Policy"]!!.contains("connect-src 'none'"))
             assertTrue(response.data.bufferedReader().use { it.readText() }.contains("__nuxt"))
+            val bundled=ApplicationProvider.getApplicationContext<Application>().assets.list("raycast-web/_nuxt").orEmpty()
+            assertTrue("The runtime bundles must be packaged, not only index.html",bundled.isNotEmpty())
+            bundled.forEach { name ->
+                val asset=view.webViewClient.shouldInterceptRequest(view,request("https://spotlight.local/_nuxt/$name"))!!
+                assertEquals(name,200,asset.statusCode)
+                assertTrue(name,asset.data.use { it.read()!=-1 })
+            }
         } finally { view.dispose(); scope.cancel() }
     }
 
@@ -48,7 +56,8 @@ class LocalRaycastWebViewTest {
         val view = LocalRaycastWebView(ApplicationProvider.getApplicationContext(), SpotlightApp(), scope, { Config() }, {}, {})
         try {
             listOf("https://example.org/index.html", "file:///etc/passwd", "content://private/item",
-                "https://spotlight.local:443/index.html", "https://spotlight.local/%2e%2e/index.html").forEach { url ->
+                "https://spotlight.local:443/index.html", "https://spotlight.local/%2e%2e/index.html",
+                "https://user@spotlight.local/index.html").forEach { url ->
                 assertEquals(url, 403, view.webViewClient.shouldInterceptRequest(view, request(url))!!.statusCode)
                 assertTrue(view.webViewClient.shouldOverrideUrlLoading(view, request(url)))
             }

@@ -700,3 +700,35 @@ Dos intentos de la fuente0989f3c3 perdieron el daemon en minifyRaycastPreviewWit
 APK y ZIP fuente exactos `ecbfdc8a927c4442135542090ad2c755fa03a1fc`: https://github.com/bauti3311-sys/Spotlight-Next/releases/tag/untagged-2770747db701386cd5bc. Seis assets uploaded y digests del servidor comprobados. Ensamblado offline experimental correcto2m43s(10 tareas ejecutadas/40al día), sin R8/shrink; mismo paquete independiente/versionCode54/certificado885838aa…/no debuggable/16KiB y ZIP sin rutas privadas. Lint existente del mismo SHA0E16W;67 UI únicas correctas en cohortes, sin repetir ni sumar ejecuciones. APK SHA256e8e8e5d0074c8b1ae4448397bfffd87d2c36af0f99d2163315ee3a4951f69372; ZIP907f7599b779e91b36245e6b05979d21f37b05e426df7d1ede5f4dd0add20319.
 
 Se conservaron los dos fallos R8 y el primer fallo experimental en mergeDex. El ensamblado separado de lint, heap2GiB/SerialGC/worker1 y proceso desacoplado terminó; esto no demuestra la causa de los daemons perdidos. Perfil optimizado continúa BLOCKED. Falta inicial de /usr/bin/time bloqueó solo el lanzador, antes de Gradle; medidor builtin utilizado. No nuevas funciones/rediseños, Actions, permisos, dependencia ni firma nueva. Sin dispositivo/cuenta Spotify real, reproducción pendiente; WhatsApp vinculado desactivado. PR18 borrador y matriz9/25/6 conservados. Cierre solicitado para Antigravity: publicar evidencia, preparar notas y liberar únicamente reserva propia mediante script/protocolo; comprobar remoto y detener Codespace.
+
+
+## 2026-11-03 — skills y contrato del prototipo Nuxt/WebView
+
+Encargo actual: instalar tres skills del ZIP y preparar tres checkpoints; sólo
+implementar contrato. Base remota real dbfcf81858240964812c5977612fbca86fc0d2f6
+en feat/nuxt-webview-recovery-20261028. Nuevo worktree/branch
+feat/webview-contracts-20261102; checkout/PR19, main y checkpoints conservados.
+Reserva adquirida normalmente estando libre; instalación byte-verificada de las
+tres skills y auditoría publicadas en54735009377027cca3da9954e5bbb1f296aa8d73.
+
+Plan y compatibilidad: docs/THREE-CAPABILITIES-CHECKPOINTS-20261102.md. Host y
+cliente migrados juntos a envelope2: sesión, IDs, cancelación/latest-query-wins,
+respuestas/errores tipados, selección nativa y consumo/deduplicación de tokens
+antes del efecto. Paquete/actividad/permisos revalidados; requested no es éxito
+de una tarea externa. No retry automático de efectos ni reapertura con token
+consumido. Dispose idempotente y paquetes antiguos/foráneos descartados.
+
+Se conservaron contratos de teclado y scroll real de lista desbordada, datos
+locales y recuperación Compose. Referencia final: veinte casos Kotlin/API33,
+quince TS y dieciséis controles Chromium; ningún resultado de fixture se empaqueta
+en producción. Gate final Kotlin/Lint correcto en2m09s: veinte casos sin fallos y lint0 errores/28 advertencias/1 información. Assets14
+idénticos a generate,725292→729349 bytes; CSS idéntico, comparación teléfono0
+píxeles distintos y tablet30 píxeles de bordes rasterizados sin cambio de diseño.
+Ver docs/RAYCAST-BRIDGE-V2.md y docs/verification/bridge-contracts-20261102/.
+
+OpenUI Vue0.4.2/Zod sólo investigados por metadatos, sin instalar; formularios y
+RAGFlow quedan planificados. FileIndex ya tiene semantic_vectors, fragments y
+validación de fuentes: reutilizar antes de duplicar proveedores. Sin servidor,
+subidas ni credenciales nuevas. No APK nueva, firma, Actions ni merge. Falta
+prueba end-to-end en Android real, IME/rotación/teclado físico y rendimiento; los
+controles Chromium/Robolectric no la sustituyen.

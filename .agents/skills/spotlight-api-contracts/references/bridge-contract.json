@@ -1,0 +1,6 @@
+{
+  "description": "ILLUSTRATIVE contract only. Codex must reconcile with actual existing event names before implementation.",
+  "request": {"v": 1, "requestId": "example-001", "type": "search.query", "payload": {"text": "spotify", "limit": 10}},
+  "reply": {"v": 1, "requestId": "example-001", "type": "search.results", "status": "ok", "data": {"items": [{"id": "native-result-id", "title": "Spotify", "subtitle": "Aplicación", "actionAvailable": true}]}},
+  "error": {"v": 1, "requestId": "example-001", "type": "search.results", "status": "error", "error": {"code": "STALE_RESULT", "message": "El resultado ya no está disponible"}}
+}

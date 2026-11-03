@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:22:53" hostname="d72f3c82698f" time="4.752">
+  <properties/>
+  <testcase name="malformedOversizedUnexpectedAndCoercedFieldsAreRejected" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="3.909"/>
+  <testcase name="disposalSilencesRequestsAndLateCompletions" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="0.141"/>
+  <testcase name="inFlightRepeatAndConflictingReuseCannotDispatch" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="0.17"/>
+  <testcase name="reconnectRejectsOldPacketsAndOldCompletionEvenWhenIdIsReused" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="0.118"/>
+  <testcase name="validReplyIsCorrelatedAndDuplicateNeverDispatchesAgain" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="0.127"/>
+  <testcase name="repeatedSearchDoesNotCacheLargeResultPacketsOrRestartWork" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="0.108"/>
+  <testcase name="replayFenceSurvivesBoundedCacheEviction" classname="dev.bautista.spotlight.overlay.RaycastBridgeProtocolTest" time="0.14"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

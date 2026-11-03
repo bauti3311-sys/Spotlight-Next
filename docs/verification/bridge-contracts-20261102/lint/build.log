@@ -1,0 +1,54 @@
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preWebviewPrototypeBuild UP-TO-DATE
+> Task :app:compileWebviewPrototypeAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkWebviewPrototypeAarMetadata UP-TO-DATE
+> Task :app:generateWebviewPrototypeResValues UP-TO-DATE
+> Task :app:mapWebviewPrototypeSourceSetPaths UP-TO-DATE
+> Task :app:generateWebviewPrototypeResources UP-TO-DATE
+> Task :app:mergeWebviewPrototypeResources UP-TO-DATE
+> Task :app:packageWebviewPrototypeResources UP-TO-DATE
+> Task :app:parseWebviewPrototypeLocalResources UP-TO-DATE
+> Task :app:createWebviewPrototypeCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksWebviewPrototype UP-TO-DATE
+> Task :app:processWebviewPrototypeMainManifest UP-TO-DATE
+> Task :app:processWebviewPrototypeManifest UP-TO-DATE
+> Task :app:processWebviewPrototypeManifestForPackage UP-TO-DATE
+> Task :app:processWebviewPrototypeResources UP-TO-DATE
+> Task :app:javaPreCompileWebviewPrototype UP-TO-DATE
+> Task :app:preWebviewPrototypeUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileWebviewPrototypeUnitTest UP-TO-DATE
+> Task :app:mergeWebviewPrototypeShaders UP-TO-DATE
+> Task :app:compileWebviewPrototypeShaders NO-SOURCE
+> Task :app:generateWebviewPrototypeAssets UP-TO-DATE
+> Task :app:mergeWebviewPrototypeAssets UP-TO-DATE
+> Task :app:packageWebviewPrototypeUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateWebviewPrototypeUnitTestConfig UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+
+> Task :app:compileWebviewPrototypeKotlin
+w: file:///workspace/Spotlight-Next-bridge/app/src/main/java/dev/bautista/spotlight/overlay/LocalRaycastWebView.kt:54:18 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+
+> Task :app:compileWebviewPrototypeJavaWithJavac UP-TO-DATE
+> Task :app:bundleWebviewPrototypeClassesToRuntimeJar
+> Task :app:bundleWebviewPrototypeClassesToCompileJar
+> Task :app:processWebviewPrototypeJavaRes UP-TO-DATE
+> Task :app:generateWebviewPrototypeLintReportModel
+> Task :app:generateWebviewPrototypeUnitTestLintModel
+
+> Task :app:compileWebviewPrototypeUnitTestKotlin
+w: file:///workspace/Spotlight-Next-bridge/app/src/test/java/dev/bautista/spotlight/overlay/LocalRaycastBridgeTest.kt:54:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next-bridge/app/src/test/java/dev/bautista/spotlight/overlay/LocalRaycastBridgeTest.kt:233:80 'constructor(): RenderProcessGoneDetail' is deprecated. Deprecated in Java.
+
+> Task :app:compileWebviewPrototypeUnitTestJavaWithJavac UP-TO-DATE
+> Task :app:processWebviewPrototypeUnitTestJavaRes UP-TO-DATE
+> Task :app:testWebviewPrototypeUnitTest
+> Task :app:finalizeTestRoborazziWebviewPrototype SKIPPED
+> Task :app:lintAnalyzeWebviewPrototype
+> Task :app:lintAnalyzeWebviewPrototypeUnitTest
+> Task :app:lintReportWebviewPrototype UP-TO-DATE
+> Task :app:lintWebviewPrototype
+
+BUILD SUCCESSFUL in 2m 9s
+37 actionable tasks: 10 executed, 27 up-to-date
