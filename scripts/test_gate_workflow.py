@@ -110,7 +110,7 @@ class GateWorkflowTest(unittest.TestCase):
         self.assertEqual({'workflow_dispatch'}, set(self.doc['on']))
         inputs = self.doc['on']['workflow_dispatch']['inputs']
         self.assertEqual('directed-tests', inputs['mode']['default'])
-        self.assertEqual(['directed-tests', 'preview'], inputs['mode']['options'])
+        self.assertEqual(['directed-tests', 'preview', 'native60-once'], inputs['mode']['options'])
         self.assertIn("inputs.mode == 'directed-tests'", self.gate['if'])
         self.assertIn("inputs.mode == 'preview'", self.doc['jobs']['raycast-preview']['if'])
         self.assertEqual({'contents': 'read'}, self.doc['permissions'])

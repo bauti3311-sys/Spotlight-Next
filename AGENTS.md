@@ -1,5 +1,22 @@
 # Spotlight Next — instrucciones para Codex
 
+## Firma Native60 — preparación, NO ejecutar Actions todavía
+
+La APK aprobada debe compilarse desde `e9647c1329b93820383e3c8b4ec56dbceb3ce5f1`
+(code60, funcionalidad f664484); el SHA de automatización se revisa aparte.
+Prioridad actual: comprobar en Termux la copia histórica privada del ZIP0.9.1,
+con clave original885838aa, sin enviar material privado al chat/cloud.
+Ver `docs/NATIVE60-HISTORICAL-SIGNING-20261103.md` y kit público de preflight.
+La ruta está en el dispositivo y aún no se comprobó su disponibilidad actual.
+
+`mode=native60-once` está preparado y validado localmente, **sin autorización de
+dispatch**. Sólo si la vía local no es viable, el propietario debe confirmar los
+bindings/cuota y autorizar expresamente una ejecución del par SHA fuente/SHA
+workflow revisado. Solicitudes anteriores de APK o un «seguí» no levantan esta
+restricción. No usar el modo legacy56, no hacer re-run/otro dispatch ni eludir
+las guardas. El operador conserva su propia reserva durante la ejecución y sólo
+él la libera con notas. No copiar/exportar claves privadas o contraseñas.
+
 ## Dirección vigente — Preview 57 nativa (decisión 2026-11-03)
 
 Leer primero [la decisión vigente](docs/NATIVE-PREVIEW57-DIRECTION-20261103.md)

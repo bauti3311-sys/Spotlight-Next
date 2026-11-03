@@ -1,0 +1,26 @@
+test_correct_native60_metadata (test_native60_signing.Native60ArtifactTest.test_correct_native60_metadata) ... ok
+test_exact_source_comment_and_no_private_material (test_native60_signing.Native60ArtifactTest.test_exact_source_comment_and_no_private_material) ... ok
+test_main_wrong_duplicate_or_unsigned_signature_is_rejected (test_native60_signing.Native60ArtifactTest.test_main_wrong_duplicate_or_unsigned_signature_is_rejected) ... ok
+test_old_main_debuggable_sdk_or_wrong_abi_rejected (test_native60_signing.Native60ArtifactTest.test_old_main_debuggable_sdk_or_wrong_abi_rejected) ... ok
+test_private_paths_traversal_and_symlinks_are_rejected (test_native60_signing.Native60ArtifactTest.test_private_paths_traversal_and_symlinks_are_rejected) ... ok
+test_single_historical_v2_certificate (test_native60_signing.Native60ArtifactTest.test_single_historical_v2_certificate) ... ok
+test_exact_owner_revisions_live_lease_and_first_attempt_pass (test_native60_signing.Native60PolicyTest.test_exact_owner_revisions_live_lease_and_first_attempt_pass) ... ok
+test_foreign_or_updated_reservation_fails_closed (test_native60_signing.Native60PolicyTest.test_foreign_or_updated_reservation_fails_closed) ... ok
+test_missing_current_run_history_fails_closed (test_native60_signing.Native60PolicyTest.test_missing_current_run_history_fails_closed) ... ok
+test_reruns_are_rejected (test_native60_signing.Native60PolicyTest.test_reruns_are_rejected) ... ok
+test_reviewed_workflow_cannot_be_replaced_by_current_branch_head (test_native60_signing.Native60PolicyTest.test_reviewed_workflow_cannot_be_replaced_by_current_branch_head) ... ok
+test_second_fresh_dispatch_after_even_a_failed_attempt_is_rejected (test_native60_signing.Native60PolicyTest.test_second_fresh_dispatch_after_even_a_failed_attempt_is_rejected) ... ok
+test_wrong_actor_repository_branch_event_or_source_never_pass (test_native60_signing.Native60PolicyTest.test_wrong_actor_repository_branch_event_or_source_never_pass) ... ok
+test_all_new_actions_are_immutable_commit_pins (test_native60_signing.Native60WorkflowTest.test_all_new_actions_are_immutable_commit_pins) ... ok
+test_manual_only_existing_workflow_and_read_only_native_jobs (test_native60_signing.Native60WorkflowTest.test_manual_only_existing_workflow_and_read_only_native_jobs) ... ok
+test_missing_signing_inputs_fail_before_private_files_exist (test_native60_signing.Native60WorkflowTest.test_missing_signing_inputs_fail_before_private_files_exist) ... ok
+test_private_inputs_are_step_scoped_and_cleanup_is_always (test_native60_signing.Native60WorkflowTest.test_private_inputs_are_step_scoped_and_cleanup_is_always) ... ok
+test_signer_never_checks_out_app_or_runs_gradle (test_native60_signing.Native60WorkflowTest.test_signer_never_checks_out_app_or_runs_gradle) ... ok
+test_termux_missing_archive_creates_no_key_or_output (test_native60_signing.Native60WorkflowTest.test_termux_missing_archive_creates_no_key_or_output) ... ok
+test_termux_never_extracts_into_a_shared_or_arbitrary_home (test_native60_signing.Native60WorkflowTest.test_termux_never_extracts_into_a_shared_or_arbitrary_home) ... ok
+test_unsigned_build_has_no_signing_secret_and_no_retry_or_experimental (test_native60_signing.Native60WorkflowTest.test_unsigned_build_has_no_signing_secret_and_no_retry_or_experimental) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.051s
+
+OK

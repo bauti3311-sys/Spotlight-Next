@@ -1,5 +1,11 @@
 # Validación física — Preview57 nativa con checkpoints1/2
 
+Actualización de auditoría de firma: [vía Termux prioritaria y alternativa Actions
+preparada sin ejecutar](NATIVE60-HISTORICAL-SIGNING-20261103.md). El propietario
+identificó una ruta histórica en su Android; su disponibilidad actual no está
+verificada. La referencia a un secreto en el workflow no permite confirmar su
+configuración desde esta integración (API403).
+
 **Estado: preparación bloqueada por falta de acceso al firmador histórico. No hay
 APK nueva compilada, firmada ni descargable.** Base funcional aprobada:
 `f6644841bf3e1725a055c6fda19e29256485ffdf`, rama de PR21. Kotlin, recursos,

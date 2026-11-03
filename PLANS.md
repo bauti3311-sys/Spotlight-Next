@@ -827,3 +827,41 @@ f664484 y19 del checkpoint1 siguen históricos, no una nueva corrida. Estado de
 entrega BLOCKED_HISTORICAL_SIGNER_UNAVAILABLE. Reanudar tras acceso al firmador,
 verificar nuevamente reserva/remoto y certificado antes de producir una única APK.
 Cierre con checkpoint de preparación, sin promoción integral, y sólo reserva propia.
+
+
+## 2026-11-03 — auditoría del firmador y preparación local/Actions, sin ejecutar
+
+Continuación e9647c1/PR21; reserva libre adquirida con propietario propio. Usuario
+identificó RAYCAST_PREVIEW_KEYSTORE_BASE64 en workflow y copia histórica0.9.1.
+No se encontró ZIP en cloud/refs/releases. Metadata de secretos403: no demuestra
+secreto inexistente ni acceso a su valor. No se imprimen/copían valores privados.
+Propietario aportó ruta histórica en su Android/Termux, presencia actual pendiente,
+entrada exacta SpotlightNext/signing/spotlight-debug.keystore. Ruta no accesible
+desde cloud. **Prioridad Termux**, sin subir clave/ZIP privado al chat o cloud.
+
+Kit público preflight: extrae sólo entrada exacta, 1MiB máximo, sin symlinks/ambigüedad,
+en HOME privado Termux700/600 (no TMPDIR compartido). Java17+ prompts de contraseñas
+sin eco sólo localmente, única entrada con certificado885838aa y PrivateKey accesible;
+no exporta keybytes ni firmaAPK, elimina copia temporal. No prueba con archivo real
+ni dispositivo ejecutada. Paquetes oficiales Termux OpenJDK17/21/apksigner investigados;
+preflight sólo necesita Python yJDK, sin instalaciones automáticas.
+
+Alternativa preparada mode=native60-once en build-apk.yml, jamás ejecutada. Guard
+repo/owner/triggeringactor/ref/SHA fuente e9647c1/SHA workflow revisado/run_attempt1,
+historial de un solo intento por workflowSHA, concurrencia y lease/owner propios
+vigentes. Token CI contents/actions read-only; operador mantiene/libera reserva.
+3jobs aislados preflight certificado+clave, build unsigned sin secretos y firma sin
+Gradle/source ejecutable; sourceZIP exacto, metadata60/certv2/16KiB/DEX/payload hashes.
+No retry/fallback experimental. Cuatro bindings de firma requeridos, valores nunca
+versionados/solicitados en chat; configuración actual no verificable con esta app.
+Antes de dispatch requiere autorización expresa de revisión exacta y confirmar
+secretos/cuota; máximo45min configurado, almacenamiento~200MB estimado, no medido.
+
+21 casos de guardas/artefactos/aislamiento+6workflow histórico correctos; Actionlint
+1.7.7 checksum verificado, bash-n steps/helpers yjavac17 correctos. No Androidbuild,
+R8/APK/firma, claves nuevas, dispatch/secret edit, main/merge/PRs previos o instalaciones.
+App/config funcional idéntica ae9647c1; helpers nuevos no pertenecen al sourceAPK
+aprobado. Documento exacto docs/NATIVE60-HISTORICAL-SIGNING-20261103.md; evidencia
+ docs/verification/native60-signing-plan-20261103/. Esperar preflight local, y sólo si
+no viable presentar autorización de una ejecución Actions para ese source/workflow.
+No promover puntero integral; cerrar y liberar únicamente la reserva propia.
