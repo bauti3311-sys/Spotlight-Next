@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.HomeSuggestionsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-04T14:34:55" hostname="c880c3bda6d8" time="2.624">
+  <properties/>
+  <testcase name="hideAndPinAreAppliedToAvailableCommands" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="2.101"/>
+  <testcase name="freshInstallHasRealLaunchableAppsWithoutLearningOrUsageAccess" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.329"/>
+  <testcase name="currentVolumeActionAppearsWithoutInventingAnApplication" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.129"/>
+  <testcase name="noHistoryOrUnavailableProvidersLeakIntoHome" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.031"/>
+  <testcase name="disabledSuggestionsReturnNothing" classname="dev.bautista.spotlight.search.HomeSuggestionsTest" time="0.027"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

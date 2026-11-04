@@ -94,7 +94,7 @@ object ActionCatalog {
     fun searchAction(topic:String,packageName:String,query:String):Action? {
         val q=query.trim();if(q.isBlank())return null
         val url=when(topic){"youtube"->"https://www.youtube.com/results?search_query=";"spotify"->"https://open.spotify.com/search/";"mapas"->"https://www.google.com/maps/search/?api=1&query=";"sofascore"->"https://www.google.com/search?q=";else->"https://www.google.com/search?q="}
-        val term=when(topic){"sofascore"->"site:sofascore.com $q resultado";"google","chrome","vivaldi","youtube","spotify","mapas","app"->q;else->"$topic $q"}
+        val term=when(topic){"sofascore"->"site:sofascore.com $q resultado";"google","chrome","vivaldi","youtube","spotify","mapas","app","app-web-search"->q;else->"$topic $q"}
         val web=Intent(Intent.ACTION_VIEW,Uri.parse(url+Uri.encode(term)))
         val pkg=packageName.ifBlank {packages[topic].orEmpty()}
         return if(topic=="google" || pkg.isBlank())Action.Launch(web)

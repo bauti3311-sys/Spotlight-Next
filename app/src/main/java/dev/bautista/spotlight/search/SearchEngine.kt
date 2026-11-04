@@ -60,15 +60,29 @@ class SearchEngine(
         apps = null
     }
 
-    /** Explicit "app name + terms" only; public Android capability, never inferred private data. */
+    /** Explicit app + terms and local search phrasing; never inferred private data. */
     private suspend fun contextualAppSearch(input:String):List<Result> {
         if(!dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"apps"))return emptyList()
-        val words=input.trim().split(Regex("\\s+"))
-        if(words.size<2)return emptyList()
-        val candidates=appList().mapNotNull { app ->
+        val raw=input.trim()
+        val installed=appList()
+        if(installed.any{normalize(it.label.trim())==normalize(raw)})return emptyList()
+        val prefix=Regex("^(?:buscar|busca|buscá)\\s+en\\s+",RegexOption.IGNORE_CASE)
+        val verb=Regex("^(?:buscar|busca|buscá)\\s+",RegexOption.IGNORE_CASE)
+        val candidates=installed.mapNotNull { app ->
+            currentCoroutineContext().ensureActive()
             val name=app.label.trim().split(Regex("\\s+"))
-            if(words.size>name.size && normalize(words.take(name.size).joinToString(" "))==normalize(name.joinToString(" ")))
-                app to name.size else null
+            val leadingText=prefix.replaceFirst(raw,"")
+            val leadingWords=Regex("\\S+").findAll(leadingText).toList()
+            val direct=if(leadingWords.size>name.size && leadingWords.take(name.size).map{normalize(it.value.trimEnd(':'))}==name.map(::normalize))
+                leadingText.substring(leadingWords[name.lastIndex].range.last+1).trim().removePrefix(":").trim() else null
+            val trailingText=verb.replaceFirst(raw,"")
+            val trailingWords=Regex("\\S+").findAll(trailingText).toList()
+            val separator=trailingWords.size-name.size-1
+            val trailing=if(verb.containsMatchIn(raw) && separator>0 && normalize(trailingWords[separator].value)=="en" &&
+                trailingWords.takeLast(name.size).map{normalize(it.value)}==name.map(::normalize))
+                trailingText.substring(0,trailingWords[separator].range.first).trim() else null
+            val term=(direct ?: trailing)?.trim()?.takeIf{it.isNotBlank()} ?: return@mapNotNull null
+            Triple(app,name.size,term.take(4000))
         }
         val longest=candidates.maxOfOrNull{it.second} ?: return emptyList()
         // Homonymous packages/profiles require explicit app selection in the inspector.
@@ -78,10 +92,9 @@ class SearchEngine(
             .singleOrNull{it.id=="search"} ?: return emptyList()
         val draft=capability.action as? Action.ComposeSearch ?: return emptyList()
         // Documented named integrations already have their own root-query provider.
-        if(draft.topic!="app")return emptyList()
-        val term=words.drop(longest).joinToString(" ").take(4000)
+        if(draft.topic !in setOf("app","app-web-search"))return emptyList()
         return listOf(Result("context:app-search:${app.id}","Buscar en ${app.label}",
-            "Revisar consulta: $term","Acciones",2200,draft.copy(query=term),icon=null))
+            "Revisar consulta: ${chosen.third}","Acciones",2200,draft.copy(query=chosen.third),icon=null))
             .filter{dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it)}
     }
 

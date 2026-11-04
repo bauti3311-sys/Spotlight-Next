@@ -45,3 +45,16 @@ sin fallos/omisiones. Reproducción previa:2 fallos de3 casos nuevos.
 Evidencia web-red/web-green. Ningún Intent se solicita durante descubrimiento;
 la actividad debe ser pública, habilitada, del paquete elegido y sin permiso
 denegado. PUBLIC_SEARCH/documentado precede a WEB_SEARCH, sin duplicados.
+
+## Subhito 2 — consulta contextual explícita
+
+Se admiten «Wikipedia términos», «buscar en Wikipedia: términos» y «buscar
+ términos en Wikipedia» cuando la app expone búsqueda pública. El nombre más
+largo inequívoco gana, se conservan acentos/texto original y las apps exactas
+siguen primero. No se elige un homónimo ni se ofrecen capacidades ausentes.
+WEB_SEARCH usa el formulario existente y QUERY, sin inventar búsqueda interna.
+
+16 casos correctos:10 C2ContextSearch,5 HomeSuggestions y1 recorrido UI nuevo
+consulta→edición→solicitud WEB_SEARCH al componente exacto→Escape/foco.
+Rojo previo:2 fallos/10; evidencia query-red/query-green. Sin remoto por tecla,
+lectura de otras apps ni efectos externos verificados.

@@ -29,14 +29,14 @@ import org.robolectric.annotation.GraphicsMode
 class C2PublicSearchFlowTest {
     @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
-    private fun install(pkg:String="org.wikipedia",title:String="Wikipedia") {
+    private fun install(pkg:String="org.wikipedia",title:String="Wikipedia",web:Boolean=false) {
         val a=ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel=title;enabled=true}
         val main=ActivityInfo().apply{packageName=pkg;name="Main";nonLocalizedLabel=title;applicationInfo=a;exported=true;enabled=true}
         val search=ActivityInfo().apply{packageName=pkg;name="$pkg.Search";applicationInfo=a;exported=true;enabled=true}
         val pm=Shadows.shadowOf(app.packageManager)
         pm.installPackage(PackageInfo().apply{packageName=pkg;applicationInfo=a;activities=arrayOf(main,search)})
         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=main})
-        pm.addResolveInfoForIntent(Intent(Intent.ACTION_SEARCH).setPackage(pkg),ResolveInfo().apply{activityInfo=search})
+        pm.addResolveInfoForIntent(Intent(if(web)Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(pkg),ResolveInfo().apply{activityInfo=search})
         app.search.invalidateApps()
     }
     private fun capture(name:String) {
@@ -178,6 +178,24 @@ class C2PublicSearchFlowTest {
         ui.onNodeWithTag("context-footer").assertIsDisplayed()
         repeat(2){ui.onNodeWithTag("compact-inspector-scroll").performTouchInput{swipeUp()}}
         ui.onNodeWithText("org.wikipedia").assertIsDisplayed()
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
+
+    @Test fun explicitQueryUsesSelectedWebSearchHandlerAndKeepsEditableReview() {
+        install("fixture.webatlas","Web Atlas",web=true)
+        ui.setContent{Box(Modifier.width(360.dp)){SpotlightPanel(app,
+            AppConfig(files=false,online=false,contacts=false,animations=false,learning=false),{},"buscar en Web Atlas: órbita",700f)}}
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:context:app-search:fixture.webatlas/Main").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar"))).performKeyInput{pressKey(Key.Enter)}
+        ui.onNode(hasSetTextAction() and hasText("órbita")).performTextReplacement("órbita lunar")
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+        ui.onNodeWithText("Buscar").performClick()
+        val intent=Shadows.shadowOf(app).nextStartedActivity
+        assertEquals(Intent.ACTION_WEB_SEARCH,intent.action)
+        assertEquals("fixture.webatlas",intent.component!!.packageName)
+        assertEquals("órbita lunar",intent.getStringExtra(android.app.SearchManager.QUERY))
+        ui.onNodeWithTag("spotlight-root").performKeyInput{pressKey(Key.Escape)}
+        ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar"))).assertIsFocused()
         assertNull(Shadows.shadowOf(app).nextStartedActivity)
     }
 
