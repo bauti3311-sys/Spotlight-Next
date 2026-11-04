@@ -12,7 +12,7 @@ Actions, claves, dependencias, cambio de permisos/versión o motores nuevos.
 - Base `03761d6`: selección satinada, foco de resultado 1 dp neutro (ActionPanel
   mantiene 2 dp), jerarquía, sombra/borde contenidos y dock táctil sin cápsula.
   Barra 56 dp y filas normales 48 dp inline/60dp apiladas intactas; hasta 3 sugerencias.
-- Ajustes de inspector y este cierre: acento local reducido y por paquete exacto,
+- Ajustes de inspector `9a26db0`: acento local reducido y por paquete exacto,
   encabezado semántico y acciones secundarias desplegables dentro del contexto
   compacto. Se conserva cancelación mientras se extrae y expansión al terminar,
   evitando plegado automático. Media/formularios usan controles sobrios. Se
@@ -95,3 +95,6 @@ verificaron en fixtures, no certifican todos los fondos/dispositivos. El texto 2
 y RTL ejercitados corresponden al menú nativo; no se afirma validación física de
 cada formulario. La aprobación visual posterior se realiza sobre estas capturas
 nativas, diferenciadas de los conceptos generados. No avanzar a C2 sin autorización.
+
+El cierre documental posterior conserva literalmente los registros históricos de
+continuidad; no altera producción, tests ni el resultado de verificación de9a26db0.

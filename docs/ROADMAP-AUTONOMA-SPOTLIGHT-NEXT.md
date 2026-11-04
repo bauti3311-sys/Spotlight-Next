@@ -12,6 +12,7 @@ Actions, firma, dependencias o cambios de main/PRs anteriores. C0 físico sigue
 pendiente. Próxima acción: revisión del C1 nativo y validación física autorizada,
 no comenzar otro checkpoint automáticamente.
 
+
 ## Dirección vigente 2026-11-03 — Preview57 nativa
 
 La [decisión del propietario](NATIVE-PREVIEW57-DIRECTION-20261103.md) establece
