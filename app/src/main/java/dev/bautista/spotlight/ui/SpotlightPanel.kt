@@ -480,7 +480,12 @@ fun SpotlightPanel(
                 is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());if(!keepSurface())onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
                 is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};invalidateResults();preview=null;menu=false;selected=0;focus.requestFocus()}
                 is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
-                is Action.ComposeSearch -> {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
+                is Action.ComposeSearch -> {
+                    val unavailable=action.topic=="app" && dev.bautista.spotlight.control.IntegrationRegistry(context)
+                        .launchAccess(Intent(Intent.ACTION_SEARCH).setPackage(action.packageName)).problem!=null
+                    if(unavailable)error="La búsqueda de esta app ya no está disponible. Revisá la instalación y sus permisos."
+                    else {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
+                }
                 is Action.AudioPanel -> {push();clearForms();audioPanel=true;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
                 is Action.Access -> when(action.access){
                     "contacts","calendar","base" -> launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access",action.access).putExtra("query",action.query))

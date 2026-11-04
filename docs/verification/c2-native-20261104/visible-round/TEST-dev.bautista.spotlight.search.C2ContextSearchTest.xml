@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.C2ContextSearchTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-04T12:55:29" hostname="c880c3bda6d8" time="3.027">
+  <properties/>
+  <testcase name="homonymousPackagesRequireSelectionAndExactQueryStaysApplicationFirst" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="2.801"/>
+  <testcase name="absentSearchDoesNotInventContextualCapability" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.079"/>
+  <testcase name="appAndTermsPrepareTheExistingPublicSearchWithoutLaunching" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.077"/>
+  <testcase name="exactInstalledApplicationWinsSameNamedHighScoreAction" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.024"/>
+  <testcase name="longestApplicationNameWinsAndAccentsInTermsArePreserved" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.046"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

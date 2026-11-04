@@ -20,7 +20,6 @@ class AppCapabilities(private val context:Context) {
         "com.spotify.music" to ("spotify" to "https://open.spotify.com/search/consulta"),
         "com.google.android.youtube" to ("youtube" to "https://www.youtube.com/results?search_query=consulta"),
         "com.google.android.apps.maps" to ("mapas" to "https://www.google.com/maps/search/?api=1&query=consulta"),
-        "com.sofascore.results" to ("sofascore" to "https://www.sofascore.com/"),
         "com.android.chrome" to ("chrome" to "https://www.google.com/search?q=consulta"),
         "com.vivaldi.browser" to ("vivaldi" to "https://www.google.com/search?q=consulta"),
     )
@@ -30,7 +29,7 @@ class AppCapabilities(private val context:Context) {
         val documented=searches[packageName]
         if(documented!=null && registry.resolves(Intent(Intent.ACTION_VIEW,Uri.parse(documented.second)).setPackage(packageName))) {
             rows+=AppCapability("search",packageName,"Buscar en la aplicación",AppCapabilityMechanism.DOCUMENTED_LINK,
-                listOf("query"),true,emptyList(),"Abrir resultados en la app; no reproduce ni consulta una cuenta desde Spotlight.","Respaldo web si Android no puede abrir el destino.",Action.ComposeSearch(documented.first,packageName))
+                listOf("query"),true,emptyList(),"Abrir resultados en la app; no reproduce ni consulta una cuenta desde Spotlight.","Alternativa web sólo tras revisión y confirmación explícitas.",Action.ComposeSearch(documented.first,packageName))
         } else if(registry.resolves(probeSearch(packageName))) {
             rows+=AppCapability("search",packageName,"Buscar en la aplicación",AppCapabilityMechanism.PUBLIC_SEARCH,
                 listOf("query"),true,emptyList(),"Solicitar búsqueda a una actividad pública.","Sin acceso a los datos privados de la app.",Action.ComposeSearch("app",packageName))

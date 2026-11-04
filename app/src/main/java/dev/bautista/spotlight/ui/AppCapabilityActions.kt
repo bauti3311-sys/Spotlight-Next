@@ -25,17 +25,28 @@ import kotlinx.coroutines.*
     var capabilities by remember(packageName){mutableStateOf(emptyList<AppCapability>())}
     var error by remember(packageName){mutableStateOf("")}
     var busy by remember(packageName){mutableStateOf(false)}
+    var loading by remember(packageName){mutableStateOf(true)}
     val catalog=remember(packageName,appInfoAlreadyVisible){ActionCatalog.applicationActions(packageName).filterNot {
         appInfoAlreadyVisible && (it.action as? Action.Launch)?.intent?.action==android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
     }}
-    LaunchedEffect(packageName){capabilities=withContext(Dispatchers.IO){runCatching{registry.available(packageName)}.getOrDefault(emptyList())}}
+    LaunchedEffect(packageName){capabilities=withContext(Dispatchers.IO){registry.available(packageName)};loading=false}
     Column(Modifier.fillMaxWidth().testTag("app-capabilities")) {
         InspectorSecondaryActions(compact,packageName) {
         HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant,modifier=Modifier.padding(bottom=(12f*d).dp))
         Text("Acciones de app",style=MaterialTheme.typography.labelMedium,fontSize=GlassTokens.scaledSp(12.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant,
             modifier=Modifier.padding(bottom=(4f*d).dp))
         catalog.forEach { target ->
-            TextButton(enabled=!busy,onClick={onAction(target.action)},
+            val search=target.action is Action.ComposeSearch
+            val available=!search || capabilities.any{it.id=="search"}
+            TextButton(enabled=!busy && available,onClick={
+                if(!search)onAction(target.action) else {
+                    busy=true;scope.launch {
+                        try{val action=withContext(Dispatchers.IO){registry.prepare(packageName,"search")};error="";onAction(action)}
+                        catch(e:CancellationException){throw e}catch(_:Exception){error="La búsqueda ya no está disponible. Revisá la app y sus permisos."}
+                        finally{busy=false}
+                    }
+                }
+            },
                 colors=ButtonDefaults.textButtonColors(contentColor=MaterialTheme.colorScheme.onSurface),
                 contentPadding=PaddingValues(horizontal=(2f*d).dp,vertical=(8f*d).dp),
                 modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("app-action-${target.id}")) {
@@ -43,7 +54,8 @@ import kotlinx.coroutines.*
                     ResultIcon(target,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.primary)
                     Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy((3f*d).dp)) {
                         Text(target.title,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance))
-                        Text(target.subtitle,style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(if(search && !available)if(loading)"Comprobando disponibilidad…" else "No disponible: la app no publica una búsqueda accesible." else target.subtitle,
+                            style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }

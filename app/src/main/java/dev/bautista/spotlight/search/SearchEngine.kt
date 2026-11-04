@@ -60,6 +60,29 @@ class SearchEngine(
         apps = null
     }
 
+    /** Explicit "app name + terms" only; public Android capability, never inferred private data. */
+    private suspend fun contextualAppSearch(input:String):List<Result> {
+        val words=input.trim().split(Regex("\\s+"))
+        if(words.size<2)return emptyList()
+        val candidates=appList().mapNotNull { app ->
+            val name=app.label.trim().split(Regex("\\s+"))
+            if(words.size>name.size && normalize(words.take(name.size).joinToString(" "))==normalize(name.joinToString(" ")))
+                app to name.size else null
+        }
+        val longest=candidates.maxOfOrNull{it.second} ?: return emptyList()
+        // Homonymous packages/profiles require explicit app selection in the inspector.
+        val chosen=candidates.filter{it.second==longest}.singleOrNull() ?: return emptyList()
+        val app=chosen.first
+        val capability=AppCapabilities(context).available(app.intent.component!!.packageName)
+            .singleOrNull{it.id=="search"} ?: return emptyList()
+        val draft=capability.action as? Action.ComposeSearch ?: return emptyList()
+        // Documented named integrations already have their own root-query provider.
+        if(draft.topic!="app")return emptyList()
+        val term=words.drop(longest).joinToString(" ").take(4000)
+        return listOf(Result("context:app-search:${app.id}","Buscar en ${app.label}",
+            "Revisar consulta: $term","Acciones",2200,draft.copy(query=term),icon=null))
+    }
+
     fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {
         // Resolve once at the production boundary. This is local and side-effect free.
         val resolution=if(scope==null && input.isNotBlank())UniversalIntentEngine.resolve(input,c) else null
@@ -113,8 +136,9 @@ class SearchEngine(
         val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
+        val contextual=if(effectiveScope==null && input.isNotBlank())contextualAppSearch(input) else emptyList()
         searchSources(query,c,effectiveScope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else StableResults.unique(ResultRanker.rank(query,rows,c))
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved+contextual,c)) else StableResults.unique(ResultRanker.rank(query,rows,c))
             // Only advertise device controls backed by a currently available local route.
             // The executor still rechecks permission, configuration and target at execution.
             send(all.filter { item ->
