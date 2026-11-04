@@ -219,16 +219,22 @@ fun SpotlightPanel(
             if(pinnedPreview==oldPin){pinnedPreview=nextPin;if(oldPin!=null && nextPin==null)error="La nota ya no existe. Su vista recuperada se descartó."}
         }
         var importedSelection by rememberSaveable{mutableStateOf<String?>(null)}
+        var importedContextId by rememberSaveable{mutableStateOf<String?>(null)}
         val activeContext by app.contexts.active.collectAsState()
         LaunchedEffect(activeContext?.id) {
-            if(activeContext!=null && app.contexts.sharedFiles.items.isNotEmpty()) {
-                fileBuffer.clear();app.contexts.sharedFiles.items.forEach{fileBuffer.add(it)}
-                importedSelection=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)
-            } else if(importedSelection!=null) {
+            val sourceId=activeContext?.id
+            if(sourceId!=null && app.contexts.sharedFiles.items.isNotEmpty()) {
+                // Restore the user's edited selection; import only a genuinely new context.
+                if(importedContextId!=sourceId) {
+                    fileBuffer.clear();app.contexts.sharedFiles.items.forEach{fileBuffer.add(it)}
+                    importedSelection=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)
+                    importedContextId=sourceId
+                }
+            } else if(importedContextId!=null) {
                 // Clear an untouched incoming selection when its context is removed/expired;
                 // preserve a selection the user has deliberately changed in the tray.
                 if(importedSelection==dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items))fileBuffer.clear()
-                importedSelection=null
+                importedSelection=null;importedContextId=null
             }
         }
         val pinnedContexts by app.contexts.pinned.collectAsState()

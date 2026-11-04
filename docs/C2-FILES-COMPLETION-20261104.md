@@ -125,3 +125,61 @@ incluida la propuesta de archivos y app exacta por encima. El layout de revisió
 conserva estado/scroll al pasar ancho→compacto→ancho; footer dentro de límites.
 La matriz usa componentes registrados con IntentFilter real (no arrays sueltos en
 PackageInfo);10 casos API26/35 correctos, sin afirmar compatibilidad de apps reales.
+
+
+## Restauración de selección: regresión adicional
+
+La prueba roja recrea la UI con un contexto de2 archivos al que el usuario añadió
+un tercero. El efecto inicial importaba de nuevo la selección original y retiraba
+el tercero. Se recuerda únicamente la identidad del contexto ya importado: un
+contexto nuevo sustituye la selección; una restauración del mismo conserva la
+selección editada. Eliminar un contexto retira su selección entrante sin editar;
+una selección modificada deliberadamente sigue siendo una bandeja independiente.
+Ni esa identidad ni el hash de selección conceden permisos o guardan confirmación.
+Ver selection-restore-red y la ronda final posterior. No hay cambio en WindowManager.
+
+## Capacidades utilizables en una futura APK autorizada
+
+- «PDFs de ayer» filtra por fecha de modificación conocida; «buscar documento de
+  vestibular» conserva candidatos por contenido y prioriza coincidencias de nombre.
+  «compartir archivo X» prepara la revisión, sin abrir directamente una app externa.
+  Apps exactas mantienen prioridad incluso si su nombre parece una consulta.
+- Búsqueda sobre FileIndex y metadatos explícitos de ContextStore/selección, con
+  grants vigentes. Archivos, apps y acciones siguen siendo categorías diferentes;
+  hasta3 sugerencias de inicio, orden/selección estables, cancelación y sin IA remota
+  por tecla. No se accede a proveedores no elegidos.
+- Share de1–12 archivos mantiene URI originales. Bandeja existente, contexto y
+  selección SAF existente permiten revisar antes de solicitar SEND/MULTIPLE con
+  MIME real, ClipData íntegro y sólo READ temporal. Elegir app en el selector de
+  Android sigue siendo decisión del usuario; no hay destino alternativo automático.
+- Texto y Process Text conservan sus formularios anteriores. La recepción de
+  archivos no extrae texto automáticamente: la extracción local sigue siendo manual.
+  Revisar/confirmar/cancelar no duplica el motor NativeLaunchSession.
+
+## Presentación conservada
+
+Obsidian Refinado + Adaptive y los tokens C1; no rediseño importante. La revisión
+muestra nombre/tipo/origen/destino, controles48dp y scroll del inspector existente.
+Footer «Preparar envío» o «Revisar archivos»; en la tarea indica navegación por
+acciones/volver. Bandeja redundante oculta durante revisión, sin cambiar altura de
+WindowManager ni IME. Se comprueba ancho→compacto→ancho,320dp disponibles, nombres
+largos y foco al cancelar. Un viewport Compose no simula un teclado OEM real.
+
+## Límites y aceptación pendiente
+
+Máximo12 archivos, nombre de revisión acotado a300 caracteres con aviso y sin
+inferir fecha desconocida. Sólo archivos que admiten lectura autorizada; un
+proveedor virtual/no abrible exige nueva selección/ruta compatible, sin conversión
+ni copia automática. Un grant temporal puede vencer al terminar el servicio o
+proceso; URI restaurada no es permiso. Selección múltiple entrante es temporal;
+fijarla como contexto persistente no se promete. SAF persistente individual sigue
+siendo el contrato anterior. La lectura/metadata puede cambiar después de confirmar;
+no se garantiza inmutabilidad de bytes sin copia. No se mide p95/RAM/jank físicos.
+
+Para terminar la aceptación C2 quedan la matriz física por app/proveedor, OneUI/
+Gboard/foco/orientación, accesibilidad/fuente200% y rendimiento. No se identifica
+otro bloque funcional pendiente dentro del alcance solicitado comprobable sin
+dispositivos; posibles ajustes dependen de esa evidencia. C3–C9 siguen sin iniciar.
+Preview62/135a9af continúa como referencia física instalada, sin estos nuevos cambios.
+No se generó otra APK, firma o Actions, ni se cambió main, permisos sensibles,
+dependencias, servicios externos, presupuestoUS$0 o bloqueo de gasto.

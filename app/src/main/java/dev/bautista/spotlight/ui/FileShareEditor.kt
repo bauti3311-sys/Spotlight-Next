@@ -77,7 +77,7 @@ import kotlinx.coroutines.*
             HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant)
         } }
         Text("Destino: $destination",style=MaterialTheme.typography.bodyMedium)
-        Text("Android dará acceso temporal de lectura a la aplicación que elijas. No se crea otra copia.",style=MaterialTheme.typography.bodySmall)
+        Text("Se solicita acceso temporal de lectura para la aplicación que elijas. Spotlight no copia los archivos.",style=MaterialTheme.typography.bodySmall)
         Text("La entrega sólo puede comprobarse en la aplicación receptora.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         if(busy)LinearProgressIndicator(Modifier.fillMaxWidth())
         if(error.isNotBlank())Text(error,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.error,modifier=Modifier.testTag("file-share-error"))

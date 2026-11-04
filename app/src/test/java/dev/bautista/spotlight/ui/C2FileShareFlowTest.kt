@@ -160,4 +160,24 @@ class C2FileShareFlowTest {
         ui.onNodeWithTag("file-share-cancel").performScrollTo().performClick()
         ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar"))).assertIsFocused()
     }
+    @Test fun restoringAnEditedIncomingSelectionDoesNotReplaceItWithTheOriginalContext() {
+        kotlinx.coroutines.runBlocking{app.contexts.setDocuments(listOf(
+            Uri.parse("content://share-files-fixture/document/1"),Uri.parse("content://share-files-fixture/document/2")))}
+        val restore=StateRestorationTester(ui);restore.setContent{panel()}
+        ui.waitUntil(15000){ui.onAllNodesWithText("Selección · 2").fetchSemanticsNodes().isNotEmpty()}
+        ui.runOnIdle{add(3)}
+        ui.onNodeWithText("Selección · 3").assertExists()
+        restore.emulateSavedInstanceStateRestore()
+        ui.onNodeWithText("Selección · 3").assertExists()
+        assertEquals(2,app.contexts.sharedFiles.items.size)
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
+    @Test fun clearingTheSourceRemovesAnUntouchedIncomingSelection() {
+        kotlinx.coroutines.runBlocking{app.contexts.setDocuments(listOf(Uri.parse("content://share-files-fixture/document/1")))}
+        ui.setContent{panel()}
+        ui.waitUntil(15000){ui.onAllNodesWithText("Selección · 1").fetchSemanticsNodes().isNotEmpty()}
+        ui.runOnIdle{app.contexts.clearActive()}
+        ui.onNodeWithText("Selección · 1").assertDoesNotExist()
+        assertTrue(buffer.items.isEmpty());assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
 }
