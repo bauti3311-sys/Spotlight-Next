@@ -8,7 +8,7 @@ import tempfile
 import unittest
 import zipfile
 import yaml
-from preview_delivery_policy import SOURCE, REPOSITORY, BRANCH, OWNER, ACK, CERTIFICATE, validate
+from preview_delivery_policy import SOURCE, REPOSITORY, BRANCH, OWNER, ACK, CERTIFICATE, VERSION_CODE, VERSION_NAME, validate
 from preview_delivery_verify import metadata, certificate, source_archive, safe_paths
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -56,10 +56,10 @@ class Native60PolicyTest(unittest.TestCase):
 
 class Native60ArtifactTest(unittest.TestCase):
     def badging(self):
-        return "package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='61' versionName='2.0.1-raycast-preview-native57-v61'\nsdkVersion:'26'\ntargetSdkVersion:'35'\nnative-code: 'arm64-v8a'\n"
+        return f"package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='{VERSION_CODE}' versionName='{VERSION_NAME}'\nsdkVersion:'26'\ntargetSdkVersion:'35'\nnative-code: 'arm64-v8a'\n"
     def test_correct_delivery_metadata(self):metadata(self.badging())
     def test_old_main_debuggable_sdk_or_wrong_abi_rejected(self):
-        samples=[self.badging().replace("versionCode='61'","versionCode='56'"),
+        samples=[self.badging().replace(f"versionCode='{VERSION_CODE}'",f"versionCode='{VERSION_CODE-1}'"),
                  self.badging().replace('.raycastpreview',''),self.badging()+'application-debuggable\n',
                  self.badging().replace("sdkVersion:'26'","sdkVersion:'35'"),
                  self.badging().replace("'arm64-v8a'","'x86_64'")]

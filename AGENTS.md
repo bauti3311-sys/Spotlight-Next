@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## Preview62 — preparación autorizada, ejecución pendiente
+
+Prioridad del propietario: validar físicamente el arreglo de ventana antes de
+ampliar C2. Conservar íntegro76a1c18, preparar sólo versionCode62 y manifiesto
+del flujo nativo reutilizable. Ver docs/NATIVE62-PREPARATION-20261104.md.
+Presentar fuente/workflow SHA exactos y esperar autorización concreta antes de
+un único intento de build/firma/Actions. No reutilizar autorizaciones61/60.
+Sin funciones nuevas, main, C3–C9 ni facturación nueva; US$0/bloqueo vigentes,
+sin pedir capturas recurrentes. Usar reserva propia nueva al ejecutar.
+
 ## Corrección Preview61 y C2 — autorización posterior 2026-11-04
 
 El propietario autorizó investigar/reproducir/corregir la altura comprimida de

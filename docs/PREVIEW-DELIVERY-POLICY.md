@@ -1,5 +1,12 @@
 # Entrega nativa Preview — procedimiento autónomo restringido
 
+Actualización Preview62: sólo preparación autorizada desde76a1c18. Fuente exacta
+135a9af74be08fc4368c8b9fc803d12fdcd273d3 (numeración62, función intacta).
+Manifiesto revisado con previo61/base76a1c18. Presentar SHA workflow del commit
+que fija este manifiesto y esperar autorización específica para un intento62.
+La autorización61 inferior es histórica; no habilita ejecución62 ni repetición61.
+Ver [preparación62](NATIVE62-PREPARATION-20261104.md).
+
 Decisión del propietario 2026-11-04: GitHub Free con cuota incluida disponible,
 presupuesto Actions US$0, bloqueo al alcanzar presupuesto y secretos históricos
 configurados. Preview60 es precedente de compilación/firma correcta. No pedir
