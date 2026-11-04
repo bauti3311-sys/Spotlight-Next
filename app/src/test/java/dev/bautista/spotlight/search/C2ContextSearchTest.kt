@@ -105,4 +105,23 @@ class C2ContextSearchTest {
         assertTrue(rows("buscar en Wikip: luna").none{it.id.startsWith("context:app-search:")})
     }
 
+    @Test fun shareQueryRequiresPublicTextHandlerAndNeverCopiesOrLaunches() {
+        install()
+        assertTrue(rows("compartir en Wikipedia").none{it.id.startsWith("context:app-share:")})
+        val pm=Shadows.shadowOf(app.packageManager)
+        val handler=ActivityInfo().apply{packageName="org.wikipedia";name="org.wikipedia.Share";exported=true;enabled=true;applicationInfo=app.packageManager.getApplicationInfo("org.wikipedia",0)}
+        pm.addResolveInfoForIntent(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage("org.wikipedia"),ResolveInfo().apply{activityInfo=handler})
+        for(query in listOf("compartir en Wikipedia","compartir enlace en Wikipedia")) {
+            val results=rows(query)
+            val row=results.single{it.id.startsWith("context:app-share:")}
+            val draft=row.action as Action.ComposeMessage
+            assertEquals("share:org.wikipedia",draft.channel)
+            assertEquals("",draft.text)
+            assertTrue(CompactResults.select(query,results,config).initial.any{it.id==row.id})
+        }
+        handler.exported=false
+        assertTrue(rows("compartir en Wikipedia").none{it.id.startsWith("context:app-share:")})
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
+
 }

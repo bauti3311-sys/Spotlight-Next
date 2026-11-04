@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2PublicSearchFlowTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-04T14:50:25" hostname="c880c3bda6d8" time="7.113">
+  <properties/>
+  <testcase name="explicitQueryUsesSelectedWebSearchHandlerAndKeepsEditableReview" classname="dev.bautista.spotlight.ui.C2PublicSearchFlowTest" time="6.406"/>
+  <testcase name="exactAppInspectorPreparesLiveSearchAndEscapeReturnsToItsQuery" classname="dev.bautista.spotlight.ui.C2PublicSearchFlowTest" time="0.707"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

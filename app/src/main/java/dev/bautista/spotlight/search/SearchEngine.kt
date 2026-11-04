@@ -66,6 +66,15 @@ class SearchEngine(
         val raw=input.trim()
         val installed=appList()
         if(installed.any{normalize(it.label.trim())==normalize(raw)})return emptyList()
+        val share=Regex("^compartir(?: (?:texto|enlace|contenido))? en (.+)$",RegexOption.IGNORE_CASE).matchEntire(raw)
+        if(share!=null) {
+            val chosen=installed.filter{normalize(it.label.trim())==normalize(share.groupValues[1].trim())}.singleOrNull() ?: return emptyList()
+            val capability=AppCapabilities(context).available(chosen.intent.component!!.packageName)
+                .singleOrNull{it.id=="share-text"} ?: return emptyList()
+            return listOf(Result("context:app-share:${chosen.id}","Compartir en ${chosen.label}",
+                "Preparar texto o enlace · revisar antes de abrir la app","Acciones",2200,capability.action))
+                .filter{dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it)}
+        }
         val prefix=Regex("^(?:buscar|busca|buscá)\\s+en\\s+",RegexOption.IGNORE_CASE)
         val verb=Regex("^(?:buscar|busca|buscá)\\s+",RegexOption.IGNORE_CASE)
         val candidates=installed.mapNotNull { app ->

@@ -48,6 +48,8 @@ import dev.bautista.spotlight.search.*
 internal fun primaryActionLabel(result:Result?,config:Config):String=when {
     result?.action is Action.Copy->"Copiar"
     result?.action is Action.ComposeSearch->"Preparar búsqueda"
+    (result?.action as? Action.ComposeMessage)?.channel=="share:com.google.android.gm"->"Preparar correo"
+    (result?.action as? Action.ComposeMessage)?.channel?.startsWith("share:")==true->"Preparar contenido"
     result?.action is Action.ComposeMessage->"Preparar mensaje"
     result?.action is Action.Ask->result.title.takeIf{it.startsWith("Responder") || it.startsWith("Preguntar") || it.startsWith("Consultar")} ?: UniversalIntentEngine.primaryAiTitle(config)
     result?.action is Action.SystemPanel && result.action.page=="interpret"->"Revisar plan"

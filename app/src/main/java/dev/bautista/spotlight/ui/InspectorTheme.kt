@@ -40,7 +40,7 @@ internal object InspectorAccent {
             "whatsapp" -> "com.whatsapp"
             "whatsapp_business" -> "com.whatsapp.w4b"
             "gmail" -> "com.google.android.gm"
-            else -> null
+            else -> message.channel.takeIf{it.startsWith("share:")}?.substringAfter(":")
         }
         search != null -> search.packageName.takeIf { it.isNotBlank() }
         page != null -> page.packageName.takeIf { page.page == "app" && it.isNotBlank() }

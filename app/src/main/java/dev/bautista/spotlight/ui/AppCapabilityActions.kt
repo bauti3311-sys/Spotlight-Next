@@ -37,12 +37,14 @@ import kotlinx.coroutines.*
             modifier=Modifier.padding(bottom=(4f*d).dp))
         catalog.forEach { target ->
             val search=target.action is Action.ComposeSearch
-            val available=!search || capabilities.any{it.id=="search"}
+            val share=(target.action as? Action.ComposeMessage)?.channel?.startsWith("share:")==true
+            val capabilityId=if(search)"search" else if(share)"share-text" else null
+            val available=capabilityId==null || capabilities.any{it.id==capabilityId}
             TextButton(enabled=!busy && available,onClick={
-                if(!search)onAction(target.action) else {
+                if(capabilityId==null)onAction(target.action) else {
                     busy=true;scope.launch {
-                        try{val action=withContext(Dispatchers.IO){registry.prepare(packageName,"search")};error="";onAction(action)}
-                        catch(e:CancellationException){throw e}catch(_:Exception){error="La búsqueda ya no está disponible. Revisá la app y sus permisos."}
+                        try{val action=withContext(Dispatchers.IO){registry.prepare(packageName,requireNotNull(capabilityId))};error="";onAction(action)}
+                        catch(e:CancellationException){throw e}catch(_:Exception){error="La acción ya no está disponible. Revisá la app y sus permisos."}
                         finally{busy=false}
                     }
                 }
@@ -54,7 +56,7 @@ import kotlinx.coroutines.*
                     ResultIcon(target,Modifier.size(18.dp),tint=MaterialTheme.colorScheme.primary)
                     Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy((3f*d).dp)) {
                         Text(target.title,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance))
-                        Text(if(search && !available)if(loading)"Comprobando disponibilidad…" else "No disponible: la app no publica una búsqueda accesible." else target.subtitle,
+                        Text(if(!available)if(loading)"Comprobando disponibilidad…" else if(search)"No disponible: la app no publica una búsqueda accesible." else "No disponible: revisá la app y sus permisos para compartir texto." else target.subtitle,
                             style=MaterialTheme.typography.labelSmall,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }

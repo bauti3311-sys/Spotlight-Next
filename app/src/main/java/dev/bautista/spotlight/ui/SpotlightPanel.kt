@@ -69,6 +69,14 @@ fun SpotlightPanel(
         }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
+        var returnFocusRevision by remember { mutableIntStateOf(0) }
+        LaunchedEffect(returnFocusRevision) {
+            if(returnFocusRevision>0) {
+                // Restore after removing the focused form, not before its disposal.
+                withFrameNanos{}
+                focus.requestFocus()
+            }
+        }
         val launchSession=remember(context){NativeLaunchSession(context)}
         DisposableEffect(launchSession){onDispose{launchSession.dispose()}}
         var query by rememberSaveable { mutableStateOf(initialQuery) }
@@ -479,7 +487,12 @@ fun SpotlightPanel(
                 }
                 is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());if(!keepSurface())onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
                 is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};invalidateResults();preview=null;menu=false;selected=0;focus.requestFocus()}
-                is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
+                is Action.ComposeMessage -> {
+                    val unavailable=action.channel.startsWith("share:") && dev.bautista.spotlight.control.IntegrationRegistry(context)
+                        .launchAccess(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage(action.channel.substringAfter(":"))).problem!=null
+                    if(unavailable)error="La acción de compartir ya no está disponible. Revisá la app y sus permisos."
+                    else {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
+                }
                 is Action.ComposeSearch -> {
                     val unavailable=action.topic in setOf("app","app-web-search") && dev.bautista.spotlight.control.IntegrationRegistry(context)
                         .launchAccess(Intent(if(action.topic=="app-web-search")Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(action.packageName)).problem!=null
@@ -809,7 +822,7 @@ fun SpotlightPanel(
                 inspectorPinned=false;pinnedPreview=null;pinnedCard=null
                 preview=null;card=null;expandedPreview=false;menu=false
                 clearForms();noteEditor=false;aiJob?.cancel();showAi=false
-                runCatching{focus.requestFocus()}
+                returnFocusRevision++
             }
             val inspectorToolbar:@Composable ()->Unit = {
                 Row(Modifier.fillMaxWidth().padding(start=16.dp,end=4.dp).testTag("inspector-toolbar"),verticalAlignment=Alignment.CenterVertically) {
@@ -1160,7 +1173,7 @@ fun SpotlightPanel(
                                 if(actionsOnly) {
                                     val actions=mutableListOf<ContextAction>()
                                     fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,state:ContextActionState=ContextActionState.Available,risk:dev.bautista.spotlight.ai.ToolRisk=dev.bautista.spotlight.ai.ToolRisk.READ,perform:()->Unit){actions+=ContextAction(title,description,icon,{menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus();perform()},id=id,group=group,state=state,risk=risk)}
-                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
+                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->primaryActionLabel(item,config);is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
                                     if(item.id.startsWith("suggest:")) {
                                         add("suggestion.pin",ContextActionGroup.Organize,if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
                                         add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
@@ -1168,15 +1181,23 @@ fun SpotlightPanel(
                                     if(PreviewPresentation.isApplication(item)) {
                                         val catalogActions=ActionCatalog.applicationActions(appPackage.orEmpty())
                                             .filterNot { (it.action as? Action.Launch)?.intent?.action == android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS }
+                                        val appCapabilities=appPackage?.let{dev.bautista.spotlight.control.AppCapabilities(context).available(it)}.orEmpty()
                                         catalogActions.forEach { target ->
                                             val group=if(target.action is Action.Navigate)ContextActionGroup.Open else ContextActionGroup.Communicate
                                             val icon=when(target.action){is Action.Navigate->CommandIcons.Folder;is Action.ComposeSearch->CommandIcons.Search;else->CommandIcons.ChatBubbleOutline}
-                                            add("app.intent:${target.id}",group,target.title,target.subtitle,icon,
+                                            val capabilityId=when {
+                                                target.action is Action.ComposeSearch->"search"
+                                                (target.action as? Action.ComposeMessage)?.channel?.startsWith("share:")==true->"share-text"
+                                                else->null
+                                            }
+                                            val available=capabilityId==null || appCapabilities.any{it.id==capabilityId}
+                                            add("app.intent:${target.id}",group,target.title,
+                                                if(available)target.subtitle else "Revisá la aplicación y sus permisos.",icon,
+                                                state=if(available)ContextActionState.Available else ContextActionState.Unavailable,
                                                 risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)}
                                         }
                                         if(appPackage!=null) {
-                                            dev.bautista.spotlight.control.AppCapabilities(context).available(appPackage)
-                                                .filterNot { cap ->
+                                            appCapabilities.filterNot { cap ->
                                                     cap.id=="search" && catalogActions.any{it.action is Action.ComposeSearch} ||
                                                         cap.id=="share-text" && catalogActions.any{it.action is Action.ComposeMessage}
                                                 }

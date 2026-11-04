@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-04T14:50:18" hostname="c880c3bda6d8" time="6.314">
+  <properties/>
+  <testcase name="escapeFromPreparedShareReturnsQueryAndFocusWithoutRequest" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="6.014"/>
+  <testcase name="restoringSharedDraftDoesNotRestoreItsConfirmation" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.3"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

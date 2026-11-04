@@ -58,3 +58,33 @@ WEB_SEARCH usa el formulario existente y QUERY, sin inventar búsqueda interna.
 consulta→edición→solicitud WEB_SEARCH al componente exacto→Escape/foco.
 Rojo previo:2 fallos/10; evidencia query-red/query-green. Sin remoto por tecla,
 lectura de otras apps ni efectos externos verificados.
+
+## Subhito 3 — compartir contenido con destino revisado
+
+«compartir en App» y «compartir enlace/texto/contenido en App» preparan el
+formulario existente sólo si esa app publica ACTION_SEND text/plain accesible.
+No copian texto ni abren destinos. El botón explícito incorpora contexto local
+Share/Process Text; límite8000 anunciado, edición y revisión antes de confirmar.
+Un contexto nuevo no sobrescribe el borrador. Restaurar estado no restaura la
+confirmación. Documentos sin texto no se extraen por esta ruta.
+
+Gmail del inspector/panel se conserva en com.google.android.gm: ya no deriva al
+cliente de correo predeterminado. La acción se deshabilita con recuperación si
+no hay receptor accesible. Revalidación antes del formulario y antes de solicitar
+Android; error por destino retirado sin fallback. Correo genérico/WhatsApp y sus
+contratos anteriores se conservan. Footer distingue contenido/correo/mensaje,
+y el acento existente reconoce el destino share elegido.
+
+La ronda inicial fue21/22 correcta. Detectó pérdida de foco con Escape al retirar
+un formulario recién abierto. La ruta real era dismissInspector, no back; el
+primer parche en back no resolvió el caso y se retiró. Se solicita foco después
+de retirar el subárbol del formulario, en el frame siguiente; sin cambiar IME,
+WindowManager ni introducir espera temporal fija. Cuatro regresiones finales
+correctas: Escape compartir, restauración sin confirmación y dos retornos de
+búsqueda.25 casos distintos correctos de última evidencia en ambas rondas;
+no una suite única de25. Ver share-first/focus-first/focus-green, rojos conservados.
+
+Capturas reales de Compose/Robolectric API33 NATIVE, no dispositivo: formulario
+claro/oscuro y catálogo Gmail antes/después; confirmación con viewport320dp,
+scroll y footer dentro de la ventana. Se conservaron tokens/composición; sin
+nueva hoja, paleta o jerarquía. Los fixtures usan actividades sintéticas.

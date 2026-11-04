@@ -51,7 +51,7 @@ object ResultRanker {
             item.category=="Archivos" && item.semanticMatch->3
             item.category=="Web"->0
             (item.category in setOf("Archivos","Contactos") || item.category=="Notas" && item.action !is Action.NewNote) && relevance(query,item.title)>=500->3
-            item.id.startsWith("root:") || item.id.startsWith("smart:") || item.id.startsWith("context:app-search:") || item.id=="intent:local" || relevance(query,item.title)>=500->2
+            item.id.startsWith("root:") || item.id.startsWith("smart:") || (item.id.startsWith("context:app-search:") || item.id.startsWith("context:app-share:")) || item.id=="intent:local" || relevance(query,item.title)>=500->2
             else->0
         }
     }
