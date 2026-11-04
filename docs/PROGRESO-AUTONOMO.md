@@ -1,5 +1,16 @@
 # Progreso autónomo de Spotlight Next
 
+## 2026-11-04 — Preview62 entregada, validación física de ventana prioritaria
+
+Fuente exacta135a9af, workflow388fe90, único run41843064054 correcto; optimizada
+R8, code62, paquete Raycast Preview y certificado885838aa. APK/ZIP descargados y
+verificados independientemente, fuente idéntica a git archive, permisos iguales
+a61 y compatibilidad estática de actualización62>61. [Entrega, hashes y respaldo](NATIVE62-DELIVERY-20261104.md).
+C1/arreglo/primer C2 preservados, sin funciones adicionales/main/C3–C9.119 pruebas
+reutilizadas; no repetidas. Próximo: propietario valida ventana/Gboard/scroll/
+inspector/footer en A9+ antes de ampliar C2. No declarar instalación física ni
+conservación de datos ya probadas. Reserva propia liberada con notas al cerrar.
+
 ## 2026-11-04 — altura Preview61 corregida y primer recorrido C2 validado localmente
 
 Corrección independiente be14f7e: marco pequeño ya no se interpreta como IME;

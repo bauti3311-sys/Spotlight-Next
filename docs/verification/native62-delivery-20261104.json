@@ -1,0 +1,49 @@
+{
+  "source_sha": "135a9af74be08fc4368c8b9fc803d12fdcd273d3",
+  "workflow_sha": "388fe90fd7bccc2f16d4a2e33923d54f8860dc47",
+  "run_id": 41843064054,
+  "versionCode": 62,
+  "previousVersionCode": 61,
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "signatureV2": true,
+  "signers": 1,
+  "optimized": true,
+  "notDebuggable": true,
+  "sdk": [
+    26,
+    35
+  ],
+  "abi": "arm64-v8a",
+  "zipalignAndElf16KiB": true,
+  "unsignedPayloadMatches": true,
+  "sourceZipMatchesGitArchiveByteForByte": true,
+  "permissionsUnchangedFrom61": true,
+  "dataSchemaSourceUnchanged": true,
+  "physicalInstallOrDataPreservationVerified": false,
+  "c1c2Markers": {
+    "search-use-context": true,
+    "compact-inspector-scroll": true,
+    "context:app-search:": true
+  },
+  "files": {
+    "Spotlight-Next-Preview62-135a9af.apk": {
+      "bytes": 73430437,
+      "sha256": "733c9eb48ae8f616b87b7d06583f2c0ca6aa9a6956bddee6dd3b8e30a3243961"
+    },
+    "Spotlight-Next-source-135a9af.zip": {
+      "bytes": 12540181,
+      "sha256": "4ffc7af3a01be77a965dcd2f90756df9cd5b150f407469b5ec685420fb5d5960"
+    }
+  },
+  "run_attempt": 1,
+  "run_conclusion": "success",
+  "artifact_id": 13331145151,
+  "artifact_sha256": "a29995d37f1b5b149bb7a4c367b2d00d420e023e952851cd6f2a3b8a9149af8e",
+  "artifact_bytes": 86052185,
+  "artifact_expires_at": "2026-11-07T14:08:02Z",
+  "gradle": "BUILD SUCCESSFUL in 7m 13s",
+  "budget_configuration_changed": false,
+  "automatic_retries": 0,
+  "experimental_profile": false
+}

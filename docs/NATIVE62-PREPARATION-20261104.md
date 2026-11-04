@@ -1,5 +1,8 @@
 # Preview62 — candidata para validación física, ejecución pendiente
 
+Actualización posterior: [Preview62 entregada y verificada](NATIVE62-DELIVERY-20261104.md).
+La espera de autorización que sigue describe la etapa histórica de preparación.
+
 Base funcional exacta:76a1c185b644c67a61cd9defd909c9075632e856 de PR21.
 C1 completo, corrección de ventana y primer recorrido C2 conservados. No más
 funciones ni ampliación C2/C3–C9. Sólo numeración Raycast62 y esta documentación.
