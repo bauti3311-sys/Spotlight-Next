@@ -1438,8 +1438,15 @@ fun SpotlightPanel(
                                 ?: systemPage?.let{"page:$it"} ?: inspectorItem?.id,
                             inspectorHeader=inspectorToolbar)
                         else if(hasInspector) {
-                            if(!taskInspector && inspectorCard==null && !expandedPreview)resultList()
-                            pane()
+                            // Both inline previews and forms share a bounded body;
+                            // their measured content must never push the footer out.
+                            key(inspectorItem?.id,searchForm,messageForm,systemPage) {
+                                Column(Modifier.fillMaxWidth().heightIn(max=resultLimit)
+                                    .testTag("compact-inspector-scroll").verticalScroll(rememberScrollState())) {
+                                    if(!taskInspector && inspectorCard==null && !expandedPreview)resultList()
+                                    pane()
+                                }
+                            }
                         }
                         else if(systemPage!=null || category=="IA" && query.isBlank())contextBody()
                         else resultList()
@@ -1473,7 +1480,7 @@ fun SpotlightPanel(
                         } else false
                         if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
                             Text("Tab siguiente campo   esc volver",
-                                Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
+                                Modifier.testTag("context-footer").padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
                         else GlassContextFooter(
                             suggestion=suggestion!=null,enabled=selectedResult!=null,
                             primaryLabel=primaryActionLabel(selectedResult,config),

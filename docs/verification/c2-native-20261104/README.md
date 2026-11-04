@@ -1,5 +1,10 @@
 # C2 incremental — búsqueda pública por app y revisión explícita
 
+Actualización final: F14/V05/V06 implementados;83 casos C2 distintos con última
+evidencia correcta y Lint0errores/26advertencias/1información. Combinados con la
+corrección de ventana:119 casos distintos, no una suite única.
+[Informe de cierre](../../C2-IMPLEMENTATION-20261104.md).
+
 Parte1 implementada después de la corrección independiente de ventana be14f7e.
 Se reutilizan SearchEngine, ResultRanker, CompactResults, AppCapabilities,
 IntegrationRegistry, formularios e inspector de C1 y NativeLaunchSession.
@@ -58,7 +63,36 @@ parte F14/V05/V06 se registrarán en el siguiente checkpoint técnico.
 
 ## Pendiente y límites
 
-Parte2: texto autorizado de Share/Process Text→selección explícita en formulario,
-footer con etiqueta de preparación y desplazamiento en viewport móvil corto.
+Parte2 completada: texto autorizado de Share/Process Text→selección explícita en
+formulario, footer con etiqueta de preparación y desplazamiento en viewport móvil
+corto. No se transmite al seleccionar ni al copiar contexto; Buscar solicita la
+acción Android. Los primeros4000 caracteres se anuncian si el texto es mayor.
+La revisión identifica app y fuente, mantiene borradores y no añade envío real.
+
+| Escena | Antes | Después |
+|---|---|---|
+| Formulario oscuro,360dp | ![](before/phone-dark-shared-search.png) | ![](final/phone-dark-shared-search.png) |
+| Formulario claro,360dp | ![](before/phone-light-shared-search.png) | ![](final/phone-light-shared-search.png) |
+| Inspector móvil, viewport320dp | ![](compact-red/phone-app-inspector-ime.png) | ![](final/phone-app-inspector-ime.png) |
+| Contexto compartido, viewport320dp | — | ![](final/phone-shared-ime.png) |
+| Contexto compartido, restaurado700dp | — | ![](final/phone-shared-restored.png) |
+
+Producción Compose API33 NATIVE, mismo fixture por par, temas claro/oscuro
+existentes, paquetes/actividades sintéticos, sin dispositivo ni IME real. En el
+inspector corto, antes el footer quedaba fuera de la ventana; después se alcanza
+contenido mediante scroll. La captura de formulario corto está desplazada hasta
+Buscar, con footer visible; desplazarse arriba permite revisar título/campo.
+
+shared-red prueba ausencia del enlace de contexto. shared-round conserva la
+primera ronda:19/20 correctos; el fallo era comparar EditableText vacío junto con
+la etiqueta de TextField. Se comprueba el valor EditableText exacto, no se elimina
+la aserción. compact-red reproduce footer fuera del viewport; se limita el cuerpo
+existente, sin ocultar funciones. final tiene12/12 correctos (C2 UI10+C1 móvil2).
+El caso nuevo de módulos falla antes en module-red; module-final tiene6/6 correctos
+y Lint correcto. La ruta nueva reutiliza ExtensionStore y no cambia preferencias.
+coverage-final.json identifica la última evidencia de cada caso; no se suman
+repeticiones para inflar resultados. No hay tests deshabilitados ni baselines
+cambiadas para ocultar fallos. Los nuevos avisos Lint son sólo GradleDependency.
+
 No declarar C2 físico completo: OneUI/IME/rotación reales, accesibilidad y p95/
 memoria requieren dispositivos y medición. C3–C9 y main siguen intactos.

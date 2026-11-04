@@ -63,5 +63,15 @@ class C2ContextSearchTest {
         assertTrue(rows("Wikipedia luna").none{it.id.startsWith("context:app-search:")})
         assertEquals("Aplicaciones",rows("Wikipedia").first().category)
     }
+    @Test fun disabledModulesCannotBeBypassedByContextualRoute() {
+        install()
+        val store=dev.bautista.spotlight.extensions.ExtensionStore
+        try {
+            store.setEnabled(app,"apps",false)
+            assertTrue(rows("Wikipedia luna").none{it.id.startsWith("context:app-search:")})
+            store.setEnabled(app,"apps",true);store.setEnabled(app,"web",false)
+            assertTrue(rows("Wikipedia luna").none{it.id.startsWith("context:app-search:")})
+        }finally{store.setEnabled(app,"apps",true);store.setEnabled(app,"web",true)}
+    }
 
 }

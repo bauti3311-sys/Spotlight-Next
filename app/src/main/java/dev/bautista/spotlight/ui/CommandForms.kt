@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.*
 import dev.bautista.spotlight.control.*
 import dev.bautista.spotlight.search.*
@@ -130,10 +131,26 @@ import kotlinx.coroutines.*
     }
     var term by rememberSaveable(draft){mutableStateOf(draft.query)}
     val focus=remember(draft){FocusRequester()}
+    val context=LocalContext.current
+    val destination=remember(draft.topic,draft.packageName) {
+        if(draft.topic=="app")runCatching {
+            context.packageManager.getApplicationLabel(context.packageManager.getApplicationInfo(draft.packageName,0)).toString()
+        }.getOrDefault(draft.packageName) else ActionCatalog.displayName(draft.topic)
+    }
+    val shared=app?.contexts?.active?.collectAsState()?.value
     LaunchedEffect(draft){delay(60);focus.requestFocus()}
     Column(Modifier.fillMaxWidth().padding(16.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        Text("Buscar en ${ActionCatalog.displayName(draft.topic)}",style=MaterialTheme.typography.titleMedium)
+        Text("Buscar en $destination",style=MaterialTheme.typography.titleMedium)
         OutlinedTextField(term,{term=it.take(4000)},label={Text("Qué querés buscar")},singleLine=true,modifier=Modifier.fillMaxWidth().focusRequester(focus))
+        shared?.takeIf{it.text.isNotBlank()}?.let { selected ->
+            TextButton(onClick={term=selected.text.take(4000);focus.requestFocus()},
+                modifier=Modifier.heightIn(min=48.dp).testTag("search-use-context")) {
+                Text("Usar contexto seleccionado")
+            }
+            Text(selected.title,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+            if(selected.text.length>4000)Text("Se usarán los primeros 4000 caracteres; podés editarlos antes de buscar.",
+                style=MaterialTheme.typography.bodySmall)
+        }
         Row {Button(enabled=term.isNotBlank(),onClick={ActionCatalog.searchAction(draft.topic,draft.packageName,term)?.let(onRun)}){Text("Buscar")};TextButton(onClick=onCancel){Text("Volver")}}
     }
 }

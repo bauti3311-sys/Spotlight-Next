@@ -77,7 +77,9 @@ heap Gradle2GiB/SerialGC/Kotlin in-process y test1.5GiB; JDK17.0.21, SDK35,
 Gradle8.10.2. Task :app:testRaycastPreviewUnitTest con spotlightDirectedClasses
 y filtros de esas6clases. No assemble, APK, firma, Actions o proveedor externo.
 results.json conserva suites y hashes. Lint se registra en el cierre del bloque
-técnico posterior; no se declara todavía ejecutado en este checkpoint.
+técnico posterior:0errores/26advertencias/1información; las10 nuevas son avisos de
+versiones disponibles al consultar dependencias online. No hubo actualizaciones.
+Ver [informe final](../../C2-IMPLEMENTATION-20261104.md).
 
 ## Límite físico y aceptación
 

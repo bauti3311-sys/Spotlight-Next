@@ -62,6 +62,7 @@ class SearchEngine(
 
     /** Explicit "app name + terms" only; public Android capability, never inferred private data. */
     private suspend fun contextualAppSearch(input:String):List<Result> {
+        if(!dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"apps"))return emptyList()
         val words=input.trim().split(Regex("\\s+"))
         if(words.size<2)return emptyList()
         val candidates=appList().mapNotNull { app ->
@@ -81,6 +82,7 @@ class SearchEngine(
         val term=words.drop(longest).joinToString(" ").take(4000)
         return listOf(Result("context:app-search:${app.id}","Buscar en ${app.label}",
             "Revisar consulta: $term","Acciones",2200,draft.copy(query=term),icon=null))
+            .filter{dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it)}
     }
 
     fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {

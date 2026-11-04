@@ -1,5 +1,22 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-04 — altura Preview61 corregida y primer recorrido C2 validado localmente
+
+Corrección independiente be14f7e: marco pequeño ya no se interpreta como IME;
+39 casos de ventana con evidencia roja/verde y capturas. C2 público5f385c2:
+consulta/app→inspector→revisión→solicitud Android exacta, capacidades vivas y
+prioridad exacta. Parte de contenido compartido/footer/scroll publicada con este
+registro; SHA de cierre en la nota de HEAD y PR21.119 casos distintos de última
+evidencia correcta en rondas dirigidas; Lint0errores/26advertencias/1información
+(10avisos adicionales de versiones de dependencias online, sin actualizarlas).
+
+[Informe y límites](docs/C2-IMPLEMENTATION-20261104.md). C1 conservado, sin C3–C9,
+Actions, assemble/APK, firma, permisos/dependencias nuevos ni main/merge. Reserva
+propia cerrada mediante notas atómicas; comprobar remoto. No promover e38eae8.
+Próximo paso de aceptación: revisión de capturas y validación física A9+/moto g86
+cuando haya una entrega autorizada. La APK61 instalada sigue siendo11b647c y no
+contiene estos cambios. No repetir C1 ni dar C0/C2 físico por aprobado por JVM.
+
 ## 2026-11-04 — Preview61 C1 entregada; físico pendiente
 
 Fuente11b647c, workflow8e2bbe9, único run41772255307 correcto. APK61 optimizada

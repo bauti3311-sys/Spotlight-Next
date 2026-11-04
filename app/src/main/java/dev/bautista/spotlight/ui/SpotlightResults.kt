@@ -47,6 +47,8 @@ import dev.bautista.spotlight.search.*
 /** Same action identity as the existing dispatcher, never a new executor or completion claim. */
 internal fun primaryActionLabel(result:Result?,config:Config):String=when {
     result?.action is Action.Copy->"Copiar"
+    result?.action is Action.ComposeSearch->"Preparar búsqueda"
+    result?.action is Action.ComposeMessage->"Preparar mensaje"
     result?.action is Action.Ask->result.title.takeIf{it.startsWith("Responder") || it.startsWith("Preguntar") || it.startsWith("Consultar")} ?: UniversalIntentEngine.primaryAiTitle(config)
     result?.action is Action.SystemPanel && result.action.page=="interpret"->"Revisar plan"
     result?.category=="Archivos"->"Abrir documento"

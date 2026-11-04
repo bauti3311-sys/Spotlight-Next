@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.*
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import dev.bautista.spotlight.data.Config as AppConfig
@@ -102,6 +103,81 @@ class C2PublicSearchFlowTest {
         assertEquals("órbita",request.getStringExtra(android.app.SearchManager.QUERY))
         ui.onNodeWithTag("spotlight-root").performKeyInput{pressKey(Key.Escape)}
         ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar"))).assertTextEquals("Wikipedia").assertIsFocused()
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
+    @Test fun sharedTextRequiresSelectionAndASeparateSearchRequest() {
+        install();val calls=mutableListOf<Action>()
+        app.contexts.setText("luna azul de prueba","Texto compartido")
+        ui.setContent{SpotlightTheme{SearchEditor(Action.ComposeSearch("app","org.wikipedia"),{calls+=it},{})}}
+        assertEquals("",ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.EditableText].text)
+        assertTrue(calls.isEmpty())
+        ui.onNodeWithTag("search-use-context").performClick()
+        assertEquals("luna azul de prueba",ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.EditableText].text)
+        assertTrue(calls.isEmpty());assertNull(Shadows.shadowOf(app).nextStartedActivity)
+        ui.onNodeWithText("Buscar").performClick()
+        val request=calls.single() as Action.InApp
+        assertEquals("org.wikipedia",request.intent.`package`)
+        assertEquals("luna azul de prueba",request.intent.getStringExtra(android.app.SearchManager.QUERY))
+    }
+    @Test fun largeSharedTextIsExplicitlyBoundedBeforeSearch() {
+        install();val calls=mutableListOf<Action>()
+        app.contexts.setText("x".repeat(5000),"Texto compartido largo")
+        ui.setContent{SpotlightTheme{SearchEditor(Action.ComposeSearch("app","org.wikipedia"),{calls+=it},{})}}
+        ui.onNodeWithTag("search-use-context").performClick()
+        val length=ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.EditableText].text.length
+        assertEquals(4000,length);assertTrue(calls.isEmpty())
+        ui.onNodeWithText("Buscar").performClick()
+        assertEquals(4000,(calls.single() as Action.InApp).intent.getStringExtra(android.app.SearchManager.QUERY)!!.length)
+    }
+    @Test fun androidSharedTextReviewKeepsFooterAndActionsReachableWithImeBudget() {
+        install()
+        val controller=Robolectric.buildActivity(dev.bautista.spotlight.ShareContextActivity::class.java,
+            Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,"luna compartida explícitamente")).create()
+        try {
+            ui.waitUntil(10000){Shadows.shadowOf(android.os.Looper.getMainLooper()).idle();controller.get().isFinishing}
+            val entry=Shadows.shadowOf(app).nextStartedActivity
+            assertEquals("dev.bautista.spotlight.InvokeActivity",entry.component!!.className)
+        }finally{controller.destroy()}
+        assertEquals("luna compartida explícitamente",app.contexts.active.value!!.text)
+        var viewport by mutableStateOf(700f)
+        ui.setContent{Box(Modifier.width(360.dp)){SpotlightPanel(app,
+            AppConfig(files=false,online=false,contacts=false,animations=false,learning=false,preset="glass"),{},"Wikipedia luna",viewport)}}
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:context:app-search:org.wikipedia/Main").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithText("Preparar búsqueda").assertIsDisplayed()
+        ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar"))).performKeyInput{pressKey(Key.Enter)}
+        ui.runOnIdle{viewport=320f}
+        ui.onNodeWithTag("search-use-context").performScrollTo().assertIsDisplayed().performClick()
+        ui.onNode(hasSetTextAction() and hasText("luna compartida explícitamente")).assertExists()
+        ui.onNodeWithText("Buscar").performScrollTo().assertIsDisplayed()
+        ui.onNodeWithTag("context-footer").assertIsDisplayed()
+        val root=ui.onNodeWithTag("spotlight-root").getUnclippedBoundsInRoot()
+        assertTrue(ui.onNodeWithTag("context-footer").getUnclippedBoundsInRoot().bottom<=root.bottom)
+        ui.onNodeWithTag("spotlight-root").captureRoboImage("build/c2/after/phone-shared-ime.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        ui.runOnIdle{viewport=700f};ui.waitForIdle()
+        ui.onNodeWithTag("context-footer").assertIsDisplayed()
+        ui.onNodeWithTag("spotlight-root").captureRoboImage("build/c2/after/phone-shared-restored.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+        ui.onNodeWithText("Buscar").performClick()
+        val request=Shadows.shadowOf(app).nextStartedActivity
+        assertEquals("org.wikipedia",request.component!!.packageName)
+        assertEquals("luna compartida explícitamente",request.getStringExtra(android.app.SearchManager.QUERY))
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
+    @Test fun compactAppInspectorScrollKeepsFooterInsideShortViewport() {
+        install();var viewport by mutableStateOf(700f)
+        ui.setContent{Box(Modifier.width(360.dp)){SpotlightPanel(app,
+            AppConfig(files=false,online=false,contacts=false,animations=false,learning=false,preset="glass"),{},"Wikipedia",viewport)}}
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:org.wikipedia/Main").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNodeWithTag("result:org.wikipedia/Main").performClick()
+        ui.onNodeWithTag("inspector-title").assertTextEquals("Wikipedia")
+        ui.runOnIdle{viewport=320f};ui.waitForIdle()
+        val phase=System.getenv("SPOTLIGHT_C2_CAPTURE_PHASE") ?: "after"
+        ui.onNodeWithTag("spotlight-root").captureRoboImage("build/c2/$phase/phone-app-inspector-ime.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        val root=ui.onNodeWithTag("spotlight-root").getUnclippedBoundsInRoot()
+        assertTrue("Footer is outside the short window",ui.onNodeWithTag("context-footer").getUnclippedBoundsInRoot().bottom<=root.bottom)
+        ui.onNodeWithTag("context-footer").assertIsDisplayed()
+        repeat(2){ui.onNodeWithTag("compact-inspector-scroll").performTouchInput{swipeUp()}}
+        ui.onNodeWithText("org.wikipedia").assertIsDisplayed()
         assertNull(Shadows.shadowOf(app).nextStartedActivity)
     }
 
