@@ -1,5 +1,14 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-04 — Preview61 C1 entregada; físico pendiente
+
+Fuente11b647c, workflow8e2bbe9, único run41772255307 correcto. APK61 optimizada
+R8, firma histórica885838aa, paquete Raycast Preview; APK/ZIP descargados y
+verificados independientemente. [Entrega y hashes](docs/NATIVE61-DELIVERY-20261104.md).
+C1 preservado; sin C2/main ni pruebas Android repetidas. Presupuesto0/bloqueo
+confirmados por propietario, sin pedir capturas recurrentes; Usage403 no invalida
+esa evidencia. Siguiente: validación física A/B Tab A9+/moto g86, no otro checkpoint.
+
 ## 2026-11-04 — implementación C1 nativa, aceptación física pendiente
 
 Dirección Refinado + Adaptive autorizada. Refactor 9bdd9d9, base visual 03761d6 y

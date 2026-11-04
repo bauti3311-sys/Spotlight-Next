@@ -1,5 +1,10 @@
 # Preview61 — preparación de validación física C1
 
+Actualización posterior: [Preview61 entregada y verificada](NATIVE61-DELIVERY-20261104.md).
+La autorización posterior y el procedimiento vigente están en
+[política de entrega](PREVIEW-DELIVERY-POLICY.md); los bloqueos de preparación
+que siguen describen la etapa histórica previa.
+
 Estado: preparación autorizada; NO autoriza compilar, firmar, ejecutar Actions,
 instalar ni comenzar C2. Base exacta C1: 8cd43a7e3c1f01d272e214f5649d67f96ea64a3e.
 La fuente candidata será el commit publicado que contiene este documento y el
