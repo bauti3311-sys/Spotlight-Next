@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-04T20:39:18" hostname="c880c3bda6d8" time="4.793">
+  <properties/>
+  <testcase name="publicMultipleDocumentHandlerIsDistinctFromPrivateOrRemovedReceiver[26]" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="1.776"/>
+  <testcase name="publicMultipleDocumentHandlerIsDistinctFromPrivateOrRemovedReceiver" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="2.707"/>
+  <testcase name="businessReceiverDoesNotSilentlyFallBackToPersonal[26]" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.043"/>
+  <testcase name="businessReceiverDoesNotSilentlyFallBackToPersonal" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.04"/>
+  <testcase name="gmailSingleAttachmentDoesNotImplyMultipleAttachmentSupport[26]" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.04"/>
+  <testcase name="gmailSingleAttachmentDoesNotImplyMultipleAttachmentSupport" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.051"/>
+  <testcase name="personalWhatsAppTextHandlerDoesNotImplyPdfOrBusinessSupport[26]" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.027"/>
+  <testcase name="personalWhatsAppTextHandlerDoesNotImplyPdfOrBusinessSupport" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.03"/>
+  <testcase name="spotifyAndVivaldiCannotBeInventedAsDocumentReceivers[26]" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.053"/>
+  <testcase name="spotifyAndVivaldiCannotBeInventedAsDocumentReceivers" classname="dev.bautista.spotlight.control.DocumentCompatibilityMatrixTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
