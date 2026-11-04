@@ -39,3 +39,28 @@ se revisará para conservar archivos originales y permisos sin lectura automáti
 
 Evidencia: verification/c2-files-20261104/search-red, search-first y search-upgrade.
 No p95/RAM/jank físicos ni efectos externos verificados.
+
+## F14 — contratos base comprobados, recorrido UI siguiente
+
+FileBuffer produce SEND para1 archivo y SEND_MULTIPLE para2–12, MIME concreto o
+familia común y ClipData consistente, sólo READ temporal. Conserva content URI;
+file URI de fuentes locales anteriores usa el FileProvider existente, sin copiar
+bytes ni resolver content URI como ruta privada.
+
+IntegrationRegistry inspecciona el payload anidado del chooser, todos los streams
+y ClipData, permisos vigentes y receptor público. Rechaza arrays sin ClipData,
+URI diferentes, extras mal tipados, grants WRITE/PERSISTABLE/PREFIX y un chooser
+no perteneciente al sistema. Mantiene NativeLaunchSession como único ejecutor y
+barrera de solicitud. Se excluye nuestra entrada de Share del catálogo de destinos
+externos y del chooser para no presentar autoimportación como receptor externo.
+
+Dos queries públicas SEND/MULTIPLE por MIME permiten descubrir receptores en
+Android11+, sin añadir uses-permission ni acceso al almacenamiento.
+
+51 casos distintos con última evidencia correcta en rondas de contratos:18 de
+formato/grants API26/35,19 NativeLaunchSession,6 FileBuffer y8 de preparación real
+sobre ContentProvider controlado/descriptor local. No prueban Android Sharesheet
+o receptores reales. Sólo metadatos/descriptor, sin extracción/copia. Se conserva
+el rojo, el error de runtime API26 inicialmente ausente (jar oficial con SHA512
+comprobado en caché), el fixture de flag SYSTEM corregido y la detección de nuestra
+propia Activity como falso destino externo. Ver contract-*/prepare-*.

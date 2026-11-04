@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.FileBufferTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-04T19:47:13" hostname="c880c3bda6d8" time="4.315">
+  <properties/>
+  <testcase name="shareUsesAndroidMultipleIntentWithEveryUriAndReadGrant[26]" classname="dev.bautista.spotlight.search.FileBufferTest" time="1.6"/>
+  <testcase name="shareUsesAndroidMultipleIntentWithEveryUriAndReadGrant" classname="dev.bautista.spotlight.search.FileBufferTest" time="2.572"/>
+  <testcase name="threeFilesStaySelectedAndDuplicateUrisDoNotMultiply[26]" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.038"/>
+  <testcase name="threeFilesStaySelectedAndDuplicateUrisDoNotMultiply" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.031"/>
+  <testcase name="foldersAppsUnsupportedSchemesAndUnboundedSelectionsAreRejected[26]" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.05"/>
+  <testcase name="foldersAppsUnsupportedSchemesAndUnboundedSelectionsAreRejected" classname="dev.bautista.spotlight.search.FileBufferTest" time="0.024"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

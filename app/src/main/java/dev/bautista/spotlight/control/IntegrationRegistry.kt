@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
 import android.os.Process
 import dev.bautista.spotlight.search.*
+import dev.bautista.spotlight.sharing.FileShareContract
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -37,23 +38,51 @@ class IntegrationRegistry(private val context: Context) {
                 component.packageName!=context.packageName && !activity.exported -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
                 !activity.permission.isNullOrBlank() && component.packageName!=context.packageName &&
                     androidx.core.content.ContextCompat.checkSelfPermission(context,activity.permission)!=android.content.pm.PackageManager.PERMISSION_GRANTED -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
+                intent.action==Intent.ACTION_CHOOSER && app.flags and (ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)==0 -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
                 !grantsAvailable(intent) -> LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)
+                intent.action==Intent.ACTION_CHOOSER && FileShareContract.chooserPayload(intent)?.hasExtra(Intent.EXTRA_STREAM)==true &&
+                    !hasCompatibleShareTarget(requireNotNull(FileShareContract.chooserPayload(intent))) -> LaunchAccess(problem=LaunchProblem.UNAVAILABLE)
                 else -> LaunchAccess(component,"${activity.loadLabel(pm).toString().take(120)} · ${component.packageName}")
             }
         }
     }catch(_:SecurityException){LaunchAccess(problem=LaunchProblem.PERMISSION_REQUIRED)}
      catch(_:Exception){LaunchAccess(problem=LaunchProblem.UNAVAILABLE)}
+    /** Same live gate for discovery and the chooser; no launch or result fabrication. */
+    internal fun hasCompatibleShareTarget(intent:Intent):Boolean=runCatching {
+        context.packageManager.queryIntentActivities(intent,android.content.pm.PackageManager.MATCH_DEFAULT_ONLY).any { row ->
+            val activity=row.activityInfo ?: return@any false
+            if(activity.packageName==context.packageName)return@any false // Our input activity is not an external destination.
+            launchAccess(Intent(intent).setComponent(android.content.ComponentName(activity.packageName,activity.name))).problem==null
+        }
+    }.getOrDefault(false)
+    @Suppress("DEPRECATION")
     private fun grantsAvailable(intent:Intent):Boolean {
+        if(intent.action==Intent.ACTION_CHOOSER) {
+            val payload=FileShareContract.chooserPayload(intent) ?: return false
+            if(intent.flags and (Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)!=0)return false
+            if(!grantsAvailable(payload))return false
+            val innerUris=buildList {payload.data?.let(::add);payload.clipData?.let{clip->repeat(clip.itemCount){clip.getItemAt(it).uri?.let(::add)}}}
+            return (0 until (intent.clipData?.itemCount ?: 0)).all { index ->
+                val item=intent.clipData!!.getItemAt(index);item.intent==null && (item.uri==null || item.uri in innerUris)
+            }
+        }
+        val sharing=intent.action in setOf(Intent.ACTION_SEND,Intent.ACTION_SEND_MULTIPLE)
+        val hasStreams=intent.hasExtra(Intent.EXTRA_STREAM)
+        if(sharing && hasStreams && !FileShareContract.validFilePayload(intent))return false
+        if(sharing && !hasStreams && (intent.data!=null || (0 until (intent.clipData?.itemCount ?: 0)).any{intent.clipData!!.getItemAt(it).uri!=null}))return false
         val modes=listOf(Intent.FLAG_GRANT_READ_URI_PERMISSION,Intent.FLAG_GRANT_WRITE_URI_PERMISSION).filter{intent.flags and it!=0}
         if(modes.isEmpty())return true
         val uris=buildList<android.net.Uri> {
             intent.data?.let(::add)
             intent.clipData?.let{clip->repeat(clip.itemCount){clip.getItemAt(it).uri?.let(::add)}}
-            @Suppress("DEPRECATION")
-            (intent.getParcelableExtra<android.os.Parcelable>(Intent.EXTRA_STREAM) as? android.net.Uri)?.let(::add)
+            when(val extra=intent.extras?.get(Intent.EXTRA_STREAM)) {
+                is android.net.Uri->add(extra)
+                is ArrayList<*>->extra.forEach{if(it is android.net.Uri)add(it)}
+            }
         }
-        return uris.filter{it.scheme=="content"}.all { uri -> modes.all { mode ->
-            context.checkUriPermission(uri,android.os.Process.myPid(),android.os.Process.myUid(),mode)==android.content.pm.PackageManager.PERMISSION_GRANTED
+        return uris.distinct().filter{it.scheme=="content"}.all { uri -> modes.all { mode ->
+            if(mode==Intent.FLAG_GRANT_READ_URI_PERMISSION)FileShareContract.canRead(context,uri)
+            else context.checkUriPermission(uri,android.os.Process.myPid(),android.os.Process.myUid(),mode)==android.content.pm.PackageManager.PERMISSION_GRANTED
         } }
     }
     fun capabilities(packageName: String): List<Capability> {
