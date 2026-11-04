@@ -1,0 +1,89 @@
+Cierre Preview62 verificado,2026-11-04UTC. PR21 HEAD documental f49281a6068f35eb82bc0d301425b805070e7192; fuente APK/ZIP exacta135a9af74be08fc4368c8b9fc803d12fdcd273d3, workflow exacto388fe90fd7bccc2f16d4a2e33923d54f8860dc47. Único run41843064054 correcto,run_attempt1, sin retries/fallback. Owner propio codex-291594d1-9427-420b-ab67-c9047f925705; lease durante run31d773a67a6c595fb4e2173008fd8b93b4f9bc3c; lease final9948b5578a7f5d5095e2b0d905eca6f6dda411aa. Sólo esta reserva se libera con estas notas atómicas.
+APK/ZIP descargados por conector oficial y verificados localmente: v2/un firmante885838aa, RaycastPreview/code62>61/noDebuggable/SDK26-35/ARM64/16KiB, permisos iguales a61, contenido firmado igual al unsigned y ZIP byte a byte igual a git archive. HashAPK733c9eb48ae8f616b87b7d06583f2c0ca6aa9a6956bddee6dd3b8e30a3243961; hashZIP4ffc7af3a01be77a965dcd2f90756df9cd5b150f407469b5ec685420fb5d5960. Artefacto privado13331145151 vence2026-11-07T14:08:02Z, copias individuales ChatGPT en shared/downloads/spotlight-preview62/. PR actualizado. Ver docs/NATIVE62-DELIVERY-20261104.md y verification/native62-delivery-20261104.json.
+US$0/bloqueo conservados según referencia propietaria; no se cambió facturación/secretos ni se evadió cuota. No se repitieron119 casos nativos ya aprobados, no hubo nuevas funciones ni C3–C9/main/merge. native60-once intacto, source/artefactos60/61 preservados. No promover e38eae8; main47259ce2 intacta.
+Compatibilidad estática de actualización comprobada; instalación/conservación de datos físicas NO ejecutadas. Prioridad siguiente: propietario valida tamaño/Gboard/scroll/inspector/footer en A9+ antes de ampliarC2. Sin tareas activas después del cierre.
+
+# Preview62 — candidata nativa entregada para validación física
+
+Única ejecución autorizada [41843064054](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/41843064054)
+correcta, run_attempt1, mode=native-delivery, actor/triggering_actor bauti3311-sys.
+Fuente APK/ZIP135a9af74be08fc4368c8b9fc803d12fdcd273d3; workflow revisado y
+ejecutado388fe90fd7bccc2f16d4a2e33923d54f8860dc47. Este informe se publica después
+y no es el SHA compilado. Código funcional76a1c18 intacto: C1, recuperación de
+ventana y primer recorrido C2. Sin funciones nuevas.
+
+## Identidad y archivos finales
+
+Paquete dev.bautista.spotlight.next.raycastpreview, versionCode62,
+versionName2.0.1-raycast-preview-native57-v62. Certificado SHA256 histórico:
+885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba.
+Firma v2 válida, un firmante, no debuggable, ARM64, min26/target35.
+R8 y resource shrinking ejecutados; Gradle BUILD SUCCESSFUL in7m13s. Sin fallback
+experimental ni reintento. Preflight12s, unsigned8m1s, firma54s;
+run13:58:53–14:08:11UTC del04/11/2026.
+
+| Archivo | Bytes | SHA256 |
+|---|---:|---|
+| Spotlight-Next-Preview62-135a9af.apk | 73430437 | 733c9eb48ae8f616b87b7d06583f2c0ca6aa9a6956bddee6dd3b8e30a3243961 |
+| Spotlight-Next-source-135a9af.zip | 12540181 | 4ffc7af3a01be77a965dcd2f90756df9cd5b150f407469b5ec685420fb5d5960 |
+
+[Respaldo privado conjunto GitHub](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/41843064054/artifacts/13331145151),
+retención3días; vence2026-11-07T14:08:02Z. Contiene APK/ZIP/SHA256SUMS,
+SOURCE_COMMIT/WORKFLOW_COMMIT/provenance.json/package.txt/signature.txt.
+ZIP de artefacto86052185bytes, SHA256
+a29995d37f1b5b149bb7a4c367b2d00d420e023e952851cd6f2a3b8a9149af8e.
+Descarga mediante conector oficial, archivo File Service y copia local íntegra;
+hash GitHub cotejado antes de extraer y CRC/rutas seguros. Copias individuales
+verificadas en shared/downloads/spotlight-preview62/ para enlaces ChatGPT.
+No depender de una URL temporal de blob como único enlace; el respaldo anterior
+es la página autenticada del artefacto, con caducidad explícita.
+
+## Verificación independiente y actualización desde61
+
+Verificador local ejecutado con source/workflow/run exactos: firma/certificado,
+metadata, zipalign-P16, todos los ELF ARM64 alineados16KiB y payload firmado
+idéntico al mapa unsigned registrado. ZIP fuente cmp idéntico byte a byte con
+git archive del135a9af. Sin credenciales/keystore ni puente visual WebView/Nuxt.
+Marcadores compilados C2 presentes: search-use-context, compact-inspector-scroll
+y context:app-search:. No se presenta esa inspección como prueba física de UI.
+
+Comparación contra APK61 histórica verificada, cuyo hash se cotejó de nuevo:
+paquete y certificado iguales,62>61, mismos SDK/ABI y permisos declarados.
+Manifest, archivos de datos/esquemas y release.properties no cambian frente61;
+no se añadió migración ni limpieza de datos. Se acredita compatibilidad estática
+de actualización, no instalación/conservación física ya comprobadas.
+[Resultado machine-readable](verification/native62-delivery-20261104.json).
+
+Instalar manualmente encima de Raycast Preview61, sin desinstalar ni borrar datos.
+Si Android muestra conflicto de paquete/firma, cancelar y registrar el mensaje.
+No se instaló ni se modificó el dispositivo desde esta sesión.
+
+## Seguridad, presupuesto y continuidad
+
+Reserva propia codex-291594d1-9427-420b-ab67-c9047f925705, lease durante todo el
+run31d773a67a6c595fb4e2173008fd8b93b4f9bc3c, checkpoint388fe90.
+Cada job validó SHA/actor/ref/historial/reserva; firma aislada del build y limpieza
+correcta. El cierre actualiza documentación y libera sólo esta reserva con notas
+atómicas. Main47259ce2, e38eae8 y PR/ramas anteriores conservados; sin merge.
+
+US$0/bloqueo/cuota gratuita/secrets históricos confirmados por el propietario;
+UsageAPI403 por permisos de integración en preparación, sin reinterpretarlo como
+ausencia del límite. No se modificó facturación ni se habilitó gasto; no se afirma
+auditoría contable independiente. GitHub permitió el único run; no hubo evasión
+de cuota. No se reusaron intentos60/61 ni se cambió native60-once.
+
+Se reutilizaron119 casos nativos/Lint correctos de76a1c18, sin repetirlos por
+numeración. Preparación62:17 contratos de entrega,21 históricos y Actionlint
+correctos. Sin código adicional, nuevas dependencias/permisos, C3–C9 o ampliación
+C2. Evidencia de entrega y logs no sustituyen aceptación del producto en OneUI.
+
+## Próximo paso: Galaxy Tab A9+
+
+Priorizar ventana al abrir desde Apariencia y desde otra app; Gboard cerrado→
+abierto→cerrado varias veces; cerrar/reabrir Spotlight; vertical/horizontal;
+PDF/búsqueda larga y scroll sin apertura; inspector/footer/última acción; teclado
+físico y conservación de ajustes/datos. Registrar versión62 y resultado por caso;
+captura/video corto por fallo sin contenido privado. Seguir
+[protocolo preparado](NATIVE62-PREPARATION-20261104.md). Moto g86 complementa la
+matriz. C0/C1/C2 físicos y métricas p95/memoria siguen pendientes; no ampliar C2
+antes de la revisión física priorizada por el propietario.
