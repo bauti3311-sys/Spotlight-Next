@@ -1,0 +1,791 @@
+{
+  "distinctCases": 112,
+  "allLatestPassed": true,
+  "notSingleGlobalSuite": true,
+  "cases": [
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "absentCapabilitiesDoNotProduceActionButtons",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "anotherPackageCannotSupplyTheSelectedAppsShareCapability",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "browserSearchRetainsChromeOrVivaldiInsteadOfUsingDefaultBrowser",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "disabledOrSuspendedAppsDoNotPublishShareActions",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "documentedSearchRequiresExportedResolvableExactPackage",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "genericSearchIsOnlyExposedByItsPublicHandler",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "mapsSearchIsDocumentedButSofascoreHomepageDoesNotProveSearch",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "revokedCapabilityIsRecheckedBeforeOpeningItsForm",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.AppCapabilitiesTest",
+      "case": "sharePreparationKeepsTheSelectedAppAndDoesNotSend",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:47",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.C2WebSearchCapabilityTest",
+      "case": "publicSearchWinsWithoutDuplicateCapability",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:44",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.C2WebSearchCapabilityTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.C2WebSearchCapabilityTest",
+      "case": "revokedWebSearchCannotBePrepared",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:44",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.C2WebSearchCapabilityTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.C2WebSearchCapabilityTest",
+      "case": "webSearchOnlyAppPublishesOneExactPreparation",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:29:44",
+      "evidence": "web-green/TEST-dev.bautista.spotlight.control.C2WebSearchCapabilityTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "activityNotFoundAfterValidationOnlyOffersAlternative",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "boundedIntentRejectsOversizedPayloadWithoutDispatch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "cancelledAndDisposedProposalsNeverDispatch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "changedContextMakesOldApprovalStale",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "changedDefaultHandlerRequiresFreshReview",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "disabledPrivateMissingAndRestrictedActivitiesNeverDispatch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "disposingDropsReceiptAndNeverReplaysTheRequest",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "exactInstalledActivityIsPinnedAndRequestedOnce",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "failedOrUncertainRequestDoesNotPublishAReceipt",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "fallbackRequiresCurrentProposalAndDispatchesOnce",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "modifiedProposalCannotExecuteDifferentPayload",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "receiptContainsOnlyDestinationAndExpiresWithItsOrigin",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "removedPackageIsRevalidatedBeforeDispatch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "reviewedPayloadIsAnIndependentSnapshot",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "revokedAlternativePermissionBlocksConfirmation",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "revokedReadGrantBlocksDocumentLaunch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "revokedWriteGrantBlocksDispatchBeforeEffect",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "securityExceptionIsSanitizedAndNeverRetried",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.control.NativeLaunchSessionTest",
+      "case": "unknownOutcomeOffersNoAutomaticOrManualFallback",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:24",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "absentSearchDoesNotInventContextualCapability",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "appAndTermsPrepareTheExistingPublicSearchWithoutLaunching",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "disabledModulesCannotBeBypassedByContextualRoute",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "exactInstalledApplicationWinsSameNamedHighScoreAction",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "exactInstalledLabelCannotBeInterpretedAsACommand",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "explicitFormsStillRequireUnambiguousAvailableAppAndTerms",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "explicitPrefixAndSuffixPreserveTermsWithoutWebFallbackResults",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "genericWebSearchParticipatesWithoutInventingInternalSearch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "homonymousPackagesRequireSelectionAndExactQueryStaysApplicationFirst",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "longestApplicationNameWinsAndAccentsInTermsArePreserved",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.C2ContextSearchTest",
+      "case": "shareQueryRequiresPublicTextHandlerAndNeverCopiesOrLaunches",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:27",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "adaptiveSearchIncludesEveryEligibleMatchWithoutAddingNoise",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "contentAndSemanticDocumentHitsDoNotRequireTitleOverlap",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "exactApplicationNeverAutocompletesIntoLongerSibling",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "explicitAiNotificationsAndAndroidCommandsSurviveDifferentLabels",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "explicitAppAndContactScopesUseTheirParsedSearchTerms",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "explicitDictionaryAndTextCommandsRemainAvailableInitially",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "explicitUrlProviderAndFolderRequestsAreNotTreatedAsGenericFallbacks",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "navigationKeepsExistingOrderWhenLateProvidersArrive",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "queryShowsSixAndExpansionRetainsEveryDistinctAction",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "recognizedBrightnessMusicAndQuestionActionsStayEligible",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.CompactResultsTest",
+      "case": "whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:32",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "currentVolumeActionAppearsWithoutInventingAnApplication",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:34:55",
+      "evidence": "query-green/TEST-dev.bautista.spotlight.search.HomeSuggestionsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "disabledSuggestionsReturnNothing",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:34:55",
+      "evidence": "query-green/TEST-dev.bautista.spotlight.search.HomeSuggestionsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "freshInstallHasRealLaunchableAppsWithoutLearningOrUsageAccess",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:34:55",
+      "evidence": "query-green/TEST-dev.bautista.spotlight.search.HomeSuggestionsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "hideAndPinAreAppliedToAvailableCommands",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:34:55",
+      "evidence": "query-green/TEST-dev.bautista.spotlight.search.HomeSuggestionsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.search.HomeSuggestionsTest",
+      "case": "noHistoryOrUnavailableProvidersLeakIntoHome",
+      "status": "passed",
+      "timestamp": "2026-11-04T14:34:55",
+      "evidence": "query-green/TEST-dev.bautista.spotlight.search.HomeSuggestionsTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "actionGroupsHaveVisibleHeadingsWithoutExecutingItems",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "asynchronousReorderingRetainsSelectedIdentityAndRemovalUsesLiveFallback",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "densityAndTextScalePreserveMinimum48dpTouchTargetsInActionPanel",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "groupsAndIdentityDoNotDependOnTheVisibleTitle",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "nativeBackRestoresParentFilterBeforeClosingAndUnregistersOnDispose",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest",
+      "case": "tabCyclesAndEnterRunsOnlyFocusedContextAction",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:35",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ActionPanelKeyboardContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.AppActionsSectionTest",
+      "case": "businessCompositionPreservesDestinationAndIncludesReplies",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:42",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.AppActionsSectionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.AppActionsSectionTest",
+      "case": "unsupportedAppHasAnHonestSectionWithoutImaginaryActions",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:42",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.AppActionsSectionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.AppActionsSectionTest",
+      "case": "whatsappReplyNavigationIsNotFilteredOutByActionType",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:42",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.AppActionsSectionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C1InspectorContractTest",
+      "case": "businessUsesTheFullApplicationNameWithoutAChannelSwitch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:46",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C1InspectorContractTest",
+      "case": "changingIdentityCollapsesTheOldPresentationWithoutEffects",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:46",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C1InspectorContractTest",
+      "case": "completingExtractionDoesNotCollapseTheVisibleActions",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:46",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C1InspectorContractTest",
+      "case": "disclosureOnlyRevealsExistingActionsAndDoesNotDispatch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:46",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C1InspectorContractTest",
+      "case": "personalDestinationIsNamedExplicitlyAndReviewDoesNotSend",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:46",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C1InspectorContractTest",
+      "case": "runningExtractionKeepsItsCancellationVisible",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:46",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "acceptedSearchShowsRequestReceiptWithoutClaimingExternalEffect",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:57:53",
+      "evidence": "final/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "androidSharedTextReviewKeepsFooterAndActionsReachableWithImeBudget",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "compactAppInspectorScrollKeepsFooterInsideShortViewport",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "contextualQueryOpensReviewAndRequestsTheExactPublicActivityOnce",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "darkSharedSearchFormUsesExistingComposition",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "exactAppInspectorPreparesLiveSearchAndEscapeReturnsToItsQuery",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "explicitQueryUsesSelectedWebSearchHandlerAndKeepsEditableReview",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "largeSharedTextIsExplicitlyBoundedBeforeSearch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "lightSharedSearchFormUsesExistingComposition",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "removedAppCannotOpenTheStalePreparedSearchForm",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "sharedTextRequiresSelectionAndASeparateSearchRequest",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2PublicSearchFlowTest",
+      "case": "unavailableCatalogSearchIsDisabledInsteadOfAdvertisedAsExecutable",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:14",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "captureDark",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "captureGmailCapability",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "captureLight",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "contextLimitIsVisibleAndNoDocumentIsRead",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "contextRequiresSelectionReviewAndConfirmationToRequestSelectedApp",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "escapeFromPreparedShareReturnsQueryAndFocusWithoutRequest",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "gmailInspectorCannotUseADifferentDefaultMailClient",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "newContextDoesNotReplaceAnEditedDraftOrAuthorizeIt",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "restoringSharedDraftDoesNotRestoreItsConfirmation",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "revokedShareAtConfirmationDoesNotOpenAnAlternative",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "sharedQueryReviewScrollAndConfirmationRequestExactAppOnce",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:58:01",
+      "evidence": "final/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
+      "case": "unavailableGmailShareIsDisabledWithReason",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:55:52",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.NativeCommandFlowTest",
+      "case": "deletingSavedCommandRequiresConfirmationAndDoesNotExecuteIt",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:01",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.NativeCommandFlowTest",
+      "case": "reorderingIdenticallyNamedAppsPreservesTheirExactPackages",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:01",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.NativeCommandFlowTest",
+      "case": "savedPanelContainsNativeCommandsAndKeepsLegacyRoutinesHidden",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:01",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.NativeCommandFlowTest",
+      "case": "savingFromEditorCreatesSearchableNativeCommandWithoutExecuting",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:01",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.NativeCommandFlowTest",
+      "case": "searchOpensStoredReviewAndExplicitConfirmationChangesVolume",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:01",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "accessibilityClickKeepsTheSameSelectionAndPrimaryContract",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "longPressShowsActionsWithoutInvokingPrimaryCallback",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "case": "touchDownAndCancelledGestureDoNotSelectOrOpenPdf",
+      "status": "passed",
+      "timestamp": "2026-11-04T18:56:09",
+      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    }
+  ]
+}

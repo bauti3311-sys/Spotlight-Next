@@ -38,3 +38,11 @@ import dev.bautista.spotlight.control.LaunchProblem
         }
     }
 }
+
+/** Local Android receipt only; no query/URI/message content and no restored authorization. */
+@Composable internal fun NativeLaunchRequestStatus(destination:String?) {
+    if(destination!=null)Text("Solicitud enviada a Android · $destination\nResultado externo sin comprobar.",
+        style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier=Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp)
+            .testTag("native-launch-request").semantics{liveRegion=LiveRegionMode.Polite})
+}

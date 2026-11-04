@@ -199,4 +199,19 @@ class C2PublicSearchFlowTest {
         assertNull(Shadows.shadowOf(app).nextStartedActivity)
     }
 
+    @Test fun acceptedSearchShowsRequestReceiptWithoutClaimingExternalEffect() {
+        install()
+        ui.setContent{Box(Modifier.width(360.dp)){SpotlightPanel(app,
+            AppConfig(theme="dark",preset="glass",files=false,online=false,contacts=false,animations=false,learning=false),{},"Wikipedia luna",700f)}}
+        ui.waitUntil(15000){ui.onAllNodesWithTag("result:context:app-search:org.wikipedia/Main").fetchSemanticsNodes().isNotEmpty()}
+        ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar"))).performKeyInput{pressKey(Key.Enter)}
+        ui.onNodeWithText("Buscar").performClick()
+        assertNotNull(Shadows.shadowOf(app).nextStartedActivity)
+        val phase=System.getenv("SPOTLIGHT_C2_NEXT_PHASE") ?: "after"
+        ui.onNodeWithTag("spotlight-root").captureRoboImage("build/c2-next/$phase/request-status.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+        ui.onNodeWithTag("native-launch-request").assertTextContains("Solicitud enviada a Android",substring=true)
+            .assertTextContains("org.wikipedia",substring=true).assertTextContains("Resultado externo sin comprobar",substring=true)
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
+    }
+
 }

@@ -167,4 +167,31 @@ class NativeLaunchSessionTest {
         assertFalse(session.launch(primary.putExtra("text","x".repeat(300000)),null,"origin",true))
         assertEquals(LaunchProblem.INVALID_INPUT,session.issue?.problem);assertTrue(calls.isEmpty())
     }
+    @Test fun receiptContainsOnlyDestinationAndExpiresWithItsOrigin() {
+        install();val session=NativeLaunchSession(context)
+        assertNull(session.requestedDestination)
+        assertTrue(session.launch(Intent(primary).putExtra(Intent.EXTRA_TEXT,"private-query-payload"),null,"origin",false))
+        assertTrue(session.requestedDestination!!.contains(target.packageName))
+        assertFalse(session.requestedDestination!!.contains("private-query-payload"))
+        session.synchronize("another-origin")
+        assertNull(session.requestedDestination)
+    }
+    @Test fun failedOrUncertainRequestDoesNotPublishAReceipt() {
+        install();failure=IllegalStateException("possibly-dispatched")
+        val session=NativeLaunchSession(context)
+        assertFalse(session.launch(primary,null,"origin",false))
+        assertEquals(LaunchProblem.UNKNOWN_OUTCOME,session.issue?.problem)
+        assertNull(session.requestedDestination)
+        assertEquals(1,attempts)
+    }
+    @Test fun disposingDropsReceiptAndNeverReplaysTheRequest() {
+        install();val session=NativeLaunchSession(context)
+        assertTrue(session.launch(primary,null,"origin",false))
+        assertNotNull(session.requestedDestination)
+        session.dispose()
+        assertNull(session.requestedDestination)
+        assertFalse(session.launch(primary,null,"origin",false))
+        assertEquals(1,calls.size)
+    }
+
 }

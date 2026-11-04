@@ -88,3 +88,25 @@ Capturas reales de Compose/Robolectric API33 NATIVE, no dispositivo: formulario
 claro/oscuro y catálogo Gmail antes/después; confirmación con viewport320dp,
 scroll y footer dentro de la ventana. Se conservaron tokens/composición; sin
 nueva hoja, paleta o jerarquía. Los fixtures usan actividades sintéticas.
+
+## Subhito 4 — solicitud aceptada no equivale a efecto externo
+
+El inspector de búsqueda/compartir muestra un recibo efímero únicamente después
+que startActivity retorna: «Solicitud enviada a Android», destino exacto y
+«Resultado externo sin comprobar». No persiste texto, URI, contenido ni permiso
+de ejecución. Se descarta al cambiar contexto o cerrar la sesión. Error/resultado
+incierto no publica recibo ni provoca reintento. Mismo ejecutor NativeLaunchSession.
+
+Gate dirigido95 casos:93 correctos y2 errores del fixture de texto, sin nuevos
+fallos de producción. Las frases se estaban comparando con el Text completo;
+se comprueban explícitamente como subcadenas, manteniendo las comprobaciones de
+paquete, advertencia de efecto no comprobado y ausencia de solicitudes extra.
+Sólo esos2 casos se repitieron, ambos correctos, más Lint:0errores/26advertencias/
+1información (igual al reporte online anterior).112 casos distintos de última
+evidencia correcta en esta sesión, no una suite global ni112 casos nuevos.
+Los XML/fallos originales se conservan; no se vuelven a sumar las119 previas.
+
+Las primeras capturas aisladas claro/oscuro carecían de Surface en el fixture;
+la versión clara no permite evaluar contraste contra el fondo real. Se conservan
+como evidencia inicial; se preparan capturas comparables con Surface sobre fuente
+anterior y actual, sin retocar PNG ni cambiar producción para arreglar la imagen.

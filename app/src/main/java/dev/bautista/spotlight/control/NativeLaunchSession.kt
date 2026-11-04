@@ -28,18 +28,21 @@ internal data class LaunchIssue(val problem:LaunchProblem,val alternative:Launch
 internal class NativeLaunchSession(private val context:Context) {
     var issue by mutableStateOf<LaunchIssue?>(null)
         private set
+    // Ephemeral receipt of startActivity returning, never proof of an external effect.
+    var requestedDestination by mutableStateOf<String?>(null)
+        private set
     private var origin:Any?=null
     private val consumed=mutableSetOf<String>()
     private var disposed=false
     fun synchronize(current:Any) {
-        if(origin!=current){origin=current;consumed.clear();issue=null}
+        if(origin!=current){origin=current;consumed.clear();issue=null;requestedDestination=null}
     }
     fun cancel(){
         if(issue?.problem in setOf(LaunchProblem.INVALID_INPUT,LaunchProblem.UNAVAILABLE,LaunchProblem.PERMISSION_REQUIRED,LaunchProblem.STALE_TARGET))consumed.clear()
         issue=null
     }
     fun signature(intent:Intent):String=runCatching{snapshot(intent).second}.getOrDefault("invalid")
-    fun dispose(){disposed=true;issue=null;consumed.clear()}
+    fun dispose(){disposed=true;issue=null;requestedDestination=null;consumed.clear()}
     private fun snapshot(intent:Intent):Pair<Intent,String> {
         val parcel=Parcel.obtain()
         try {
@@ -62,6 +65,7 @@ internal class NativeLaunchSession(private val context:Context) {
         }
         consumed+=key
         issue=null
+        requestedDestination=null
         return dispatch(intent,null,close,fallback)
     }
     fun confirm(id:String,current:Any):Boolean {
@@ -73,6 +77,7 @@ internal class NativeLaunchSession(private val context:Context) {
         val (intent,key)=try{snapshot(alternative.intent)}catch(_:Exception){issue=LaunchIssue(LaunchProblem.INVALID_INPUT);return false}
         if(key!=alternative.signature){issue=LaunchIssue(LaunchProblem.STALE_TARGET);return false}
         if(!consumed.add(key)){issue=LaunchIssue(LaunchProblem.ALREADY_REQUESTED);return false}
+        requestedDestination=null
         return dispatch(intent,alternative.component,alternative.close,null)
     }
     private fun dispatch(intent:Intent,reviewed:ComponentName?,close:Boolean,fallback:Intent?):Boolean {
@@ -86,6 +91,7 @@ internal class NativeLaunchSession(private val context:Context) {
         catch(_:SecurityException){fail(LaunchProblem.PERMISSION_REQUIRED,fallback,close);return false}
         catch(_:Exception){fail(LaunchProblem.UNKNOWN_OUTCOME,null,close);return false}
         issue=null
+        requestedDestination=access.label
         return true // REQUESTED, not proof of the external effect.
     }
     private fun fail(problem:LaunchProblem,fallback:Intent?,close:Boolean) {

@@ -90,6 +90,10 @@ class C2SharedMessageFlowTest {
         assertEquals(8000,ui.onNode(hasSetTextAction()).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.EditableText].text.length)
         ui.onNodeWithText("Se usarán los primeros 8000 caracteres; podés editarlos antes de compartir.").assertExists()
         assertNull(Shadows.shadowOf(app).nextStartedActivity)
+        kotlinx.coroutines.runBlocking{app.contexts.setDocument(android.net.Uri.parse("content://fixture.documents/item1"))}
+        ui.onNodeWithTag("message-use-context").assertDoesNotExist()
+        assertEquals(8000,editable().length)
+        assertNull(Shadows.shadowOf(app).nextStartedActivity)
     }
     @Test fun captureGmailCapability() {
         install("com.google.android.gm","Gmail")
@@ -141,6 +145,8 @@ class C2SharedMessageFlowTest {
         assertEquals(Intent.ACTION_SEND,requested.action)
         assertEquals("fixture.receiver",requested.component!!.packageName)
         assertEquals("https://example.org/nota",requested.getStringExtra(Intent.EXTRA_TEXT))
+        ui.onNodeWithTag("native-launch-request").performScrollTo().assertTextContains("Resultado externo sin comprobar",substring=true)
+        assertTrue(ui.onNodeWithTag("context-footer").getUnclippedBoundsInRoot().bottom<=root.bottom)
         ui.runOnIdle{viewport=700f}
         ui.onNodeWithTag("context-footer").assertIsDisplayed()
         ui.onNodeWithText("Revisar mensaje").performScrollTo().performClick()

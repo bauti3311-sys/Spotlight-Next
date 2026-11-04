@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C1InspectorContractTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-04T18:55:46" hostname="c880c3bda6d8" time="4.879">
+  <properties/>
+  <testcase name="completingExtractionDoesNotCollapseTheVisibleActions" classname="dev.bautista.spotlight.ui.C1InspectorContractTest" time="3.767"/>
+  <testcase name="changingIdentityCollapsesTheOldPresentationWithoutEffects" classname="dev.bautista.spotlight.ui.C1InspectorContractTest" time="0.19"/>
+  <testcase name="businessUsesTheFullApplicationNameWithoutAChannelSwitch" classname="dev.bautista.spotlight.ui.C1InspectorContractTest" time="0.52"/>
+  <testcase name="disclosureOnlyRevealsExistingActionsAndDoesNotDispatch" classname="dev.bautista.spotlight.ui.C1InspectorContractTest" time="0.096"/>
+  <testcase name="personalDestinationIsNamedExplicitlyAndReviewDoesNotSend" classname="dev.bautista.spotlight.ui.C1InspectorContractTest" time="0.209"/>
+  <testcase name="runningExtractionKeepsItsCancellationVisible" classname="dev.bautista.spotlight.ui.C1InspectorContractTest" time="0.095"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

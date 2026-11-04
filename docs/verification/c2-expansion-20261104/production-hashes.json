@@ -1,0 +1,18 @@
+{
+  "base": "f49281a6068f35eb82bc0d301425b805070e7192",
+  "changedProductionFiles": {
+    "app/src/main/java/dev/bautista/spotlight/control/ActionCatalog.kt": "6a4400f7f26caf146bd4edde43ca42f65145bb5cc7fc1d0b3ffe7fdd3cfd44e3",
+    "app/src/main/java/dev/bautista/spotlight/control/AppCapabilities.kt": "8dcab04be6d193c597e6c7a52e994995c333012f7ba92e606c0e90e236d833fd",
+    "app/src/main/java/dev/bautista/spotlight/control/IntegrationRegistry.kt": "ae499a8d49ded9813baa83bedf8cdfd8ebed28805a5dcaef3d693ca8eb0a0452",
+    "app/src/main/java/dev/bautista/spotlight/control/NativeLaunchSession.kt": "bac47c7b7a79ab18d0a047496eba0ac7f43293e481ad295b56ebdedb6e70ab70",
+    "app/src/main/java/dev/bautista/spotlight/search/CompactResults.kt": "22cda71428119e6ddd96ca36b0a06e0b7ca79f63717d10d3751bc0d9b9a7c32c",
+    "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt": "02488d4a88a569192667f44244721c59a3bd7f693c69288725e45c19a28e3ca5",
+    "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt": "4c5908e8657f34132dc4421c832fc7c407de3fc7d0f1b3a8a866d87e698ab1a9",
+    "app/src/main/java/dev/bautista/spotlight/ui/AppCapabilityActions.kt": "3c0230922c1c73b7962e809712a837135effefa8a56883087577036c42269b72",
+    "app/src/main/java/dev/bautista/spotlight/ui/CommandForms.kt": "67164d10908c8b82fc43b9e8a2990f08fc58757c9b630d8da74fc7c07e690d36",
+    "app/src/main/java/dev/bautista/spotlight/ui/InspectorTheme.kt": "9a30f6726e60db3a3eee2740455a9781414b393bee7d66b39370604444a4026a",
+    "app/src/main/java/dev/bautista/spotlight/ui/NativeLaunchReview.kt": "58409ec071de31952678696c251ec25202ec5f1419295713760c0ddfa957aeaa",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt": "24d9752607d0e1f82080421b38adf1c938f4558cf438f6f436cbbad95ee6e5f0",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightResults.kt": "e429462f4416118fc6ad78c11e839168cb1dbee4d1c2f2ffee047fe484a891ea"
+  }
+}
