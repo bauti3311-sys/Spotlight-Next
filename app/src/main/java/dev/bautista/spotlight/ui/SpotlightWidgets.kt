@@ -86,6 +86,7 @@ fun ResultRow(
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
+    val focused by interaction.collectIsFocusedAsState()
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
     val pad=GlassTokens.rowVerticalPadding(appearance,inline)
@@ -98,7 +99,8 @@ fun ResultRow(
         Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else (60f*d).coerceAtLeast(48f).dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
-            .background(colors.onSurface.copy(alpha=.09f*amount))
+            .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
+            .then(if(focused)Modifier.border(GlassTokens.resultFocusStroke,GlassTokens.resultFocusColor(dark),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
             // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
@@ -118,7 +120,7 @@ fun ResultRow(
             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
                 modifier=Modifier.weight(1f,fill=false),
                 fontSize=GlassTokens.scaledSp(GlassTokens.rowText(appearance),appearance),
-                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+                lineHeight=GlassTokens.scaledSp(18.sp,appearance),letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
                 Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.scaledSp(GlassTokens.secondaryText,appearance),
                 maxLines=1,overflow=TextOverflow.Ellipsis)

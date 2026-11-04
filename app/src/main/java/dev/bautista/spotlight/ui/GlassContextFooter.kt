@@ -44,14 +44,16 @@ import androidx.compose.ui.unit.*
     Text(if(wide)expandLabel else if(expandLabel.startsWith("Ver menos"))"Menos" else "Más",fontSize=GlassTokens.scaledSp(11.sp,appearance),color=colors.onSurfaceVariant)
    }
    if(autocomplete && !actionsOpen && wide)Row(Modifier.padding(horizontal=(8f*d).dp),verticalAlignment=Alignment.CenterVertically){Text("Autocompletar",fontSize=GlassTokens.scaledSp(11.sp,appearance),color=colors.onSurfaceVariant);Spacer(Modifier.width(6.dp));GlassKeycap("Tab")}
-   if(enabled)Row(Modifier.then(if(wide)Modifier else Modifier.weight(1f)).testTag("command-dock-actions").background(colors.onSurface.copy(alpha=.045f),RoundedCornerShape(24.dp))
-    .border(1.dp,colors.onSurface.copy(alpha=.10f),RoundedCornerShape(24.dp)),verticalAlignment=Alignment.CenterVertically) {
-    TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.then(if(wide)Modifier.widthIn(max=220.dp) else Modifier.weight(1f)).heightIn(min=48.dp)) {
-     Text(if(actionsOpen)"Ejecutar" else primaryLabel,fontSize=GlassTokens.scaledSp(12.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurface)
+   // A quiet text dock on touch layouts; preserve callbacks, 48dp targets and total height.
+   val dock=if(wide)Modifier.background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(12.dp))
+    .border(1.dp,colors.onSurface.copy(alpha=.08f),RoundedCornerShape(12.dp)) else Modifier
+   if(enabled)Row(Modifier.then(if(wide)Modifier else Modifier.weight(1f)).testTag("command-dock-actions").then(dock),verticalAlignment=Alignment.CenterVertically) {
+    TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.then(if(wide)Modifier.widthIn(max=220.dp) else Modifier.weight(1f)).heightIn(min=48.dp).testTag("command-primary")) {
+     Text(if(actionsOpen)"Ejecutar" else primaryLabel,fontSize=GlassTokens.scaledSp(12.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurface.copy(alpha=if(actionsOpen).38f else 1f))
      if(wide){Spacer(Modifier.width(6.dp));GlassKeycap("Enter")}
     }
-    Box(Modifier.width(1.dp).height(18.dp).background(colors.onSurface.copy(alpha=.12f)))
-    TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.heightIn(min=48.dp)) {
+    if(wide)Box(Modifier.width(1.dp).height(18.dp).background(colors.onSurface.copy(alpha=.10f)))
+    TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.heightIn(min=48.dp).testTag("command-actions")) {
      Text(if(actionsOpen)"Volver" else "Acciones",fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant)
      if(wide){Spacer(Modifier.width(6.dp));GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel)}
     }

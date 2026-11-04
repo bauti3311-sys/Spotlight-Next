@@ -53,6 +53,8 @@ class C1SceneContractTest {
         // Preview60 uses the existing stacked60dp row on compact phones, inline48dp on tablet.
         ui.onNodeWithTag("result:com.spotify.music/Main").assertHeightIsEqualTo(if(width<700)60.dp else 48.dp).performClick()
         ui.onNodeWithTag("inspector-title").assertTextEquals("Spotify")
+        // Package metadata loads on IO. Capture the settled scene, not an intermediate height.
+        ui.waitUntil(15000){ui.onAllNodesWithText("1.0-fixture").fetchSemanticsNodes().isNotEmpty()}
         ui.onNodeWithTag("context-footer").assertIsDisplayed()
         if(width<700)ui.onNodeWithTag("context-inspector").assertDoesNotExist()
         capture("${if(width<700)"phone" else "tablet"}-$theme-inspector")

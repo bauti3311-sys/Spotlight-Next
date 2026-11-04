@@ -50,6 +50,9 @@ object GlassTokens {
     @Composable fun selection()=MaterialTheme.colorScheme.onSurface.copy(alpha=.08f)
     @Composable fun hover()=MaterialTheme.colorScheme.onSurface.copy(alpha=.04f)
     val focusStroke=2.dp
+    // Result focus is quieter than the independent ActionPanel, including in light mode.
+    val resultFocusStroke=1.dp
+    fun resultFocusColor(dark:Boolean)=if(dark)Color(0xFF969AAB) else Color(0xFF747783)
     @Composable fun focusRing()=MaterialTheme.colorScheme.onSurface
     @Composable fun inputOutline()=MaterialTheme.colorScheme.onSurface.copy(alpha=.50f)
     const val glyphStroke=1.5f
@@ -88,11 +91,11 @@ object GlassTokens {
     val shape=RoundedCornerShape(GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
     val material=GlassTokens.windowColors(c,dark,legibleBackdrop)
-    return shadow(24.dp,shape,clip=false,
-            ambientColor=Color.Black.copy(alpha=.24f),spotColor=Color.Black.copy(alpha=.40f))
+    return shadow(18.dp,shape,clip=false,
+            ambientColor=Color.Black.copy(alpha=.18f),spotColor=Color.Black.copy(alpha=.30f))
         .clip(shape)
         .background(Brush.verticalGradient(material))
-        .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=if(dark).16f else .12f),shape)
+        .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=if(dark).14f else .10f),shape)
         .drawWithContent {
             drawContent()
             drawLine(Color.White.copy(alpha=if(dark).12f else .60f),

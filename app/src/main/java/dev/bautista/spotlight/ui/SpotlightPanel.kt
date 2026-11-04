@@ -989,7 +989,7 @@ fun SpotlightPanel(
                     { acceptSuggestion() },
                     motionEnabled,
                     autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
-                    contextAccent=rememberCommandAccent(selectedResult),
+                    contextAccent=null,
                     showOptionsButton=optionsInHeader,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
