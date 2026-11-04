@@ -10,7 +10,7 @@ El plan maestro original se conserva sin alterar en el archivo adjunto versionad
    Estado/scope/generaciones/selección y efectos permanecen en su propietario.
    Conservar keys, LazyListState, saveable drafts y NativeLaunchSession.
 2. Base visual: jerarquía y selección satinada/foco sutil, superficies/bordes/sombra
-   sobrios. Mismas alturas de barra/filas/densidad, hasta3 sugerencias, teclado
+   sobrios. Mismas alturas de barra/filas/densidad, hasta 3 sugerencias, teclado
    intacto; sin acento de app en la barra ni dock móvil pesado.
 3. Inspectores: acento local, agrupación y controles discretos en superficies que
    YA existen. Menos duplicación móvil, sin ocultar funciones irreversiblemente.
@@ -26,8 +26,8 @@ cuentas reales o envíos. Package/versionCode/certificado permanecen intactos.
 
 ## Evidencia y aceptación
 
-Capturas de producción Compose antes/refactor/después, mismos fixtures/API33,
-360/960dp, oscuro/claro, consulta/selección y escala equivalentes. Los paquetes
+Capturas de producción Compose antes/refactor/después, mismos fixtures/API 33,
+360/960 dp, oscuro/claro, consulta/selección y escala equivalentes. Los paquetes
 son ficticios, sin cuentas. No son capturas físicas ni verificación de IME real.
 Antes/refactor debe conservar píxeles y comportamiento; después debe conservar
 altura de filas y límites de ventana/scroll. Pruebas dirigidas: presentación,
@@ -40,5 +40,7 @@ ampliado y controles que pierdan acceso. Conservar identidad y lifecycle; valida
 por regresiones existentes y fixtures de UI. TalkBack/OneUI/rotación/200% reales,
 apertura/p95/memoria y efecto de apps quedan pendientes de dispositivo.
 
-Estado inicial: baseline/capturas en preparación. Resultados concretos y SHAs al
-cerrar la implementación; no se afirma aprobado por tener sólo un render.
+Estado: C1 implementado y verificado localmente; aceptación física pendiente.
+Refactor 9bdd9d9 y base visual 03761d6 publicados por separado; ajustes de inspector
+se publican con este informe. [Capturas, XML,78 casos distintos y Lint](verification/c1-native-20261104/README.md).
+No se cierra C0 físico ni se autoriza C2 por este resultado.

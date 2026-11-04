@@ -17,7 +17,7 @@ import kotlinx.coroutines.*
 @Composable internal fun AppCapabilityActions(packageName:String,onAction:(Action)->Unit) =
     AppCapabilityActions(packageName,appInfoAlreadyVisible=false,onAction=onAction)
 
-@Composable internal fun AppCapabilityActions(packageName:String,appInfoAlreadyVisible:Boolean,onAction:(Action)->Unit) {
+@Composable internal fun AppCapabilityActions(packageName:String,appInfoAlreadyVisible:Boolean,compact:Boolean=false,onAction:(Action)->Unit) {
     val context=LocalContext.current;val scope=rememberCoroutineScope()
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
@@ -30,6 +30,7 @@ import kotlinx.coroutines.*
     }}
     LaunchedEffect(packageName){capabilities=withContext(Dispatchers.IO){runCatching{registry.available(packageName)}.getOrDefault(emptyList())}}
     Column(Modifier.fillMaxWidth().testTag("app-capabilities")) {
+        InspectorSecondaryActions(compact,packageName) {
         HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant,modifier=Modifier.padding(bottom=(12f*d).dp))
         Text("Acciones de app",style=MaterialTheme.typography.labelMedium,fontSize=GlassTokens.scaledSp(12.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant,
             modifier=Modifier.padding(bottom=(4f*d).dp))
@@ -66,6 +67,7 @@ import kotlinx.coroutines.*
         }
         if(catalog.isEmpty() && extra.isEmpty())Text("La app no publica acciones adicionales compatibles.",style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance))
         if(error.isNotBlank())Text(error,style=MaterialTheme.typography.bodySmall,fontSize=GlassTokens.scaledSp(12.sp,appearance),color=MaterialTheme.colorScheme.error)
+        }
     }
 }
 

@@ -1110,6 +1110,7 @@ fun SpotlightPanel(
                                         previewPages.remove(item.id);previewPages[item.id]=page
                                         while(previewPages.size>8)previewPages.remove(previewPages.keys.first())
                                     })
+                                    InspectorSecondaryActions(compact,item.id,forceExpanded=documentExtraction.running) {
                                     Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
                                         TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
                                         TextButton(onClick={
@@ -1132,6 +1133,7 @@ fun SpotlightPanel(
                                             TextButton(onClick={execute(Result("ai:quicklook:summary","Resumir","","IA",0,dev.bautista.spotlight.search.AiRequestPolicy.prepare(Action.Ask("Resumí este documento (${item.title}):\n"+item.preview,true,origin=dev.bautista.spotlight.search.AiInputOrigin.PRIVATE_CONTEXT))))}){Text("Resumir con IA")}
                                             TextButton(onClick={execute(Result("ai:quicklook:explain","Explicar","","IA",0,dev.bautista.spotlight.search.AiRequestPolicy.prepare(Action.Ask("Explicá este documento (${item.title}):\n"+item.preview,true,origin=dev.bautista.spotlight.search.AiInputOrigin.PRIVATE_CONTEXT))))}){Text("Explicar con IA")}
                                         }
+                                    }
                                     }
                                 }
                                 SelectionContainer {
@@ -1402,7 +1404,7 @@ fun SpotlightPanel(
                                     onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
                                     onActions={preview=application;menu=true;navigating=true},onMedia={},
                                     mediaContent=if(observed==null)null else player,embedded=true,
-                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
+                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true,compact=compact){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
                                 if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
                             } }
                         }

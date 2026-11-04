@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -24,7 +27,7 @@ import dev.bautista.spotlight.search.Result
 internal object InspectorAccent {
     fun brand(packageName: String?): Color? = when (packageName) {
         "com.spotify.music" -> Color(0xFF65D993)
-        "com.whatsapp" -> Color(0xFF59D3A5)
+        "com.whatsapp", "com.whatsapp.w4b" -> Color(0xFF59D3A5)
         "com.google.android.gm" -> Color(0xFFF2958B)
         "com.android.chrome" -> Color(0xFF8CB5FF)
         "com.google.android.youtube" -> Color(0xFFEE898D)
@@ -35,6 +38,7 @@ internal object InspectorAccent {
                     page: Action.SystemPanel?, taskActive: Boolean): String? = when {
         message != null -> when (message.channel) {
             "whatsapp" -> "com.whatsapp"
+            "whatsapp_business" -> "com.whatsapp.w4b"
             "gmail" -> "com.google.android.gm"
             else -> null
         }
@@ -106,7 +110,11 @@ internal object InspectorAccent {
     MaterialTheme(colorScheme = palette) {
         CompositionLocalProvider(LocalContentColor provides palette.onSurface) {
             Box(Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(
-                palette.primary.copy(alpha = .055f), palette.primary.copy(alpha = .012f))))) { content() }
+                palette.primary.copy(alpha = .025f), Color.Transparent)))
+                .drawBehind {
+                    val x=if(layoutDirection==androidx.compose.ui.unit.LayoutDirection.Rtl)size.width-1.dp.toPx() else 1.dp.toPx()
+                    drawLine(palette.primary.copy(alpha=.50f),Offset(x,12.dp.toPx()),Offset(x,minOf(size.height,36.dp.toPx())),strokeWidth=1.5.dp.toPx())
+                }) { content() }
         }
     }
 }

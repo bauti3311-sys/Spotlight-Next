@@ -15,6 +15,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.bautista.spotlight.search.Result
@@ -53,8 +55,8 @@ import kotlinx.coroutines.withContext
             horizontalArrangement=Arrangement.spacedBy((12f*d).dp)) {
             ResultIcon(item,Modifier.size((42f*d).coerceIn(36f,48f).dp))
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
-                Text(item.title,Modifier.testTag("inspector-title"),fontSize=GlassTokens.scaledSp(16.sp,appearance),
-                    fontWeight=FontWeight.SemiBold,maxLines=1,overflow=TextOverflow.Ellipsis)
+                Text(item.title,Modifier.testTag("inspector-title").semantics{heading()},fontSize=GlassTokens.scaledSp(17.sp,appearance),
+                    lineHeight=GlassTokens.scaledSp(21.sp,appearance),fontWeight=FontWeight.SemiBold,maxLines=2,overflow=TextOverflow.Ellipsis)
                 Text(if(playing)"En reproducción" else "Aplicación instalada",fontSize=GlassTokens.scaledSp(12.sp,appearance),
                     color=colors.onSurfaceVariant)
             }

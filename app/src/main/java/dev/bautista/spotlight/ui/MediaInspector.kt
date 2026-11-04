@@ -62,7 +62,7 @@ private fun mediaTime(ms:Long):String {
             val command=if(s.playing)"pause" else "play"
             if(s.supports(if(s.playing)PlaybackState.ACTION_PAUSE else PlaybackState.ACTION_PLAY))
                 FilledTonalIconButton(onClick={onCommand(command)},colors=IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor=colors.primary,contentColor=colors.onPrimary),
+                    containerColor=colors.onSurface.copy(alpha=.065f),contentColor=colors.onSurface),
                     modifier=Modifier.size(48.dp)){Icon(painterResource(if(s.playing)R.drawable.inspector_ios_pause else R.drawable.inspector_ios_play),if(s.playing)"Pausar reproducción" else "Reanudar reproducción",Modifier.size(22.dp))}
             if(s.supports(PlaybackState.ACTION_SKIP_TO_NEXT))IconButton(onClick={onCommand("next")},modifier=Modifier.size(48.dp)){Icon(painterResource(R.drawable.inspector_ios_next),"Pista siguiente",Modifier.size(22.dp))}
         }

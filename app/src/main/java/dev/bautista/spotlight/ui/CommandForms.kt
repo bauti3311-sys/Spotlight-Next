@@ -33,7 +33,12 @@ import kotlinx.coroutines.*
     val received=notifications.firstOrNull{it.key==activeReplyKey}
     val compatibleReply=if(!reply && draft.channel in setOf("whatsapp","whatsapp_business"))Replies.findCompatibleReply(draft.channel,selected?.name ?: target) else null
     val sharing=draft.channel=="telegram" || draft.channel.startsWith("share:")
-    val appName=if(draft.channel.startsWith("share:"))draft.target else ActionCatalog.displayName(draft.channel)
+    // Names describe the already selected destination; C1 adds no channel switch or new sender.
+    val appName=when(draft.channel){
+        "whatsapp"->"WhatsApp personal"
+        "whatsapp_business"->"WhatsApp Business"
+        else->if(draft.channel.startsWith("share:"))draft.target else ActionCatalog.displayName(draft.channel)
+    }
     val mechanismLabel=when{
         reply->"RemoteInput de notificación activa (${received?.packageName ?: appName})"
         draft.channel in setOf("whatsapp","whatsapp_business")->"Enlace oficial wa.me · se abre en $appName para confirmar el envío"
@@ -90,7 +95,7 @@ import kotlinx.coroutines.*
                     if(reply && received!=null){Text("Mensaje recibido",style=MaterialTheme.typography.labelSmall);androidx.compose.foundation.text.selection.SelectionContainer{Text(received.visibleText.take(800),style=MaterialTheme.typography.bodySmall)}}
                     Text(body,style=MaterialTheme.typography.bodyMedium)
                     Row {
-                        Button(onClick={
+                        Button(colors=inspectorButtonColors(),modifier=Modifier.heightIn(min=48.dp),onClick={
                             error="";confirming=false
                             if(reply)runCatching {Replies.send(context,activeReplyKey!!,body,requireNotNull(approvedReply){"Revisá la conversación nuevamente."})}.onSuccess{sent=true}.onFailure{error=it.message ?: "No se pudo responder"}
                             else {
@@ -104,7 +109,7 @@ import kotlinx.coroutines.*
             }
         }
         Row {
-            Button(enabled=body.isNotBlank()&&!sent&&(!reply || received?.action!=null)&&(reply||sharing||address.isNotBlank()),onClick={approvedReply=received;confirming=true}) {Text(if(reply)"Revisar respuesta" else "Revisar mensaje")}
+            Button(colors=inspectorButtonColors(),modifier=Modifier.heightIn(min=48.dp),enabled=body.isNotBlank()&&!sent&&(!reply || received?.action!=null)&&(reply||sharing||address.isNotBlank()),onClick={approvedReply=received;confirming=true}) {Text(if(reply)"Revisar respuesta" else "Revisar mensaje")}
             TextButton(onClick=onCancel){Text("Volver")}
         }
     }

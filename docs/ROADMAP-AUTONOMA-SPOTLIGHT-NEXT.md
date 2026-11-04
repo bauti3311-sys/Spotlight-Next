@@ -1,5 +1,17 @@
 # Spotlight Next — hoja de ruta maestra y continuidad autónoma
 
+## 2026-11-04 — implementación C1 nativa, aceptación física pendiente
+
+Dirección Refinado + Adaptive autorizada. Refactor 9bdd9d9, base visual 03761d6 y
+ajustes de inspectores separados. 78 casos nativos distintos en rondas dirigidas,
+última evidencia correcta; Lint 0 errores / 16 advertencias / 1 información.
+[Capturas reales antes/después y límites](verification/c1-native-20261104/README.md).
+Barra/lista compactas, hasta 3 sugerencias, acento contenido y footer ligero;
+acciones secundarias en contexto reversible. Sin motores nuevos, C2–C9, APK,
+Actions, firma, dependencias o cambios de main/PRs anteriores. C0 físico sigue
+pendiente. Próxima acción: revisión del C1 nativo y validación física autorizada,
+no comenzar otro checkpoint automáticamente.
+
 ## Dirección vigente 2026-11-03 — Preview57 nativa
 
 La [decisión del propietario](NATIVE-PREVIEW57-DIRECTION-20261103.md) establece

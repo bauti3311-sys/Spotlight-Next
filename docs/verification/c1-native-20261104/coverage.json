@@ -1,0 +1,319 @@
+{
+  "uniqueDirectedCases": 78,
+  "latestEvidenceAllPassed": true,
+  "notOneSuiteRun": true,
+  "cases": {
+    "dev.bautista.spotlight.ui.C1SceneContractTest.phoneLight": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.homeRemainsCompactWithAtMostThreeSuggestions": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.tabletDark": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.phoneDark": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.reducedViewportPreservesSearchAndFooter": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.tabletLight": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.FloatingSearchFlowTest.phoneScenesPreserveSearchSelectionAndPaletteGeometry": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.FloatingSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.FloatingSearchFlowTest.tabletShowsSeveralActionsWithoutResizingThePalette": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.FloatingSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.FloatingSearchFlowTest.tabletScenesPreserveSearchSelectionAndPaletteGeometry": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.FloatingSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.FloatingSearchFlowTest.realPaletteSurfacesOnControlledLightAndDarkBackdrops": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.FloatingSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.escapeCancelsReviewAndKeepsQueryWithoutLaunching": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.phoneReviewAllowsExplicitTouchConfirmation": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.failedSelectedActionNeverOpensFallbackOrClosesOverlay": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.restoringReviewDoesNotRestoreConsentOrLaunch": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.alternativeOnlyLaunchesAfterExplicitConfirmation": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.closingInspectorCancelsPendingAlternative": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.installedApplicationStillLaunchesOnceFromEnter": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.changingQueryDiscardsAlternativeWithoutLaunch": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeLaunchFlowTest.enterOnDefaultReviewActionDoesNotConfirm": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeLaunchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.accessibilityClickKeepsTheSameSelectionAndPrimaryContract": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.completedTapSelectsAndInvokesThePrimaryCallbackExactlyOnce": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.draggingAcrossPdfRowsScrollsWithoutSelectionPreviewOrLaunch": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.touchDownAndCancelledGestureDoNotSelectOrOpenPdf": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.longPressShowsActionsWithoutInvokingPrimaryCallback": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.repeatedFastSwipesReachTheLastDocumentWithoutOpeningAnything": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ResultTouchScrollTest.fastSwipeKeepsMovingAfterReleaseWithoutSelectingADocument": {
+      "passed": true,
+      "lastEvidence": "refactor/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelCraftTest.largeTextKeepsCompleteActionAndDescription": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelCraftTest.rtlLargeTextKeepsCompleteActionAndKeyboardExecution": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelCraftTest.lightFilterHasStableNameRecoveryAndKeyboardFocus": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelCraftTest.contextualFilterKeepsAccessibleNameWhileEditing": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelCraftTest.darkFilterHasStableNameRecoveryAndKeyboardFocus": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelCraftTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelScrollContractTest.phoneShortActionsKeepCompactDensity": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelScrollContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelScrollContractTest.enlargedTextScrollAndKeyboardReachLastActionWithoutExecuting": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelScrollContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ActionPanelScrollContractTest.tabletShortActionsKeepCompactDensity": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.ActionPanelScrollContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.keyboardBudgetShrinksAndRestoresWithoutLosingMatches": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.tabletShowsTwelveMatchesWithoutManualExpansionOrScroll": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.phoneUsesActualRowHeightAndKeepsFooterVisible": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.inspectorSharesTheViewportWithResultsAndFooter": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.compactPreferenceKeepsSixAndManualExpansion": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1ChromeContractTest.openActionMenuCannotExecuteTheStalePrimaryFromDock": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.C1ChromeContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1ChromeContractTest.quietTouchDockKeepsTargetsHeightAndIndependentActions": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.C1ChromeContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1ChromeContractTest.restrainedResultFocusStillContrastsInBothThemes": {
+      "passed": true,
+      "lastEvidence": "base-visual/TEST-dev.bautista.spotlight.ui.C1ChromeContractTest.xml"
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.replySeparatorsKeepTheRecipientAndDraftUnchanged": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.reviewedTargetDispatchesOnceAndCannotBeRepeated": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.missingTargetAndDisconnectedListenerNeverDispatch": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.changedConversationOrRecipientRequiresAnotherHumanReview": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.localThemeChangesWithPackageAndDoesNotLeakOutsideInspector": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.phoneUsesSameInspectorAndKeepsSearchAfterClosing": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.selectedInstalledAppsUseRealInspectorAndPinRetainsItsOwnColor": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.pinnedApplicationKeepsItsOwnExplicitOpenerAfterAnotherResultIsSelected": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.AdaptiveInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ApplicationInspectorAccessibilityTest.secondaryActionsExposeButtonRolesAndOnlyInvokeTheirOwnCallback": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.ApplicationInspectorAccessibilityTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1InspectorContractTest.changingIdentityCollapsesTheOldPresentationWithoutEffects": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1InspectorContractTest.businessUsesTheFullApplicationNameWithoutAChannelSwitch": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1InspectorContractTest.disclosureOnlyRevealsExistingActionsAndDoesNotDispatch": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1InspectorContractTest.personalDestinationIsNamedExplicitlyAndReviewDoesNotSend": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1InspectorContractTest.runningExtractionKeepsItsCancellationVisible": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ContextExtractionFlowTest.contextQuickActionsPrepareBoundedSummaryAndKeyPointsWithPrivateOrigin": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.ContextExtractionFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ContextExtractionFlowTest.clearingContextDiscardsLateDocumentTextWithoutPreparingRemoteReview": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.ContextExtractionFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ContextExtractionFlowTest.currentTextContextPreparesReviewWithoutGrantingConsent": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.ContextExtractionFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.ContextExtractionFlowTest.explicitCancellationDiscardsLateDocumentText": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.ContextExtractionFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.InspectorAccentTest.darkAndLightAccentsKeepReadableControlsWithoutChangingErrorOrSurface": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.InspectorAccentTest.xml"
+    },
+    "dev.bautista.spotlight.ui.InspectorAccentTest.formDestinationWinsAndUnrelatedTasksNeverInheritSelectedApplication": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.InspectorAccentTest.xml"
+    },
+    "dev.bautista.spotlight.ui.InspectorAccentTest.commandAccentUsesTheSelectedPackageAndClearsForUnrelatedResults": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.InspectorAccentTest.xml"
+    },
+    "dev.bautista.spotlight.ui.InspectorAccentTest.unknownAppsUseBoundedIconColorAndDoNotMutateSharedDrawable": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.InspectorAccentTest.xml"
+    },
+    "dev.bautista.spotlight.ui.InspectorAccentTest.identityIsExactAndNeverGuessedFromResultTitleOrQuery": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.InspectorAccentTest.xml"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest.spotifySearchExpandsOnlyWhenRequestedAndCanClose": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest.realSessionMetadataIsContextualAndPinSurvivesSearchAndWidthChange": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest.absentSessionDoesNotCreateAnEmptyInspector": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest.phonePlayerFitsAndEscapeRestoresQuery": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.MediaInspectorFlowTest.tallViewportShowsBottomActionsWithoutScrolling": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.MediaInspectorFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeCommandFlowTest.savedPanelContainsNativeCommandsAndKeepsLegacyRoutinesHidden": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeCommandFlowTest.deletingSavedCommandRequiresConfirmationAndDoesNotExecuteIt": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeCommandFlowTest.savingFromEditorCreatesSearchableNativeCommandWithoutExecuting": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeCommandFlowTest.searchOpensStoredReviewAndExplicitConfirmationChangesVolume": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.NativeCommandFlowTest.reorderingIdenticallyNamedAppsPreservesTheirExactPackages": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.NativeCommandFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.RenewalInteractionTest.preparingMessageRequiresRecipientAndContentReview": {
+      "passed": true,
+      "lastEvidence": "inspectors-first/TEST-dev.bautista.spotlight.ui.RenewalInteractionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1InspectorContractTest.completingExtractionDoesNotCollapseTheVisibleActions": {
+      "passed": true,
+      "lastEvidence": "inspectors/TEST-dev.bautista.spotlight.ui.C1InspectorContractTest.xml"
+    }
+  }
+}
