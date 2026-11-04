@@ -133,7 +133,7 @@ import kotlinx.coroutines.*
     val focus=remember(draft){FocusRequester()}
     val context=LocalContext.current
     val destination=remember(draft.topic,draft.packageName) {
-        if(draft.topic=="app")runCatching {
+        if(draft.topic in setOf("app","app-web-search"))runCatching {
             context.packageManager.getApplicationLabel(context.packageManager.getApplicationInfo(draft.packageName,0)).toString()
         }.getOrDefault(draft.packageName) else ActionCatalog.displayName(draft.topic)
     }

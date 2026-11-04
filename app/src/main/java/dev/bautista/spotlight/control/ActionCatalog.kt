@@ -98,6 +98,6 @@ object ActionCatalog {
         val web=Intent(Intent.ACTION_VIEW,Uri.parse(url+Uri.encode(term)))
         val pkg=packageName.ifBlank {packages[topic].orEmpty()}
         return if(topic=="google" || pkg.isBlank())Action.Launch(web)
-        else Action.InApp(if(topic in setOf("youtube","spotify","mapas","chrome","vivaldi"))Intent(web).setPackage(pkg) else Intent(Intent.ACTION_SEARCH).setPackage(pkg).putExtra(android.app.SearchManager.QUERY,q),web)
+        else Action.InApp(if(topic in setOf("youtube","spotify","mapas","chrome","vivaldi"))Intent(web).setPackage(pkg) else Intent(if(topic=="app-web-search")Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(pkg).putExtra(android.app.SearchManager.QUERY,q),web)
     }
 }

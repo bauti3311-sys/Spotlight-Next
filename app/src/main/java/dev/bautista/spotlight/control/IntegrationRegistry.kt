@@ -60,7 +60,7 @@ class IntegrationRegistry(private val context: Context) {
         val launcher = context.getSystemService(LauncherApps::class.java)
         val base=listOf(
             Capability("Abrir", if(context.packageManager.getLaunchIntentForPackage(packageName) != null) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Actividad de inicio de Android"),
-            Capability("Buscar dentro de la app", if(resolves(Intent(Intent.ACTION_SEARCH).setPackage(packageName))) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Actividad pública de búsqueda"),
+            Capability("Buscar dentro de la app", if(AppCapabilities(context).available(packageName).any{it.id=="search"}) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Actividad pública de búsqueda"),
             Capability("Accesos directos publicados", if(launcher?.hasShortcutHostPermission() == true) CapabilityState.AVAILABLE else CapabilityState.UNSUPPORTED, "Android los reserva al lanzador predeterminado; Spotlight conserva tu lanzador actual")
         )
         val documented=if(AppCapabilities(context).available(packageName).any{it.mechanism==AppCapabilityMechanism.DOCUMENTED_LINK} && packageName in setOf("com.spotify.music","com.google.android.youtube","com.google.android.apps.maps","com.sofascore.results"))listOf(Capability("Búsqueda documentada",CapabilityState.AVAILABLE,"Abrir búsqueda mediante enlace compatible o respaldo web; no controlar datos internos")) else emptyList()

@@ -481,8 +481,8 @@ fun SpotlightPanel(
                 is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};invalidateResults();preview=null;menu=false;selected=0;focus.requestFocus()}
                 is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 is Action.ComposeSearch -> {
-                    val unavailable=action.topic=="app" && dev.bautista.spotlight.control.IntegrationRegistry(context)
-                        .launchAccess(Intent(Intent.ACTION_SEARCH).setPackage(action.packageName)).problem!=null
+                    val unavailable=action.topic in setOf("app","app-web-search") && dev.bautista.spotlight.control.IntegrationRegistry(context)
+                        .launchAccess(Intent(if(action.topic=="app-web-search")Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(action.packageName)).problem!=null
                     if(unavailable)error="La búsqueda de esta app ya no está disponible. Revisá la instalación y sus permisos."
                     else {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
                 }

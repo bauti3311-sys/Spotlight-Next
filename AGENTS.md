@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## Continuación C2 autorizada después de Preview62 — 2026-11-04
+
+Preview62 entregada. El propietario autoriza continuar F01/F07/F14/V02/V05/V06
+sin esperar la tablet: integraciones públicas reales, búsqueda contextual y
+contenido compartido, pruebas dirigidas/Lint/capturas y commits independientes.
+Esta autorización sustituye la pausa de ampliación C2 indicada debajo.
+Validación física de ventana/IME62 sigue pendiente; no Actions/APK, main, C3–C9,
+permisos sensibles, servicios externos ni cambios visuales mayores sin aprobación.
+Conservar ejecutores, contratos de ventana y C1. Reserva propia obligatoria.
+
 ## Preview62 — preparación autorizada, ejecución pendiente
 
 Prioridad del propietario: validar físicamente el arreglo de ventana antes de
