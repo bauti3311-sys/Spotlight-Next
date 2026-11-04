@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## C2 — completar parte comprobable sin dispositivos
+
+Autorización posterior a f17d9b2: completar F07 de archivos autorizados, F14 con
+URI content/MIME/grants temporales y matriz técnica, sin C3–C9/main/APK/Actions.
+Reutilizar FileIndex, ContextStore, FileBuffer y NativeLaunchSession. Revisión y
+confirmación nuevas tras restaurar, sin copias innecesarias ni extracción automática.
+Preview62 y su física siguen pendientes; no confundir PM/fixtures con efectos reales.
+La ampliación del índice cache es aditiva y debe conservar metadatos/transcripciones.
+No nuevos permisos sensibles, acceso general, servicios ni dependencias.
+
 ## Continuación C2 autorizada después de Preview62 — 2026-11-04
 
 Preview62 entregada. El propietario autoriza continuar F01/F07/F14/V02/V05/V06

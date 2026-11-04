@@ -109,8 +109,9 @@ class SearchEngine(
 
     fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {
         // Resolve once at the production boundary. This is local and side-effect free.
-        val resolution=if(scope==null && input.isNotBlank())UniversalIntentEngine.resolve(input,c) else null
-        val interpretation=QueryInterpreter.interpret(input,scope)
+        val literalApp=scope==null && input.isNotBlank() && appList().any{normalize(it.label.trim())==normalize(input.trim())}
+        val resolution=if(!literalApp && scope==null && input.isNotBlank())UniversalIntentEngine.resolve(input,c) else null
+        val interpretation=if(literalApp)QueryInterpretation(input,input,QueryIntent.SEARCH) else QueryInterpreter.interpret(input,scope)
         if(resolution!=null) {
             val spec=resolution.presentation
             when(resolution.primaryIntent) {

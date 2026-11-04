@@ -55,6 +55,7 @@ private constructor(private val root: Node, val problem: String?, val plain: Str
                         "nota" -> d.kind == "note"
                         "message",
                         "mensajes" -> d.kind == "message"
+                        "file", "files", "archivo", "archivos" -> d.kind != "folder"
                         "document",
                         "documents",
                         "documento",
@@ -223,7 +224,7 @@ private constructor(private val root: Node, val problem: String?, val plain: Str
                 val prefix=Regex("""^(?:buscar\s+)?(pdfs?|archivos?|documentos?|fotos?|im[aá]genes?|v[ií]deos?)\s+(?:de\s+)?(.+)$""",RegexOption.IGNORE_CASE).matchEntire(input.trim())
                 if(prefix!=null) {
                     val head=normalize(prefix.groupValues[1])
-                    val kind=when {head.startsWith("pdf")->"pdf";head.startsWith("foto") || head.startsWith("imagen")->"image";head.startsWith("video")->"video";else->"document"}
+                    val kind=when {head.startsWith("pdf")->"pdf";head.startsWith("foto") || head.startsWith("imagen")->"image";head.startsWith("video")->"video";head.startsWith("archivo")->"file";else->"document"}
                     return "kind:$kind (${prefix.groupValues[2]})"
                 }
                 return input

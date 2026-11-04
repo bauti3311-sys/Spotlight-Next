@@ -8,13 +8,20 @@ enum class QueryIntent { SEARCH, FILES, APPLICATION, ACTION, KNOWLEDGE, CALENDAR
 data class FileConstraint(val kind:String,val terms:String,val start:Long?=null,val end:Long?=null,val dateField:String="modified",val dateLabel:String="",val unsupportedDateReason:String?=null) {
     val query:String get()=listOf("kind:$kind",terms,if(start!=null && unsupportedDateReason==null)"$dateField-after:$start" else "",if(end!=null && unsupportedDateReason==null)"$dateField-before:$end" else "").filter{it.isNotBlank()}.joinToString(" ")
 }
-data class QueryInterpretation(val original:String,val text:String,val intent:QueryIntent,val scope:SearchScope?=null,val files:FileConstraint?=null,val question:String?=null,val calendarPeriod:String?=null) {
-    val hints:List<String> get()=files?.let{listOf(when(it.kind){"pdf"->"PDF";"image"->"Imágenes";"video"->"Vídeos";else->"Documentos"},it.dateLabel,it.terms,"Archivos locales").filter{it.isNotBlank()}} ?: emptyList()
+data class QueryInterpretation(val original:String,val text:String,val intent:QueryIntent,val scope:SearchScope?=null,val files:FileConstraint?=null,val question:String?=null,val calendarPeriod:String?=null,val shareFiles:Boolean=false) {
+    val hints:List<String> get()=files?.let{listOf(when(it.kind){"pdf"->"PDF";"image"->"Imágenes";"video"->"Vídeos";"file"->"Archivos";else->"Documentos"},it.dateLabel,it.terms,"Archivos locales").filter{it.isNotBlank()}} ?: emptyList()
 }
 
 /** One entry point. Adapters preserve existing commands; date tokens never become file names. */
 object QueryInterpreter {
     fun interpret(raw:String,scope:SearchScope?=null,today:LocalDate=LocalDate.now(),zone:ZoneId=ZoneId.systemDefault()):QueryInterpretation {
+        val share=Regex("^compartir\\s+(?:(?:el|los|un|unos)\\s+)?((?:archivos?|documentos?|pdfs?)(?:\\s+.*)?)$",RegexOption.IGNORE_CASE).matchEntire(raw.trim())
+        if(share!=null && (scope==null || scope.section in setOf("files","files-mode"))) {
+            val clause=share.groupValues[1]
+            val file=files("mis $clause",today,zone)
+            val query=file?.query ?: SearchQuery.natural("buscar $clause")
+            return QueryInterpretation(raw,query,QueryIntent.FILES,SearchScope("","files"),file,shareFiles=true)
+        }
         if(scope!=null) {
             if(scope.section in setOf("files-mode","files") && raw.isNotBlank()) {
                 files(raw,today,zone)?.let{return QueryInterpretation(raw,it.query,QueryIntent.FILES,SearchScope("","files",it.kind),it)}
@@ -47,7 +54,7 @@ object QueryInterpreter {
         // Normalize compound file nouns like "archivos pdf" or "documentos pdf" -> "pdf"
         q=q.replace(Regex("^(?:archivos?|documentos?) (pdfs?|imagenes|fotos|videos)\\b"),"$1")
         val head=q.substringBefore(' ')
-        val kind=when(head){"pdf","pdfs"->"pdf";"foto","fotos","imagen","imagenes"->"image";"video","videos"->"video";"archivo","archivos","documento","documentos"->"document";else->return null}
+        val kind=when(head){"pdf","pdfs"->"pdf";"foto","fotos","imagen","imagenes"->"image";"video","videos"->"video";"archivo","archivos"->"file";"documento","documentos"->"document";else->return null}
         var terms=q.substringAfter(' ',"").removePrefix("de ").removePrefix("sobre ")
         terms=terms.replace(Regex("^(?:acerca de(?:l)?|relacionad[oa]s? con|que (?:hablan?|tratan?) (?:sobre|de|acerca de)|que contienen?)\\s+"),"")
         if(terms.isBlank() && head in setOf("archivo","archivos","documento","documentos") && !norm.startsWith("mostr") && !norm.startsWith("mis "))return null

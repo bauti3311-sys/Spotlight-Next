@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.QueryInterpretationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-04T19:27:06" hostname="c880c3bda6d8" time="0.093">
+  <properties/>
+  <testcase name="knowledgeAndCalendarResolveWithoutRemoteCalls" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.054"/>
+  <testcase name="literalOperatorsAndEntityNumbersArePreserved" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.008"/>
+  <testcase name="lastWeekPhotoIsCalendarWeekAndUnknownMetadataExcluded" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.01"/>
+  <testcase name="timezoneDaySurvivesDstAndDoesNotAssume24Hours" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.002"/>
+  <testcase name="yesterdayPdfUsesHalfOpenLocalDatesNotName" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.002"/>
+  <testcase name="sqlPreFilterIsParameterizedAndNeverPrunesOrNotBranches" classname="dev.bautista.spotlight.search.QueryInterpretationTest" time="0.015"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

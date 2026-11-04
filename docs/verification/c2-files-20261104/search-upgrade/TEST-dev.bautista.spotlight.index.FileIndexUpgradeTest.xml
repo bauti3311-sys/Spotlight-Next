@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.index.FileIndexUpgradeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-04T19:30:47" hostname="c880c3bda6d8" time="3.485">
+  <properties/>
+  <testcase name="versionThreeCacheKeepsDocumentsAndExtractionDuringAdditiveUpgrade" classname="dev.bautista.spotlight.index.FileIndexUpgradeTest" time="3.444"/>
+  <testcase name="literalLikeCharactersNeverBecomeSqlWildcards" classname="dev.bautista.spotlight.index.FileIndexUpgradeTest" time="0.041"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[System.logW: A resource was acquired at attached stack trace but never released. See java.io.Closeable for information on avoiding resource leaks.
+java.lang.Throwable: Explicit termination method 'close' not called
+	at dalvik.system.CloseGuard.$$robo$$dalvik_system_CloseGuard$openWithCallSite(CloseGuard.java:288)
+	at dalvik.system.CloseGuard.openWithCallSite(CloseGuard.java)
+	at dalvik.system.CloseGuard.$$robo$$dalvik_system_CloseGuard$open(CloseGuard.java:257)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.robolectric.shadows.ShadowCloseGuard$CloseGuardReflector$$Reflector13.open(Unknown Source)
+	at org.robolectric.shadows.ShadowCloseGuard.open(ShadowCloseGuard.java:38)
+	at dalvik.system.CloseGuard.open(CloseGuard.java)
+	at android.database.sqlite.SQLiteDatabase.$$robo$$android_database_sqlite_SQLiteDatabase$openInner(SQLiteDatabase.java:1086)
+	at android.database.sqlite.SQLiteDatabase.openInner(SQLiteDatabase.java)
+	at android.database.sqlite.SQLiteDatabase.$$robo$$android_database_sqlite_SQLiteDatabase$open(SQLiteDatabase.java:1065)
+	at android.database.sqlite.SQLiteDatabase.open(SQLiteDatabase.java)
+	at android.database.sqlite.SQLiteDatabase.$$robo$$android_database_sqlite_SQLiteDatabase$openDatabase(SQLiteDatabase.java:929)
+	at android.database.sqlite.SQLiteDatabase.openDatabase(SQLiteDatabase.java)
+	at android.database.sqlite.SQLiteDatabase.$$robo$$android_database_sqlite_SQLiteDatabase$openDatabase(SQLiteDatabase.java:918)
+	at android.database.sqlite.SQLiteDatabase.openDatabase(SQLiteDatabase.java)
+	at android.database.sqlite.SQLiteOpenHelper.$$robo$$android_database_sqlite_SQLiteOpenHelper$getDatabaseLocked(SQLiteOpenHelper.java:373)
+	at android.database.sqlite.SQLiteOpenHelper.getDatabaseLocked(SQLiteOpenHelper.java)
+	at android.database.sqlite.SQLiteOpenHelper.$$robo$$android_database_sqlite_SQLiteOpenHelper$getReadableDatabase(SQLiteOpenHelper.java:340)
+	at android.database.sqlite.SQLiteOpenHelper.getReadableDatabase(SQLiteOpenHelper.java)
+	at dev.bautista.spotlight.index.FileIndex$search$2.invokeSuspend(FileIndex.kt:760)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+
+]]></system-err>
+</testsuite>

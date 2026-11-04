@@ -65,22 +65,35 @@ class FileIndex(
     @Volatile private var refreshed = 0L
 
     private class Database(context: Context) :
-        SQLiteOpenHelper(context, "search-index.db", null, 3) {
+        SQLiteOpenHelper(context, "search-index.db", null, 4) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(
-                "CREATE TABLE files(uri TEXT PRIMARY KEY,tree TEXT,parent TEXT,name TEXT,mime TEXT,modified INTEGER,size INTEGER,author TEXT,created INTEGER,body TEXT,mode TEXT,extraction TEXT NOT NULL DEFAULT '')"
+                "CREATE TABLE files(uri TEXT PRIMARY KEY,tree TEXT,parent TEXT,name TEXT,mime TEXT,modified INTEGER,size INTEGER,author TEXT,created INTEGER,body TEXT,mode TEXT,extraction TEXT NOT NULL DEFAULT '',name_key TEXT NOT NULL DEFAULT '')"
             )
         }
 
         override fun onOpen(db:SQLiteDatabase) {
             super.onOpen(db)
             db.execSQL("CREATE TABLE IF NOT EXISTS semantic_vectors(uri TEXT NOT NULL,model TEXT NOT NULL,fingerprint TEXT NOT NULL,part INTEGER NOT NULL,start INTEGER NOT NULL,end INTEGER NOT NULL,excerpt TEXT NOT NULL,vector BLOB NOT NULL,PRIMARY KEY(uri,model,fingerprint,part))")
+            db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_name ON files(tree,name_key)")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_modified ON files(tree,modified DESC)")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_created ON files(tree,created)")
             db.execSQL("CREATE INDEX IF NOT EXISTS files_tree_mime ON files(tree,mime)")
         }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
             if(oldVersion<2)db.execSQL("ALTER TABLE files ADD COLUMN extraction TEXT NOT NULL DEFAULT ''")
+            if(oldVersion<4) {
+                db.execSQL("ALTER TABLE files ADD COLUMN name_key TEXT NOT NULL DEFAULT ''")
+                // Cache-only additive migration; preserve URI, body, grants and all metadata.
+                db.compileStatement("UPDATE files SET name_key=? WHERE uri=?").use { update ->
+                    db.query("files",arrayOf("uri","name"),null,null,null,null,null).use { rows ->
+                        while(rows.moveToNext()) {
+                            update.bindString(1,normalize(rows.getString(1).orEmpty()))
+                            update.bindString(2,rows.getString(0));update.executeUpdateDelete()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -174,6 +187,7 @@ class FileIndex(
                     put("tree", "__imports__")
                     put("parent", "")
                     put("name", name)
+                    put("name_key", normalize(name))
                     put("mime", mime)
                     put("modified", 0L)
                     put("created", 0L)
@@ -459,6 +473,7 @@ class FileIndex(
                                             else folder.uri.toString(),
                                         )
                                         put("name", name)
+                    put("name_key", normalize(name))
                                         put("mime", mime)
                                         put("modified", modified)
                                         put("size", size)
@@ -720,17 +735,30 @@ class FileIndex(
                     "__imports__" +
                     if (broadAllowed()) setOf("__shared__") else emptySet()
             val out = mutableListOf<Result>()
-            helper.readableDatabase
-                .query(
-                    "files",
-                    null,
-                    "tree IN (" + sources.joinToString(",") { "?" } + ")" + (if(filter.selection.isBlank())"" else " AND ("+filter.selection+")") + if(recentDocuments)" AND modified > 0 AND (mime LIKE 'application/%' OR mime LIKE 'text/%')" else "",
-                    (sources.toList()+filter.args).toTypedArray(),
-                    null,
-                    null,
-                    "modified DESC",
-                    if(recentDocuments)"32" else "200000",
-                )
+            val seen=mutableSetOf<String>()
+            val selection="tree IN ("+sources.joinToString(","){"?"}+")"+
+                (if(filter.selection.isBlank())"" else " AND ("+filter.selection+")")+
+                if(recentDocuments)" AND modified > 0 AND (mime LIKE 'application/%' OR mime LIKE 'text/%')" else ""
+            val arguments=sources.toList()+filter.args
+            data class Pass(val selection:String,val arguments:List<String>,val order:String)
+            fun like(text:String)=text.replace("\\","\\\\").replace("%","\\%").replace("_","\\_")
+            val nameWords=normalize(query.plain).split(Regex("\\s+")).filter{it.isNotBlank()}.take(12)
+            val passes=buildList {
+                if(!recentDocuments && query.plain.length in 2..128 && nameWords.isNotEmpty()) {
+                    // Filename candidates first, before the bounded content/date fallback.
+                    // Unicode keys live in this same index, never another file catalogue.
+                    val names=nameWords.joinToString(" AND "){"name_key LIKE ? ESCAPE '\\'"}
+                    add(Pass("$selection AND ($names)",arguments+nameWords.map{"%${like(it)}%"}+
+                        listOf(normalize(query.plain),like(normalize(query.plain))+"%"),
+                        "CASE WHEN name_key = ? THEN 0 WHEN name_key LIKE ? ESCAPE '\\' THEN 1 ELSE 2 END, modified DESC, uri ASC"))
+                }
+                add(Pass(selection,arguments,"modified DESC, uri ASC"))
+            }
+            for(pass in passes) {
+                ensureActive()
+                if(out.size>=80)break
+                helper.readableDatabase.query("files",null,pass.selection,pass.arguments.toTypedArray(),null,null,
+                    pass.order,if(recentDocuments)"32" else "200000")
                 .use { row ->
                     fun string(key: String) = row.getString(row.getColumnIndexOrThrow(key)) ?: ""
                     fun long(key: String) = row.getLong(row.getColumnIndexOrThrow(key))
@@ -775,6 +803,7 @@ class FileIndex(
                         )
                             continue
                         val uri = Uri.parse(string("uri"))
+                        if(!seen.add(uri.toString()))continue
                         val intent =
                             Intent(Intent.ACTION_VIEW)
                                 .setDataAndType(uri, mime)
@@ -824,6 +853,7 @@ class FileIndex(
                         if (out.size >= 80) break
                     }
                 }
-            out
+            }
+            out.sortedWith(compareByDescending<Result>{it.score}.thenByDescending{it.modifiedAt ?: 0L}.thenBy{it.id})
         }
 }
