@@ -1,5 +1,17 @@
 # Spotlight Next — instrucciones para Codex
 
+## Entregas Preview — autorización y facturación vigentes 2026-11-04
+
+Leer [procedimiento autónomo restringido](docs/PREVIEW-DELIVERY-POLICY.md).
+El propietario verificó cuota gratuita disponible, presupuesto Actions US$0,
+bloqueo al límite y secretos históricos. No pedir capturas de facturación por
+checkpoint;403 no invalida esa evidencia. No modificar facturación ni habilitar
+gasto. Si GitHub bloquea cuota/presupuesto, detenerse sin retry ni evasión.
+Preview61: autorizado un intento desde fuente11b647c tras revisar SHA tooling,
+reserva y guardas. native60-once queda intacto; C2/main no autorizados.
+Las prohibiciones históricas de ejecución inferiores no revocan esta autorización
+específica ni permiten ampliar alcance o repetir un intento fallido.
+
 ## Dirección vigente 2026-11-04 — C1 autorizado, implementación incremental
 
 El [plan maestro](docs/SPOTLIGHT-NEXT-PLAN-MAESTRO-20261103.md) conserva los23

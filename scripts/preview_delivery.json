@@ -1,0 +1,15 @@
+{
+  "source_sha": "11b647c2ec930d4f7cc7f6d38d5c7de8d233de80",
+  "functional_base_sha": "8cd43a7e3c1f01d272e214f5649d67f96ea64a3e",
+  "version_code": 61,
+  "version_name": "2.0.1-raycast-preview-native57-v61",
+  "previous_version_code": 60,
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "budget_usd": 0,
+  "stop_on_limit": true,
+  "allowed_delta_paths": [
+    "app/build.gradle.kts",
+    "docs/NATIVE61-PREPARATION-20261104.md"
+  ]
+}
