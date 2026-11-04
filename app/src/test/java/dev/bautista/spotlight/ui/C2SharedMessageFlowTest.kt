@@ -8,6 +8,7 @@ import dev.bautista.spotlight.control.ActionCatalog
 import dev.bautista.spotlight.data.Config as AppConfig
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.*
@@ -46,7 +47,7 @@ class C2SharedMessageFlowTest {
     private fun form(theme:String,onLaunch:(Intent)->Unit={}) {
         app.contexts.setText("https://example.org/nota?tema=café","Texto seleccionado · Process Text")
         ui.setContent{SpotlightTheme(theme){Box(Modifier.width(360.dp).testTag("shared-message-scene")){
-            MessageEditor(draft,onLaunch,{}, {})
+            Surface { MessageEditor(draft,onLaunch,{}, {}) }
         }}}
     }
     private fun capture(theme:String) {
@@ -98,7 +99,7 @@ class C2SharedMessageFlowTest {
     @Test fun captureGmailCapability() {
         install("com.google.android.gm","Gmail")
         ui.setContent{SpotlightTheme("dark"){Box(Modifier.width(360.dp).testTag("gmail-capability-scene")){
-            AppCapabilityActions("com.google.android.gm"){}
+            Surface { AppCapabilityActions("com.google.android.gm"){} }
         }}}
         ui.waitForIdle()
         val phase=System.getenv("SPOTLIGHT_C2_NEXT_PHASE") ?: "after"

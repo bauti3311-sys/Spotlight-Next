@@ -1,0 +1,59 @@
+{
+  "baselineProduction": "8645d4cbd25c5262b13df740d217adef061c510f",
+  "currentProduction": "567cc84ae701620d8e3b3a64513e9bbee7749a5d",
+  "testFixture": "app/src/test/java/dev/bautista/spotlight/ui/C2SharedMessageFlowTest.kt",
+  "testFixtureSha256": "acb70bbc9f6b17a1227e8b161bda0488230bac23e7225503410d467adc46edb1",
+  "identicalFixtureOnBothSources": true,
+  "baselineIsDetachedWorktree": true,
+  "api": 33,
+  "graphics": "NATIVE",
+  "qualifiers": "w390dp-h844dp",
+  "widthDp": 360,
+  "surface": "Material3 Surface using existing SpotlightTheme",
+  "retouched": false,
+  "physicalDevice": false,
+  "images": {
+    "surface-before/message-light.png": {
+      "sha256": "7ce2a9cc6a9aa1e2a90118ded3ed0c59f0fdd9e25a7c0a15704e83a593d21cd9",
+      "pixels": [
+        360,
+        296
+      ]
+    },
+    "surface-before/gmail-capability.png": {
+      "sha256": "7ee285a9cf96aa2e8094ea707cf6e59f3e49e24398e276271099f7eb15d85796",
+      "pixels": [
+        360,
+        183
+      ]
+    },
+    "surface-before/message-dark.png": {
+      "sha256": "87f35b50a631802225ed136dfce579bc1a430aba007ef56c7756c45eafacb858",
+      "pixels": [
+        360,
+        296
+      ]
+    },
+    "surface-after/message-light.png": {
+      "sha256": "3d6994c5df48da4f6bc387ec27b8d8986879fd910fcffeb054558ebb5c6f1a7c",
+      "pixels": [
+        360,
+        376
+      ]
+    },
+    "surface-after/gmail-capability.png": {
+      "sha256": "adc07e187809eec11e55fef0377f871c8f4550fafee084d1d0b4a286551def00",
+      "pixels": [
+        360,
+        183
+      ]
+    },
+    "surface-after/message-dark.png": {
+      "sha256": "38db7f6e9977d402d4c51e88178a2beb5017e00806eb33ecf3d04d92e8917c76",
+      "pixels": [
+        360,
+        376
+      ]
+    }
+  }
+}

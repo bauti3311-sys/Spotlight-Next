@@ -15,15 +15,21 @@ la altura del recorte cambia al añadir controles, no demuestra altura del overl
 
 | Cambio acotado | Antes | Después |
 |---|---|---|
-| Compartir texto: incorporación explícita y fuente, oscuro | ![](before/message-dark.png) | ![](after/message-dark.png) |
-| Mismo formulario, claro | ![](before/message-light.png) | ![](after/message-light.png) |
-| Gmail conserva destino; sin cliente de correo implícito | ![](before/gmail-capability.png) | ![](after/gmail-capability.png) |
+| Compartir texto: incorporación explícita y fuente, oscuro | ![](surface-before/message-dark.png) | ![](surface-after/message-dark.png) |
+| Mismo formulario, claro | ![](surface-before/message-light.png) | ![](surface-after/message-light.png) |
+| Gmail conserva destino; sin cliente de correo implícito | ![](surface-before/gmail-capability.png) | ![](surface-after/gmail-capability.png) |
 | Solicitud Android diferenciada de efecto externo, Obsidian Glass | ![](receipt-red/request-status.png) | ![](after/request-status.png) |
 
-Las dos primeras bases se capturaron sobre producción f49281a; la base Gmail
-sobre8645d4c; la base del aviso sobrec071455. Los fixtures nuevos no alteraban
-producción. Los PNG finales corresponden a los archivos de producción registrados
-en production-hashes.json. Las pruebas/capturas no promueven aceptación física.
+Los tres pares de componentes usan el mismo fixture con Surface nativa:
+fuente anterior8645d4c y producción actual567cc84. Se verificó el SHA256 del
+fixture idéntico en ambos checkouts, cada uno con3 capturas correctas; el anterior
+se compiló en worktree propio detached, sin alterar la rama ni otros worktrees.
+[Procedencia y hashes de PNG](visual-provenance.json). Las primeras imágenes
+before/after se conservan como historial: carecían de fondo Surface y el recorte
+claro no permite juzgar contraste. No se sustituyeron baselines ni retocaron PNG.
+El par de aviso usa el overlay real del fixture: c071455→567cc84. Los archivos de
+producción actuales coinciden con production-hashes.json; capturas/semántica no
+promueven aceptación física.
 Wikipedia, Gmail y Receptor son actividades sintéticas de PackageManager, sin
 cuentas conectadas ni transmisión real a esos proveedores.
 
@@ -49,6 +55,7 @@ hardware de Samsung con el teléfono. La física IME/OneUI sigue pendiente.
 - receipt-red: solicitud aceptada sin aviso visible antes de la mejora.
 - gate-first: revisión dirigida final; se conservan todos los XML, incluso fallos
   del fixture que comparaba frases parciales como texto completo.
+- surface-before/surface-after:3 capturas equivalentes por fuente; sin repetir pruebas funcionales.
 - final: repetir únicamente los casos afectados del fixture y ejecutar Lint.
   coverage.json identifica la última evidencia por caso, sin sumar repeticiones.
 
@@ -63,3 +70,12 @@ scripts/directed-tests.init.gradle y spotlightDirectedClasses/filtros de método
 Gradle2GiB/SerialGC/Kotlin in-process, test1.5GiB. Sin assemble, R8, APK, firma,
 Actions, red por pulsación o proveedor externo. No suite global ni medición p95,
 jank, RAM o teclado físico. Capturas/semántica no demuestran efectos externos.
+
+## Resultado y alcance
+
+112 casos distintos de última evidencia correcta en coverage.json, incluyendo
+capturas; no112 pruebas nuevas ni una suite global. El gate final95 se completó
+por93 casos correctos +2 correcciones de fixture repetidas solas. Lint0errores,
+26advertencias y1información; no se actualizaron dependencias ni suprimieron avisos.
+La captura de la fuente anterior se excluye de la cobertura de regresión actual.
+La aceptación física62 y los criterios de cierre C2 siguen abiertos.

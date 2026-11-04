@@ -623,22 +623,22 @@
       "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
       "case": "captureDark",
       "status": "passed",
-      "timestamp": "2026-11-04T18:55:52",
-      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+      "timestamp": "2026-11-04T19:03:20",
+      "evidence": "surface-after/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
     },
     {
       "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
       "case": "captureGmailCapability",
       "status": "passed",
-      "timestamp": "2026-11-04T18:55:52",
-      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+      "timestamp": "2026-11-04T19:03:20",
+      "evidence": "surface-after/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
     },
     {
       "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
       "case": "captureLight",
       "status": "passed",
-      "timestamp": "2026-11-04T18:55:52",
-      "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+      "timestamp": "2026-11-04T19:03:20",
+      "evidence": "surface-after/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
     },
     {
       "class": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest",
@@ -787,5 +787,6 @@
       "timestamp": "2026-11-04T18:56:09",
       "evidence": "gate-first/TEST-dev.bautista.spotlight.ui.ResultTouchScrollTest.xml"
     }
-  ]
+  ],
+  "baselineCaptureExcluded": "surface-before: previous production, not current regression coverage"
 }

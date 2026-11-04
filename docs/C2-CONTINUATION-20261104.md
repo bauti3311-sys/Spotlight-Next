@@ -110,3 +110,56 @@ Las primeras capturas aisladas claro/oscuro carecían de Surface en el fixture;
 la versión clara no permite evaluar contraste contra el fondo real. Se conservan
 como evidencia inicial; se preparan capturas comparables con Surface sobre fuente
 anterior y actual, sin retocar PNG ni cambiar producción para arreglar la imagen.
+
+## Capturas cerradas y trazabilidad
+
+Comparativas Surface corregidas:3 sobre8645d4c y3 sobre567cc84, fixture idéntico
+por hash y sin alterar producción para capturar. El worktree anterior era propio,
+detached y se retiró al guardar evidencia. Los recortes iniciales se conservan
+con su limitación explícita; no sirven para juzgar contraste claro. Lint y gate
+funcional corresponden a producción567cc84, sin cambios funcionales posteriores.
+[Comparativas, XML, hashes y límites](verification/c2-expansion-20261104/README.md).
+
+| Checkpoint | Resultado |
+|---|---|
+|6d872d7|F01: ACTION_WEB_SEARCH público, sin duplicar búsqueda interna/documentada|
+|8645d4c|F07: consulta explícita por app, revisión editable, exactos y3 sugerencias|
+|c071455|F14/V02/V05/V06: compartir texto/enlaces, Gmail fijo, footer y foco al cancelar|
+|567cc84|Estado REQUESTED explícito, sin afirmar efecto externo completado|
+
+## Qué probar en la próxima APK autorizada
+
+1. Mantener la prueba física prioritaria de Preview62: abrir desde Ajustes/otra
+   app, Gboard cerrado→abierto→cerrado, reapertura, scroll/PDF largo, orientación,
+   inspector/footer y teclado físico en Tab A9+; complementar con moto g86.
+2. En una futura APK de este código: app exacta primero; «App términos», «buscar
+   en App: términos» y «buscar términos en App». Revisar/editar y solicitar a la
+   misma app. Si no publica capacidad, comprobar motivo sin abrir otra app.
+3. Share/Process Text→«compartir en App»→incorporar contexto explícitamente→editar→
+   revisar→confirmar. No apertura antes de confirmar; verificar destinatario en
+   la app receptora. Gmail se prepara en Gmail aunque otro correo sea predeterminado.
+4. Cancelar con Escape/Volver y comprobar consulta/foco; alternar320dp disponible
+   con ventana restaurada, orientación y texto200%. Última acción alcanzable,
+   scroll sin ejecutar y footer accesible. Restaurar borrador no debe ejecutar.
+5. Diferenciar recibo Android de efecto real: comprobar en el destino la búsqueda,
+   borrador o envío final. Registrar fallos sin repetir automáticamente solicitudes.
+
+## Pendientes para cerrar C2
+
+- Matriz física de capacidades por apps realmente instaladas/versiones y efectos
+  externos observables; disponibilidad/contratos públicos no prueban acceso a
+  cuentas o datos privados. Shortcuts siguen sujetos al rol/permisos de Android.
+- Ampliar contexto/relevancia local de archivos autorizados y candidatos útiles,
+  preservando exactos,3 sugerencias, cancelación y selección estable; sin IA remota
+  por tecla ni inferencia de contenido privado.
+- Generalizar envío dirigido de archivos/URI/MIME con grants mínimos y revisión,
+  reutilizando el Sharesheet/selección existentes; este bloque incorpora texto y
+  enlaces, no extrae/adjunta documentos automáticamente ni convierte URI en texto.
+- Matriz de IME/rotación/foco, fuente200%/TalkBack y mediciones físicas de latencia,
+  memoria/jank.112 casos JVM no cierran esos criterios ni C0/C1/C2 físicos.
+
+No main, C3–C9, WebView, APK/Actions, nuevas dependencias/SDK/permisos sensibles,
+servicios externos ni cambios de firma/facturación. Preview62/135a9af sigue siendo
+la entrega instalada de referencia; estos commits sólo están en la rama/PR21.
+El puntero integral e38eae8 permanece sin promover. Se libera exclusivamente la
+reserva propia con nota de cierre atómica; fuente/artefactos anteriores conservados.

@@ -1,5 +1,19 @@
 # Spotlight Next — hoja de ruta maestra y continuidad autónoma
 
+## 2026-11-04 — continuación C2 autorizada, cuatro avances publicados
+
+La nueva autorización permite avanzar C2 sin esperar la tablet. Producción567cc84:
+6d872d7 búsqueda pública WEB_SEARCH;8645d4c consultas explícitas por app;
+c071455 compartir texto/enlaces, destino Gmail, footer y retorno de foco;
+567cc84 recibo Android sin afirmar efecto externo.112 casos distintos de última
+evidencia correcta en rondas dirigidas, Lint0E/26W/1Info. Capturas Compose claras/
+oscuras y comparativas desde fuente anterior con fixture idéntico; sin OneUI físico.
+[Informe y próximos pasos](C2-CONTINUATION-20261104.md). Preview62 sigue intacta (fuente135a9af), física
+ventana/Gboard/scroll/inspector/footer pendiente. Sin APK/Actions/main/C3–C9,
+permisos/dependencias/servicios nuevos ni cambios de firma/facturación. C2 no cerrado;
+continuar matriz pública y contexto/URI autorizados, manteniendo criterio físico abierto.
+
+
 ## 2026-11-04 — implementación C1 nativa, aceptación física pendiente
 
 Dirección Refinado + Adaptive autorizada. Refactor 9bdd9d9, base visual 03761d6 y

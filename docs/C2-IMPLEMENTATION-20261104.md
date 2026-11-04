@@ -1,5 +1,9 @@
 # Recuperación Preview61 + primer recorrido C2
 
+Actualización posterior: el propietario autorizó continuar C2 sin esperar la
+validación física de Preview62. Ver [cuatro avances nuevos y límites](C2-CONTINUATION-20261104.md).
+Este informe conserva el checkpoint anterior; no declara validación física.
+
 Estado: implementado y comprobado localmente; aceptación física pendiente.
 Rama feat/preview57-native-return-20261103, PR21. C1 se conserva; no se repite su
 implementación ni se promueven los checkpoints físicos/integrales históricos.

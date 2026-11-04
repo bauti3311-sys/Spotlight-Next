@@ -14,5 +14,6 @@
     "app/src/main/java/dev/bautista/spotlight/ui/NativeLaunchReview.kt": "58409ec071de31952678696c251ec25202ec5f1419295713760c0ddfa957aeaa",
     "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt": "24d9752607d0e1f82080421b38adf1c938f4558cf438f6f436cbbad95ee6e5f0",
     "app/src/main/java/dev/bautista/spotlight/ui/SpotlightResults.kt": "e429462f4416118fc6ad78c11e839168cb1dbee4d1c2f2ffee047fe484a891ea"
-  }
+  },
+  "productionCheckpoint": "567cc84ae701620d8e3b3a64513e9bbee7749a5d"
 }

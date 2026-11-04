@@ -9,6 +9,9 @@ Esta autorización sustituye la pausa de ampliación C2 indicada debajo.
 Validación física de ventana/IME62 sigue pendiente; no Actions/APK, main, C3–C9,
 permisos sensibles, servicios externos ni cambios visuales mayores sin aprobación.
 Conservar ejecutores, contratos de ventana y C1. Reserva propia obligatoria.
+Cuatro avances publicados hasta567cc84; ver docs/C2-CONTINUATION-20261104.md
+y docs/verification/c2-expansion-20261104.112 casos distintos/Lint0E26W1Info;
+C2 sigue abierto y no se generó una APK posterior a62.
 
 ## Preview62 — preparación autorizada, ejecución pendiente
 
