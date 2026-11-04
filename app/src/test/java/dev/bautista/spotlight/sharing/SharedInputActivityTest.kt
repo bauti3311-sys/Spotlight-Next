@@ -10,6 +10,8 @@ import android.provider.OpenableColumns
 import dev.bautista.spotlight.ShareContextActivity
 import dev.bautista.spotlight.SpotlightApp
 import org.junit.Assert.*
+import org.junit.Before
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -40,6 +42,7 @@ class SharedTextProvider : ContentProvider() {
 @Config(sdk=[33], application=SpotlightApp::class)
 class SharedInputActivityTest {
     private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
+    @Before fun exposeProvider(){Shadows.shadowOf(app.packageManager).addOrUpdateProvider(ProviderInfo().apply{authority="shared-fixture";name=SharedTextProvider::class.java.name;packageName=app.packageName;applicationInfo=app.applicationInfo;enabled=true;grantUriPermissions=true})}
     private fun runShare(intent: Intent, check:(ShareContextActivity)->Unit) {
         val controller=Robolectric.buildActivity(ShareContextActivity::class.java,intent).create()
         try {
@@ -63,7 +66,7 @@ class SharedInputActivityTest {
             assertNull(Shadows.shadowOf(activity).peekNextStartedActivity())
         }
     }
-    @Test fun multipleFilesUseExistingExtractionAndDeduplicateBeforeReading() {
+    @Test fun multipleFilesKeepReferencesAndExtractOnlyWhenExplicitlyRequested() {
         val provider=SharedTextProvider().apply { attachInfo(app,ProviderInfo().apply { authority="shared-fixture" }) }
         ShadowContentResolver.registerProviderInternal("shared-fixture",provider)
         val first=Uri.parse("content://shared-fixture/first")
@@ -76,10 +79,13 @@ class SharedInputActivityTest {
             putParcelableArrayListExtra(Intent.EXTRA_STREAM,arrayListOf(first,second))
             clipData=ClipData("files",arrayOf("text/plain"),ClipData.Item(first))
         }) { activity ->
+            assertEquals(0,reads.get())
+            assertEquals("2 archivos compartidos",app.contexts.active.value!!.title)
+            assertTrue(app.contexts.active.value!!.text.isEmpty())
+            val extracted=runBlocking{app.contexts.text(app.contexts.active.value!!)}
             assertEquals(2,reads.get())
-            assertEquals("2 documentos compartidos",app.contexts.active.value!!.title)
-            assertTrue(app.contexts.active.value!!.text.contains("Contenido uno"))
-            assertTrue(app.contexts.active.value!!.text.contains("Contenido dos"))
+            assertTrue(extracted.contains("Contenido uno"))
+            assertTrue(extracted.contains("Contenido dos"))
             assertNotNull(Shadows.shadowOf(activity).nextStartedActivity)
         }
     }
@@ -92,4 +98,20 @@ class SharedInputActivityTest {
             assertNull(Shadows.shadowOf(activity).peekNextStartedActivity())
         }
     }
+    @Test fun incomingFilesMustKeepTheirUrisAndForwardReadAccessWithoutExtraction() {
+        val provider=SharedTextProvider().apply{attachInfo(app,ProviderInfo().apply{authority="shared-fixture"})}
+        ShadowContentResolver.registerProviderInternal("shared-fixture",provider)
+        val first=Uri.parse("content://shared-fixture/first");val second=Uri.parse("content://shared-fixture/second")
+        val reads=AtomicInteger();val resolver=Shadows.shadowOf(app.contentResolver)
+        resolver.registerInputStreamSupplier(first){reads.incrementAndGet();ByteArrayInputStream("texto uno".toByteArray())}
+        resolver.registerInputStreamSupplier(second){reads.incrementAndGet();ByteArrayInputStream("texto dos".toByteArray())}
+        runShare(Intent(Intent.ACTION_SEND_MULTIPLE).setType("text/plain").putParcelableArrayListExtra(Intent.EXTRA_STREAM,arrayListOf(first,second))){activity->
+            assertEquals("No se debe extraer contenido al recibir archivos",0,reads.get())
+            assertTrue(app.contexts.active.value!!.text.isEmpty())
+            val request=Shadows.shadowOf(activity).nextStartedActivity
+            assertEquals(listOf(first,second),(0 until request.clipData!!.itemCount).map{request.clipData!!.getItemAt(it).uri})
+            assertEquals(Intent.FLAG_GRANT_READ_URI_PERMISSION,request.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION))
+        }
+    }
+
 }

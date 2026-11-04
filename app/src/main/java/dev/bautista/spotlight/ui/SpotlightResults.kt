@@ -45,7 +45,9 @@ import dev.bautista.spotlight.search.*
 }
 
 /** Same action identity as the existing dispatcher, never a new executor or completion claim. */
-internal fun primaryActionLabel(result:Result?,config:Config):String=when {
+internal fun primaryActionLabel(result:Result?,config:Config,shareFiles:Boolean=false):String=when {
+    shareFiles && result?.category=="Archivos" && result.action is Action.Launch->"Preparar envío"
+    result?.action is Action.SystemPanel && result.action.page in setOf("file-share-context","file-share-selection")->"Revisar archivos"
     result?.action is Action.Copy->"Copiar"
     result?.action is Action.ComposeSearch->"Preparar búsqueda"
     (result?.action as? Action.ComposeMessage)?.channel=="share:com.google.android.gm"->"Preparar correo"

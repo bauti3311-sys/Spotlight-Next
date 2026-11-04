@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.access.InvocationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-04T20:30:36" hostname="c880c3bda6d8" time="2.828">
+  <properties/>
+  <testcase name="missingOverlayPermissionDoesNotOpenSettingsTask" classname="dev.bautista.spotlight.access.InvocationTest" time="2.333"/>
+  <testcase name="trampolineFinishesWithoutLaunchingMainActivity" classname="dev.bautista.spotlight.access.InvocationTest" time="0.467"/>
+  <testcase name="physicalShortcutStartsOnlyOverlayAndConsumesRepeat" classname="dev.bautista.spotlight.access.InvocationTest" time="0.027"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

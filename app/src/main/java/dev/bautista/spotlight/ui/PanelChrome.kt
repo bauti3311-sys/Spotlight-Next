@@ -7,7 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import dev.bautista.spotlight.advanced.AdvancedState
-fun panelLabel(page:String)=when(page){"saved-command"->"COMANDO GUARDADO";"catalog"->"CENTRO DE COMANDOS";"profiles"->"PERFILES";"display-review"->"PANTALLA";"tasker"->"TASKER";"weather-native"->"CLIMA";"sports-native"->"DEPORTES";"agent"->"IA · HERRAMIENTAS";"focus"->"CONCENTRACIÓN";"extensions"->"INTEGRACIONES";"device"->"DISPOSITIVO";"app"->"APLICACIÓN";"controls"->"SISTEMA";"shizuku"->"SHIZUKU";else->"AJUSTES"}
+fun panelLabel(page:String)=when(page){"file-share"->"COMPARTIR ARCHIVOS";"saved-command"->"COMANDO GUARDADO";"catalog"->"CENTRO DE COMANDOS";"profiles"->"PERFILES";"display-review"->"PANTALLA";"tasker"->"TASKER";"weather-native"->"CLIMA";"sports-native"->"DEPORTES";"agent"->"IA · HERRAMIENTAS";"focus"->"CONCENTRACIÓN";"extensions"->"INTEGRACIONES";"device"->"DISPOSITIVO";"app"->"APLICACIÓN";"controls"->"SISTEMA";"shizuku"->"SHIZUKU";else->"AJUSTES"}
 @Composable fun InfoField(title:String,value:String,icon:ImageVector){
  Surface(color=MaterialTheme.colorScheme.surfaceVariant.copy(alpha=.65f),shape=MaterialTheme.shapes.medium){Row(Modifier.fillMaxWidth().padding(12.dp),verticalAlignment=Alignment.CenterVertically){Icon(icon,null,Modifier.size(22.dp),tint=MaterialTheme.colorScheme.primary);Spacer(Modifier.width(12.dp));Column(Modifier.weight(1f)){Text(title,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant);Text(value,style=MaterialTheme.typography.bodyMedium)}}}
 }

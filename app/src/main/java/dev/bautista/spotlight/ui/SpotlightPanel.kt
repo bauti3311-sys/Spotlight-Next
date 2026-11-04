@@ -82,6 +82,10 @@ fun SpotlightPanel(
         var query by rememberSaveable { mutableStateOf(initialQuery) }
         var searchScope by rememberSaveable(stateSaver=SearchScopeSaver) { mutableStateOf<SearchScope?>(null) }
         var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
+        val fileShareDraft=rememberSaveable(saver=FileBufferSaver){dev.bautista.spotlight.data.FileBuffer()}
+        var fileShareRevision by remember{mutableIntStateOf(0)}
+        var fileShareSelectionOwner by rememberSaveable{mutableStateOf<String?>(null)}
+        var fileShareContextOwner by rememberSaveable{mutableStateOf<String?>(null)}
         var messageForm by rememberSaveable(stateSaver=MessageTaskSaver) { mutableStateOf<Action.ComposeMessage?>(null) }
         var searchForm by rememberSaveable(stateSaver=SearchTaskSaver) { mutableStateOf<Action.ComposeSearch?>(null) }
         var notificationKey by rememberSaveable {mutableStateOf<String?>(null)}
@@ -101,7 +105,7 @@ fun SpotlightPanel(
         var followUp by rememberSaveable{mutableStateOf("")}
         val replyTargets by Replies.targets.collectAsState()
         val replyConnected by Replies.connected.collectAsState()
-        fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
+        fun clearForms(){fileShareDraft.clear();fileShareSelectionOwner=null;fileShareContextOwner=null;systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
         var category by rememberSaveable { mutableStateOf("Todo") }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int,
             val expanded: Boolean, val retainedId: String?)
@@ -214,7 +218,19 @@ fun SpotlightPanel(
             if(preview==oldPreview){preview=nextPreview;if(oldPreview!=null && nextPreview==null)error="La nota ya no existe. Su vista recuperada se descartó."}
             if(pinnedPreview==oldPin){pinnedPreview=nextPin;if(oldPin!=null && nextPin==null)error="La nota ya no existe. Su vista recuperada se descartó."}
         }
+        var importedSelection by rememberSaveable{mutableStateOf<String?>(null)}
         val activeContext by app.contexts.active.collectAsState()
+        LaunchedEffect(activeContext?.id) {
+            if(activeContext!=null && app.contexts.sharedFiles.items.isNotEmpty()) {
+                fileBuffer.clear();app.contexts.sharedFiles.items.forEach{fileBuffer.add(it)}
+                importedSelection=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)
+            } else if(importedSelection!=null) {
+                // Clear an untouched incoming selection when its context is removed/expired;
+                // preserve a selection the user has deliberately changed in the tray.
+                if(importedSelection==dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items))fileBuffer.clear()
+                importedSelection=null
+            }
+        }
         val pinnedContexts by app.contexts.pinned.collectAsState()
         val savedChats by app.contexts.conversations.collectAsState()
         val indexStatus by app.index.status.collectAsState()
@@ -284,7 +300,7 @@ fun SpotlightPanel(
             messageForm!=null || searchForm!=null || timerMinutes!=null || audioPanel ||
             notificationKey!=null || noteEditor || clipEditing!=null || snippetTemplate!=null ||
             snippetText!=null || deletingNote!=null || systemPage?.page in setOf(
-                "interpret", "agent", "weather-native", "sports-native", "calendar", "context-ai", "conversation")
+                "interpret", "agent", "weather-native", "sports-native", "calendar", "context-ai", "conversation", "file-share")
         fun keepSurface() = inspectorPinned || inspectorTaskActive() || PreviewPresentation.needsInspector(preview)
         fun present(items:List<Result>):List<Result> {
             val filtered=filterResults(items).filter(ProductVisibility::allowed)
@@ -351,7 +367,7 @@ fun SpotlightPanel(
                     is Action.InApp -> launchSession.signature(action.intent)+launchSession.signature(action.fallback)
                     else -> action.toString()
                 }
-            },preview?.id,pinnedPreview?.id,inspectorPinned,messageForm,searchForm,systemPage)
+            },preview?.id,pinnedPreview?.id,inspectorPinned,messageForm,searchForm,systemPage,if(systemPage?.page=="file-share")fileShareRevision else 0)
         SideEffect { launchSession.synchronize(launchOrigin()) }
         fun launch(intent: Intent, close: Boolean = true):Boolean {
             val preferred=CommandCenter.preferred(intent)
@@ -388,19 +404,20 @@ fun SpotlightPanel(
                 )
             }
         }
+        fun prepareFiles(items:List<Result>,packageName:String?=null,selectionOwner:String?=null,contextOwner:String?=null) {
+            if(inspectorPinned){error="Desfijá el inspector para revisar la selección. La tarea actual se conserva.";return}
+            val snapshot=items.toList()
+            if(snapshot.isEmpty()){error="Seleccioná archivos antes de compartir.";return}
+            val checked=dev.bautista.spotlight.data.FileBuffer()
+            if(!snapshot.all{checked.add(it)}){error="La selección contiene un elemento no compatible.";return}
+            val canonical=try{dev.bautista.spotlight.sharing.FileShareContract.canonicalRows(context,checked.items)}catch(_:Exception){error="No se pudo autorizar la selección de archivos.";return}
+            push();clearForms();canonical.forEach{fileShareDraft.add(it)};fileShareRevision++
+            fileShareSelectionOwner=selectionOwner;fileShareContextOwner=contextOwner
+            systemPage=Action.SystemPanel("file-share",packageName.orEmpty());preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()
+        }
         fun share(item: Result) {
-            val uri =
-                if (item.category == "Archivos") (item.action as? Action.Launch)?.intent?.data
-                else null
-            val send = Intent(Intent.ACTION_SEND)
-            if (uri != null) {
-                send
-                    .setType(item.mime ?: "application/octet-stream")
-                    .putExtra(Intent.EXTRA_STREAM, uri)
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                send.clipData = ClipData.newRawUri("Archivo", uri)
-            } else
-                send.setType("text/plain").putExtra(Intent.EXTRA_TEXT, item.preview ?: item.title)
+            if(item.category=="Archivos"){prepareFiles(listOf(item));return}
+            val send=Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,item.preview ?: item.title)
             launch(Intent.createChooser(send, "Compartir"))
         }
         fun lookup(action: Action.Lookup) {
@@ -444,6 +461,17 @@ fun SpotlightPanel(
         }
         fun execute(item: Result) {
             error = ""
+            if(item.category=="Archivos" && item.action is Action.Launch && QueryInterpreter.interpret(query,searchScope).shareFiles) {
+                prepareFiles(listOf(item));return
+            }
+            if(item.action is Action.SystemPanel && item.action.page=="file-share-selection") {
+                if(dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)!=item.action.packageName){error="La selección cambió. Volvé a revisar los archivos actuales.";return}
+                prepareFiles(fileBuffer.items,selectionOwner=item.action.packageName);return
+            }
+            if(item.action is Action.SystemPanel && item.action.page=="file-share-context") {
+                if(app.contexts.active.value?.id!=item.action.packageName){error="La selección cambió. Volvé a revisar el contexto actual.";return}
+                prepareFiles(app.contexts.sharedFiles.items,contextOwner=item.action.packageName);return
+            }
             val replacesInspector = when(val action=item.action) {
                 is Action.Ask -> !action.continuation
                 is Action.ComposeSearch, is Action.ComposeMessage, is Action.SystemPanel,
@@ -672,7 +700,7 @@ fun SpotlightPanel(
             observedAiQuery=query
         }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
-        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
+        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,fileBuffer.items,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
             snapshotFlow { Triple(query,searchScope,searchGeneration).also {
                 app.diagnostics.traceSearch("observed",it.second?.section,it.third)
             } }
@@ -709,7 +737,7 @@ fun SpotlightPanel(
                                         cardLoading = false
                                     }
                                 }
-                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope).collect {
+                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope,selectedFiles=fileBuffer.items).collect {
                                 app.diagnostics.traceSearch(if(isCurrentRequest())"received" else "obsolete-rows",requestScope?.section,generation,it.size)
                                 if(!isCurrentRequest())return@collect
                                 val selectedId=present(results).getOrNull(selected)?.id
@@ -762,6 +790,8 @@ fun SpotlightPanel(
             // rather than capturing only the outer composition's computed list.
             val visibleResults=present(resultsState.value)
             val selectedResult=visibleResults.getOrNull(selected.coerceIn(0,(visibleResults.size-1).coerceAtLeast(0)))
+            val contextHints=if(selectedResult?.category=="Aplicaciones" && normalize(selectedResult.title)==normalize(query.trim()))emptyList() else interpretation.hints
+            val showFileTray=fileBuffer.items.isNotEmpty() && systemPage?.page!="file-share"
             LaunchedEffect(selectedResult?.id,navigating,menu) {
                 if(!menu && navigating) {
                     if(selectedResult?.category=="Archivos" &&
@@ -851,7 +881,7 @@ fun SpotlightPanel(
                     }
                 }
             }
-            val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
+            val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(showFileTray)140 else 0)+(if(contextHints.isNotEmpty())24 else 0)
             val availableBody = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceAtLeast(0.dp)
             // maxHeight is a results-list preference. A contextual inspector may
             // use the remaining viewport, shrinking naturally to its content.
@@ -1028,11 +1058,11 @@ fun SpotlightPanel(
                 )
                 if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
                 if(activeContext!=null && !searchOptions)ContextChip(app,activeContext!!){action->execute(Result("context:active","","","Contexto",0,action))}
-                if(fileBuffer.items.isNotEmpty())FileBufferTray(fileBuffer,bufferBusy,
-                    {launch(Intent.createChooser(fileBuffer.share(context),"Compartir selección"))},
+                if(showFileTray)FileBufferTray(fileBuffer,bufferBusy,
+                    {prepareFiles(fileBuffer.items,selectionOwner=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items))},
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))},
                     onCancel={bufferExtraction.cancel()})
-                if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
+                if(contextHints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){contextHints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
                 if(homeLayout && systemPage==null && history.isEmpty() && !hasInspector && !menu &&
                     !inspectorTaskActive() && !searchOptions && activeContext==null &&
                     fileBuffer.items.isEmpty() && visibleResults.isEmpty() && !loading) {
@@ -1173,7 +1203,7 @@ fun SpotlightPanel(
                                 if(actionsOnly) {
                                     val actions=mutableListOf<ContextAction>()
                                     fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,state:ContextActionState=ContextActionState.Available,risk:dev.bautista.spotlight.ai.ToolRisk=dev.bautista.spotlight.ai.ToolRisk.READ,perform:()->Unit){actions+=ContextAction(title,description,icon,{menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus();perform()},id=id,group=group,state=state,risk=risk)}
-                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->primaryActionLabel(item,config);is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
+                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->primaryActionLabel(item,config,interpretation.shareFiles);is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
                                     if(item.id.startsWith("suggest:")) {
                                         add("suggestion.pin",ContextActionGroup.Organize,if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
                                         add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
@@ -1235,7 +1265,10 @@ fun SpotlightPanel(
                                             launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+targetPackage)))
                                         }
                                     }
-                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.selection",ContextActionGroup.Organize,if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
+                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.selection",ContextActionGroup.Organize,if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else {
+                                        val canonical=runCatching{dev.bautista.spotlight.sharing.FileShareContract.canonicalRows(context,listOf(item)).single()}.getOrNull()
+                                        if(canonical==null || !fileBuffer.add(canonical))error="No se pudo añadir el archivo o la selección está completa."
+                                    };menu=false}
                                     if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add("file.extract",ContextActionGroup.Text,
                                         if(documentExtraction.running)"Cancelar extracción" else "Extraer texto",
                                         if(documentExtraction.running)"Procesamiento local en curso" else "PDF, Office, imagen o texto · procesamiento local",
@@ -1331,6 +1364,17 @@ fun SpotlightPanel(
                         else if(snippetText!=null)snippetEditor()
                         else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.updateAi(config,next)}}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
                         else if(notificationKey!=null)NotificationPreview(notificationKey!!,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{back()})
+                        else if(systemPage?.page=="file-share") {
+                            NativeLaunchRequestStatus(launchSession.requestedDestination)
+                            key(fileShareRevision) {
+                                FileShareEditor(fileShareDraft,systemPage!!.packageName.takeIf{it.isNotBlank()},
+                                    onRequest={launch(it,close=false)},onCancel={back();returnFocusRevision++},
+                                    isCurrent={
+                                        (fileShareSelectionOwner==null || fileShareSelectionOwner==dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)) &&
+                                            (fileShareContextOwner==null || fileShareContextOwner==app.contexts.active.value?.id)
+                                    })
+                            }
+                        }
                         else if(systemPage!=null) {if(systemPage!!.page=="calendar")CalendarPanel(app,systemPage!!.packageName){action->execute(Result("calendar:action","","","Agenda",0,action))} else if(systemPage!!.page=="saved-command")SavedCommandPanel(app,config,systemPage!!.packageName){action->execute(Result("command:action","","","Comandos",0,action))} else if(systemPage!!.page=="saved")SavedPanel(app,config){action->execute(Result("saved:action","","","Guardados",0,action))} else if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->val page=systemPage!!.page;app.scope.launch{runCatching{when(page){"preferences:ai"->app.preferences.updateAi(config,next);"preferences:appearance"->app.preferences.updateAppearance(next);else->app.preferences.update(next)}}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,systemPage!!.packageName){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
                         else if(messageForm!=null) {
                             NativeLaunchRequestStatus(launchSession.requestedDestination)
@@ -1506,11 +1550,11 @@ fun SpotlightPanel(
                             full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
                         } else false
                         if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
-                            Text("Tab siguiente campo   esc volver",
+                            Text(if(systemPage?.page=="file-share")"Tab acciones   esc volver" else "Tab siguiente campo   esc volver",
                                 Modifier.testTag("context-footer").padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
                         else GlassContextFooter(
                             suggestion=suggestion!=null,enabled=selectedResult!=null,
-                            primaryLabel=primaryActionLabel(selectedResult,config),
+                            primaryLabel=primaryActionLabel(selectedResult,config,interpretation.shareFiles),
                             onExecute={selectedResult?.let{execute(it)}},
                             onActions={if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
                             autocomplete=canAutocomplete && searchFocused && suggestion!=null,

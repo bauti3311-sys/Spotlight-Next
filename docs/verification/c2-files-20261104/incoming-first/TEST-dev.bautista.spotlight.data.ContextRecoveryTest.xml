@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.ContextRecoveryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-04T20:26:01" hostname="c880c3bda6d8" time="2.698">
+  <properties/>
+  <testcase name="cancelledInitialLoadDoesNotGrantPermissionToOverwriteStorage" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="2.39"/>
+  <testcase name="repeatedFailedRetryPreservesBytesAndTemporarySelection" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.039"/>
+  <testcase name="unsupportedListsAndDuplicateIdsArePreservedWithoutPartialPublication" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.062"/>
+  <testcase name="atomicBackupIsRecoveredWithoutTreatingStorageAsNew" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.027"/>
+  <testcase name="explicitRetryLoadsRecoveredDataBeforeAllowingANewSave" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.034"/>
+  <testcase name="newerStorageVersionCannotBeDowngradedBySavingAConversation" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.041"/>
+  <testcase name="malformedStorageCannotBeReplacedByDeletingAnUnknownConversation" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.024"/>
+  <testcase name="invalidPersistedRecordCannotBeSilentlyRemovedByAnotherWrite" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.039"/>
+  <testcase name="malformedStorageCannotBeReplacedByPinning" classname="dev.bautista.spotlight.data.ContextRecoveryTest" time="0.041"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

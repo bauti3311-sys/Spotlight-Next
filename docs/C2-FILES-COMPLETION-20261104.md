@@ -64,3 +64,64 @@ o receptores reales. Sólo metadatos/descriptor, sin extracción/copia. Se conse
 el rojo, el error de runtime API26 inicialmente ausente (jar oficial con SHA512
 comprobado en caché), el fixture de flag SYSTEM corregido y la detección de nuestra
 propia Activity como falso destino externo. Ver contract-*/prepare-*.
+
+
+## F14 — recorrido de archivos integrado
+
+Entrada Share conserva hasta12 URI originales sin extracción/copia automática;
+la extracción local anterior sigue disponible como acción manual. ContextStore
+proyecta metadatos autorizados al mismo SearchEngine/FileIndex, sin un segundo
+índice ni ejecutor. El trampolín transporta ClipData/READ al servicio existente;
+Share no toma permisos persistentes automáticamente. Los contextos múltiples son
+temporales y fijar un documento exige permiso persistente/propio disponible.
+
+La bandeja existente y «compartir archivo X» preparan un inspector nativo con
+nombre, tipo, origen y destino. Revisar comprueba metadatos/descriptor; confirmar
+revalida antes del único NativeLaunchSession. Selección o metadatos cambiados,
+lectura perdida, receptor ausente, cancelación y restauración no autorizan un
+pedido anterior. La confirmación no se guarda; sólo descriptores de selección.
+No hay fallback ni afirmación de entrega, y el recibo Android conserva su advertencia.
+
+La forma usa los tokens y scroll del inspector existente, objetivos48dp y foco
+inicial en volver sin compartir. Oculta la bandeja repetida durante revisión para
+no gastar altura; al cancelar conserva selección/consulta. Footer contextual:
+«Preparar envío» / «Revisar archivos». Sin rediseño de C1 ni cambios en OverlayService,
+OverlayViewport, WindowManager o cálculos IME. Las capturas/fixtures no validan OneUI.
+
+Primera ronda de entrada/contexto:25 casos correctos (ver XML incoming-first),
+sin repetir la suite C1. Los8 recorridos de revisión UI (7 iniciales y1 cambio ancho/compacto) y5 de contexto/grants tienen última evidencia correcta. El gate final/Lint y las comparativas se registran al cierre. La primera
+compilación de los fixtures UI detectó un import ambiguo de StateRestorationTester;
+se conserva el log y se usa import explícito. No es un efecto externo comprobado.
+
+[Matriz de aplicaciones y protocolo físico](C2-APPLICATION-COMPATIBILITY-20261104.md).
+
+
+## Fallos encontrados por la integración completa
+
+El motor emitía la propuesta «Revisar archivos seleccionados», pero CompactResults
+no reconocía su identidad contextual y la quitaba del listado inicial. La prueba
+panel→consulta falló antes de abrir la revisión. Se incorpora a la misma regla de
+acciones explícitas existentes; una prueba separada conserva app literal exacta
+por encima de esta propuesta. No se introduce un catálogo de sugerencias paralelo.
+
+Dos límites de fixtures se documentan sin convertirlos en garantías Android:
+addResolveInfoForIntent no representaba el filtrado MIME esperado; la matriz usa
+IntentFilter real de PackageManager. El shadow de permisos de Activity admite por
+defecto una URI no concedida: la prueba negativa del trampolín pasa a un ClipData
+con Intent anidado inválido; revocación real se mantiene en los tests con Context
+controlado y se exige en dispositivo. No se elimina la validación de grants.
+
+Las capturas iniciales de búsqueda se dispararon antes de recibir las filas. Se
+conservan en flow-first con su XML pero no sirven como comparación visual final.
+El fixture comparable espera una fila de archivo real antes de capturar, idéntico
+sobre f17d9b2 y la producción actual. No se retocan imágenes.
+
+
+La nueva prueba de app literal detectó además que CompactResults reinterpretaba
+una etiqueta exacta con forma de consulta («compartir archivos seleccionados»).
+El filtro visual ahora utiliza la consulta literal cuando ya existe coincidencia
+exacta; no sólo SearchEngine evita reinterpretarla.14 casos CompactResults verdes,
+incluida la propuesta de archivos y app exacta por encima. El layout de revisión
+conserva estado/scroll al pasar ancho→compacto→ancho; footer dentro de límites.
+La matriz usa componentes registrados con IntentFilter real (no arrays sueltos en
+PackageInfo);10 casos API26/35 correctos, sin afirmar compatibilidad de apps reales.

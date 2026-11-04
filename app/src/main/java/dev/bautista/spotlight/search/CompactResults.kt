@@ -26,7 +26,7 @@ object CompactResults {
         val effectiveQuery=if(literalExact)query else dev.bautista.spotlight.personal.PersonalCommands.expand(query,config.aliases)
         val intent = UniversalIntentEngine.resolve(effectiveQuery, config)
         val interpreted=QueryInterpreter.interpret(effectiveQuery)
-        val appQuery = intent.entities.firstOrNull { it.type == EntityType.APP_NAME }?.value ?: interpreted.text
+        val appQuery = if(literalExact)effectiveQuery else intent.entities.firstOrNull { it.type == EntityType.APP_NAME }?.value ?: interpreted.text
         val normalizedQuery=normalize(effectiveQuery.trim())
         val requestedFolders=Regex("^(?:buscar )?carpetas?(?: |$)").containsMatchIn(normalizedQuery) ||
             !query.contains('"') && Regex("(?:^| )kind:(?:folders?|carpetas?)(?: |$)").containsMatchIn(normalizedQuery)
@@ -40,7 +40,7 @@ object CompactResults {
                 if(lexical==4)return 6
             }
             // Generic web and dictionary fallbacks are exploratory, not inferred intent.
-            if ((item.id.startsWith("context:app-search:") || item.id.startsWith("context:app-share:")) || item.id == "url" || item.id.startsWith("search:natural:") || item.id.startsWith("integration:")) return 5
+            if ((item.id.startsWith("context:app-search:") || item.id.startsWith("context:app-share:") || item.id.startsWith("context:share-files:")) || item.id == "url" || item.id.startsWith("search:natural:") || item.id.startsWith("integration:")) return 5
             if (item.id == "concept-definition" || item.category == "Web") return 0
             // These adapters only emit after an explicit local command/scope match.
             // Eligibility never substitutes their permission or confirmation contracts.

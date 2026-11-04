@@ -68,6 +68,10 @@ import kotlinx.coroutines.*
                 },failure={error=it.message ?: "No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."})
             }
             Text(item.title,style=MaterialTheme.typography.titleSmall)
+            if(item.uri.isNotBlank() || item.kind=="files") {
+                TextButton(enabled=!busy,onClick={onAction(Action.SystemPanel("file-share-context",item.id))}){Text("Revisar archivos para compartir")}
+                Text("Los archivos originales se revisan sin extraer su texto. El permiso temporal puede vencer al cerrar Spotlight.",style=MaterialTheme.typography.bodySmall)
+            }
             if(item.text.isNotBlank())SelectionContainer{Text(item.text.take(2000))}
             Row{TextButton(onClick={scope.launch{try{app.contexts.pinActive();error=""}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo fijar el contexto."}}}){Text(if(item.pinned)"Contexto fijado" else "Fijar")};TextButton(onClick={app.contexts.clearActive()}){Text("Quitar")}}
             Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {

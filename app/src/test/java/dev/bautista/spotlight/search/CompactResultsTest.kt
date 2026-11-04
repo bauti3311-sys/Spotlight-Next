@@ -113,4 +113,10 @@ class CompactResultsTest {
         val view=CompactResults.select("Chrome",rows,AppConfig(),preserveOrder=true)
         assertEquals(listOf("b","a"),view.initial.map{it.id})
     }
+    @Test fun explicitFileSelectionActionRemainsVisibleAndNeverOutranksAnExactApp() {
+        val query="compartir archivos seleccionados"
+        val review=Result("context:share-files:fixture","Revisar archivos seleccionados","","Acciones",2200,Action.SystemPanel("file-share-selection","fixture"))
+        assertEquals(review,select(query,listOf(review)).initial.single())
+        assertEquals("exact",select(query,listOf(review,app("exact",query))).initial.first().id)
+    }
 }

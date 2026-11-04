@@ -34,6 +34,17 @@ internal object FileShareContract {
             it.packageName==context.packageName && it.enabled && it.grantUriPermissions
         }==true
     }.getOrDefault(false)
+    fun canKeep(context:Context,uri:Uri):Boolean=runCatching {
+        val own=context.packageManager.resolveContentProvider(uri.authority.orEmpty(),0)?.let{it.packageName==context.packageName && it.grantUriPermissions}==true
+        own || context.contentResolver.persistedUriPermissions.any{it.isReadPermission &&
+            (it.uri==uri || android.provider.DocumentsContract.isTreeUri(it.uri) && it.uri.authority==uri.authority && uri.pathSegments.take(it.uri.pathSegments.size)==it.uri.pathSegments)}
+    }.getOrDefault(false)
+    fun forwardClip(context:Context,clip:ClipData):ClipData {
+        require(clip.itemCount in 1..MAX_FILES)
+        val uris=(0 until clip.itemCount).map{index->val item=clip.getItemAt(index);require(item.intent==null);requireNotNull(item.uri)}
+        require(uris.all{canRead(context,it)})
+        return canonicalClip(uris.distinct())
+    }
     @Suppress("DEPRECATION")
     fun chooserPayload(intent:Intent):Intent? {
         if(intent.action!=Intent.ACTION_CHOOSER)return null
@@ -64,6 +75,16 @@ internal object FileShareContract {
         require(uris.size in 1..MAX_FILES && uris.distinct().size==uris.size && uris.all{it.scheme=="content" && !it.authority.isNullOrBlank()})
         return ClipData("Archivos seleccionados",mimes.distinct().toTypedArray(),ClipData.Item(uris.first())).apply{uris.drop(1).forEach{addItem(ClipData.Item(it))}}
     }
+    fun canonicalRows(context:Context,items:List<Result>):List<Result> {
+        val buffer=FileBuffer();items.forEach{require(buffer.add(it))}
+        val uris=streams(buffer.share(context))
+        return buffer.items.zip(uris).map{(item,uri)->item.copy(action=Action.Launch(Intent(Intent.ACTION_VIEW)
+            .setDataAndType(uri,item.mime).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)))}
+    }
+    fun selectionId(items:List<Result>):String {
+        val value=org.json.JSONArray(items.map{listOf(it.id,(it.action as? Action.Launch)?.intent?.data?.toString(),it.title,it.mime,it.sizeBytes,it.modifiedAt)}).toString()
+        return java.security.MessageDigest.getInstance("SHA-256").digest(value.toByteArray(Charsets.UTF_8)).joinToString(""){"%02x".format(it)}
+    }
     data class Document(val uri:Uri,val name:String,val mime:String,val size:Long?,val origin:String)
     data class Prepared(val documents:List<Document>,val send:Intent,val excluded:List<ComponentName> = emptyList()) {
         fun chooser()=Intent.createChooser(Intent(send),"Compartir archivos").also {
@@ -72,7 +93,9 @@ internal object FileShareContract {
     }
     suspend fun describe(context:Context,item:Result,uri:Uri,checkOpen:Boolean):Document=withContext(Dispatchers.IO) {
         if(!canRead(context,uri))throw Failure(Problem.ACCESS)
+        currentCoroutineContext().ensureActive()
         val providerMime=context.contentResolver.getType(uri)
+        currentCoroutineContext().ensureActive()
         val metadata=context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME,OpenableColumns.SIZE),null,null,null)?.use { row ->
             require(row.moveToFirst()){"El archivo ya no está disponible."}
             val nameIndex=row.getColumnIndex(OpenableColumns.DISPLAY_NAME);val sizeIndex=row.getColumnIndex(OpenableColumns.SIZE)
@@ -80,6 +103,7 @@ internal object FileShareContract {
             (name?.takeIf{it.isNotBlank()} ?: "Nombre no disponible").take(300) to
                 if(sizeIndex>=0 && !row.isNull(sizeIndex))row.getLong(sizeIndex).takeIf{it>=0} else null
         } ?: error("No se pudieron revisar los metadatos del archivo.")
+        currentCoroutineContext().ensureActive()
         val mime=mime(metadata.first,providerMime?.takeIf{it.isNotBlank()} ?: item.mime)
         require(mime!=android.provider.DocumentsContract.Document.MIME_TYPE_DIR && mime.matches(Regex("[a-z0-9!#$&^_.+*-]+/[a-z0-9!#$&^_.+*-]+"))){"Tipo de archivo no compatible."}
         if(checkOpen)context.contentResolver.openFileDescriptor(uri,"r")?.use{} ?: error("El archivo no admite lectura autorizada. Seleccionalo nuevamente con Android.")

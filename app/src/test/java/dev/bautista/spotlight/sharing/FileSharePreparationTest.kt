@@ -17,14 +17,15 @@ import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowContentResolver
 
 class ShareDocumentProvider:ContentProvider() {
-    var descriptors=0;var queries=0;var missing=false
+    var descriptors=0;var queries=0;var missing=false;var denied=false
+    var displayName="Vestibular.pdf";val names=mutableMapOf<String,String>();var onMetadata:(()->Unit)?=null
     lateinit var original:java.io.File
     override fun onCreate():Boolean {original=java.io.File(context!!.cacheDir,"original-share-document");original.writeText("Contenido original del fixture");return true}
     override fun getType(uri:Uri)="application/pdf"
     override fun query(u:Uri,p:Array<out String>?,s:String?,a:Array<out String>?,o:String?)=MatrixCursor(p ?: arrayOf(OpenableColumns.DISPLAY_NAME,OpenableColumns.SIZE)).apply{
-        queries++;if(!missing)addRow(columnNames.map{when(it){OpenableColumns.DISPLAY_NAME->"Vestibular.pdf";OpenableColumns.SIZE->original.length();else->null}})
+        queries++;onMetadata?.invoke();if(!missing)addRow(columnNames.map{when(it){OpenableColumns.DISPLAY_NAME->names[u.lastPathSegment] ?: displayName;OpenableColumns.SIZE->original.length();else->null}})
     }
-    override fun openFile(uri:Uri,mode:String):ParcelFileDescriptor {check(mode=="r");descriptors++;if(missing)throw java.io.FileNotFoundException("private-provider-path");return ParcelFileDescriptor.open(original,ParcelFileDescriptor.MODE_READ_ONLY)}
+    override fun openFile(uri:Uri,mode:String):ParcelFileDescriptor {check(mode=="r");descriptors++;if(denied)throw SecurityException("private-provider-path");if(missing)throw java.io.FileNotFoundException("private-provider-path");return ParcelFileDescriptor.open(original,ParcelFileDescriptor.MODE_READ_ONLY)}
     override fun insert(u:Uri,v:ContentValues?):Uri?=null
     override fun delete(u:Uri,s:String?,a:Array<out String>?)=0
     override fun update(u:Uri,v:ContentValues?,s:String?,a:Array<out String>?)=0

@@ -14,12 +14,17 @@ class InvokeActivity : Activity() {
         super.onCreate(savedInstanceState)
         overridePendingTransition(0,0)
         if (!Settings.canDrawOverlays(this)) Toast.makeText(this,"Permití la superposición desde Ajustes de Spotlight.",Toast.LENGTH_LONG).show()
-        else
+        else {
+            val clip=try{intent.clipData?.let{dev.bautista.spotlight.sharing.FileShareContract.forwardClip(this,it)}}catch(_:Exception){
+                Toast.makeText(this,"El permiso de los archivos venció. Compartilos nuevamente con Spotlight.",Toast.LENGTH_LONG).show()
+                finish();return
+            }
             runCatching {
                     ContextCompat.startForegroundService(
                         this,
                         Intent(this, OverlayService::class.java)
-                            .putExtra("query", intent.getStringExtra("query")?.take(4000)).putExtra("invocation",intent.getStringExtra("invocation") ?: "touch"),
+                            .putExtra("query", intent.getStringExtra("query")?.take(4000)).putExtra("invocation",intent.getStringExtra("invocation") ?: "touch")
+                            .also{service->if(clip!=null){service.clipData=clip;service.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)}},
                     )
                 }
                 .onFailure {
@@ -30,6 +35,7 @@ class InvokeActivity : Activity() {
                         )
                         .show()
                 }
+        }
         finish()
         overridePendingTransition(0,0)
     }
