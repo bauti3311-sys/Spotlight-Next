@@ -19,6 +19,27 @@ class OverlayImeHeightTest {
     @Test @Config(qualifiers = "w1280dp-h800dp-land")
     fun tabletLandscapeRetainsKeyboardOnRefresh() = verifyInsetRetention()
 
+    @Test @Config(sdk=[33])
+    fun hiddenEventDiscardsStaleImeAmountAndReopenUsesFullHeight() {
+        val controller=Robolectric.buildService(OverlayService::class.java).create()
+        val service=controller.get()
+        fun event(visible:Boolean)=androidx.core.view.WindowInsetsCompat.Builder()
+            .setInsetsIgnoringVisibility(androidx.core.view.WindowInsetsCompat.Type.systemBars(),androidx.core.graphics.Insets.of(0,24,0,48))
+            // Some transitions retain the previous amount after visibility changes.
+            .setInsets(androidx.core.view.WindowInsetsCompat.Type.ime(),androidx.core.graphics.Insets.of(0,0,0,300))
+            .setVisible(androidx.core.view.WindowInsetsCompat.Type.ime(),visible).build()
+        try {
+            service.updateWindowInsets(event(false))
+            val closed=service.updateAvailableHeight().heightDp
+            service.updateWindowInsets(event(true))
+            assertTrue(service.updateAvailableHeight().heightDp<closed)
+            service.updateWindowInsets(event(false))
+            assertEquals(closed,service.updateAvailableHeight().heightDp,0f)
+            service.onConfigurationChanged(service.resources.configuration)
+            assertEquals(closed,service.updateAvailableHeight().heightDp,0f)
+        } finally {controller.destroy()}
+    }
+
     private fun verifyInsetRetention() {
         val controller = Robolectric.buildService(OverlayService::class.java).create()
         val service = controller.get()

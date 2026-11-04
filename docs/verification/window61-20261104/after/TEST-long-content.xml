@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.OverlayHeightRecoverySceneTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-04T12:42:17" hostname="c880c3bda6d8" time="7.018">
+  <properties/>
+  <testcase name="longContentKeepsLastResultAndInspectorMetadataReachable" classname="dev.bautista.spotlight.ui.OverlayHeightRecoverySceneTest" time="7.018"/>
+  <system-out><![CDATA[LONG_SCROLL before=0.0 max=105.0
+LONG_SCROLL after=105.0 max=105.0
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+LONG_GEOMETRY root=DpRect(left=0.0.dp, top=0.0.dp, right=960.0.dp, bottom=332.0.dp) scroll=DpRect(left=595.0.dp, top=119.0.dp, right=944.0.dp, bottom=271.0.dp) metadata=DpRect(left=666.0.dp, top=241.0.dp, right=928.0.dp, bottom=261.0.dp)
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,5 +1,17 @@
 # Spotlight Next — instrucciones para Codex
 
+## Corrección Preview61 y C2 — autorización posterior 2026-11-04
+
+El propietario autorizó investigar/reproducir/corregir la altura comprimida de
+Preview61 y después continuar C2 (F01/F07/F14/V02/V05/V06) desde PR21. Reutilizar
+los registros/ejecutores nativos; conservar C1, ranking exacto, tres sugerencias,
+teclado/táctil y datos. Correcciones pequeñas y pruebas/Lint locales dirigidas,
+commits independientes, capturas Compose comparables y límites físicos explícitos.
+No Actions, APK, firma, main, WebView ni C3–C9. Una decisión visual importante se
+presenta para aprobación; avanzar tareas técnicas independientes sin esperarla.
+Esta autorización reemplaza las exclusiones históricas de C2 inferiores, sin
+convertir la aceptación física C1 pendiente en validación ya realizada.
+
 ## Entregas Preview — autorización y facturación vigentes 2026-11-04
 
 Leer [procedimiento autónomo restringido](docs/PREVIEW-DELIVERY-POLICY.md).
