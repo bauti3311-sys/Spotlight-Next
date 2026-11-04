@@ -1034,55 +1034,24 @@ fun SpotlightPanel(
                     menu=false
                 }
                 val resultList:@Composable ()->Unit = {
-                            LazyColumn(
-                                state = listState,
-                                modifier =
-                                    Modifier.fillMaxWidth().onFocusChanged{resultsFocused=it.hasFocus}.focusGroup()
-                                        .heightIn(
-                                            max =
-                                                if ((richPreview || mediaInspector) && !widePreview) resultLimit * .35f
-                                                else resultLimit
-                                        )
-                                        .padding(horizontal = GlassTokens.listHorizontalInset(config), vertical = (3f*GlassTokens.densityScale(config)).dp),
-                            ) {
-                                if(query.isNotBlank() && visibleResults.isNotEmpty()) item("results-heading") {
-                                    Text(if(visibleResults.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(visibleResults.first()) else "Resultados",Modifier.padding(start=GlassTokens.rowHorizontalPadding(config),top=(6f*GlassTokens.densityScale(config)).dp,bottom=(4f*GlassTokens.densityScale(config)).dp),
-                                        fontSize=GlassTokens.scaledSp(11.sp,config),lineHeight=GlassTokens.scaledSp(14.sp,config,minSp=12f),fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
-                                }
-                                itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
-                                    val section=ResultSections.category(item)
-                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section,first=i==0 && homeLayout)
-                                    ResultRow(
-                                        item,
-                                        i == selected,
-                                        if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned,
-                                        {
-                                            val confirmed=touchedResultId==item.id && selected==i
-                                            selected = i
-                                            touchedResultId=item.id
-                                            if(confirmed){touchedResultId=null;execute(item)}
-                                            else if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
-                                            else if(PreviewPresentation.isApplication(item)) {
-                                                // Touch selects/inspects; Enter remains the primary action.
-                                                selectApplication(item,i)
-                                            }
-                                            else {navigating=true;pointerSelecting=true}
-                                        },
-                                        {
-                                            selected = i
-                                            preview = item
-                                            menu = true
-                                            navigating = true
-                                        },
-                                        { toggleFavorite(item) },
-                                        inline=inlineResultRows,
-                                        animations=motionEnabled,
-                                        onInteraction={pointerSelecting=true;navigating=true},
-                                        playing=(item.action as? Action.Launch)?.intent?.component?.packageName in playingPackages,
-                                    )
-                                    if(query.isBlank() && searchScope==null && category=="Todo")Spacer(Modifier.height(3.dp))
-                                }
-                            }
+                    SpotlightResultList(
+                        results=visibleResults,config=config,query=query,selectedIndex=selected,
+                        listState=listState,maxHeight=if((richPreview || mediaInspector) && !widePreview)resultLimit*.35f else resultLimit,
+                        homeSections=searchScope==null && category=="Todo",homeLayout=homeLayout,
+                        inline=inlineResultRows,motionEnabled=motionEnabled,playingPackages=playingPackages,
+                        isFavorite={item->if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned},
+                        onFocusChanged={resultsFocused=it},
+                        onSelect={i,item->
+                            val confirmed=touchedResultId==item.id && selected==i
+                            selected=i;touchedResultId=item.id
+                            if(confirmed){touchedResultId=null;execute(item)}
+                            else if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
+                            else if(PreviewPresentation.isApplication(item))selectApplication(item,i)
+                            else{navigating=true;pointerSelecting=true}
+                        },
+                        onDetails={i,item->selected=i;preview=item;menu=true;navigating=true},
+                        onFavorite={toggleFavorite(it)},onInteraction={pointerSelecting=true;navigating=true},
+                    )
                 }
                 val details:@Composable (Boolean)->Unit = { actionsOnly ->
                         (if(actionsOnly)preview else inspectorItem)?.let { item ->
@@ -1500,15 +1469,7 @@ fun SpotlightPanel(
                                 Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
                         else GlassContextFooter(
                             suggestion=suggestion!=null,enabled=selectedResult!=null,
-                            primaryLabel=when {
-                                selectedResult?.action is Action.Copy->"Copiar"
-                                selectedResult?.action is Action.Ask->selectedResult.title.takeIf{it.startsWith("Responder") || it.startsWith("Preguntar") || it.startsWith("Consultar")} ?: UniversalIntentEngine.primaryAiTitle(config)
-                                selectedResult?.action is Action.SystemPanel && selectedResult.action.page=="interpret"->"Revisar plan"
-                                selectedResult?.category=="Archivos"->"Abrir documento"
-                                (selectedResult?.action as? Action.Launch)?.intent?.component!=null->"Abrir aplicación"
-                                selectedResult?.action is Action.Launch->"Abrir"
-                                else->"Ejecutar"
-                            },
+                            primaryLabel=primaryActionLabel(selectedResult,config),
                             onExecute={selectedResult?.let{execute(it)}},
                             onActions={if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
                             autocomplete=canAutocomplete && searchFocused && suggestion!=null,

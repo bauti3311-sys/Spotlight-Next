@@ -1,5 +1,25 @@
 # Spotlight Next — instrucciones para Codex
 
+## Dirección vigente 2026-11-04 — C1 autorizado, implementación incremental
+
+El [plan maestro](docs/SPOTLIGHT-NEXT-PLAN-MAESTRO-20261103.md) conserva los23
+objetivos y10 checkpoints. Aprobación posterior expresa: implementar **sólo C1**
+en la rama de PR21 desde faf84f0. Refinado en barra/listado/estructura; Adaptive
+en inspectores y presentaciones existentes. Lista compacta sin aumentar altura,
+hasta3 sugerencias, acento contenido al contexto, footer móvil discreto, foco
+sutil también en claro y nomenclatura WhatsApp inequívoca. No añadir selector de
+canal ni funciones previstas para C2–C9. No incorporar las capacidades dibujadas
+para Spotify/citas como si estuvieran implementadas. Ver [alcance C1](docs/C1-IMPLEMENTATION-20261104.md).
+
+Separar commits estructural, base visual y ajustes de inspector; conservar
+búsqueda, teclado, borradores, permisos y NativeLaunchSession. Pruebas locales
+nativas dirigidas/Lint y capturas comparables, sin APK, firma o Actions. C0 físico
+sigue pendiente; JVM/Robolectric no lo cierra. No main/merge ni nuevas dependencias.
+
+La APK60 ya fue entregada desde e9647c1, workflowc6d481c, run41581584988 correcto,
+certificado Preview885838aa. La sección de preparación de firma inferior es
+histórica: NO autoriza otro intento ni describe el estado vigente de la entrega.
+
 ## Firma Native60 — preparación, NO ejecutar Actions todavía
 
 La APK aprobada debe compilarse desde `e9647c1329b93820383e3c8b4ec56dbceb3ce5f1`
