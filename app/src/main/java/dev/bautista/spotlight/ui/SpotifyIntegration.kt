@@ -133,22 +133,38 @@ import kotlinx.coroutines.launch
                 SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={if(!busy)selected=item})
             }
             selected?.let { item ->
-                Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    FilterChip(selected = webPlayback, enabled = !busy, onClick = { webPlayback = true; message = "" },
-                        label = { Text("Reproducir en dispositivo activo") })
-                    FilterChip(selected = !webPlayback, enabled = !busy, onClick = { webPlayback = false; message = "" },
-                        label = { Text("Reproducción local (App Remote)") })
-                }
-                Text(if (webPlayback) "Web API: requiere Premium y un dispositivo activo y controlable. No cambia de dispositivo ni reintenta."
-                    else "Usa Spotify en este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
-                Button(enabled = !busy, onClick = { action { message = if (webPlayback) connection.playOnActiveDevice(item) else connection.playback("play", item) } }) { Text("Confirmar reproducción") }
-                TextButton(enabled = !busy, onClick = { action {
-                    val observed = if (webPlayback) connection.observeActiveDevice() else connection.observe()
-                    message = observed?.diagnose(item, if (webPlayback) "Web API" else "el cliente local") ?: "Spotify no informó un dispositivo activo."
-                } }) { Text("Comprobar reproducción") }
+                SpotifySelectionControls(item, webPlayback, busy,
+                    onRoute = { webPlayback = it; message = "" },
+                    onConfirm = { action { message = if (webPlayback) connection.playOnActiveDevice(item) else connection.playback("play", item) } },
+                    onObserve = { action {
+                        val observed = if (webPlayback) connection.observeActiveDevice() else connection.observe()
+                        message = observed?.diagnose(item, if (webPlayback) "Web API" else "el cliente local") ?: "Spotify no informó un dispositivo activo."
+                    } })
             }
         }
         if (message.isNotBlank()) Text(message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("spotify-result-status"))
     }
+}
+
+/** Same production controls, isolated for input/availability regression tests. No playback on selection. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable internal fun SpotifySelectionControls(
+    item: SpotifySearchItem,
+    webPlayback: Boolean,
+    busy: Boolean,
+    onRoute: (Boolean) -> Unit,
+    onConfirm: () -> Unit,
+    onObserve: () -> Unit,
+) {
+    Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        FilterChip(selected = webPlayback, enabled = !busy, onClick = { onRoute(true) },
+            label = { Text("Reproducir en dispositivo activo") })
+        FilterChip(selected = !webPlayback, enabled = !busy, onClick = { onRoute(false) },
+            label = { Text("Reproducción local (App Remote)") })
+    }
+    Text(if (webPlayback) "Web API: requiere Premium y un dispositivo activo y controlable. No cambia de dispositivo ni reintenta."
+        else "Usa Spotify en este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
+    Button(enabled = !busy, onClick = onConfirm) { Text("Confirmar reproducción") }
+    TextButton(enabled = !busy, onClick = onObserve) { Text("Comprobar reproducción") }
 }
