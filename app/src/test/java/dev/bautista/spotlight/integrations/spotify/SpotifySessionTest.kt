@@ -93,4 +93,20 @@ class SpotifySessionTest {
         assertTrue(runCatching { SpotifyTokens.restore("{}") }.isFailure)
         assertTrue(runCatching { SpotifySession(Memory(), SpotifyHttp(), okhttp3.HttpUrl.Builder().scheme("https").host("evil.example").build()) }.isFailure)
     }
+    @Test fun renewedTokenCannotSilentlyLoseTheRequiredPlaybackScope() = runBlocking {
+        val server = MockWebServer(); server.start()
+        try {
+            val required = setOf("user-read-playback-state", "user-modify-playback-state")
+            val store = Memory()
+            store.value = SpotifyTokens("old-access", "old-refresh", 1000, required)
+            server.enqueue(MockResponse().setBody(response(",\"scope\":\"user-read-playback-state\"")))
+            val session = SpotifySession(store, SpotifyHttp(), server.url("/token")) { 2000 }
+            val failure = runCatching { session.token(client, required) }.exceptionOrNull()
+            assertTrue(failure is IllegalStateException)
+            assertEquals("old-access", store.value!!.accessToken)
+            assertEquals(required, store.value!!.scopes)
+            assertEquals(1, server.requestCount)
+        } finally { server.shutdown() }
+    }
+
 }

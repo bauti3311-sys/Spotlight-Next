@@ -21,15 +21,15 @@ data class SpotifyPlaybackObservation(
     fun matches(item: SpotifySearchItem): Boolean =
         trackUri == item.uri || contextUri == item.uri
 
-    fun diagnose(item: SpotifySearchItem): String = when {
+    fun diagnose(item: SpotifySearchItem, source: String = "el cliente local"): String = when {
         playing && matches(item) ->
             "Spotify confirmó reproducción del contenido seleccionado."
         !playing && matches(item) ->
             "Spotify cargó el contenido seleccionado, pero el reproductor está en pausa."
         playing && item.type != SpotifyItemType.TRACK && contextUri.isNullOrBlank() && !trackUri.isNullOrBlank() ->
-            "Spotify está reproduciendo en este momento, pero el cliente local no informó el contexto para verificar si corresponde a la selección."
+            "Spotify está reproduciendo en este momento, pero $source no informó el contexto para verificar si corresponde a la selección."
         !playing && item.type != SpotifyItemType.TRACK && contextUri.isNullOrBlank() && !trackUri.isNullOrBlank() ->
-            "Spotify está en pausa y el cliente local no informó el contexto para verificar si corresponde a la selección."
+            "Spotify está en pausa y $source no informó el contexto para verificar si corresponde a la selección."
         playing && (!trackUri.isNullOrBlank() || !contextUri.isNullOrBlank()) ->
             "Spotify sigue reproduciendo otro contenido; aún no confirmó el cambio a la selección."
         else ->

@@ -104,4 +104,13 @@ class SpotifyConnection(context: Context) {
         check(localPlaybackEnabled){"Autorizá primero la reproducción local en Ajustes → Integraciones → Spotify."}
         localPlayer.observe(clientId)
     }
+    /** Explicit Web route; never authorizes, connects or falls back to App Remote. */
+    suspend fun playOnActiveDevice(item: SpotifySearchItem): String = withContext(Dispatchers.IO) {
+        SpotifyPlaybackClient().playSelection(session.token(clientId,
+            setOf("user-read-playback-state", "user-modify-playback-state")), item)
+    }
+    suspend fun observeActiveDevice(): SpotifyPlaybackObservation? = withContext(Dispatchers.IO) {
+        SpotifyPlaybackClient().observe(session.token(clientId, setOf("user-read-playback-state")))
+    }
+
 }
