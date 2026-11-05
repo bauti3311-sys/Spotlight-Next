@@ -42,6 +42,46 @@ class FocusSettingsSceneTest {
  @Test fun tabletLight()=scene("light",false)
  @Test @Config(qualifiers="w390dp-h844dp") fun phoneDark()=scene("dark",true)
  @Test @Config(qualifiers="w390dp-h844dp") fun phoneLight()=scene("light",true)
+ @Test fun focusSelectorPersistsAcrossRecreationAndRestoresLegacy(){
+  ready();ui.onNodeWithTag("settings-area:Apariencia").performClick()
+  val toggle=ui.onNodeWithTag("focus-interface-toggle")
+  toggle.performScrollTo().assertIsOn().performClick()
+  ui.waitUntil(15000){!runBlocking{app.preferences.config.first().focusInterface}}
+  ui.activityRule.scenario.recreate()
+  ui.waitUntil(15000){ui.onAllNodesWithTag("focus-interface-toggle").fetchSemanticsNodes().isNotEmpty()}
+  ui.onNodeWithTag("focus-interface-toggle").performScrollTo().assertIsOff().performClick()
+  ui.waitUntil(15000){runBlocking{app.preferences.config.first().focusInterface}}
+  ui.activityRule.scenario.recreate()
+  ui.waitUntil(15000){ui.onAllNodesWithTag("focus-interface-toggle").fetchSemanticsNodes().isNotEmpty()}
+  ui.onNodeWithTag("focus-interface-toggle").performScrollTo().assertIsOn()
+  assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
+ }
+
+ @Test fun openOverlayObservesFocusPreferenceWithoutReopening(){
+  ready()
+  org.robolectric.shadows.ShadowSettings.setCanDrawOverlays(true)
+  val controller=Robolectric.buildService(dev.bautista.spotlight.overlay.OverlayService::class.java).create()
+  val service=controller.get()
+  val read=service.javaClass.getDeclaredMethod("getConfig").apply{isAccessible=true}
+  fun awaitFocus(expected:Boolean){
+   ui.waitUntil(15000){
+    // Service lifecycle/DataStore dispatch uses Android's looper, separate from Compose's clock.
+    Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+    org.robolectric.util.ReflectionHelpers.getField<android.view.View?>(service,"view")?.onWindowFocusChanged(true)
+    (read.invoke(service) as dev.bautista.spotlight.data.Config).focusInterface==expected
+   }
+  }
+  try {
+   service.onStartCommand(android.content.Intent(ui.activity,service.javaClass),0,1)
+   awaitFocus(true)
+   assertNotNull("Overlay must be open before changing preferences",org.robolectric.util.ReflectionHelpers.getField<android.view.View?>(service,"view"))
+   runBlocking{app.preferences.updateAppearance(app.preferences.config.first().copy(focusInterface=false))}
+   awaitFocus(false)
+   runBlocking{app.preferences.updateAppearance(app.preferences.config.first().copy(focusInterface=true))}
+   awaitFocus(true)
+  } finally {controller.destroy();org.robolectric.shadows.ShadowSettings.setCanDrawOverlays(false)}
+ }
+
  @Test fun opacityIsImmediatePersistentAndSurvivesActivityRecreation(){
   ready("glass");ui.onNodeWithTag("settings-area:Apariencia").performClick()
   ui.onNodeWithTag("surface-opacity-slider").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress){it(.73f)}
