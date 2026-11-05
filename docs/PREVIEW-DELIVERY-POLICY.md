@@ -1,3 +1,10 @@
+## Preview64 entregada — autorización consumida
+
+Fuente808bda2/workflow5b346bc, run42082398659 attempt1 success. APK/ZIP/firma
+histórica verificados independientemente. Ver [entrega64](NATIVE64-DELIVERY-20261105.md).
+No otro intento/re-run/fallback de64. Focus=false yUS$0 intactos; física pendiente.
+La sección de preparación inferior es histórica y no describe autorización vigente.
+
 ## Preview64 — preparación vigente; ejecución no autorizada
 
 Autorización posterior del propietario: preparar64 desde E1–E5 conservando

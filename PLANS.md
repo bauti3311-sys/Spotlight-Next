@@ -1049,3 +1049,21 @@ Informe docs/NATIVE64-PREPARATION-20261105.md y evidencia asociada.
 Tras publicar, actualizar reserva y liberar sólo la propia con notas atómicas.
 Siguiente: autorización expresa del par exacto antes de un intento futuro;
 OneUI/Gboard/Tab A9+/moto g86 continúan pendientes.
+
+## 2026-11-05 — Preview64 entregada, física pendiente
+
+Autorización expresa del par fuente808bda2/workflow5b346bc ejecutada una sola vez:
+run42082398659 attempt1 success. APK/ZIP descargados y verificados independientemente;
+code64, paquete Raycast, firma v2/cert885838aa histórico, R8/noDebuggable/ARM64/16KiB,
+payload unsigned conservado y ZIP fuente idéntico a git archive. Gradle7m21s correcto;
+lintDebug local nuevo0E/26W/1Info(3m45s);6tests dirigidos de preparación reutilizados,
+no ejecutados otra vez en Actions. No nuevos cambios productivos/estéticos/WebView,
+main/C3–C9 ni permisos/dependencias. Focus=false intacto.
+
+Informe docs/NATIVE64-DELIVERY-20261105.md; APK individual, ZIP y SHA256SUMS en
+shared/downloads/spotlight-preview64. Artefacto13442486203, caduca08/11/2026
+18:24:02UTC. APK SHA25640fde01a6a7ec7fa5a263278012aa372f36af0d31d5c0f64d0bdc20bd30540f3.
+Reserva propia codex-632cb1c8-d60b-4961-8a99-6c1250741c5a se cierra con notas
+atómicas al publicar; no promover checkpoint integral ni alterar reservas ajenas.
+Autorización consumida, sin retry/fallback. Siguiente: actualización física sobre
+Preview existente sin borrar datos; OneUI/Gboard/TabA9+/moto g86 pendientes.

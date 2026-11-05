@@ -1,3 +1,12 @@
+## Preview64 entregada — 2026-11-05, física pendiente
+
+Par808bda2/5b346bc expresamente autorizado, único run42082398659 attempt1 success.
+APK/ZIP/firma/procedencia comprobados independientemente, certPreview885838aa,
+code64. Ver docs/NATIVE64-DELIVERY-20261105.md. Focus=false intacto, sin adopción
+global ni validación OneUI. Autorización consumida: no otro dispatch/re-run/fallback.
+Reserva propia cerrada con notas; al reanudar comprobar remoto. Main/checkpoints/C3–C9
+intactos. Siguiente: instalación sobrePreview existente y aceptación física.
+
 ## Preview64 — preparación autorizada 2026-11-05
 
 El propietario autorizó preparar64 desde la integración nativa E1–E5, conservando

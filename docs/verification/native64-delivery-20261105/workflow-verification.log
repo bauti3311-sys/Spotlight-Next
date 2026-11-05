@@ -1,0 +1,9 @@
+preflight: 2026-11-05T18:15:11.4544240Z Approved source, workflow revision, owner, one-attempt history and live reservation verified.
+preflight: 2026-11-05T18:15:13.9668311Z Historical signing input and certificate verified; no APK built or signed.
+build: 2026-11-05T18:15:29.0292285Z Approved source, workflow revision, owner, one-attempt history and live reservation verified.
+build: 2026-11-05T18:15:43.7923087Z bash gradlew :app:assembleRaycastPreview --no-daemon --max-workers=1 --console=plain --stacktrace             -Dorg.gradle.jvmargs="-Xmx3072m -XX:+UseSerialGC -Dfile.encoding=UTF-8"             -Pkotlin.compiler.execution.strategy=in-process
+build: 2026-11-05T18:20:48.4932274Z > Task :app:minifyRaycastPreviewWithR8
+build: 2026-11-05T18:23:05.1976716Z > Task :app:assembleRaycastPreview
+build: 2026-11-05T18:23:05.2016667Z BUILD SUCCESSFUL in 7m 21s
+sign: 2026-11-05T18:23:26.0114238Z Approved source, workflow revision, owner, one-attempt history and live reservation verified.
+sign: 2026-11-05T18:24:01.7842723Z One final APK and matching source verified. No install or publication performed.
