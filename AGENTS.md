@@ -1,5 +1,17 @@
 # Spotlight Next — instrucciones para Codex
 
+## Focus — acabado de producto05/11, arquitectura conceptual aprobada
+
+El propietario aprobó el campo contextual y su recuperación, NO el diseño final
+ni la adopción global. Pulido aislado sobre6d9289c: consulta/tarea protagonistas,
+explicación secundaria plegable, identidad PM y monogramas de fixture explícitos,
+Geist, grafito/marfil y footer integrado. Cuatro estados para Spotify/Vivaldi,
+comparaciones reales antes/después en4 perfiles. Sólo app/src/test, sin APK/Actions
+ni C3–C9. Ver docs/verification/focus-product-finish-20261105/README.md.
+Conservar C1/C2/main/checkpoints, verificar restauración, liberar reserva propia
+y detenerse para aprobación visual.
+
+
 ## Focus búsqueda — revisión aislada05/11
 
 B771 es dirección preferida, SIN adopción global. Nueva revisión del recorrido

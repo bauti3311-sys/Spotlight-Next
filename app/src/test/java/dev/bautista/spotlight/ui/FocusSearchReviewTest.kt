@@ -80,7 +80,7 @@ class FocusSearchReviewTest {
    favorites=setOf("com.spotify.music/Main","com.vivaldi.browser/Main"))
   ui.setContent {
    val baseDensity=androidx.compose.ui.platform.LocalDensity.current
-   CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(baseDensity.density,fontScale),LocalLiquidScene provides (if(mode=="preview63")null else LiquidTypeface.Geist),LocalPremiumReview provides (mode!="preview63")) {
+   CompositionLocalProvider(LocalFocusProductFinish provides (System.getenv("SPOTLIGHT_FOCUS_FINISH")=="true"),androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(baseDensity.density,fontScale),LocalLiquidScene provides (if(mode=="preview63")null else LiquidTypeface.Geist),LocalPremiumReview provides (mode!="preview63")) {
     SpotlightTheme(theme) {
      Box(Modifier.width(width.dp).height(700.dp).background(if(theme=="dark")Color(0xFF101214) else Color(0xFFE9E6E0)).testTag("focus-canvas")) {
       if(mode=="preview63")SpotlightPanel(app,config,{baselineCloses++},"",700f)

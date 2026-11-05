@@ -1,0 +1,74 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:compileRaycastPreviewKotlin UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:bundleRaycastPreviewClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleRaycastPreviewClassesToCompileJar UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreviewUnitTest UP-TO-DATE
+> Task :app:mergeRaycastPreviewShaders UP-TO-DATE
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets UP-TO-DATE
+> Task :app:packageRaycastPreviewUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestConfig UP-TO-DATE
+> Task :app:processRaycastPreviewJavaRes UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:generateRaycastPreviewLintReportModel UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestLintModel
+> Task :app:lintAnalyzeRaycastPreview UP-TO-DATE
+> Task :app:compileRaycastPreviewUnitTestKotlin
+> Task :app:compileRaycastPreviewUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processRaycastPreviewUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+> Task :app:lintAnalyzeRaycastPreviewUnitTest
+
+OpenGLRenderer W 11-05 11:25:28  3998  4030 Trying to start new animators on 0x7ff436c4a4e0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:28  3998  4030 Trying to start new animators on 0x7ff436c4a4e0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:29  3998  4030 Trying to start new animators on 0x7ff436b674b0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:30  3998  4030 Trying to start new animators on 0x7ff436b674b0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:33  3998  4030 Trying to start new animators on 0x7ff436d46790 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:33  3998  4030 Trying to start new animators on 0x7ff436d46790 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:34  3998  4030 Trying to start new animators on 0x7ff4376ac660 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:35  3998  4030 Trying to start new animators on 0x7ff4376ac660 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:37  3998  4030 Trying to start new animators on 0x7ff436daab90 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:37  3998  4030 Trying to start new animators on 0x7ff436daab90 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:38  3998  4030 Trying to start new animators on 0x7ff4376b1c50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:38  3998  4030 Trying to start new animators on 0x7ff4376b1c50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:40  3998  4030 Trying to start new animators on 0x7ff436f103f0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:40  3998  4030 Trying to start new animators on 0x7ff436f103f0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:41  3998  4030 Trying to start new animators on 0x7ff436f04920 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 11:25:41  3998  4030 Trying to start new animators on 0x7ff436f04920 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+> Task :app:finalizeTestRoborazziRaycastPreview SKIPPED
+> Task :app:lintReportRaycastPreview UP-TO-DATE
+> Task :app:lintRaycastPreview
+
+BUILD SUCCESSFUL in 2m 22s
+36 actionable tasks: 5 executed, 31 up-to-date

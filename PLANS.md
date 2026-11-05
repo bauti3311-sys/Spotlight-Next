@@ -1,5 +1,15 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — Focus acabado de producto, sin adopción
+
+Arquitectura conceptual aprobada; diseño final todavía pendiente. Pulir sobre
+6d9289c sin reiniciar: input contextual, tarea preparada, explicación plegable,
+identidad PM, tipografía y footer. Cuatro estados×dos apps×cuatro perfiles, inicio
+compartido. Misma arquitectura/contratos, sólo revisión de prueba.
+Ver docs/verification/focus-product-finish-20261105/README.md. No APK/Actions
+ni C3–C9; detenerse para revisión y liberar sólo reserva propia.
+
+
 ## 2026-11-05 — Focus, revisión completa de búsqueda
 
 B elegida sólo como dirección estructural. Prototipo editable aislado de búsqueda

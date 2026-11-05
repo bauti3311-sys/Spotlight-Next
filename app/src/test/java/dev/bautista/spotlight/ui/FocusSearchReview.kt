@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
@@ -62,11 +63,19 @@ internal class FocusSearchState {
 }
 
 @Composable internal fun FocusSearchReview(app:SpotlightApp,config:Config,state:FocusSearchState,onRequest:(Action)->Unit) {
- val c=MaterialTheme.colorScheme
+ val finish=LocalFocusProductFinish.current
+ val base=MaterialTheme.colorScheme
+ val c=remember(base,finish){if(finish)FocusProductType.palette(base) else base}
+ val type=if(finish)FocusProductType.roles else FocusLegacyRoles
+ var information by remember(state.context?.draft?.packageName){mutableStateOf(false)}
  val focus=remember{FocusRequester()};val scope=rememberCoroutineScope();val list=state.list
  val registry=remember(app){AppCapabilities(app)}
  val context=state.context
- val accent=context?.let { PremiumMaterial.accent(c,if(it.draft.packageName=="com.spotify.music")Color(0xFF65D993) else Color(0xFFDE6D72)).primary } ?: c.onSurfaceVariant
+ val rawAccent=remember(context?.item?.id,context?.item?.icon,finish,c.onSurfaceVariant) {
+  context?.let { if(finish)InspectorAccent.result(it.item) ?: c.onSurfaceVariant
+   else if(it.draft.packageName=="com.spotify.music")Color(0xFF65D993) else Color(0xFFDE6D72) }
+ }
+ val accent=remember(c,rawAccent){rawAccent?.let{PremiumMaterial.accent(c,it).primary} ?: c.onSurfaceVariant}
  fun back() {
   context?.let{state.drafts[it.draft.packageName]=state.term}
   state.context=null;state.review=null;state.error="";focus.requestFocus()
@@ -113,7 +122,7 @@ internal class FocusSearchState {
  }
  LaunchedEffect(Unit){focus.requestFocus()}
  Box(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=12.dp).testTag("focus-footprint")) {
- Column(Modifier.fillMaxWidth().heightIn(max=676.dp).testTag("focus-window").clip(RoundedCornerShape(22.dp))
+ Column(Modifier.fillMaxWidth().heightIn(max=676.dp).testTag("focus-window").then(if(finish)Modifier.shadow(8.dp,RoundedCornerShape(22.dp),ambientColor=Color.Black.copy(alpha=.12f),spotColor=Color.Black.copy(alpha=.18f)) else Modifier).clip(RoundedCornerShape(22.dp))
   .background(Brush.verticalGradient(listOf(c.surface,c.surfaceContainerLow)))
   .onPreviewKeyEvent { e ->
    if(e.type!=KeyEventType.KeyDown)false else when(e.key) {
@@ -130,65 +139,95 @@ internal class FocusSearchState {
     IosCommandIcon(CommandIcons.Reply,"Volver a búsqueda global",Modifier.size(20.dp),tint=c.onSurfaceVariant)
    }
    if(context==null)IosCommandIcon(CommandIcons.Search,null,Modifier.size(22.dp),tint=c.onSurfaceVariant)
-   else ResultIcon(context.item,Modifier.size(24.dp))
-   Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
-    Text(context?.name ?: "Spotlight",style=FocusSearchType.metadata,color=accent)
+   else if(!finish)ResultIcon(context.item,Modifier.size(24.dp))
+   Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(if(finish)4.dp else 2.dp)) {
+    if(finish && context!=null)Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+     ResultIcon(context.item,Modifier.size(20.dp))
+     Text(context.name,style=type.metadata.copy(fontWeight=FontWeight.SemiBold),color=accent)
+    } else Text(context?.name ?: "Spotlight",style=type.metadata,color=accent)
     BasicTextField(if(context==null)state.global else state.term,
      {value->if(context==null){state.global=value;state.selected=0;state.lastTapped=null;state.review=null;scope.launch{list.scrollToItem(0)}} else {state.term=value.copy(text=value.text.take(4000));state.review=null}},
      keyboardOptions=KeyboardOptions(imeAction=ImeAction.Search),
      keyboardActions=KeyboardActions(onSearch={if(context!=null)prepare() else state.rows.getOrNull(state.selected)?.let{if(it.action is Action.ComposeSearch)enter(it) else onRequest(it.action)}}),
-     textStyle=(if(context==null)FocusSearchType.query else FocusSearchType.contextual).copy(color=c.onSurface),singleLine=true,
+     textStyle=(if(context==null)type.query else type.contextual).copy(color=c.onSurface),singleLine=true,
      modifier=Modifier.fillMaxWidth().focusRequester(focus).testTag("focus-query"),
      cursorBrush=androidx.compose.ui.graphics.SolidColor(accent),decorationBox={input ->
       if((if(context==null)state.global.text else state.term.text).isEmpty())Text(context?.placeholder ?: "Buscar o ejecutar",
-       style=if(context==null)FocusSearchType.query else FocusSearchType.contextual,color=c.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+       style=if(context==null)type.query else type.contextual,color=c.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
       input()
      })
    }
   }
   if(context==null) {
-   if(state.rows.isNotEmpty())Text(if(state.global.text.isBlank())"PARA EMPEZAR" else "RESULTADOS",
-    Modifier.padding(horizontal=20.dp,vertical=6.dp),style=FocusSearchType.section,color=c.onSurfaceVariant)
+   if(state.rows.isNotEmpty())Text(if(state.global.text.isBlank())if(finish)"Sugerencias" else "PARA EMPEZAR" else if(finish)"Resultados" else "RESULTADOS",
+    Modifier.padding(horizontal=20.dp,vertical=6.dp),style=type.section,color=c.onSurfaceVariant)
    LazyColumn(state=list,modifier=Modifier.weight(1f,fill=false).fillMaxWidth().testTag("focus-results")) {
     itemsIndexed(state.rows,key={_,r->r.id}) { i,row ->
      val search=row.action as? Action.ComposeSearch
-     Row(Modifier.fillMaxWidth().heightIn(min=62.dp).background(if(i==state.selected)c.onSurface.copy(alpha=.045f) else Color.Transparent)
+     Row(Modifier.fillMaxWidth().heightIn(min=if(finish)58.dp else 62.dp).background(if(i==state.selected)c.onSurface.copy(alpha=.045f) else Color.Transparent)
       .clickable(role=Role.Button){state.selected=i;if(search!=null)enter(row) else {if(state.lastTapped==row.id)onRequest(row.action);state.lastTapped=row.id}}.testTag("focus-result-$i")
-      .padding(horizontal=20.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+      .padding(horizontal=20.dp,vertical=if(finish)8.dp else 10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
       ResultIcon(row,Modifier.size(if(search==null)32.dp else 22.dp))
       Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
        Text(if(search==null)row.title else if(search.packageName=="com.spotify.music")"Buscar canción o artista" else "Buscar en la web",
-        style=FocusSearchType.result,color=c.onSurface,maxLines=2,overflow=TextOverflow.Ellipsis)
-       Text(if(search==null)if((row.action as? Action.Launch)?.intent?.component!=null)"Aplicación instalada" else row.category else "Abrir búsqueda contextual",style=FocusSearchType.subtitle,color=c.onSurfaceVariant,maxLines=1)
+        style=type.result,color=c.onSurface,maxLines=2,overflow=TextOverflow.Ellipsis)
+       Text(if(search==null)if((row.action as? Action.Launch)?.intent?.component!=null)"Aplicación instalada" else row.category else "Abrir búsqueda contextual",style=type.subtitle,color=c.onSurfaceVariant,maxLines=1)
       }
-      Text(if(search!=null)"Entrar" else if(i==state.selected)"↗" else "",style=FocusSearchType.metadata,color=c.onSurfaceVariant)
+      Text(if(search!=null)"Entrar" else if(i==state.selected)"↗" else "",style=type.metadata,color=c.onSurfaceVariant)
      }
     }
    }
-  } else Column(Modifier.weight(1f,fill=false).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp,vertical=14.dp),
-    verticalArrangement=Arrangement.spacedBy(10.dp)) {
-   Text(if(state.review==null)"Tu búsqueda continúa en ${context.name}" else "Revisá antes de continuar",style=FocusSearchType.title)
-   Text(if(context.draft.packageName=="com.spotify.music")"Se abrirá su enlace público. No se consultan tu cuenta ni resultados internos desde Spotlight."
-    else "Se abrirá la búsqueda web en Vivaldi. No se leen pestañas ni historial.",style=FocusSearchType.subtitle,color=c.onSurfaceVariant)
-   if(state.review!=null) {
-    Text(state.term.text,style=FocusSearchType.result)
-    Text(state.review!!.intent.data?.host.orEmpty(),style=FocusSearchType.metadata,color=accent)
+  } else Column(Modifier.weight(1f,fill=false).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp,vertical=if(finish)8.dp else 14.dp),
+    verticalArrangement=Arrangement.spacedBy(if(finish)8.dp else 10.dp)) {
+   if(!finish) {
+    Text(if(state.review==null)"Tu búsqueda continúa en ${context.name}" else "Revisá antes de continuar",style=type.title)
+    Text(if(context.draft.packageName=="com.spotify.music")"Se abrirá su enlace público. No se consultan tu cuenta ni resultados internos desde Spotlight."
+     else "Se abrirá la búsqueda web en Vivaldi. No se leen pestañas ni historial.",style=type.subtitle,color=c.onSurfaceVariant)
+    if(state.review!=null) {
+     Text(state.term.text,style=type.result)
+     Text(state.review!!.intent.data?.host.orEmpty(),style=type.metadata,color=accent)
+    }
+   } else {
+    if(state.review!=null) {
+     Row(Modifier.fillMaxWidth().testTag("focus-action-review").padding(vertical=4.dp),horizontalArrangement=Arrangement.spacedBy(20.dp)) {
+      Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
+       Text("Acción",style=type.metadata,color=c.onSurfaceVariant)
+       Text(if(context.draft.packageName=="com.spotify.music")"Buscar música" else "Buscar en la web",style=type.title,color=c.onSurface)
+      }
+      Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
+       Text("Destino",style=type.metadata,color=c.onSurfaceVariant)
+       Text(state.review!!.intent.data?.host.orEmpty(),style=type.subtitle,color=c.onSurface,maxLines=2,overflow=TextOverflow.Ellipsis)
+      }
+     }
+    } else Text(if(state.term.text.isBlank())
+       if(context.draft.packageName=="com.spotify.music")"Escribí una canción o un artista para buscar." else "Escribí lo que querés encontrar en la web."
+      else "Revisá la acción antes de abrir ${context.name}.",style=type.subtitle,color=c.onSurfaceVariant)
+    if(information)Text(if(context.draft.packageName=="com.spotify.music")
+      "Enlace público de Spotify. No se consultan tu cuenta ni resultados internos desde Spotlight."
+      else "Búsqueda web pública en Vivaldi. No se leen pestañas ni historial.",
+      modifier=Modifier.testTag("focus-public-information"),style=type.metadata,color=c.onSurfaceVariant)
    }
   }
-  if(state.error.isNotBlank())Text(state.error,Modifier.padding(horizontal=20.dp,vertical=8.dp).testTag("focus-error"),style=FocusSearchType.subtitle,color=c.error)
+  if(state.error.isNotBlank())Text(state.error,Modifier.padding(horizontal=20.dp,vertical=8.dp).testTag("focus-error"),style=type.subtitle,color=c.error)
   Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=16.dp).testTag("focus-footer"),verticalAlignment=Alignment.CenterVertically) {
-   Text(if(context==null)if(state.global.text.isBlank())"Búsqueda global" else "${state.rows.size} resultados" else if(state.review==null)"Sin solicitud enviada" else "Acción preparada",
-    Modifier.weight(1f),style=FocusSearchType.metadata,color=c.onSurfaceVariant)
+   if(!finish)Text(if(context==null)if(state.global.text.isBlank())"Búsqueda global" else "${state.rows.size} resultados" else if(state.review==null)"Sin solicitud enviada" else "Acción preparada",
+    Modifier.weight(1f),style=type.metadata,color=c.onSurfaceVariant)
+   if(finish) {
+    if(context!=null)TextButton(onClick={information=!information},modifier=Modifier.heightIn(min=48.dp).testTag("focus-information")) {
+     Text("Enlace público",style=type.metadata,color=c.onSurfaceVariant)
+    }
+    Spacer(Modifier.weight(1f))
+   }
    if(context!=null)TextButton(onClick={
     if(state.review==null)prepare() else {
      val frozen=state.review!!;state.review=null
      if(IntegrationRegistry(app).resolves(frozen.intent))onRequest(frozen) else state.error="La aplicación ya no está disponible."
     }
    },enabled=state.term.text.isNotBlank(),modifier=Modifier.heightIn(min=48.dp).testTag("focus-prepare")) {
-    Text(if(state.review==null)"Revisar" else "Solicitar a Android",style=FocusSearchType.subtitle,color=if(state.term.text.isBlank())c.onSurfaceVariant.copy(alpha=.45f) else accent)
+    Text(if(state.review==null)"Revisar" else if(finish)"Abrir en ${context.name}" else "Solicitar a Android",style=type.subtitle,color=if(state.term.text.isBlank())c.onSurfaceVariant.copy(alpha=.45f) else accent)
    } else state.rows.getOrNull(state.selected)?.let { row ->
     TextButton(onClick={if(row.action is Action.ComposeSearch)enter(row) else onRequest(row.action)},modifier=Modifier.heightIn(min=48.dp).testTag("focus-global-primary")) {
-     Text(if(row.action is Action.ComposeSearch)"Entrar" else "Abrir",style=FocusSearchType.subtitle,color=c.onSurface)
+     Text(if(row.action is Action.ComposeSearch)"Entrar" else if(finish)"Abrir ${row.title}" else "Abrir",style=type.subtitle,color=c.onSurface)
     }
    }
   }
