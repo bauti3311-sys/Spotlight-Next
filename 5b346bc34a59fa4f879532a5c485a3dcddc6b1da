@@ -1,0 +1,12 @@
+Preview64 preparation complete, execution NOT authorized — 2026-11-05.
+Owner codex-0b1fb8c6-943f-4948-ac52-719378f44cea; branch feat/preview57-native-return-20261103, PR21.
+Initial remote db79c84b22a102d62b870ad61ff8bdc7b0ccfac2, E1–E5 source 8d560828369e2fbd35957808cad66ae4a4a2895d.
+Prepared source 808bda2c25887d14b42665dea4c254181d72b837.
+Reviewed tooling/workflow commit 5b346bc34a59fa4f879532a5c485a3dcddc6b1da.
+Workflow file blob unchanged 3525f774199520583877dbb1a83b9c06ecff355e; manifest64 frozen base=source, allowed delta empty.
+Code64, version2.0.1-raycast-preview-native57-v64. Package .raycastpreview/cert885838aa intact. Focus=false default. No production source changes beyond two Gradle version lines; two added JVM regressions only. Native E1–E5 app/src/main and workflows byte identical. No WebView changes/merge, no aesthetic changes, C1/C2/main/checkpoints intact.
+6 distinct latest-green JVM cases:3 FocusFoundation +selector persistence/activity recreation +opacity recreation +open service true/false/true observation. Fixture failures preserved, permission/focus/Android-looper setup corrected only in tests. Last overlay run17s success, no broadened suite.17 offline delivery-policy and2 identity checks pass.44 historical E1–E5 XML cases plus5 evidence hashes independently rechecked, not new test runs; lint historical0E/26W/1Info.
+Runtime recovered running/connected, minimal pwd passed. Installed isolated verified TemurinJDK17 and AndroidSDK35 after initial runtime lacked javac; Java proxy explicitly configured. No APK/assemble/signing/private preflight/Actions/new certificate/secret edits.
+Report docs/NATIVE64-PREPARATION-20261105.md; logs/XML/dedup summary docs/verification/native64-preparation-20261105/.
+Main remains47259ce2d7259f0ddfa5d85b7c73f07983d8cd6d; integral checkpoint e38eae8 unchanged. Reservation updated to tooling4c0a67aabd4e69ad59f289e71aa91617af0e74cb; release only own reservation atomically with these notes.
+NEXT: owner express authorization of exact source/tooling pair for one future attempt, acquire NEW own reservation checkpoint=authorized tooling; retain US$0 stop/no-retry and authoritative-history/identity guards. No visual/global Focus adoption or physical acceptance claimed. TabA9+/motoG86/OneUI/Gboard/window/rotation/keyboard/PDF/real app effects pending. C3–C9 paused.
