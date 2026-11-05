@@ -908,7 +908,7 @@ fun SpotlightPanel(
             val bodyHeading=if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor))48.dp else 0.dp
             val resultLimit = (panelLimit-footerHeight-3.dp-bodyHeading).coerceAtLeast(0.dp)
             val splitPanelHeight = resultLimit
-            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else .62f
+            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else if(LocalPremiumReview.current).54f else .62f
             val inlineResultRows=!compact && (!widePreview || maxWidth*resultsFraction>=384.dp)
             Box(
                 Modifier.fillMaxWidth()
