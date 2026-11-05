@@ -1,5 +1,16 @@
 # Spotlight Next — instrucciones para Codex
 
+## Preview63 — sólo preparación autorizada05/11
+
+C2 técnicamente cerrado en261eef4; física pendiente. Preparar code63 con todas
+las funciones acumuladas, sin nuevas features ni C3–C9. Fuente candidata71d6980,
+manifiesto preview_delivery.json revisado y checklist en docs/NATIVE63-PREPARATION-20261105.md.
+No compilar, firmar, ejecutar preflight real ni Actions hasta autorización expresa
+del par exacto fuente/workflow. PresupuestoUS$0 y bloqueo conservados, sin pedir
+otra revisión manual de facturación. No main/merge ni firma alternativa. Reserva
+propia nueva para el futuro intento; liberar sólo la propia de preparación con notas.
+Reutilizar evidencia Android ya publicada y comprobar sólo delta/contratos offline.
+
 ## C2 — completar parte comprobable sin dispositivos
 
 Autorización posterior a f17d9b2: completar F07 de archivos autorizados, F14 con

@@ -1,5 +1,20 @@
 # Entrega nativa Preview — procedimiento autónomo restringido
 
+## Vigente05/11 — Preview63 preparada, ejecución NO autorizada
+
+Fuente71d6980e50e6206776014946a2a606521fad9fd8, base funcional C2 cerrado
+261eef4669f775b3257b707953c6987d374a1d10, code63>62, paquete/certificado
+Raycast históricos intactos. [Preparación y checklist breve](NATIVE63-PREPARATION-20261105.md).
+El commit que actualiza preview_delivery.json es el SHA tooling/workflow que debe
+presentarse junto al fuente para autorización expresa de un único intento63.
+Hasta entonces no build, firma, preflight real ni Actions. Adquirir reserva propia
+nueva al ejecutar, con checkpoint=workflow autorizado. Autorizaciones anteriores
+no habilitan63. No cambiar guardas/scripts/workflow ni presupuestoUS$0 para esta
+preparación; reutilizar el procedimiento inferior, sustituyendo sólo identidad
+de entrega desde el manifiesto revisado. Datos/efectos/instalación físicos pendientes.
+
+Las secciones62/61 siguientes son históricas; no describen autorización vigente.
+
 Actualización Preview62: sólo preparación autorizada desde76a1c18. Fuente exacta
 135a9af74be08fc4368c8b9fc803d12fdcd273d3 (numeración62, función intacta).
 Manifiesto revisado con previo61/base76a1c18. Presentar SHA workflow del commit

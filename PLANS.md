@@ -1,5 +1,17 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — Preview63 preparada, esperando autorización de ejecución
+
+Fuente71d6980e50e6206776014946a2a606521fad9fd8, base261eef4 (C1+altura/IME+C2).
+Único delta de app: numeración Raycast63; paquete/certificado histórico885838aa,
+R8/SDK/ABI y resto de variantes intactos. Manifiesto fija fuente/base/versiones y
+delta explícito. [Procedimiento y checklist breve Tab A9+/moto g86](docs/NATIVE63-PREPARATION-20261105.md).
+Presentar SHA fuente y SHA tooling/workflow exactos para autorizar un único intento;
+sin build/firma/preflight real/Actions hasta entonces. Física62 sigue pendiente,
+63 podrá comprobar el arreglo heredado sin validar retrospectivamente62. C3 sólo
+después de revisar validación física63, sin comenzar aquí. Reserva propia de
+preparación liberada con notas al cierre. main/integral/presupuestoUS$0 intactos.
+
 ## 2026-11-05 — C2: validación técnica local cerrada
 
 Fuente84ab6d7 de PR21; recuperación administrativa anterior comprobada, reserva
