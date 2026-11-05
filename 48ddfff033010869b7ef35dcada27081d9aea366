@@ -13,3 +13,15 @@ Push normal correcto:87c75aa ->48ddfff033010869b7ef35dcada27081d9aea366. Verific
 Fuente Preview65:ffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7. Workflow/manifiesto:48ddfff033010869b7ef35dcada27081d9aea366.
 Preview65 publicada y lista para solicitar autorización del par exacto; NO autorizada ni ejecutada. No código cambiado, commits nuevos de app, builds, pruebas repetidas, APK, Actions, preflight o firma. Evidencia15 dirigidas/19 offline/lint0E26W1Info se conserva sin nueva ejecución.
 Entrega futura sólo tras autorización específica: nueva reserva propia checkpoint=workflow, verificación HEAD/historial, único native-delivery con par exacto y AUTHORIZE_PREVIEW_65_ONCE, sin retry/fallback, procedimiento existente. Esta reserva de recuperación se libera atómicamente junto con esta nota; no reutilizarla.
+
+PREVIEW65 ENTREGADA — único intento expresamente autorizado, autorización consumida.
+Run42130468596 attempt1 success: https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42130468596
+Fuenteffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7; workflow48ddfff033010869b7ef35dcada27081d9aea366. HEAD conservado, sin código/commits nuevos/main.
+Reserva nueva codex-6410a4d5-9df0-4bf6-82a1-d36d57fc7e1d, leasebacf0ff6b7d9c4292ae37d255286b2739f93ac9e, checkpoint workflow exacto durante los3jobs. Guardas, preflight histórico, único unsigned y firma aislada correctos. Gradle BUILD SUCCESSFUL10m26s.
+APK Spotlight-Next-Preview65-ffc74d2.apk SHA256 a5857160720de93cbc5d3a71cb301d095a5e19c9872fdbd7ef63ef5d8e4cdb2e.
+ZIP Spotlight-Next-source-ffc74d2.zip SHA256 c89471e7856ec6dfb0f4b17f898197301b0003db87093db602be296fd8ef486a, idéntico al git archive independiente.
+Artifact13463756721 digest990e7a56c9301f503323fe32178b0aa8a9b98449e861912035d8894be46c93b1. Descarga gh por redirección403; conector GitHub recuperó el MISMO artifact sin nuevo build. Digest/CRC/rutas comprobados antes de extraer.
+Verificación independiente scriptsdelworkflow: package dev.bautista.spotlight.next.raycastpreview, code65/name2.0.1-raycast-preview-native57-v65, noDebuggable,ARM64,min26/target35, firma v2/un firmante885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba idéntico a APK64 verificada; payload unsigned/signed idéntico, procedencia exacta, zipalign/ELF16KiB nativo sin puenteNuxt.
+Pruebas/lint no repetidos: evidencia15dirigidas/19offline/lint0E26W1Info de preparación conservada. No afirmar nuevas unitarias/lint en Actions(native-delivery las omite por diseño).
+Descargas verificadas/evidencia en /workspace/shared/downloads/spotlight-preview65/, VERIFICATION.json y SHA256SUMS. APK/ZIP Preview privada, física pendiente TabA9+/moto g86; instalar sobre64 sin borrar datos. Focus B, homónimos, Spotify Web/local conservados; timeout local no resuelto ni Spotify real certificado por JVM.
+Sin retry/fallback/otraAPK, presupuestoUS$0 intacto. Liberación sólo reserva propia con estas notas atómicas; no reutilizar autorización65 ni esta reserva.
