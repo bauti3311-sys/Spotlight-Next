@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -888,15 +889,24 @@ fun SpotlightPanel(
                 }
             }
             val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(showFileTray)140 else 0)+(if(contextHints.isNotEmpty())24 else 0)
-            val availableBody = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceAtLeast(0.dp)
+            var headerPixels by remember { mutableStateOf<Int?>(null) }
+            var footerPixels by remember { mutableStateOf<Int?>(null) }
+            val density=LocalDensity.current
+            // The independent WM budget includes the root's 12dp top/bottom padding.
+            // Measure chrome instead of subtracting overlapping 112/168 + 48/90dp
+            // guesses, which left usable space empty above Gboard on the tablet.
+            val headerHeight=headerPixels?.let{with(density){it.toDp()}} ?: (56+extraHeaders).dp
+            val footerHeight=footerPixels?.let{with(density){it.toDp()}} ?: 48.dp
+            val availableBody = (viewport - 24.dp - headerHeight).coerceAtLeast(0.dp)
             // maxHeight is a results-list preference. A contextual inspector may
             // use the remaining viewport, shrinking naturally to its content.
             val adaptiveSearch = query.isNotBlank() && !config.compactSearchResults
-            val panelLimit = if(adaptiveSearch)(viewport - 84.dp - extraHeaders.dp).coerceAtLeast(0.dp)
-                else if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
+            val panelLimit = if(adaptiveSearch || hasInspector)availableBody
+                else minOf(availableBody,config.maxHeight.dp+footerHeight+3.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
             val optionsInHeader=(homeLayout && visibleResults.isEmpty()) || systemPage!=null || messageForm!=null || searchForm!=null
-            val resultLimit = (panelLimit - if(adaptiveSearch)52.dp else if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
+            val bodyHeading=if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor))48.dp else 0.dp
+            val resultLimit = (panelLimit-footerHeight-3.dp-bodyHeading).coerceAtLeast(0.dp)
             val splitPanelHeight = resultLimit
             val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else .62f
             val inlineResultRows=!compact && (!widePreview || maxWidth*resultsFraction>=384.dp)
@@ -1056,7 +1066,7 @@ fun SpotlightPanel(
                             {group->searchOptions=false;launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group))},
                             {mode->searchOptions=false;selectMode(mode)})
                     },
-                    optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
+                    optionsMaxHeight=minOf(320.dp,(viewport-24.dp-GlassTokens.searchHeight).coerceAtLeast(0.dp)),
                     onBack=if(searchScope!=null || history.isNotEmpty())({preview=null;menu=false;back()}) else null,
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
                     onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},
@@ -1064,7 +1074,7 @@ fun SpotlightPanel(
                 )
                 if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
                 if(activeContext!=null && !searchOptions)ContextChip(app,activeContext!!){action->execute(Result("context:active","","","Contexto",0,action))}
-                if(showFileTray)FileBufferTray(fileBuffer,bufferBusy,
+                if(showFileTray && !searchOptions)FileBufferTray(fileBuffer,bufferBusy,
                     {prepareFiles(fileBuffer.items,selectionOwner=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items))},
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))},
                     onCancel={bufferExtraction.cancel()})
@@ -1313,7 +1323,7 @@ fun SpotlightPanel(
                         }
                 }
                 Column(Modifier.fillMaxWidth()) {
-                header()
+                Column(Modifier.fillMaxWidth().onSizeChanged{headerPixels=it.height}){header()}
                 if (!searchOptions && expanded && panelLimit >= 100.dp) {
                     Column(
                         Modifier.fillMaxWidth()
@@ -1555,6 +1565,7 @@ fun SpotlightPanel(
                             val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
                             full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
                         } else false
+                        Box(Modifier.fillMaxWidth().onSizeChanged{footerPixels=it.height}) {
                         if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
                             Text(if(systemPage?.page=="file-share")"Tab acciones   esc volver" else "Tab siguiente campo   esc volver",
                                 Modifier.testTag("context-footer").padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
@@ -1570,6 +1581,7 @@ fun SpotlightPanel(
                             scopeLabel=searchScope?.label ?: if(category=="Todo")"Spotlight" else category,
                             expandLabel=if(moreResults)"Ver menos resultados" else "Ver más resultados",
                             onExpand=if(expandable)({toggleMoreResults()}) else null)
+                        }
                     }
                 }
                 }
