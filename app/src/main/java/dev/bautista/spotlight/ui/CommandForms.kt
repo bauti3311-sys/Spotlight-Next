@@ -78,7 +78,7 @@ import kotlinx.coroutines.*
                 if(loading)LinearProgressIndicator(Modifier.fillMaxWidth())
                 if(selected==null && choices.isNotEmpty()) {
                     Text("Elegí el contacto y número",fontSize=12.sp)
-                    choices.take(8).forEach { person -> TextButton(onClick={selected=person;address=person.address}){Text("${person.name} · ${person.address}")}}
+                    choices.take(8).forEach { person -> TextButton(onClick={selected=person;address=person.address;sent=false;confirming=false;approvedReply=null}){Text("${person.name} · ${person.address}")}}
                 }
                 if(selected!=null)Text("${selected!!.name} · ${selected!!.address}",fontSize=12.sp)
                 if(address.isNotBlank() || selected!=null || target.isNotBlank())OutlinedTextField(address,{address=it.take(100);selected=null;confirming=false},label={Text(if(draft.channel=="email")"Email" else "Número de destino")},singleLine=true,modifier=Modifier.fillMaxWidth())
