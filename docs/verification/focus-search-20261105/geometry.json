@@ -1,0 +1,426 @@
+{
+  "tablet-dark": [
+    {
+      "profile": "tablet-dark",
+      "mode": "preview63",
+      "scene": "01-home",
+      "surfaceHeightDp": "168.0",
+      "footprintHeightDp": "192.0",
+      "surfaceAreaDp2": "155904.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "preview63",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "237.0",
+      "footprintHeightDp": "261.0",
+      "surfaceAreaDp2": "219936.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "preview63",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "318304.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "preview63",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "237.0",
+      "footprintHeightDp": "261.0",
+      "surfaceAreaDp2": "219936.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "preview63",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "318304.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "preview63",
+      "scene": "06-return",
+      "surfaceHeightDp": "237.0",
+      "footprintHeightDp": "261.0",
+      "surfaceAreaDp2": "219936.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "review",
+      "scene": "01-home",
+      "surfaceHeightDp": "212.0",
+      "footprintHeightDp": "236.0",
+      "surfaceAreaDp2": "196736.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "review",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "254272.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "review",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "202.0",
+      "footprintHeightDp": "226.0",
+      "surfaceAreaDp2": "187456.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "review",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "254272.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "review",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "202.0",
+      "footprintHeightDp": "226.0",
+      "surfaceAreaDp2": "187456.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "review",
+      "scene": "06-return",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "254272.0"
+    },
+    {
+      "profile": "tablet-dark",
+      "mode": "B",
+      "scene": "04-vivaldi-supported-context",
+      "surfaceHeightDp": "292.0",
+      "footprintHeightDp": "316.0",
+      "surfaceAreaDp2": "270976.0"
+    }
+  ],
+  "tablet-light": [
+    {
+      "profile": "tablet-light",
+      "mode": "preview63",
+      "scene": "01-home",
+      "surfaceHeightDp": "168.0",
+      "footprintHeightDp": "192.0",
+      "surfaceAreaDp2": "155904.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "preview63",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "237.0",
+      "footprintHeightDp": "261.0",
+      "surfaceAreaDp2": "219936.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "preview63",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "318304.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "preview63",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "237.0",
+      "footprintHeightDp": "261.0",
+      "surfaceAreaDp2": "219936.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "preview63",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "318304.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "preview63",
+      "scene": "06-return",
+      "surfaceHeightDp": "237.0",
+      "footprintHeightDp": "261.0",
+      "surfaceAreaDp2": "219936.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "review",
+      "scene": "01-home",
+      "surfaceHeightDp": "212.0",
+      "footprintHeightDp": "236.0",
+      "surfaceAreaDp2": "196736.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "review",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "254272.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "review",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "202.0",
+      "footprintHeightDp": "226.0",
+      "surfaceAreaDp2": "187456.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "review",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "254272.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "review",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "202.0",
+      "footprintHeightDp": "226.0",
+      "surfaceAreaDp2": "187456.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "review",
+      "scene": "06-return",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "254272.0"
+    },
+    {
+      "profile": "tablet-light",
+      "mode": "B",
+      "scene": "04-vivaldi-supported-context",
+      "surfaceHeightDp": "292.0",
+      "footprintHeightDp": "316.0",
+      "surfaceAreaDp2": "270976.0"
+    }
+  ],
+  "phone-dark": [
+    {
+      "profile": "phone-dark",
+      "mode": "preview63",
+      "scene": "01-home",
+      "surfaceHeightDp": "180.0",
+      "footprintHeightDp": "204.0",
+      "surfaceAreaDp2": "59040.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "preview63",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "261.0",
+      "footprintHeightDp": "285.0",
+      "surfaceAreaDp2": "85608.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "preview63",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "112504.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "preview63",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "261.0",
+      "footprintHeightDp": "285.0",
+      "surfaceAreaDp2": "85608.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "preview63",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "112504.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "preview63",
+      "scene": "06-return",
+      "surfaceHeightDp": "261.0",
+      "footprintHeightDp": "285.0",
+      "surfaceAreaDp2": "85608.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "review",
+      "scene": "01-home",
+      "surfaceHeightDp": "212.0",
+      "footprintHeightDp": "236.0",
+      "surfaceAreaDp2": "69536.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "review",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "89872.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "review",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "220.0",
+      "footprintHeightDp": "244.0",
+      "surfaceAreaDp2": "72160.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "review",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "89872.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "review",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "220.0",
+      "footprintHeightDp": "244.0",
+      "surfaceAreaDp2": "72160.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "review",
+      "scene": "06-return",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "89872.0"
+    },
+    {
+      "profile": "phone-dark",
+      "mode": "B",
+      "scene": "04-vivaldi-supported-context",
+      "surfaceHeightDp": "292.0",
+      "footprintHeightDp": "316.0",
+      "surfaceAreaDp2": "95776.0"
+    }
+  ],
+  "phone-light": [
+    {
+      "profile": "phone-light",
+      "mode": "preview63",
+      "scene": "01-home",
+      "surfaceHeightDp": "180.0",
+      "footprintHeightDp": "204.0",
+      "surfaceAreaDp2": "59040.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "preview63",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "261.0",
+      "footprintHeightDp": "285.0",
+      "surfaceAreaDp2": "85608.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "preview63",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "112504.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "preview63",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "261.0",
+      "footprintHeightDp": "285.0",
+      "surfaceAreaDp2": "85608.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "preview63",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "343.0",
+      "footprintHeightDp": "367.0",
+      "surfaceAreaDp2": "112504.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "preview63",
+      "scene": "06-return",
+      "surfaceHeightDp": "261.0",
+      "footprintHeightDp": "285.0",
+      "surfaceAreaDp2": "85608.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "review",
+      "scene": "01-home",
+      "surfaceHeightDp": "212.0",
+      "footprintHeightDp": "236.0",
+      "surfaceAreaDp2": "69536.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "review",
+      "scene": "02-global-spotify",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "89872.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "review",
+      "scene": "03-context-spotify",
+      "surfaceHeightDp": "220.0",
+      "footprintHeightDp": "244.0",
+      "surfaceAreaDp2": "72160.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "review",
+      "scene": "04-global-vivaldi",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "89872.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "review",
+      "scene": "05-context-vivaldi",
+      "surfaceHeightDp": "220.0",
+      "footprintHeightDp": "244.0",
+      "surfaceAreaDp2": "72160.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "review",
+      "scene": "06-return",
+      "surfaceHeightDp": "274.0",
+      "footprintHeightDp": "298.0",
+      "surfaceAreaDp2": "89872.0"
+    },
+    {
+      "profile": "phone-light",
+      "mode": "B",
+      "scene": "04-vivaldi-supported-context",
+      "surfaceHeightDp": "292.0",
+      "footprintHeightDp": "316.0",
+      "surfaceAreaDp2": "95776.0"
+    }
+  ]
+}

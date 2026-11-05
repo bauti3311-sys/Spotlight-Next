@@ -1,0 +1,14 @@
+profile,mode,scene,surfaceHeightDp,footprintHeightDp,surfaceAreaDp2
+phone-dark,preview63,01-home,180.0,204.0,59040.0
+phone-dark,preview63,02-global-spotify,261.0,285.0,85608.0
+phone-dark,preview63,03-context-spotify,343.0,367.0,112504.0
+phone-dark,preview63,04-global-vivaldi,261.0,285.0,85608.0
+phone-dark,preview63,05-context-vivaldi,343.0,367.0,112504.0
+phone-dark,preview63,06-return,261.0,285.0,85608.0
+phone-dark,review,01-home,212.0,236.0,69536.0
+phone-dark,review,02-global-spotify,274.0,298.0,89872.0
+phone-dark,review,03-context-spotify,220.0,244.0,72160.0
+phone-dark,review,04-global-vivaldi,274.0,298.0,89872.0
+phone-dark,review,05-context-vivaldi,220.0,244.0,72160.0
+phone-dark,review,06-return,274.0,298.0,89872.0
+phone-dark,B,04-vivaldi-supported-context,292.0,316.0,95776.0

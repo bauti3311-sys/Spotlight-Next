@@ -1,5 +1,14 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — Focus, revisión completa de búsqueda
+
+B elegida sólo como dirección estructural. Prototipo editable aislado de búsqueda
+global/contextual Spotify/Vivaldi, escala Geist y navegación reversible.
+Comparaciones63 y B771 únicamente donde existía escena equivalente.
+Ver docs/verification/focus-search-20261105/README.md. Sin adopción, APK/Actions
+ni C3–C9. C1/C2/main intactos, liberar sólo reserva propia y esperar revisión.
+
+
 ## 2026-11-05 — A/B estructural, sólo prototipos Vivaldi
 
 Tras rechazo visual de dee1efd, experimentar Unified Command Surface y Spotlight

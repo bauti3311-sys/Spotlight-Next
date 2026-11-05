@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.FocusSearchReviewTest" tests="6" skipped="0" failures="4" errors="0" timestamp="2026-11-05T10:57:49" hostname="3c087af7cb52" time="14.359">
+  <properties/>
+  <testcase name="phoneLight" classname="dev.bautista.spotlight.ui.FocusSearchReviewTest" time="9.642">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])&#10;Semantics of the node:&#10;Node #276 at (l=128.0, t=49.0, r=328.0, b=70.0)px, Tag: 'focus-query'&#10;EditableText = ''&#10;TextSelectionRange = 'TextRange(0, 0)'&#10;IsEditable = 'true'&#10;ImeAction = 'Default'&#10;Focused = 'true'&#10;Text = '[Buscar canción o artista]'&#10;Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]&#10;MergeDescendants = 'true'&#10;Has 3 siblings&#10;Selector used: (TestTag = 'focus-query')&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])
+Semantics of the node:
+Node #276 at (l=128.0, t=49.0, r=328.0, b=70.0)px, Tag: 'focus-query'
+EditableText = ''
+TextSelectionRange = 'TextRange(0, 0)'
+IsEditable = 'true'
+ImeAction = 'Default'
+Focused = 'true'
+Text = '[Buscar canción o artista]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 3 siblings
+Selector used: (TestTag = 'focus-query')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:185)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:181)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.scene(FocusSearchReviewTest.kt:124)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.phoneLight(FocusSearchReviewTest.kt:149)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:505)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:333)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:385)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:332)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:359)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:331)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:372)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:330)
+	at androidx.compose.ui.test.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:329)
+	at androidx.compose.ui.test.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:155)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:328)
+	at androidx.compose.ui.test.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="tabletDark" classname="dev.bautista.spotlight.ui.FocusSearchReviewTest" time="1.566">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])&#10;Semantics of the node:&#10;Node #653 at (l=128.0, t=49.0, r=928.0, b=70.0)px, Tag: 'focus-query'&#10;EditableText = ''&#10;TextSelectionRange = 'TextRange(0, 0)'&#10;IsEditable = 'true'&#10;ImeAction = 'Default'&#10;Focused = 'true'&#10;Text = '[Buscar canción o artista]'&#10;Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]&#10;MergeDescendants = 'true'&#10;Has 3 siblings&#10;Selector used: (TestTag = 'focus-query')&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])
+Semantics of the node:
+Node #653 at (l=128.0, t=49.0, r=928.0, b=70.0)px, Tag: 'focus-query'
+EditableText = ''
+TextSelectionRange = 'TextRange(0, 0)'
+IsEditable = 'true'
+ImeAction = 'Default'
+Focused = 'true'
+Text = '[Buscar canción o artista]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 3 siblings
+Selector used: (TestTag = 'focus-query')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:185)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:181)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.scene(FocusSearchReviewTest.kt:124)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.tabletDark(FocusSearchReviewTest.kt:146)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:505)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:333)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:385)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:332)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:359)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:331)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:372)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:330)
+	at androidx.compose.ui.test.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:329)
+	at androidx.compose.ui.test.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:155)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:328)
+	at androidx.compose.ui.test.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="phoneDark" classname="dev.bautista.spotlight.ui.FocusSearchReviewTest" time="1.235">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])&#10;Semantics of the node:&#10;Node #971 at (l=128.0, t=49.0, r=328.0, b=70.0)px, Tag: 'focus-query'&#10;EditableText = ''&#10;TextSelectionRange = 'TextRange(0, 0)'&#10;IsEditable = 'true'&#10;ImeAction = 'Default'&#10;Focused = 'true'&#10;Text = '[Buscar canción o artista]'&#10;Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]&#10;MergeDescendants = 'true'&#10;Has 3 siblings&#10;Selector used: (TestTag = 'focus-query')&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])
+Semantics of the node:
+Node #971 at (l=128.0, t=49.0, r=328.0, b=70.0)px, Tag: 'focus-query'
+EditableText = ''
+TextSelectionRange = 'TextRange(0, 0)'
+IsEditable = 'true'
+ImeAction = 'Default'
+Focused = 'true'
+Text = '[Buscar canción o artista]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 3 siblings
+Selector used: (TestTag = 'focus-query')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:185)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:181)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.scene(FocusSearchReviewTest.kt:124)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.phoneDark(FocusSearchReviewTest.kt:148)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:505)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:333)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:385)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:332)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:359)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:331)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:372)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:330)
+	at androidx.compose.ui.test.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:329)
+	at androidx.compose.ui.test.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:155)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:328)
+	at androidx.compose.ui.test.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="unavailableContextDoesNotPretendSupport" classname="dev.bautista.spotlight.ui.FocusSearchReviewTest" time="0.192"/>
+  <testcase name="tabletLight" classname="dev.bautista.spotlight.ui.FocusSearchReviewTest" time="1.375">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])&#10;Semantics of the node:&#10;Node #1388 at (l=128.0, t=49.0, r=928.0, b=70.0)px, Tag: 'focus-query'&#10;EditableText = ''&#10;TextSelectionRange = 'TextRange(0, 0)'&#10;IsEditable = 'true'&#10;ImeAction = 'Default'&#10;Focused = 'true'&#10;Text = '[Buscar canción o artista]'&#10;Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]&#10;MergeDescendants = 'true'&#10;Has 3 siblings&#10;Selector used: (TestTag = 'focus-query')&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [])
+Semantics of the node:
+Node #1388 at (l=128.0, t=49.0, r=928.0, b=70.0)px, Tag: 'focus-query'
+EditableText = ''
+TextSelectionRange = 'TextRange(0, 0)'
+IsEditable = 'true'
+ImeAction = 'Default'
+Focused = 'true'
+Text = '[Buscar canción o artista]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 3 siblings
+Selector used: (TestTag = 'focus-query')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:185)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:181)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.scene(FocusSearchReviewTest.kt:124)
+	at dev.bautista.spotlight.ui.FocusSearchReviewTest.tabletLight(FocusSearchReviewTest.kt:147)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:505)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:333)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:385)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:332)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:359)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:331)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:372)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:330)
+	at androidx.compose.ui.test.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:329)
+	at androidx.compose.ui.test.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:155)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:328)
+	at androidx.compose.ui.test.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="scrollDraftAndReceiverRevocation" classname="dev.bautista.spotlight.ui.FocusSearchReviewTest" time="0.348"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

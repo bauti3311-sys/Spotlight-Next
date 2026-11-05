@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## Focus búsqueda — revisión aislada05/11
+
+B771 es dirección preferida, SIN adopción global. Nueva revisión del recorrido
+de búsqueda: Geist/escala completa, inicio, Spotify/Vivaldi global y contextual
+en un único campo editable, retorno con consulta/foco/selección/scroll. Sólo
+app/src/test, capacidades públicas existentes, sin resultados privados inventados
+ni C3–C9. Ver docs/verification/focus-search-20261105/README.md. No APK/Actions
+ni otras pantallas; detenerse para revisión y liberar sólo reserva propia.
+
+
 ## A/B estructural Vivaldi — revisión pendiente05/11
 
 El propietario NO aprobó dee1efd (6,3/10); conservarlo. Sólo prototipos aislados
