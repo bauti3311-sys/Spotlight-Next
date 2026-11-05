@@ -99,7 +99,7 @@ internal fun accessRows(app:SpotlightApp,c:Config):List<PermissionRow> {
                 Row(Modifier.fillMaxWidth().heightIn(min=62.dp).padding(vertical=8.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)){
                     Surface(shape=RoundedCornerShape(10.dp),color=colors.onSurface.copy(alpha=.055f)){
                         Box(Modifier.size(36.dp),contentAlignment=Alignment.Center){
-                            Icon(row.icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+                            IosCommandIcon(row.icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
                         }
                     }
                     Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)){

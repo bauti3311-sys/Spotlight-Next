@@ -15,7 +15,7 @@ import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
 
 @Composable fun ContextChip(app:SpotlightApp,item:SharedContext,onAction:(Action)->Unit) {
-    Row(Modifier.fillMaxWidth().padding(horizontal=18.dp),verticalAlignment=Alignment.CenterVertically){Icon(CommandIcons.Description,null,Modifier.size(16.dp));TextButton(onClick={onAction(Action.SystemPanel("context"))},modifier=Modifier.weight(1f)){Text("Contexto: ${item.title}",maxLines=1)};IconButton(onClick={app.contexts.clearActive()}){Icon(CommandIcons.Close,"Quitar contexto",Modifier.size(18.dp))}}
+    Row(Modifier.fillMaxWidth().padding(horizontal=18.dp),verticalAlignment=Alignment.CenterVertically){IosCommandIcon(CommandIcons.Description,null,Modifier.size(16.dp));TextButton(onClick={onAction(Action.SystemPanel("context"))},modifier=Modifier.weight(1f)){Text("Contexto: ${item.title}",maxLines=1)};IconButton(onClick={app.contexts.clearActive()}){IosCommandIcon(CommandIcons.Close,"Quitar contexto",Modifier.size(18.dp))}}
 }
 /** Persistent data remains untouched when loading fails; retry is an explicit local action. */
 @Composable internal fun ContextStorageStatus(store:ContextStore,onRecovered:()->Unit={}) {

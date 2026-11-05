@@ -45,7 +45,7 @@ import dev.bautista.spotlight.advanced.*
             TextButton(onClick={open(Intent(Intent.ACTION_VIEW,Uri.parse("https://shizuku.rikka.app/guide/setup/")))}){Text("Guía oficial de inicio")}
             if(page=="controls") {
                 AdvancedControls(app)
-                listOf("Pantalla" to Settings.ACTION_DISPLAY_SETTINGS,"Aplicaciones" to Settings.ACTION_APPLICATION_SETTINGS,"Permisos" to Settings.ACTION_APPLICATION_DETAILS_SETTINGS,"Multimedia" to Settings.ACTION_SOUND_SETTINGS,"Desarrollador" to Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).forEach{(label,action)->TextButton(onClick={open(if(action==Settings.ACTION_APPLICATION_DETAILS_SETTINGS)Intent(action,Uri.parse("package:"+context.packageName)) else Intent(action))}){Icon(CommandIcons.Settings,null,Modifier.size(18.dp));Spacer(Modifier.width(8.dp));Text(label)}}
+                listOf("Pantalla" to Settings.ACTION_DISPLAY_SETTINGS,"Aplicaciones" to Settings.ACTION_APPLICATION_SETTINGS,"Permisos" to Settings.ACTION_APPLICATION_DETAILS_SETTINGS,"Multimedia" to Settings.ACTION_SOUND_SETTINGS,"Desarrollador" to Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).forEach{(label,action)->TextButton(onClick={open(if(action==Settings.ACTION_APPLICATION_DETAILS_SETTINGS)Intent(action,Uri.parse("package:"+context.packageName)) else Intent(action))}){IosCommandIcon(CommandIcons.Settings,null,Modifier.size(18.dp));Spacer(Modifier.width(8.dp));Text(label)}}
             }
         }
         if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)

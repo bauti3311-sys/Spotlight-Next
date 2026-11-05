@@ -56,6 +56,8 @@ data class Config(
     val actionOpacity:Float=1f, val settingsOpacity:Float=.99f,
     val keyBindings:Set<String> = emptySet(),
     val compactSearchResults:Boolean=false,
+    val focusInterface:Boolean=false, // reversible production review, legacy remains the default until adoption approval
+    val focusTypeface:String="geist",
     val uiDensityScale:Float=-1f, // -1 preserves legacy density ("compact"/"balanced"/"spacious"/"auto") until slider is adjusted
 )
 
@@ -187,6 +189,7 @@ class Preferences(private val context: Context) {
                     windowScale=extra.optDouble("windowScale",-1.0).toFloat().takeIf{it.isFinite() && it in 0f..1f} ?: -1f,
                     actionOpacity=extra.optDouble("actionOpacity",1.0).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: 1f,
                     settingsOpacity=extra.optDouble("settingsOpacity",.99).toFloat().takeIf{it.isFinite() && it in .70f..1f} ?: .99f,
+                    focusInterface=extra.optBoolean("focusInterface",false),focusTypeface=extra.optString("focusTypeface","geist").takeIf{it in setOf("geist","inter","system","mono")} ?: "geist",
                     uiDensityScale=extra.optDouble("uiDensityScale",-1.0).toFloat().takeIf{it.isFinite() && it in .85f..1.15f} ?: -1f
                 ).also{val v=p[privateVersion] ?: 0L;if(v>=privacyRevision){isPrivate=it.privateMode;privacyRevision=v;current=it;ready=true}}
     }
@@ -205,6 +208,8 @@ class Preferences(private val context: Context) {
             val extra = runCatching { org.json.JSONObject(p[next20] ?: "{}") }.getOrDefault(org.json.JSONObject())
             extra.put("actionOpacity",c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: 1f)
             extra.put("settingsOpacity",c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(.70f,1f) ?: .99f)
+            extra.put("focusInterface",c.focusInterface)
+            extra.put("focusTypeface",c.focusTypeface)
             extra.put("windowScale", c.windowScale.takeIf { it.isFinite() && it in 0f..1f } ?: -1f)
             extra.put("uiDensityScale", c.uiDensityScale.takeIf { it.isFinite() && it in .85f..1.15f } ?: -1f)
             p[next20] = extra.toString()
@@ -317,6 +322,8 @@ class Preferences(private val context: Context) {
             extra.put("surfaceTone",c.surfaceTone)
             extra.put("borderWidth",c.borderWidth)
             extra.put("shadowSize",c.shadowSize)
+            extra.put("focusInterface",c.focusInterface)
+            extra.put("focusTypeface",c.focusTypeface)
             extra.put("typeface",c.typeface)
             extra.put("selectionStyle",c.selectionStyle)
             extra.put("movement",c.movement)
@@ -339,7 +346,7 @@ class Preferences(private val context: Context) {
             p[privateFlag]=c.privateMode
             p[next20]=org.json.JSONObject().put("autoKeyboard",c.autoKeyboard).put("glassIntensity",c.glassIntensity.toDouble())
                 .put("surfaceTone",c.surfaceTone).put("borderWidth",c.borderWidth.toDouble()).put("shadowSize",c.shadowSize.toDouble())
-                .put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
+                .put("focusInterface",c.focusInterface).put("focusTypeface",c.focusTypeface).put("typeface",c.typeface).put("selectionStyle",c.selectionStyle).put("landscapeWidth",c.landscapeWidth)
                 .put("landscapePosition",c.landscapePosition.toDouble()).put("customThemes",c.customThemes)
                 .put("actionOpacity",c.actionOpacity.toDouble()).put("settingsOpacity",c.settingsOpacity.toDouble()).put("windowScale",c.windowScale).put("uiDensityScale",c.uiDensityScale).put("sourcePriority",c.sourcePriority).put("captureContext",c.captureContext).put("aiRootConsent",rootConsent).put("movement",c.movement).put("manualWidth",if(c.width>0)c.width else c.manualWidth).toString()
             p[theme] = c.theme

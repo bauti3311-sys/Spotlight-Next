@@ -1,3 +1,7 @@
+## Renovación integrada · 2026-11-05
+
+E1–E2 base productiva en validación; E3 campo contextual único con ejecutor existente; E4 Ajustes; E5 componentes. Capturas del panel/Activity reales, pruebas dirigidas y Lint; no publicar cambios preexistentes de otras revisiones. Cierre físico sigue pendiente en One UI.
+
 # Continuidad de Spotlight Next
 
 ## 2026-11-05 — Focus acabado de producto, sin adopción

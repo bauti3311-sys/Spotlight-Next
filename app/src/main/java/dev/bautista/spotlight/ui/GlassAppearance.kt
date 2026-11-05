@@ -33,7 +33,19 @@ import kotlin.math.roundToInt
     fun edit(next:Config){draft=next;awaitingSave=true;update(AppearanceEdits.merge(c,next))}
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(18.dp)) {
         if(showHeading)Text("Apariencia",style=MaterialTheme.typography.headlineSmall)
-        Text("Raycast · Solid Graphite",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("Spotlight Focus",style=MaterialTheme.typography.titleMedium)
+                Text("Revisión integrada. Podés volver a la interfaz anterior.",style=MaterialTheme.typography.bodySmall)
+            }
+            Switch(draft.focusInterface,{edit(draft.copy(focusInterface=it))},modifier=Modifier.testTag("focus-interface-toggle"))
+        }
+        if(draft.focusInterface)SettingsOptions {
+            listOf("geist" to "Geist","inter" to "Inter","system" to "Sistema","mono" to "Monoespaciada").forEach{(key,label)->
+                FilterChip(draft.focusTypeface==key,{edit(draft.copy(focusTypeface=key))},label={Text(label)})
+            }
+        }
+        Text(if(draft.focusInterface)"Focus · grafito y marfil" else "Raycast · Solid Graphite",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
         GlassThemeChoices(draft){edit(it)}
         SettingsGroupSurface {
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {

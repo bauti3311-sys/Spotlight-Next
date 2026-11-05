@@ -82,7 +82,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
      Row(Modifier.fillMaxWidth().padding(14.dp),verticalAlignment=Alignment.Top,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
       Checkbox(f.id in selected,{checked->selected=if(checked)(selected+f.id).distinct() else selected-f.id},modifier=Modifier.testTag("feature-select-${f.id}"))
       Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(5.dp)) {
-       Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(9.dp)){Icon(f.icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant);Text(f.title,style=MaterialTheme.typography.titleSmall)}
+       Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(9.dp)){IosCommandIcon(f.icon,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant);Text(f.title,style=MaterialTheme.typography.titleSmall)}
        Text(f.detail,style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
        Text(f.status,style=MaterialTheme.typography.labelSmall,color=if(f.ready)colors.primary else colors.onSurfaceVariant)
        TextButton(onClick={pending=f.id},contentPadding=PaddingValues(vertical=4.dp)){Text("Configurar ${f.title.lowercase()}")}
@@ -96,7 +96,7 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
     Text("Configuración a tu medida",style=MaterialTheme.typography.titleSmall)
     Text("Elegí funciones y revisá cada autorización por separado.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
     Text(if(failed)"Estado no disponible" else if(features.isEmpty())"Comprobando configuración…" else "${features.count{it.ready}} accesos habilitados · IA bajo tu control",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
-    TextButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){Icon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Elegir funciones")}
+    TextButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){IosCommandIcon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Elegir funciones")}
    }
    HomeDestination("Conectar Gemini","Tu clave, tus decisiones",CommandIcons.AutoAwesome){onNavigate("Inteligencia artificial")}
    HomeDestination("Personalizar apariencia","Raycast Dark Glass y opacidad",CommandIcons.Display){onNavigate("Apariencia")}
@@ -113,13 +113,13 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
 @Composable private fun HomeShortcut(title:String,detail:String,icon:ImageVector,modifier:Modifier=Modifier,onClick:()->Unit) {
  val colors=MaterialTheme.colorScheme
  Surface(onClick=onClick,modifier=modifier,shape=RoundedCornerShape(15.dp),color=colors.onSurface.copy(alpha=.045f)) {
-  Column(Modifier.padding(16.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){Icon(icon,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant);Text(title,style=MaterialTheme.typography.titleSmall);Text(detail,style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)}
+  Column(Modifier.padding(16.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){IosCommandIcon(icon,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant);Text(title,style=MaterialTheme.typography.titleSmall);Text(detail,style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)}
  }
 }
 @Composable private fun HomeDestination(title:String,detail:String,icon:ImageVector,onClick:()->Unit) {
  val colors=MaterialTheme.colorScheme
  Row(Modifier.fillMaxWidth().clickable(onClick=onClick).heightIn(min=64.dp).padding(vertical=8.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-  Icon(icon,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant)
+  IosCommandIcon(icon,null,Modifier.size(21.dp),tint=colors.onSurfaceVariant)
   Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)){Text(title,style=MaterialTheme.typography.titleSmall);Text(detail,style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)}
   Text("›",style=MaterialTheme.typography.titleLarge,color=colors.onSurfaceVariant)
  }

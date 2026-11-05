@@ -1,0 +1,365 @@
+{
+  "folder": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/folder-invoices--v1.png",
+    "sha256": "3583dae7bef5bb9d0cdc125464407526c7a8d47b9332eb149ff541d681fc393f",
+    "bytes": 372,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "document": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/document--v1.png",
+    "sha256": "85b6ab853fbdc280e6b8e48ecdc15f211f7ba9c8e0e2a5e25ef413831b668e45",
+    "bytes": 287,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "pdf": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/pdf--v1.png",
+    "sha256": "96ed67aca655ee42d9343653b20d9064f241a4b30a5ef42dd4be4b95b79c4aa7",
+    "bytes": 789,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "music": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/musical-notes.png",
+    "sha256": "7a599575f1b0acb6ec5045cd5e818ec906492005c79362232743785ccd7885f0",
+    "bytes": 901,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "video": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/video.png",
+    "sha256": "a26b5b203c0a4402f7e68a081eef58b2afa1b453661e6380fc69b446894ca4cd",
+    "bytes": 367,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "delete": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/full-trash--v1.png",
+    "sha256": "aba4520959234a1c63ecad8b29f441b26ecef054c6988cf5c6b22e9f9551e1b9",
+    "bytes": 1242,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "check": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/checkmark.png",
+    "sha256": "b1e6a691c6c29aee706d1694c513403d76357d6ea0e6ec50a84a91ba5a7086aa",
+    "bytes": 755,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "error": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/error--v1.png",
+    "sha256": "47650047e6a50bb8227b3d122ca337b39ec9a7e501ebf026fb4144833bfa2f12",
+    "bytes": 1150,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "timer": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/clock--v1.png",
+    "sha256": "d6232ff7f9ff10f929f5c302c122f69fd19f3ea8147d1359631d07a8a6a6908a",
+    "bytes": 1302,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "calendar": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/calendar--v1.png",
+    "sha256": "6b0f8d1b7cf8ef17957c6777454560e6125aa293e9759c1be7cd7f78f78a2a34",
+    "bytes": 317,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "volume": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/high-volume--v1.png",
+    "sha256": "1e078d5bd3d80b771c086927115236455b1b18928d770c529557ea30680f2ee4",
+    "bytes": 1263,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "volume_low": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/low-volume.png",
+    "sha256": "a9ca03073537708b946caa692d18d3c1571f32c08eb821eb276272be174cc9d2",
+    "bytes": 694,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "mute": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/mute.png",
+    "sha256": "0d6feb8a3bb2f4783f140747d3c498bdea94f966daecb2bea154b9e526b1369e",
+    "bytes": 678,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "person": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/contacts.png",
+    "sha256": "c1af482bb2ff678ec68a3125038de97f2a25a8b4fe4a7cfd728b6d4f696002fc",
+    "bytes": 1190,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "wifi": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/wifi--v1.png",
+    "sha256": "2ed4730be5233bbf2c859804934e5d274bbec93e943b825b31e2bcbf0fd3d306",
+    "bytes": 1583,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom attribution license; see existing notice"
+  },
+  "bluetooth": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/bluetooth.png",
+    "sha256": "c14b1c49b937cab5c84459d461c07eb0386fc740b32e02603a36dee0f077d0f7",
+    "bytes": 420,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "globe": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/globe--v1.png",
+    "sha256": "56533f8e085a2e44ed7765f45dcc97da7cab867d0752dec1dbfde8d62334bc92",
+    "bytes": 1766,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "calculator": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/calculator.png",
+    "sha256": "4000a4fd5c08ad497a4f4b6109b4c63c531630a31b68c8d4377fd1ea23051d7a",
+    "bytes": 349,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "edit": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/edit--v1.png",
+    "sha256": "637b27aaea334ac9494eb8ba7d09c3d0960d3ffc792583b0c42ba36f240abe14",
+    "bytes": 502,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "image": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/image.png",
+    "sha256": "a2fc37dd747b594dc7f90511dead34ce902781ace7dba3c1b32d08d770bbb841",
+    "bytes": 630,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "sun": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/sun--v1.png",
+    "sha256": "22eadfd452ee03fcd1b87b7ed0d3bbde94b1b5ab72166b89222562979ed9dfe4",
+    "bytes": 888,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "list": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/list.png",
+    "sha256": "ee2654064cc5eb04902b8b7ca55496e79325363176216ddff89d3b0382e211c6",
+    "bytes": 225,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "unlock": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/unlock.png",
+    "sha256": "13865532dcdc2e6f3388c4635a51c81dd47b190d40eafe2fed59a8fee9276b45",
+    "bytes": 788,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "location": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/map-marker.png",
+    "sha256": "80a9f2b5b2f7d36414a7671ab5c824373a220c90235d5c79b9ff9ba2263cfe2f",
+    "bytes": 1408,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "phone": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/phone.png",
+    "sha256": "072f7ad051e63cedd8a798d151845595d40e8b1e6815c3b99ac345a7749cff23",
+    "bytes": 1229,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "mail": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/new-post.png",
+    "sha256": "1daeccede4b4c434c5c541926a09bc571117a92cfd4dcc2ae783046e79f9e9cb",
+    "bytes": 746,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "bolt": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/lightning-bolt--v1.png",
+    "sha256": "2756c84a2ee6f18dc989143c4c437b6222ae12051ffbe68df7533d05a481b1ed",
+    "bytes": 986,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "battery": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/battery--v1.png",
+    "sha256": "9dde61b50555155f679ad0624652e86214a38a8a6cb7eb95b79462f045b2b268",
+    "bytes": 417,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "storage": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/database.png",
+    "sha256": "7a510b30a1a3d74fd2e70bf354b96072c10a94f84fbe4fc4be4810b07731395a",
+    "bytes": 901,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "accessibility": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/accessibility2.png",
+    "sha256": "faa98dbaf5e801e01dad3fea232df2911077c60b76a628a5ecb0b5f63d8ca025",
+    "bytes": 1845,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "sport": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/trophy.png",
+    "sha256": "5553a27c58c83c1ecb56d2ffe86b5778627c66d6f23a13a4f21421dad18d79f2",
+    "bytes": 1360,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "history": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/time-machine.png",
+    "sha256": "d0388b9b3d1e086c826d127333d8c634d9a5dd7c6bc965d1e970b5dc90cb2a74",
+    "bytes": 1276,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  },
+  "weather": {
+    "url": "https://img.icons8.com/ios/50/e7e9ef/partly-cloudy-day--v1.png",
+    "sha256": "42c29ce8b93e6b6f47bfbaa51c9b51eab4843fc0035af00ac0390102eff5dc85",
+    "bytes": 1180,
+    "size": [
+      50,
+      50
+    ],
+    "copyright": "Icons8",
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+  }
+}

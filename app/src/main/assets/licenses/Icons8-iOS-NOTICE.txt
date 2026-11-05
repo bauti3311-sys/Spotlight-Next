@@ -14,3 +14,8 @@ Common commands migrated; specialist glyphs outside this scene retain their exis
 Additional same-source scene controls: security-checked, speech-bubble.
 
 Settings navigation additions on 2026-10-23: monitor, keyboard, squared-menu, sparkling, horizontal-settings-mixer--v1. Same Icons8 iOS50 source and attribution.
+
+Focus E1 additions, 2026-11-05: iOS50 PNG only, same source/attribution as above.
+Source URLs, SHA-256 and dimensions: docs/verification/focus-integrated-20261105/icons-provenance.json.
+No standalone icon pack is distributed. Current license page retrieval returned HTTP403;
+license basis is the existing in-project Icons8 iOS attribution notice, not a claim of fresh terms validation.

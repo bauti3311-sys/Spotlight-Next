@@ -22,7 +22,7 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
 @Composable private fun NextCard(title:String,detail:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Info,content:@Composable ColumnScope.()->Unit={}) {
     Surface(shape=RoundedCornerShape(14.dp),color=MaterialTheme.colorScheme.surfaceContainerLow,border=BorderStroke(1.dp,MaterialTheme.colorScheme.outlineVariant)) {
         Column(Modifier.fillMaxWidth().padding(14.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
-            Row(horizontalArrangement=Arrangement.spacedBy(12.dp)){Icon(icon,null,Modifier.size(22.dp),tint=MaterialTheme.colorScheme.primary);Column(Modifier.weight(1f)){Text(title,style=MaterialTheme.typography.titleSmall);if(detail.isNotBlank())Text(detail,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}}
+            Row(horizontalArrangement=Arrangement.spacedBy(12.dp)){IosCommandIcon(icon,null,Modifier.size(22.dp),tint=MaterialTheme.colorScheme.primary);Column(Modifier.weight(1f)){Text(title,style=MaterialTheme.typography.titleSmall);if(detail.isNotBlank())Text(detail,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)}}
             content()
         }
     }
@@ -107,7 +107,7 @@ private fun stamp(value:Long)=DateFormat.getDateTimeInstance(DateFormat.SHORT,Da
         OutlinedTextField(city,{city=it.take(100)},label={Text("Localidad")},singleLine=true,modifier=Modifier.fillMaxWidth())
         Row{TextButton(enabled=!busy,onClick={coordinates=null;requested=city.ifBlank{primary};revision++}){Text("Consultar")};TextButton(enabled=!busy,onClick={coordinates=null;city=primary;requested=city;revision++}){Text("Ciudad principal")}}
         Row(Modifier.horizontalScroll(rememberScrollState())){TextButton(onClick={primary=city.ifBlank{"Mar del Plata"};prefs.edit().putString("primary_city",primary).apply()}){Text("Usar como ciudad principal")};TextButton(onClick={if(city.isNotBlank()){cities=(cities+city).take(8).toSet();prefs.edit().putStringSet("cities",cities).apply()}}){Text("Guardar ciudad")}}
-        if(cities.isNotEmpty())Row(Modifier.horizontalScroll(rememberScrollState())){cities.forEach{saved->InputChip(saved==requested,{coordinates=null;city=saved;requested=saved;revision++},label={Text(saved)},trailingIcon={IconButton(onClick={cities=cities-saved;prefs.edit().putStringSet("cities",cities).apply()},modifier=Modifier.size(24.dp)){Icon(CommandIcons.Close,"Quitar ciudad",Modifier.size(14.dp))}})}}
+        if(cities.isNotEmpty())Row(Modifier.horizontalScroll(rememberScrollState())){cities.forEach{saved->InputChip(saved==requested,{coordinates=null;city=saved;requested=saved;revision++},label={Text(saved)},trailingIcon={IconButton(onClick={cities=cities-saved;prefs.edit().putStringSet("cities",cities).apply()},modifier=Modifier.size(24.dp)){IosCommandIcon(CommandIcons.Close,"Quitar ciudad",Modifier.size(14.dp))}})}}
         TextButton(onClick={
             if(androidx.core.content.ContextCompat.checkSelfPermission(app,android.Manifest.permission.ACCESS_COARSE_LOCATION)!=android.content.pm.PackageManager.PERMISSION_GRANTED){onAction(Action.Access("location","clima"));return@TextButton}
             scope.launch {val latest=withContext(Dispatchers.IO){val lm=app.getSystemService(android.location.LocationManager::class.java);lm.getProviders(true).mapNotNull{provider->runCatching{lm.getLastKnownLocation(provider)}.getOrNull()}.filter{System.currentTimeMillis()-it.time in 0..3600000}.maxByOrNull{it.time}}

@@ -80,20 +80,21 @@ object GlassTokens {
     fun actionOpacity(c:Config)=c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: 1f
     fun settingsOpacity(c:Config)=c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .99f
     fun actionColor(c:Config,dark:Boolean)=
-        (if(dark && c.preset=="glass")Color(0xFF20212B) else if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
+        (if(c.focusInterface){if(dark)Color(0xFF26282C) else Color(0xFFFAF8F3)} else if(dark && c.preset=="glass")Color(0xFF20212B) else if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)
         listOf(Color(0xFFC7CBD4).copy(alpha=.17f*amount),Color(0xFFBFC3CC).copy(alpha=.11f*amount))
         else listOf(.09f,.05f).map{Color.Black.copy(alpha=it*amount)}
     fun selectionDuration(c:Config)=when(c.movement){"precise"->55;"liquid_immersive"->125;else->90}
 }
+private fun opacityForFocus(c:Config,legible:Boolean)=if(legible)maxOf(.90f,GlassTokens.opacity(c)) else GlassTokens.opacity(c)
 @Composable fun Modifier.glassSurface(c:Config, legibleBackdrop:Boolean=false):Modifier {
     val colors=MaterialTheme.colorScheme
     val premium=LocalPremiumReview.current
     val shape=RoundedCornerShape(if(premium)26.dp else GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
-    val material=if(premium)listOf(colors.surface.copy(alpha=1f),colors.surfaceContainerLow.copy(alpha=1f))
+    val material=if(c.focusInterface)listOf(colors.surface.copy(alpha=opacityForFocus(c,legibleBackdrop)),colors.surfaceContainerLow.copy(alpha=opacityForFocus(c,legibleBackdrop))) else if(premium)listOf(colors.surface.copy(alpha=1f),colors.surfaceContainerLow.copy(alpha=1f))
         else GlassTokens.windowColors(c,dark,legibleBackdrop)
-    return shadow(18.dp,shape,clip=false,
+    return shadow(if(c.focusInterface)c.shadowSize.dp else 18.dp,shape,clip=false,
             ambientColor=Color.Black.copy(alpha=.18f),spotColor=Color.Black.copy(alpha=.30f))
         .clip(shape)
         .background(Brush.verticalGradient(material))
