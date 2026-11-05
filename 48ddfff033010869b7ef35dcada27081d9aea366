@@ -5,3 +5,11 @@ Remoto87c75aa; fuente localffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7; tooling loc
 Dos pushes normales rechazados fatal error in commit_refs y alternativa GitAPI primerblob HTTP503. No más reintentos.
 Recuperar transporte, verificar HEAD/reserva, publicar fast-forward ambos commits del bundle local, comprobar par remoto y pedir autorización65 antes de nueva reserva de entrega.
 Ver docs/NATIVE65-PREPARATION-20261105.md.
+
+RECUPERACIÓN DE PUBLICACIÓN COMPLETADA — 2026-11-05.
+La situación de publicación bloqueada descrita en el commit/documentación anterior queda superada por esta nota; commits originales conservados sin recreación ni modificaciones.
+Autenticación GH_TOKEN operativa para bauti3311-sys, push=true; árbol local limpio. Base87c75aa confirmada, reserva propia nueva codex-6c597d0c-6de7-4125-97bf-37f6ec860970.
+Push normal correcto:87c75aa ->48ddfff033010869b7ef35dcada27081d9aea366. Verificación independiente por git ls-remote y API GitHub: HEAD48ddfff, padreffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7, padre de fuente87c75aa. PR21 OPEN/draft. Main47259ce intacto.
+Fuente Preview65:ffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7. Workflow/manifiesto:48ddfff033010869b7ef35dcada27081d9aea366.
+Preview65 publicada y lista para solicitar autorización del par exacto; NO autorizada ni ejecutada. No código cambiado, commits nuevos de app, builds, pruebas repetidas, APK, Actions, preflight o firma. Evidencia15 dirigidas/19 offline/lint0E26W1Info se conserva sin nueva ejecución.
+Entrega futura sólo tras autorización específica: nueva reserva propia checkpoint=workflow, verificación HEAD/historial, único native-delivery con par exacto y AUTHORIZE_PREVIEW_65_ONCE, sin retry/fallback, procedimiento existente. Esta reserva de recuperación se libera atómicamente junto con esta nota; no reutilizarla.
