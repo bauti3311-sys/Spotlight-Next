@@ -34,7 +34,7 @@ private fun mediaTime(ms:Long):String {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
             s.artwork?.let { artwork ->
                 Image(artwork.asImageBitmap(),contentDescription="Portada de la sesión",contentScale=ContentScale.Crop,
-                    modifier=Modifier.size(if(premium)112.dp else 64.dp).clip(RoundedCornerShape(if(premium)16.dp else 8.dp)))
+                    modifier=Modifier.size(if(premium && LocalInspectorReviewBudget.current>=420f)112.dp else 64.dp).clip(RoundedCornerShape(if(premium)16.dp else 8.dp)))
             }
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
                 Text(s.title.ifBlank{"Título no disponible"},style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=TextOverflow.Ellipsis)

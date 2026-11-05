@@ -27,3 +27,4 @@ internal object PremiumMaterial {
 /** Review-only opt-in. No saved preference, no launcher action, no change to shipped defaults.
  * The owner reviews real Compose comparisons before adopting material composition changes. */
 internal val LocalPremiumReview = staticCompositionLocalOf { false }
+internal val LocalInspectorReviewBudget = staticCompositionLocalOf { Float.POSITIVE_INFINITY }

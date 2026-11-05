@@ -24,8 +24,8 @@ import dev.bautista.spotlight.search.Result
     val shape=RoundedCornerShape(18.dp)
     Column(Modifier.fillMaxWidth().background(colors.surfaceContainerHigh,shape)
         .border(.75.dp,colors.outlineVariant.copy(alpha=.65f),shape)
-        .padding(if(compact)14.dp else 20.dp),verticalArrangement=Arrangement.spacedBy(if(compact)10.dp else 16.dp)) {
-        PremiumSectionLabel(kind)
+        .padding(if(compact)12.dp else 20.dp),verticalArrangement=Arrangement.spacedBy(if(compact)6.dp else 16.dp)) {
+        if(!compact)PremiumSectionLabel(kind)
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
             Box(Modifier.size(if(compact)48.dp else 64.dp).background(colors.primaryContainer,RoundedCornerShape(15.dp)),contentAlignment=Alignment.Center) {
                 ResultIcon(item,Modifier.size(if(application)44.dp else 30.dp),colors.primary)

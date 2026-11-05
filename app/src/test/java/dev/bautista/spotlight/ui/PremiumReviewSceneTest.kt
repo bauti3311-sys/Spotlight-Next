@@ -102,7 +102,7 @@ class PremiumReviewSceneTest {
         ui.waitUntil(15000){ui.onAllNodesWithTag("result:suggest:app:com.spotify.music").fetchSemanticsNodes().isNotEmpty()}
         capture(profile,"home");fits()
         query("Vi");ui.waitUntil(15000){ui.onAllNodesWithTag("result:com.vivaldi.browser/Main").fetchSemanticsNodes().isNotEmpty()}
-        capture(profile,"search");select("com.vivaldi.browser")
+        capture(profile,"search");query("Vivaldi");select("com.vivaldi.browser")
         ui.waitUntil(15000){ui.onAllNodesWithText("7.2-fixture").fetchSemanticsNodes().isNotEmpty()}
         capture(profile,"app");fits()
         ui.runOnIdle{viewport=330f};ui.waitForIdle();capture(profile,"app-ime");fits()

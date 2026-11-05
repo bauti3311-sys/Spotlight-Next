@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.PremiumInteractionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-05T02:05:49" hostname="d6fbf1b305fb" time="19.372">
+  <properties/>
+  <testcase name="fadeDoesNotDuplicateContentResizeItsOwnerOrTakeEditorFocus" classname="dev.bautista.spotlight.ui.PremiumInteractionTest" time="18.602"/>
+  <testcase name="touchFooterKeepsIndependentAccessibleCallbacksAtTwoHundredPercentText" classname="dev.bautista.spotlight.ui.PremiumInteractionTest" time="0.77"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

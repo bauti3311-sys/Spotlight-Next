@@ -1140,7 +1140,7 @@ fun SpotlightPanel(
                                 }
                                 if(!actionsOnly && (richPreview || PreviewPresentation.isApplication(item))) {
                                 if(LocalPremiumReview.current && item.category=="Archivos")PremiumInspectorHeader(item,"Archivos",
-                                    if(item.mime=="application/pdf")"Documento PDF" else item.mime ?: "Archivo seleccionado",application=false)
+                                    if(item.mime=="application/pdf")"Documento PDF" else item.mime ?: "Archivo seleccionado",application=false,compact=LocalInspectorReviewBudget.current<420f)
                                 else Row(verticalAlignment = Alignment.CenterVertically) {
                                     ResultIcon(item,Modifier.size(if(PreviewPresentation.isApplication(item))40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
                                     Spacer(Modifier.width(12.dp))
@@ -1511,6 +1511,7 @@ fun SpotlightPanel(
                                     PreviewPresentation.isApplication(it) &&
                                         (it.action as? Action.Launch)?.intent?.component?.packageName==accentPackage
                                 }?.icon
+                                CompositionLocalProvider(LocalInspectorReviewBudget provides viewport.value) {
                                 InspectorTheme(accentPackage,accentIcon) {
                                 Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
                                     if(!widePreview || expandedPreview)inspectorToolbar()
@@ -1526,7 +1527,10 @@ fun SpotlightPanel(
                                     val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
                                         ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
                                         ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"
-                                    ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                    if(LocalPremiumReview.current)PremiumInspectorReveal(taskKey,LocalMotion.current) {
+                                        ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                    } else ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                }
                                 }
                                 }
                             }

@@ -1,0 +1,55 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreviewUnitTest UP-TO-DATE
+> Task :app:mergeRaycastPreviewShaders UP-TO-DATE
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets UP-TO-DATE
+> Task :app:packageRaycastPreviewUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestConfig UP-TO-DATE
+> Task :app:compileRaycastPreviewKotlin
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:bundleRaycastPreviewClassesToRuntimeJar
+> Task :app:bundleRaycastPreviewClassesToCompileJar
+> Task :app:processRaycastPreviewJavaRes
+
+> Task :app:compileRaycastPreviewUnitTestKotlin
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/PremiumReviewSceneTest.kt:45:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+
+> Task :app:compileRaycastPreviewUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processRaycastPreviewUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+OpenGLRenderer W 11-05 02:03:39  7712  7741 Trying to start new animators on 0x7f566b088d10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 02:03:41  7712  7741 Trying to start new animators on 0x7f566b8458b0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 02:03:42  7712  7741 Trying to start new animators on 0x7f565f3d2310 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 02:03:44  7712  7741 Trying to start new animators on 0x7f5661a4f260 (UnprojectedRipple) without an animation handle!
+
+> Task :app:finalizeTestRoborazziRaycastPreview SKIPPED
+
+BUILD SUCCESSFUL in 1m 11s
+29 actionable tasks: 6 executed, 23 up-to-date

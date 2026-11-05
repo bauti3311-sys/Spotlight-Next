@@ -54,7 +54,7 @@ import kotlinx.coroutines.withContext
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
         if(premium)PremiumInspectorHeader(item,
             when(packageName){"com.spotify.music"->"Música";"com.whatsapp","com.whatsapp.w4b"->"Mensajería";"com.vivaldi.browser","com.android.chrome"->"Navegador";else->"Aplicación"},
-            if(playing)"En reproducción" else "Aplicación instalada",compact=packageName=="com.spotify.music" && mediaContent!=null,
+            if(playing)"En reproducción" else "Aplicación instalada",compact=LocalInspectorReviewBudget.current<420f || packageName=="com.spotify.music" && mediaContent!=null,
             onSearch=if(packageName=="com.spotify.music")({spotifySearch=!spotifySearch}) else null)
         else Row(Modifier.fillMaxWidth().heightIn(min=(46f*d).coerceAtLeast(40f).dp),verticalAlignment=Alignment.CenterVertically,
             horizontalArrangement=Arrangement.spacedBy((12f*d).dp)) {
