@@ -109,7 +109,9 @@ internal object InspectorAccent {
     val palette = remember(base, accent) { InspectorAccent.palette(base, accent) }
     MaterialTheme(colorScheme = palette) {
         CompositionLocalProvider(LocalContentColor provides palette.onSurface) {
-            Box(Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(
+            Box(Modifier.fillMaxWidth()
+                .then(if(LocalPremiumReview.current)Modifier.background(palette.surfaceContainerLow) else Modifier)
+                .background(Brush.verticalGradient(listOf(
                 palette.primary.copy(alpha = .025f), Color.Transparent)))
                 .drawBehind {
                     val x=if(layoutDirection==androidx.compose.ui.unit.LayoutDirection.Rtl)size.width-1.dp.toPx() else 1.dp.toPx()

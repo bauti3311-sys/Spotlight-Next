@@ -42,6 +42,7 @@ import kotlinx.coroutines.withContext
     val colors=MaterialTheme.colorScheme
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
+    val premium=LocalPremiumReview.current
     val context=LocalContext.current
     var version by remember(packageName) { mutableStateOf<String?>(null) }
     var spotifySearch by remember(packageName) { mutableStateOf(false) }
@@ -51,7 +52,11 @@ import kotlinx.coroutines.withContext
         } }
     }
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
-        Row(Modifier.fillMaxWidth().heightIn(min=(46f*d).coerceAtLeast(40f).dp),verticalAlignment=Alignment.CenterVertically,
+        if(premium)PremiumInspectorHeader(item,
+            when(packageName){"com.spotify.music"->"Música";"com.whatsapp","com.whatsapp.w4b"->"Mensajería";"com.vivaldi.browser","com.android.chrome"->"Navegador";else->"Aplicación"},
+            if(playing)"En reproducción" else "Aplicación instalada",compact=packageName=="com.spotify.music" && mediaContent!=null,
+            onSearch=if(packageName=="com.spotify.music")({spotifySearch=!spotifySearch}) else null)
+        else Row(Modifier.fillMaxWidth().heightIn(min=(46f*d).coerceAtLeast(40f).dp),verticalAlignment=Alignment.CenterVertically,
             horizontalArrangement=Arrangement.spacedBy((12f*d).dp)) {
             ResultIcon(item,Modifier.size((42f*d).coerceIn(36f,48f).dp))
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
@@ -65,6 +70,8 @@ import kotlinx.coroutines.withContext
             }
         }
         mediaContent?.invoke()
+        if(premium && packageName in setOf("com.whatsapp","com.whatsapp.w4b"))
+            Text("La conversación y el envío se confirman en WhatsApp.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
         if(packageName=="com.spotify.music" && spotifySearch) {
             (context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.let { SpotifySearchPanel(it) }
             TextButton(onClick={spotifySearch=false}) { Text("Cerrar búsqueda de Spotify") }
@@ -78,7 +85,12 @@ import kotlinx.coroutines.withContext
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=GlassTokens.scaledSp(14.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
-        if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy((8f*d).dp)) {
+        if(premium && embedded)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+            PremiumSectionLabel("Accesos")
+            InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
+            InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",R.drawable.inspector_ios_star,onClick=onFavorite)
+        }
+        else if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy((8f*d).dp)) {
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo,modifier=Modifier.weight(1f))
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite,modifier=Modifier.weight(1f))

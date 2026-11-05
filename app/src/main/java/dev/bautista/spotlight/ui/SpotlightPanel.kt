@@ -1139,7 +1139,9 @@ fun SpotlightPanel(
                                     }
                                 }
                                 if(!actionsOnly && (richPreview || PreviewPresentation.isApplication(item))) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                if(LocalPremiumReview.current && item.category=="Archivos")PremiumInspectorHeader(item,"Archivos",
+                                    if(item.mime=="application/pdf")"Documento PDF" else item.mime ?: "Archivo seleccionado",application=false)
+                                else Row(verticalAlignment = Alignment.CenterVertically) {
                                     ResultIcon(item,Modifier.size(if(PreviewPresentation.isApplication(item))40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
                                     Spacer(Modifier.width(12.dp))
                                     Column(Modifier.weight(1f)) {
@@ -1512,6 +1514,15 @@ fun SpotlightPanel(
                                 InspectorTheme(accentPackage,accentIcon) {
                                 Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
                                     if(!widePreview || expandedPreview)inspectorToolbar()
+                                    if(LocalPremiumReview.current && taskInspector)Box(Modifier.padding(horizontal=18.dp,vertical=10.dp)) {
+                                        PremiumSectionLabel(when {
+                                            pendingAsk!=null || showAi->"Inteligencia artificial"
+                                            systemPage?.page=="file-share"->"Archivos"
+                                            searchForm!=null->"Búsqueda"
+                                            messageForm!=null->"Contenido"
+                                            else->"Acción preparada"
+                                        })
+                                    }
                                     val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
                                         ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
                                         ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"

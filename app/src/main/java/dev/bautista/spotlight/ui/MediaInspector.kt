@@ -27,12 +27,14 @@ private fun mediaTime(ms:Long):String {
 @Composable fun MediaInspector(snapshot:MediaSnapshot,onCommand:(String)->Unit,onSeek:(Long)->Unit) {
     val s=snapshot
     val colors=MaterialTheme.colorScheme
+    val premium=LocalPremiumReview.current
     var dragging by remember(s.token,s.title,s.duration){mutableStateOf<Float?>(null)}
     Column(Modifier.fillMaxWidth().testTag("media-inspector").padding(top=12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        if(premium)PremiumSectionLabel("Reproducción")
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
             s.artwork?.let { artwork ->
                 Image(artwork.asImageBitmap(),contentDescription="Portada de la sesión",contentScale=ContentScale.Crop,
-                    modifier=Modifier.size(64.dp).clip(RoundedCornerShape(8.dp)))
+                    modifier=Modifier.size(if(premium)112.dp else 64.dp).clip(RoundedCornerShape(if(premium)16.dp else 8.dp)))
             }
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
                 Text(s.title.ifBlank{"Título no disponible"},style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=TextOverflow.Ellipsis)
