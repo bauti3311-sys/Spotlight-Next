@@ -13,6 +13,9 @@ de lectura de los URI sintéticos. C1/C2 conservados; sin APK/firma/Actions/main
 Par71d6980/a82af60 pausado y conservado como histórico. Nueva fuente es el commit
 de correcciones; tooling posterior fija fuente=base validada sin delta. Presentar
 SHA nuevos para autorización expresa; liberar sólo reserva propia con notas.
+Fuente nueva exacta ef4e60fcd94c33279581dc247461f227274e66b1; metadata63 ya
+heredada, sin otro delta de aplicación. El commit del manifiesto es el nuevo
+workflow. No ejecutar el par antiguo ni convertir esta preparación en autorización.
 
 ## 2026-11-05 — Preview63 preparada, esperando autorización de ejecución
 

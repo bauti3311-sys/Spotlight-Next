@@ -1,0 +1,18 @@
+test_exact_owner_revisions_live_lease_and_first_attempt_pass (test_preview_delivery.Native60PolicyTest.test_exact_owner_revisions_live_lease_and_first_attempt_pass) ... ok
+test_foreign_or_updated_reservation_fails_closed (test_preview_delivery.Native60PolicyTest.test_foreign_or_updated_reservation_fails_closed) ... ok
+test_missing_current_run_history_fails_closed (test_preview_delivery.Native60PolicyTest.test_missing_current_run_history_fails_closed) ... ok
+test_reruns_are_rejected (test_preview_delivery.Native60PolicyTest.test_reruns_are_rejected) ... ok
+test_reviewed_workflow_cannot_be_replaced_by_current_branch_head (test_preview_delivery.Native60PolicyTest.test_reviewed_workflow_cannot_be_replaced_by_current_branch_head) ... ok
+test_second_fresh_dispatch_after_even_a_failed_attempt_is_rejected (test_preview_delivery.Native60PolicyTest.test_second_fresh_dispatch_after_even_a_failed_attempt_is_rejected) ... ok
+test_wrong_actor_repository_branch_event_or_source_never_pass (test_preview_delivery.Native60PolicyTest.test_wrong_actor_repository_branch_event_or_source_never_pass) ... ok
+test_correct_delivery_metadata (test_preview_delivery.Native60ArtifactTest.test_correct_delivery_metadata) ... ok
+test_exact_source_comment_and_no_private_material (test_preview_delivery.Native60ArtifactTest.test_exact_source_comment_and_no_private_material) ... ok
+test_main_wrong_duplicate_or_unsigned_signature_is_rejected (test_preview_delivery.Native60ArtifactTest.test_main_wrong_duplicate_or_unsigned_signature_is_rejected) ... ok
+test_old_main_debuggable_sdk_or_wrong_abi_rejected (test_preview_delivery.Native60ArtifactTest.test_old_main_debuggable_sdk_or_wrong_abi_rejected) ... ok
+test_private_paths_traversal_and_symlinks_are_rejected (test_preview_delivery.Native60ArtifactTest.test_private_paths_traversal_and_symlinks_are_rejected) ... ok
+test_single_historical_v2_certificate (test_preview_delivery.Native60ArtifactTest.test_single_historical_v2_certificate) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.003s
+
+OK

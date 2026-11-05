@@ -1,5 +1,19 @@
 # Entrega nativa Preview — procedimiento autónomo restringido
 
+## Vigente tras prueba física62 — candidata63 renovada, NO ejecutar
+
+Par71d6980/a82af60 histórico PAUSADO por el propietario. Fuente nueva y base
+funcional idénticas:ef4e60fcd94c33279581dc247461f227274e66b1, con correcciones
+de tablet505507a y menú/validación ef4e60f. Code63, paquete/certificado yUS$0
+conservados. Manifiesto con delta permitido vacío: no hay código adicional sobre
+la fuente probada. El commit de tooling que fija este manifiesto es el SHA workflow
+nuevo a presentar para autorización expresa. Guardas, workflow y firmador intactos.
+No utilizar el par anterior, no build APK/firma/preflight real/Actions ahora.
+Ver [diagnóstico/evidencia](TABLET62-REGRESSIONS-20261105.md) y preparación63.
+Para el único intento posterior adquirir reserva nueva propia checkpoint=workflow
+autorizado; no reutilizar la reserva de corrección liberada. Sin retry/fallback,
+main/C3–C9 ni cambios de facturación. Las secciones inferiores son históricas.
+
 ## Vigente05/11 — Preview63 preparada, ejecución NO autorizada
 
 Fuente71d6980e50e6206776014946a2a606521fad9fd8, base funcional C2 cerrado

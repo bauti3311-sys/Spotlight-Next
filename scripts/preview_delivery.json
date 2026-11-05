@@ -1,6 +1,6 @@
 {
-  "source_sha": "71d6980e50e6206776014946a2a606521fad9fd8",
-  "functional_base_sha": "261eef4669f775b3257b707953c6987d374a1d10",
+  "source_sha": "ef4e60fcd94c33279581dc247461f227274e66b1",
+  "functional_base_sha": "ef4e60fcd94c33279581dc247461f227274e66b1",
   "version_code": 63,
   "version_name": "2.0.1-raycast-preview-native57-v63",
   "previous_version_code": 62,
@@ -8,8 +8,5 @@
   "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
   "budget_usd": 0,
   "stop_on_limit": true,
-  "allowed_delta_paths": [
-    "app/build.gradle.kts",
-    "docs/NATIVE63-PREPARATION-20261105.md"
-  ]
+  "allowed_delta_paths": []
 }

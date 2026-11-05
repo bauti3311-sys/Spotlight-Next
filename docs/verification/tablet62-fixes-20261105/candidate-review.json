@@ -1,0 +1,18 @@
+{
+  "source_sha": "ef4e60fcd94c33279581dc247461f227274e66b1",
+  "functional_base_sha": "ef4e60fcd94c33279581dc247461f227274e66b1",
+  "allowed_delta_paths": [],
+  "version_code": 63,
+  "previous_version_code": 62,
+  "budget_usd": 0,
+  "stop_on_limit": true,
+  "app_delta_after_validated_source": false,
+  "source_hashes_match_validated_files": true,
+  "existing_evidence_hashes_verified": true,
+  "workflow_and_guards_unchanged": true,
+  "historical_paused_source": "71d6980e50e6206776014946a2a606521fad9fd8",
+  "historical_paused_workflow": "a82af60a8e212364a8f40ed3a9af49323bfa7983",
+  "apk_built": false,
+  "signer_executed": false,
+  "actions_dispatched": false
+}

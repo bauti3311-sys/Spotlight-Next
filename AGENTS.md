@@ -9,6 +9,10 @@ pruebas dirigidas/Lint/capturas Compose comparables; C1/C2 íntegros. El par
 par nuevo tras verificar; no APK/firma/Actions/main/C3–C9. La compilación y
 ejecución de pruebas locales sí están autorizadas para estas correcciones.
 Ver docs/TABLET62-REGRESSIONS-20261105.md. La evidencia Compose no acepta OneUI.
+Candidata renovada:fuente/base ef4e60fcd94c33279581dc247461f227274e66b1,
+28 casos distintos de última evidencia correcta y Lint0E/27W/1Info. El manifiesto
+posterior fija ese SHA sin delta; presentar nuevo workflow exacto y esperar
+autorización. El par anterior no está autorizado ni debe usarse para63.
 
 ## Preview63 — sólo preparación autorizada05/11
 
