@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SpotifyIntegrationFlowTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:21:34" hostname="52363180d3ce" time="4.234">
+  <properties/>
+  <testcase name="savingPublicClientIdNeverStartsAuthorizationOrCreatesTokens" classname="dev.bautista.spotlight.ui.SpotifyIntegrationFlowTest" time="4.111"/>
+  <testcase name="disconnectedInspectorOffersConfigurationWithoutRemoteQueries" classname="dev.bautista.spotlight.ui.SpotifyIntegrationFlowTest" time="0.123"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

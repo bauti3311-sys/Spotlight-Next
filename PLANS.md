@@ -1,3 +1,14 @@
+## Preview65 — preparación local verificada, infraestructura bloquea publicación
+
+Base87c75aa confirmada enPR21. Fuente localffc74d2: code65, nombrev65,
+extracción equivalente de controles Spotify para cobertura realCompose.15 casos
+correctos/lint0E26W1Info/19 offline. NoAPK/Actions/main ni features nuevas.
+Dos pushes commit_refs y POSTGitblob HTTP503; no se publicó fuente/tooling.
+Ver docs/NATIVE65-PREPARATION-20261105.md. No confundir candidata local con
+par remoto autorizable. Siguiente: recuperar transporte, verificar reserva/HEAD,
+publicar fast-forward ambos commits conservados, comprobar par y solicitar
+autorización. Física65 antes deC3; FocusB/aprobaciones visuales conservadas.
+
 ## 2026-11-05 — Spotify: reproducción Web en dispositivo activo
 
 Prioridad expresa después del checkpoint4546c55: conectar playSelection existente

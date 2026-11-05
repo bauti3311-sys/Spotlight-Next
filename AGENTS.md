@@ -1,3 +1,15 @@
+## Preview65 — preparación local, publicación bloqueada 2026-11-05
+
+Fuente local ffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7: numeración65 y
+controles Spotify existentes extraídos para3 pruebasCompose sin diseño nuevo.
+15 casos dirigidos correctos, lint0E26W1Info,19 checks offline entrega/identidad.
+Ver docs/NATIVE65-PREPARATION-20261105.md. Fuente y tooling aún NO publicados:
+dos pushes rechazados commit_refs; alternativa API Git HTTP503 antes del primer
+blob. Remoto sigue87c75aa/PR21 borrador. No retry infinito/force/Actions/APK.
+Recuperar transporte y verificar HEAD/reserva antes de publicar fast-forward y
+presentar par remoto fuente/workflow para autorización nueva de65. Focus B,
+homónimos, Web/AppRemote, firma y paquete íntegros. C3–C9 después de física65.
+
 ## Spotify Web API — corrección acotada autorizada 2026-11-05
 
 Desde4546c55 (Focus B completado, conservarlo), ruta explícita de reproducción en
