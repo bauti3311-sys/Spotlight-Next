@@ -109,3 +109,5 @@ Los31 PNG utilitarios complementarios suman27.901bytes de archivos fuente, no un
 |D40 checkpoints|Evidencia local reproducible, reserva propia, PR borrador y main intacta; sin APK ni Actions.|
 
 **Estado:** E1–E5 integrados técnicamente como candidata reversible en producción. Falta aprobación de adopción visual y validación física. El manifiesto ejecutable de entrega de Preview63 queda histórico, intacto y no reutilizable para esta fuente. La siguiente candidata APK requiere numeración/manifest revisados y autorización nueva para el par exacto; esta fase sólo entrega una candidata de fuente para revisión estética.
+
+Fuente productiva congelada de esta candidata: `8d560828369e2fbd35957808cad66ae4a4a2895d`. Preparación de aprobación visual y límites de la próxima entrega en [review-candidate.json](verification/focus-integrated-20261105/review-candidate.json). No es un par autorizado de build; versión64 es una propuesta no aplicada. El siguiente paso de release se prepara tras aceptar la composición para evitar fijar una fuente que todavía deba cambiar de valor por defecto.

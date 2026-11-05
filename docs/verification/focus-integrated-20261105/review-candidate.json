@@ -1,0 +1,43 @@
+{
+  "status": "production-visual-candidate-awaiting-adoption-review",
+  "source_sha": "8d560828369e2fbd35957808cad66ae4a4a2895d",
+  "branch": "feat/preview57-native-return-20261103",
+  "pr": 21,
+  "focus_available_in": "Apariencia → Spotlight Focus",
+  "default_enabled": false,
+  "legacy_recovery": true,
+  "apk_generated": false,
+  "actions_executed": false,
+  "build_authorized": false,
+  "budget_usd": 0,
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256_required": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "current_source_version_code": 63,
+  "next_version_code_proposal": 64,
+  "next_version_applied": false,
+  "executable_delivery_manifest": "scripts/preview_delivery.json remains historical Preview63 and is NOT usable for this source",
+  "next_steps": [
+    "Review real integrated comparisons and approve default composition",
+    "Prepare increasing version and exact source/workflow release manifest after visual acceptance",
+    "Request express authorization for that exact pair before one attempt; stop on quota/security denial",
+    "Physical acceptance on Galaxy Tab A9+ and moto g86 before C3-C9"
+  ],
+  "evidence": {
+    "gallery": "GALERIA.md",
+    "pdf": "Comparativa-Focus.pdf",
+    "coverage": "test-coverage.json",
+    "functional_boundary": "functional-boundary.json",
+    "lint": {
+      "errors": 0,
+      "warnings": 26,
+      "information": 1
+    }
+  },
+  "artifact_sha256": {
+    "Comparativa-Focus.pdf": "003487ff8934416c5ac22ed2cbf107d2fb243a83fcb4fac8f5594622d37d2c87",
+    "captures-sha256.json": "ea08ea64d8349cf1fe3a0aebf6afc732739e28a4dad2afcb071c38bcf076d3be",
+    "test-coverage.json": "4771b4ec83255059fc21faf78ad8e6361958d4089d7072ba8b93c2e0e8a9ef76",
+    "lint.xml": "67ce952db2b2efcb11ffb38dd6b1ef9b748b114717794883ea66c4dbb2e6a381",
+    "functional-boundary.json": "206fb8bbcc154fbc03c9f80c45ebf72fe6e1ebf2285de2f1456237716ee1eff7"
+  }
+}
