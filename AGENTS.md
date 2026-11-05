@@ -1,3 +1,15 @@
+## Focus desde64 — revisión y contratos, decisión pendiente 2026-11-05
+
+Ver docs/FOCUS-CONSOLIDATION-REVIEW-20261105.md y contratosC3/C4 asociados.
+B inspector y revisión contextual son prototipos en tests, NO adoptados ni activos.
+Preservar Focus=false, recuperabilidad y estilos; no otraAPK/Actions. Defecto menor
+reproducido: cambiar contacto no invalidaba revisión; corregido en df5bd77 con
+regresión roja/verde. No está en laAPK64.11casos dirigidos/lint0E26W1Info.
+C0/C1/C2 físicos pendientes. C3/C4 sólo diseño, sin capacidades productivas nuevas.
+Próximo paso: decisión del propietario sobreB; luego integraciónacotada opt-in,
+disponibilidad/deduplicación y altura330dp/textoampliado/roles/teclado/retorno.
+No activarFocusglobal ni avanzarC3 sin sus condiciones deaceptación y autorización.
+
 ## Preview64 entregada — 2026-11-05, física pendiente
 
 Par808bda2/5b346bc expresamente autorizado, único run42082398659 attempt1 success.

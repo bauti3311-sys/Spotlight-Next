@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.ReplyConfirmationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-05T21:41:19" hostname="52363180d3ce" time="1.662">
+  <properties/>
+  <testcase name="reviewedTargetDispatchesOnceAndCannotBeRepeated" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="1.634"/>
+  <testcase name="changedConversationOrRecipientRequiresAnotherHumanReview" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.028"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Intent = Intent { act=reply.fixture.1 clip={text/vnd.android.intent hasLabel(27) {I:(has extras)}} }; Matching wrappers: []
+]]></system-err>
+</testsuite>

@@ -1067,3 +1067,28 @@ Reserva propia codex-632cb1c8-d60b-4961-8a99-6c1250741c5a se cierra con notas
 atómicas al publicar; no promover checkpoint integral ni alterar reservas ajenas.
 Autorización consumida, sin retry/fallback. Siguiente: actualización física sobre
 Preview existente sin borrar datos; OneUI/Gboard/TabA9+/moto g86 pendientes.
+
+## 2026-11-05 — revisión crítica Focus desde64 y contratosC3/C4
+
+Base remota0fa6781/fuente64=808bda2 verificada, PR21 borrador; reserva propia nueva
+codex-f1eae2fd-6eda-4cfa-ae7c-a7b404d4458b. Diagnóstico y matriz de23mejoras en
+docs/FOCUS-CONSOLIDATION-REVIEW-20261105.md. Dos propuestasB aisladas sólo test:
+acción de búsqueda visible/administración plegable e identificación app vsweb.
+18PNGCompose,8comparativas,HTMLautocontenido yPDFbreve. Fragmento382→360dp;
+revisión176→176dp, no medidas físicas deWM. Primera B438dp descartada y preservada.
+PopupActionPanel no estaba incluido en captura deventanabase; evidencia de su
+componente corregida, sin afirmar fallo de app por ese recorte.
+
+Defecto real reproducido: seleccionar otro contacto homónimo conservaba revisión.
+Fixlocalizado df5bd778019e1dc16a56c41ca8f8ad9ea4525652 invalida revisión/approvedReply
+y estadoanterior. Red/green preservados, sin envío real ni capacidadnueva. No está
+enAPK64.11casos JVM distintos verdes y lint0E/26W/1Info; no suite/APK/Actions.
+
+B noadoptadas: decisión visual pendiente y luego integraciónacotada opt-in con
+disponibilidad real,deduplicación,330dp,textoampliado,heading/roles,retorno/teclado.
+Focus=false permanece. C0/C1/C2 físicos pendientes; C3/C4 diseñados, noimplementados
+ni activados. docs/C3-C4-CONTRACT-DESIGN-20261105.md fija destinatario/canal/paquete/
+revisión efímera,mecanismos existentes y estadosSpotify autorización/solicitud/
+observación separados. No modificar planmaestrooriginal,main,checkpoints,firma,
+paquete,dependencias,permisos,motor,ranking,NativeLaunchSession oWM.
+Cerrar con notas y liberar sólo reserva propia; no promover e38eae8.

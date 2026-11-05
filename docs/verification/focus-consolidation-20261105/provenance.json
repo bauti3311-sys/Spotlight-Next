@@ -1,0 +1,32 @@
+{
+  "base_administrative_sha": "0fa67813f7ea8f461f1d8f21502bfe8f8f008c66",
+  "preview64_source_sha": "808bda2c25887d14b42665dea4c254181d72b837",
+  "safety_fix_sha": "df5bd778019e1dc16a56c41ca8f8ad9ea4525652",
+  "production_delta": "MessageEditor contact selection invalidates old confirmation; no new capability",
+  "A_components_and_protected_boundaries_unchanged_from_preview64": [
+    "app/src/main/java/dev/bautista/spotlight/ui/ApplicationInspector.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/ActionPanelView.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassContextFooter.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusDesign.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassAppearance.kt",
+    "app/src/main/java/dev/bautista/spotlight/search",
+    "app/src/main/java/dev/bautista/spotlight/control/NativeLaunchSession.kt",
+    "app/src/main/java/dev/bautista/spotlight/overlay",
+    "app/build.gradle.kts",
+    ".github/workflows",
+    "release.properties"
+  ],
+  "delivery_manifest_unchanged_from_administrative_head": true,
+  "B_status": "test-only proposals, not adopted or included in APK64",
+  "fixtures": "API33 Robolectric NATIVE; Android icon fixture; Vivaldi package main + documented search resolver; no accounts/network/sends",
+  "font_scale": 1,
+  "profiles": [
+    "phone:360dp dark/light",
+    "tablet inspector fragment:470dp dark/light"
+  ],
+  "historical_captures": "E1-E5 archived Compose renders; product code equivalent to Preview64, some Settings labels still63; never retouched",
+  "physical_one_ui_gboard_spotify_and_delivery": "not validated",
+  "new_apk_actions_merge_main": "none"
+}
