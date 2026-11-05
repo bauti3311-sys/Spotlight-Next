@@ -1,5 +1,14 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — A/B estructural, sólo prototipos Vivaldi
+
+Tras rechazo visual de dee1efd, experimentar Unified Command Surface y Spotlight
+Focus en código de pruebas, sin modificar la app ni adoptar opciones. Ocho vistas
+nuevas + cuatro referencias63, mismos datos/lienzos, métricas geométricas.
+Ver docs/verification/structural-vivaldi-20261105/README.md. Sin APK/Actions/C3–C9.
+Conservar dee1efd y C1/C2, detenerse para revisión y liberar sólo reserva propia.
+
+
 ## 2026-11-05 — Obsidian Liquid elegida, primera vertical Vivaldi
 
 Alcance autorizado: escena Vivaldi con inspector, cuatro perfiles y comparación

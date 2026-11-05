@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## A/B estructural Vivaldi — revisión pendiente05/11
+
+El propietario NO aprobó dee1efd (6,3/10); conservarlo. Sólo prototipos aislados
+Compose de Unified Command Surface y Spotlight Focus en app/src/test, cuatro
+perfiles con los mismos datos/dimensiones y comparación63. Sin adoptar, extender
+a otras pantallas, cambiar código productivo, APK/Actions ni C3–C9.
+Ver docs/verification/structural-vivaldi-20261105/README.md. Detenerse tras ocho
+vistas nuevas para aprobación visual y liberar sólo la reserva propia.
+
+
 ## Liquid — vertical Vivaldi autorizada05/11
 
 El propietario eligió Obsidian Liquid con jerarquía editorial y footer discreto.
