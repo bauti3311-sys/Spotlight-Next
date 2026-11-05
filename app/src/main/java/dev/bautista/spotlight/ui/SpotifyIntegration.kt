@@ -81,24 +81,26 @@ import kotlinx.coroutines.launch
     val connection = app.spotify
     val state by connection.state.collectAsState()
     val scope = rememberCoroutineScope()
+    val requestGate = remember { SpotifyRequestGate() }
     val context = LocalContext.current
     var query by rememberSaveable(initialQuery) { mutableStateOf(initialQuery.take(240)) }
     var typeKey by rememberSpotifyFilterType()
     val type = SpotifyItemType.entries.firstOrNull { it.api == typeKey } ?: SpotifyItemType.TRACK
     var results by remember { mutableStateOf<List<SpotifySearchItem>>(emptyList()) }
     var selected by remember { mutableStateOf<SpotifySearchItem?>(null) }
+    var webPlayback by rememberSaveable { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
     var job by remember { mutableStateOf<Job?>(null) }
     var busy by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { connection.inspect() }
     LaunchedEffect(state) { if (state != SpotifyConnectionState.AUTHORIZED) { job?.cancel(); results = emptyList(); selected = null } }
     fun action(block: suspend () -> Unit) {
-        if (busy) return
+        if (!requestGate.enter()) return
         message = ""; busy = true
-        job = scope.launch {
-            try { block() } catch (e: CancellationException) { throw e }
+        job = scope.launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            try { block() } catch (e: CancellationException) { message = "Solicitud cancelada. Si ya confirmaste reproducción, comprobá el estado: cancelar no revierte un cambio recibido por Spotify."; throw e }
             catch (e: Exception) { message = e.message ?: "Spotify no pudo completar la operación." }
-            finally { busy = false }
+            finally { busy = false; requestGate.leave() }
         }
     }
     fun searchNow() {
@@ -132,11 +134,18 @@ import kotlinx.coroutines.launch
             }
             selected?.let { item ->
                 Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)
-                Text("Se solicitará la reproducción al cliente Spotify de este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
-                Button(enabled = !busy, onClick = { action { message = connection.playback("play", item) } }) { Text("Confirmar reproducción") }
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    FilterChip(selected = webPlayback, enabled = !busy, onClick = { webPlayback = true; message = "" },
+                        label = { Text("Reproducir en dispositivo activo") })
+                    FilterChip(selected = !webPlayback, enabled = !busy, onClick = { webPlayback = false; message = "" },
+                        label = { Text("Reproducción local (App Remote)") })
+                }
+                Text(if (webPlayback) "Web API: requiere Premium y un dispositivo activo y controlable. No cambia de dispositivo ni reintenta."
+                    else "Usa Spotify en este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
+                Button(enabled = !busy, onClick = { action { message = if (webPlayback) connection.playOnActiveDevice(item) else connection.playback("play", item) } }) { Text("Confirmar reproducción") }
                 TextButton(enabled = !busy, onClick = { action {
-                    val observed = connection.observe()
-                    message = observed?.diagnose(item) ?: "Spotify no informó un dispositivo activo."
+                    val observed = if (webPlayback) connection.observeActiveDevice() else connection.observe()
+                    message = observed?.diagnose(item, if (webPlayback) "Web API" else "el cliente local") ?: "Spotify no informó un dispositivo activo."
                 } }) { Text("Comprobar reproducción") }
             }
         }

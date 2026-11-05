@@ -129,4 +129,62 @@ class SpotifyPlaybackGuardTest {
             assertNull(server.takeRequest(200,TimeUnit.MILLISECONDS))
         } finally {server.shutdown()}
     }
+    @Test fun targetedRejectionsNeverReplayTheConfirmedSelection() = runBlocking {
+        val server = MockWebServer(); server.start()
+        try {
+            val client = SpotifyPlaybackClient(OkHttpClient(), server.url("/"))
+            for (status in listOf(401, 403, 404, 429)) {
+                server.enqueue(MockResponse().setBody(active()))
+                server.enqueue(MockResponse().setResponseCode(status).setHeader("Retry-After", "30"))
+                val failure = runCatching { client.playSelection("fixture-token", item) }.exceptionOrNull() as SpotifyApiException
+                assertEquals(status, failure.status)
+                assertEquals("GET", server.takeRequest(1, TimeUnit.SECONDS)!!.method)
+                assertEquals("PUT", server.takeRequest(1, TimeUnit.SECONDS)!!.method)
+                assertNull(server.takeRequest(100, TimeUnit.MILLISECONDS))
+            }
+            assertEquals(8, server.requestCount)
+        } finally { server.shutdown() }
+    }
+
+    @Test fun concurrentConfirmationsProduceOnlyOnePlaybackMutation() = runBlocking {
+        val server = MockWebServer(); server.start()
+        try {
+            server.enqueue(MockResponse().setBody(active()).setBodyDelay(200, TimeUnit.MILLISECONDS))
+            server.enqueue(MockResponse().setResponseCode(204))
+            val client = SpotifyPlaybackClient(OkHttpClient(), server.url("/"))
+            val gate = SpotifyRequestGate()
+            suspend fun confirm() {
+                if (!gate.enter()) return
+                try { client.playSelection("fixture-token", item) } finally { gate.leave() }
+            }
+            coroutineScope {
+                val first = launch(start = CoroutineStart.UNDISPATCHED) { confirm() }
+                val second = launch(start = CoroutineStart.UNDISPATCHED) { confirm() }
+                joinAll(first, second)
+            }
+            assertEquals("GET", server.takeRequest(1, TimeUnit.SECONDS)!!.method)
+            assertEquals("PUT", server.takeRequest(1, TimeUnit.SECONDS)!!.method)
+            assertEquals(2, server.requestCount)
+            assertNull(server.takeRequest(100, TimeUnit.MILLISECONDS))
+        } finally { server.shutdown() }
+    }
+
+    @Test fun cancellingAfterThePutDoesNotReplayOrClaimToUndoIt() = runBlocking {
+        val server = MockWebServer(); server.start()
+        try {
+            server.enqueue(MockResponse().setBody(active()))
+            server.enqueue(MockResponse().setResponseCode(204).setHeadersDelay(2, TimeUnit.SECONDS))
+            val client = SpotifyPlaybackClient(OkHttpClient(), server.url("/"))
+            val job = launch(start = CoroutineStart.UNDISPATCHED) { client.playSelection("fixture-token", item) }
+            withContext(Dispatchers.IO) {
+                assertEquals("GET", server.takeRequest(2, TimeUnit.SECONDS)!!.method)
+                assertEquals("PUT", server.takeRequest(2, TimeUnit.SECONDS)!!.method)
+            }
+            job.cancelAndJoin()
+            assertTrue(job.isCancelled)
+            assertEquals(2, server.requestCount)
+            assertNull(server.takeRequest(100, TimeUnit.MILLISECONDS))
+        } finally { server.shutdown() }
+    }
+
 }
