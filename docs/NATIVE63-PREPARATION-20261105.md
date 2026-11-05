@@ -1,5 +1,9 @@
 # Preview63 — preparación, sin autorización de ejecución
 
+Actualización posterior: [Preview63 entregada y verificada](NATIVE63-DELIVERY-20261105.md)
+desde ef4e60f/b4bd17e, único intento expresamente autorizado41947253299. No
+repetir ni usar el par histórico71d6980/a82af60. Las esperas inferiores son historia.
+
 ## Actualización posterior — correcciones físicas reportadas en62
 
 El par fuente71d6980e50e6206776014946a2a606521fad9fd8 / workflow

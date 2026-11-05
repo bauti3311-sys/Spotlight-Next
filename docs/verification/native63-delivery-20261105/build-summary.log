@@ -1,0 +1,6 @@
+2026-11-05T01:18:34.7785579Z > Task :app:packageRaycastPreviewResources
+2026-11-05T01:22:11.0786618Z > Task :app:minifyRaycastPreviewWithR8
+2026-11-05T01:25:25.2793827Z > Task :app:shrinkRaycastPreviewRes
+2026-11-05T01:25:26.6799007Z > Task :app:packageRaycastPreview
+2026-11-05T01:25:26.6847525Z > Task :app:assembleRaycastPreview
+2026-11-05T01:25:26.7728432Z BUILD SUCCESSFUL in 9m 21s

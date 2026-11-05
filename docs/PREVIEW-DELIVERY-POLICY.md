@@ -1,5 +1,10 @@
 # Entrega nativa Preview — procedimiento autónomo restringido
 
+Actualización: [Preview63 entregada](NATIVE63-DELIVERY-20261105.md), fuenteef4e60f/
+workflowb4bd17e, único run41947253299 correcto, intento1 autorizado expresamente.
+No autoriza otra ejecución de63 ni re-run/fallback. Física pendiente; las secciones
+de preparación siguientes son históricas. PresupuestoUS$0/bloqueo intactos.
+
 ## Vigente tras prueba física62 — candidata63 renovada, NO ejecutar
 
 Par71d6980/a82af60 histórico PAUSADO por el propietario. Fuente nueva y base

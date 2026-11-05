@@ -1,5 +1,14 @@
 # Spotlight Next — instrucciones para Codex
 
+## Preview63 entregada —05/11, física pendiente
+
+Autorización expresa de UN intento ef4e60f/b4bd17e ejecutada correctamente en
+run41947253299, attempt1. APK63/ZIP verificados independientemente, certificado
+histórico885838aa, paquete Raycast intacto. Ver docs/NATIVE63-DELIVERY-20261105.md.
+No otro intento/re-run/fallback ni usar71d6980/a82af60. Sin código nuevo/main/C3–C9.
+Siguiente: propietario instala sobre62 sin borrar datos y valida Tab A9+; no dar
+OneUI por aprobado con28 pruebas/Lint. Reserva propia liberada con notas al cerrar.
+
 ## Corrección física62 y nueva candidata63 —05/11
 
 El propietario probó62 en Tab A9+ y reportó distribución/altura con Gboard y

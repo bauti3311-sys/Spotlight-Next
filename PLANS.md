@@ -1,5 +1,16 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — Preview63 entregada y verificada, validación física pendiente
+
+Fuenteef4e60f, workflowb4bd17e, único run41947253299 correcto/attempt1. APK63
+optimizada, Raycast Preview/certificado885838aa, ZIP igual a git archive y payload/
+firma/ABI/SDK/zipalign comprobados independientemente. [Entrega, hashes y respaldo](docs/NATIVE63-DELIVERY-20261105.md).
+C1+C2+altura/regreso táctil incluidos; sin código funcional adicional, main o C3–C9.
+28 casos/Lint previos reutilizados. US$0/bloqueo conservados, sin revisión manual
+recurrente ni reintentos. Próximo: instalar sobre62 sin desinstalar y validar
+Ajustes/Gboard/inspector/footer y regreso táctil en Tab A9+; complementar moto g86.
+No afirmar aceptación física ni promover integral. Reserva propia cerrada con notas.
+
 ## 2026-11-05 — defectos físicos62 corregidos localmente; candidata63 renovada
 
 Fotos reales Tab A9+ reportan altura/inspector con Gboard y menú sin regreso táctil.
