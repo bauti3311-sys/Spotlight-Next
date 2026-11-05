@@ -1,0 +1,8 @@
+Cierre propio 2026-11-05 · E1–E5 Spotlight Focus
+Owner codex-edb23718-d9b4-4b5d-9b48-e2ea47926393. Fuente8d560828369e2fbd35957808cad66ae4a4a2895d; HEAD documental db79c84b22a102d62b870ad61ff8bdc7b0ccfac2. Checkpoints553cdbc/127a43c/8d56082/db79c84 en PR21 borrador. Comentario6662341919.
+44 casos con XML verde, más2persistencia de ronda previa reutilizados. Lint0E/26W/1Info.124PNG/20comparativas/PDF, reporte V01–V08/V10 y decisiones históricas en docs/FOCUS-INTEGRACION-E1-E5-20261105.md.
+Integración productiva opt-in persistente: Apariencia/Spotlight Focus. No activar por defecto sin revisión visual de geometría/navegación. No es un segundo motor ni otro prototipo aislado.
+No APK ni Actions. Main47259ce intacta.61límites funcionales idénticos a bb7096c. No C3–C9. Version63/manifest de entrega históricos intactos;64 sólo propuesta no aplicada. Antes de build: aprobación visual, numeración creciente y par exacto nuevo con autorización expresa. No reutilizar par63 ni autorización consumida.
+Galaxy Tab A9+/moto g86 pendientes: Gboard/OneUI abrir desde Ajustes, alto/foco/cursor/scroll/footer, PDF/grants/destino/cancelación/restauración, teclado/TalkBack/movimiento/perf. Fixture no es efecto externo. Incidencias físicas62/63 abiertas. LicenciaIcons8 conserva base/atribución histórica; términos actuales HTTP403 documentado.
+WIP preexistente de AGENTS/PLANS, PremiumReviewSceneTest/PremiumAiReviewSceneTest y capturas premium-review permanece local sin descartarlo ni incluirlo en estos commits. Fuente productiva propia sí publicada. No elevar checkpoint integral e38eae8.
+Liberar sólo esta reserva mediante release atómico con estas notas.
