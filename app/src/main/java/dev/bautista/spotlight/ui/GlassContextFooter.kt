@@ -53,12 +53,12 @@ import androidx.compose.ui.unit.*
    if(enabled)Row(Modifier.then(if(wide)Modifier else Modifier.weight(1f)).testTag("command-dock-actions").then(dock),verticalAlignment=Alignment.CenterVertically) {
     TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.then(if(wide)Modifier.widthIn(max=220.dp) else Modifier.weight(1f)).heightIn(min=48.dp).testTag("command-primary")) {
      Text(if(actionsOpen)"Ejecutar" else primaryLabel,fontSize=GlassTokens.scaledSp(12.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurface.copy(alpha=if(actionsOpen).38f else 1f))
-     if(wide){Spacer(Modifier.width(6.dp));GlassKeycap("Enter")}
+     if(wide && LocalLiquidScene.current==null){Spacer(Modifier.width(6.dp));GlassKeycap("Enter")}
     }
     if(wide)Box(Modifier.width(1.dp).height(18.dp).background(colors.onSurface.copy(alpha=.10f)))
     TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.heightIn(min=48.dp).testTag("command-actions")) {
      Text(if(actionsOpen)"Volver" else "Acciones",fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant)
-     if(wide){Spacer(Modifier.width(6.dp));GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel)}
+     if(wide && LocalLiquidScene.current==null){Spacer(Modifier.width(6.dp));GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel)}
     }
    }
   }

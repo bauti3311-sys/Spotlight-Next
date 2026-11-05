@@ -102,11 +102,14 @@ internal object InspectorAccent {
 /** One scoped theme on the existing inspector. Search, ActionPanel, error colors and settings stay neutral. */
 @Composable internal fun InspectorTheme(packageName: String?, icon: Drawable?, content: @Composable () -> Unit) {
     val base = MaterialTheme.colorScheme
-    val accent = remember(packageName, icon, base.primary) {
-        if (packageName == null) base.primary
+    val liquid=LocalLiquidScene.current!=null
+    val accent = remember(packageName, icon, base.primary,liquid) {
+        if(liquid && packageName=="com.vivaldi.browser") Color(0xFFDE6D72)
+        else if (packageName == null) base.primary
         else InspectorAccent.brand(packageName) ?: InspectorAccent.iconColor(icon) ?: base.primary
     }
-    val palette = remember(base, accent) { InspectorAccent.palette(base, accent) }
+    val premium=LocalPremiumReview.current
+    val palette = remember(base, accent,premium) { if(premium)PremiumMaterial.accent(base,accent) else InspectorAccent.palette(base, accent) }
     MaterialTheme(colorScheme = palette) {
         CompositionLocalProvider(LocalContentColor provides palette.onSurface) {
             Box(Modifier.fillMaxWidth()

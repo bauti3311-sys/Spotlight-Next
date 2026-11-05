@@ -908,7 +908,7 @@ fun SpotlightPanel(
             val bodyHeading=if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor))48.dp else 0.dp
             val resultLimit = (panelLimit-footerHeight-3.dp-bodyHeading).coerceAtLeast(0.dp)
             val splitPanelHeight = resultLimit
-            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else if(LocalPremiumReview.current).54f else .62f
+            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else if(LocalLiquidScene.current!=null).43f else if(LocalPremiumReview.current).54f else .62f
             val inlineResultRows=!compact && (!widePreview || maxWidth*resultsFraction>=384.dp)
             Box(
                 Modifier.fillMaxWidth()
@@ -1513,7 +1513,7 @@ fun SpotlightPanel(
                                 }?.icon
                                 CompositionLocalProvider(LocalInspectorReviewBudget provides viewport.value) {
                                 InspectorTheme(accentPackage,accentIcon) {
-                                Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
+                                Column(Modifier.fillMaxWidth().liquidInspector().testTag("inspector-content")) {
                                     if(!widePreview || expandedPreview)inspectorToolbar()
                                     if(LocalPremiumReview.current && taskInspector)Box(Modifier.padding(horizontal=18.dp,vertical=10.dp)) {
                                         PremiumSectionLabel(when {

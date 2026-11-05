@@ -52,7 +52,8 @@ import kotlinx.coroutines.withContext
         } }
     }
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
-        if(premium)PremiumInspectorHeader(item,
+        if(LocalLiquidScene.current!=null && packageName=="com.vivaldi.browser")LiquidApplicationIdentity(item)
+        else if(premium)PremiumInspectorHeader(item,
             when(packageName){"com.spotify.music"->"Música";"com.whatsapp","com.whatsapp.w4b"->"Mensajería";"com.vivaldi.browser","com.android.chrome"->"Navegador";else->"Aplicación"},
             if(playing)"En reproducción" else "Aplicación instalada",compact=LocalInspectorReviewBudget.current<420f || packageName=="com.spotify.music" && mediaContent!=null,
             onSearch=if(packageName=="com.spotify.music")({spotifySearch=!spotifySearch}) else null)
@@ -85,7 +86,7 @@ import kotlinx.coroutines.withContext
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=GlassTokens.scaledSp(14.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
-        if(premium && embedded)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+        if(premium && embedded && LocalLiquidScene.current==null)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),verticalArrangement=Arrangement.spacedBy(2.dp)) {
             PremiumSectionLabel("Accesos")
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",R.drawable.inspector_ios_star,onClick=onFavorite)

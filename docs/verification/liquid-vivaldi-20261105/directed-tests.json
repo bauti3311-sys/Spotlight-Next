@@ -1,0 +1,43 @@
+{
+  "newDistinctCases": 6,
+  "cases": [
+    {
+      "class": "dev.bautista.spotlight.ui.LiquidMaterialTest",
+      "name": "darkTextContrast",
+      "seconds": 0.161,
+      "passed": true
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.LiquidMaterialTest",
+      "name": "lightTextContrast",
+      "seconds": 0.001,
+      "passed": true
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.LiquidVivaldiSceneTest",
+      "name": "phoneLight",
+      "seconds": 23.295,
+      "passed": true
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.LiquidVivaldiSceneTest",
+      "name": "tabletDark",
+      "seconds": 2.296,
+      "passed": true
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.LiquidVivaldiSceneTest",
+      "name": "phoneDark",
+      "seconds": 1.626,
+      "passed": true
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.LiquidVivaldiSceneTest",
+      "name": "tabletLight",
+      "seconds": 1.764,
+      "passed": true
+    }
+  ],
+  "repeatedRoundsNotAdded": true,
+  "physicalValidation": false
+}

@@ -9,12 +9,14 @@ import org.junit.Test
 class PremiumMaterialTest {
     @Test fun bothMaterialsKeepReadableTextOnEveryInspectorSurface() {
         for(dark in listOf(true,false)) {
-            val p=PremiumMaterial.palette(if(dark)darkColorScheme() else lightColorScheme(),dark)
+            val p=PremiumMaterial.palette(if(dark)darkColorScheme(primary=Color(0xFF0072E8)) else lightColorScheme(primary=Color(0xFF0072E8)),dark)
             for(surface in listOf(p.surface,p.surfaceContainerLow,p.surfaceContainerHigh)) {
                 assertTrue(InspectorAccent.contrast(p.onSurface,surface)>=4.5f)
                 assertTrue(InspectorAccent.contrast(p.onSurfaceVariant,surface)>=4.5f)
+                assertTrue("Accent contrast on raised material",InspectorAccent.contrast(p.primary,surface)>=4.5f)
             }
             assertTrue(InspectorAccent.contrast(p.primary,p.surface)>=4.5f)
+            assertTrue(InspectorAccent.contrast(p.primary,p.surfaceContainerHigh)>=4.5f)
         }
     }
     @Test fun atelierIsWarmPaperWithDistinctCoolSupportSurfaces() {
@@ -24,12 +26,13 @@ class PremiumMaterialTest {
         assertNotEquals(p.surfaceContainerLow,p.surfaceContainerHigh)
     }
     @Test fun brandAccentsRemainScopedAndReadableWithoutTintingNeutralMaterials() {
-        val base=PremiumMaterial.palette(darkColorScheme(),true)
+        val base=PremiumMaterial.palette(darkColorScheme(primary=Color(0xFF0072E8)),true)
         for(pkg in listOf("com.spotify.music","com.whatsapp","com.google.android.gm")) {
-            val p=InspectorAccent.palette(base,InspectorAccent.brand(pkg)!!)
+            val p=PremiumMaterial.accent(base,InspectorAccent.brand(pkg)!!)
             assertEquals(base.surface,p.surface)
             assertTrue(InspectorAccent.contrast(p.primary,p.surface)>=4.5f)
             assertTrue(InspectorAccent.contrast(p.onPrimary,p.primary)>=4.5f)
+            assertTrue(InspectorAccent.contrast(p.primary,p.surfaceContainerHigh)>=4.5f)
         }
     }
 }

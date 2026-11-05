@@ -1,0 +1,50 @@
+{
+  "phone-dark-geist.png": {
+    "widthPx": 360,
+    "heightPx": 679
+  },
+  "phone-dark-inter.png": {
+    "widthPx": 360,
+    "heightPx": 674
+  },
+  "phone-dark-preview63.png": {
+    "widthPx": 360,
+    "heightPx": 572
+  },
+  "phone-light-geist.png": {
+    "widthPx": 360,
+    "heightPx": 679
+  },
+  "phone-light-inter.png": {
+    "widthPx": 360,
+    "heightPx": 674
+  },
+  "phone-light-preview63.png": {
+    "widthPx": 360,
+    "heightPx": 572
+  },
+  "tablet-dark-geist.png": {
+    "widthPx": 960,
+    "heightPx": 699
+  },
+  "tablet-dark-inter.png": {
+    "widthPx": 960,
+    "heightPx": 693
+  },
+  "tablet-dark-preview63.png": {
+    "widthPx": 960,
+    "heightPx": 523
+  },
+  "tablet-light-geist.png": {
+    "widthPx": 960,
+    "heightPx": 699
+  },
+  "tablet-light-inter.png": {
+    "widthPx": 960,
+    "heightPx": 693
+  },
+  "tablet-light-preview63.png": {
+    "widthPx": 960,
+    "heightPx": 523
+  }
+}

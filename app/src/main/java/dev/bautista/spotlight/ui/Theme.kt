@@ -94,13 +94,26 @@ labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=Spotli
 labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*scale))
     val tone=when(config.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->palette.surface}
     val toned=palette.copy(onSurfaceVariant=GlassTokens.secondary(config,dark),surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
+    val liquid=LocalLiquidScene.current!=null
     val premium=LocalPremiumReview.current
     val reviewTypography=if(premium)typography.copy(
         titleLarge=typography.titleLarge.copy(fontSize=26.sp*scale,lineHeight=31.sp*scale),
         titleMedium=typography.titleMedium.copy(fontSize=20.sp*scale,lineHeight=26.sp*scale),
         titleSmall=typography.titleSmall.copy(fontSize=15.sp*scale,lineHeight=21.sp*scale),
         bodyMedium=typography.bodyMedium.copy(fontSize=14.sp*scale,lineHeight=20.sp*scale)) else typography
-    MaterialTheme(colorScheme = if(premium)PremiumMaterial.palette(toned,dark) else toned, typography=reviewTypography) {
+    val face=liquidFont()
+    val liquidTypography=if(liquid)reviewTypography.copy(
+        headlineLarge=reviewTypography.headlineLarge.copy(fontFamily=face,fontSize=32.sp*scale,lineHeight=38.sp*scale,letterSpacing=(-.8).sp),
+        titleLarge=reviewTypography.titleLarge.copy(fontFamily=face),
+        titleMedium=reviewTypography.titleMedium.copy(fontFamily=face),
+        bodyLarge=reviewTypography.bodyLarge.copy(fontFamily=face),
+        titleSmall=reviewTypography.titleSmall.copy(fontFamily=face),
+        labelMedium=reviewTypography.labelMedium.copy(fontFamily=face),
+        labelLarge=reviewTypography.labelLarge.copy(fontFamily=face),
+        bodyMedium=reviewTypography.bodyMedium.copy(fontFamily=face),
+        bodySmall=reviewTypography.bodySmall.copy(fontFamily=face),
+        labelSmall=reviewTypography.labelSmall.copy(fontFamily=face)) else reviewTypography
+    MaterialTheme(colorScheme = if(liquid)liquidPalette(toned,dark) else if(premium)PremiumMaterial.palette(toned,dark) else toned, typography=liquidTypography) {
         val motion=rememberMotionAllowed(config.animations)
         CompositionLocalProvider(LocalMotion provides motion,LocalAppearance provides config, LocalContentColor provides MaterialTheme.colorScheme.onSurface, content=content)
     }

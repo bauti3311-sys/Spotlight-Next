@@ -3,6 +3,8 @@ package dev.bautista.spotlight.ui
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.luminance
 
 /** Obsidian and Atelier are separate materials; neutral surfaces never inherit a brand fill. */
 internal object PremiumMaterial {
@@ -20,7 +22,14 @@ internal object PremiumMaterial {
             surfaceContainerHighest=if(dark)Color(0xFF364151) else Color(0xFFE4EAF1),
             outline=if(dark)Color(0xFF66768D) else Color(0xFF8190A4),
             outlineVariant=if(dark)Color(0xFF3B4657) else Color(0xFFCDD5DF))
-        return InspectorAccent.palette(neutral,base.primary)
+        return accent(neutral,base.primary)
+    }
+    fun accent(base:ColorScheme,raw:Color):ColorScheme {
+        val end=if(base.surface.luminance()<.5f)Color.White else Color.Black
+        val surfaces=listOf(base.surface,base.surfaceContainerLow,base.surfaceContainerHigh)
+        val accessible=(0..20).asSequence().map{lerp(raw.copy(alpha=1f),end,it/20f)}
+            .firstOrNull{color->surfaces.all{InspectorAccent.contrast(color,it)>=4.5f}} ?: end
+        return InspectorAccent.palette(base,accessible)
     }
 }
 

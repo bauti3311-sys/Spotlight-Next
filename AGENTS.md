@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## Liquid — vertical Vivaldi autorizada05/11
+
+El propietario eligió Obsidian Liquid con jerarquía editorial y footer discreto.
+Sólo primera escena Compose real Vivaldi/inspector en tablet y teléfono, claro/oscuro,
+comparación Inter/Geist frente a presentación63. LocalLiquidScene=null por defecto.
+No extender a otras pantallas ni adoptar globalmente, APK/Actions o C3–C9.
+Ver docs/verification/liquid-vivaldi-20261105/README.md. Reserva propia se libera
+al cerrar este subhito; no tocar reservas ajenas. V1–V4 conservada.
+
+
 ## Preview63 entregada —05/11, física pendiente
 
 Autorización expresa de UN intento ef4e60f/b4bd17e ejecutada correctamente en

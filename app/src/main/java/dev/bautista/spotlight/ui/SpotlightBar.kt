@@ -141,7 +141,7 @@ fun SpotlightBar(
                 }.focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = inputFontSize),
+                    TextStyle(color = colors.onSurface, fontFamily=if(LocalLiquidScene.current!=null)liquidFont() else when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = inputFontSize),
                 cursorBrush = SolidColor(contextAccent ?: colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
@@ -164,7 +164,7 @@ fun SpotlightBar(
                                 maxLines = 1,
                                 fontSize = inputFontSize,
                                 color = colors.onSurface.copy(alpha = .30f),
-                                style=TextStyle(fontFamily=when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
+                                style=TextStyle(fontFamily=if(LocalLiquidScene.current!=null)liquidFont() else when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
                             )
                         inner()

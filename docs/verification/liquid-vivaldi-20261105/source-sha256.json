@@ -1,0 +1,12 @@
+{
+  "app/src/main/java/dev/bautista/spotlight/ui/LiquidScene.kt": "ac5dbc1b2776518bad8246ddd3d0ec0b1f5af1c813226fd86a9489c64a75fefc",
+  "app/src/main/java/dev/bautista/spotlight/ui/Theme.kt": "7f270fc3d61394119519b5fcb8dce5ad07637dfb36367ed1e02ca769d1af6505",
+  "app/src/main/java/dev/bautista/spotlight/ui/ApplicationInspector.kt": "173c02bdbfdcee1f437a0c52facc480e4f121ce53e80d13dc4413fb3012d6984",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt": "68185b617d8ed01401fb30843bc18ba8eb1e25457015ffc54c5914a1e9808a2a",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt": "2f18f1ae61e6a3bb04e0aabb6c935b6322195d28f661fef82fa0e4d16a877f3d",
+  "app/src/main/java/dev/bautista/spotlight/ui/GlassContextFooter.kt": "40b2e846ea7a8e545572bc38bb266a0ee55102858d2d43ba6026641cd17b270f",
+  "app/src/main/java/dev/bautista/spotlight/ui/InspectorTheme.kt": "a388e6d3a355fda77c9bd0b15ca29958b04c603d9d1ded8d36b28bbf7c8e32c3",
+  "app/src/main/java/dev/bautista/spotlight/ui/PremiumReview.kt": "58f6b6f3ea7412f736b6960c6f3d97d5a259e5cc349067a53fa16af91a263968",
+  "app/src/test/java/dev/bautista/spotlight/ui/LiquidVivaldiSceneTest.kt": "922f086a6f24a0500cf0fe4a6d972764758a62b4d9d0f83f2097dd2e0eb6d010",
+  "app/src/test/java/dev/bautista/spotlight/ui/LiquidMaterialTest.kt": "1c8502ff4b86210e435c1834f8772698fd19e283a4f3c5695f6d50e0253a7937"
+}

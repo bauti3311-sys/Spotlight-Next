@@ -1,5 +1,13 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — Obsidian Liquid elegida, primera vertical Vivaldi
+
+Alcance autorizado: escena Vivaldi con inspector, cuatro perfiles y comparación
+real Inter/Geist/estilo63. No adopción general ni otras pantallas.
+Seguimiento: docs/verification/liquid-vivaldi-20261105/README.md.
+Sin APK/Actions/C3–C9; conservar C1/C2 y contratos, liberar sólo reserva propia.
+
+
 ## 2026-11-05 — Preview63 entregada y verificada, validación física pendiente
 
 Fuenteef4e60f, workflowb4bd17e, único run41947253299 correcto/attempt1. APK63
