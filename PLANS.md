@@ -1026,3 +1026,26 @@ aprobado. Documento exacto docs/NATIVE60-HISTORICAL-SIGNING-20261103.md; evidenc
  docs/verification/native60-signing-plan-20261103/. Esperar preflight local, y sólo si
 no viable presentar autorización de una ejecución Actions para ese source/workflow.
 No promover puntero integral; cerrar y liberar únicamente la reserva propia.
+
+
+## 2026-11-05 — recuperación de Work y preparación Preview64
+
+Rama feat/preview57-native-return-20261103 / PR21; remoto inicial db79c84,
+fuente E1–E5 8d56082. Entorno recuperado running/connected, terminal funcional;
+SDK35 y JDK17 aislado preparados, sin credenciales de firma ni certificado nuevo.
+Reserva nueva propia codex-0b1fb8c6-943f-4948-ac52-719378f44cea, sin reserva ajena
+al adquirir. Main47259ce/checkpoints y experimentos existentes intactos.
+
+Propietario autorizó preparar64 manteniendo Focus=false: sólo dos líneas de
+versión Raycast y dos regresiones de test. app/src/main y presentación E1–E5
+idénticos. Se verificaron44 casos XML históricos y cinco hashes de evidencia;
+no se cuentan como ejecución nueva. 6 casos dirigidos JVM correctos (dos nuevos),17 checks de entrega y2 de identidad correctos..
+
+Fuente 808bda2c25887d14b42665dea4c254181d72b837; manifiesto posterior fija base=fuente, delta vacío,
+code64/nombre2.0.1-raycast-preview-native57-v64, paquete .raycastpreview y
+certificado885838aa. Procedimiento/guardas/workflow/US$0 intactos.
+No APK, firma, preflight real, Actions, main/merge ni C3–C9.
+Informe docs/NATIVE64-PREPARATION-20261105.md y evidencia asociada.
+Tras publicar, actualizar reserva y liberar sólo la propia con notas atómicas.
+Siguiente: autorización expresa del par exacto antes de un intento futuro;
+OneUI/Gboard/Tab A9+/moto g86 continúan pendientes.

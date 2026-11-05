@@ -1,3 +1,13 @@
+## Preview64 — preparación vigente; ejecución no autorizada
+
+Autorización posterior del propietario: preparar64 desde E1–E5 conservando
+Focus=false por defecto y el diseño aprobado, sin Nuxt/WebView ni cambios estéticos.
+Ver [preparación64](NATIVE64-PREPARATION-20261105.md). El manifiesto64 fija el
+nuevo par exacto; ninguna autorización63 permite ejecutarlo. No APK/firma/preflight
+real/Actions hasta aprobación expresa del par. Guardas, workflow, identidad,
+certificado Preview885838aa y presupuestoUS$0 intactos. La preparación usa reserva
+propia; liberarla con notas y adquirir otra propia al ejecutar tras autorización.
+
 # Entrega nativa Preview — procedimiento autónomo restringido
 
 Actualización: [Preview63 entregada](NATIVE63-DELIVERY-20261105.md), fuenteef4e60f/

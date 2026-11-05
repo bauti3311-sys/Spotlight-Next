@@ -1,3 +1,12 @@
+## Preview64 — preparación autorizada 2026-11-05
+
+El propietario autorizó preparar64 desde la integración nativa E1–E5, conservando
+Focus desactivado por defecto. Esta autorización posterior permite numeración y
+manifiesto sin adoptar globalmente el diseño ni cerrar su aceptación física.
+Ver docs/NATIVE64-PREPARATION-20261105.md. No APK, firma, preflight real ni Actions
+hasta autorización expresa del par exacto fuente/workflow publicado. No Nuxt/WebView,
+main ni cambios estéticos. PresupuestoUS$0 y certificado Preview885838aa intactos.
+
 ## Renovación integrada · 2026-11-05
 
 E1–E5 integrados como candidata productiva reversible desde bb7096c; Focus desactivado por defecto hasta aprobación de las comparativas. Pruebas dirigidas y Lint0E/26W/1Info. Sin APK/Actions/C3–C9. Ver docs/FOCUS-INTEGRACION-E1-E5-20261105.md; defectos físicos One UI abiertos.

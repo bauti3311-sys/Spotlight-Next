@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.FocusFoundationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T18:00:08" hostname="52363180d3ce" time="7.177">
+  <properties/>
+  <testcase name="portableThemesAndPreferencesRoundTripFocusWithoutAuthorizingAnything" classname="dev.bautista.spotlight.ui.FocusFoundationTest" time="7.022"/>
+  <testcase name="focusAppearancePersistsAndLegacyCanBeRestoredWithoutDataLoss" classname="dev.bautista.spotlight.ui.FocusFoundationTest" time="0.1"/>
+  <testcase name="everyBuiltInUtilityUsesAttributedIosArt" classname="dev.bautista.spotlight.ui.FocusFoundationTest" time="0.054"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

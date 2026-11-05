@@ -1,0 +1,41 @@
+{
+  "base_e1_e5": "8d560828369e2fbd35957808cad66ae4a4a2895d",
+  "previous_remote_head": "db79c84b22a102d62b870ad61ff8bdc7b0ccfac2",
+  "historical_xml_cases_rechecked": 44,
+  "historical_xml_failures": [],
+  "historical_evidence_hashes": {
+    "Comparativa-Focus.pdf": true,
+    "captures-sha256.json": true,
+    "test-coverage.json": true,
+    "lint.xml": true,
+    "functional-boundary.json": true
+  },
+  "byte_identical_to_e1_e5": [
+    "app/src/main",
+    "app/src/androidTest",
+    "experiments",
+    "visual-lab",
+    ".github/workflows",
+    "release.properties"
+  ],
+  "focus_default": false,
+  "appearance_chain_static_review": [
+    "GlassAppearance.edit -> AppearanceEdits.merge (focusInterface/focusTypeface preserved)",
+    "Preferences.updateAppearance -> DataStore next20 JSON -> config flow",
+    "OverlayService.onStartCommand collects preferences.config -> mutableStateOf Config -> SpotlightPanel(config)"
+  ],
+  "physical_validation": "pending OneUI/Gboard/Tab A9+/moto g86; JVM does not validate physical behavior",
+  "apk_actions_signing_executed": false,
+  "new_directed_tests": [
+    "FocusSettingsSceneTest.focusSelectorPersistsAcrossRecreationAndRestoresLegacy",
+    "FocusSettingsSceneTest.openOverlayObservesFocusPreferenceWithoutReopening"
+  ],
+  "new_tests_status": "passed; six distinct directed JVM cases across initial and validated rounds",
+  "preparation_reservation": {
+    "owner": "codex-0b1fb8c6-943f-4948-ac52-719378f44cea",
+    "acquired_lease_sha": "1f8e743e9b5967453aea7bc49a2eaf66f3751ca0",
+    "prior_reservation": null
+  },
+  "prepared_source_sha": "808bda2c25887d14b42665dea4c254181d72b837",
+  "delivery_manifest_sha256": "d4c001351c6d1708787f00c3057ee93d88a78b8fcd2543edba45ab2a45636579"
+}

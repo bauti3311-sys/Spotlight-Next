@@ -1,0 +1,30 @@
+{
+  "distinct_passed_cases": 6,
+  "cases": {
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.focusSelectorPersistsAcrossRecreationAndRestoresLegacy": {
+      "evidence": "initial/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 4.609
+    },
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.opacityIsImmediatePersistentAndSurvivesActivityRecreation": {
+      "evidence": "initial/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 0.728
+    },
+    "dev.bautista.spotlight.ui.FocusFoundationTest.portableThemesAndPreferencesRoundTripFocusWithoutAuthorizingAnything": {
+      "evidence": "initial/TEST-dev.bautista.spotlight.ui.FocusFoundationTest.xml",
+      "seconds": 7.022
+    },
+    "dev.bautista.spotlight.ui.FocusFoundationTest.focusAppearancePersistsAndLegacyCanBeRestoredWithoutDataLoss": {
+      "evidence": "initial/TEST-dev.bautista.spotlight.ui.FocusFoundationTest.xml",
+      "seconds": 0.1
+    },
+    "dev.bautista.spotlight.ui.FocusFoundationTest.everyBuiltInUtilityUsesAttributedIosArt": {
+      "evidence": "initial/TEST-dev.bautista.spotlight.ui.FocusFoundationTest.xml",
+      "seconds": 0.054
+    },
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.openOverlayObservesFocusPreferenceWithoutReopening": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 4.755
+    }
+  },
+  "scope": "Directed JVM/Robolectric tests only. Not a full suite or physical acceptance. Initial fixture failures preserved; only overlay test repeated after permission/focus/Android-looper setup fixes."
+}
