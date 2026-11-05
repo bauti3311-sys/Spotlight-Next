@@ -52,7 +52,14 @@ import kotlinx.coroutines.withContext
         } }
     }
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
-        if(LocalLiquidScene.current!=null && packageName=="com.vivaldi.browser")LiquidApplicationIdentity(item)
+        if(LocalFocusUi.current)Row(Modifier.fillMaxWidth().padding(vertical=8.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+            ResultIcon(item,Modifier.size(40.dp))
+            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
+                Text(item.title,Modifier.testTag("inspector-title").semantics{heading()},style=MaterialTheme.typography.titleLarge,maxLines=2,overflow=TextOverflow.Ellipsis)
+                Text(if(playing)"En reproducción" else "Aplicación instalada",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
+            }
+        }
+        else if(LocalLiquidScene.current!=null && packageName=="com.vivaldi.browser")LiquidApplicationIdentity(item)
         else if(premium)PremiumInspectorHeader(item,
             when(packageName){"com.spotify.music"->"Música";"com.whatsapp","com.whatsapp.w4b"->"Mensajería";"com.vivaldi.browser","com.android.chrome"->"Navegador";else->"Aplicación"},
             if(playing)"En reproducción" else "Aplicación instalada",compact=LocalInspectorReviewBudget.current<420f || packageName=="com.spotify.music" && mediaContent!=null,
@@ -143,10 +150,10 @@ import kotlinx.coroutines.withContext
 @Composable private fun InspectorProperty(label:String,value:String) {
     val appearance=LocalAppearance.current
     Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.Top,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
-        Text(label,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(label,fontSize=GlassTokens.scaledSp(if(LocalFocusUi.current)12.sp else 11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.weight(1f))
         SelectionContainer(Modifier.weight(2f)) {
-            Text(value,Modifier.fillMaxWidth(),fontSize=GlassTokens.scaledSp(11.sp,appearance),maxLines=2,overflow=TextOverflow.Ellipsis,
+            Text(value,Modifier.fillMaxWidth(),fontSize=GlassTokens.scaledSp(if(LocalFocusUi.current)12.sp else 11.sp,appearance),maxLines=2,overflow=TextOverflow.Ellipsis,
                 textAlign=androidx.compose.ui.text.style.TextAlign.End,color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }

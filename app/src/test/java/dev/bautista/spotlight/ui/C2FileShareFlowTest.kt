@@ -60,7 +60,7 @@ class C2FileShareFlowTest {
         buffer.add(FileShareContract.result(FileShareContract.Document(uri,"Vestibular $n.pdf","application/pdf",100,"Origen elegido")))
     }
     @Composable private fun panel(theme:String="dark") {
-        Box(Modifier.width(width.dp)){SpotlightPanel(app,AppConfig(theme=theme,files=true,online=false,contacts=false,animations=false,learning=false,preset="glass"),{},phrase,viewport,fileSelection=buffer)}
+        Box(Modifier.width(width.dp)){SpotlightPanel(app,AppConfig(theme=theme,focusInterface=System.getenv("SPOTLIGHT_FOCUS_REVIEW")=="1",files=true,online=false,contacts=false,animations=false,learning=false,preset="glass"),{},phrase,viewport,fileSelection=buffer)}
     }
     private fun open(theme:String="dark") {
         ui.setContent{panel(theme)};enter()
@@ -76,7 +76,7 @@ class C2FileShareFlowTest {
         ui.onNodeWithTag("file-share-review-button").performScrollTo().performClick()
         ui.waitUntil(10000){ui.onAllNodesWithTag("file-share-confirm-button").fetchSemanticsNodes().isNotEmpty()}
     }
-    private fun capture(name:String) {ui.onNodeWithTag("spotlight-root").captureRoboImage("build/c2-files/after/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
+    private fun capture(name:String) {ui.onNodeWithTag("spotlight-root").captureRoboImage("build/${if(System.getenv("SPOTLIGHT_FOCUS_REVIEW")=="1")"focus-files" else "c2-files/after"}/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
     @Test fun queryReviewsOriginalFileAndRequestsOnlyOneSystemChooser() {
         open();assertEquals(0,provider.descriptors);review()
         assertEquals(1,provider.descriptors)

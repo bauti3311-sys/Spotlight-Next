@@ -1,6 +1,6 @@
 ## Renovación integrada · 2026-11-05
 
-Fase estética E1–E5 desde bb7096c: integración productiva reversible, sin APK/Actions/C3–C9. Geometría nueva pendiente de comparación y aprobación; Focus desactivado por defecto. Ver docs/verification/focus-integrated-20261105/E1-E2.md.
+E1–E5 integrados como candidata productiva reversible desde bb7096c; Focus desactivado por defecto hasta aprobación de las comparativas. Pruebas dirigidas y Lint0E/26W/1Info. Sin APK/Actions/C3–C9. Ver docs/FOCUS-INTEGRACION-E1-E5-20261105.md; defectos físicos One UI abiertos.
 
 # Spotlight Next — instrucciones para Codex
 

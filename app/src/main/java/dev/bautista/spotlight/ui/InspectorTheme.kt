@@ -108,12 +108,12 @@ internal object InspectorAccent {
         else if (packageName == null) base.primary
         else InspectorAccent.brand(packageName) ?: InspectorAccent.iconColor(icon) ?: base.primary
     }
-    val premium=LocalPremiumReview.current
+    val premium=LocalPremiumReview.current || LocalFocusUi.current
     val palette = remember(base, accent,premium) { if(premium)PremiumMaterial.accent(base,accent) else InspectorAccent.palette(base, accent) }
     MaterialTheme(colorScheme = palette) {
         CompositionLocalProvider(LocalContentColor provides palette.onSurface) {
             Box(Modifier.fillMaxWidth()
-                .then(if(LocalPremiumReview.current)Modifier.background(palette.surfaceContainerLow) else Modifier)
+                .then(if(LocalPremiumReview.current || LocalFocusUi.current)Modifier.background(palette.surfaceContainerLow) else Modifier)
                 .background(Brush.verticalGradient(listOf(
                 palette.primary.copy(alpha = .025f), Color.Transparent)))
                 .drawBehind {

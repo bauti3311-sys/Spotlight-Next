@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.*
 @Composable internal fun GlassKeycap(key:String) {
  val colors=MaterialTheme.colorScheme
  val appearance=LocalAppearance.current
- val keyMaterial=if(LocalPremiumReview.current)Modifier else Modifier.background(colors.onSurface.copy(alpha=.065f),RoundedCornerShape(5.dp))
+ val keyMaterial=if(LocalPremiumReview.current || LocalFocusUi.current)Modifier else Modifier.background(colors.onSurface.copy(alpha=.065f),RoundedCornerShape(5.dp))
   .border(1.dp,colors.onSurface.copy(alpha=.09f),RoundedCornerShape(5.dp))
  Text(key,keyMaterial.padding(horizontal=6.dp,vertical=3.dp),
   fontSize=GlassTokens.scaledSp(10.sp,appearance),lineHeight=GlassTokens.scaledSp(13.sp,appearance,minSp=11f),color=colors.onSurfaceVariant,maxLines=1)
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.*
  val colors=MaterialTheme.colorScheme
  val appearance=LocalAppearance.current
  val d=GlassTokens.densityScale(appearance)
- val premium=LocalPremiumReview.current
+ val premium=LocalPremiumReview.current || LocalFocusUi.current
  BoxWithConstraints(Modifier.fillMaxWidth().testTag("context-footer")
   .then(if(premium)Modifier.background(colors.surfaceContainerLow) else Modifier)) {
   val wide=maxWidth>=700.dp

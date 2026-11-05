@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
     // Finishing work must not fold the controls under the user's pointer/focus.
     LaunchedEffect(identity,forceExpanded){if(forceExpanded)expanded=true}
     Column(Modifier.fillMaxWidth()) {
-        if(compact)TextButton(onClick={expanded=!expanded},enabled=!forceExpanded,
+        if(compact || LocalFocusUi.current)TextButton(onClick={expanded=!expanded},enabled=!forceExpanded,
             modifier=Modifier.heightIn(min=48.dp).testTag("inspector-more-actions"),
             contentPadding=PaddingValues(horizontal=2.dp),
             colors=ButtonDefaults.textButtonColors(contentColor=MaterialTheme.colorScheme.onSurfaceVariant)) {
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
                 fontSize=GlassTokens.scaledSp(12.sp,LocalAppearance.current))
         }
         // A running extraction's cancel action must never disappear behind the disclosure.
-        if(!compact || expanded || forceExpanded)content()
+        if((!compact && !LocalFocusUi.current) || expanded || forceExpanded)content()
     }
 }
 

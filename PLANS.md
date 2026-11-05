@@ -1,6 +1,6 @@
 ## Renovación integrada · 2026-11-05
 
-E1–E2 base productiva en validación; E3 campo contextual único con ejecutor existente; E4 Ajustes; E5 componentes. Capturas del panel/Activity reales, pruebas dirigidas y Lint; no publicar cambios preexistentes de otras revisiones. Cierre físico sigue pendiente en One UI.
+E1/E2 base compartida, E3 campo contextual único, E4 Ajustes y E5 componentes integrados en producción con recuperación. Evidencia en docs/verification/focus-integrated-20261105/GALERIA.md. Pendiente adopción visual y validación Tab A9+/moto g86; no activar entrega histórica63 ni ejecutar Actions. Preservar trabajo preexistente de otras revisiones.
 
 # Continuidad de Spotlight Next
 

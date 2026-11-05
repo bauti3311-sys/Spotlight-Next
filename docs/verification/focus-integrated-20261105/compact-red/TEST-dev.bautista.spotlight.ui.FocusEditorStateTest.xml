@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.FocusEditorStateTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T15:28:32" hostname="3c087af7cb52" time="2.871">
+  <properties/>
+  <testcase name="configuredAccentIsContrastAdjustedAcrossAllFocusMaterials" classname="dev.bautista.spotlight.ui.FocusEditorStateTest" time="2.702"/>
+  <testcase name="restorationKeepsIndependentEditorsAndCursorButNeverPreparedLaunch" classname="dev.bautista.spotlight.ui.FocusEditorStateTest" time="0.126"/>
+  <testcase name="privateEditorsAreNotSavedAndMalformedRestorationCannotCreateAnAction" classname="dev.bautista.spotlight.ui.FocusEditorStateTest" time="0.043"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -30,11 +30,12 @@ object FocusDesign {
  fun palette(base:ColorScheme,dark:Boolean,c:Config):ColorScheme {
   val tone=when(c.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->Color.Transparent}
   val surface=if(dark)Color(0xFF26282C) else Color(0xFFFAF8F3)
-  return base.copy(background=if(dark)Color(0xFF111315) else Color(0xFFE9E6E0),
+  val material=base.copy(background=if(dark)Color(0xFF111315) else Color(0xFFE9E6E0),
    surface=if(tone==Color.Transparent)surface else lerp(surface,tone,.035f),
    surfaceVariant=if(dark)Color(0xFF303237) else Color(0xFFE8E3DB),
    surfaceContainerLow=if(dark)Color(0xFF1B1D20) else Color(0xFFF0ECE4),surfaceContainerHigh=if(dark)Color(0xFF303237) else Color(0xFFFFFDF8),
    onSurface=if(dark)Color(0xFFF1F0ED) else Color(0xFF252629),onSurfaceVariant=if(dark)Color(0xFFB9BCC1) else Color(0xFF5B5C60),
    outlineVariant=if(dark)Color(0xFF4B4E54) else Color(0xFFCFC9BE))
+  return PremiumMaterial.accent(material,base.primary)
  }
 }

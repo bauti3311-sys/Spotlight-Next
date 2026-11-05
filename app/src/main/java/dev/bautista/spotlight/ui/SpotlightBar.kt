@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.res.painterResource
+import androidx.core.graphics.drawable.toBitmap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -89,11 +90,16 @@ fun SpotlightBar(
     autocompleteKeyLabel:String="Ctrl+Space",
     contextAccent:Color?=null,
     showOptionsButton:Boolean,
+    controlledValue:TextFieldValue?=null,
+    onEditorValueChange:((TextFieldValue)->Unit)?=null,
+    contextualLabel:String?=null,
+    contextualIcon:android.graphics.drawable.Drawable?=null,
+    contextualPlaceholder:String?=null,
 ) {
     val colors = MaterialTheme.colorScheme
     var editorValue by remember { mutableStateOf(TextFieldValue(query,TextRange(query.length))) }
     // Selection belongs to the editor. External completion/restoration places the caret at the end.
-    val visibleValue=if(editorValue.text==query)editorValue else TextFieldValue(query,TextRange(query.length))
+    val visibleValue=controlledValue ?: if(editorValue.text==query)editorValue else TextFieldValue(query,TextRange(query.length))
     SideEffect {
         if(editorValue!=visibleValue)editorValue=visibleValue
         onAutocompleteAvailabilityChanged(suggestion!=null && visibleValue.selection.collapsed &&
@@ -105,11 +111,11 @@ fun SpotlightBar(
 
     val appearance = LocalAppearance.current
     val premium=LocalPremiumReview.current
-    val inputFontSize = GlassTokens.scaledSp(if(premium && !compact)22.sp else if (compact) GlassTokens.compactSearchText else GlassTokens.searchText, appearance)
+    val inputFontSize = GlassTokens.scaledSp(if(appearance.focusInterface)if(contextualLabel!=null)20.sp else 22.sp else if(premium && !compact)22.sp else if (compact) GlassTokens.compactSearchText else GlassTokens.searchText, appearance)
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
         Row(
             fieldModifier
-                .height(if(premium)64.dp else GlassTokens.searchHeight)
+                .then(if(appearance.focusInterface)Modifier.heightIn(min=if(contextualLabel!=null)76.dp else 64.dp) else Modifier.height(if(premium)64.dp else GlassTokens.searchHeight))
                 .padding(start = 2.dp, end = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -119,15 +125,21 @@ fun SpotlightBar(
                 IosCommandIcon(CommandIcons.Search,null,Modifier.size(20.dp).semantics{testTag="search-context-accent"},tint=contextAccent ?: colors.onSurfaceVariant)
             }
             Spacer(Modifier.width(4.dp))
+            Column(Modifier.weight(1f)) {
+            if(contextualLabel!=null)Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+                contextualIcon?.let { Image(remember(it){it.toBitmap(40,40).asImageBitmap()},null,Modifier.size(20.dp)) }
+                Text(contextualLabel,style=MaterialTheme.typography.labelMedium,color=contextAccent ?: colors.onSurfaceVariant)
+            }
             BasicTextField(
                 visibleValue,
                 { next ->
                     val previousText=editorValue.text
                     editorValue=next.copy(text=next.text.take(4000))
+                    onEditorValueChange?.invoke(editorValue)
                     // Compare consecutive input events, not a query captured before this frame.
                     if(editorValue.text!=previousText)onQueryChange(editorValue.text)
                 },
-                Modifier.weight(1f).semantics {
+                Modifier.fillMaxWidth().semantics {
                     // Accessibility replacement can arrive twice before recomposition. Forward
                     // both events using live state; the controlled field otherwise drops a
                     // replacement equal to its last rendered value.
@@ -135,26 +147,28 @@ fun SpotlightBar(
                         val text=replacement.text.take(4000)
                         val previous=editorValue.text
                         editorValue=TextFieldValue(text,TextRange(text.length))
+                        onEditorValueChange?.invoke(editorValue)
                         if(text!=previous)onQueryChange(text)
                         true
                     }
                 }.focusProperties { left=FocusRequester.Cancel; right=FocusRequester.Cancel }.focusRequester(focus).onFocusChanged{onSearchFocusChanged(it.isFocused);if(it.isFocused)onSearchFocus()},
                 singleLine = true,
                 textStyle =
-                    TextStyle(color = colors.onSurface, fontFamily=if(LocalLiquidScene.current!=null)liquidFont() else when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = inputFontSize),
+                    TextStyle(color = colors.onSurface, fontFamily=if(appearance.focusInterface)FocusDesign.family(appearance) else if(LocalLiquidScene.current!=null)liquidFont() else when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter}, fontSize = inputFontSize),
                 cursorBrush = SolidColor(contextAccent ?: colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
                 decorationBox = { inner ->
                     Box {
-                        if (query.isEmpty())
+                        if (query.isEmpty()) {
                             Text(
-                                when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar aplicaciones y comandos…"},
+                                contextualPlaceholder ?: when(category){"IA"->"Preguntá a la IA…";"Archivos"->"Buscar archivos…";"Apps"->"Buscar aplicaciones…";"Acciones"->"Buscar comandos…";else->if(compact)"Buscar…" else "Buscar aplicaciones y comandos…"},
                                 fontSize = inputFontSize,
                                 color = colors.onSurface.copy(alpha = .52f),letterSpacing=0.sp,
                                 maxLines = 1,
                             )
-                        if (suggestion != null && query.isNotEmpty())
+                        }
+                        if (suggestion != null && query.isNotEmpty()) {
                             Text(
                                 buildAnnotatedString {
                                     withStyle(SpanStyle(color=Color.Transparent)){append(query)}
@@ -164,13 +178,15 @@ fun SpotlightBar(
                                 maxLines = 1,
                                 fontSize = inputFontSize,
                                 color = colors.onSurface.copy(alpha = .30f),
-                                style=TextStyle(fontFamily=if(LocalLiquidScene.current!=null)liquidFont() else when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
+                                style=TextStyle(fontFamily=if(appearance.focusInterface)FocusDesign.family(appearance) else if(LocalLiquidScene.current!=null)liquidFont() else when(appearance.typeface){"system"->androidx.compose.ui.text.font.FontFamily.Default;"mono"->androidx.compose.ui.text.font.FontFamily.Monospace;else->Inter},letterSpacing=0.sp),
                                 softWrap=false,
                             )
+                        }
                         inner()
                     }
                 },
             )
+            }
             if (suggestion != null)
                 Text(
                     autocompleteKeyLabel,

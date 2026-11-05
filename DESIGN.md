@@ -1,3 +1,15 @@
+# Dirección vigente · Spotlight Focus · 2026-11-05
+
+La solicitud de renovación E1–E5 y el acabado `bb7096c` prevalecen sobre tokens históricos incompatibles: Geist principal con fallback; Icons8 iOS para utilidades; iconos instalados por PackageManager; grafito/marfil; campo editable único global/contextual. No restaurar automáticamente Inter, Lucide, cuatro sugerencias ni tarjetas grandes.
+
+La integración está en código productivo con preferencia persistente `focusInterface`. Su valor inicial sigue siendo falso hasta la comparación/aprobación de la composición y conserva la interfaz anterior como recuperación. No es otro motor ni una maqueta. Ver [informe de integración](docs/FOCUS-INTEGRACION-E1-E5-20261105.md).
+
+Se mantienen las preferencias existentes de fuente anterior, opacidades, densidad, acento, ancho y movimiento. Geist/Inter conservan sus licencias OFL; Icons8 conserva atribución y su aviso específico, no se reclasifica como MIT. Sin blur obligatorio, nuevos permisos ni servicios. La aprobación conceptual no equivale a validación física de One UI.
+
+---
+
+## Documento histórico de diseño
+
 # Spotlight Next 2.0 — diseño nativo
 
 La búsqueda es la pantalla principal. Una consulta mezcla acciones locales, aplicaciones, documentos autorizados y herramientas; los filtros son opcionales. Una coincidencia precisa pesa más que el número de archivos o los hábitos. La acción principal aparece antes de las alternativas y el panel contextual conserva la consulta al volver.

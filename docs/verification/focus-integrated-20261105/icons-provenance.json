@@ -74,7 +74,9 @@
       50
     ],
     "copyright": "Icons8",
-    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC",
+    "distributed": false,
+    "reason": "Removed after Lint: no production usage; avoid unnecessary resources."
   },
   "error": {
     "url": "https://img.icons8.com/ios/50/e7e9ef/error--v1.png",
@@ -85,7 +87,9 @@
       50
     ],
     "copyright": "Icons8",
-    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC"
+    "license": "Icons8 custom license; attribution required; existing Icons8-iOS-NOTICE applies, not MIT/ISC",
+    "distributed": false,
+    "reason": "Removed after Lint: no production usage; avoid unnecessary resources."
   },
   "timer": {
     "url": "https://img.icons8.com/ios/50/e7e9ef/clock--v1.png",

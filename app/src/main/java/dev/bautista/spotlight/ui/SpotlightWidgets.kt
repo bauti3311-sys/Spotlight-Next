@@ -94,6 +94,7 @@ fun ResultRow(
     val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")
     val dark=colors.surface.luminance()<.5f
     val premium=LocalPremiumReview.current
+    val focusUi=LocalFocusUi.current
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
@@ -118,12 +119,12 @@ fun ResultRow(
             ResultIcon(result,Modifier.size(if(result.icon!=null)GlassTokens.appIconSize(appearance) else GlassTokens.glyphSize(appearance)),colors.onSurfaceVariant)
         }
         Spacer(Modifier.width((10f*d).dp))
-        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(if(focusUi)3.dp else 2.dp)) {
           Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((10f*d).dp)) {
             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
                 modifier=Modifier.weight(1f,fill=false),
-                fontSize=GlassTokens.scaledSp(GlassTokens.rowText(appearance),appearance),
-                lineHeight=GlassTokens.scaledSp(18.sp,appearance),letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+                fontSize=GlassTokens.scaledSp(if(focusUi)15.sp else GlassTokens.rowText(appearance),appearance),
+                lineHeight=GlassTokens.scaledSp(if(focusUi)21.sp else 18.sp,appearance),letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
                 Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.scaledSp(GlassTokens.secondaryText,appearance),
                 maxLines=1,overflow=TextOverflow.Ellipsis)
@@ -134,14 +135,14 @@ fun ResultRow(
         }
         if(inline && !playing)Text(metadata,
             Modifier.padding(start=(10f*d).dp).widthIn(max=104.dp),color=colors.onSurfaceVariant,
-            fontSize=GlassTokens.scaledSp(GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
+            fontSize=GlassTokens.scaledSp(if(focusUi)12.sp else GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
         if(playing)Text("En reproducción",Modifier.padding(start=(10f*d).dp).widthIn(max=124.dp),color=colors.onSurfaceVariant,
-            fontSize=GlassTokens.scaledSp(GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
+            fontSize=GlassTokens.scaledSp(if(focusUi)12.sp else GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=6.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
         if(selected || hovered) IconButton(onClick = {onInteraction();onDetails()}, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
-            Icon(
+            IosCommandIcon(
                 CommandIcons.Chevron,
                 "Operaciones del resultado",
                 Modifier.size(18.dp),

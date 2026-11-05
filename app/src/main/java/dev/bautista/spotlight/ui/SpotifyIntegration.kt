@@ -77,7 +77,7 @@ import kotlinx.coroutines.launch
 
 /** Explicit remote queries only; selecting a result never starts playback. */
 @OptIn(ExperimentalLayoutApi::class)
-@Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "") {
+@Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "", externalQuery:String?=null, searchTrigger:Int=0) {
     val connection = app.spotify
     val state by connection.state.collectAsState()
     val scope = rememberCoroutineScope()
@@ -101,13 +101,22 @@ import kotlinx.coroutines.launch
             finally { busy = false }
         }
     }
+    fun searchNow() {
+                val approvedQuery = query; val approvedType = type
+                action {
+                    val page = connection.search(approvedQuery, setOf(approvedType))
+                    if (query == approvedQuery && type == approvedType) { results = page.items; selected = null; if (results.isEmpty()) message = "Sin coincidencias." }
+                }
+    }
+    LaunchedEffect(externalQuery){if(externalQuery!=null && externalQuery!=query){query=externalQuery.take(240);results=emptyList();selected=null;job?.cancel()}}
+    LaunchedEffect(searchTrigger){if(searchTrigger>0 && state==SpotifyConnectionState.AUTHORIZED)searchNow()}
     Column(Modifier.fillMaxWidth().testTag("spotify-search-panel"), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Buscar en Spotify", style = MaterialTheme.typography.titleSmall)
         if (state != SpotifyConnectionState.AUTHORIZED) {
             Text("Conectá Spotify para buscar dentro de Spotlight. Los controles de sesión Android siguen disponibles cuando están autorizados.", style = MaterialTheme.typography.bodySmall)
             TextButton(onClick = { context.startActivity(Intent(context, MainActivity::class.java).putExtra("group", "Integraciones").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }) { Text("Configurar Spotify") }
         } else {
-            OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
+            if(externalQuery==null)OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
                 enabled = !busy, label = { Text("Canción, artista, álbum o playlist") }, modifier = Modifier.fillMaxWidth().testTag("spotify-search-query"))
             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -116,13 +125,7 @@ import kotlinx.coroutines.launch
                         label = { Text(when(option) { SpotifyItemType.TRACK -> "Tema"; SpotifyItemType.ARTIST -> "Artista"; SpotifyItemType.ALBUM -> "Álbum"; else -> "Lista" }, style = MaterialTheme.typography.labelSmall) })
                 }
             }
-            Button(enabled = query.isNotBlank() && !busy, onClick = {
-                val approvedQuery = query; val approvedType = type
-                action {
-                    val page = connection.search(approvedQuery, setOf(approvedType))
-                    if (query == approvedQuery && type == approvedType) { results = page.items; selected = null; if (results.isEmpty()) message = "Sin coincidencias." }
-                }
-            }) { Text("Buscar en Spotify") }
+            Button(enabled = query.isNotBlank() && !busy, onClick = { searchNow() }) { Text("Buscar en Spotify") }
             if (busy) TextButton(onClick = { job?.cancel() }) { Text("Cancelar solicitud") }
             results.forEach { item ->
                 SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={if(!busy)selected=item})

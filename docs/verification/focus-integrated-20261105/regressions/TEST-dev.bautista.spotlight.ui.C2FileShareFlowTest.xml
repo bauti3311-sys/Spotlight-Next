@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2FileShareFlowTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T15:40:16" hostname="3c087af7cb52" time="10.412">
+  <properties/>
+  <testcase name="queryReviewsOriginalFileAndRequestsOnlyOneSystemChooser" classname="dev.bautista.spotlight.ui.C2FileShareFlowTest" time="9.065"/>
+  <testcase name="multipleLongNamesScrollInShortViewportAndCancelRestoresQueryFocus" classname="dev.bautista.spotlight.ui.C2FileShareFlowTest" time="0.987"/>
+  <testcase name="restoringAnEditedIncomingSelectionDoesNotReplaceItWithTheOriginalContext" classname="dev.bautista.spotlight.ui.C2FileShareFlowTest" time="0.36"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

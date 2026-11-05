@@ -1,0 +1,238 @@
+{
+  "scope": "Directed rounds, not a full suite or physical validation. Repeated methods counted once.",
+  "xml_cases": 44,
+  "cases": {
+    "dev.bautista.spotlight.ui.FocusFoundationTest.portableThemesAndPreferencesRoundTripFocusWithoutAuthorizingAnything": {
+      "evidence": "first-integrated/TEST-dev.bautista.spotlight.ui.FocusFoundationTest.xml",
+      "seconds": 2.472,
+      "timestamp": "2026-11-05T13:05:31"
+    },
+    "dev.bautista.spotlight.ui.FocusFoundationTest.focusAppearancePersistsAndLegacyCanBeRestoredWithoutDataLoss": {
+      "evidence": "first-integrated/TEST-dev.bautista.spotlight.ui.FocusFoundationTest.xml",
+      "seconds": 0.18,
+      "timestamp": "2026-11-05T13:05:31"
+    },
+    "dev.bautista.spotlight.ui.FocusFoundationTest.everyBuiltInUtilityUsesAttributedIosArt": {
+      "evidence": "first-integrated/TEST-dev.bautista.spotlight.ui.FocusFoundationTest.xml",
+      "seconds": 0.105,
+      "timestamp": "2026-11-05T13:05:31"
+    },
+    "dev.bautista.spotlight.ui.FocusIntegratedSceneTest.phoneLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusIntegratedSceneTest.xml",
+      "seconds": 10.336,
+      "timestamp": "2026-11-05T15:30:58"
+    },
+    "dev.bautista.spotlight.ui.FocusIntegratedSceneTest.tabletDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusIntegratedSceneTest.xml",
+      "seconds": 2.059,
+      "timestamp": "2026-11-05T15:30:58"
+    },
+    "dev.bautista.spotlight.ui.FocusIntegratedSceneTest.phoneDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusIntegratedSceneTest.xml",
+      "seconds": 1.408,
+      "timestamp": "2026-11-05T15:30:58"
+    },
+    "dev.bautista.spotlight.ui.FocusIntegratedSceneTest.tabletLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusIntegratedSceneTest.xml",
+      "seconds": 1.497,
+      "timestamp": "2026-11-05T15:30:58"
+    },
+    "dev.bautista.spotlight.ui.FocusContentSceneTest.phoneLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusContentSceneTest.xml",
+      "seconds": 11.186,
+      "timestamp": "2026-11-05T15:30:41"
+    },
+    "dev.bautista.spotlight.ui.FocusContentSceneTest.tabletDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusContentSceneTest.xml",
+      "seconds": 1.898,
+      "timestamp": "2026-11-05T15:30:41"
+    },
+    "dev.bautista.spotlight.ui.FocusContentSceneTest.phoneDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusContentSceneTest.xml",
+      "seconds": 1.494,
+      "timestamp": "2026-11-05T15:30:41"
+    },
+    "dev.bautista.spotlight.ui.FocusContentSceneTest.tabletLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusContentSceneTest.xml",
+      "seconds": 1.566,
+      "timestamp": "2026-11-05T15:30:41"
+    },
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.phoneLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 11.681,
+      "timestamp": "2026-11-05T15:28:50"
+    },
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.tabletDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 2.266,
+      "timestamp": "2026-11-05T15:28:50"
+    },
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.phoneDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 1.602,
+      "timestamp": "2026-11-05T15:28:50"
+    },
+    "dev.bautista.spotlight.ui.FocusSettingsSceneTest.tabletLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusSettingsSceneTest.xml",
+      "seconds": 1.901,
+      "timestamp": "2026-11-05T15:28:50"
+    },
+    "dev.bautista.spotlight.ui.FocusEditorStateTest.publicAndroidSearchIsNotPresentedAsAnInternalWebResult": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusEditorStateTest.xml",
+      "seconds": 2.959,
+      "timestamp": "2026-11-05T15:31:14"
+    },
+    "dev.bautista.spotlight.ui.FocusEditorStateTest.configuredAccentIsContrastAdjustedAcrossAllFocusMaterials": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusEditorStateTest-state-contrast.xml",
+      "seconds": 2.702,
+      "timestamp": "2026-11-05T15:28:32"
+    },
+    "dev.bautista.spotlight.ui.FocusEditorStateTest.restorationKeepsIndependentEditorsAndCursorButNeverPreparedLaunch": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusEditorStateTest-state-contrast.xml",
+      "seconds": 0.126,
+      "timestamp": "2026-11-05T15:28:32"
+    },
+    "dev.bautista.spotlight.ui.FocusEditorStateTest.privateEditorsAreNotSavedAndMalformedRestorationCannotCreateAnAction": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusEditorStateTest-state-contrast.xml",
+      "seconds": 0.043,
+      "timestamp": "2026-11-05T15:28:32"
+    },
+    "dev.bautista.spotlight.ui.FocusAiSceneTest.phoneLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusAiSceneTest.xml",
+      "seconds": 9.862,
+      "timestamp": "2026-11-05T15:27:34"
+    },
+    "dev.bautista.spotlight.ui.FocusAiSceneTest.tabletDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusAiSceneTest.xml",
+      "seconds": 0.701,
+      "timestamp": "2026-11-05T15:27:34"
+    },
+    "dev.bautista.spotlight.ui.FocusAiSceneTest.phoneDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusAiSceneTest.xml",
+      "seconds": 0.591,
+      "timestamp": "2026-11-05T15:27:34"
+    },
+    "dev.bautista.spotlight.ui.FocusAiSceneTest.tabletLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusAiSceneTest.xml",
+      "seconds": 0.48,
+      "timestamp": "2026-11-05T15:27:34"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.visibleImeCanUseFullDisplayFrameWhenBothInsetAmountsAreMissing": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 6.495,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.legacyVisibleFrameDoesNotSubtractKeyboardTwice": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 3.462,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.closedImeMustNotTreatWrapContentWindowAsKeyboard": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.148,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.resizedLegacyOverlayStillDetectsKeyboardWhenLocalInsetIsZero": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.167,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.modernMetricsSupplyKeyboardEvenWhenOverlayLocalInsetIsZero": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.808,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.lowPositionMovesAboveKeyboardInsteadOfInventingAvailableSpace": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.183,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.usableFrameExcludesBarsAndCutoutInBothOrientations": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.126,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.keyboardCannotChooseHorizontalWidthOnPortraitTablet": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.109,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayViewportTest.actualImeInsetWinsOverSmallContentFrameAndRecoversAcrossOrientation": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayViewportTest.xml",
+      "seconds": 0.085,
+      "timestamp": "2026-11-05T13:11:36"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.hiddenEventDiscardsStaleImeAmountAndReopenUsesFullHeight": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 6.18,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.tabletPortraitRetainsKeyboardOnRefresh[28]": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 2.056,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.tabletPortraitRetainsKeyboardOnRefresh": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 0.092,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.geometryRefreshRetainsKeyboardUntilInsetsReportItHidden[28]": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 0.076,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.geometryRefreshRetainsKeyboardUntilInsetsReportItHidden": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 0.033,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.tabletLandscapeRetainsKeyboardOnRefresh[28]": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 0.056,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.overlay.OverlayImeHeightTest.tabletLandscapeRetainsKeyboardOnRefresh": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "seconds": 0.023,
+      "timestamp": "2026-11-05T13:11:26"
+    },
+    "dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest.filtersAndQueryRestoreAfterProviderErrorCloseAndReopen": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest.xml",
+      "seconds": 8.172,
+      "timestamp": "2026-11-05T15:37:15"
+    },
+    "dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest.spotifyPanelCanOpenUnderDurableOverlayRegistry": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest.xml",
+      "seconds": 0.134,
+      "timestamp": "2026-11-05T15:37:15"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.queryReviewsOriginalFileAndRequestsOnlyOneSystemChooser": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml",
+      "seconds": 9.065,
+      "timestamp": "2026-11-05T15:40:16"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.multipleLongNamesScrollInShortViewportAndCancelRestoresQueryFocus": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml",
+      "seconds": 0.987,
+      "timestamp": "2026-11-05T15:40:16"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.restoringAnEditedIncomingSelectionDoesNotReplaceItWithTheOriginalContext": {
+      "evidence": "regressions/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml",
+      "seconds": 0.36,
+      "timestamp": "2026-11-05T15:40:16"
+    }
+  },
+  "additional_cases_observed_green_in_integrated_final_log": [
+    "FocusSettingsSceneTest.opacityIsImmediatePersistentAndSurvivesActivityRecreation",
+    "FocusSettingsSceneTest.roleOpacityAndThemeSaveImmediatelyWithoutApply"
+  ],
+  "observed_note": "The six-case Settings XML was read as 6/0/0 before the four-profile capture rerun replaced it. The two persistence cases were not rerun unnecessarily; integrated-final.log is preserved.",
+  "lint": {
+    "errors": 0,
+    "warnings": 26,
+    "information": 1,
+    "evidence": "lint.xml",
+    "source_log": "lint-verified.log"
+  }
+}

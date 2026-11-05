@@ -28,7 +28,7 @@ import dev.bautista.spotlight.search.*
         if(query.isNotBlank() && results.isNotEmpty())item("results-heading") {
             Text(if(results.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(results.first()) else "Resultados",
                 Modifier.padding(start=GlassTokens.rowHorizontalPadding(config),top=(6f*GlassTokens.densityScale(config)).dp,bottom=(4f*GlassTokens.densityScale(config)).dp),
-                fontSize=GlassTokens.scaledSp(11.sp,config),lineHeight=GlassTokens.scaledSp(14.sp,config,minSp=12f),
+                fontSize=GlassTokens.scaledSp(if(LocalFocusUi.current)12.sp else 11.sp,config),lineHeight=GlassTokens.scaledSp(14.sp,config,minSp=12f),
                 fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
         }
         itemsIndexed(results,key={_,item->item.id}) { i,item->

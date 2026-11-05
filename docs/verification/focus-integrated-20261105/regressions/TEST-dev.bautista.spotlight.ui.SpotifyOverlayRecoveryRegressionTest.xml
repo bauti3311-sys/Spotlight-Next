@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-05T15:37:15" hostname="3c087af7cb52" time="8.306">
+  <properties/>
+  <testcase name="filtersAndQueryRestoreAfterProviderErrorCloseAndReopen" classname="dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest" time="8.172"/>
+  <testcase name="spotifyPanelCanOpenUnderDurableOverlayRegistry" classname="dev.bautista.spotlight.ui.SpotifyOverlayRecoveryRegressionTest" time="0.134"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
