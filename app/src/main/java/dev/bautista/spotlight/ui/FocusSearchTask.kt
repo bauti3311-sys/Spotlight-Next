@@ -65,9 +65,12 @@ internal fun focusSearchActionTitle(topic:String)=when(topic){
  Column(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
   val plan=controller.prepared
   if(plan!=null)Row(Modifier.fillMaxWidth().testTag("focus-action-review"),horizontalArrangement=Arrangement.spacedBy(16.dp)) {
-   Column(Modifier.weight(1f)){Text("Acción",style=MaterialTheme.typography.labelMedium,color=colors.onSurfaceVariant);Text(focusSearchActionTitle(draft.topic),style=MaterialTheme.typography.titleSmall)}
    val intent=when(plan){is Action.InApp->plan.intent;is Action.Launch->plan.intent;else->null}
-   Column(Modifier.weight(1f)){Text("Destino",style=MaterialTheme.typography.labelMedium,color=colors.onSurfaceVariant);Text(intent?.data?.host ?: draft.packageName,style=MaterialTheme.typography.bodySmall)}
+   val receiver=intent?.component?.packageName ?: intent?.`package`
+   val application=remember(receiver){receiver?.let{pkg->runCatching{app.packageManager.getApplicationLabel(app.packageManager.getApplicationInfo(pkg,0)).toString()}.getOrDefault(pkg)} ?: "Predeterminada de Android"}
+   Column(Modifier.weight(1f)){Text("Abrir con",style=MaterialTheme.typography.labelMedium,color=colors.onSurfaceVariant);Text(application,style=MaterialTheme.typography.titleSmall)}
+   val host=intent?.data?.host?.takeIf{it.isNotBlank()}
+   Column(Modifier.weight(1f)){Text(if(host!=null)"Sitio web" else "Destino",style=MaterialTheme.typography.labelMedium,color=colors.onSurfaceVariant);Text(host ?: receiver ?: draft.packageName,style=MaterialTheme.typography.bodySmall)}
   } else Text(if(draft.query.isBlank())if(draft.topic=="spotify")"Escribí una canción o un artista para buscar." else "Escribí lo que querés encontrar." else "Revisá la acción antes de continuar.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
   if(controller.information)Text(if(draft.topic=="spotify")"Enlace público de Spotify. Sin consultas a tu cuenta ni resultados internos desde Spotlight." else "Búsqueda pública en la aplicación elegida. No se leen datos privados.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
   if(controller.error.isNotBlank())Text(controller.error,color=colors.error,style=MaterialTheme.typography.bodySmall)

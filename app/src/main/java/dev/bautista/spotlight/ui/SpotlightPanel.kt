@@ -847,8 +847,11 @@ fun SpotlightPanel(
             // Compact Raycast inspector: only show it on wide overlays when a
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
-            LaunchedEffect(selectedResult?.id,inspectorPinned) {
-                if(!inspectorPinned && !inspectorTaskActive() && applicationPreviewId!=null) {
+            LaunchedEffect(selectedResult?.id,inspectorPinned,loading,config.focusInterface) {
+                // Focus restores identity before asynchronous providers refill the rows.
+                // Empty/intermediate batches are not a user selection change.
+                if(!inspectorPinned && !inspectorTaskActive() && applicationPreviewId!=null &&
+                    (!config.focusInterface || !loading && selectedResult!=null)) {
                     preview=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
                     applicationPreviewId=preview?.id
                 }
@@ -1259,20 +1262,23 @@ fun SpotlightPanel(
                                     if(PreviewPresentation.isApplication(item)) {
                                         val catalogActions=ActionCatalog.applicationActions(appPackage.orEmpty())
                                             .filterNot { (it.action as? Action.Launch)?.intent?.action == android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS }
+                                            .distinctBy { appActionCapabilityId(it.action) ?: it.id }
                                         val appCapabilities=appPackage?.let{dev.bautista.spotlight.control.AppCapabilities(context).available(it)}.orEmpty()
                                         catalogActions.forEach { target ->
                                             val group=if(target.action is Action.Navigate)ContextActionGroup.Open else ContextActionGroup.Communicate
                                             val icon=when(target.action){is Action.Navigate->CommandIcons.Folder;is Action.ComposeSearch->CommandIcons.Search;else->CommandIcons.ChatBubbleOutline}
-                                            val capabilityId=when {
-                                                target.action is Action.ComposeSearch->"search"
-                                                (target.action as? Action.ComposeMessage)?.channel?.startsWith("share:")==true->"share-text"
-                                                else->null
-                                            }
+                                            val capabilityId=appActionCapabilityId(target.action)
                                             val available=capabilityId==null || appCapabilities.any{it.id==capabilityId}
                                             add("app.intent:${target.id}",group,target.title,
                                                 if(available)target.subtitle else "Revisá la aplicación y sus permisos.",icon,
                                                 state=if(available)ContextActionState.Available else ContextActionState.Unavailable,
-                                                risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)}
+                                                risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){
+                                                if(capabilityId==null)execute(target) else scope.launch {
+                                                    try{val action=withContext(Dispatchers.IO){dev.bautista.spotlight.control.AppCapabilities(context).prepare(appPackage!!,capabilityId)};execute(target.copy(action=action))}
+                                                    catch(e:CancellationException){throw e}
+                                                    catch(_:Exception){error="La acción ya no está disponible. Revisá la app y sus permisos."}
+                                                }
+                                            }
                                         }
                                         if(appPackage!=null) {
                                             appCapabilities.filterNot { cap ->

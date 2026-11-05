@@ -69,7 +69,7 @@ class FocusIntegratedSceneTest {
  private fun enter(name:String) {
   field().performTextReplacement(name)
   ui.waitUntil(15000){ui.onAllNodesWithText("Buscar en $name").fetchSemanticsNodes().isNotEmpty()}
-  ui.onNodeWithText("Buscar en $name").performClick();ui.onNodeWithText("Buscar en $name").performClick()
+  ui.onNodeWithTag("result:catalog:${name.lowercase()}:search").performClick();ui.onNodeWithTag("result:catalog:${name.lowercase()}:search").performClick()
   ui.waitUntil(15000){ui.onAllNodesWithTag("focus-prepare").fetchSemanticsNodes().isNotEmpty()}
  }
  private fun scene(width:Int,theme:String) {
@@ -116,7 +116,7 @@ class FocusIntegratedSceneTest {
   ui.waitUntil(15000){ui.onAllNodesWithText("Buscar en Vivaldi").fetchSemanticsNodes().isNotEmpty()}
   field().performTextInputSelection(TextRange(1,4))
   val cursor=field().fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange]
-  ui.onNodeWithText("Buscar en Vivaldi").performClick();ui.onNodeWithText("Buscar en Vivaldi").performClick()
+  ui.onNodeWithTag("result:catalog:vivaldi:search").performClick();ui.onNodeWithTag("result:catalog:vivaldi:search").performClick()
   ui.waitUntil(15000){ui.onAllNodesWithTag("focus-prepare").fetchSemanticsNodes().isNotEmpty()}
   field().performTextReplacement("android tablet");ui.onNodeWithTag("focus-prepare").performClick()
   ui.waitUntil(15000){ui.onAllNodesWithTag("focus-action-review").fetchSemanticsNodes().isNotEmpty()}
@@ -142,8 +142,8 @@ class FocusIntegratedSceneTest {
    ui.onNodeWithContentDescription("Volver a resultados").performClick()
    field().assertTextEquals("Vivaldi").assertIsFocused()
    ui.waitUntil(15000){ui.onAllNodesWithText("Buscar en Vivaldi").fetchSemanticsNodes().isNotEmpty()}
-   ui.onNodeWithText("Buscar en Vivaldi").assertIsSelected()
-   ui.onNodeWithText("Buscar en Vivaldi").performClick();ui.onNodeWithText("Buscar en Vivaldi").performClick()
+   ui.onNodeWithTag("result:catalog:vivaldi:search").assertIsSelected()
+   ui.onNodeWithTag("result:catalog:vivaldi:search").performClick();ui.onNodeWithTag("result:catalog:vivaldi:search").performClick()
    field().assertTextEquals("android tablet")
    field().performKeyInput{pressKey(Key.Enter)}
    ui.onNodeWithTag("focus-action-review").assertExists()

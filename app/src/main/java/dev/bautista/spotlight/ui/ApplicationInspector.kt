@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -42,6 +44,8 @@ import kotlinx.coroutines.withContext
     val colors=MaterialTheme.colorScheme
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
+    val focusUi=LocalFocusUi.current
+    var administrationExpanded by rememberSaveable(packageName){mutableStateOf(false)}
     val premium=LocalPremiumReview.current
     val context=LocalContext.current
     var version by remember(packageName) { mutableStateOf<String?>(null) }
@@ -93,6 +97,7 @@ import kotlinx.coroutines.withContext
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=GlassTokens.scaledSp(14.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
+        if(!focusUi) {
         if(premium && embedded && LocalLiquidScene.current==null)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),verticalArrangement=Arrangement.spacedBy(2.dp)) {
             PremiumSectionLabel("Accesos")
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
@@ -103,8 +108,9 @@ import kotlinx.coroutines.withContext
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite,modifier=Modifier.weight(1f))
         }
+        }
         Column(Modifier.fillMaxWidth()) {
-            if(!embedded) {
+            if(!embedded && !focusUi) {
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite)
@@ -117,7 +123,20 @@ import kotlinx.coroutines.withContext
             if(!embedded)InspectorActionRow("Ver acciones contextuales",R.drawable.inspector_ios_actions,"Ctrl+K",onActions)
         }
         capabilitiesContent?.invoke()
-        if(packageName!=null) {
+        if(focusUi) {
+            TextButton(onClick={administrationExpanded=!administrationExpanded},
+                modifier=Modifier.heightIn(min=48.dp).testTag("inspector-administration-toggle")
+                    .semantics{stateDescription=if(administrationExpanded)"Expandido" else "Contraído"},
+                contentPadding=PaddingValues(horizontal=2.dp),
+                colors=ButtonDefaults.textButtonColors(contentColor=colors.onSurfaceVariant)) {
+                Text(if(administrationExpanded)"Ocultar información y favoritos" else "Información y favoritos",style=MaterialTheme.typography.labelMedium)
+            }
+            if(administrationExpanded)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions")) {
+                InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
+                InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",R.drawable.inspector_ios_star,onClick=onFavorite)
+            }
+        }
+        if(packageName!=null && (!focusUi || administrationExpanded)) {
             HorizontalDivider(color=colors.onSurface.copy(alpha=.10f))
             Column(Modifier.fillMaxWidth().testTag("inspector-metadata"),verticalArrangement=Arrangement.spacedBy((6f*d).dp)) {
                 version?.let { InspectorProperty("Versión",it) }

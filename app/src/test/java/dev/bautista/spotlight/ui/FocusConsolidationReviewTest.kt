@@ -84,7 +84,7 @@ class FocusConsolidationReviewTest {
       } else {
        Column(Modifier.padding(horizontal=20.dp,vertical=8.dp)) {
         if(!proposed)ApplicationInspector(item,pkg,true,false,emptyList(),{},{favorites++},{info++},{},{},embedded=true,
-         capabilitiesContent={AppCapabilityActions(pkg,appInfoAlreadyVisible=true,compact=width<400){}})
+         capabilitiesContent={AppCapabilityActions(pkg,appInfoAlreadyVisible=true,compact=width<400,promoteSearch=false){}})
         else ReviewInspector(item,width,{contextual=true;review.invalidate()},{info++},{favorites++})
 
        }
@@ -94,6 +94,7 @@ class FocusConsolidationReviewTest {
     }
    }
   }
+  ui.onNodeWithTag("inspector-administration-toggle").performClick()
   ui.waitUntil(15000){ui.onAllNodesWithText("7.2-fixture").fetchSemanticsNodes().isNotEmpty()}
   capture("$profile-inspector-A")
   ui.runOnIdle{proposed=true};capture("$profile-inspector-B")
@@ -135,7 +136,7 @@ class FocusConsolidationReviewTest {
     IosCommandIcon(CommandIcons.Search,null,Modifier.size(20.dp));Spacer(Modifier.width(10.dp))
     Text("Buscar en Vivaldi",Modifier.weight(1f),style=MaterialTheme.typography.titleSmall)
    }
-   AppCapabilityActions(pkg,appInfoAlreadyVisible=true,compact=width<400){}
+   AppCapabilityActions(pkg,appInfoAlreadyVisible=true,compact=width<400,promoteSearch=false){}
    TextButton(onClick={details=!details},modifier=Modifier.heightIn(min=48.dp),contentPadding=PaddingValues(horizontal=2.dp)) {
     Text(if(details)"Ocultar información y favoritos" else "Información y favoritos",style=MaterialTheme.typography.labelMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
    }
