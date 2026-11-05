@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:13:34" hostname="52363180d3ce" time="8.973">
+  <properties/>
+  <testcase name="activePausedDeviceMayReceiveAnExplicitPlayRequest" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="1.786"/>
+  <testcase name="failedTargetedPlayDoesNotPauseTransferFallbackOrAutomaticallyReplay" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="0.305"/>
+  <testcase name="cancellingAfterThePutDoesNotReplayOrClaimToUndoIt" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="2.039"/>
+  <testcase name="selectedTrackChecksAndTargetsTheLiveDeviceWithoutPausingOrTransferring" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="0.235"/>
+  <testcase name="rejectedStateReadDoesNotFallThroughToPlayOrRetry" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="0.539"/>
+  <testcase name="concurrentConfirmationsProduceOnlyOnePlaybackMutation" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="0.328"/>
+  <testcase name="absentInactiveRestrictedOrUnverifiedDevicesNeverReceiveAPlaybackMutation" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="1.248"/>
+  <testcase name="targetedRejectionsNeverReplayTheConfirmedSelection" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="0.463"/>
+  <testcase name="cancellingTheStateReadNeverSchedulesPlayback" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackGuardTest" time="2.028"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

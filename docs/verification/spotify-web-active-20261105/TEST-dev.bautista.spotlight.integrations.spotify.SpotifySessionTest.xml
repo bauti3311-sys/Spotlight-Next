@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:13:44" hostname="52363180d3ce" time="2.304">
+  <properties/>
+  <testcase name="concurrentReadersRenewOnceAndPreserveOmittedRefreshAndScopes" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="1.958"/>
+  <testcase name="cancelledRenewalDoesNotInstallTokensAndDisconnectCanComplete" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="0.052"/>
+  <testcase name="revokedRefreshClearsStorageAndDoesNotRetry" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="0.063"/>
+  <testcase name="renewedTokenCannotSilentlyLoseTheRequiredPlaybackScope" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="0.027"/>
+  <testcase name="tokenRotationIsDurableAndNeverPrinted" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="0.029"/>
+  <testcase name="malformedTokenResponsesAndUntrustedOriginsFailClosed" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="0.044"/>
+  <testcase name="redirectAndRateLimitNeverReplayOrDestroyTheOldSession" classname="dev.bautista.spotlight.integrations.spotify.SpotifySessionTest" time="0.13"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 05, 2026 11:13:46 PM okhttp3.mockwebserver.MockWebServer$SocketHandler handle
+WARNING: MockWebServer[50473] connection from /127.0.0.1 didn't make a request
+]]></system-err>
+</testsuite>

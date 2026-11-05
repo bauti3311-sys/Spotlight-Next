@@ -1,3 +1,15 @@
+## Spotify Web API — corrección acotada autorizada 2026-11-05
+
+Desde4546c55 (Focus B completado, conservarlo), ruta explícita de reproducción en
+el dispositivo activo mediante SpotifyPlaybackClient.playSelection y comprobación
+Web posterior manual. Mantener App Remote separado y local por defecto; no fallback,
+transferencias, reintentos ni polling. Scopes guardados/renovados obligatorios antes
+del control; dispositivo vivo activo/no restringido. Confirmación única sin cola.
+Ver docs/SPOTIFY-WEB-ACTIVE-20261105.md y evidencia dirigida. Timeout App Remote
+físico sigue sin causa confirmada; no modificar SDK/firma/redirect por hipótesis.
+No incluido en APK64, no Actions/APK nueva, Square/Outify ni permisos/dependencias.
+No rehacer Focus; C3–C9/plan23 conservados sin cierre físico ficticio.
+
 ## Focus B integrada — aprobación expresa 2026-11-05
 
 AmbasB autorizadas e integradas en8f6a5b4, desde677d9d8, PR21. Ver informe

@@ -1,3 +1,12 @@
+## 2026-11-05 — Spotify: reproducción Web en dispositivo activo
+
+Prioridad expresa después del checkpoint4546c55: conectar playSelection existente
+al buscador, distinguir Web/App Remote, validar scopes/dispositivo, controlar
+confirmación concurrente y observar estado por consulta explícita. Focus B y
+checkpoint64 conservados. Ver docs/SPOTIFY-WEB-ACTIVE-20261105.md. No atribuir
+el timeout local a causa no reproducida; validación de cuenta/tablet pendiente.
+Sin Actions/APK/main, cambios de firma/paquete, Square/Outify ni avance integral.
+
 ## Renovación integrada · 2026-11-05
 
 E1/E2 base compartida, E3 campo contextual único, E4 Ajustes y E5 componentes integrados en producción con recuperación. Evidencia en docs/verification/focus-integrated-20261105/GALERIA.md. Pendiente adopción visual y validación Tab A9+/moto g86; no activar entrega histórica63 ni ejecutar Actions. Preservar trabajo preexistente de otras revisiones.

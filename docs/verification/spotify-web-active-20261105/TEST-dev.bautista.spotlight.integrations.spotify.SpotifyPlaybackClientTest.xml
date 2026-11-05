@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackClientTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:13:29" hostname="52363180d3ce" time="2.14">
+  <properties/>
+  <testcase name="acceptedRequestAndObservedPlaybackRemainDifferentStates" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackClientTest" time="1.876"/>
+  <testcase name="externalSideEffectsAreNeverAutomaticallyRetried" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackClientTest" time="0.226"/>
+  <testcase name="typedTrackAndContextRequestsNeverExecuteArbitraryText" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackClientTest" time="0.036"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
