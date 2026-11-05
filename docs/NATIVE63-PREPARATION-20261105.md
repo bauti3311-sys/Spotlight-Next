@@ -1,5 +1,26 @@
 # Preview63 — preparación, sin autorización de ejecución
 
+## Actualización posterior — correcciones físicas reportadas en62
+
+El par fuente71d6980e50e6206776014946a2a606521fad9fd8 / workflow
+a82af60a8e212364a8f40ed3a9af49323bfa7983 queda **histórico y pausado** por
+instrucción del propietario. No compilar ese par. La candidata nueva incorpora
+las [correcciones verificadas de distribución y regreso táctil](TABLET62-REGRESSIONS-20261105.md),
+conservando code63 y todas las funciones C1/C2. El nuevo SHA fuente es el commit
+de corrección; un commit posterior fija fuente y base funcional al mismo SHA
+verificado, con delta permitido vacío. Esto evita agregar código después del gate.
+El par exacto nuevo se publica en PR21/notas y se presenta al propietario.
+No build APK, firma ni Actions hasta autorización expresa de ese nuevo par.
+
+En el checklist físico, repetir prioritariamente los dos casos de las capturas:
+abrir desde Ajustes/Apariencia→Gboard abierto/cerrado→inspector de archivo y
+footer; tres puntos→Volver a resultados táctil/Esc/Volver→misma consulta y selección.
+La prueba real62 reportada tiene defectos: no está aceptada físicamente. La
+candidata63 requiere nueva prueba en Tab A9+ y moto g86, incluido teclado físico.
+
+El resto describe la preparación inicial y el procedimiento reutilizable; las
+referencias al delta de2 archivos son históricas para71d6980, no para la nueva fuente.
+
 Base consolidada261eef4669f775b3257b707953c6987d374a1d10, PR21 borrador,
 rama feat/preview57-native-return-20261103. C1, corrección de altura/IME y todos
 los cambios C2 ya están en su historia: no se fusionan ramas ni se repiten features.

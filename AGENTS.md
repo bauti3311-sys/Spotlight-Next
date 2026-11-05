@@ -1,5 +1,15 @@
 # Spotlight Next — instrucciones para Codex
 
+## Corrección física62 y nueva candidata63 —05/11
+
+El propietario probó62 en Tab A9+ y reportó distribución/altura con Gboard y
+ausencia de regreso táctil desde opciones. Corregir sólo estos problemas con
+pruebas dirigidas/Lint/capturas Compose comparables; C1/C2 íntegros. El par
+71d6980/a82af60 queda histórico PAUSADO, no autorizado para compilar. Preparar
+par nuevo tras verificar; no APK/firma/Actions/main/C3–C9. La compilación y
+ejecución de pruebas locales sí están autorizadas para estas correcciones.
+Ver docs/TABLET62-REGRESSIONS-20261105.md. La evidencia Compose no acepta OneUI.
+
 ## Preview63 — sólo preparación autorizada05/11
 
 C2 técnicamente cerrado en261eef4; física pendiente. Preparar code63 con todas

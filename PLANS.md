@@ -1,5 +1,19 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — defectos físicos62 corregidos localmente; candidata63 renovada
+
+Fotos reales Tab A9+ reportan altura/inspector con Gboard y menú sin regreso táctil.
+Se reproducen reservas fijas solapadas (268/300dp usados), posición sobre pantalla
+oculta por IME y ausencia de regreso visible cuando el menú sustituye al footer.
+Medición de chrome real, posición sobre área libre y botón48dp de regreso con
+consulta/foco/selección preservados. [Informe y comparativas](docs/TABLET62-REGRESSIONS-20261105.md).
+28 casos distintos de última evidencia correcta, Lint0E/27W/1Info; rojos y errores
+de fixture conservados. No se interpreta Compose como aceptación OneUI ni prueba
+de lectura de los URI sintéticos. C1/C2 conservados; sin APK/firma/Actions/main/C3–C9.
+Par71d6980/a82af60 pausado y conservado como histórico. Nueva fuente es el commit
+de correcciones; tooling posterior fija fuente=base validada sin delta. Presentar
+SHA nuevos para autorización expresa; liberar sólo reserva propia con notas.
+
 ## 2026-11-05 — Preview63 preparada, esperando autorización de ejecución
 
 Fuente71d6980e50e6206776014946a2a606521fad9fd8, base261eef4 (C1+altura/IME+C2).

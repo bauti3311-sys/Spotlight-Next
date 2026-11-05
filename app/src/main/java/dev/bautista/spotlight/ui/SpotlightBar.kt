@@ -199,7 +199,15 @@ fun SpotlightBar(
         }
         if(options) {
             HorizontalDivider()
-            Column(Modifier.fillMaxWidth().heightIn(max=(optionsMaxHeight-16.dp).coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
+            // Always reachable by touch, even when the three-dot opener lives in
+            // the footer that the open menu replaces. Returning never clears input.
+            TextButton(onClick={setOptions(false);focus.requestFocus()},
+                modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).semantics{testTag="spotlight-menu-return"}) {
+                IosCommandIcon(CommandIcons.Reply,null,Modifier.size(18.dp),tint=colors.onSurfaceVariant)
+                Spacer(Modifier.width(8.dp))
+                Text("Volver a resultados")
+            }
+            Column(Modifier.fillMaxWidth().heightIn(max=(optionsMaxHeight-64.dp).coerceAtLeast(0.dp)).verticalScroll(rememberScrollState())) {
                 onSaved?.let{DropdownMenuItem(text={Text("Abrir Guardados")},onClick={setOptions(false);it()})}
                 onDictate?.let{DropdownMenuItem(text={Text("Dictar consulta")},onClick={setOptions(false);it()})}
                 if(quickMenu==null)onSettings?.let{DropdownMenuItem(text={Text("Abrir Ajustes")},onClick={setOptions(false);it()})}

@@ -1,0 +1,8 @@
+{
+  "app/src/main/java/dev/bautista/spotlight/overlay/AdaptiveLayout.kt": "53aa0f56124901a30f6139d36550701410994222bea7c16bf726f425e375973f",
+  "app/src/main/java/dev/bautista/spotlight/overlay/OverlayViewport.kt": "4c34e40aa54d2aa13119a1d1f4939f13248f68d952552fe93f8f2d4a5c59ea49",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt": "a9a48671e527f8cebdce3ac4bdf3ffd8f29fec34db0e5ed7cc03c5eb84302c38",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt": "81ae010811e929d75ff35252e537a0d49d68255564cd7b43726a263ba61307c1",
+  "app/src/test/java/dev/bautista/spotlight/ui/TabletPhysicalRegressionTest.kt": "684530f84674c216417d231c01b2cf265555310d8fc78228ff486670186738fc",
+  "app/src/test/java/dev/bautista/spotlight/overlay/KeyboardPositionTest.kt": "89770c455070ec68e67f69dc4e5fb7ffe01b51bcf28abef52deceb98b0438eda"
+}
