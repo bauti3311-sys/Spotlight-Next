@@ -99,7 +99,7 @@ object SettingsGroups {
  val brand:@Composable ()->Unit={
   Row(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=12.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
    Box(Modifier.size(40.dp).background(colors.primary.copy(alpha=.12f),RoundedCornerShape(10.dp)),contentAlignment=Alignment.Center){IosCommandIcon(CommandIcons.Search,null,Modifier.size(26.dp),tint=colors.primary)}
-   Column {Text("Spotlight Next",fontSize=15.sp,fontWeight=FontWeight.SemiBold);Text("Búsqueda en todas partes",fontSize=10.sp,color=colors.onSurfaceVariant)}
+   Column {Text("Spotlight Next",fontSize=if(LocalFocusUi.current)17.sp else 15.sp,fontWeight=FontWeight.SemiBold);Text("Búsqueda en todas partes",fontSize=if(LocalFocusUi.current)12.sp else 10.sp,color=colors.onSurfaceVariant)}
   }
  }
  val category:@Composable (String)->Unit={group->
@@ -107,7 +107,7 @@ object SettingsGroups {
    .background(if(selected==group)colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(9.dp))
    .heightIn(min=48.dp).padding(horizontal=12.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
    IosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(20.dp),tint=colors.onSurfaceVariant)
-   Text(group,Modifier.weight(1f),fontSize=13.sp,fontWeight=if(selected==group)FontWeight.Medium else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
+   Text(group,Modifier.weight(1f),fontSize=if(LocalFocusUi.current)14.sp else 13.sp,fontWeight=if(selected==group)FontWeight.Medium else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
   }
  }
  CompositionLocalProvider(LocalSettingsQuery provides query) {
@@ -167,7 +167,7 @@ object SettingsGroups {
  Column(Modifier.fillMaxWidth().padding(vertical=4.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
   Row(Modifier.fillMaxWidth().heightIn(min=48.dp).clickable(role=Role.Button,onClickLabel=if(open)"Contraer sección" else "Expandir sección"){expanded=!expanded}
    .semantics{stateDescription=if(open)"Expandida" else "Contraída"},verticalAlignment=Alignment.CenterVertically){
-   Text(title,Modifier.weight(1f),fontSize=13.sp,fontWeight=FontWeight.SemiBold)
+   Text(title,Modifier.weight(1f),fontSize=if(LocalFocusUi.current)15.sp else 13.sp,fontWeight=FontWeight.SemiBold)
    IosCommandIcon(CommandIcons.Chevron,null,Modifier.size(14.dp).rotate(if(open)90f else 0f),tint=MaterialTheme.colorScheme.onSurfaceVariant)
   }
   if(open)SettingsGroupSurface{content()}
@@ -175,9 +175,9 @@ object SettingsGroups {
 }
 
 @Composable fun SettingsGroupSurface(content:@Composable ColumnScope.()->Unit) {
- Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(12.dp),color=MaterialTheme.colorScheme.surfaceVariant.copy(alpha=.30f),
+ Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(if(LocalFocusUi.current)0.dp else 12.dp),color=if(LocalFocusUi.current)Color.Transparent else MaterialTheme.colorScheme.surfaceVariant.copy(alpha=.30f),
   tonalElevation=0.dp) {
-  Column(Modifier.padding(horizontal=14.dp,vertical=10.dp),verticalArrangement=Arrangement.spacedBy(10.dp),content=content)
+  Column(Modifier.padding(horizontal=if(LocalFocusUi.current)2.dp else 14.dp,vertical=10.dp),verticalArrangement=Arrangement.spacedBy(10.dp),content=content)
  }
 }
 
