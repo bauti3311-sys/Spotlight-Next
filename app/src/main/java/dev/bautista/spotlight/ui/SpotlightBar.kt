@@ -104,11 +104,12 @@ fun SpotlightBar(
     fun setOptions(value:Boolean){localOptions=value;onOptionsChange(value)}
 
     val appearance = LocalAppearance.current
-    val inputFontSize = GlassTokens.scaledSp(if (compact) GlassTokens.compactSearchText else GlassTokens.searchText, appearance)
+    val premium=LocalPremiumReview.current
+    val inputFontSize = GlassTokens.scaledSp(if(premium && !compact)22.sp else if (compact) GlassTokens.compactSearchText else GlassTokens.searchText, appearance)
     val searchField:@Composable (Modifier)->Unit = {fieldModifier ->
         Row(
             fieldModifier
-                .height(GlassTokens.searchHeight)
+                .height(if(premium)64.dp else GlassTokens.searchHeight)
                 .padding(start = 2.dp, end = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {

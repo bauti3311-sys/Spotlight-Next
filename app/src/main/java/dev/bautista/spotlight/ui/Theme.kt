@@ -94,7 +94,13 @@ labelMedium=SpotlightTypography.labelMedium.copy(fontFamily=font,fontSize=Spotli
 labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=SpotlightTypography.labelSmall.fontSize*scale))
     val tone=when(config.surfaceTone){"warm"->Color(0xFFFFCA8C);"cool"->Color(0xFF87BFFF);else->palette.surface}
     val toned=palette.copy(onSurfaceVariant=GlassTokens.secondary(config,dark),surface=lerp(palette.surface,tone,if(config.surfaceTone=="neutral")0f else .035f))
-    MaterialTheme(colorScheme = toned, typography=typography) {
+    val premium=LocalPremiumReview.current
+    val reviewTypography=if(premium)typography.copy(
+        titleLarge=typography.titleLarge.copy(fontSize=26.sp,lineHeight=31.sp),
+        titleMedium=typography.titleMedium.copy(fontSize=20.sp,lineHeight=26.sp),
+        titleSmall=typography.titleSmall.copy(fontSize=15.sp,lineHeight=21.sp),
+        bodyMedium=typography.bodyMedium.copy(fontSize=14.sp,lineHeight=20.sp)) else typography
+    MaterialTheme(colorScheme = if(premium)PremiumMaterial.palette(toned,dark) else toned, typography=reviewTypography) {
         val motion=rememberMotionAllowed(config.animations)
         CompositionLocalProvider(LocalMotion provides motion,LocalAppearance provides config, LocalContentColor provides MaterialTheme.colorScheme.onSurface, content=content)
     }

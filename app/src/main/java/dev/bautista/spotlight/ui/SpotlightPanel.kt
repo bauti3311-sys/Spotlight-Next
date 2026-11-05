@@ -1066,7 +1066,7 @@ fun SpotlightPanel(
                             {group->searchOptions=false;launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group))},
                             {mode->searchOptions=false;selectMode(mode)})
                     },
-                    optionsMaxHeight=minOf(320.dp,(viewport-24.dp-GlassTokens.searchHeight).coerceAtLeast(0.dp)),
+                    optionsMaxHeight=minOf(320.dp,(viewport-24.dp-(if(LocalPremiumReview.current)64.dp else GlassTokens.searchHeight)).coerceAtLeast(0.dp)),
                     onBack=if(searchScope!=null || history.isNotEmpty())({preview=null;menu=false;back()}) else null,
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
                     onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},

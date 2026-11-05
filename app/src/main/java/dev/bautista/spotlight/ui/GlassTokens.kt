@@ -88,14 +88,16 @@ object GlassTokens {
 }
 @Composable fun Modifier.glassSurface(c:Config, legibleBackdrop:Boolean=false):Modifier {
     val colors=MaterialTheme.colorScheme
-    val shape=RoundedCornerShape(GlassTokens.windowRadius)
+    val premium=LocalPremiumReview.current
+    val shape=RoundedCornerShape(if(premium)26.dp else GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
-    val material=GlassTokens.windowColors(c,dark,legibleBackdrop)
+    val material=if(premium)listOf(colors.surface.copy(alpha=1f),colors.surfaceContainerLow.copy(alpha=1f))
+        else GlassTokens.windowColors(c,dark,legibleBackdrop)
     return shadow(18.dp,shape,clip=false,
             ambientColor=Color.Black.copy(alpha=.18f),spotColor=Color.Black.copy(alpha=.30f))
         .clip(shape)
         .background(Brush.verticalGradient(material))
-        .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=if(dark).14f else .10f),shape)
+        .border(if(premium).75.dp else 1.dp,(if(premium)colors.outline else if(dark)Color.White else Color.Black).copy(alpha=if(premium).48f else if(dark).14f else .10f),shape)
         .drawWithContent {
             drawContent()
             drawLine(Color.White.copy(alpha=if(dark).12f else .60f),

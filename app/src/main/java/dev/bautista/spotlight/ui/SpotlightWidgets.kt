@@ -93,13 +93,16 @@ fun ResultRow(
     val hPad=GlassTokens.rowHorizontalPadding(appearance)
     val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")
     val dark=colors.surface.luminance()<.5f
+    val premium=LocalPremiumReview.current
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
         Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else (60f*d).coerceAtLeast(48f).dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
-            .background(Brush.horizontalGradient(GlassTokens.selectedColors(dark,amount)))
+            .background(Brush.horizontalGradient(if(premium)listOf(
+                colors.primary.copy(alpha=(if(dark).19f else .11f)*amount),
+                colors.onSurface.copy(alpha=(if(dark).065f else .025f)*amount)) else GlassTokens.selectedColors(dark,amount)))
             .then(if(focused)Modifier.border(GlassTokens.resultFocusStroke,GlassTokens.resultFocusColor(dark),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
