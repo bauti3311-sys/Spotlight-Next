@@ -1,0 +1,7 @@
+Preparación65 local verificada; publicación GitHub bloqueada, NO candidata remota autorizable.
+Owner codex-b6d66238-6c1a-4c88-a47b-67d9cf345e58; lease dbf36552aef08502949552fd98bb4f0cbcee6164.
+Remoto87c75aa; fuente localffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7; tooling local48ddfff033010869b7ef35dcada27081d9aea366.
+15 casos dirigidos correctos, lint0E26W1Info,19 offline; noActions/APK/preflight/firma/main. Focus B/homónimos/WebAppRemote conservados.
+Dos pushes normales rechazados fatal error in commit_refs y alternativa GitAPI primerblob HTTP503. No más reintentos.
+Recuperar transporte, verificar HEAD/reserva, publicar fast-forward ambos commits del bundle local, comprobar par remoto y pedir autorización65 antes de nueva reserva de entrega.
+Ver docs/NATIVE65-PREPARATION-20261105.md.
