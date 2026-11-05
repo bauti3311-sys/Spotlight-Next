@@ -1,5 +1,9 @@
 # C2 — archivos locales, compartir y compatibilidad
 
+Actualización05/11: [validación técnica local cerrada](C2-TECHNICAL-CLOSURE-20261105.md)
+sobre84ab6d7, con restauración verde, regresiones dirigidas y Lint sin errores.
+Los pendientes físicos siguen abiertos; no se entregó otra APK ni se inició C3.
+
 Base f17d9b2 del PR21. Continuación autorizada F07/F14 y matriz técnica, sin
 esperar la tablet, sin APK/Actions/main/C3–C9. Preview62 permanece referencia
 física; no se promueven C0/C1/C2 físicos ni el checkpoint integral.

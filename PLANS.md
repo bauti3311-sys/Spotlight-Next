@@ -1,5 +1,18 @@
 # Continuidad de Spotlight Next
 
+## 2026-11-05 — C2: validación técnica local cerrada
+
+Fuente84ab6d7 de PR21; recuperación administrativa anterior comprobada, reserva
+propia nueva. Restauración pendiente2/2 y regresiones mínimas6/6, sin fallos ni
+omisiones; no suite global ni suma a112 históricos. Lint RaycastPreview0E/27W/1Info:
+un aviso adicional de nomenclatura en helper Compose de pruebas, sin supresiones.
+No se necesitaron correcciones de fuentes ni cambios visuales. [Cierre y evidencia](docs/C2-TECHNICAL-CLOSURE-20261105.md).
+[Checklist físico Tab A9+/moto g86](docs/C2-PHYSICAL-ACCEPTANCE-20261105.md):
+Preview62 ventana/IME aún pendiente; futura APK C2 requiere autorización y pruebas
+de receptores/grants/restauración/accesibilidad/rendimiento. No C3–C9/APK/Actions,
+main/merge ni promoción del checkpoint integral. Reserva propia liberada con nota
+atómica al cierre; verificar remoto antes de otra ejecución.
+
 ## 2026-11-04 — continuación C2 autorizada, cuatro avances publicados
 
 La nueva autorización permite avanzar C2 sin esperar la tablet. Producción567cc84:
