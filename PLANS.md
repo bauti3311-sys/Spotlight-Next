@@ -1092,3 +1092,25 @@ revisión efímera,mecanismos existentes y estadosSpotify autorización/solicitu
 observación separados. No modificar planmaestrooriginal,main,checkpoints,firma,
 paquete,dependencias,permisos,motor,ranking,NativeLaunchSession oWM.
 Cerrar con notas y liberar sólo reserva propia; no promover e38eae8.
+
+## 2026-11-05 — ambasB integradas por aprobación expresa
+
+Continuidad desde677d9d8/PR21, reserva propia nueva codex-87df291d-22cb-40e5-a1eb-7f6e35955a6a.
+Fuente8f6a5b470310b59c4f5950870ce81327a546e947: búsquedaFocus promovida con disponibilidad
+y prepare reales, deduplicada deMásacciones/ActionPanel; administración plegable
+y recuperable; revisión identifica app receptora del Intent y sitio web sin variar
+ejecución. GuardUIcorrige pérdida de inspector al restaurar antes de completar lotes
+de resultados; motor/ranking/savers/NativeLaunchSession/WM intactos.
+
+15métodos dirigidos con última evidencia correcta, lint0E26W1Info(2m7s). Se preservan
+fallos y trazas; sin timeouts mayores ni aserciones reducidas.24PNG originales/9pares
+reales/PDF/HTML.330dp,360/960ancho,ambostemas; texto200%teléfono,scroll/48dp,CtrlK/Escape,
+restauración de borrador/cursor sin confirmar y Focus→anterior→Focus. Escena móvil
+comparable700dp:426→407dp de superficie, no medidaOneUI.
+
+Informe docs/FOCUS-B-INTEGRATION-20261105.md. Focus=false y homónimodf5bd77/prueba
+conservados. APK64 no contiene estos cambios. No Actions/APK/main/merge/firma/paquete/
+versión/permisos/dependencias ni capacidadesC3/C4 nuevas; plan23/checkpoints intactos.
+Siguiente:C3/C4funcionales conforme a contratos/aceptación física pendientes, sin
+rediseñar otra vez estas piezas. Publicar cierre y liberar sólo reserva propia con
+notas; no promover checkpoint integral e38eae8.

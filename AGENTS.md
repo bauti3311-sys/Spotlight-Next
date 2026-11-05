@@ -1,3 +1,16 @@
+## Focus B integrada — aprobación expresa 2026-11-05
+
+AmbasB autorizadas e integradas en8f6a5b4, desde677d9d8, PR21. Ver informe
+FOCUS-B-INTEGRATION-20261105.md. B ya no está pendiente de decisión ni es sólo
+prototipo: búsqueda visible/disponible/preparada y deduplicada, administración
+plegable, app/sitio separados. Focus=false y recuperación conservados.15casos
+JVMdirigidos/lint0E26W1Info;330dp,texto200%,dos temas,teclado/retorno/restauración.
+CarreraUIde restauración corregida sin tocar motor/ranking/NativeLaunchSession/WM.
+Homónimodf5bd77 y su regresión intactos. NO incluido enAPK64; no nuevaAPK/Actions.
+C3/C4 son lo siguiente según contratos/aceptación, sin volver a rediseñar estas
+piezas. No activarFocusglobal, main, merge, firma/paquete ni capacidadesnuevas
+por esta aprobación. Validación físicaOneUI/Gboard/TabA9+/moto g86 pendiente.
+
 ## Focus desde64 — revisión y contratos, decisión pendiente 2026-11-05
 
 Ver docs/FOCUS-CONSOLIDATION-REVIEW-20261105.md y contratosC3/C4 asociados.

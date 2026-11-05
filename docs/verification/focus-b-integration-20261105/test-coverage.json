@@ -1,0 +1,80 @@
+{
+  "scope": "15 distinct directed cases; latest result per method; baseline capture rounds not added",
+  "cases": {
+    "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+      "seconds": 4.127
+    },
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneLight": {
+      "status": "pass",
+      "evidence": "access-round/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "seconds": 5.593
+    },
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.tabletDark": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "seconds": 0.754
+    },
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDark": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "seconds": 0.481
+    },
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneLightText200": {
+      "status": "pass",
+      "evidence": "font-settled/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "seconds": 5.74
+    },
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDarkText200": {
+      "status": "pass",
+      "evidence": "access-round/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "seconds": 0.687
+    },
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.tabletLight": {
+      "status": "pass",
+      "evidence": "tablet-settled/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "seconds": 5.736
+    },
+    "dev.bautista.spotlight.ui.FocusCapabilityPresentationTest.promotedSearchIsUniqueAndRevokedCapabilityNeverOpensAForm": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusCapabilityPresentationTest.xml",
+      "seconds": 3.893
+    },
+    "dev.bautista.spotlight.ui.FocusCapabilityPresentationTest.disablingFocusKeepsTheLegacySearchAvailableWithoutPromotion": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusCapabilityPresentationTest.xml",
+      "seconds": 0.124
+    },
+    "dev.bautista.spotlight.ui.FocusCapabilityPresentationTest.reviewNamesTheActualPreparedReceiverAndDoesNotChangeTheAction": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusCapabilityPresentationTest.xml",
+      "seconds": 0.071
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedPhoneDark": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 4.701
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedPhoneLight": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.358
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedTabletDark": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.276
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedTabletLight": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.264
+    },
+    "dev.bautista.spotlight.ui.FocusIntegratedSceneTest.phoneLight": {
+      "status": "pass",
+      "evidence": "directed/TEST-dev.bautista.spotlight.ui.FocusIntegratedSceneTest.xml",
+      "seconds": 6.421
+    }
+  }
+}

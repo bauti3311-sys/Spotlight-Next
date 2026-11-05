@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.FocusCapabilityPresentationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T22:35:26" hostname="52363180d3ce" time="4.088">
+  <properties/>
+  <testcase name="promotedSearchIsUniqueAndRevokedCapabilityNeverOpensAForm" classname="dev.bautista.spotlight.ui.FocusCapabilityPresentationTest" time="3.893"/>
+  <testcase name="disablingFocusKeepsTheLegacySearchAvailableWithoutPromotion" classname="dev.bautista.spotlight.ui.FocusCapabilityPresentationTest" time="0.124"/>
+  <testcase name="reviewNamesTheActualPreparedReceiverAndDoesNotChangeTheAction" classname="dev.bautista.spotlight.ui.FocusCapabilityPresentationTest" time="0.071"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
