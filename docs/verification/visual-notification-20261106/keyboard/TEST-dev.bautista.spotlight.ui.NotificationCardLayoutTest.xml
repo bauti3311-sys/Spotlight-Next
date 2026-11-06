@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.NotificationCardLayoutTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-06T10:12:03" hostname="52363180d3ce" time="4.013">
+  <properties/>
+  <testcase name="wrappedActionsKeepTabShiftTabAndEnterOrder" classname="dev.bautista.spotlight.ui.NotificationCardLayoutTest" time="4.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
