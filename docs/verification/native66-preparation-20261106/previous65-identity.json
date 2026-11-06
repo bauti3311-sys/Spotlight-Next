@@ -1,0 +1,8 @@
+{
+  "apk_sha256": "a5857160720de93cbc5d3a71cb301d095a5e19c9872fdbd7ef63ef5d8e4cdb2e",
+  "package_line": "package: name='dev.bautista.spotlight.next.raycastpreview' versionCode='65' versionName='2.0.1-raycast-preview-native57-v65' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "v2": true,
+  "signers": 1,
+  "preview66_apk": "not built; signature must be checked after authorized delivery"
+}

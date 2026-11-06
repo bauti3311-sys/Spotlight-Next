@@ -1,0 +1,9 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :app:inspectPreview66Identity
+PREVIEW66_IDENTITY={"package":"dev.bautista.spotlight.next.raycastpreview","outputs":[{"code":66,"name":"2.0.1-raycast-preview-native57-v66"}],"debuggable":false,"minified":true,"shrinkResources":true,"abi":["arm64-v8a"],"minSdk":26,"targetSdk":35,"signing":"unchanged source configuration; historical certificate checked against previous65; candidate signing requires authorized isolated workflow"}
+
+BUILD SUCCESSFUL in 10s
+1 actionable task: 1 executed
