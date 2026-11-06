@@ -46,7 +46,7 @@ object SettingsGroups {
  fun icon(group:String)=when(canonical(group)){"Apariencia"->CommandIcons.Display;"Búsqueda y archivos"->CommandIcons.Search;"Inteligencia artificial"->CommandIcons.AutoAwesome;"Integraciones"->CommandIcons.Apps;"Atajos"->CommandIcons.Keyboard;"General"->HugeIcons.Settings;"Avanzado"->CommandIcons.Sliders;else->CommandIcons.Shield}
  fun description(group:String)=when(canonical(group)){
   "General"->"Inicio, sugerencias y formas de abrir Spotlight."
-  "Apariencia"->"Solid Graphite, Dark Glass y opacidad por superficie."
+  "Apariencia"->"Temas claro y oscuro, tipografía y opacidad."
   "Inteligencia artificial"->"Proveedor, credenciales y contexto bajo tu control."
   "Búsqueda y archivos"->"Fuentes autorizadas, índice y reconocimiento local."
   "Integraciones"->"Aplicaciones, conexiones y herramientas disponibles."
@@ -55,7 +55,7 @@ object SettingsGroups {
   else->"Alias, prioridades, respaldo y diagnóstico."
  }
  fun summary(title:String)=when {
-  title=="Apariencia"->"Solid Graphite y variantes de contraste"
+  title=="Apariencia"->"Temas, tipografía y contraste"
   title.startsWith("Inteligencia")->"Configurar proveedor y clave; comprobar conexión de forma explícita"
   title.startsWith("Shizuku")->"Consultar conexión y autorización del servicio real"
   title.startsWith("Índice")->"Consultar estado, actualizar o cancelar el análisis local"

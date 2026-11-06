@@ -45,7 +45,7 @@ import kotlin.math.roundToInt
                 FilterChip(draft.focusTypeface==key,{edit(draft.copy(focusTypeface=key))},label={Text(label)})
             }
         }
-        Text(if(draft.focusInterface)"Focus · grafito y marfil" else "Raycast · Solid Graphite",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(if(draft.focusInterface)"Focus · Obsidian Glass" else "Raycast · Solid Graphite",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
         GlassThemeChoices(draft){edit(it)}
         SettingsGroupSurface {
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {

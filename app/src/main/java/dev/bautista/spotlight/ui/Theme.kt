@@ -113,7 +113,8 @@ labelSmall=SpotlightTypography.labelSmall.copy(fontFamily=font,fontSize=Spotligh
         bodyMedium=reviewTypography.bodyMedium.copy(fontFamily=face),
         bodySmall=reviewTypography.bodySmall.copy(fontFamily=face),
         labelSmall=reviewTypography.labelSmall.copy(fontFamily=face)) else reviewTypography
-    MaterialTheme(colorScheme = if(config.focusInterface)FocusDesign.palette(toned,dark,config) else if(liquid)liquidPalette(toned,dark) else if(premium)PremiumMaterial.palette(toned,dark) else toned, typography=if(config.focusInterface)FocusDesign.typography(config) else liquidTypography) {
+    MaterialTheme(colorScheme = if(config.focusInterface)FocusDesign.palette(toned,dark,config) else if(liquid)liquidPalette(toned,dark) else if(premium)PremiumMaterial.palette(toned,dark) else toned, typography=if(config.focusInterface)FocusDesign.typography(config) else liquidTypography,
+        shapes=if(config.focusInterface)FocusDesign.shapes() else FocusDesign.legacyShapes) {
         val motion=rememberMotionAllowed(config.animations)
         CompositionLocalProvider(LocalFocusUi provides config.focusInterface,LocalMotion provides motion,LocalAppearance provides config, LocalContentColor provides MaterialTheme.colorScheme.onSurface, content=content)
     }

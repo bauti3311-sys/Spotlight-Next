@@ -47,6 +47,7 @@ class VisualFirstGalleryTest {
  private var scene by mutableStateOf("inicio")
  private var proposed by mutableStateOf(false)
  private var requests=0
+ private val integrationPhase=System.getenv("SPOTLIGHT_VISUAL_PHASE")?.also{require(it in setOf("before","after"))}
  private lateinit var document:Result
  private lateinit var media:MediaSnapshot
  private val pkg="com.vivaldi.browser"
@@ -138,12 +139,13 @@ class VisualFirstGalleryTest {
  }
  private fun capture(p:Profile,variant:String) {
   val name="${p.id}-$scene-$variant"
-  ui.onNodeWithTag("visual-canvas").captureRoboImage("build/visual-first/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+  val output=if(integrationPhase==null)"build/visual-first" else "build/visual-polish/$integrationPhase"
+  ui.onNodeWithTag("visual-canvas").captureRoboImage("$output/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
   val footers=ui.onAllNodesWithTag("context-footer").fetchSemanticsNodes()
   assertTrue("Every scene needs its existing footer",footers.isNotEmpty())
   val b=ui.onNodeWithTag("context-footer").getUnclippedBoundsInRoot()
   assertTrue("Footer must fit available app viewport",b.bottom.value<=p.height-p.ime+1)
-  java.io.File("build/visual-first/manifest.tsv").apply{parentFile!!.mkdirs();appendText("${p.id}\t$scene\t$variant\t${p.width}\t${p.height}\t${p.scale}\t${p.ime}\t${p.theme}\t$name.png\t${scene in preserved}\n")}
+  java.io.File("$output/manifest.tsv").apply{parentFile!!.mkdirs();appendText("${p.id}\t$scene\t$variant\t${p.width}\t${p.height}\t${p.scale}\t${p.ime}\t${p.theme}\t$name.png\t${scene in preserved}\n")}
  }
  private fun profile(p:Profile) {
   fixtures();val c=config(p)
@@ -162,7 +164,7 @@ class VisualFirstGalleryTest {
   }
   for(s in scenes) {
    ui.runOnIdle{scene=s;proposed=false};ready();capture(p,"A")
-   if(s !in preserved){ui.runOnIdle{proposed=true};ready();capture(p,"B")}
+   if(integrationPhase==null && s !in preserved){ui.runOnIdle{proposed=true};ready();capture(p,"B")}
   }
   assertEquals("Rendering must not issue external requests",0,requests)
   assertNull(Shadows.shadowOf(app).nextStartedActivity)

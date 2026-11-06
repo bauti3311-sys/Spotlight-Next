@@ -1,6 +1,7 @@
 package dev.bautista.spotlight.ui
 
 import androidx.compose.material3.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -18,6 +19,11 @@ object FocusDesign {
  val gap=12.dp
  val inset=20.dp
  val radius=22.dp
+ val controlRadius=10.dp
+ val legacyShapes=Shapes()
+ private val controlShape=RoundedCornerShape(controlRadius)
+ private val controlShapes=legacyShapes.copy(extraSmall=controlShape,small=controlShape)
+ fun shapes()=controlShapes
  fun family(c:Config):FontFamily=when(c.focusTypeface){"system"->FontFamily.Default;"mono"->FontFamily.Monospace;"inter"->Inter;else->Geist}
  fun typography(c:Config):Typography {
   val family=family(c);val scale=GlassTokens.textScale(c)
