@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-06T02:45:08" hostname="52363180d3ce" time="4.621">
+  <properties/>
+  <testcase name="oneReviewCannotLaunchTwiceBeforeRecomposition" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="4.064"/>
+  <testcase name="editedBodyInvalidatesEvenAPreviouslyCapturedConfirmCallback" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.237"/>
+  <testcase name="selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.319"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

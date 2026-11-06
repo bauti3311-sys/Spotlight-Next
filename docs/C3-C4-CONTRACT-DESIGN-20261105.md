@@ -1,3 +1,10 @@
+> Actualización posterior del propietario: Focus B ya integrado y Preview65 entregada.
+> Spotify App Remote/Web API fallan físicamente según su prueba y quedan pausados.
+> Se autoriza avanzar C3a en contratos, fixtures y correcciones pequeñas existentes,
+> sin nuevos permisos/capacidades sensibles/envíos reales. Ver
+> [avance C3a](C3-PROGRESS-20261105.md). El diseño y las puertas inferiores conservan
+> su valor histórico; esta autorización no equivale a aceptación física integral.
+
 # C3 y C4 · diseño de contratos desde Preview64
 
 **Estado: diseño preparado; capacidades productivas nuevas NO autorizadas ni implementadas.**

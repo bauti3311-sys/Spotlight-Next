@@ -1,0 +1,147 @@
+{
+  "distinct_passed": 34,
+  "lint": {
+    "Warning": 26,
+    "Information": 1
+  },
+  "physical_validation": false,
+  "media3_binder_validation": false,
+  "cases": [
+    {
+      "case": "dev.bautista.spotlight.control.PeopleMessagingIdentityTest.personalAndBusinessIntentsFixThePackageNumberAndExactText",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.PeopleMessagingIdentityTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.PeopleMessagingIdentityTest.oneContactWithTwoNumbersAndHomonymsRequireExplicitSelection",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.PeopleMessagingIdentityTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.PeopleMessagingIdentityTest.internationalNumberNeverSilentlyDropsLettersOrSpecialCodes",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.PeopleMessagingIdentityTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.oneReviewCannotLaunchTwiceBeforeRecomposition",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.editedBodyInvalidatesEvenAPreviouslyCapturedConfirmCallback",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.editingAndLeavingTheReviewNeverRequestsAnIntent",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.restoredDraftRequiresAnotherReviewAndNeverRestoresApproval",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.cancellationBeforeConfirmationNeverRequestsPlayback",
+      "evidence": "green/TEST-dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.deniedOrFailedSearchReleasesTheHandle",
+      "evidence": "green/TEST-dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.coroutineCancellationReleasesWithoutAPlayRequest",
+      "evidence": "green/TEST-dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.explicitSelectionUsesTheReturnedItemAndDoesNotInventPlayback",
+      "evidence": "green/TEST-dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.onlyAnIndependentMatchingPlayingObservationConfirmsSelection",
+      "evidence": "green/TEST-dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.revokedPlaybackCommandNeverFallsBackToAnActivityOrRetries",
+      "evidence": "green/TEST-dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.cancelledPendingIntentConsumesTheTargetWithoutRetry",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.replySeparatorsKeepTheRecipientAndDraftUnchanged",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.reviewedTargetDispatchesOnceAndCannotBeRepeated",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.missingTargetAndDisconnectedListenerNeverDispatch",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.samePendingIntentWithChangedReplyFieldRequiresNewReview",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.control.ReplyConfirmationTest.changedConversationOrRecipientRequiresAnotherHumanReview",
+      "evidence": "green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.escapeFromPreparedShareReturnsQueryAndFocusWithoutRequest",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.revokedShareAtConfirmationDoesNotOpenAnAlternative",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.captureGmailCapability",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.gmailInspectorCannotUseADifferentDefaultMailClient",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.captureDark",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.captureLight",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.unavailableGmailShareIsDisabledWithReason",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.restoringSharedDraftDoesNotRestoreItsConfirmation",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.newContextDoesNotReplaceAnEditedDraftOrAuthorizeIt",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.sharedQueryReviewScrollAndConfirmationRequestExactAppOnce",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.contextRequiresSelectionReviewAndConfirmationToRequestSelectedApp",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.contextLimitIsVisibleAndNoDocumentIsRead",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml"
+    },
+    {
+      "case": "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.whatsappReviewShowsTheExactInternationalNumberBeforePreparingIt",
+      "evidence": "green-final-ui/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml"
+    }
+  ]
+}

@@ -1,0 +1,457 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+
+> Task :app:compileDebugUnitTestKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+    2. Kotlin compile daemon is ready
+e: The daemon has terminated unexpectedly on startup attempt #2 with error code: 0. The daemon process output:
+    1. Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+    2. Kotlin compile daemon is ready
+Problems may have occurred during auto-selection of GC. The preferred GC is Parallel GC.
+If the problems persist, try adding the JVM option to the Kotlin daemon JVM arguments: -XX:-UseParallelGC.
+GC auto-selection logic is disabled temporary for the next daemon startup.
+e: The daemon has terminated unexpectedly on startup attempt #3 with error code: 0. The daemon process output:
+    1. Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+    2. Kotlin compile daemon is ready
+e: Failed connecting to the daemon in 4 retries
+e: Daemon compilation failed: Could not connect to Kotlin compile daemon
+java.lang.RuntimeException: Could not connect to Kotlin compile daemon
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.compileWithDaemon(GradleKotlinCompilerWork.kt:214)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.compileWithDaemonOrFallbackImpl(GradleKotlinCompilerWork.kt:159)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:111)
+	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Failed to compile with Kotlin daemon: java.lang.RuntimeException: Could not connect to Kotlin compile daemon
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.compileWithDaemon(GradleKotlinCompilerWork.kt:214)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.compileWithDaemonOrFallbackImpl(GradleKotlinCompilerWork.kt:159)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:111)
+	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Using fallback strategy: Compile without Kotlin daemon
+Try ./gradlew --stop if this issue persists
+If it does not look related to your configuration, please file an issue with logs to https://kotl.in/issue
+exception: picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+exception: app/src/test/java/dev/bautista/spotlight/control/ActionCatalogTest.kt:29:25: warning: 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+exception:             Replies.put(StatusBarNotification(pkg,pkg,id,null,1000,0,0,n,android.os.Process.myUserHandle(),0))
+exception:                         ^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/ActionCatalogTest.kt:121:17: warning: 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+exception:         val sbn=StatusBarNotification("com.whatsapp","com.whatsapp",1,null,1000,0,0,notification,android.os.Process.myUserHandle(),0)
+exception:                 ^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/AndroidCapabilityTest.kt:26:70: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         for(raw in listOf("123",number))shadowOf(app.packageManager).addResolveInfoForIntent(People.dialIntent(raw),info)
+exception:                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/AppCapabilitiesTest.kt:20:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(intent,ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/C2WebSearchCapabilityTest.kt:21:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(action).setPackage(pkg),ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/DocumentShareContractTest.kt:34:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(intent,ResolveInfo().apply{activityInfo=a;isDefault=true})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/IntegrationRegistryTest.kt:30:17: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         manager.addResolveInfoForIntent(intent,android.content.pm.ResolveInfo().apply{activityInfo=info})
+exception:                 ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/NativeLaunchSessionTest.kt:37:39: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         if(component==browser)manager.addResolveInfoForIntent(web,ResolveInfo().apply{activityInfo=activity})
+exception:                                       ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/NativeLaunchSessionTest.kt:116:17: warning: 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+exception:         manager.removeResolveInfosForIntent(web,browser.packageName)
+exception:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/NativeLaunchSessionTest.kt:117:17: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         manager.addResolveInfoForIntent(web,ResolveInfo().apply{activityInfo=activity})
+exception:                 ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/NotificationContentTest.kt:17:60: warning: 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+exception:     private fun put(n:Notification,id:Int=1):String {val s=StatusBarNotification("com.whatsapp","com.whatsapp",id,null,1000,0,0,n,android.os.Process.myUserHandle(),1700000000000+id);Replies.put(s);return s.key}
+exception:                                                            ^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/control/ReplyConfirmationTest.kt:21:21: warning: 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+exception:         Replies.put(StatusBarNotification("com.whatsapp", "com.whatsapp", 1, null, 1000, 0, 0, n, android.os.Process.myUserHandle(), 1700000000000))
+exception:                     ^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:51:56: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:         val screen = OverlayViewport.fromWindowMetrics(WindowMetrics(Rect(0, 0, 1280, 800), insets), 1f)
+exception:                                                        ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:64:54: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:             override fun getCurrentWindowMetrics() = WindowMetrics(Rect(0, 0, 1280, 800), insets)
+exception:                                                      ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:82:54: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:             override fun getCurrentWindowMetrics() = WindowMetrics(Rect(0, 0, 1280, 800), insets)
+exception:                                                      ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:112:28: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:                     return WindowMetrics(Rect(0,0,width,height),insets)
+exception:                            ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:150:60: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:             val screen = OverlayViewport.fromWindowMetrics(WindowMetrics(Rect(0, 0, width, height), insets), 1f)
+exception:                                                            ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/AliasTemplateRankingTest.kt:31:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/AliasTemplateRankingTest.kt:32:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(info.packageName),ResolveInfo().apply{activityInfo=activity})
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:27:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=main})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:28:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(pkg),ResolveInfo().apply{activityInfo=main})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:29:22: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         if(search)pm.addResolveInfoForIntent(Intent(Intent.ACTION_SEARCH).setPackage(pkg),ResolveInfo().apply{activityInfo=handler})
+exception:                      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:30:19: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         if(web)pm.addResolveInfoForIntent(Intent(Intent.ACTION_WEB_SEARCH).setPackage(pkg),ResolveInfo().apply{activityInfo=handler})
+exception:                   ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:113:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage("org.wikipedia"),ResolveInfo().apply{activityInfo=handler})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/C2FileContextTest.kt:42:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/CompactProductionTest.kt:31:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),info)
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/CompactProductionTest.kt:32:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(pkg),info)
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/HomeSuggestionsTest.kt:21:54: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(launcher,android.content.pm.ResolveInfo().apply{activityInfo=info})
+exception:                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/HybridSearchTest.kt:30:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/HybridSearchTest.kt:31:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(info.packageName),ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/Next091ProductivityTest.kt:33:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,android.content.pm.ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/SmartSearchAcceptanceTest.kt:25:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/SmartSearchAcceptanceTest.kt:27:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(pkg),ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/UnifiedRootRegressionTest.kt:29:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),resolve)
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/UnifiedRootRegressionTest.kt:30:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(app.packageName),resolve)
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/search/UniversalIntelligenceArchitectureTest.kt:199:54: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(context.packageManager).addResolveInfoForIntent(launcher, ResolveInfo().apply { activityInfo = actInfo })
+exception:                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/sharing/FileSharePreparationTest.kt:48:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_SEND).setType("application/pdf"),ResolveInfo().apply{activityInfo=a;isDefault=true})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/ActionHubVisualTest.kt:32:62: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER).setPackage("com.whatsapp"),info)
+exception:                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/AdaptiveInspectorFlowTest.kt:51:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/AdaptiveResultsGeometryTest.kt:35:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/C1SceneContractTest.kt:37:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/C2FileShareFlowTest.kt:51:16: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             pm.addResolveInfoForIntent(intent,ResolveInfo().apply{activityInfo=activity;isDefault=true})
+exception:                ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/C2PublicSearchFlowTest.kt:38:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=main})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/C2PublicSearchFlowTest.kt:39:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(if(web)Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(pkg),ResolveInfo().apply{activityInfo=search})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/C2SharedMessageFlowTest.kt:41:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=main})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/C2SharedMessageFlowTest.kt:42:21: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         if(share)pm.addResolveInfoForIntent(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage(pkg),ResolveInfo().apply{activityInfo=send})
+exception:                     ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FloatingSearchFlowTest.kt:45:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusBIntegrationTest.kt:45:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,ri);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),ri)
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusBIntegrationTest.kt:45:42: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,ri);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),ri)
+exception:                                          ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusBIntegrationTest.kt:46:51: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   for(q in listOf("consulta","android tablet"))pm.addResolveInfoForIntent((ActionCatalog.searchAction("vivaldi",pkg,q) as Action.InApp).intent,ri)
+exception:                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusCapabilityPresentationTest.kt:35:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(intent,ResolveInfo().apply{activityInfo=ai})
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusCapabilityPresentationTest.kt:46:53: warning: 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+exception:   ui.runOnIdle{Shadows.shadowOf(app.packageManager).removeResolveInfosForIntent(probe,pkg)}
+exception:                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:45:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,ri);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),ri)
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:45:42: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,ri);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),ri)
+exception:                                          ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:46:51: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   for(q in listOf("consulta","android tablet"))pm.addResolveInfoForIntent((ActionCatalog.searchAction("vivaldi",pkg,q) as Action.InApp).intent,ri)
+exception:                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusContentSceneTest.kt:46:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:56:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,ri);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),ri)
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:56:42: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,ri);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),ri)
+exception:                                          ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:57:61: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   for(term in listOf("consulta","Luna","android tablet"))pm.addResolveInfoForIntent((ActionCatalog.searchAction(if(label=="Spotify")"spotify" else "vivaldi",pkg,term) as Action.InApp).intent,ri)
+exception:                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusProductFinishTest.kt:54:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,resolve);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),resolve)
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusProductFinishTest.kt:54:47: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,resolve);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),resolve)
+exception:                                               ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusProductFinishTest.kt:65:61: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   for(term in listOf("consulta","Luna","android tablet"))pm.addResolveInfoForIntent((ActionCatalog.searchAction(topic,pkg,term) as Action.InApp).intent,resolve)
+exception:                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:51:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,r);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),r)
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:51:41: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(main,r);pm.addResolveInfoForIntent(Intent(main).setPackage(pkg),r)
+exception:                                         ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:54:7: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:    pm.addResolveInfoForIntent((ActionCatalog.searchAction(topic,pkg,term) as Action.InApp).intent,r)
+exception:       ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:173:40: warning: 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+exception:   Shadows.shadowOf(app.packageManager).removeResolveInfosForIntent(intent,"com.spotify.music")
+exception:                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:181:40: warning: 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+exception:   Shadows.shadowOf(app.packageManager).removeResolveInfosForIntent(probe,"com.vivaldi.browser")
+exception:                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/GeminiHomeCaptureTest.kt:38:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/HybridIntelligenceTest.kt:158:85: warning: 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+exception:             dev.bautista.spotlight.control.Replies.put(android.service.notification.StatusBarNotification("com.whatsapp","com.whatsapp",41,null,1000,0,0,n,android.os.Process.myUserHandle(),1700000000041))
+exception:                                                                                     ^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/InspectorResourceRecoveryTest.kt:160:11: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   manager.addResolveInfoForIntent(Intent.makeMainActivity(component),android.content.pm.ResolveInfo().apply{activityInfo=info})
+exception:           ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/LiquidVivaldiSceneTest.kt:41:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/MasterC1TouchFlowTest.kt:32:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   if(speech)Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH),ResolveInfo().apply{activityInfo=ActivityInfo().apply{packageName="fixture.voice";name="Voice";exported=true;applicationInfo=ApplicationInfo().apply{packageName="fixture.voice"}}})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/MasterC1TouchFlowTest.kt:35:40: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=info})
+exception:                                        ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/MediaInspectorFlowTest.kt:40:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/MinimalistSearchFlowTest.kt:36:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/NativeCommandFlowTest.kt:81:76: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   for(category in listOf(Intent.CATEGORY_INFO,Intent.CATEGORY_LAUNCHER))pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(category).setPackage(pkg),info)
+exception:                                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/NativeLaunchFlowTest.kt:44:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/NativeLaunchFlowTest.kt:51:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=main})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/NativePaletteFlowTest.kt:38:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(intent,ResolveInfo().apply{activityInfo=activity})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/Next091VisualTest.kt:50:256: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         repeat(9){i->val info=ActivityInfo().apply{packageName="fixture.next$i";name="fixture.next$i.Main";nonLocalizedLabel="Aplicación ${'A'+i}";applicationInfo=ApplicationInfo().apply{packageName="fixture.next$i"}};Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})}
+exception:                                                                                                                                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/Next091VisualTest.kt:65:21: warning: 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+exception:         Replies.put(StatusBarNotification("com.whatsapp","com.whatsapp",91,null,1000,0,0,notification,android.os.Process.myUserHandle(),1700000000000))
+exception:                     ^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/OverlayDesignReviewTest.kt:38:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/OverlayGeometryCaptureTest.kt:51:55: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:         val frame = OverlayViewport.fromWindowMetrics(WindowMetrics(Rect(0, 0, width, height), insets), 1f)
+exception:                                                       ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/OverlayHeightRecoverySceneTest.kt:48:52: warning: 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+exception:             override fun getCurrentWindowMetrics()=WindowMetrics(Rect(0,0,width,height),insets)
+exception:                                                    ^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/OverlayHeightRecoverySceneTest.kt:63:16: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/PremiumReviewSceneTest.kt:45:12: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:            ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/RaycastCompositionCaptureTest.kt:57:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply{activityInfo=info})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/RaycastWindowCompositionTest.kt:38:46: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/SpotlightPanelLayoutTest.kt:48:18: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:                 .addResolveInfoForIntent(launcher, ResolveInfo().apply { activityInfo = activity })
+exception:                  ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/SpotlightPanelLayoutTest.kt:106:38: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         shadowOf(app.packageManager).addResolveInfoForIntent(
+exception:                                      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/StructuralVivaldiSceneTest.kt:47:6: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:      ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/TabletPhysicalRegressionTest.kt:42:16: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),ResolveInfo().apply{activityInfo=activity})
+exception:                ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/ToolTaskRecoveryTest.kt:137:11: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:   manager.addResolveInfoForIntent(android.content.Intent.makeMainActivity(component),android.content.pm.ResolveInfo().apply{activityInfo=info})
+exception:           ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:153:62: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,info)
+exception:                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:154:62: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(launcher).setPackage(pkg),info)
+exception:                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:155:62: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:         org.robolectric.Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_INFO).setPackage(pkg),info)
+exception:                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+exception: app/src/test/java/dev/bautista/spotlight/ui/VisualFidelityTest.kt:43:50: warning: 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+exception:             Shadows.shadowOf(app.packageManager).addResolveInfoForIntent(launcher,ResolveInfo().apply {activityInfo=info})
+exception:                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateDebugUnitTestConfig UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+ReplyConfirmationTest > samePendingIntentWithChangedReplyFieldRequiresNewReview FAILED
+    java.lang.AssertionError at ReplyConfirmationTest.kt:68
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+MessageRecipientReviewRegressionTest > oneReviewCannotLaunchTwiceBeforeRecomposition FAILED
+    java.lang.AssertionError at MessageRecipientReviewRegressionTest.kt:75
+
+MessageRecipientReviewRegressionTest > editedBodyInvalidatesEvenAPreviouslyCapturedConfirmCallback FAILED
+    java.lang.AssertionError at MessageRecipientReviewRegressionTest.kt:85
+
+9 tests completed, 3 failed
+
+> Task :app:testDebugUnitTest FAILED
+> Task :app:finalizeTestRoborazziDebug SKIPPED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///workspace/Spotlight-Next/app/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 55s
+28 actionable tasks: 2 executed, 26 up-to-date

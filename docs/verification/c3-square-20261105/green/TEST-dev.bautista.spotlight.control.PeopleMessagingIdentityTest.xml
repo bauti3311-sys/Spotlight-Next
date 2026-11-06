@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.PeopleMessagingIdentityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-06T02:48:56" hostname="52363180d3ce" time="1.755">
+  <properties/>
+  <testcase name="personalAndBusinessIntentsFixThePackageNumberAndExactText" classname="dev.bautista.spotlight.control.PeopleMessagingIdentityTest" time="1.655"/>
+  <testcase name="oneContactWithTwoNumbersAndHomonymsRequireExplicitSelection" classname="dev.bautista.spotlight.control.PeopleMessagingIdentityTest" time="0.028"/>
+  <testcase name="internationalNumberNeverSilentlyDropsLettersOrSpecialCodes" classname="dev.bautista.spotlight.control.PeopleMessagingIdentityTest" time="0.072"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

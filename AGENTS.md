@@ -1,3 +1,18 @@
+## Continuación C3 y Square aislado — decisión posterior 2026-11-05
+
+Preview65 YA entregada: run42130468596 attempt1 success, fuenteffc74d2/workflow48ddfff;
+ver notasf7d0209. Textos de bloqueo de publicación inferiores son históricos.
+Propietario probó ambas rutas Spotify en65 y reporta reproducción fallida: PAUSAR
+reparación App Remote/Web API; conservar código/evidencia. No afirmar audio real.
+Autoriza estudio Square aislado sin GPL/librespot/deps productivas/permisos, y C3a
+contratos/pruebas/correcciones seguras sobre mecanismos existentes. Ver
+C3-PROGRESS-20261105.md y experiments/SQUARE-MEDIA3-FEASIBILITY-20261105.md.
+Square sólo auditoría+fixture de protocolo: NO Media3 compilado/Binder/audio reales,
+no producto ni UI nuevos. C3 revisión efímera consumida antes del efecto, E164
+revisado y RemoteInput vigente. No nuevos envíos sensibles ni reales autorizados.
+No cerrar aceptación física C3 ni C0/C1/C2. Focus B,65/checkpoints, main/firma/paquete
+íntegros; no Actions/APK. Seguir C3; C4 pausado, C5 siguiente vertical independiente.
+
 ## Preview65 — preparación local, publicación bloqueada 2026-11-05
 
 Fuente local ffc74d291a8a13ac1d62c5ddfb989bb90e3b6fe7: numeración65 y

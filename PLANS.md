@@ -1,3 +1,14 @@
+## 2026-11-05 — C3a seguro y estudio Square separado
+
+Base48ddfff/PR21 verificados. Preview65 entregada, física de Spotify fallida según
+propietario: conservar y pausar ambas rutas. Square2.8.0 auditado en6d3d47c:
+biblioteca exportada, caller externo aceptado en fuente y búsqueda Web API propia;
+fixture de protocolo sin Media3/Binder/audio reales ni dependencia/códigoGPL.
+C3a: revisión de un uso y contenido/identidad válidos, E164 visible, camposRemoteInput
+vigentes y consumo antes del efecto. Sin diseño nuevo, permisos, cuenta/envío real,
+Actions/APK ni cambios de identidad. Ver docs/C3-PROGRESS-20261105.md. C3 sigue
+abierto por aceptación/dispositivos; C4 pausado, C5 siguiente vertical sin Spotify.
+
 ## Preview65 — preparación local verificada, infraestructura bloquea publicación
 
 Base87c75aa confirmada enPR21. Fuente localffc74d2: code65, nombrev65,

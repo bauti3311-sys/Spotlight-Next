@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-06T02:49:01" hostname="52363180d3ce" time="0.044">
+  <properties/>
+  <testcase name="cancellationBeforeConfirmationNeverRequestsPlayback" classname="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" time="0.023"/>
+  <testcase name="deniedOrFailedSearchReleasesTheHandle" classname="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" time="0.005"/>
+  <testcase name="coroutineCancellationReleasesWithoutAPlayRequest" classname="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" time="0.013"/>
+  <testcase name="explicitSelectionUsesTheReturnedItemAndDoesNotInventPlayback" classname="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" time="0.001"/>
+  <testcase name="onlyAnIndependentMatchingPlayingObservationConfirmsSelection" classname="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" time="0.0"/>
+  <testcase name="revokedPlaybackCommandNeverFallsBackToAnActivityOrRetries" classname="dev.bautista.spotlight.experiments.square.SquareProtocolFixtureTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
