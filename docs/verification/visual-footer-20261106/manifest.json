@@ -1,0 +1,48 @@
+{
+  "base": "d570a8689a63caeb4e29eb4273dba34e2570317b",
+  "pairs": [
+    {
+      "name": "dark-1000dp-text200.png",
+      "before_sha256": "4ffb35911f4a5cb8cb9fd231f00958d7b1d40aa6cc7917eaf2a87b4dcf0b3ab6",
+      "after_sha256": "d51899baa873034bc10de81a84e2673e05d38271359fca444294ee2e94759a05"
+    },
+    {
+      "name": "dark-700dp-text200.png",
+      "before_sha256": "94bcf9cfc665d372f9d8dbbdf0002ad174bb70352a0eabb8d6c946940f0d285d",
+      "after_sha256": "72fc4c783c933a1eb2af92e65a65074b08b4f617a9cd41aca745caceb44b1ed2"
+    },
+    {
+      "name": "light-1000dp-text100.png",
+      "before_sha256": "96495561c1460fe90043fd3dc50fb1bdbdcf903c23b0fe89c8e6b3e4e0987809",
+      "after_sha256": "96495561c1460fe90043fd3dc50fb1bdbdcf903c23b0fe89c8e6b3e4e0987809"
+    },
+    {
+      "name": "light-1000dp-text200.png",
+      "before_sha256": "29b1000510ecf69387584664f2735851450f6ab9764465d854fa3c6ce5c5154f",
+      "after_sha256": "352b2c5c80e373102956889ee28b1bcee104276e80a7a8393d7d97d4ca4fb015"
+    },
+    {
+      "name": "light-330dp-text200.png",
+      "before_sha256": "f75fcd0680e51d285607c7ddc7a37eb3b5f5583df53e3608b66c3ac894f9da68",
+      "after_sha256": "f75fcd0680e51d285607c7ddc7a37eb3b5f5583df53e3608b66c3ac894f9da68"
+    }
+  ],
+  "source_sha256": "8b95ca2f7a2a00ffbf6ad0006c118be30516d75690157fb25f9300cdee6c4b3e",
+  "platform": "Compose / Robolectric API33 native graphics / density1",
+  "limits": [
+    "isolated real component fixture",
+    "No APK, Actions or new physical evidence",
+    "JVM viewport/keyboard tests are not One UI/Gboard/FPS/RAM acceptance"
+  ],
+  "extra_validation": [
+    {
+      "name": "dark-330dp-text200-options.png",
+      "sha256": "37d872a85dfd8bc2c22e1e480b5374f24323922b176425b796bca934bfe2f802"
+    },
+    {
+      "name": "light-700dp-text130-preference130.png",
+      "sha256": "d261e9b9e081078df81e99fda519130f2004b05934e424ad07646c88b3472fb9"
+    }
+  ],
+  "directed_cases_passed": 13
+}

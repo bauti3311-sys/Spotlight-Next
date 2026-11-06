@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 
@@ -34,7 +35,10 @@ import androidx.compose.ui.unit.*
  val premium=LocalPremiumReview.current || LocalFocusUi.current
  BoxWithConstraints(Modifier.fillMaxWidth().testTag("context-footer")
   .then(if(premium)Modifier.background(colors.surfaceContainerLow) else Modifier)) {
-  val wide=maxWidth>=700.dp
+  // The desktop hints need the same readable budget when text is enlarged.
+  // Reuse the existing compact dock rather than squeezing action buttons to zero.
+  val textScale=(LocalDensity.current.fontScale*GlassTokens.textScale(appearance)).coerceAtLeast(1f)
+  val wide=maxWidth>=700.dp*textScale
   Row(Modifier.fillMaxWidth().heightIn(min=(48f*d).coerceAtLeast(48f).dp).padding(horizontal=(10f*d).dp,vertical=(2f*d).dp),verticalAlignment=Alignment.CenterVertically) {
    onOptions?.let { options ->
     IconButton(onClick=options,modifier=Modifier.size(48.dp).testTag("command-dock-menu")) {

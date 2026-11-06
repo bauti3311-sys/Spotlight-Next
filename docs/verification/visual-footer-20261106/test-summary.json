@@ -1,0 +1,54 @@
+{
+  "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDarkText200": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.thresholdDarkText200": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.tabletDarkText200": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.phoneLightText200": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.tabletLightStandard": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.tabletLightText200Keyboard": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.keyboardBudgetShrinksAndRestoresWithoutLosingMatches": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.tabletShowsTwelveMatchesWithoutManualExpansionOrScroll": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.phoneUsesActualRowHeightAndKeepsFooterVisible": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.inspectorSharesTheViewportWithResultsAndFooter": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.compactPreferenceKeepsSixAndManualExpansion": {
+    "xml": "docs/verification/visual-footer-20261106/green/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.phoneDarkText200WithOptions": {
+    "xml": "docs/verification/visual-footer-20261106/extra/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFooterBudgetTest.windowLightTextAndPreference130": {
+    "xml": "docs/verification/visual-footer-20261106/extra/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+    "passed": true
+  }
+}
