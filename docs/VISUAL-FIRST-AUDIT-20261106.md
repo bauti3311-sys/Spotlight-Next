@@ -1,3 +1,9 @@
+> **Actualización posterior:** D1B aprobado/integrado; D2–D4 conservan A.
+> [Resultados y galería nueva](VISUAL-POLISH-D1-V06-V08-V10-20261106.md).
+> **Corrección de V10:** los160ms inferiores corresponden a un helper Compose SIN
+> llamadas productivas. La ventana real abre140ms/cierra100ms. Capturas históricas
+> conservadas; no interpretar «actual160ms» como animación real de WindowManager.
+
 # Visual First — auditoría de las nueve V y decisiones pendientes
 
 Base remota y PR21 verificados: f27c8673ab8aaa557adf4da20b7a28283c449e78.

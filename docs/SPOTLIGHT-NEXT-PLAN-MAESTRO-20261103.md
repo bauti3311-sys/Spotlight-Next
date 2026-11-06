@@ -1,3 +1,7 @@
+> **Decisión posterior: D1B aprobado e integrado; D2–D4 conservan A; D5 sólo experimento.**
+> Ver [checkpoint y estado de las nueve V](VISUAL-POLISH-D1-V06-V08-V10-20261106.md).
+> C3–C8 siguen pausados. Aceptación física y D5 productivo aún pendientes.
+
 > **Prioridad posterior — 06/11/2026: Visual First.** El propietario prioriza terminar
 > V01,V02,V03,V04,V05,V06,V07,V08,V10 antes de nuevas funciones. C3–C8 quedan
 > congelados; se preservan implementaciones y Preview65. No se incorpora V09.

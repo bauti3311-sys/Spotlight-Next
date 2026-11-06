@@ -1,3 +1,16 @@
+## 2026-11-06 — Visual First D1 integrado; D5 aislado
+
+Decisiones posteriores del propietario: D1B aprobado; D2/D3/D4A conservados.
+Radios10dp en controles Focus, shapes compartido, opt-out4/8dp; copy descriptivo
+coherente sin preferencias nuevas. PDF330dp/texto200%: FlowRow, botones visibles48dp,
+callbacks/renderer intactos. 35casos vigentes verdes/lint0E26W1Info;75pares originales,
+25fotogramas. Ver docs/VISUAL-POLISH-D1-V06-V08-V10-20261106.md y evidencia asociada.
+D5sólo test120ms cancelable/reducción; corrección: helper160ms SIN llamadas
+productivas, ventana real140msabre/100mscierra intacta. No afirmar mejoraFPS/RAM.
+Sin dispositivo: OneUI/Gboard/PDFreal/fondo/fluidez pendientes;9Vno cerradas físicamente.
+FocusB/Geist/Ajustestablet/selección/iconos por rol, Preview65 y C3–C8 preservados.
+C3–C8 siguen pausados. SinActions/APK/deps/permisos/main/firma/paquete.
+
 ## 2026-11-06 — Visual First; funcionalidades en pausa
 
 Nueva decisión posterior: prioridad a las9Vseleccionadas del plan23 (sinV09).
