@@ -35,10 +35,12 @@ object People {
         out.filter{it.address.isNotBlank()}.distinctBy{it.id to it.address}
     }
     fun international(context:Context,raw:String):String? {
-        val digits=raw.filter(Char::isDigit)
-        if(raw.trim().startsWith('+') && digits.length in 8..15 && digits.first()!='0')return "+$digits"
+        val phone=raw.trim()
+        if(phone.length !in 3..100 || !phone.matches(Regex("\\+?[0-9 ()-]+")))return null
+        val digits=phone.filter{it in '0'..'9'}
+        if(phone.startsWith('+') && digits.length in 8..15 && digits.first()!='0')return "+$digits"
         val country=runCatching { context.getSystemService(TelephonyManager::class.java).networkCountryIso }.getOrNull()?.takeIf{it.length==2} ?: Locale.getDefault().country.takeIf{it.length==2} ?: "AR"
-        return PhoneNumberUtils.formatNumberToE164(raw,country.uppercase(Locale.ROOT))
+        return PhoneNumberUtils.formatNumberToE164(phone,country.uppercase(Locale.ROOT))?.takeIf{it.matches(Regex("\\+[1-9][0-9]{7,14}"))}
     }
     fun messageIntent(context:Context,channel:String,address:String,text:String):Intent? = when(channel) {
         "whatsapp","whatsapp_business"->international(context,address)?.let { Intent(Intent.ACTION_VIEW,Uri.parse("https://wa.me/${it.drop(1)}?text=${Uri.encode(text)}")).setPackage(if(channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp") }
