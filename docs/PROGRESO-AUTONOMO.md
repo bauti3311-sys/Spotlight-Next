@@ -1,3 +1,16 @@
+## 2026-11-06 — Visual First: footer accesible con texto ampliado
+
+Continuación desde d570a86/PR21. Defecto reproducido: footer700dp/texto200% dejaba
+Acciones con ancho0 y crecía308dp. Corrección mínima del breakpoint de footer según
+escala Android×preferencia existente: reutiliza distribución compacta, altura52dp.
+Sin modificar ancho de Ajustes/overlay, tipografía, colores, iconos o atajos.
+V05/V06 avanzan; FocusB/D1/D2–D4 y Preview65 conservados, C3–C8 pausados. D5aislado,
+ventana140/100ms intacta. Física OneUI/Gboard/ventanas/FPS/RAM sigue pendiente.
+Ver docs/VISUAL-FOOTER-BUDGET-20261106.md y evidencia visual-footer-20261106.
+Fuente/pruebas/capturas publicadas d9bc0b53f25b3fb9c21a65cd90b22767dfaffe7d.
+13casos dirigidos correctos; lint0E26W1Info;5pares y2validaciones extra.
+SinActions/APK/main/merge/firma/paquete/deps/permisos ni funciones nuevas.
+
 
 ## 2026-11-05 — ambasB integradas por aprobación expresa
 

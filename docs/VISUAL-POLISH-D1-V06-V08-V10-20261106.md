@@ -1,3 +1,6 @@
+> **Continuación posterior:** [footer con texto ampliado](VISUAL-FOOTER-BUDGET-20261106.md)
+> corrige Acciones con ancho cero a700dp/200%, preservando escenas normales.
+
 # Visual First — integración D1 y pulido V06/V08/V10
 
 Base remota `7332b2effc717ba8a5c59b9ed9a9158848500351`, PR #21 abierto/borrador.
