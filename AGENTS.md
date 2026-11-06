@@ -1,3 +1,20 @@
+## Visual First — prioridad vigente 2026-11-06
+
+Propietario cambia el orden: completar visualmente V01,V02,V03,V04,V05,V06,V07,V08,V10;
+NO V09. C3/C4/C5/C6/C7/C8 congelados, conservar todo su código/evidencia y Preview65.
+Basef27c867/PR21 comprobada; FocusB,Geist,temas/macOS/Raycast/Obsidian intactos.
+Primera entrega auditoría+comparativas REALES Compose sólo en tests, sin integrar
+cambios importantes antes de decisión visual. Ver docs/VISUAL-FIRST-AUDIT-20261106.md
+y verification/visual-first-20261106.136PNG,8perfiles,72pares de escenas,12casos verdes.
+Inicio/resultados/inspector son SpotlightPanel vigente; periféricos son componentes
+en fixture. B sólo MaterialTheme/anchos de test. IME simulado, nunca OneUI/Gboard real.
+Recomendación: conservarA/FocusB; radiosB en campos; ensayaropacidad120msB; NO adoptar
+ancho/títulos/neutralizaciónB global (empeoraAjustes tablet). Aprobación aún pendiente.
+NO producto nuevo, deps/permisos/servicios/motores, Actions/APK/main/firma/paquete.
+Tras decisión: integrar incremental, comparar antes/después y validarinput/restore.
+No reanudar funciones ni rediseñar inspector B por esta auditoría. Reserva propia
+se libera con notas; checkpoint integral no avanza por una galería.
+
 ## Continuación C3 y Square aislado — decisión posterior 2026-11-05
 
 Preview65 YA entregada: run42130468596 attempt1 success, fuenteffc74d2/workflow48ddfff;

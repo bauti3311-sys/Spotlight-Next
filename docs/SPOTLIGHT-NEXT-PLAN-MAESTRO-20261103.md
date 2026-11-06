@@ -1,3 +1,10 @@
+> **Prioridad posterior — 06/11/2026: Visual First.** El propietario prioriza terminar
+> V01,V02,V03,V04,V05,V06,V07,V08,V10 antes de nuevas funciones. C3–C8 quedan
+> congelados; se preservan implementaciones y Preview65. No se incorpora V09.
+> [Auditoría y galería](VISUAL-FIRST-AUDIT-20261106.md): sólo propuestas de test;
+> integración importante después de aprobación visual. Las dependencias/códigos
+> históricos del plan se conservan, pero no indican prioridad funcional vigente.
+
 # SPOTLIGHT NEXT
 ## Plan maestro de evolución funcional y visual — Preview 60 nativa
 

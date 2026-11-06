@@ -1,3 +1,15 @@
+## 2026-11-06 — Visual First; funcionalidades en pausa
+
+Nueva decisión posterior: prioridad a las9Vseleccionadas del plan23 (sinV09).
+Congelar C3–C8; no reparar másSpotify por ahora y conservar Square/C3/Preview65.
+Basef27c867 verificada. Auditoría y propuestas sólo test, no producto:
+136capturasCompose,72pares/8perfiles, iconos y fotogramas de movimiento;12casos
+correctos. Docs/VISUAL-FIRST-AUDIT-20261106.md, galeríaoffline/PDF. FocusB intacto.
+Decidir radios/movimiento; conservar ancho y selección A de Ajustes y títulos17sp.
+Bglobal reduce densidad en tablet. Esperar aprobación material antes de integración;
+correcciones triviales posteriores conservan teclado/ranking/estado y reversibilidad.
+SinActions/APK/deps/permisos/main ni promoción de checkpoint integral. Física pendiente.
+
 ## 2026-11-05 — C3a seguro y estudio Square separado
 
 Base48ddfff/PR21 verificados. Preview65 entregada, física de Spotify fallida según
