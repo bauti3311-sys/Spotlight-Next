@@ -27,6 +27,7 @@ class OverlayWindowMotionTest {
             OverlayWindowMotion.prepare(host, true)
             activity.setContentView(host)
             OverlayWindowMotion.open(host, true)
+            assertEquals(140L,host.animate().duration)
             assertTrue(host.alpha > .9f)
             assertTrue(editor.requestFocus())
             editor.setText("spot")
@@ -52,4 +53,19 @@ class OverlayWindowMotionTest {
             assertTrue(closed)
         } finally { activity.pause().stop().destroy() }
     }
+    @Test fun actualCloseDurationIs100msAndKeepsTheHostLayout() {
+        val controller=Robolectric.buildActivity(Activity::class.java).setup()
+        try {
+            val host=FrameLayout(controller.get())
+            controller.get().setContentView(host)
+            host.layoutParams=FrameLayout.LayoutParams(320,200)
+            var finished=0
+            OverlayWindowMotion.close(host,true) { finished++ }
+            assertEquals(100L,host.animate().duration)
+            shadowOf(android.os.Looper.getMainLooper()).idleFor(Duration.ofMillis(200))
+            assertEquals(1,finished)
+            assertEquals(320,host.layoutParams.width);assertEquals(200,host.layoutParams.height)
+        } finally {controller.pause().stop().destroy()}
+    }
+
 }
