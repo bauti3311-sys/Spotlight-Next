@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.*
@@ -63,15 +64,21 @@ class PdfPreviewSession private constructor(private val fd:ParcelFileDescriptor,
         else if(bitmap==null)LinearProgressIndicator(Modifier.fillMaxWidth())
         bitmap?.let{Image(it.asImageBitmap(),"Página ${page+1} del PDF",Modifier.fillMaxWidth().heightIn(max=if(expanded)540.dp else 320.dp))}
         session?.let{s->if(s.pageCount>0){
-            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){
-                TextButton(enabled=page>0,onClick={onPage(page-1)}){Text("Anterior")}
-                Text("${page+1} / ${s.pageCount}")
-                TextButton(enabled=page<s.pageCount-1,onClick={onPage(page+1)}){Text("Siguiente")}
-            }
+            PdfPageNavigation(page,s.pageCount,onPage)
             Row {
                 OutlinedTextField(number,{number=it.filter(Char::isDigit).take(6)},label={Text("Página")},singleLine=true,modifier=Modifier.weight(1f))
                 TextButton(enabled=number.toIntOrNull()?.let{it in 1..s.pageCount}==true,onClick={number.toIntOrNull()?.takeIf{it in 1..s.pageCount}?.let{onPage(it-1)}}){Text("Ir")}
             }
         }}
+    }
+}
+
+/** Presentation only; kept separate so narrow/large-text geometry can be tested without a PDF renderer. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable internal fun PdfPageNavigation(page:Int,pageCount:Int,onPage:(Int)->Unit) {
+    FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalArrangement=Arrangement.spacedBy(4.dp)) {
+        TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=page>0,onClick={onPage(page-1)}){Text("Anterior")}
+        Text("${page+1} / $pageCount",Modifier.align(Alignment.CenterVertically))
+        TextButton(modifier=Modifier.heightIn(min=48.dp),enabled=page<pageCount-1,onClick={onPage(page+1)}){Text("Siguiente")}
     }
 }
