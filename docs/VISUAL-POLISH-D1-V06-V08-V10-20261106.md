@@ -1,3 +1,6 @@
+> **Continuación posterior:** [acciones de notificación legibles](VISUAL-NOTIFICATION-CARD-20261106.md)
+> corrige botones con ancho cero en teléfono sin nuevas capacidades.
+
 > **Continuación posterior:** [footer con texto ampliado](VISUAL-FOOTER-BUDGET-20261106.md)
 > corrige Acciones con ancho cero a700dp/200%, preservando escenas normales.
 

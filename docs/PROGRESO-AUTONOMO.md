@@ -1,3 +1,16 @@
+## 2026-11-06 — Visual First: acciones de notificación legibles
+
+Continuación desde73af4d6/PR21. Defecto reproducido: fila fija ocultabaVolver
+(ancho0) en390dp/100% y Sugerirrespuesta en330dp/200%. Ajuste mínimo aFlowRow,
+4dp entre líneas; mismos botones, orden, capacidades y callbacks. Tablet1000/100
+idéntica byteabyte. Sólo presentación NotificationPreview, no funcionalidadC3.
+Ver docs/VISUAL-NOTIFICATION-CARD-20261106.md y verification/visual-notification-20261106.
+V06/V08 avanzan; D1/FocusB/D2–D4/Preview65 preservados, C3–C8 pausados. D5aislado,
+ventana140/100ms intacta. FísicaOneUI/Gboard/WhatsApp/RemoteInput/FPS/RAM pendientes.
+Fuente/pruebas/capturas d342c9ec2e4bf19f2f669a045a2df3184bde2fef.
+18casos dirigidos correctos, lint0E26W1Info;4pares originales, teclado en orden.
+SinActions/APK/main/merge/firma/paquete/deps/permisos ni funciones nuevas.
+
 ## 2026-11-06 — Visual First: footer accesible con texto ampliado
 
 Continuación desde d570a86/PR21. Defecto reproducido: footer700dp/texto200% dejaba
