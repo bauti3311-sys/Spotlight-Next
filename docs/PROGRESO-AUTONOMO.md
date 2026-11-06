@@ -1,3 +1,22 @@
+## 2026-11-06 — Preview66 preparada, pendiente de autorización específica
+
+Base7bc8a26/PR21 verificada. Fuente 66d4ea0b28192f84ba26b9a451a8299d90f84cfb:
+code66/name2.0.1-raycast-preview-native57-v66; paqueteRaycastPreview/cert885838aa
+conservados. App/src/main idéntico a7bc8a26: FocusB/D1/footer/PDF/notificaciones
+íntegros; auditoría crítica sin otro defecto reproducible, sin rediseño ni C3–C8.
+2casos nuevos266dpinterior/330dp/texto200%claroscuro correctos, lint0E26W1Info;
+identidadAGPsinAPK correcta; firma/hashAPK65recomprobados;19guardasofflineverdes.
+No repetir35/13/18históricos; imágenes originales conservadas. Ver
+docs/NATIVE66-PREPARATION-20261106.md y verification/native66-preparation-20261106.
+Manifiesto66 congela source=base y allowed_delta_paths=[]; workflowescommit de
+manifiesto posterior, SHAexacto ennota de cierre. NoActions/APK/preflightreal/firma,
+main/merge/deps/permisos/servicios. D5sólotest; ventana140/100ms intacta.
+C3–C8/Spotify/Square/ranking/acciones/datos congelados. FísicaOneUI/Gboard/A9+/g86
+y nueveV aún pendientes. DETENERtraspublicarpar y liberarúnicamente reserva propia.
+Una futura entrega requiereautorización nueva delpar66 y reserva nueva; jamás
+reutilizar autorización65 ni estareserva. Únicaruta native-delivery, un intento
+con AUTHORIZE_PREVIEW_66_ONCE, guardas/aislamientofirma y verificaciónAPK+ZIP.
+
 ## 2026-11-06 — Visual First: acciones de notificación legibles
 
 Continuación desde73af4d6/PR21. Defecto reproducido: fila fija ocultabaVolver
