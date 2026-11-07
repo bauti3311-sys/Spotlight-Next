@@ -1,0 +1,42 @@
+{
+  "base_sha": "b80d9762eefef2e06bff32a7b6d97f51c2d7f94c",
+  "source_sha": "84c0e1a668c16becc0cc5098d20da22dc4644716",
+  "new_tests": {
+    "real_pdf": 4,
+    "saf_state": 10,
+    "failures": 0
+  },
+  "historical_related_regression": 1,
+  "lint": {
+    "errors": 0,
+    "warnings": 26,
+    "information": 1
+  },
+  "physical_validation": false,
+  "real_ocr_executed": false,
+  "sha256": {
+    "preservation.json": "c1482ea727f54f44903e35ea1e84030778b4d9ac1ad6653d618333ec367be30c",
+    "environment.json": "54536222828109174a64445aaf3b891145de2417a3a6295cefddd154f6b88b3b",
+    "README.md": "3a22a6ee9ea8fbbb5152395edd6f7bdba2688f13e6dbd31c103e35f39f84aaab",
+    "pdf/image-only-text.txt": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977",
+    "pdf/pdfinfo.txt": "110a9fe8eb683e361ea928b24f8f926848ff3ab3cc3b88c550ace8adf5aa7b90",
+    "pdf/extraction.json": "44f9b058675fe1d7f85acb15c42f9129b586c7717f29d9297be75a738a516680",
+    "pdf/poppler-pages.txt": "db86a466b3ffeaffd9f2fe7e053bba5c30a428e8eeed32ab08b8cf877e7293ca",
+    "pdf/independent-verification.json": "b52748b4eab3a21cbbf426e488f2ab36fcf42f6b7d69a146ad1bd07ae18724a1",
+    "pdf/real-three-pages.pdf": "2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784",
+    "pdf/image-only.pdf": "38f77dcda81c3e745d5331e9efcdb25b94f2c54ec6a0b6a6a7691d1d9e5731ac",
+    "before-clear-fix/TEST-dev.bautista.spotlight.index.CitationSafStateTest.xml": "e1b07c68a5e1d4fcc4d230231698b05442c91d3ed3ab2af357bec8124fd5a496",
+    "before-clear-fix/saf-and-lint.log": "d93f585d5c74b3cd1e779ce99ba134f08823d159f7bffb7b48e52d7d838a21dc",
+    "before-cancel-fix/TEST-dev.bautista.spotlight.index.CitationSafStateTest.xml": "1ce008ea882a0b407816150fa803693abd62af5bd7cd70574277c02c6ecfa193",
+    "before-cancel-fix/cancel-before.log": "bf94585329988eb9a2060a6bd53bb618c09e4c07fca2e0ae44ae346cdb80820a",
+    "initial/initial.log": "f515b48b1d3307cdd687f9dac545cbfeb10956cfa4043bf68af4f150250918f3",
+    "initial/TEST-dev.bautista.spotlight.index.CitationSafStateTest.xml": "73d0df597e62a51c313ae002fa448545731effb05b8d7aad04bb791d76be2ba3",
+    "initial/TEST-dev.bautista.spotlight.index.CitationRealPdfTest.xml": "21ea6a4d25bcffbf790e5259a55ca8fdcf84be133addbf29f9f9a129797acf3a",
+    "final/TEST-dev.bautista.spotlight.index.DocumentCitationsTest.xml": "4c268b7a5c46c63a87601205899631de3a01574f5a277b08afd59244291f908c",
+    "final/lint-results-debug.xml": "524c3420453704a69df598351eafaac8126788bdc007bb19e61dd3af839fe501",
+    "final/clear-fix-and-lint.log": "54fa73edec178e0df6ca9df5bdf719b1af336946824e04602d2af2c92a59671e",
+    "final/TEST-dev.bautista.spotlight.index.CitationSafStateTest.xml": "dd710b1b0e370dd67385117993a982d162342f70ac23ab7da1dbabe5f3f326c3",
+    "final/sealed.log": "d3539a845a65d104e25b6560fefc038a40658690ce41bac968873c69dd6ac32d",
+    "final/TEST-dev.bautista.spotlight.index.CitationRealPdfTest.xml": "21ea6a4d25bcffbf790e5259a55ca8fdcf84be133addbf29f9f9a129797acf3a"
+  }
+}

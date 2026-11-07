@@ -1,0 +1,28 @@
+{
+  "pdf_sha256": "2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784",
+  "pages": [
+    {
+      "page": 1,
+      "start": 23,
+      "end": 143,
+      "method": "pdf_text",
+      "matches_independent_poppler_page": true
+    },
+    {
+      "page": 2,
+      "start": 168,
+      "end": 286,
+      "method": "pdf_text",
+      "matches_independent_poppler_page": true
+    },
+    {
+      "page": 3,
+      "start": 311,
+      "end": 441,
+      "method": "pdf_text",
+      "matches_independent_poppler_page": true
+    }
+  ],
+  "raster_pdf_text_layer_empty": true,
+  "ocr_performed": false
+}

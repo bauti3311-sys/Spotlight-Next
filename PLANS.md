@@ -1,3 +1,22 @@
+## 2026-11-07 — C5.2: PDF auténtico y contrato reactivo aislado
+
+Prioridad expresa: sólo C5.2 desde b80d976/PR21, no reconstruir C5.1.
+DocumentText/PdfTextSource/PDFBox reales: PDF3páginas, Unicode, offsets y páginas
+comprobados; Poppler independiente coincide. PDF raster real sin capa textual,
+OCR explícitamente deshabilitado: no afirmar reconocimiento real. SAF probado con
+DocumentsProvider en Robolectric, NO instrumentación: adb sin dispositivos y sin
+emulador/KVM. DocumentCitationState efímero sin restauración/persistencia; invalida
+por configuración/revisión/eventos del host, revalida antes de mostrar/copiar/abrir.
+SAF no tiene aviso universal de revocación: conectar lifecycle/eventos al host antes
+integrar barra. Corrección mínima: clear() emite revisión tras borrar índice; rojo
+previo conservado. Ver docs/C5-2-PROVENANCE-STATE-20261107.md y evidencia asociada.
+14casos nuevos +1regresión correctos; lint0E26W1Info. Fuente84c0e1a.
+No UI productiva ni cambios a Studio/QuickLook/ranking/140ms/Preview67/identidad/
+prefs/manifiesto/deps/permisos; sin Actions/APK/main/merge. C3/C4/C6–C8 pausados.
+C5 NO completo. C5.3 semántica pendiente; primero validar SAF/OCR/host físico y
+medir I/O. Preservar11casosC5.1, repetir sólo regresión relacionada. Liberar sólo
+reserva propia con notas atómicas; no mover checkpoint integral.
+
 ## 2026-11-07 — C5 reabierto: citas locales, primer checkpoint técnico
 
 Decisión posterior del propietario: avanzar únicamente C5 desde293290a/PR21.
