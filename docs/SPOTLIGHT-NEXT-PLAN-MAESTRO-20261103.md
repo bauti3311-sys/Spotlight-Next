@@ -1,3 +1,7 @@
+> **Decisión posterior07/11:** Studio B aprobado e integrado con cuerpoA enAjustes.
+> [Implementación y estado de las nueveV](STUDIO-INTEGRATION-20261107.md).
+> C3–C8 pausados, D5noaprobado, entrega física posterior requiere autorización.
+
 > **Decisión posterior: D1B aprobado e integrado; D2–D4 conservan A; D5 sólo experimento.**
 > Ver [checkpoint y estado de las nueve V](VISUAL-POLISH-D1-V06-V08-V10-20261106.md).
 > C3–C8 siguen pausados. Aceptación física y D5 productivo aún pendientes.

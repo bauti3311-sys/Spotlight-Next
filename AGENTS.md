@@ -1,3 +1,17 @@
+## 2026-11-07 — Studio aprobado e integrado, Ajustes A conservado
+
+El propietario aprueba BStudio con cuerpoA enAjustes. Fuente 3662cf79f0982dea08e48689f67ec7932f1ca4a9.
+Barraenmarcada/seleccióntinte+rail sinotrocontorno/inspectorcard/ActionPanel/footer
+integrados en producción. StudioSurface cede márgenes según ancho útil×texto,
+no tamaño físico. CuerpoAjustes/temas/Geist/D1/FocusB/acciones/ranking intactos.
+30pares reales antes/después,6perfiles/5escenas.20casos dirigidos correctos,
+lint0E26W1Info. Ver docs/STUDIO-INTEGRATION-20261107.md. No nueva validación
+OneUI/Gboard/WM/fluidez/RAM; requiere entrega futura autorizada, no incluidoenAPK66.
+Focus=false/reversible; D5aislado140ms intacto. C3–C8/Spotify/Square/WhatsApp/docs
+funcionales congelados. NoActions/APK/main/merge/firma/paquete/version/deps/permisos.
+Preservar checkpoints; liberar sólo reserva propia con notas. No repetir rediseño
+ni interpretar la integración como autorización para compilar otra Preview.
+
 ## 2026-11-07 — Focus como base aprobada; direcciones A/B pendientes
 
 Propietario reporta prueba física66 satisfactoria y conservaFocus como base estética,
