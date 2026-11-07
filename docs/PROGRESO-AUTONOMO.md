@@ -1,3 +1,22 @@
+## 2026-11-07 — C5.4: banco físico preparado, no ejecutado
+
+Desde d712a14/PR21. Cinco métodos AndroidTest preparados: PDF/citas/renderer,
+SAF DocumentsUI asistido+provider sólofixtures+pipebloqueante/cancel/revocar,
+OCRreal optativo, hostStudio aislado/scroll/copiaenmemoria/lifecycle y corpus
+semántico real condicionado por ready/preferencias/recursos. Sin mockdeembeddings.
+Compilación Kotlin+Java SINAPK correcta; controles estáticos/fixtures/grafo/APKs
+correctos. adb0dispositivos: CERO instrumentación/métricas físicas. C5.3 7/12,
+5omisiones/0FP inalterado; ninguna evaluación semántica nueva ni modelo descargado.
+Ver docs/C5-4-PHYSICAL-PROTOCOL-20261107.md, fichaaceptación y evidencia asociada.
+Target compilado DebugAndroidTest=.next/.next.test; Preview67 NO contieneC5.
+Ejecución futura requiere artefactos/target/firma compatibles y autorización
+separada. No instalar sobreapp personal, no asumir perfilAndroid protege código.
+Guardas pkg/cert/app+test/source declarado; source declarado NOprueba APK.
+BDprivada sin acceso amplio, provider sóloficticios; prefs/modelo no se escriben.
+App/src/main/Studio/QuickLook/140ms/67/identidad/main intactos. C3/C4/C6–C8 pausados.
+Sin APK/testAPK/Actions/permisos productivos/deps nuevas/merge/nuevaPreview.
+C5 NOcompleto; físico y unión productiva pendientes. Liberar sólo reserva propia.
+
 ## 2026-11-07 — C5.3: evaluación léxica y límite de modelo ausente
 
 Desde16ef8bf/PR21, sóloC5.3. Cuatro casos nuevos correctos, corpus6docs/12consultas:

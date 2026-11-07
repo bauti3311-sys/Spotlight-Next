@@ -1,0 +1,38 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+:app:preBuild SKIPPED
+:app:preDebugBuild SKIPPED
+:app:compileDebugAidl SKIPPED
+:app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+:app:checkDebugAarMetadata SKIPPED
+:app:generateDebugResValues SKIPPED
+:app:mapDebugSourceSetPaths SKIPPED
+:app:generateDebugResources SKIPPED
+:app:mergeDebugResources SKIPPED
+:app:packageDebugResources SKIPPED
+:app:parseDebugLocalResources SKIPPED
+:app:createDebugCompatibleScreenManifests SKIPPED
+:app:extractDeepLinksDebug SKIPPED
+:app:processDebugMainManifest SKIPPED
+:app:processDebugManifest SKIPPED
+:app:processDebugManifestForPackage SKIPPED
+:app:processDebugResources SKIPPED
+:app:compileDebugKotlin SKIPPED
+:app:javaPreCompileDebug SKIPPED
+:app:compileDebugJavaWithJavac SKIPPED
+:app:bundleDebugClassesToCompileJar SKIPPED
+:app:preDebugAndroidTestBuild SKIPPED
+:app:compileDebugAndroidTestAidl SKIPPED
+:app:checkDebugAndroidTestAarMetadata SKIPPED
+:app:generateDebugAndroidTestResValues SKIPPED
+:app:mapDebugAndroidTestSourceSetPaths SKIPPED
+:app:generateDebugAndroidTestResources SKIPPED
+:app:mergeDebugAndroidTestResources SKIPPED
+:app:processDebugAndroidTestManifest SKIPPED
+:app:processDebugAndroidTestResources SKIPPED
+:app:compileDebugAndroidTestKotlin SKIPPED
+:app:javaPreCompileDebugAndroidTest SKIPPED
+:app:compileDebugAndroidTestJavaWithJavac SKIPPED
+
+BUILD SUCCESSFUL in 5s

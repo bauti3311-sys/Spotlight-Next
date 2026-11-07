@@ -1,0 +1,16 @@
+{
+  "preparation": "VALIDATED",
+  "prepared_instrumented_methods": 5,
+  "instrumented_methods_executed": 0,
+  "apk_inventory_unchanged": true,
+  "new_apk_count": 0,
+  "production_unchanged": true,
+  "c53_accepted_results_unchanged": true,
+  "physical_status": "NOT_EXECUTED",
+  "semantic_metrics_new": null,
+  "asset_sha256": {
+    "corpus.json": "ac7dcad9ce0acc1b5dff00697b738a0e8613cbb64ff7dcddcf153460eea3dbbe",
+    "real-three-pages.pdf": "2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784",
+    "ocr-raster-fixture.pdf": "a698b707505bd8bfee3b0953c95b1826f4a4243c72bd3ac585addf7c864e8c14"
+  }
+}
