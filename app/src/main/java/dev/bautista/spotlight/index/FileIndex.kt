@@ -176,6 +176,7 @@ class FileIndex(
                 lastTrees = emptySet()
                 refreshed = 0L
                 state.value = Status(message = "Índice borrado")
+                changes.update{it+1} // Invalidate ephemeral document evidence immediately after deletion.
             }
         }
 
