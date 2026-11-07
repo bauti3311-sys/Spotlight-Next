@@ -1,0 +1,18 @@
+{
+  "base_sha": "16ef8bfddb334ec2a7dc84615923348ec6826070",
+  "production_unchanged": true,
+  "sha256": {
+    "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt": "2d326dd1e23ac287f5fa15bd193165223b809ccfb8f7ecf8952d2fbd352e3bf9",
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt": "9a78b4e1f9bbfb73d6d1bed2e3574f7c6f9d72fb2f66f75d0e4c572f684a1e87",
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentCitationState.kt": "584d98187d3e19a16aa8d588cefb6dec1acfe9a5ea59cdf3d28303445118cbc4",
+    "app/src/main/java/dev/bautista/spotlight/semantic/DocumentEmbedder.kt": "ef43fa175f406ba3027b0e2054abd15f9988bcae2fae23aca52784ecbd23ec30",
+    "app/src/main/java/dev/bautista/spotlight/semantic/SemanticModelStore.kt": "19a0f8ef9395c19305cb22f77856c17ab5334de130752ca0f926902fde69b0d5",
+    "app/src/main/java/dev/bautista/spotlight/semantic/SemanticModel.kt": "3ffcbf0eb992c3933b61629322bf851923a5d5b59616477edbbc110a9c55d553",
+    "app/src/main/java/dev/bautista/spotlight/semantic/SemanticPolicy.kt": "373bf77fc06455d1e3f635f87e4d301d479f072a8bc9c8877eaa21de8d6b0285",
+    "app/build.gradle.kts": "938a2131c9d30a68e307dd817b578b13ef25a9f3468253a8686865ca1b9a8844",
+    "app/src/main/AndroidManifest.xml": "c3fa40dffc4d65a8f4f54237971b72e63b5327274971f5e5f1f3fab2c7a9406d",
+    "scripts/preview_delivery.json": "1b1904752c529a0f72cf759c5bbba9e9abc1f5283254454e3d55b24c90c40ab7",
+    "release.properties": "27d97e5ae8b499c14271adac9a5f2e6e38bf86a2428a6e36385b5ae89d6f9419"
+  },
+  "lint": "C5.2 reused, not rerun"
+}

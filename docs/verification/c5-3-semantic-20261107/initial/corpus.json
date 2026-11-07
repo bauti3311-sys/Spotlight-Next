@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "privacy": "All text is fictional. No private documents or remote services.",
+  "documents": [
+    {"id":"D1","filename":"doc-01.txt","text":"El presupuesto aprobado del proyecto es de 2400 pesos."},
+    {"id":"D2","filename":"doc-02.txt","text":"La reunión del equipo será el martes a las quince horas."},
+    {"id":"D3","filename":"doc-03.txt","text":"El tren nocturno sale a las veintidós horas desde la estación central."},
+    {"id":"D4","filename":"doc-04.pdf","fixture":"real-three-pages.pdf","sha256":"2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784","extraction":"existing DocumentText, real PDF text"},
+    {"id":"D5","filename":"doc-05.txt","text":"Cláusula común: conservar documento original y verificar su procedencia.\nCláusula común: conservar documento original y verificar su procedencia."},
+    {"id":"D6","filename":"doc-06.pdf","fixture":"image-only.pdf","ocr_fixture_text":"La dosis aparente es 1O mg; revisar la imagen original.","extraction":"controlled OCR metadata fixture, NOT real recognition"}
+  ],
+  "queries": [
+    {"id":"Q01","category":"literal","query":"presupuesto aprobado","relevant":["D1"]},
+    {"id":"Q02","category":"literal_pdf","query":"presupuesto café","relevant":["D4"]},
+    {"id":"Q03","category":"literal_multiple","query":"reunión martes","relevant":["D2","D4"]},
+    {"id":"Q04","category":"synonym","query":"dinero asignado a la iniciativa","relevant":["D1"]},
+    {"id":"Q05","category":"synonym","query":"encuentro del grupo el martes","relevant":["D2"]},
+    {"id":"Q06","category":"paraphrase","query":"viaje ferroviario después del anochecer","relevant":["D3"]},
+    {"id":"Q07","category":"paraphrase","query":"a qué hora nos juntamos los compañeros","relevant":["D2"]},
+    {"id":"Q08","category":"irrelevant","query":"receta de sopa de calabaza","relevant":[]},
+    {"id":"Q09","category":"irrelevant_shared_word","query":"presupuesto de una nave espacial","relevant":[]},
+    {"id":"Q10","category":"repeated","query":"cláusula común","relevant":["D4","D5"]},
+    {"id":"Q11","category":"ocr_uncertain_literal","query":"dosis aparente","relevant":["D6"]},
+    {"id":"Q12","category":"ocr_uncertain_paraphrase","query":"información de la dosis escaneada","relevant":["D6"]}
+  ],
+  "judgement_notes": "Relevant sets are fixed manual judgements for this small corpus. D6 supports an uncertain OCR reading, never the factual normalization 10 mg. Relevance is distinct from citation validity. Evaluate the full actual order, not just top1."
+}

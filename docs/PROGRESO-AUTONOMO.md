@@ -1,3 +1,21 @@
+## 2026-11-07 — C5.3: evaluación léxica y límite de modelo ausente
+
+Desde16ef8bf/PR21, sóloC5.3. Cuatro casos nuevos correctos, corpus6docs/12consultas:
+7aciertos documento-consulta/5omisiones/0FP; recall7/12, MRR0.50 en10positivas.
+Modelo DistilUSE verificado NO disponible enentorno; calidad semántica actual NO
+evaluada, no cero ni vectores simulados. No descarga de modelos/dependencias.
+NOintegrar semántica a citas hasta demostrar mejora auténtica y coste/seguridad.
+Ver docs/C5-3-SEMANTIC-EVALUATION-20261107.md y evidencia asociada. Históricos8/8
+separados/no reejecutados. Offsets semánticos searchableText !=body de citas;
+semanticSearch no relee SHAarchivo; puente futuro debe revalidar C5.2 y procedencia.
+DocumentCitationSession/State/PDFextractor/barra/ranking/Studio/140ms intactos.
+C5 sigue abierto; sin UI productiva/síntesis/backend/RAGFlow. SAF/OCR/lifecycle
+físicos pendientes. C3/C4/C6–C8/Spotify/Square pausados; Preview67 preservada.
+Sólo tests/corpus/docs; reutilizar lintC5.2(0E26W1Info), no suites históricas,
+Actions/APK/main/merge/version/firma/paquete/prefs/deps/permisos. Próximo: evaluación
+con modelo local ya verificado disponible y el mismo corpus, antes de un puente.
+Publicar checkpoints y liberar sólo reserva propia con notas atómicas.
+
 ## 2026-11-07 — C5.2: PDF auténtico y contrato reactivo aislado
 
 Prioridad expresa: sólo C5.2 desde b80d976/PR21, no reconstruir C5.1.

@@ -1,0 +1,316 @@
+{
+  "corpus_sha256": "00e64c7decef9bb5bc0e45c4f096d493f9a7d0c237b642b3a329e8f247bacfc0",
+  "model": "distiluse-v2-arm64-int8-bfe45d0-v1",
+  "model_ready": false,
+  "semantic_vectors": 0,
+  "platform": "Robolectric API33 \/ Linux x86_64 JVM; NOT Android device; healthy resource policy fixture",
+  "new_model_downloads": 0,
+  "embedding_inference_executed": false,
+  "semantic_quality": null,
+  "lexical": {
+    "tp": 7,
+    "fp": 0,
+    "fn": 5,
+    "micro_precision": 1,
+    "micro_recall": 0.5833333333333334,
+    "positive_queries": 10,
+    "queries_with_relevant_hit": 5,
+    "mrr_positive_queries": 0.5
+  },
+  "cases": [
+    {
+      "id": "Q01",
+      "category": "literal",
+      "query": "presupuesto aprobado",
+      "relevant": [
+        "D1"
+      ],
+      "lexical_order": [
+        "D1"
+      ],
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 49431593,
+      "missing_semantic_gate_elapsed_ns": 3194149,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": [
+        {
+          "id": "D1",
+          "quote": "El presupuesto aprobado del proyecto es de 2400 pesos.",
+          "page": null,
+          "uncertain": false,
+          "start": 0,
+          "end": 54,
+          "source_sha256": "68771a62bd590b7ca5baf98312966a8e835edb7da39b48cbc1d5ddb143a69023"
+        }
+      ]
+    },
+    {
+      "id": "Q02",
+      "category": "literal_pdf",
+      "query": "presupuesto café",
+      "relevant": [
+        "D4"
+      ],
+      "lexical_order": [
+        "D4"
+      ],
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 3839935,
+      "missing_semantic_gate_elapsed_ns": 526932,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": [
+        {
+          "id": "D4",
+          "quote": "Presupuesto café: 2400 € — revisión número uno.\nCláusula común: conservar documento original y verificar su procedencia.",
+          "page": 1,
+          "uncertain": false,
+          "start": 23,
+          "end": 143,
+          "source_sha256": "2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784"
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "category": "literal_multiple",
+      "query": "reunión martes",
+      "relevant": [
+        "D2",
+        "D4"
+      ],
+      "lexical_order": [
+        "D2",
+        "D4"
+      ],
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 5208656,
+      "missing_semantic_gate_elapsed_ns": 638570,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": [
+        {
+          "id": "D2",
+          "quote": "La reunión del equipo será el martes a las quince horas.",
+          "page": null,
+          "uncertain": false,
+          "start": 0,
+          "end": 56,
+          "source_sha256": "4e0f272a6ae926b9384ef5dcbb5eef335745392ad8d57bc94f0a58b3be9aed7d"
+        },
+        {
+          "id": "D4",
+          "quote": "Reunión del martes: José y María — sección 2.\nCláusula común: conservar documento original y verificar su procedencia.",
+          "page": 2,
+          "uncertain": false,
+          "start": 168,
+          "end": 286,
+          "source_sha256": "2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784"
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "category": "synonym",
+      "query": "dinero asignado a la iniciativa",
+      "relevant": [
+        "D1"
+      ],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "lexical_elapsed_ns": 21701768,
+      "missing_semantic_gate_elapsed_ns": 941054,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    },
+    {
+      "id": "Q05",
+      "category": "synonym",
+      "query": "encuentro del grupo el martes",
+      "relevant": [
+        "D2"
+      ],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "lexical_elapsed_ns": 1382688,
+      "missing_semantic_gate_elapsed_ns": 481193,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    },
+    {
+      "id": "Q06",
+      "category": "paraphrase",
+      "query": "viaje ferroviario después del anochecer",
+      "relevant": [
+        "D3"
+      ],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "lexical_elapsed_ns": 1464881,
+      "missing_semantic_gate_elapsed_ns": 491319,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    },
+    {
+      "id": "Q07",
+      "category": "paraphrase",
+      "query": "a qué hora nos juntamos los compañeros",
+      "relevant": [
+        "D2"
+      ],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "lexical_elapsed_ns": 1932514,
+      "missing_semantic_gate_elapsed_ns": 2559807,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    },
+    {
+      "id": "Q08",
+      "category": "irrelevant",
+      "query": "receta de sopa de calabaza",
+      "relevant": [],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 1137709,
+      "missing_semantic_gate_elapsed_ns": 428694,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    },
+    {
+      "id": "Q09",
+      "category": "irrelevant_shared_word",
+      "query": "presupuesto de una nave espacial",
+      "relevant": [],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 1352633,
+      "missing_semantic_gate_elapsed_ns": 376556,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    },
+    {
+      "id": "Q10",
+      "category": "repeated",
+      "query": "cláusula común",
+      "relevant": [
+        "D4",
+        "D5"
+      ],
+      "lexical_order": [
+        "D4",
+        "D5"
+      ],
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 6714969,
+      "missing_semantic_gate_elapsed_ns": 518309,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": [
+        {
+          "id": "D4",
+          "quote": "Presupuesto café: 2400 € — revisión número uno.\nCláusula común: conservar documento original y verificar su procedencia.",
+          "page": 1,
+          "uncertain": false,
+          "start": 23,
+          "end": 143,
+          "source_sha256": "2efb85528330d78458d9f427466fd2ae7c1990b698879bbca12a28b204f89784"
+        },
+        {
+          "id": "D5",
+          "quote": "Cláusula común: conservar documento original y verificar su procedencia.\nCláusula común: conservar documento original y verificar su procedencia.",
+          "page": null,
+          "uncertain": false,
+          "start": 0,
+          "end": 145,
+          "source_sha256": "5fd4432e7682bf0a59859de33d77d682d6cff94d14533c1309c6b2f083163b87"
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "category": "ocr_uncertain_literal",
+      "query": "dosis aparente",
+      "relevant": [
+        "D6"
+      ],
+      "lexical_order": [
+        "D6"
+      ],
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "lexical_elapsed_ns": 1407986,
+      "missing_semantic_gate_elapsed_ns": 7327640,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": [
+        {
+          "id": "D6",
+          "quote": "La dosis aparente es 1O mg; revisar la imagen original.",
+          "page": 1,
+          "uncertain": true,
+          "start": 0,
+          "end": 55,
+          "source_sha256": "38f77dcda81c3e745d5331e9efcdb25b94f2c54ec6a0b6a6a7691d1d9e5731ac"
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "category": "ocr_uncertain_paraphrase",
+      "query": "información de la dosis escaneada",
+      "relevant": [
+        "D6"
+      ],
+      "lexical_order": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "lexical_elapsed_ns": 1274074,
+      "missing_semantic_gate_elapsed_ns": 17056007,
+      "semantic_status": "not_evaluated_model_missing_no_vectors",
+      "semantic_ranking": null,
+      "semantic_quality": null,
+      "citations": []
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "one JVM execution of tiny synthetic corpus; scheduling/cache included; NOT Android benchmark or semantic inference cost",
+  "measurements": {
+    "lexical_elapsed_ns": {
+      "first_ms": 20.281702,
+      "median_ms": 1.283709,
+      "min_ms": 0.879551,
+      "max_ms": 20.281702,
+      "samples": 12
+    },
+    "missing_semantic_gate_elapsed_ns": {
+      "first_ms": 2.379996,
+      "median_ms": 0.36254450000000005,
+      "min_ms": 0.301784,
+      "max_ms": 2.780538,
+      "samples": 12
+    }
+  },
+  "semantic_inference_measured": false,
+  "physical_ram_measured": false
+}

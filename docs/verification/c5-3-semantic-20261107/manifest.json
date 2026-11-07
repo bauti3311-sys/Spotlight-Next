@@ -1,0 +1,37 @@
+{
+  "base_sha": "16ef8bfddb334ec2a7dc84615923348ec6826070",
+  "test_corpus_sha": "bfe72bd9fb72abadbda8b14b717734c1efa526fc",
+  "new_tests_passed": 4,
+  "semantic_integration": false,
+  "semantic_model_available_in_lab": false,
+  "authentic_current_semantic_inference": false,
+  "semantic_quality": null,
+  "lexical": {
+    "tp": 7,
+    "fp": 0,
+    "fn": 5,
+    "micro_precision": 1,
+    "micro_recall": 0.5833333333333334,
+    "positive_queries": 10,
+    "queries_with_relevant_hit": 5,
+    "mrr_positive_queries": 0.5
+  },
+  "production_changed": false,
+  "new_apk_actions_models_or_dependencies": false,
+  "sha256": {
+    "preservation.json": "f44e253e59674821f154da155648ea17c3a39da8a8c29c2984d03c3b10d42866",
+    "README.md": "bb2dc404aea83cd373c38893a4e1bd9a746a8c1e5c0f6e9eab4f69f33f21dbf0",
+    "historical-reference.json": "f2b053934fabde2e2e9190d78e2341776b629fec55235d053189d951a7912243",
+    "initial/evaluation.json": "384ead9a8dcc77953964847759eed52e0afa36b7a71aef5bd2d8c27ecdb9da8c",
+    "initial/TEST-dev.bautista.spotlight.semantic.C5SemanticEvaluationTest.xml": "838de975bf810ed887a29c4d68d99cae811466be297d24b2212c828360e0705a",
+    "initial/corpus.json": "00e64c7decef9bb5bc0e45c4f096d493f9a7d0c237b642b3a329e8f247bacfc0",
+    "initial/evaluation.log": "2d4a675bccaffa2fa886b53ad6ef994ce6af1296feb8ed7bcfa9691b947afdf5",
+    "final/host-costs.json": "f21ad109d499c0042d22626e08921000ea8b72a9b0fdac09c868d9bbf7a92ece",
+    "final/ocr-raster-fixture.pdf": "a698b707505bd8bfee3b0953c95b1826f4a4243c72bd3ac585addf7c864e8c14",
+    "final/evaluation.json": "3734352cd0901e34ae87c5b26db07beb6ccccbf7fbc335fc427b2bcf07d90fd6",
+    "final/final.log": "2d4a675bccaffa2fa886b53ad6ef994ce6af1296feb8ed7bcfa9691b947afdf5",
+    "final/ocr-raster-fixture.png": "76b0bfcf8b2262c9ea05d2d7fb632958882c2741e2fbc9b17f0eddbd6752e435",
+    "final/TEST-dev.bautista.spotlight.semantic.C5SemanticEvaluationTest.xml": "f2618571c0572e3c8265bd3992304dbbe95178517d5d88c5159123109ad40a98",
+    "final/corpus.json": "ac7dcad9ce0acc1b5dff00697b738a0e8613cbb64ff7dcddcf153460eea3dbbe"
+  }
+}
