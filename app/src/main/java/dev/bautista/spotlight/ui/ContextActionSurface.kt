@@ -27,6 +27,7 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
  * surface uses the parent's token and its own public touch rectangle, not fullscreen.
  */
 @Composable internal fun BoxScope.ContextActionSurface(availableHeight:Dp,onDismiss:()->Unit,content:@Composable ()->Unit) {
+    val studio=LocalFocusUi.current
     val anchor=LocalView.current
     val density=LocalDensity.current
     val parent=rememberCompositionContext()
@@ -46,8 +47,8 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
     val width=with(density){minOf(360.dp,(rect?.width() ?: 1).toDp()-8.dp).coerceAtLeast(1.dp).roundToPx()}
     val height=with(density){minOf(GlassTokens.actionPanelMaxHeight+16.dp,availableHeight-16.dp).coerceAtLeast(1.dp).roundToPx()}
     if(rect!=null) {
-        DisposableEffect(anchor,parent) {
-            val host=ActionPopupHost(anchor.context,anchor,{currentDismiss()},{navigation.back?.invoke() ?: currentDismiss()})
+        DisposableEffect(anchor,parent,studio) {
+            val host=ActionPopupHost(anchor.context,anchor,{currentDismiss()},{navigation.back?.invoke() ?: currentDismiss()},studio=studio)
             host.setParentCompositionContext(parent)
             anchor.findViewTreeLifecycleOwner()?.let{host.setViewTreeLifecycleOwner(it)}
             anchor.findViewTreeSavedStateRegistryOwner()?.let{host.setViewTreeSavedStateRegistryOwner(it)}

@@ -19,6 +19,7 @@ internal class ActionPopupHost(
     private val anchor:View,
     private val dismiss:()->Unit,
     private val back:()->Unit,
+    private val studio:Boolean=false,
 ) : AbstractComposeView(context) {
     private val manager=context.getSystemService(WindowManager::class.java)
     private var attached=false
@@ -63,19 +64,25 @@ internal class ActionPopupHost(
         if(changed && attached)manager.updateViewLayout(this,params)
     }
 
-    private fun horizontalOutset()=if(anchorBounds.width()>=600*resources.displayMetrics.density)minOf(144*resources.displayMetrics.density,anchorBounds.width()*.18f).toInt() else 0
+    private fun horizontalOutset()=if(!studio && anchorBounds.width()>=600*resources.displayMetrics.density)minOf(144*resources.displayMetrics.density,anchorBounds.width()*.18f).toInt() else 0
 
     private fun updateSafeBounds() {
         anchor.getWindowVisibleDisplayFrame(bounds)
         if(bounds.width()<=0 || bounds.height()<=0)bounds.set(0,0,resources.displayMetrics.widthPixels,resources.displayMetrics.heightPixels)
+        if(studio) {
+            val edge=(8*resources.displayMetrics.density).toInt()
+            bounds.inset(minOf(edge,(bounds.width()-1).coerceAtLeast(0)/2),minOf(edge,(bounds.height()-1).coerceAtLeast(0)/2))
+        }
         params.width=params.width.coerceIn(1,bounds.width().coerceAtLeast(1))
-        maximumHeight=minOf(suppliedHeight,(bounds.height()-16*resources.displayMetrics.density).toInt()).coerceAtLeast(1)
+        val frameLimit=if(studio)bounds.height() else (bounds.height()-16*resources.displayMetrics.density).toInt()
+        val parentLimit=if(studio)maxOf(anchorBounds.height(),(320*resources.displayMetrics.density).toInt()) else Int.MAX_VALUE
+        maximumHeight=minOf(suppliedHeight,frameLimit,parentLimit).coerceAtLeast(1)
     }
 
     private fun reposition() {
         updateSafeBounds()
         if(!attached)return
-        val placed=ActionPopupPosition.place(anchorBounds,bounds,params.width,height.takeIf{it>0} ?: maximumHeight,(56*resources.displayMetrics.density).toInt(),horizontalOutset())
+        val placed=ActionPopupPosition.place(anchorBounds,bounds,params.width,minOf(height.takeIf{it>0} ?: maximumHeight,maximumHeight),(56*resources.displayMetrics.density).toInt(),horizontalOutset())
         if(params.x!=placed.left || params.y!=placed.top || layoutParams?.width!=params.width) {
             params.x=placed.left;params.y=placed.top
             manager.updateViewLayout(this,params)
