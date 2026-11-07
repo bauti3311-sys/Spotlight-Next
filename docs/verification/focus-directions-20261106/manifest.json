@@ -1,0 +1,559 @@
+{
+  "base": "cfb8fa863de381203d1395e464fab4a78d441c8a",
+  "renders": [
+    {
+      "profile": "compact-dark",
+      "scene": "acciones",
+      "direction": "A",
+      "file": "compact-dark-acciones-A.png",
+      "sha256": "177d1b33a0b3297488630442a19cbe238c67249f3e12c79ca358683acf243a44"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "acciones",
+      "direction": "B",
+      "file": "compact-dark-acciones-B.png",
+      "sha256": "235556aff6acdfd593e9bcab36e0c23340802c92abc21e7d121b7de3ebf0c1ad"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "acciones",
+      "direction": "C",
+      "file": "compact-dark-acciones-C.png",
+      "sha256": "ca431c9e03a575018a0b49a27e33b129f7613fc4a26582dfb65f74702d8abb49"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "ajustes",
+      "direction": "A",
+      "file": "compact-dark-ajustes-A.png",
+      "sha256": "0725b53ce43399c45482d59980ba2e39823ebb8f085255571c3ebf782ef0c5b2"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "ajustes",
+      "direction": "B",
+      "file": "compact-dark-ajustes-B.png",
+      "sha256": "c0cb47869b5b9c9bfdb250a766526ff46dec89864db5783bc7baaa44806663ca"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "ajustes",
+      "direction": "C",
+      "file": "compact-dark-ajustes-C.png",
+      "sha256": "39e854cab8de9fc709775ba25a4dd4574786af58c681fbf1b209d9f55ba20c7c"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "inspector",
+      "direction": "A",
+      "file": "compact-dark-inspector-A.png",
+      "sha256": "4db06d4ec93fc25147762f7efde2b20d1b387fa0f4b3d91f408e6a60edaf4b2d"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "inspector",
+      "direction": "B",
+      "file": "compact-dark-inspector-B.png",
+      "sha256": "d2c092628f3e62b97e02c129bbdb269e19d081a768f32bc9f9f5eef3265b7c9a"
+    },
+    {
+      "profile": "compact-dark",
+      "scene": "inspector",
+      "direction": "C",
+      "file": "compact-dark-inspector-C.png",
+      "sha256": "8b0e88f4d18cbc4d464acd136397af07e814c01ffc8858dfe34f3a3ffa92c08d"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "acciones",
+      "direction": "A",
+      "file": "compact-light-acciones-A.png",
+      "sha256": "ee90f7a0f799de1e40d502c9bc6d12d5de4d2aaa82062d65282eebf307967777"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "acciones",
+      "direction": "B",
+      "file": "compact-light-acciones-B.png",
+      "sha256": "b7e1021909d08d65018dbb95736f7fcce7933bde551ac1ea512417c3130658b5"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "acciones",
+      "direction": "C",
+      "file": "compact-light-acciones-C.png",
+      "sha256": "46523099fb939a00ee115e0f63d8768b2b43896915705fd63de807761cadef0c"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "ajustes",
+      "direction": "A",
+      "file": "compact-light-ajustes-A.png",
+      "sha256": "4bdda4c51e258f3831cde53e19bd33e3dc52785e403beff4cab202de81d8458f"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "ajustes",
+      "direction": "B",
+      "file": "compact-light-ajustes-B.png",
+      "sha256": "2c7d871ed561545d062d2de8c4922d4a7eb263557489c7c281aeb753e6203001"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "ajustes",
+      "direction": "C",
+      "file": "compact-light-ajustes-C.png",
+      "sha256": "d7b85e5b2aabb1448913a0c1519339c8dc745ae12f7a1b4871c51ff3925ff9a6"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "inspector",
+      "direction": "A",
+      "file": "compact-light-inspector-A.png",
+      "sha256": "9e1cc8e7285d941c2ee4f16f9435634209473b8b5fcb2038219c509bd619fc79"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "inspector",
+      "direction": "B",
+      "file": "compact-light-inspector-B.png",
+      "sha256": "04485295cf5dd4a803579407389eb6d60bc57aed3a66bcbf17053b5a7f60ac32"
+    },
+    {
+      "profile": "compact-light",
+      "scene": "inspector",
+      "direction": "C",
+      "file": "compact-light-inspector-C.png",
+      "sha256": "1ec55c7637beeff4b154a32fcc23b90a75623cadfe77b2572f24e84971015d92"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "direction": "A",
+      "file": "phone-dark-acciones-A.png",
+      "sha256": "0797b5c95b365d8d7b0674db40c40e8071f18f80ee337b1ccd4c7f15f85c848d"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "direction": "B",
+      "file": "phone-dark-acciones-B.png",
+      "sha256": "025312b4be3daf4d7c1333dbfd7348d0843957eafbb677ff1a228418ebe0e34d"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "direction": "C",
+      "file": "phone-dark-acciones-C.png",
+      "sha256": "1d5e766bf18033d283e352be66282b631bc24e0d2a3f5c3da2607e229621e4aa"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "direction": "A",
+      "file": "phone-dark-ajustes-A.png",
+      "sha256": "a9d34977cf9db9ab827f32163d469a8103c7ae8b4b56706687a821e73a0fc976"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "direction": "B",
+      "file": "phone-dark-ajustes-B.png",
+      "sha256": "eb8277759af46f7cb7ef53feebc518974070099094330302539df6541f08b292"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "direction": "C",
+      "file": "phone-dark-ajustes-C.png",
+      "sha256": "c75819b1f52e1c2b0019a3ee63945658022452800ae1273fe33167b7777ac6e6"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inicio",
+      "direction": "A",
+      "file": "phone-dark-inicio-A.png",
+      "sha256": "ad42943e3def9ea79181c76e1ef4fc1cd2fa824f5d4fc9ccedcce59b8898b139"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inicio",
+      "direction": "B",
+      "file": "phone-dark-inicio-B.png",
+      "sha256": "68b381c96eca28fcccca7eeff4f44dec55e5ede0e53f603bebd700e5bf0f85aa"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inicio",
+      "direction": "C",
+      "file": "phone-dark-inicio-C.png",
+      "sha256": "9b9fbea5d3669e7acecce6058f494a13cba34edc1ea504bdea7bff5e9747807f"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inspector",
+      "direction": "A",
+      "file": "phone-dark-inspector-A.png",
+      "sha256": "b7a6b7204d9404195c154945af272a24920bb19bf290107dcb7a6429f642f07d"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inspector",
+      "direction": "B",
+      "file": "phone-dark-inspector-B.png",
+      "sha256": "8c8d78b33733a1feec56ea594555eabeccf443ecc1a589777ae2da9856e1e03f"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inspector",
+      "direction": "C",
+      "file": "phone-dark-inspector-C.png",
+      "sha256": "a5ada22f689333c1e5ead0746b17604bee7cbafa71ef287055b857ba25934af0"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "resultados",
+      "direction": "A",
+      "file": "phone-dark-resultados-A.png",
+      "sha256": "72b81e4605f1af6da1c4ccfac960c7c348a66a8922c4e803e86b7f1dcf3da41f"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "resultados",
+      "direction": "B",
+      "file": "phone-dark-resultados-B.png",
+      "sha256": "dbdfce576f27efb6bf028415a8f067a59ba183128f27ea74906156fe3155c09f"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "resultados",
+      "direction": "C",
+      "file": "phone-dark-resultados-C.png",
+      "sha256": "f100a1aeedd3f539b9935243508586a56c584aed0f5597ed52e5c864f6d45684"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "direction": "A",
+      "file": "phone-light-acciones-A.png",
+      "sha256": "83a83746bef0f75ca521b0d0829ad9dde47ad826dad092800dcee1488b3163fb"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "direction": "B",
+      "file": "phone-light-acciones-B.png",
+      "sha256": "a195f7a19607844325af5caacd9e5667dfe849f4ff2ecf14121234016ce5637c"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "direction": "C",
+      "file": "phone-light-acciones-C.png",
+      "sha256": "ecb49927db1b20cbd7ebf88e4349abffb89642e28764757b979316b37fff25f6"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "direction": "A",
+      "file": "phone-light-ajustes-A.png",
+      "sha256": "8f6ff21ce6c6a929064ea664b89fd29dd10ea10a362864ec13f044d372153871"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "direction": "B",
+      "file": "phone-light-ajustes-B.png",
+      "sha256": "b9b6c3efe04602522d1612766d61337ab7a2b277257ecc7692e9633e01d01994"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "direction": "C",
+      "file": "phone-light-ajustes-C.png",
+      "sha256": "a4e07be2b43e058d2acfffa10127caa2f6270052e9fcff67a9089b48353a08c5"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inicio",
+      "direction": "A",
+      "file": "phone-light-inicio-A.png",
+      "sha256": "a20e39b4b464ac5b2f0c8fd17619487fd8ec1a7bfd239de2d35f7eb5533d7efa"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inicio",
+      "direction": "B",
+      "file": "phone-light-inicio-B.png",
+      "sha256": "f8ef81f18163590dcd67f7375287247371724c32d6407016f116e4d3cf5516de"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inicio",
+      "direction": "C",
+      "file": "phone-light-inicio-C.png",
+      "sha256": "1cfb165bce8378cde373e05e9a72cf0466545e5cd32b68a56f51c4f065ec62c6"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inspector",
+      "direction": "A",
+      "file": "phone-light-inspector-A.png",
+      "sha256": "efc8dfa4377f8d680b5da32a210eae139a5c910c8deb2eec7fb7ff56051c18bc"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inspector",
+      "direction": "B",
+      "file": "phone-light-inspector-B.png",
+      "sha256": "a7ab692408419e0965492b473ed589b2cb20db5d4a5dcd131d3735ceb874352a"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inspector",
+      "direction": "C",
+      "file": "phone-light-inspector-C.png",
+      "sha256": "a1c0aa67512a5830a5ee8c8281b97d38a02b345a32c14193fb8cc5a8a3f2e8e9"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "resultados",
+      "direction": "A",
+      "file": "phone-light-resultados-A.png",
+      "sha256": "8c5f93987224262c1fb1ff11705a494b0cc86722afd9ccb46ec5568410ad3fdd"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "resultados",
+      "direction": "B",
+      "file": "phone-light-resultados-B.png",
+      "sha256": "5059aae5b7aa93a567014d83107937170b1ca1fdc480738012c07a9c6b6687a1"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "resultados",
+      "direction": "C",
+      "file": "phone-light-resultados-C.png",
+      "sha256": "4626c0ad34da375205b574fe171d762f601503aee0ab32192422323104d17f04"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "direction": "A",
+      "file": "tablet-dark-acciones-A.png",
+      "sha256": "6e221442aa39085f7b1a2aa8c0cabd93d63fa614b80c142a645da5e17caa68fa"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "direction": "B",
+      "file": "tablet-dark-acciones-B.png",
+      "sha256": "24ae9aa368a04efa0a8d638cb48ce16a2d5f98de49f3c27d438bbe9d6c0ef187"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "direction": "C",
+      "file": "tablet-dark-acciones-C.png",
+      "sha256": "8f5d13c036bb3854b91d39c2768b1b3ec0678a99c70b047afe885a839b83cb56"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "direction": "A",
+      "file": "tablet-dark-ajustes-A.png",
+      "sha256": "5bc39fb7890d8668baec2da5db46c39877d42a021de4b3fb7308f22815b3a99e"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "direction": "B",
+      "file": "tablet-dark-ajustes-B.png",
+      "sha256": "c4251591634ae6d3c1246e776c2d260b13f4226f881ef36445631c6b03f820b4"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "direction": "C",
+      "file": "tablet-dark-ajustes-C.png",
+      "sha256": "b293815091c73c0e3a96b60bfddcafd1d4b31fc80b2fea0f5d075205b4c76c88"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inicio",
+      "direction": "A",
+      "file": "tablet-dark-inicio-A.png",
+      "sha256": "254447c76c607cd5dc0252c5edcff3828437e3fabea09ef104740bfd0b0a0e81"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inicio",
+      "direction": "B",
+      "file": "tablet-dark-inicio-B.png",
+      "sha256": "2d66874371f38ba8781aed04165368d5fa7503c3b88a2a9798c96bbe1a76537e"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inicio",
+      "direction": "C",
+      "file": "tablet-dark-inicio-C.png",
+      "sha256": "000f0488549791bdb9693604f1283ed20f2af8bc99b53dd8259f5f9ce05b7cbc"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inspector",
+      "direction": "A",
+      "file": "tablet-dark-inspector-A.png",
+      "sha256": "ac8fd0c2c498e68074c50e4c1e943ef6c6d067612e5591a3470b5edb4d4dc14a"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inspector",
+      "direction": "B",
+      "file": "tablet-dark-inspector-B.png",
+      "sha256": "09976dd938aabc52987742ea40ef7cc29f05bace55364b52adab05dfe810b083"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inspector",
+      "direction": "C",
+      "file": "tablet-dark-inspector-C.png",
+      "sha256": "80b571289344f0fee09e250f040af95e88fe53076c21af6b4eb5872215208c9d"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "resultados",
+      "direction": "A",
+      "file": "tablet-dark-resultados-A.png",
+      "sha256": "a3d4015a2dab6dd64db35ed236fde4208b21d81bfac7cb92910e72de0d95c593"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "resultados",
+      "direction": "B",
+      "file": "tablet-dark-resultados-B.png",
+      "sha256": "05ccaac798ceb0624a1e35b44cbcb8abaf68f58899a4c0c79c28a2b5bacd2349"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "resultados",
+      "direction": "C",
+      "file": "tablet-dark-resultados-C.png",
+      "sha256": "f22c9306e8af32e8032026f484ce2511c58d03ed1ebc84a948dd4a86d7522f70"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "direction": "A",
+      "file": "tablet-light-acciones-A.png",
+      "sha256": "2794d202391d9249708061eadf0a3a1a082920b395b0d5787739417a99d32552"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "direction": "B",
+      "file": "tablet-light-acciones-B.png",
+      "sha256": "d9770df33734f6ad76c34b7db88c633e30ec55273524ab21291c351ba86c2287"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "direction": "C",
+      "file": "tablet-light-acciones-C.png",
+      "sha256": "33db26be811c42908b9edb8f06d2bd6773c210d38ee3c6fd2d0e95ce5bddd49d"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "direction": "A",
+      "file": "tablet-light-ajustes-A.png",
+      "sha256": "ff6a4dff08b889ec689aaf73f352beef49eeb5bcc9f48309f66b4a0010bfc262"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "direction": "B",
+      "file": "tablet-light-ajustes-B.png",
+      "sha256": "631018df93030b026e76378d8a350aa18401fb62321a238a581ba071a09aee7a"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "direction": "C",
+      "file": "tablet-light-ajustes-C.png",
+      "sha256": "9fbee23c39b1426bf35f4475e9f44808fe38ff53dc04d4ac3dcaa6c6b449f5c1"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inicio",
+      "direction": "A",
+      "file": "tablet-light-inicio-A.png",
+      "sha256": "4cb3b541e9774e0cb27aa6dd63eb8430bcaf43ed37b0c32b3d5030f384e33fc4"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inicio",
+      "direction": "B",
+      "file": "tablet-light-inicio-B.png",
+      "sha256": "c8487c521f3682af51610406e727af8d0abcafa516262f6e35b049c764a5e0cd"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inicio",
+      "direction": "C",
+      "file": "tablet-light-inicio-C.png",
+      "sha256": "69d0e21f7a416db570e8bf29f3af581a1751c29c541a5b5f0bbfecf38642e789"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inspector",
+      "direction": "A",
+      "file": "tablet-light-inspector-A.png",
+      "sha256": "8795a998fd50db2e840a95ef574b7da1d771c0a4fa610f0eaf0bdfa061c10cb2"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inspector",
+      "direction": "B",
+      "file": "tablet-light-inspector-B.png",
+      "sha256": "039d03756cd06db11cb9e28148201dc68012e2979a114b56aaef97100c437ca8"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inspector",
+      "direction": "C",
+      "file": "tablet-light-inspector-C.png",
+      "sha256": "b35ffbb3b511b263757d8f30f26e0fcd8ec9c4ae1a909755c60e2d349a513266"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "resultados",
+      "direction": "A",
+      "file": "tablet-light-resultados-A.png",
+      "sha256": "f22e1b1cf6c9296ed433770c52dd95370997d53beb2894e1e434362314bcfc81"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "resultados",
+      "direction": "B",
+      "file": "tablet-light-resultados-B.png",
+      "sha256": "a4ddf0ef458195682e61746209f053deca4623d7a4b3f29b5123d8281dc1e6eb"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "resultados",
+      "direction": "C",
+      "file": "tablet-light-resultados-C.png",
+      "sha256": "274720c1500d2eb3273d1ca685cea370f9da411e65713e0bef91f774e9d54338"
+    }
+  ],
+  "tests": 6,
+  "failures": 0,
+  "production_changes": false,
+  "limits": [
+    "Presentation fixture, not SpotlightPanel/full APK",
+    "PM monogram icons and authorized text/volume context are test fixtures",
+    "No new keyboard/WindowManager/hardware/FPS/RAM acceptance"
+  ]
+}

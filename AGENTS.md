@@ -1,3 +1,15 @@
+## 2026-11-07 — Focus como base aprobada; direcciones A/B pendientes
+
+Propietario reporta prueba física66 satisfactoria y conservaFocus como base estética,
+NO cierre exhaustivo deOneUI/Gboard ni autorización de adoptarA/B. Basecfb8fa8/PR21.
+Propuestas sólo test: ARefinado/BStudio,78PNG/26comparativas,6casos nuevos correctos.
+Motores y componentes productivos enfixture; NO APK/SpotlightPanelcompleto. Ver
+ docs/FOCUS-DIRECTIONS-20261107.md y verification/focus-directions-20261106.
+RecomendaciónB con cuerpoA enAjustes (Bconsumeespaciovertical). Esperar elección;
+no otrorediseño, producción/Geist/D1/FocusB/ranking/140ms/identidad66 intactos.
+D5noaprobado; C3–C8/Spotify/Square/WhatsApp/documentos funcionalmente pausados.
+SinActions/APK/main/deps/permisos/firma. Liberar únicamente reserva propia con notas.
+
 ## 2026-11-06 — Preview66 preparada, pendiente de autorización específica
 
 Base7bc8a26/PR21 verificada. Fuente 66d4ea0b28192f84ba26b9a451a8299d90f84cfb:
