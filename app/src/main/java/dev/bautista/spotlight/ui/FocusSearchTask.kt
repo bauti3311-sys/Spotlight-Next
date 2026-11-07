@@ -77,10 +77,11 @@ internal fun focusSearchActionTitle(topic:String)=when(topic){
  }
 }
 @Composable internal fun FocusSearchTaskFooter(draft:Action.ComposeSearch,controller:FocusSearchReviewController,authorizedSpotify:Boolean,onSpotifySearch:()->Unit,onRun:(Action)->Unit) {
- Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=12.dp).testTag("context-footer"),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
-  if(authorizedSpotify)Text("Conexión autorizada",Modifier.padding(horizontal=8.dp),style=MaterialTheme.typography.labelMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+ val readableStatus=LocalFocusUi.current && authorizedSpotify
+ Row(Modifier.fillMaxWidth().studioContentBacking(footer=true).heightIn(min=48.dp).padding(horizontal=12.dp).testTag("context-footer"),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+  if(authorizedSpotify)Text("Conexión autorizada",Modifier.then(if(readableStatus)Modifier.weight(1f) else Modifier).padding(horizontal=8.dp),style=MaterialTheme.typography.labelMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
   else TextButton(onClick={controller.information=!controller.information},modifier=Modifier.heightIn(min=48.dp)){Text(if(draft.topic in setOf("app","app-web-search"))"Cómo funciona" else "Enlace público",style=MaterialTheme.typography.labelMedium)}
-  Spacer(Modifier.weight(1f))
+  if(!readableStatus)Spacer(Modifier.weight(1f))
   TextButton(enabled=draft.query.isNotBlank(),onClick={
    if(authorizedSpotify)onSpotifySearch() else if(controller.prepared==null)controller.prepare(draft) else controller.take()?.let(onRun)
   },modifier=Modifier.heightIn(min=48.dp).testTag("focus-prepare")) {

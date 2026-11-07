@@ -25,3 +25,7 @@ import androidx.compose.ui.unit.dp
    .border(.75.dp,colors.outlineVariant.copy(alpha=.65f),shape)) {content()}
  }
 }
+
+/** Readable inner content over another app. Outer glass and stored opacity remain unchanged. */
+@Composable internal fun Modifier.studioContentBacking(footer:Boolean=false):Modifier =
+ if(LocalFocusUi.current)background((if(footer)MaterialTheme.colorScheme.surfaceContainerLow else MaterialTheme.colorScheme.surface).copy(alpha=.98f)) else this

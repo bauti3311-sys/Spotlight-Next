@@ -1366,6 +1366,7 @@ fun SpotlightPanel(
                     Column(
                         Modifier.fillMaxWidth()
                             .testTag("spotlight-results")
+                            .studioContentBacking()
                             .heightIn(max = panelLimit)
                             .then(if(widePreview && !expandedPreview)Modifier else Modifier.verticalScroll(rememberScrollState()))
                     ) {

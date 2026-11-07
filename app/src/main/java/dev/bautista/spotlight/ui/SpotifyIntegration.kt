@@ -112,7 +112,10 @@ import kotlinx.coroutines.launch
     }
     LaunchedEffect(externalQuery){if(externalQuery!=null && externalQuery!=query){query=externalQuery.take(240);results=emptyList();selected=null;job?.cancel()}}
     LaunchedEffect(searchTrigger){if(searchTrigger>0 && state==SpotifyConnectionState.AUTHORIZED)searchNow()}
-    Column(Modifier.fillMaxWidth().testTag("spotify-search-panel"), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    val compactTools=LocalFocusUi.current && externalQuery!=null
+    Column(Modifier.fillMaxWidth().testTag("spotify-search-panel")
+        .padding(horizontal=if(compactTools)12.dp else 0.dp,vertical=if(compactTools)8.dp else 0.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Buscar en Spotify", style = MaterialTheme.typography.titleSmall)
         if (state != SpotifyConnectionState.AUTHORIZED) {
             Text("Conectá Spotify para buscar dentro de Spotlight. Los controles de sesión Android siguen disponibles cuando están autorizados.", style = MaterialTheme.typography.bodySmall)
@@ -120,7 +123,8 @@ import kotlinx.coroutines.launch
         } else {
             if(externalQuery==null)OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
                 enabled = !busy, label = { Text("Canción, artista, álbum o playlist") }, modifier = Modifier.fillMaxWidth().testTag("spotify-search-query"))
-            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
+            val tools:@Composable ()->Unit = {
+            FlowRow(if(compactTools)Modifier else Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 SpotifyItemType.entries.forEach { option ->
                     FilterChip(enabled = !busy, selected = option == type, onClick = { job?.cancel(); typeKey = option.api; selected = null; results = emptyList() },
@@ -128,6 +132,9 @@ import kotlinx.coroutines.launch
                 }
             }
             Button(enabled = query.isNotBlank() && !busy, onClick = { searchNow() }) { Text("Buscar en Spotify") }
+            }
+            if(compactTools)FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalArrangement=Arrangement.spacedBy(4.dp)){tools()}
+            else tools()
             if (busy) TextButton(onClick = { job?.cancel() }) { Text("Cancelar solicitud") }
             results.forEach { item ->
                 SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={if(!busy)selected=item})
