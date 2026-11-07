@@ -1,3 +1,18 @@
+## 2026-11-07 — C5.4: ruta segura, NO-GO de instalación actual
+
+Desde b744ecf/PR21. ADB0, AVD0, sinemulador/imagen/KVM; parDebug/testAPK ausente
+y materialfirma local ausente. Perfiles/registroglobal Galaxy/Motorola DESCONOCIDOS:
+no aprobar instalación personal por suposición ni por elegir otro perfil.
+Ver docs/C5-4-SAFE-EXECUTION-DECISION-20261107.md y evidencia de entorno.
+Recomendación física: equipoARM64 de pruebas ya limpio/autorizado; alternativamente
+auditar si .next/.next.test están libres globalmente y sólo existe Preview67
+.raycastpreview. Coexistencia posible por IDs distintos, NO verificada todavía.
+AVD nuevo descartable en host apto sólo ensayo preliminar, no validación física.
+No aprovisionar/descargar/compilar/firmar/instalar ni adaptar native-delivery ahora.
+C5.3 7/12+5omisiones/0FP y bancoC5.4c2f94e8 intactos; no repetir pruebas.
+Sin cambiosproductivos/paquetes/firmas/main/Preview67/Actions. NoC5.5 ni C5completo.
+Publicar decisión y liberar sólo reserva propia con notas atómicas.
+
 ## 2026-11-07 — C5.4: banco físico preparado, no ejecutado
 
 Desde d712a14/PR21. Cinco métodos AndroidTest preparados: PDF/citas/renderer,
