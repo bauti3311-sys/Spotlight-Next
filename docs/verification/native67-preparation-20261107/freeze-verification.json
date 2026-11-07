@@ -1,0 +1,44 @@
+{
+  "base": "26377fabbfc6402cf53d152f84e8a098fb60ff8e",
+  "studio": "3662cf79f0982dea08e48689f67ec7932f1ca4a9",
+  "main_tree": "3017642fd453a6a2e5bd12ab729d67cb12298975",
+  "main_unchanged": true,
+  "only_version_delta": true,
+  "focus_default": false,
+  "reused_cases": 20,
+  "evidence": [
+    {
+      "path": "docs/verification/studio-integration-20261107/after/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+      "sha256": "2db992af0e11925fb40443004562a18c9b1743237ae51075c17d6a1f0ae2b3c7",
+      "tests": 6
+    },
+    {
+      "path": "docs/verification/studio-integration-20261107/after/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+      "sha256": "ef0dcab580c6db2728064a43000f164ecd874f7f2c05f445e99c175c4e6f22fd",
+      "tests": 1
+    },
+    {
+      "path": "docs/verification/studio-integration-20261107/after/TEST-dev.bautista.spotlight.ui.VisualFooterBudgetTest.xml",
+      "sha256": "730e7087ed0cbc30e462ef85d21dc893b4fe8728daf1094e9fbd0e08c57af1fa",
+      "tests": 7
+    },
+    {
+      "path": "docs/verification/studio-integration-20261107/after/TEST-dev.bautista.spotlight.ui.VisualPolishTokensTest.xml",
+      "sha256": "2f9ff4298608b0c5063d66bad4b3c8d65cb9d10854e9cb885644de5dba2d00e3",
+      "tests": 3
+    },
+    {
+      "path": "docs/verification/studio-integration-20261107/after/TEST-dev.bautista.spotlight.ui.StudioBudgetTest.xml",
+      "sha256": "e887876612e76ba8fff7c1f148582688692695614caf25acb01a6f775bdac947",
+      "tests": 1
+    },
+    {
+      "path": "docs/verification/studio-integration-20261107/keyboard/TEST-dev.bautista.spotlight.ui.StudioActionKeyboardTest.xml",
+      "sha256": "6431148d3f32acfc3dd584a3581a35abb11ee10dba556850b0648b08e655a85b",
+      "tests": 2
+    }
+  ],
+  "update_compatibility": "same package/signing configuration/data schema; actual installation and signature67 pending authorized build",
+  "no_apk": true,
+  "no_actions": true
+}

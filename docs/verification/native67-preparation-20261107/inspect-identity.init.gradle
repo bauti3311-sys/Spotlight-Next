@@ -1,0 +1,23 @@
+// Read-only AGP variant inspection. No assemble, signing task, key read or dispatch.
+allprojects { project ->
+ project.pluginManager.withPlugin('com.android.application') {
+  def components=project.extensions.getByName('androidComponents')
+  components.onVariants(components.selector().withBuildType('raycastPreview')) { variant ->
+   project.tasks.register('inspectPreview67Identity') {
+    doLast {
+     def type=project.android.buildTypes.getByName('raycastPreview')
+     def outputs=variant.outputs.collect { [code:it.versionCode.get(),name:it.versionName.get()] }
+     assert variant.applicationId.get()=='dev.bautista.spotlight.next.raycastpreview'
+     assert !outputs.isEmpty() && outputs.every { it.code==67 && it.name=='2.0.1-raycast-preview-native57-v67' }
+     assert !type.debuggable && type.minifyEnabled && type.shrinkResources
+     assert type.ndk.abiFilters==(['arm64-v8a'] as Set)
+     println 'PREVIEW67_IDENTITY='+groovy.json.JsonOutput.toJson([package:variant.applicationId.get(),outputs:outputs,
+       debuggable:type.debuggable,minified:type.minifyEnabled,shrinkResources:type.shrinkResources,
+       abi:type.ndk.abiFilters,minSdk:project.android.defaultConfig.minSdkVersion.apiLevel,
+       targetSdk:project.android.defaultConfig.targetSdkVersion.apiLevel,
+       signing:'unchanged source configuration; historical certificate checked against previous66; candidate signing requires authorized isolated workflow'])
+    }
+   }
+  }
+ }
+}
