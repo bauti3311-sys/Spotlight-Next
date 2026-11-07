@@ -1,0 +1,33 @@
+{
+  "base_sha": "293290a30d739f2e4495a3560f59e56618f96d1a",
+  "domain_tests": 10,
+  "compose_tests": 1,
+  "failures": 0,
+  "lint": {
+    "errors": 0,
+    "warnings": 26,
+    "information": 1
+  },
+  "physical_validation": false,
+  "pdf_ocr_fixture_only": true,
+  "sha256": {
+    "gallery.html": "583bcbf380ba1884b5c1bc606560f1c9d9d06db57b9919cf47c9027f9dfa5697",
+    "README.md": "4f5f12cad4731d953a2c497974846eea098076bf0b3a589c1d775d93650993f8",
+    "initial/TEST-dev.bautista.spotlight.index.DocumentCitationsTest.xml": "d3259898eae03ca7fd1f31f17f140b253f4964f216c9339c590267946f76f6bc",
+    "initial/directed-and-lint.log": "e22cefe4adb5240bf4040eb68d09c03af4ef31be02820880a0728cf052ca26ec",
+    "images/card-dark.png": "f5087343215facf99c3a2e3ecb4ca38fc5f020a0e79a817754c4920757a0bb81",
+    "images/card-light.png": "49fd7d4756dcb99ce2690475af37eaff590d8bf19f2de655f173e4d83dc9d812",
+    "final/TEST-dev.bautista.spotlight.index.DocumentCitationsTest.xml": "f286fa9eef3f920ec62181c50b68a114ce00c605e6370bcbac839ee67daf82d4",
+    "final/sealed-tests.log": "6513924fb74065dab57f514377b0beab51ffa66b6fa63b2e3acab37a97e3de6d",
+    "final/validation.log": "4c37d41130d59f278bbfa78b55308385f961cfab6cd37cfbaac76db3590136ac",
+    "final/TEST-dev.bautista.spotlight.ui.C5CitationCardReviewTest.xml": "bd97db14b10fa77cf8a2cc2366dc440624b979cc62f3d747c5de61e3eda7dfbd",
+    "final/lint-results-debug.xml": "524c3420453704a69df598351eafaac8126788bdc007bb19e61dd3af839fe501"
+  },
+  "source_sha": "844e23d25c3c8ba8c41c2c5ed33f6ddfc11fadde",
+  "source_sha256": {
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt": "9a78b4e1f9bbfb73d6d1bed2e3574f7c6f9d72fb2f66f75d0e4c572f684a1e87",
+    "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt": "8e9c365081ec1d356d6a8c328aa888ec7d33e97ec0601a351f65a46b6ed95760",
+    "app/src/test/java/dev/bautista/spotlight/index/DocumentCitationsTest.kt": "8463a4f97ea425e688eed984f46576cd97de2b1b8ea691ac756bb11c1ef813b1",
+    "app/src/test/java/dev/bautista/spotlight/ui/C5CitationCardReviewTest.kt": "daccfa2e32f7b64cd043c023e91c2c3ea958ae32a9c6443b20061cf0c34384e1"
+  }
+}

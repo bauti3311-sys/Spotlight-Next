@@ -1,3 +1,20 @@
+## 2026-11-07 — C5 reabierto: citas locales, primer checkpoint técnico
+
+Decisión posterior del propietario: avanzar únicamente C5 desde293290a/PR21.
+Preview67 ya entregada por único intento autorizado; no repetir entrega. Studio
+aprobado se conserva; validación física exhaustiva sigue pendiente. C3/C4/C6–C8
+siguen pausados. Este bloque prevalece sobre congelamientos históricos de C5.
+DocumentCitationSession reutiliza FileIndex/extracción/permisos; citas literales
+con SHA actual, offsets y página sólo respaldada por metadatos PDF válidos.
+Revocación/borrado/cancelación invalidan referencias; no es todavía un motor de
+respuestas ni integración productiva de UI. Recuperación léxica natural existente;
+semántica inventariada, pendiente. Propuesta Studio sólo test, apertura explícita.
+Ver docs/C5-CITATIONS-CHECKPOINT-20261107.md y evidencia asociada: 11 casos dirigidos
+correctos, lint0E26W1Info. Fixtures OCR/PDF, no prueba física ni OCR real. C5NOcerrado.
+Sin Actions/APK/main/merge/version/manifiesto/firma/paquete/prefs/deps/permisos.
+Próximo: páginas/fuentes reales, evaluación semántica y estado reactivo por revocación.
+Preservar checkpoints; publicar y liberar únicamente reserva propia con notas.
+
 ## Preview67 — candidata congelada, pendiente de autorización de entrega
 
 Base26377fa/PR21 verificada. Fuente6918204238706d3c9bac826196ad3f1f272a51e7:
