@@ -621,6 +621,32 @@ class FileIndex(
         fun n(k:String)=row.getLong(row.getColumnIndexOrThrow(k))
         SemanticFile(s("uri"),s("tree"),s("name"),OfficeText.mime(s("name"),s("mime")) ?: "application/octet-stream",s("body"),s("extraction"),s("parent"),n("modified"),n("created"),s("author"),n("size"))
     }
+    /** C5 read seam: reuse this index and its live SAF authority; never extract or open Quick Look. */
+    internal suspend fun citationDocument(uri:String,c:Config):CitationDocument?=withContext(Dispatchers.IO) {
+        fun allowed(info:SemanticFile):Boolean {
+            val current=semanticConfig(c) ?: return false
+            return current.files && current.contentIndex && !current.privateMode &&
+                (info.tree=="__imports__" || sourceAllowed(info.tree,current))
+        }
+        val info=semanticFile(uri) ?: return@withContext null
+        if(!allowed(info))return@withContext null
+        val metadata=runCatching{org.json.JSONObject(info.extraction)}.getOrNull() ?: return@withContext null
+        val sha=metadata.optString("sha256")
+        if(metadata.optBoolean("stale") || !sha.matches(Regex("[0-9a-f]{64}")))return@withContext null
+        try {
+            val digest=java.security.MessageDigest.getInstance("SHA-256");var bytes=0
+            context.contentResolver.openInputStream(Uri.parse(uri))?.use { input ->
+                val buffer=ByteArray(8192)
+                while(true){currentCoroutineContext().ensureActive();val n=input.read(buffer);if(n<0)break
+                    bytes+=n;if(bytes>8_000_000)return@withContext null;digest.update(buffer,0,n)}
+            } ?: return@withContext null
+            if(digest.digest().joinToString(""){"%02x".format(it)}!=sha)return@withContext null
+            val fresh=semanticFile(uri) ?: return@withContext null
+            if(!allowed(fresh) || fresh.fingerprint!=info.fingerprint)return@withContext null
+            CitationDocument(uri,info.name,info.mime,info.body,info.extraction,sha,info.fingerprint)
+        } catch(e:CancellationException){throw e} catch(e:Exception){null}
+    }
+
     private fun semanticCached(info:SemanticFile,part:dev.bautista.spotlight.semantic.WordPiece.Fragment)=helper.readableDatabase.rawQuery("SELECT start,end,excerpt,vector FROM semantic_vectors WHERE uri=? AND model=? AND fingerprint=? AND part=?",arrayOf(info.uri,dev.bautista.spotlight.semantic.SemanticPolicy.MODEL,info.fingerprint,part.index.toString())).use{r->r.moveToFirst() && r.getInt(0)==part.start && r.getInt(1)==part.end && r.getString(2)==part.text && dev.bautista.spotlight.semantic.SemanticPolicy.vector(r.getBlob(3))!=null}
 
     /** Explicit bounded preparation; never called by typing. Completed fragments survive cancellation. */
