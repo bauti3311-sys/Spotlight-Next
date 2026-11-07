@@ -62,7 +62,9 @@ class C5FocusHostDeviceTest {
                         list.addView(copy);list.addView(open)
                         val compose=ComposeView(activity).apply {
                             setViewTreeLifecycleOwner(activity);setViewTreeSavedStateRegistryOwner(activity)
-                            setContent {SpotlightTheme("dark",c.value){StudioSurface("inspector") {
+                            setContent {
+                                val config by c.collectAsState()
+                                SpotlightTheme("dark",config){StudioSurface("inspector") {
                                 opened?.let{item->AuthorizedFilePreview(activity,item,false,0,{})}
                             }}}
                         }
