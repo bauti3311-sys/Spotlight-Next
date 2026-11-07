@@ -15,6 +15,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.FontWeight
@@ -103,7 +105,8 @@ fun ResultRow(
             .background(fill)
             .background(Brush.horizontalGradient(if(premium)listOf(
                 colors.primary.copy(alpha=(if(dark).19f else .11f)*amount),
-                colors.onSurface.copy(alpha=(if(dark).065f else .025f)*amount)) else GlassTokens.selectedColors(dark,amount)))
+                colors.onSurface.copy(alpha=(if(dark).065f else .025f)*amount)) else if(focusUi)listOf(colors.primary.copy(alpha=.08f*amount),colors.onSurface.copy(alpha=.03f*amount)) else GlassTokens.selectedColors(dark,amount)))
+            .drawWithContent {drawContent();if(focusUi && amount>0f)drawLine(colors.primary.copy(alpha=.7f*amount),Offset(1.5.dp.toPx(),size.height/2-10.dp.toPx()),Offset(1.5.dp.toPx(),size.height/2+10.dp.toPx()),3.dp.toPx(),StrokeCap.Round)}
             .then(if(focused)Modifier.border(GlassTokens.resultFocusStroke,GlassTokens.resultFocusColor(dark),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down

@@ -139,7 +139,7 @@ class VisualFirstGalleryTest {
  }
  private fun capture(p:Profile,variant:String) {
   val name="${p.id}-$scene-$variant"
-  val output=if(integrationPhase==null)"build/visual-first" else "build/visual-polish/$integrationPhase"
+  val output=System.getenv("SPOTLIGHT_CAPTURE_ROOT")?.let{"$it/${integrationPhase ?: "after"}"} ?: if(integrationPhase==null)"build/visual-first" else "build/visual-polish/$integrationPhase"
   ui.onNodeWithTag("visual-canvas").captureRoboImage("$output/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
   val footers=ui.onAllNodesWithTag("context-footer").fetchSemanticsNodes()
   assertTrue("Every scene needs its existing footer",footers.isNotEmpty())
@@ -162,7 +162,7 @@ class VisualFirstGalleryTest {
     }
    }
   }
-  for(s in scenes) {
+  for(s in scenes.filter{System.getenv("SPOTLIGHT_MAIN_SCENES")==null || it in preserved || it in setOf("acciones","ajustes")}) {
    ui.runOnIdle{scene=s;proposed=false};ready();capture(p,"A")
    if(integrationPhase==null && s !in preserved){ui.runOnIdle{proposed=true};ready();capture(p,"B")}
   }

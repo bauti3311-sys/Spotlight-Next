@@ -1,0 +1,227 @@
+{
+  "base": "f36d8306c1bb081e380d6c72d08a600d85a98854",
+  "pairs": [
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "file": "phone-dark-acciones-A.png",
+      "before_sha256": "4c9362a650c5cda55f25891d02f17e3acf6ce39ba26e3efbd2348372c7e0ced9",
+      "after_sha256": "80e1da07ae5c144e9b88d7a3d5b9cf8cb6cf9ca0ad7c49e065c9a6a66de94085"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "file": "phone-dark-ajustes-A.png",
+      "before_sha256": "a6f6c766f258c050cc166021c6194346d458c96968f6d30cb260928006fdbaad",
+      "after_sha256": "b8e5fa19392e23849a49dafdd2cc5367049d8fb163b7cce1edc3cc38d95d569e"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inicio",
+      "file": "phone-dark-inicio-A.png",
+      "before_sha256": "a645843e19c96f7ccebf562e86a9ba686d8ecc073f96ba8a50cc52d8f72fe065",
+      "after_sha256": "872f139fab63e4a9dab045fb55b0af6d26ee8b032620538284c242b3d1892b39"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inspector",
+      "file": "phone-dark-inspector-A.png",
+      "before_sha256": "5029743dcf8ec6a6de0e911d5721512555aceaa4456dbd55ec60b4eb83146e5c",
+      "after_sha256": "b3297337bef078d267bbfb17322c64a1406f530abca0744f509f92f0506ef4dd"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "resultados",
+      "file": "phone-dark-resultados-A.png",
+      "before_sha256": "331106ffcf0bf306b8f2cb93d95c5f7bdc617a7a69b4623d7b1c0e390ed4dacc",
+      "after_sha256": "b344ec1a75e9965baacd0fa443eb47e90685a4413ef4b5b00785ca3a33c72ad1"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "acciones",
+      "file": "phone-dark-text200-acciones-A.png",
+      "before_sha256": "7546f466cd16657d4b77adb2ed5b1cc13a49d2637b22ca91e6364f2140c4d128",
+      "after_sha256": "b36a5fc6e4b2ccb29e6419487c572f67013e74493d6a96fadcee45375f394ecc"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "ajustes",
+      "file": "phone-dark-text200-ajustes-A.png",
+      "before_sha256": "6981e10449e76e30a23d0691745a92abe1490dbfbf73f0938baace458a768357",
+      "after_sha256": "982d83d995f5f1caeaf36efeb686578696087ebc0a63201bd5b844f0ac0feb0b"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "inicio",
+      "file": "phone-dark-text200-inicio-A.png",
+      "before_sha256": "2748866a2696bc90eb9678e94b2d2535e5e99dbe1d697775582012d0aceecce4",
+      "after_sha256": "7d14ae4455f462022c5f48eb3ccb49cc9b47ba61c33b124eb04475e795528a44"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "inspector",
+      "file": "phone-dark-text200-inspector-A.png",
+      "before_sha256": "93e27a75b6b0781c00709252760d97817a4f632beb2cb3fc76c9c3b13e1765e0",
+      "after_sha256": "6399f6fe3dbcef2ecec4b5e9153fefc4b19dc4d96c6ad4a3e7ba291401ca1b11"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "resultados",
+      "file": "phone-dark-text200-resultados-A.png",
+      "before_sha256": "ecd65679efdb55e0677393e3f9ce2d458c34cd107ece9e55e4c37c1f14d0812d",
+      "after_sha256": "1221333f757b9c1c7fbc24072b4d403f33efadb27123ed1a7bbad91de1c7806d"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "file": "phone-light-acciones-A.png",
+      "before_sha256": "dbf38a1f6a6ce99ef82c009906c8678cf83f6ad4220a465ad4d5cf4feef5342b",
+      "after_sha256": "c61850035abc1b30abfc4b0b1b0ae5d19b2762f4d1ec0f63afb8cba61d052f15"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "file": "phone-light-ajustes-A.png",
+      "before_sha256": "02b4ab5253cf515b38bb278dac2721b2dbd9a1adb7d37d3c686c45b4a7f19f9d",
+      "after_sha256": "74ad24ab90717116415af3c05793f32338734f4284fe5116ddcc53c5dcdce435"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inicio",
+      "file": "phone-light-inicio-A.png",
+      "before_sha256": "c1a598faa986393575c88109a0127042471149042a0b5bf872049e6b6af0ab62",
+      "after_sha256": "f4bef800a08fb87334d8ca3c8a16f0c79ddeae469b8b44ab73e328dbd77a75fb"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inspector",
+      "file": "phone-light-inspector-A.png",
+      "before_sha256": "9a381696bd4125d327efd5b2c61cbd4c2837152ae7184202fed13c198e258c22",
+      "after_sha256": "43968bd5948aaa9c77e1efc214e3d2c28e7dd4c6bebb166dbef8926d1c1d8cd5"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "resultados",
+      "file": "phone-light-resultados-A.png",
+      "before_sha256": "f532561bfb0bedf9130dc829149dda4760bc0f65b0dc7722d7dbb00dc88fe423",
+      "after_sha256": "094802e6d23c551f39730bb068eb4eeb0a0958bbc2881f1800a9c404cd20d613"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "acciones",
+      "file": "phone-light-text200-acciones-A.png",
+      "before_sha256": "716fcfbdbdabf0f5b8517ebf97319d16a491512784d592c0de18751e6ebe74dc",
+      "after_sha256": "f175fd40fdf046a01fdbe2ae6f23fe595be4c2ed2a8a23a3c71c5c8034467710"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "ajustes",
+      "file": "phone-light-text200-ajustes-A.png",
+      "before_sha256": "7b56f464426ba037fcfd4c4764252f35b7d13ae1e641543de8bcfea1a84dc725",
+      "after_sha256": "dbcf2a685a6a825afc0fac6733d5aaeb2ae1f60e0f4c900c0d076128f994c045"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "inicio",
+      "file": "phone-light-text200-inicio-A.png",
+      "before_sha256": "ffe67fb07321aa58b7869947954b565fc480e447eff6829910f3df965fb66bb4",
+      "after_sha256": "5905d43b7674032cde3c56d924d2d315cadffc61151fba7557e18909fecc5034"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "inspector",
+      "file": "phone-light-text200-inspector-A.png",
+      "before_sha256": "9ced79d285a96498e5c4e6d6d82a3cc5313a13d54ecc837200bc3516d4184b11",
+      "after_sha256": "b05499b8e05e7c1e2234b77bff563674ad4b9873b8ac1575f326dded22303162"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "resultados",
+      "file": "phone-light-text200-resultados-A.png",
+      "before_sha256": "a5cde9f54d36e42301ab294205b043cd6d79b236c8781ecb27a1c94d528f64dc",
+      "after_sha256": "7616232211b14ca7fe34cd2a8156b3237934eba8bbd3fd9cd56239343df000e5"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "file": "tablet-dark-acciones-A.png",
+      "before_sha256": "7058e4de2552270175251f265b524873efcc56bed1e4baaa3b6878fd9b51f0bd",
+      "after_sha256": "98c8389a55be60f07192b485e8bc30545c4a0afa57adf8d0224841eca33e8824"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "file": "tablet-dark-ajustes-A.png",
+      "before_sha256": "5fc2a97aae67a1153988469255892c144e6e487aa9e8f3d6011e83807e2231fd",
+      "after_sha256": "2d23dc861cfad247717ba5d1b188058b72dcd9f19c85963ae9b614193efab525"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inicio",
+      "file": "tablet-dark-inicio-A.png",
+      "before_sha256": "ef5ddbd2298150704ec9b7cda20afb2615117aeffb38fa005b535015155720b1",
+      "after_sha256": "c80303fe7082bb6dc2190a39ca9b7c7dbe00dabbb070e272855717939bec090a"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inspector",
+      "file": "tablet-dark-inspector-A.png",
+      "before_sha256": "c3a2c770b5fd1c65c46331600a54a1d5f15090df2da75e72d3f628646ef560bd",
+      "after_sha256": "2776a8b3c11797b8a6db3221d7aa7c374d7a16c9487202cafe3c21dbda3335a0"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "resultados",
+      "file": "tablet-dark-resultados-A.png",
+      "before_sha256": "67a145973aaf1beee5ccacf4ee60575c86463455675840ed5f555b879686f571",
+      "after_sha256": "af45845ee618bc04163dcf5ff27c21d4f520696268888bfd07e81b0afa6f19ac"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "file": "tablet-light-acciones-A.png",
+      "before_sha256": "e83efb693fa94a466b27483826b2d561afe8dd07070c4a08855391a7e10ecbde",
+      "after_sha256": "6c57a8062885375d9730af408c69ae47f3829504572b46fd2284d34e90cc1ea0"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "file": "tablet-light-ajustes-A.png",
+      "before_sha256": "8f1cee5e8e87b2873e821ddf280aa322d89984eb9004ad44461d2f4c4d92cd2f",
+      "after_sha256": "90d754256bd5a420521a267f8468851e28789b9470c47d2976c337b618ad92df"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inicio",
+      "file": "tablet-light-inicio-A.png",
+      "before_sha256": "9bfe841fb957856d0025d3cd1a298af25f2d269ce430c2a03e192354d5935660",
+      "after_sha256": "3b0d2953a561d261baa9f11a337ccc3c975757e86f0a59ebe0bce23b66060f4d"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inspector",
+      "file": "tablet-light-inspector-A.png",
+      "before_sha256": "c443f64883936b3ee4109caab9ef5a9dbb3b84bccfbcf9eff3f8bb90ed061bf5",
+      "after_sha256": "2179d3ba0a176f9432d0df7487894b39ba1e910f5649f55d306b10f97386365c"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "resultados",
+      "file": "tablet-light-resultados-A.png",
+      "before_sha256": "4126b47968620a43bec59d99680cdba847df7b047dcddab6a3ec457aa7a7f863",
+      "after_sha256": "69225cbc045835cc545b3c92ef66310d27352c87a2e12a365c80c750f9b9b3ff"
+    }
+  ],
+  "main_validation_cases": 18,
+  "lint": {
+    "Warning": 26,
+    "Information": 1
+  },
+  "scope": "SpotlightPanel real for inicio/resultados/inspector; real isolated components for actions/settings; API33 native fixtures",
+  "limits": [
+    "No APK/Actions/new hardware tests",
+    "No physical OneUI/Gboard/jank/RAM claims"
+  ],
+  "total_current_directed_cases": 20,
+  "keyboard_focus_cases": 2
+}

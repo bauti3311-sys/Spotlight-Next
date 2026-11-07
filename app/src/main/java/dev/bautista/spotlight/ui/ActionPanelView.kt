@@ -87,6 +87,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
     val d=GlassTokens.densityScale(appearance)
     val commandAccent=rememberCommandAccent(contextResult)
     val focusRing=GlassTokens.focusRing()
+    StudioSurface("actions",Modifier.fillMaxWidth()) {
     Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).padding((12f*d).dp).testTag("context-action-panel")
         .onPreviewKeyEvent { e ->
             if(e.type!=KeyEventType.KeyDown)false
@@ -172,4 +173,5 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
         }
 
     }
+}
 }

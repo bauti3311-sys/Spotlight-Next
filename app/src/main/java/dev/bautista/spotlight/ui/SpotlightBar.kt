@@ -204,7 +204,7 @@ fun SpotlightBar(
     }
     // A service overlay cannot safely host an Activity-style popup window.
     // Keep options in the same window/token as the editor.
-    Box(Modifier.fillMaxWidth()) {
+    StudioSurface("search",Modifier.fillMaxWidth()) {
     Column(Modifier.fillMaxWidth().semantics { testTag="spotlight-bar" }) {
         Row(Modifier.fillMaxWidth().padding(horizontal=6.dp), verticalAlignment=Alignment.CenterVertically) {
             searchField(Modifier.weight(1f))

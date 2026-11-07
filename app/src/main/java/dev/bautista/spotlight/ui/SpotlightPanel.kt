@@ -1549,7 +1549,8 @@ fun SpotlightPanel(
                                 }?.icon
                                 CompositionLocalProvider(LocalInspectorReviewBudget provides viewport.value) {
                                 InspectorTheme(accentPackage,accentIcon) {
-                                Column(Modifier.fillMaxWidth().liquidInspector().testTag("inspector-content")) {
+                                StudioSurface("inspector",Modifier.fillMaxWidth().liquidInspector().testTag("inspector-content")) {
+                                Column(Modifier.fillMaxWidth()) {
                                     if((!widePreview || expandedPreview) && !focusSearchActive)inspectorToolbar()
                                     if(LocalPremiumReview.current && taskInspector)Box(Modifier.padding(horizontal=18.dp,vertical=10.dp)) {
                                         PremiumSectionLabel(when {
@@ -1566,6 +1567,7 @@ fun SpotlightPanel(
                                     if(LocalPremiumReview.current || LocalFocusUi.current)PremiumInspectorReveal(taskKey,LocalMotion.current) {
                                         ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
                                     } else ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                }
                                 }
                                 }
                                 }
