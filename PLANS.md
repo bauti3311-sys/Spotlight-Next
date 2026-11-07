@@ -1,3 +1,18 @@
+## 2026-11-07 — Preview 68 visual aislada preparada, sin autorización de entrega
+
+Prioridad vigente: preparar entrega visual desde la fuente67, no distribuir C5.
+Fuente candidata c51677b79446ce1dc8213553891d45897b14d726, rama
+feat/preview68-visual-isolated-20261107. PR21 conserva TODO C5 y corrección lint214e00a.
+FileIndex.clear de C5 sí afecta una ruta antigua observada por la barra; por eso
+fuente aislada basada en6918204 + pulido2731897 idéntico + dos líneas versión68.
+No revertir C5 en PR ni confundir HEAD workflow con fuente de APK68.
+Ver docs/NATIVE68-PREPARATION-20261107.md y scripts/preview_delivery.json.
+17 tests offline de entrega +3 de aislamiento;19 visuales y lint0E/26W/1Info
+reutilizados, sin repetir. Inspección AGP sólo configuración, sin app/testAPK.
+Próximo: esperar NUEVA autorización del par source/workflow para un native-delivery;
+reserva NUEVA y AUTHORIZE_PREVIEW_68_ONCE. No Actions/APK/firma/instalación ahora.
+Main/67/140ms/datos y C5.3-C5.4 preservados. No cerrar nueveV ni C5 por preparación.
+
 ## 2026-11-07 — Focus Studio: correcciones por evidencia física de Preview 67
 
 Prioridad vigente del propietario: legibilidad interna, ActionPanel contenido y

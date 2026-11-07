@@ -1,0 +1,165 @@
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+index 18dd0c5..5270cef 100644
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -45,7 +45,7 @@ android {
+    proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
+    applicationIdSuffix = ".raycastpreview"
+-   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview-native57-v67" else "-raycast-preview-native57-v67-experimental"
++   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview-native57-v68" else "-raycast-preview-native57-v68-experimental"
+    // Never substitute a generated debug certificate for the historical Preview identity.
+    // CI/tests can configure the project without a key; that case yields unsigned output.
+    signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null
+@@ -88,7 +88,7 @@ android {
+ androidComponents {
+  onVariants(selector().withBuildType("raycastPreview")) { variant ->
+   // Native57 validation; avoid experimental58/59 numbering. Only this Preview changes.
+-  variant.outputs.forEach { output -> output.versionCode.set(67) }
++  variant.outputs.forEach { output -> output.versionCode.set(68) }
+  }
+  onVariants(selector().withBuildType("review")) { variant ->
+   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
+diff --git a/app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt b/app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt
+index d0b9507..22febd3 100644
+--- a/app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt
++++ b/app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt
+@@ -19,6 +19,7 @@ internal class ActionPopupHost(
+     private val anchor:View,
+     private val dismiss:()->Unit,
+     private val back:()->Unit,
++    private val studio:Boolean=false,
+ ) : AbstractComposeView(context) {
+     private val manager=context.getSystemService(WindowManager::class.java)
+     private var attached=false
+@@ -63,19 +64,25 @@ internal class ActionPopupHost(
+         if(changed && attached)manager.updateViewLayout(this,params)
+     }
+ 
+-    private fun horizontalOutset()=if(anchorBounds.width()>=600*resources.displayMetrics.density)minOf(144*resources.displayMetrics.density,anchorBounds.width()*.18f).toInt() else 0
++    private fun horizontalOutset()=if(!studio && anchorBounds.width()>=600*resources.displayMetrics.density)minOf(144*resources.displayMetrics.density,anchorBounds.width()*.18f).toInt() else 0
+ 
+     private fun updateSafeBounds() {
+         anchor.getWindowVisibleDisplayFrame(bounds)
+         if(bounds.width()<=0 || bounds.height()<=0)bounds.set(0,0,resources.displayMetrics.widthPixels,resources.displayMetrics.heightPixels)
++        if(studio) {
++            val edge=(8*resources.displayMetrics.density).toInt()
++            bounds.inset(minOf(edge,(bounds.width()-1).coerceAtLeast(0)/2),minOf(edge,(bounds.height()-1).coerceAtLeast(0)/2))
++        }
+         params.width=params.width.coerceIn(1,bounds.width().coerceAtLeast(1))
+-        maximumHeight=minOf(suppliedHeight,(bounds.height()-16*resources.displayMetrics.density).toInt()).coerceAtLeast(1)
++        val frameLimit=if(studio)bounds.height() else (bounds.height()-16*resources.displayMetrics.density).toInt()
++        val parentLimit=if(studio)maxOf(anchorBounds.height(),(320*resources.displayMetrics.density).toInt()) else Int.MAX_VALUE
++        maximumHeight=minOf(suppliedHeight,frameLimit,parentLimit).coerceAtLeast(1)
+     }
+ 
+     private fun reposition() {
+         updateSafeBounds()
+         if(!attached)return
+-        val placed=ActionPopupPosition.place(anchorBounds,bounds,params.width,height.takeIf{it>0} ?: maximumHeight,(56*resources.displayMetrics.density).toInt(),horizontalOutset())
++        val placed=ActionPopupPosition.place(anchorBounds,bounds,params.width,minOf(height.takeIf{it>0} ?: maximumHeight,maximumHeight),(56*resources.displayMetrics.density).toInt(),horizontalOutset())
+         if(params.x!=placed.left || params.y!=placed.top || layoutParams?.width!=params.width) {
+             params.x=placed.left;params.y=placed.top
+             manager.updateViewLayout(this,params)
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt b/app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt
+index b293ee9..57b0552 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt
+@@ -27,6 +27,7 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
+  * surface uses the parent's token and its own public touch rectangle, not fullscreen.
+  */
+ @Composable internal fun BoxScope.ContextActionSurface(availableHeight:Dp,onDismiss:()->Unit,content:@Composable ()->Unit) {
++    val studio=LocalFocusUi.current
+     val anchor=LocalView.current
+     val density=LocalDensity.current
+     val parent=rememberCompositionContext()
+@@ -46,8 +47,8 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
+     val width=with(density){minOf(360.dp,(rect?.width() ?: 1).toDp()-8.dp).coerceAtLeast(1.dp).roundToPx()}
+     val height=with(density){minOf(GlassTokens.actionPanelMaxHeight+16.dp,availableHeight-16.dp).coerceAtLeast(1.dp).roundToPx()}
+     if(rect!=null) {
+-        DisposableEffect(anchor,parent) {
+-            val host=ActionPopupHost(anchor.context,anchor,{currentDismiss()},{navigation.back?.invoke() ?: currentDismiss()})
++        DisposableEffect(anchor,parent,studio) {
++            val host=ActionPopupHost(anchor.context,anchor,{currentDismiss()},{navigation.back?.invoke() ?: currentDismiss()},studio=studio)
+             host.setParentCompositionContext(parent)
+             anchor.findViewTreeLifecycleOwner()?.let{host.setViewTreeLifecycleOwner(it)}
+             anchor.findViewTreeSavedStateRegistryOwner()?.let{host.setViewTreeSavedStateRegistryOwner(it)}
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt b/app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt
+index a944112..cf770bd 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt
+@@ -77,10 +77,11 @@ internal fun focusSearchActionTitle(topic:String)=when(topic){
+  }
+ }
+ @Composable internal fun FocusSearchTaskFooter(draft:Action.ComposeSearch,controller:FocusSearchReviewController,authorizedSpotify:Boolean,onSpotifySearch:()->Unit,onRun:(Action)->Unit) {
+- Row(Modifier.fillMaxWidth().heightIn(min=48.dp).padding(horizontal=12.dp).testTag("context-footer"),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+-  if(authorizedSpotify)Text("Conexión autorizada",Modifier.padding(horizontal=8.dp),style=MaterialTheme.typography.labelMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
++ val readableStatus=LocalFocusUi.current && authorizedSpotify
++ Row(Modifier.fillMaxWidth().studioContentBacking(footer=true).heightIn(min=48.dp).padding(horizontal=12.dp).testTag("context-footer"),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
++  if(authorizedSpotify)Text("Conexión autorizada",Modifier.then(if(readableStatus)Modifier.weight(1f) else Modifier).padding(horizontal=8.dp),style=MaterialTheme.typography.labelMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+   else TextButton(onClick={controller.information=!controller.information},modifier=Modifier.heightIn(min=48.dp)){Text(if(draft.topic in setOf("app","app-web-search"))"Cómo funciona" else "Enlace público",style=MaterialTheme.typography.labelMedium)}
+-  Spacer(Modifier.weight(1f))
++  if(!readableStatus)Spacer(Modifier.weight(1f))
+   TextButton(enabled=draft.query.isNotBlank(),onClick={
+    if(authorizedSpotify)onSpotifySearch() else if(controller.prepared==null)controller.prepare(draft) else controller.take()?.let(onRun)
+   },modifier=Modifier.heightIn(min=48.dp).testTag("focus-prepare")) {
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt b/app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt
+index 13b7989..59756be 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt
+@@ -112,7 +112,10 @@ import kotlinx.coroutines.launch
+     }
+     LaunchedEffect(externalQuery){if(externalQuery!=null && externalQuery!=query){query=externalQuery.take(240);results=emptyList();selected=null;job?.cancel()}}
+     LaunchedEffect(searchTrigger){if(searchTrigger>0 && state==SpotifyConnectionState.AUTHORIZED)searchNow()}
+-    Column(Modifier.fillMaxWidth().testTag("spotify-search-panel"), verticalArrangement = Arrangement.spacedBy(8.dp)) {
++    val compactTools=LocalFocusUi.current && externalQuery!=null
++    Column(Modifier.fillMaxWidth().testTag("spotify-search-panel")
++        .padding(horizontal=if(compactTools)12.dp else 0.dp,vertical=if(compactTools)8.dp else 0.dp),
++        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+         Text("Buscar en Spotify", style = MaterialTheme.typography.titleSmall)
+         if (state != SpotifyConnectionState.AUTHORIZED) {
+             Text("Conectá Spotify para buscar dentro de Spotlight. Los controles de sesión Android siguen disponibles cuando están autorizados.", style = MaterialTheme.typography.bodySmall)
+@@ -120,7 +123,8 @@ import kotlinx.coroutines.launch
+         } else {
+             if(externalQuery==null)OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
+                 enabled = !busy, label = { Text("Canción, artista, álbum o playlist") }, modifier = Modifier.fillMaxWidth().testTag("spotify-search-query"))
+-            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
++            val tools:@Composable ()->Unit = {
++            FlowRow(if(compactTools)Modifier else Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
+                 verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                 SpotifyItemType.entries.forEach { option ->
+                     FilterChip(enabled = !busy, selected = option == type, onClick = { job?.cancel(); typeKey = option.api; selected = null; results = emptyList() },
+@@ -128,6 +132,9 @@ import kotlinx.coroutines.launch
+                 }
+             }
+             Button(enabled = query.isNotBlank() && !busy, onClick = { searchNow() }) { Text("Buscar en Spotify") }
++            }
++            if(compactTools)FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalArrangement=Arrangement.spacedBy(4.dp)){tools()}
++            else tools()
+             if (busy) TextButton(onClick = { job?.cancel() }) { Text("Cancelar solicitud") }
+             results.forEach { item ->
+                 SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={if(!busy)selected=item})
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt b/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt
+index 29e6a76..1322cd3 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt
+@@ -1366,6 +1366,7 @@ fun SpotlightPanel(
+                     Column(
+                         Modifier.fillMaxWidth()
+                             .testTag("spotlight-results")
++                            .studioContentBacking()
+                             .heightIn(max = panelLimit)
+                             .then(if(widePreview && !expandedPreview)Modifier else Modifier.verticalScroll(rememberScrollState()))
+                     ) {
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt b/app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt
+index 4130447..1bb5bc6 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt
+@@ -25,3 +25,7 @@ import androidx.compose.ui.unit.dp
+    .border(.75.dp,colors.outlineVariant.copy(alpha=.65f),shape)) {content()}
+  }
+ }
++
++/** Readable inner content over another app. Outer glass and stored opacity remain unchanged. */
++@Composable internal fun Modifier.studioContentBacking(footer:Boolean=false):Modifier =
++ if(LocalFocusUi.current)background((if(footer)MaterialTheme.colorScheme.surfaceContainerLow else MaterialTheme.colorScheme.surface).copy(alpha=.98f)) else this

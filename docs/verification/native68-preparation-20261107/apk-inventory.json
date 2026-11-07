@@ -1,0 +1,11 @@
+{
+  "source_worktree_apk_count": 0,
+  "pr_worktree_apk_count": 0,
+  "tasks_requested": [
+    ":app:inspectPreview68Identity"
+  ],
+  "apk_build": false,
+  "signature_verified": false,
+  "instrumentation_run": false,
+  "actions_dispatched": 0
+}
