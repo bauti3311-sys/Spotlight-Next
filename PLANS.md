@@ -1,3 +1,16 @@
+## 2026-11-07 — Focus Studio: correcciones por evidencia física de Preview 67
+
+Prioridad vigente del propietario: legibilidad interna, ActionPanel contenido y
+layout compacto del formulario Spotify; sólo presentación, sin reparar integración.
+Fuente2731897c80b2d87440a58d9f9b6d08ef1710723e publicada/PR21 borrador.
+19/19 dirigidas verdes; lint global bloqueado por StateFlow.value en C5AndroidTest
+preexistente e intacto (C5FocusHostDeviceTest:65). Análisis main final completado. Ver docs/STUDIO-PHYSICAL-POLISH-20261107.md y galería
+Compose antes/después. Conservar Studio/AjustesA/Geist/D1/140ms/acciones/ranking.
+C5 congelado e intacto: NO-GO físico C5.4 y resultados C5.3 siguen vigentes.
+No APK/Actions/nuevaPreview/main/permisos/paquete/firma/deps. No declarar validación
+One UI/Gboard, rendimiento físico ni nueve V completas por capturas JVM.
+Publicar checkpoints pequeños y liberar sólo reserva propia con notas atómicas.
+
 ## 2026-11-07 — C5.4: ruta segura, NO-GO de instalación actual
 
 Desde b744ecf/PR21. ADB0, AVD0, sinemulador/imagen/KVM; parDebug/testAPK ausente

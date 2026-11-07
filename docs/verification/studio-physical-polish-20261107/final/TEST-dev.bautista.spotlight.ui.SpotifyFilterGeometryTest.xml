@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SpotifyFilterGeometryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-07T20:31:03" hostname="ab6df79ca904" time="4.833">
+  <properties/>
+  <testcase name="tabletFiltersRemainVisibleWithoutAnArtificialHeight" classname="dev.bautista.spotlight.ui.SpotifyFilterGeometryTest" time="4.163"/>
+  <testcase name="allFilterTargetsFitNarrowInspectorAtLargeText" classname="dev.bautista.spotlight.ui.SpotifyFilterGeometryTest" time="0.386"/>
+  <testcase name="keyboardTraversalAndSelectionNeverStartPlayback" classname="dev.bautista.spotlight.ui.SpotifyFilterGeometryTest" time="0.284"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
