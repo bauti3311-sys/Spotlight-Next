@@ -1,3 +1,19 @@
+## Preview67 — candidata congelada, pendiente de autorización de entrega
+
+Base26377fa/PR21 verificada. Fuente6918204238706d3c9bac826196ad3f1f272a51e7:
+code67/name2.0.1-raycast-preview-native57-v67; paquete/certificado histórico intactos.
+App/src/main idéntico aStudio3662cf7, conserva commits posteriores. Sólo dos líneas
+Gradle de numeración. AGPsinAPK correcto;19checks offline67 correctos. Reutilizar
+20casosStudio/lint0E26W1Info, sin suites/galerías históricas. Datos/preferencias/
+savers/migraciones sin delta; actualización física sobre66 aún pendiente.
+Ver docs/NATIVE67-PREPARATION-20261107.md y checklistA9+/G86. D5aislado140ms intacto;
+C3–C8/Spotify/Square/WhatsApp/docfunciones congelados. NoActions/firma/APK/main/merge.
+Manifest67 source=base/allowed_delta_paths=[]; workflowescommit posterior de entrega,
+par exacto ennotas de cierre. Detener tras publicar par y liberar sólo reserva propia.
+Nueva entrega requiereautorización explícita delpar67, reserva NUEVA y único intento
+native-delivery AUTHORIZE_PREVIEW_67_ONCE. No reusar autorización/reserva66 o actual.
+No cerrar nueveV sin evidencia física ni reabrir composición Studio aprobada.
+
 ## 2026-11-07 — Studio aprobado e integrado, Ajustes A conservado
 
 El propietario aprueba BStudio con cuerpoA enAjustes. Fuente 3662cf79f0982dea08e48689f67ec7932f1ca4a9.
