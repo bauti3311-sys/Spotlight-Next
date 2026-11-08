@@ -1529,6 +1529,7 @@ fun SpotlightPanel(
                                 if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
                                     }
                                 }
+                                if(LocalFocusUi.current)NativeLaunchRequestStatus(launchSession.requestedDestination)
                                 ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
                                     observed?.playing==true,emptyList(),onOpen={execute(application)},
                                     onFavorite={toggleFavorite(application)},
