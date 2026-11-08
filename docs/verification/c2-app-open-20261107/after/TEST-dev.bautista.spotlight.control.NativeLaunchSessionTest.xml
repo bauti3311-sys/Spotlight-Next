@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.NativeLaunchSessionTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-08T02:42:09" hostname="ab6df79ca904" time="1.942">
+  <properties/>
+  <testcase name="failedOrUncertainRequestDoesNotPublishAReceipt" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="1.659"/>
+  <testcase name="unknownOutcomeOffersNoAutomaticOrManualFallback" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.038"/>
+  <testcase name="receiptContainsOnlyDestinationAndExpiresWithItsOrigin" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.051"/>
+  <testcase name="disposingDropsReceiptAndNeverReplaysTheRequest" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.045"/>
+  <testcase name="removedPackageIsRevalidatedBeforeDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.019"/>
+  <testcase name="changedContextMakesOldApprovalStale" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.027"/>
+  <testcase name="cancelledAndDisposedProposalsNeverDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.051"/>
+  <testcase name="securityExceptionIsSanitizedAndNeverRetried" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.018"/>
+  <testcase name="exactInstalledActivityIsPinnedAndRequestedOnce" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.016"/>
+  <testcase name="disabledPrivateMissingAndRestrictedActivitiesNeverDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.017"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

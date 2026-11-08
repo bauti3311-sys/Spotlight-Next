@@ -1,0 +1,17 @@
+{
+  "base": "bfa07e7d9718467c158bf719dc1adfef9a0f9ebe",
+  "productive_delta": [
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt"
+  ],
+  "unchanged_tracked_files_checked": 337,
+  "ranking_28_prior_cases": "retained byte-for-byte, not reexecuted",
+  "apk_files_in_build": [],
+  "test_aggregate": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "physical_execution": "not executed; synthetic launcher requests only",
+  "lifecycle": "CREATED to RESUMED with retained composition; no process recreation/physical rotation"
+}

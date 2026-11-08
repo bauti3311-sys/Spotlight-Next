@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.NativeLaunchFlowTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T02:42:12" hostname="ab6df79ca904" time="5.109">
+  <properties/>
+  <testcase name="escapeCancelsReviewAndKeepsQueryWithoutLaunching" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="4.557"/>
+  <testcase name="restoringReviewDoesNotRestoreConsentOrLaunch" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.286"/>
+  <testcase name="enterOnDefaultReviewActionDoesNotConfirm" classname="dev.bautista.spotlight.ui.NativeLaunchFlowTest" time="0.266"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

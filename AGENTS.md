@@ -1,3 +1,14 @@
+## Continuidad vigente — C2/F01 recorrido de apertura local
+
+Desde bfa07e7, seis recorridos Compose nuevos +17 regresiones de ejecución.
+Único defecto productivo reproducido: inspector Focus fijado no mostraba recibo
+SOLICITADO. Una línea reutiliza NativeLaunchRequestStatus; no cambia ejecución,
+cierre ni acciones. Ver docs/C2-APP-OPEN-JOURNEY-20261107.md y evidencia.
+28 casos de ranking conservados sin repetir. Apertura externa/IME/rotación reales
+pendientes; no declarar C2 completo. Studio/2:1/140ms/Preview68 intactos.
+C5 bloqueado, otras integraciones pausadas. No APK/Actions/main/nuevaPreview.
+Autorización68 consumida; liberar sólo reserva propia con notas atómicas.
+
 ## Continuidad vigente — C2 relevancia/estabilidad, Visual First estabilización
 
 Propietario autorizó sólo búsqueda universal, desde71500e3. Ver
