@@ -1,0 +1,1 @@
+H02 Puente ligero elegido por el propietario. Prototipo web propio, HTML/CSS/JS, no referencia de terceros. Copias exactas del laboratorio previo conservado en shared/downloads/spotlight-hielo-web. PNG Chromium, NO Compose ni Android. La comparación nativa usa otro fixture Android explícito, por lo que no se afirma igualdad pixel a pixel.

@@ -1,0 +1,12 @@
+{
+  "source_sha": "0b1441e85cc736026f5bee81e1c23eef869e70c1",
+  "errors": 0,
+  "counts": {
+    "Warning": 23,
+    "Information": 1
+  },
+  "completed_lint_runs": 2,
+  "reason_for_second_run": "New compact-search and split-threshold production delta after first native checkpoint",
+  "baseline_added": false,
+  "suppression_added": false
+}

@@ -1,3 +1,16 @@
+## Continuidad vigente — Puente ligero H02 integrado en Compose
+
+El propietario eligió H02 web y autorizó integración. Código `0b1441e85cc736026f5bee81e1c23eef869e70c1`.
+Barra/lista y destino separados, alto según contenido, Hielo claro/nocturno,
+resize accesible conservado; apilado compacto con búsqueda/footer visibles.
+Reutiliza motores/acciones; no renderizador nuevo/WebView. Abrir app en contexto,
+sin duplicado visual en footer. Corregidos scroll y retorno de foco con evidencia.
+20casos únicos; ronda final20 y lint0E/23W/1I. Ver
+ docs/PUENTE-NATIVE-20261108.md y comparativas Compose antes/después/H02web.
+Focusfalse sigue por defecto y reversible; AjustesA, versiones/firmas/paquetes,
+C2/C5 y fuentes68/69/main intactos. Sin APK/Actions/instalación. Autorización69
+consumida. No declarar aceptación física ni C5 completo; liberar sóloreserva propia.
+
 ## Continuidad vigente — Puente, ocho acabados extremos de laboratorio
 
 El propietario pidió diferencias mayores: X01Terminal/X02Papel/X03Cobalto/X04Chicle/

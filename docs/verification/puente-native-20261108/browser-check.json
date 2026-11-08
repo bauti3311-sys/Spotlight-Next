@@ -1,0 +1,10 @@
+{
+  "images_decoded": 28,
+  "profiles": 6,
+  "scenes": 2,
+  "web_reference_comparisons": 4,
+  "zoom_escape": true,
+  "390px_no_overflow": true,
+  "errors": [],
+  "navigation": "set_content of exact self-contained HTML; file navigation not tested"
+}

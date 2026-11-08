@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ContextSplitHeightTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-08T22:46:08" hostname="a720fb5903ca" time="2.894">
+  <properties/>
+  <testcase name="shortInspectorDoesNotReserveUnusedHeight" classname="dev.bautista.spotlight.ui.ContextSplitHeightTest" time="2.715"/>
+  <testcase name="longInspectorUsesAvailableHeightAndOnlyScrollsWhenNecessary" classname="dev.bautista.spotlight.ui.ContextSplitHeightTest" time="0.179"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
