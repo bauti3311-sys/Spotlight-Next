@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -45,6 +47,7 @@ internal val LocalPuenteUi=staticCompositionLocalOf{false}
  inspector:(@Composable ()->Unit)?,inspectorHeader:@Composable ()->Unit,
  modifier:Modifier=Modifier,
 ) {
+ val scale=(LocalDensity.current.fontScale*GlassTokens.textScale(LocalAppearance.current)).coerceAtLeast(1f)
  val finderHost=remember{movableContentOf<@Composable ()->Unit>{content->content()}}
  val finder:@Composable ()->Unit = { finderHost {
   PuenteSurface(Modifier.fillMaxWidth().testTag("puente-finder")) {
@@ -61,11 +64,11 @@ internal val LocalPuenteUi=staticCompositionLocalOf{false}
   }
  }
  CompositionLocalProvider(LocalPuenteUi provides true) {
-  Box(modifier.fillMaxWidth().testTag("puente-frame")) {
+  Box(modifier.fillMaxWidth().testTag("puente-frame"),contentAlignment=Alignment.TopCenter) {
   if(split && inspector!=null)ContextSplitPanel(maxHeight,
    left={finder()},right={Box(Modifier.padding(top=20.dp)){destination()}},
    initialFraction=.44f,detached=true)
-  else Column(Modifier.fillMaxWidth().heightIn(max=maxHeight)
+  else Column(Modifier.widthIn(max=if(inspector==null)560.dp*scale else Dp.Infinity).fillMaxWidth().heightIn(max=maxHeight)
    .testTag("compact-inspector-scroll"),verticalArrangement=Arrangement.spacedBy(12.dp)) {
    finder()
    if(inspector!=null)Box(Modifier.weight(1f,fill=false)){destination()}

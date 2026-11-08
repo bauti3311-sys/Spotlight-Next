@@ -43,4 +43,16 @@ class PuenteFrameTest {
   val target=ui.onNodeWithTag("explicit").getUnclippedBoundsInRoot();assertTrue(target.height>=48.dp)
   ui.onNodeWithTag("explicit").performClick();assertEquals(1,effects)
  }
+ @Test fun detachedPanesKeepMinimumWidthsAtTheSplitThreshold() {
+  var width by mutableStateOf(696.dp)
+  ui.setContent{SpotlightTheme("light",AppConfig(focusInterface=true,animations=false)){
+   Box(Modifier.width(width)){ContextSplitPanel(300.dp,{Text("Resultados")},{Text("Inspector")},initialFraction=.44f,detached=true)}
+  }}
+  for(w in listOf(696.dp,700.dp)) {
+   ui.runOnIdle{width=w}
+   assertTrue(ui.onNodeWithTag("results-pane").getUnclippedBoundsInRoot().width>=400.dp)
+   assertTrue(ui.onNodeWithTag("context-inspector").getUnclippedBoundsInRoot().width>=280.dp)
+  }
+ }
+
 }

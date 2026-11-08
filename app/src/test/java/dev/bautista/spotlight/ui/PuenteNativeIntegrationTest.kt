@@ -73,6 +73,8 @@ class PuenteNativeIntegrationTest {
    for(scene in listOf("resultados","inspector")) {
     if(scene=="inspector"){ui.onNodeWithTag("result:$id").performClick();ui.onNodeWithTag("inspector-title").assertTextEquals("Proyecto")}
     ui.waitForIdle()
+    if(phase=="after" && scene=="resultados" && p.w>600 && p.scale==1f)
+     assertTrue(ui.onNodeWithTag("puente-finder").getUnclippedBoundsInRoot().width<=560.dp)
     ui.onNodeWithTag("puente-canvas").captureRoboImage("build/puente-native/$phase/${p.id}-$scene.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
     val root=ui.onNodeWithTag("spotlight-root").getUnclippedBoundsInRoot();assertTrue(root.right<=p.w.dp && root.bottom<=p.h.dp)
     metrics.appendLine("${p.id} $scene root=$root")

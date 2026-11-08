@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.*
+import kotlin.math.roundToInt
 
 @Composable fun ContextSplitPanel(height:Dp,left:@Composable ()->Unit,right:@Composable ()->Unit,scrollInspector:Boolean=false,
     inspectorKey:Any?=null,inspectorHeader:(@Composable ()->Unit)?=null) {
@@ -23,14 +24,19 @@ import androidx.compose.ui.unit.*
     var fraction by remember(initialFraction){mutableFloatStateOf(initialFraction.takeIf{it.isFinite()}?.coerceIn(.2f,.8f) ?: .62f)}
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val width=with(LocalDensity.current){maxWidth.toPx()}.coerceAtLeast(1f)
+        val scale=(LocalDensity.current.fontScale*LocalAppearance.current.textScale).coerceAtLeast(1f)
+        // Decoration yields before the established result/inspector minimum widths.
+        val gap=if(detached && maxWidth.value>=
+            (dev.bautista.spotlight.overlay.OverlayLayoutPolicy.resultsMinimumDp+
+             dev.bautista.spotlight.overlay.OverlayLayoutPolicy.inspectorMinimumDp)*scale+18f)18.dp else 12.dp
         val layout=dev.bautista.spotlight.overlay.OverlayLayoutPolicy.resolve(
-            maxWidth.value-(if(detached)6f else 0f), Float.MAX_VALUE, LocalDensity.current.fontScale * LocalAppearance.current.textScale)
+            maxWidth.value-(gap.value-12f), Float.MAX_VALUE, scale)
         val effectiveFraction=layout.fraction(fraction)
         // Measure content before the divider. A fixed-height divider used to force
         // empty space into short inspectors and a separate cap clipped long ones.
         Layout(modifier=Modifier.fillMaxWidth().heightIn(max=height),content={
             Box(Modifier.testTag("results-pane")){left()}
-            Box(Modifier.width(if(detached)18.dp else 12.dp).semantics {
+            Box(Modifier.width(gap).semantics {
                 contentDescription="Divisor ajustable del panel contextual"
                 stateDescription="${(effectiveFraction*100).toInt()}% resultados"
                 customActions=listOf(CustomAccessibilityAction("Ampliar resultados"){fraction=layout.fraction(effectiveFraction+.05f);true},CustomAccessibilityAction("Ampliar vista previa"){fraction=layout.fraction(effectiveFraction-.05f);true})
@@ -47,9 +53,9 @@ import androidx.compose.ui.unit.*
                 }
             }
         }) { measurables, constraints ->
-            val dividerWidth=(if(detached)18.dp else 12.dp).roundToPx().coerceAtMost(constraints.maxWidth)
+            val dividerWidth=gap.roundToPx().coerceAtMost(constraints.maxWidth)
             val usable=(constraints.maxWidth-dividerWidth).coerceAtLeast(0)
-            val leftWidth=(usable*effectiveFraction).toInt()
+            val leftWidth=(usable*effectiveFraction).roundToInt()
             val rightWidth=usable-leftWidth
             val leftPane=measurables[0].measure(Constraints(
                 minWidth=leftWidth,maxWidth=leftWidth,maxHeight=constraints.maxHeight))
