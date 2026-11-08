@@ -1,0 +1,52 @@
+[
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/tablet-P05-inicio.png",
+    "published": "tablet-M00-inicio.png",
+    "sha256": "bfa2aa22bef0e3e2b600a4304244b47c5829b371815ad99e1e0f521ffc054f7b"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/tablet-P05-resultados.png",
+    "published": "tablet-M00-resultados.png",
+    "sha256": "4daee9d1b29d3120469d93c4c8edd3864acac2755393f06a0704c76c83d2b6e8"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/tablet-P05-seleccion.png",
+    "published": "tablet-M00-seleccion.png",
+    "sha256": "4daee9d1b29d3120469d93c4c8edd3864acac2755393f06a0704c76c83d2b6e8"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/tablet-P05-acciones.png",
+    "published": "tablet-M00-acciones.png",
+    "sha256": "4daee9d1b29d3120469d93c4c8edd3864acac2755393f06a0704c76c83d2b6e8"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/tablet-P05-contexto.png",
+    "published": "tablet-M00-contexto.png",
+    "sha256": "a5d7d51c99c53b7fb87c75f0002f2d9d9bbb9308877002619db75d59094d980c"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/phone-P05-inicio.png",
+    "published": "phone-M00-inicio.png",
+    "sha256": "483bce7281664e6ba1f7e98ad4c0a38602fe57bf36b71bddb1485886797ddec3"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/phone-P05-resultados.png",
+    "published": "phone-M00-resultados.png",
+    "sha256": "55abc9b83c2c70e1826de1cf7040280daf591fc8a8b51a6bfd56797b049ea980"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/phone-P05-seleccion.png",
+    "published": "phone-M00-seleccion.png",
+    "sha256": "55abc9b83c2c70e1826de1cf7040280daf591fc8a8b51a6bfd56797b049ea980"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/phone-P05-acciones.png",
+    "published": "phone-M00-acciones.png",
+    "sha256": "55abc9b83c2c70e1826de1cf7040280daf591fc8a8b51a6bfd56797b049ea980"
+  },
+  {
+    "source": "docs/verification/creative-directions-20261108/originals/phone-P05-contexto.png",
+    "published": "phone-M00-contexto.png",
+    "sha256": "b512ecb5e038136df7e3a490cb0f103ad8e43ac080ce1e2e6c298f9312c0fc3a"
+  }
+]

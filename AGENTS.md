@@ -1,3 +1,13 @@
+## Continuidad vigente — Mesa interesó; cinco alternativas nuevas, sólo laboratorio
+
+Propietario pidió más y señaló interés enMesa, sin aprobar integración. M00=P05
+Mesa exacta; M01Atril/M02Folio/M03Puente/M04Tablero/M05Nexo exploran composición.
+50capturas Compose nuevas+10referencias reutilizadas, tablet/teléfono/5estados.
+Ver docs/MESA-EXPLORATIONS-20261108.md. Galeríaoffline y originales publicados.
+FocusStudio/Preview69/C2/C5/36funciones y galería anterior intactos. Sinproducto,
+APK/Actions/instalación/deps/permisos/main. Autorización69consumida. Esperar
+selección antes de integrar; liberar sóloreserva propia. No declarar cierre físico.
+
 ## Continuidad vigente — seis interfaces creativas, sólo laboratorio
 
 El propietario rechazó variaciones de temas y pidió modelos de interacción distintos.
