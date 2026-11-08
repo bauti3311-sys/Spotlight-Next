@@ -53,7 +53,8 @@ class SearchEngine(
     private suspend fun expandAliases(input:String,aliases:Set<String>):String {
         if(aliases.none{normalize(it.substringBefore('|'))==normalize(input.trim().substringBefore(' '))})return input
         // A user alias can never hide an installed application with that exact name.
-        if(appList().any{normalize(it.label)==normalize(input.trim())})return input
+        val literalName=normalizedWords(input)
+        if(appList().any{normalizedWords(it.label)==literalName})return input
         return dev.bautista.spotlight.personal.PersonalCommands.expand(input,aliases)
     }
     fun invalidateApps() {
@@ -109,7 +110,7 @@ class SearchEngine(
 
     fun search(input:String,c:Config,scope:SearchScope?=null,selectedFiles:List<Result>?=null):Flow<List<Result>> = channelFlow {
         // Resolve once at the production boundary. This is local and side-effect free.
-        val literalApp=scope==null && input.isNotBlank() && appList().any{normalize(it.label.trim())==normalize(input.trim())}
+        val literalApp=scope==null && input.isNotBlank() && normalizedWords(input).let{name->appList().any{normalizedWords(it.label)==name}}
         val store=(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts
         if(!literalApp && scope==null && normalize(input.trim()) in setOf("compartir archivos seleccionados","compartir seleccion","compartir este archivo")) {
             val files=selectedFiles ?: store?.sharedFiles?.items.orEmpty()
@@ -414,7 +415,8 @@ class SearchEngine(
                 )
         }
         launch(Dispatchers.IO) {
-            appList().firstOrNull { normalize(it.label)==normalize(query) }?.let {
+            val literalName=normalizedWords(query)
+            appList().firstOrNull { normalizedWords(it.label)==literalName }?.let {
                 publish("app-actions", integrations.menu(it.label,it.intent,it.intent.component?.packageName))
             }
             publish(
@@ -441,7 +443,7 @@ class SearchEngine(
                                 score +
                                     (if (a.id in c.favorites) 120 else 0) +
                                     (20 - c.recent.indexOf(a.id)).coerceAtMost(20).let {
-                                        if (a.id in c.recent) it else 0
+                                        if (c.learning && !c.privateMode && a.id in c.recent) it else 0
                                     },
                                 Action.Launch(a.intent),
                                 runCatching { context.packageManager.getActivityIcon(a.intent) }

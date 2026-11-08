@@ -168,7 +168,7 @@ object HomeSuggestions {
                 appScore,
             )
         }
-            .sortedWith(compareByDescending<ScoredCandidate> { it.contextualScore }.thenBy { normalize(it.result.title) })
+            .sortedWith(compareByDescending<ScoredCandidate> { it.contextualScore }.thenBy { normalize(it.result.title) }.thenBy { it.result.id })
             .take(MAX_SUGGESTED_APPS)
 
         candidates += scoredApps
