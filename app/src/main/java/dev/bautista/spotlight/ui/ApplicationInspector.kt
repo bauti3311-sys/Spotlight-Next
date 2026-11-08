@@ -40,6 +40,7 @@ import kotlinx.coroutines.withContext
     mediaContent: (@Composable () -> Unit)? = null,
     capabilitiesContent: (@Composable () -> Unit)? = null,
     embedded: Boolean = false,
+    primaryContent: (@Composable () -> Unit)? = null,
 ) {
     val colors=MaterialTheme.colorScheme
     val appearance=LocalAppearance.current
@@ -81,6 +82,7 @@ import kotlinx.coroutines.withContext
                 IosCommandIcon(CommandIcons.Search,"Buscar dentro de Spotify",Modifier.size(20.dp))
             }
         }
+        primaryContent?.invoke()
         mediaContent?.invoke()
         if(premium && packageName in setOf("com.whatsapp","com.whatsapp.w4b"))
             Text("La conversación y el envío se confirman en WhatsApp.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
