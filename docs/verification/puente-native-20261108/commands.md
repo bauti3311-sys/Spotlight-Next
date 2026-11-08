@@ -1,6 +1,6 @@
 # Comprobaciones reproducibles, sin APK
 
-Entorno usado: Java17 instalado, SDK/caché existentes. No descargar dependencias. Los tests de antes se capturaron en928705d con el harness nuevo copiado a un árbol de trabajo separado/línea anterior; ejecutar `before` en la fuente actual no recrea la estética anterior.
+Entorno usado: Java17 instalado, SDK/caché existentes. No descargar dependencias. Las capturas de antes se tomaron con producción todavía en928705d y el nuevo harness añadido al mismo árbol, antes de editar producción; ejecutar `before` en la fuente actual no recrea la estética anterior.
 
 Ronda final sobre la fuente0b1441e:
 
