@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://support.apple.com/guide/mac-help/search-with-spotlight-mchlp1008/mac",
+    "status": 200,
+    "title": "Find what you need with Spotlight on Mac - Apple Support",
+    "basis": "Composición como referencia, no código ni assets copiados."
+  },
+  {
+    "url": "https://manual.raycast.com/action-panel",
+    "status": 200,
+    "title": "Action Panel | Raycast Manual",
+    "basis": "Composición como referencia, no código ni assets copiados."
+  },
+  {
+    "url": "https://www.alfredapp.com/help/appearance/",
+    "status": 200,
+    "title": "Appearance &amp; Theming - Alfred Help and Support",
+    "basis": "Composición como referencia, no código ni assets copiados."
+  },
+  {
+    "url": "https://linear.app/docs/command-menu",
+    "status": "unavailable",
+    "error": "HTTPError"
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/windows/powertoys/run",
+    "status": 200,
+    "title": "PowerToys Run Quick Launcher for Windows | Microsoft Learn",
+    "basis": "Investigación de composición/interacción; no código ni assets copiados."
+  },
+  {
+    "url": "https://developer.android.com/develop/ui/compose/components/bottom-sheets",
+    "status": 200,
+    "title": "Bottom sheets &nbsp;|&nbsp; Jetpack Compose &nbsp;|&nbsp; Android Developers",
+    "basis": "Investigación de composición/interacción; no código ni assets copiados."
+  }
+]

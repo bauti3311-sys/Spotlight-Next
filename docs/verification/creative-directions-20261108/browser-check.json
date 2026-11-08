@@ -1,0 +1,15 @@
+{
+  "concepts": 6,
+  "images": 60,
+  "devices": 2,
+  "states": 5,
+  "overview_first": true,
+  "side_by_side": true,
+  "detail_and_zoom": true,
+  "all_60_images_decoded_offline": true,
+  "hide_labels": true,
+  "selection_json": true,
+  "phone_no_horizontal_overflow": true,
+  "js_errors": [],
+  "browser_execution": "exact self-contained HTML via set_content; file navigation not used"
+}

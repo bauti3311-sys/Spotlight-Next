@@ -1,0 +1,26 @@
+{
+  "base": "98ba6679f13b95a0d78ed6fc4ea7aa24fd409b97",
+  "protected_paths": [
+    "app/src/main",
+    "app/build.gradle.kts",
+    "scripts",
+    ".github",
+    "release.properties",
+    "app/src/test/resources/choice-catalogue",
+    "app/src/test/java/dev/bautista/spotlight/ui/ChoiceCatalogueGalleryTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/FunctionChoiceGalleryTest.kt",
+    "docs/verification/choice-catalogue-20261108"
+  ],
+  "productive_delta": [],
+  "functional_catalogue": "unchanged byte-for-byte",
+  "new_app_dependencies_permissions_services": false,
+  "APK_Actions_installation": false,
+  "active_concepts": 6,
+  "active_captures": 60,
+  "states": 5,
+  "profiles": [
+    "1200x800dp",
+    "412x860dp"
+  ],
+  "laboratory_only": true
+}

@@ -1,0 +1,545 @@
+{
+  "container_bounds_dp": [
+    {
+      "device": "tablet",
+      "concept": "P01",
+      "state": "inicio",
+      "left": 290.0,
+      "top": 110.0,
+      "width": 620.0,
+      "height": 209.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P01",
+      "state": "resultados",
+      "left": 290.0,
+      "top": 110.0,
+      "width": 620.0,
+      "height": 439.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P01",
+      "state": "seleccion",
+      "left": 290.0,
+      "top": 110.0,
+      "width": 620.0,
+      "height": 439.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P01",
+      "state": "acciones",
+      "left": 290.0,
+      "top": 110.0,
+      "width": 620.0,
+      "height": 555.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P01",
+      "state": "contexto",
+      "left": 290.0,
+      "top": 110.0,
+      "width": 620.0,
+      "height": 439.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P02",
+      "state": "inicio",
+      "left": 220.0,
+      "top": 120.0,
+      "width": 760.0,
+      "height": 299.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P02",
+      "state": "resultados",
+      "left": 220.0,
+      "top": 120.0,
+      "width": 760.0,
+      "height": 434.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P02",
+      "state": "seleccion",
+      "left": 220.0,
+      "top": 120.0,
+      "width": 760.0,
+      "height": 506.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P02",
+      "state": "acciones",
+      "left": 220.0,
+      "top": 120.0,
+      "width": 760.0,
+      "height": 434.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P02",
+      "state": "contexto",
+      "left": 220.0,
+      "top": 120.0,
+      "width": 760.0,
+      "height": 540.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P03",
+      "state": "inicio",
+      "left": 40.0,
+      "top": 310.0,
+      "width": 72.0,
+      "height": 136.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P03",
+      "state": "resultados",
+      "left": 40.0,
+      "top": 310.0,
+      "width": 1120.0,
+      "height": 220.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P03",
+      "state": "seleccion",
+      "left": 40.0,
+      "top": 310.0,
+      "width": 1120.0,
+      "height": 220.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P03",
+      "state": "acciones",
+      "left": 40.0,
+      "top": 310.0,
+      "width": 1120.0,
+      "height": 336.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P03",
+      "state": "contexto",
+      "left": 40.0,
+      "top": 80.0,
+      "width": 1120.0,
+      "height": 528.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P04",
+      "state": "inicio",
+      "left": 400.0,
+      "top": 95.0,
+      "width": 400.0,
+      "height": 64.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P04",
+      "state": "resultados",
+      "left": 75.0,
+      "top": 95.0,
+      "width": 1050.0,
+      "height": 560.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P04",
+      "state": "seleccion",
+      "left": 75.0,
+      "top": 95.0,
+      "width": 1050.0,
+      "height": 560.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P04",
+      "state": "acciones",
+      "left": 75.0,
+      "top": 95.0,
+      "width": 1050.0,
+      "height": 540.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P04",
+      "state": "contexto",
+      "left": 75.0,
+      "top": 95.0,
+      "width": 1050.0,
+      "height": 433.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P05",
+      "state": "inicio",
+      "left": 40.0,
+      "top": 70.0,
+      "width": 1120.0,
+      "height": 650.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P05",
+      "state": "resultados",
+      "left": 40.0,
+      "top": 70.0,
+      "width": 1120.0,
+      "height": 650.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P05",
+      "state": "seleccion",
+      "left": 40.0,
+      "top": 70.0,
+      "width": 1120.0,
+      "height": 650.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P05",
+      "state": "acciones",
+      "left": 40.0,
+      "top": 70.0,
+      "width": 1120.0,
+      "height": 650.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P05",
+      "state": "contexto",
+      "left": 40.0,
+      "top": 70.0,
+      "width": 1120.0,
+      "height": 650.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P06",
+      "state": "inicio",
+      "left": 702.0,
+      "top": 534.0,
+      "width": 470.0,
+      "height": 244.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P06",
+      "state": "resultados",
+      "left": 702.0,
+      "top": 280.0,
+      "width": 470.0,
+      "height": 498.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P06",
+      "state": "seleccion",
+      "left": 702.0,
+      "top": 227.0,
+      "width": 470.0,
+      "height": 551.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P06",
+      "state": "acciones",
+      "left": 702.0,
+      "top": 420.0,
+      "width": 470.0,
+      "height": 358.0
+    },
+    {
+      "device": "tablet",
+      "concept": "P06",
+      "state": "contexto",
+      "left": 702.0,
+      "top": 181.0,
+      "width": 470.0,
+      "height": 597.0
+    },
+    {
+      "device": "phone",
+      "concept": "P01",
+      "state": "inicio",
+      "left": 12.0,
+      "top": 90.0,
+      "width": 388.0,
+      "height": 222.0
+    },
+    {
+      "device": "phone",
+      "concept": "P01",
+      "state": "resultados",
+      "left": 12.0,
+      "top": 90.0,
+      "width": 388.0,
+      "height": 440.0
+    },
+    {
+      "device": "phone",
+      "concept": "P01",
+      "state": "seleccion",
+      "left": 12.0,
+      "top": 90.0,
+      "width": 388.0,
+      "height": 440.0
+    },
+    {
+      "device": "phone",
+      "concept": "P01",
+      "state": "acciones",
+      "left": 12.0,
+      "top": 90.0,
+      "width": 388.0,
+      "height": 556.0
+    },
+    {
+      "device": "phone",
+      "concept": "P01",
+      "state": "contexto",
+      "left": 12.0,
+      "top": 90.0,
+      "width": 388.0,
+      "height": 456.0
+    },
+    {
+      "device": "phone",
+      "concept": "P02",
+      "state": "inicio",
+      "left": 12.0,
+      "top": 110.0,
+      "width": 388.0,
+      "height": 299.0
+    },
+    {
+      "device": "phone",
+      "concept": "P02",
+      "state": "resultados",
+      "left": 12.0,
+      "top": 110.0,
+      "width": 388.0,
+      "height": 463.0
+    },
+    {
+      "device": "phone",
+      "concept": "P02",
+      "state": "seleccion",
+      "left": 12.0,
+      "top": 110.0,
+      "width": 388.0,
+      "height": 535.0
+    },
+    {
+      "device": "phone",
+      "concept": "P02",
+      "state": "acciones",
+      "left": 12.0,
+      "top": 110.0,
+      "width": 388.0,
+      "height": 463.0
+    },
+    {
+      "device": "phone",
+      "concept": "P02",
+      "state": "contexto",
+      "left": 12.0,
+      "top": 110.0,
+      "width": 388.0,
+      "height": 471.0
+    },
+    {
+      "device": "phone",
+      "concept": "P03",
+      "state": "inicio",
+      "left": 12.0,
+      "top": 220.0,
+      "width": 388.0,
+      "height": 136.0
+    },
+    {
+      "device": "phone",
+      "concept": "P03",
+      "state": "resultados",
+      "left": 12.0,
+      "top": 220.0,
+      "width": 388.0,
+      "height": 285.0
+    },
+    {
+      "device": "phone",
+      "concept": "P03",
+      "state": "seleccion",
+      "left": 12.0,
+      "top": 220.0,
+      "width": 388.0,
+      "height": 285.0
+    },
+    {
+      "device": "phone",
+      "concept": "P03",
+      "state": "acciones",
+      "left": 12.0,
+      "top": 220.0,
+      "width": 388.0,
+      "height": 401.0
+    },
+    {
+      "device": "phone",
+      "concept": "P03",
+      "state": "contexto",
+      "left": 12.0,
+      "top": 45.0,
+      "width": 388.0,
+      "height": 610.0
+    },
+    {
+      "device": "phone",
+      "concept": "P04",
+      "state": "inicio",
+      "left": 12.0,
+      "top": 100.0,
+      "width": 388.0,
+      "height": 64.0
+    },
+    {
+      "device": "phone",
+      "concept": "P04",
+      "state": "resultados",
+      "left": 12.0,
+      "top": 100.0,
+      "width": 388.0,
+      "height": 590.0
+    },
+    {
+      "device": "phone",
+      "concept": "P04",
+      "state": "seleccion",
+      "left": 12.0,
+      "top": 100.0,
+      "width": 388.0,
+      "height": 590.0
+    },
+    {
+      "device": "phone",
+      "concept": "P04",
+      "state": "acciones",
+      "left": 12.0,
+      "top": 100.0,
+      "width": 388.0,
+      "height": 620.0
+    },
+    {
+      "device": "phone",
+      "concept": "P04",
+      "state": "contexto",
+      "left": 12.0,
+      "top": 100.0,
+      "width": 388.0,
+      "height": 450.0
+    },
+    {
+      "device": "phone",
+      "concept": "P05",
+      "state": "inicio",
+      "left": 12.0,
+      "top": 50.0,
+      "width": 388.0,
+      "height": 700.0
+    },
+    {
+      "device": "phone",
+      "concept": "P05",
+      "state": "resultados",
+      "left": 12.0,
+      "top": 50.0,
+      "width": 388.0,
+      "height": 700.0
+    },
+    {
+      "device": "phone",
+      "concept": "P05",
+      "state": "seleccion",
+      "left": 12.0,
+      "top": 50.0,
+      "width": 388.0,
+      "height": 700.0
+    },
+    {
+      "device": "phone",
+      "concept": "P05",
+      "state": "acciones",
+      "left": 12.0,
+      "top": 50.0,
+      "width": 388.0,
+      "height": 700.0
+    },
+    {
+      "device": "phone",
+      "concept": "P05",
+      "state": "contexto",
+      "left": 12.0,
+      "top": 50.0,
+      "width": 388.0,
+      "height": 700.0
+    },
+    {
+      "device": "phone",
+      "concept": "P06",
+      "state": "inicio",
+      "left": 12.0,
+      "top": 594.0,
+      "width": 388.0,
+      "height": 244.0
+    },
+    {
+      "device": "phone",
+      "concept": "P06",
+      "state": "resultados",
+      "left": 12.0,
+      "top": 340.0,
+      "width": 388.0,
+      "height": 498.0
+    },
+    {
+      "device": "phone",
+      "concept": "P06",
+      "state": "seleccion",
+      "left": 12.0,
+      "top": 287.0,
+      "width": 388.0,
+      "height": 551.0
+    },
+    {
+      "device": "phone",
+      "concept": "P06",
+      "state": "acciones",
+      "left": 12.0,
+      "top": 480.0,
+      "width": 388.0,
+      "height": 358.0
+    },
+    {
+      "device": "phone",
+      "concept": "P06",
+      "state": "contexto",
+      "left": 12.0,
+      "top": 204.0,
+      "width": 388.0,
+      "height": 634.0
+    }
+  ],
+  "not_a_similarity_score": "Shape review is qualitative; these are measured container bounds, not pixel opacity masks."
+}

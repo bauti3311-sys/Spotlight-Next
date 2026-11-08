@@ -1,3 +1,15 @@
+## Continuidad vigente — seis interfaces creativas, sólo laboratorio
+
+El propietario rechazó variaciones de temas y pidió modelos de interacción distintos.
+Propuestas P01Faro/P02Consola/P03Cinta/P04Órbita/P05Mesa/P06Pulso:60PNG reales
+Compose (6×2perfiles×5estados), paleta/fondo/consulta/datos comunes. Galeríaoffline
+primerojuntas, zoom/estados/comparación; descartes documentados por similitud.
+Ver docs/CREATIVE-DIRECTIONS-20261108.md. Ninguna adoptada ni integrada.
+Preview69/FocusStudio/C2/C5/36funciones intactos; autorización69consumida.
+Sólo banco app/src/test y docs/evidencia. Sin APK/Actions/main/permisos/deps/servicios.
+Recomendación de diseño MesaA9+/PulsoG86, no prueba física ni decisión propietaria.
+Esperar elección antes de implementar; liberar únicamente reserva propia.
+
 ## Continuidad vigente — catálogo de elección, sólo propuestas
 
 El propietario pide variedad real y elegir antes de implementar. Catálogo de12
