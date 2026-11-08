@@ -45,7 +45,7 @@ android {
    proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
    ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
    applicationIdSuffix = ".raycastpreview"
-   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview-native57-v68" else "-raycast-preview-native57-v68-experimental"
+   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview-native57-v69" else "-raycast-preview-native57-v69-experimental"
    // Never substitute a generated debug certificate for the historical Preview identity.
    // CI/tests can configure the project without a key; that case yields unsigned output.
    signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null
@@ -88,7 +88,7 @@ android {
 androidComponents {
  onVariants(selector().withBuildType("raycastPreview")) { variant ->
   // Native57 validation; avoid experimental58/59 numbering. Only this Preview changes.
-  variant.outputs.forEach { output -> output.versionCode.set(68) }
+  variant.outputs.forEach { output -> output.versionCode.set(69) }
  }
  onVariants(selector().withBuildType("review")) { variant ->
   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
