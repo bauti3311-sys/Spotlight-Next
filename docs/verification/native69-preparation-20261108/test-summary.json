@@ -1,0 +1,13 @@
+{
+  "isolated_source_tests": {
+    "tests": 19,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "offline_delivery_tests": 17,
+  "comparison_guard_tests": 3,
+  "agp_configuration": "passed",
+  "lint": "reused prior PR run, no new candidate lint",
+  "physical": "not executed"
+}

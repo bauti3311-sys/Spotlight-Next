@@ -1,3 +1,15 @@
+## Continuidad vigente — Preview69 C2 aislada preparada, NO autorizada
+
+Fuente69 cbc956ab56756d9ebdf7de05300fb0b5f5b14a19, base exacta fuente68c51677b.
+Rama feat/preview69-c2-isolated-20261108. Sólo título2:1 + cuatro arreglos de ranking
+C2 + recibo de apertura fijado + numeración69; seisproductivos/trespruebas/Gradle.
+C5 no se distribuye y se conserva íntegro enPR21; FileIndex igual68. Ver
+ docs/NATIVE69-PREPARATION-20261108.md y evidencia. No rediseño ni nueva funcionalidad.
+Main/Studio/AjustesA/140ms/preferencias/firma/paquete preservados. Autorización68
+CONSUMIDA; no habilita69. Futuro native-delivery desde ramaPR con par exacto y
+reserva NUEVA, sólo después de autorización. No APK/Actions/instalación ahora.
+C2/9V/C5 no completos; checklist físico posterior TabA9+/MotoG86. Liberar sóloreserva propia.
+
 ## Continuidad vigente — C2/F01 recorrido de apertura local
 
 Desde bfa07e7, seis recorridos Compose nuevos +17 regresiones de ejecución.

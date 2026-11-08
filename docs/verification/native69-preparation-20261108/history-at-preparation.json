@@ -1,0 +1,33 @@
+{
+  "source": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19",
+  "recorded_utc": "2026-11-08",
+  "prior_source_attempts": [],
+  "historical_runs_examined": 9,
+  "latest_runs": [
+    {
+      "conclusion": "success",
+      "display_title": "native-delivery c51677b79446ce1dc8213553891d45897b14d726",
+      "head_sha": "fe1637309d2a89aa2c67b526b17679d7099eae1f",
+      "id": 42415046522,
+      "run_attempt": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "display_title": "native-delivery 6918204238706d3c9bac826196ad3f1f272a51e7",
+      "head_sha": "293290a30d739f2e4495a3560f59e56618f96d1a",
+      "id": 42373153068,
+      "run_attempt": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "display_title": "native-delivery 66d4ea0b28192f84ba26b9a451a8299d90f84cfb",
+      "head_sha": "cfb8fa863de381203d1395e464fab4a78d441c8a",
+      "id": 42219035267,
+      "run_attempt": 1,
+      "status": "completed"
+    }
+  ],
+  "not_authorized": "must revalidate full source/workflow run history before any future dispatch"
+}

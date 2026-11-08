@@ -1,0 +1,9 @@
+test_diverged_history_is_rejected (__main__.ExistingComparisonGuardTest.test_diverged_history_is_rejected) ... ok
+test_fileindex_delta_is_rejected (__main__.ExistingComparisonGuardTest.test_fileindex_delta_is_rejected) ... ok
+test_isolated_source_passes_existing_guard_with_fixture_dispatch_only (__main__.ExistingComparisonGuardTest.test_isolated_source_passes_existing_guard_with_fixture_dispatch_only) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+OK
+OFFLINE: exact Preview68 base + six approved title/ranking/receipt files + three tests + two version lines; preferences/140ms unchanged

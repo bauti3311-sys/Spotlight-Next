@@ -1,0 +1,96 @@
+{
+  "prior_evidence": [
+    {
+      "evidence": "docs/verification/focus-title-priority-20261107",
+      "cases_previously_passed": 5,
+      "integrity": "all SHA256SUMS entries verified",
+      "reexecution": "only 13 corpus +6 journey cases on isolated source; other historical cases not repeated"
+    },
+    {
+      "evidence": "docs/verification/c2-relevance-20261107",
+      "cases_previously_passed": 28,
+      "integrity": "all SHA256SUMS entries verified",
+      "reexecution": "only 13 corpus +6 journey cases on isolated source; other historical cases not repeated"
+    },
+    {
+      "evidence": "docs/verification/c2-app-open-20261107",
+      "cases_previously_passed": 23,
+      "integrity": "all SHA256SUMS entries verified",
+      "reexecution": "only 13 corpus +6 journey cases on isolated source; other historical cases not repeated"
+    }
+  ],
+  "explicit_preserved_blobs": {
+    "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt": {
+      "base68": "5e85214f74dcf730376dee0b1bde23e02428e4ab",
+      "source69": "5e85214f74dcf730376dee0b1bde23e02428e4ab",
+      "pr": "5e85214f74dcf730376dee0b1bde23e02428e4ab"
+    },
+    "app/src/main/java/dev/bautista/spotlight/overlay/OverlayWindowMotion.kt": {
+      "base68": "4b0c9555be4a43ff26574876a9e6c9637a6e885b",
+      "source69": "4b0c9555be4a43ff26574876a9e6c9637a6e885b",
+      "pr": "4b0c9555be4a43ff26574876a9e6c9637a6e885b"
+    },
+    "app/src/main/java/dev/bautista/spotlight/data/Preferences.kt": {
+      "base68": "3851ff2f6c4cdf0940957a05516fef6931e9ddcf",
+      "source69": "3851ff2f6c4cdf0940957a05516fef6931e9ddcf",
+      "pr": "3851ff2f6c4cdf0940957a05516fef6931e9ddcf"
+    },
+    "app/src/main/java/dev/bautista/spotlight/MainActivity.kt": {
+      "base68": "28c827f55fdf9195f80d994b2fa112579c1166ed",
+      "source69": "28c827f55fdf9195f80d994b2fa112579c1166ed",
+      "pr": "28c827f55fdf9195f80d994b2fa112579c1166ed"
+    },
+    "app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt": {
+      "base68": "1bb5bc66c86269ca6f9ec83aedd858e0b8dbb54a",
+      "source69": "1bb5bc66c86269ca6f9ec83aedd858e0b8dbb54a",
+      "pr": "1bb5bc66c86269ca6f9ec83aedd858e0b8dbb54a"
+    },
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusDesign.kt": {
+      "base68": "cc4bd8ee6893782e90f49ffa53a0b8c42f61ef3f",
+      "source69": "cc4bd8ee6893782e90f49ffa53a0b8c42f61ef3f",
+      "pr": "cc4bd8ee6893782e90f49ffa53a0b8c42f61ef3f"
+    },
+    "app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt": {
+      "base68": "57b05526ff38c00a39a5a221d3bf690380cccd4c",
+      "source69": "57b05526ff38c00a39a5a221d3bf690380cccd4c",
+      "pr": "57b05526ff38c00a39a5a221d3bf690380cccd4c"
+    },
+    "app/src/main/java/dev/bautista/spotlight/control/AppCapabilities.kt": {
+      "base68": "c51b3145bbe222f1d35aaf31c02174de64b6afff",
+      "source69": "c51b3145bbe222f1d35aaf31c02174de64b6afff",
+      "pr": "c51b3145bbe222f1d35aaf31c02174de64b6afff"
+    },
+    "app/src/main/java/dev/bautista/spotlight/control/IntegrationRegistry.kt": {
+      "base68": "200aa0b2465d738c09a50f674d0fe2256363063b",
+      "source69": "200aa0b2465d738c09a50f674d0fe2256363063b",
+      "pr": "200aa0b2465d738c09a50f674d0fe2256363063b"
+    },
+    "app/src/main/java/dev/bautista/spotlight/control/NativeLaunchSession.kt": {
+      "base68": "c0acc38b3f74d6ed7f3279861c7cdd240ab76595",
+      "source69": "c0acc38b3f74d6ed7f3279861c7cdd240ab76595",
+      "pr": "c0acc38b3f74d6ed7f3279861c7cdd240ab76595"
+    },
+    "app/src/main/AndroidManifest.xml": {
+      "base68": "84d168b914fe08d25286eafee630c036c8b9b5bf",
+      "source69": "84d168b914fe08d25286eafee630c036c8b9b5bf",
+      "pr": "84d168b914fe08d25286eafee630c036c8b9b5bf"
+    },
+    "release.properties": {
+      "base68": "43acfc68a5999e43ccd77508e13fe500c67cd9d6",
+      "source69": "43acfc68a5999e43ccd77508e13fe500c67cd9d6",
+      "pr": "43acfc68a5999e43ccd77508e13fe500c67cd9d6"
+    },
+    ".github/workflows/build-apk.yml": {
+      "base68": "3525f774199520583877dbb1a83b9c06ecff355e",
+      "source69": "3525f774199520583877dbb1a83b9c06ecff355e",
+      "pr": "3525f774199520583877dbb1a83b9c06ecff355e"
+    },
+    "scripts/preview_delivery_sign.sh": {
+      "base68": "faa2d5790844ad463f0d4eec00a90a138e652630",
+      "source69": "faa2d5790844ad463f0d4eec00a90a138e652630",
+      "pr": "faa2d5790844ad463f0d4eec00a90a138e652630"
+    }
+  },
+  "lint": "0 errors/26 warnings/1 information on PR d11a91e; reused, not run on isolated candidate",
+  "source69": "no compiled/signed APK; historic certificate is required, not independently verified on nonexistent APK"
+}

@@ -1,23 +1,23 @@
 {
-  "source_sha": "c51677b79446ce1dc8213553891d45897b14d726",
-  "functional_base_sha": "6918204238706d3c9bac826196ad3f1f272a51e7",
-  "version_code": 68,
-  "version_name": "2.0.1-raycast-preview-native57-v68",
-  "previous_version_code": 67,
+  "source_sha": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19",
+  "functional_base_sha": "c51677b79446ce1dc8213553891d45897b14d726",
+  "version_code": 69,
+  "version_name": "2.0.1-raycast-preview-native57-v69",
+  "previous_version_code": 68,
   "package": "dev.bautista.spotlight.next.raycastpreview",
   "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
   "budget_usd": 0,
   "stop_on_limit": true,
   "allowed_delta_paths": [
     "app/build.gradle.kts",
-    "app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt",
-    "app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt",
-    "app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt",
-    "app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/Models.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt",
     "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
-    "app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt",
-    "app/src/test/java/dev/bautista/spotlight/overlay/StudioPopupBudgetTest.kt",
-    "app/src/test/java/dev/bautista/spotlight/ui/StudioPhysicalPolishTest.kt",
-    "app/src/test/java/dev/bautista/spotlight/ui/StudioPolishContractTest.kt"
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt",
+    "app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/FocusTitlePriorityTest.kt"
   ]
 }
