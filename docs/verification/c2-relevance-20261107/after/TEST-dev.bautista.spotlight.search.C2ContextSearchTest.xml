@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.C2ContextSearchTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-08T01:51:27" hostname="ab6df79ca904" time="2.365">
+  <properties/>
+  <testcase name="homonymousPackagesRequireSelectionAndExactQueryStaysApplicationFirst" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="2.098"/>
+  <testcase name="appAndTermsPrepareTheExistingPublicSearchWithoutLaunching" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.074"/>
+  <testcase name="exactInstalledLabelCannotBeInterpretedAsACommand" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.08"/>
+  <testcase name="disabledModulesCannotBeBypassedByContextualRoute" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.074"/>
+  <testcase name="explicitPrefixAndSuffixPreserveTermsWithoutWebFallbackResults" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.039"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

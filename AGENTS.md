@@ -1,3 +1,15 @@
+## Continuidad vigente — C2 relevancia/estabilidad, Visual First estabilización
+
+Propietario autorizó sólo búsqueda universal, desde71500e3. Ver
+ docs/C2-RELEVANCE-STABILITY-20261107.md y evidencia c2-relevance-20261107.
+Cuatro fallos reproducidos: espacios+alias ocultan app exacta; puntajes/orden
+inconsistentes por espacios; recencia influye sin learning/en privado; homónimos
+favoritos en inicio dependen de PackageManager. Corrección mínima en ranker/core
+existentes, sin segundo sistema.28dirigidas correctas; no suitesUI repetidas.
+Conservar Studio/2:1/140ms/acciones/NativeLaunchSession y Preview68 instalada.
+C5 bloqueado y sin cambios; C3/C4/C6–C8 pausados. No APK/Actions/main/capturas.
+Autorización68 CONSUMIDA. Publicar checkpoints y liberar sólo reserva propia.
+
 ## Continuidad vigente — feedback físico Preview68 y títulos de resultados
 
 Propietario pide avanzar y detener solicitudes de capturas. Cobertura física

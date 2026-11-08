@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.C2RelevanceCorpusTest" tests="12" skipped="0" failures="4" errors="0" timestamp="2026-11-08T01:46:06" hostname="ab6df79ca904" time="2.83">
+  <properties/>
+  <testcase name="selectionIdentityAndExpansionSurviveLateResultsWithoutReinterpretingActions" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="1.78"/>
+  <testcase name="personalizationOrdersPeersButCannotDisplaceExactOrPrefixMatches" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.046"/>
+  <testcase name="longLabelsAccentsAndEveryWordAreRequiredForAppRelevance" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.355"/>
+  <testcase name="homonymousFavoriteHomeAppsDoNotDependOnPackageManagerEnumerationOrder" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.052">
+    <failure message="java.lang.AssertionError: expected:&lt;[suggest:app:fixture.a]&gt; but was:&lt;[suggest:app:fixture.z]&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;[suggest:app:fixture.a]&gt; but was:&lt;[suggest:app:fixture.z]&gt;
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at dev.bautista.spotlight.search.C2RelevanceCorpusTest.homonymousFavoriteHomeAppsDoNotDependOnPackageManagerEnumerationOrder(C2RelevanceCorpusTest.kt:135)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="normalizedEquivalentNamesHaveStableScoresAndOrder" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.021">
+    <failure message="java.lang.AssertionError: expected:&lt;3733&gt; but was:&lt;1206&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3733&gt; but was:&lt;1206&gt;
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at dev.bautista.spotlight.search.C2RelevanceCorpusTest.normalizedEquivalentNamesHaveStableScoresAndOrder(C2RelevanceCorpusTest.kt:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="exactApplicationsAndPrefixesLeadEveryProviderSnapshot" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.197"/>
+  <testcase name="emptyHomeHasNoAlphabeticalFillerAndRespectsPrivacyAndLimits" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.033"/>
+  <testcase name="explicitMusicIsPreservedAndBareQueenDoesNotInventMusicIntent" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.103"/>
+  <testcase name="deniedProvidersNeverSupplyPrivateContentAndDisabledModulesStayExcluded" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.058"/>
+  <testcase name="internalWhitespaceCannotLetAnAliasHideTheExactInstalledApp" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.035">
+    <failure message="java.lang.ClassCastException: class dev.bautista.spotlight.search.Action$InApp cannot be cast to class dev.bautista.spotlight.search.Action$Launch (dev.bautista.spotlight.search.Action$InApp and dev.bautista.spotlight.search.Action$Launch are in unnamed module of loader org.robolectric.internal.AndroidSandbox$SdkSandboxClassLoader @27e47833)" type="java.lang.ClassCastException">java.lang.ClassCastException: class dev.bautista.spotlight.search.Action$InApp cannot be cast to class dev.bautista.spotlight.search.Action$Launch (dev.bautista.spotlight.search.Action$InApp and dev.bautista.spotlight.search.Action$Launch are in unnamed module of loader org.robolectric.internal.AndroidSandbox$SdkSandboxClassLoader @27e47833)
+	at dev.bautista.spotlight.search.C2RelevanceCorpusTest.internalWhitespaceCannotLetAnAliasHideTheExactInstalledApp(C2RelevanceCorpusTest.kt:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="aliasesAndExplicitDeviceContentAndCalculatorQueriesKeepTheirContracts" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.12"/>
+  <testcase name="relevantFilesAndContactsBeatUnrelatedAppsAndGenericWebWithoutExecution" classname="dev.bautista.spotlight.search.C2RelevanceCorpusTest" time="0.028">
+    <failure message="java.lang.AssertionError: expected:&lt;[fixture.doc, fixture.contact]&gt; but was:&lt;[fixture.contact, fixture.doc]&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;[fixture.doc, fixture.contact]&gt; but was:&lt;[fixture.contact, fixture.doc]&gt;
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at dev.bautista.spotlight.search.C2RelevanceCorpusTest.relevantFilesAndContactsBeatUnrelatedAppsAndGenericWebWithoutExecution(C2RelevanceCorpusTest.kt:78)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <system-out><![CDATA[CORPUS query=[cafe clinica gestor] all=[fixture.long/Main:Café Clínica — Gestor de documentos profesionales y referencias locales, web:Buscar «cafe clinica gestor»] initial=[fixture.long/Main:Café Clínica — Gestor de documentos profesionales y referencias locales]
+HOME enumeration before=[suggest:app:fixture.z] reversed=[suggest:app:fixture.a]
+NORMALIZED [café manager] [fixture.a:3733, fixture.b:1206]
+CORPUS query=[webOS Dev Manager] all=[fixture.webos/Main:webOS Dev Manager, catalog:webOS Dev Manager:files:Buscar archivos, inspector:fixture.webos:Ver permisos y componentes, web:Buscar «webOS Dev Manager»] initial=[fixture.webos/Main:webOS Dev Manager]
+CORPUS query=[Spotify] all=[com.spotify.music/Main:Spotify, catalog:spotify:search:Buscar en Spotify, catalog:Spotify:files:Buscar archivos, inspector:com.spotify.music:Ver permisos y componentes, web:Buscar «Spotify»] initial=[com.spotify.music/Main:Spotify, catalog:spotify:search:Buscar en Spotify]
+CORPUS query=[spot] all=[com.spotify.music/Main:Spotify, dev.bautista.spotlight.next/dev.bautista.spotlight.MainActivity:Spotlight Next, dev.bautista.spotlight.next/dev.bautista.spotlight.SpotlightSearchShortcut:Spotlight · Buscar, native:catalog:spotify:Buscar en Spotify, command:spotlight:Configurar Spotlight, concept-definition:Definición de «spot», web:Buscar «spot»] initial=[com.spotify.music/Main:Spotify, dev.bautista.spotlight.next/dev.bautista.spotlight.MainActivity:Spotlight Next, dev.bautista.spotlight.next/dev.bautista.spotlight.SpotlightSearchShortcut:Spotlight · Buscar, native:catalog:spotify:Buscar en Spotify, command:spotlight:Configurar Spotlight]
+CORPUS query=[] all=[] initial=[]
+CORPUS query=[] all=[suggest:app:fixture.alpha:Alpha] initial=[suggest:app:fixture.alpha:Alpha]
+CORPUS query=[queen] all=[concept-definition:Definición de «queen», web:Buscar «queen»] initial=[]
+CORPUS query=[música de Queen] all=[root:music:spotify:Buscar música en Spotify, web:Buscar «música de Queen»] initial=[root:music:spotify:Buscar música en Spotify]
+CORPUS query=[queen] all=[fixture.queen/Main:Queen, concept-definition:Definición de «queen», catalog:Queen:files:Buscar archivos, inspector:fixture.queen:Ver permisos y componentes, web:Buscar «queen»] initial=[fixture.queen/Main:Queen]
+CORPUS query=[música de Queen] all=[root:music:spotify:Buscar música en Spotify, web:Buscar «música de Queen»] initial=[root:music:spotify:Buscar música en Spotify]
+CORPUS query=[/contacts Juan] all=[contacts:access:Permitir buscar contactos] initial=[contacts:access:Permitir buscar contactos]
+CORPUS query=[webOS Dev Manager] all=[fixture.webos/Main:webOS Dev Manager, catalog:webOS Dev Manager:files:Buscar archivos, inspector:fixture.webos:Ver permisos y componentes, web:Buscar «webOS Dev Manager»] initial=[fixture.webos/Main:webOS Dev Manager]
+CORPUS query=[  WEBOS   DEV	MANAGER  ] all=[search:natural:spotify:Buscar en Spotify] initial=[search:natural:spotify:Buscar en Spotify]
+CORPUS query=[mus] all=[com.spotify.music/Main:Spotify, catalog:spotify:search:Buscar en Spotify, catalog:Spotify:files:Buscar archivos, inspector:com.spotify.music:Ver permisos y componentes, web:Buscar «Spotify»] initial=[com.spotify.music/Main:Spotify, catalog:spotify:search:Buscar en Spotify]
+CORPUS query=[volumen 40%] all=[smart:volume:40:Volumen al 40%] initial=[smart:volume:40:Volumen al 40%]
+CORPUS query=[2+2] all=[calc:4, web:Buscar «2+2»] initial=[calc:4]
+CORPUS query=[pdf anatomía] all=[files:access:Activar búsqueda de archivos] initial=[files:access:Activar búsqueda de archivos]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

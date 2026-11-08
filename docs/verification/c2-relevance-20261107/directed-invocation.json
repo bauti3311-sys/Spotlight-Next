@@ -1,0 +1,56 @@
+{
+  "source_sha": "f9fcd5d8745ed45127f44c7616da2ec9a82ef2c3",
+  "java": 17,
+  "gradle_tasks": [
+    ":app:testDebugUnitTest",
+    ":app:lintDebug"
+  ],
+  "test_classes": [
+    "dev.bautista.spotlight.search.CompactResultsTest",
+    "dev.bautista.spotlight.search.HomeSuggestionsTest",
+    "dev.bautista.spotlight.search.AliasTemplateRankingTest",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest",
+    "dev.bautista.spotlight.search.C2ContextSearchTest"
+  ],
+  "exact_test_filters": [
+    "dev.bautista.spotlight.search.CompactResultsTest.queryShowsSixAndExpansionRetainsEveryDistinctAction",
+    "dev.bautista.spotlight.search.CompactResultsTest.recognizedBrightnessMusicAndQuestionActionsStayEligible",
+    "dev.bautista.spotlight.search.CompactResultsTest.navigationKeepsExistingOrderWhenLateProvidersArrive",
+    "dev.bautista.spotlight.search.CompactResultsTest.explicitAppAndContactScopesUseTheirParsedSearchTerms",
+    "dev.bautista.spotlight.search.HomeSuggestionsTest.hideAndPinAreAppliedToAvailableCommands",
+    "dev.bautista.spotlight.search.HomeSuggestionsTest.disabledSuggestionsReturnNothing",
+    "dev.bautista.spotlight.search.AliasTemplateRankingTest.templateArgumentsAreLiteralAndMissingArgumentsNeverExecute",
+    "dev.bautista.spotlight.search.AliasTemplateRankingTest.exactInstalledApplicationCannotBeReplacedByAnAlias",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest.exactCommandsBeatApplicationPrefixesEvenWithExtremeHistory",
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest.typoStillOffersTheMatchingInstalledApplication",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.disabledLearningAndPrivateModeIgnoreLearnedRecencyButKeepExplicitFavorites",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.selectionIdentityAndExpansionSurviveLateResultsWithoutReinterpretingActions",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.personalizationOrdersPeersButCannotDisplaceExactOrPrefixMatches",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.longLabelsAccentsAndEveryWordAreRequiredForAppRelevance",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.homonymousFavoriteHomeAppsDoNotDependOnPackageManagerEnumerationOrder",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.normalizedEquivalentNamesHaveStableScoresAndOrder",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.exactApplicationsAndPrefixesLeadEveryProviderSnapshot",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.emptyHomeHasNoAlphabeticalFillerAndRespectsPrivacyAndLimits",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.explicitMusicIsPreservedAndBareQueenDoesNotInventMusicIntent",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.deniedProvidersNeverSupplyPrivateContentAndDisabledModulesStayExcluded",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.internalWhitespaceCannotLetAnAliasHideTheExactInstalledApp",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.aliasesAndExplicitDeviceContentAndCalculatorQueriesKeepTheirContracts",
+    "dev.bautista.spotlight.search.C2RelevanceCorpusTest.relevantFilesAndContactsBeatUnrelatedAppsAndGenericWebWithoutExecution",
+    "dev.bautista.spotlight.search.C2ContextSearchTest.homonymousPackagesRequireSelectionAndExactQueryStaysApplicationFirst",
+    "dev.bautista.spotlight.search.C2ContextSearchTest.appAndTermsPrepareTheExistingPublicSearchWithoutLaunching",
+    "dev.bautista.spotlight.search.C2ContextSearchTest.exactInstalledLabelCannotBeInterpretedAsACommand",
+    "dev.bautista.spotlight.search.C2ContextSearchTest.disabledModulesCannotBeBypassedByContextualRoute",
+    "dev.bautista.spotlight.search.C2ContextSearchTest.explicitPrefixAndSuffixPreserveTermsWithoutWebFallbackResults"
+  ],
+  "expected_distinct_cases": 28,
+  "gradle_flags": [
+    "-I scripts/directed-tests.init.gradle",
+    "-PspotlightDirectedClasses=dev.bautista.spotlight.search.CompactResultsTest,dev.bautista.spotlight.search.HomeSuggestionsTest,dev.bautista.spotlight.search.AliasTemplateRankingTest,dev.bautista.spotlight.search.SmartSearchAcceptanceTest,dev.bautista.spotlight.search.C2RelevanceCorpusTest,dev.bautista.spotlight.search.C2ContextSearchTest",
+    "-Pkotlin.compiler.execution.strategy=in-process",
+    "--no-daemon",
+    "--max-workers=1",
+    "--console=plain"
+  ],
+  "no_apk_guard": "no-apk.init.gradle (copied unchanged from the guard used during this run)"
+}
