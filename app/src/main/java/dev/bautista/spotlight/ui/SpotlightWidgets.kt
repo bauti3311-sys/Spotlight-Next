@@ -125,7 +125,7 @@ fun ResultRow(
         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(if(focusUi)3.dp else 2.dp)) {
           Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((10f*d).dp)) {
             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
-                modifier=Modifier.weight(1f,fill=false),
+                modifier=Modifier.weight(if(focusUi && inline)2f else 1f,fill=false),
                 fontSize=GlassTokens.scaledSp(if(focusUi)15.sp else GlassTokens.rowText(appearance),appearance),
                 lineHeight=GlassTokens.scaledSp(if(focusUi)21.sp else 18.sp,appearance),letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,

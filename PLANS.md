@@ -1,3 +1,15 @@
+## Continuidad vigente — feedback físico Preview68 y títulos de resultados
+
+Propietario pide avanzar y detener solicitudes de capturas. Cobertura física
+parcial de68 registrada en docs/FOCUS-TITLE-PRIORITY-20261107.md; no cerrar nueveV
+ni prometer prueba de Spotify/IME/restauración completa. Arreglo menor autorizado:
+prioridad del título de resultados Focus inline, sin rediseño ni callbacks nuevos.
+Fuente y entrega68 c51677b/fe16373/run42415046522 attempt1 SUCCESS conservadas;
+autorización68 CONSUMIDA, jamás rerun. No APK/Actions/main/funciones nuevas.
+C5 íntegro pero sin cambios; Preview68 aislada continúa separada del PR.
+No pedir más capturas por ahora; claro/200%/teléfono/rotación pendientes sin
+bloquear correcciones pequeñas. Publicar pruebas focalizadas y liberar sólo reserva propia.
+
 ## 2026-11-07 — Preview 68 visual aislada preparada, sin autorización de entrega
 
 Prioridad vigente: preparar entrega visual desde la fuente67, no distribuir C5.
