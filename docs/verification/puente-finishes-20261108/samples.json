@@ -1,0 +1,118 @@
+{
+  "items": [
+    {
+      "id": "C01",
+      "group": "color",
+      "name": "Grafito",
+      "note": "Neutral, sobrio y familiar."
+    },
+    {
+      "id": "C02",
+      "group": "color",
+      "name": "Tinta",
+      "note": "Negro profundo y acento violeta; más dramático."
+    },
+    {
+      "id": "C03",
+      "group": "color",
+      "name": "Niebla",
+      "note": "Azul grisáceo suave; sensación técnica y tranquila."
+    },
+    {
+      "id": "C04",
+      "group": "color",
+      "name": "Oliva",
+      "note": "Verde mineral; carácter orgánico y discreto."
+    },
+    {
+      "id": "C05",
+      "group": "color",
+      "name": "Cobre",
+      "note": "Tonos cálidos; más cercano y distintivo."
+    },
+    {
+      "id": "C06",
+      "group": "color",
+      "name": "Ciruela",
+      "note": "Violeta contenido; personalidad editorial."
+    },
+    {
+      "id": "C07",
+      "group": "color",
+      "name": "Marfil",
+      "note": "Papel cálido; especialmente interesante en claro."
+    },
+    {
+      "id": "C08",
+      "group": "color",
+      "name": "Océano",
+      "note": "Azul profundo; identidad más marcada."
+    },
+    {
+      "id": "T01",
+      "group": "type",
+      "name": "Geist",
+      "note": "Fuente actual; continuidad y buena densidad."
+    },
+    {
+      "id": "T02",
+      "group": "type",
+      "name": "Inter",
+      "note": "Lectura neutra y amplia; alternativa cercana."
+    },
+    {
+      "id": "T03",
+      "group": "type",
+      "name": "Sistema",
+      "note": "Roboto en este laboratorio API 33; puede variar en tu dispositivo."
+    },
+    {
+      "id": "T04",
+      "group": "type",
+      "name": "Serif del sistema",
+      "note": "Contraste editorial fuerte; puede distraer en una herramienta rápida."
+    },
+    {
+      "id": "T05",
+      "group": "type",
+      "name": "Mono del sistema",
+      "note": "Carácter técnico; ocupa más ancho y recorta antes."
+    },
+    {
+      "id": "E01",
+      "group": "space",
+      "name": "Compacto",
+      "note": "Filas 48 dp, margen 12 dp, separación de superficies 16 dp."
+    },
+    {
+      "id": "E02",
+      "group": "space",
+      "name": "Equilibrado",
+      "note": "Filas 54 dp, margen 18 dp, separación de superficies 28 dp."
+    },
+    {
+      "id": "E03",
+      "group": "space",
+      "name": "Aireado",
+      "note": "Filas 64 dp, margen 24 dp, separación de superficies 40 dp; menos resultados visibles."
+    },
+    {
+      "id": "A01",
+      "group": "material",
+      "name": "Plano",
+      "note": "Radio 8 dp, sin elevación; máxima sobriedad."
+    },
+    {
+      "id": "A02",
+      "group": "material",
+      "name": "Suave",
+      "note": "Radio 18 dp y elevación 16 dp; superficies diferenciadas."
+    },
+    {
+      "id": "A03",
+      "group": "material",
+      "name": "Glass legible",
+      "note": "Gradiente con opacidad 96–98,5 %; sin blur. Falta comprobar sobre otras apps reales."
+    }
+  ]
+}

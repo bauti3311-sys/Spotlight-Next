@@ -1,0 +1,22 @@
+{
+  "tablet": {
+    "query_raster_sha256": [
+      "88eb1288060b0d9c5f57b070884b8130c5a8cd0df16f0c47cc4427d9758fcac5",
+      "d13e2646321b0dc1985e6da69cb70bee6eb3aa7e86c94b3dbb73001d6b9fceb2",
+      "92f304310085dd699ba1decdd9227229645e59437bc0f13be1dcf6243234e6b1",
+      "b1aef8c6014f1b67bdb94871ef0ac0fc13e02d0e000f8a1d825bdf2439e128bc",
+      "eacda55f76ff2a6072b2072bccbc96d6ba5a3c0997deeb7a2143aada1b8ffa23"
+    ],
+    "distinct": 5
+  },
+  "phone": {
+    "query_raster_sha256": [
+      "3044c550495d26cdf9013b2c9a85843bc593d04c389816fc666b2d884cad2ef2",
+      "1dc8ecaa203cfce7b5eec576e5084de88d61c2eea64bacdff6f929a10d123335",
+      "227b64cc436c462d7fbc6c56cbda7ecc5fc5da5d4928c4f84a7033d0330da2a5",
+      "2a221d7158db2dcafd298199fed51b9a869dba25ca9f41345aec229e7d7771c6",
+      "bfeef7c2a92f6269a2dd6f790918d5b4c2cfe3c058f74227aedfa3e198feda33"
+    ],
+    "distinct": 5
+  }
+}

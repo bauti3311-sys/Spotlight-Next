@@ -1,3 +1,12 @@
+## Continuidad vigente — Puente, acabados en laboratorio
+
+El propietario eligió explorar Puente:8paletas/5tipografías/3densidades/3superficies.
+86capturas Compose nuevas+2referencias exactas; comparación cambia un solo eje.
+Ver docs/PUENTE-FINISHES-20261108.md. Elección combinada aún NO renderizada ni
+aprobada para producto. No integrar sin decisión. FocusStudio/Preview69/C2/C5,
+36funciones y evidencia previa intactos; sinAPK/Actions/deps/permisos/main.
+Autorización69consumida. Validación física pendiente; liberar sóloreserva propia.
+
 ## Continuidad vigente — Mesa interesó; cinco alternativas nuevas, sólo laboratorio
 
 Propietario pidió más y señaló interés enMesa, sin aprobar integración. M00=P05

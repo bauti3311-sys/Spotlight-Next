@@ -1,0 +1,12 @@
+[
+  {
+    "source": "docs/verification/mesa-explorations-20261108/originals/tablet-M03-acciones.png",
+    "copy": "tablet-R00-dark-acciones.png",
+    "sha256": "9193955f3e933e55dd7970bd4a1cc3333b61a442eb4401b22c3b375911ef24b0"
+  },
+  {
+    "source": "docs/verification/mesa-explorations-20261108/originals/phone-M03-acciones.png",
+    "copy": "phone-R00-dark-acciones.png",
+    "sha256": "57ced29a287511c6d94ed75622c7649eca6b12d06bf22c52feb1dd6aae9cbc86"
+  }
+]
