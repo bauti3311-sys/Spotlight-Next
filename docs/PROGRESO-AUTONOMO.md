@@ -1,3 +1,12 @@
+## Continuidad vigente — Puente, ocho acabados extremos de laboratorio
+
+El propietario pidió diferencias mayores: X01Terminal/X02Papel/X03Cobalto/X04Chicle/
+X05Señal/X06Hielo/X07Berenjena/X08Blanco. Combinaciones completas;4opacidades
+100/90/76/60% aisladas.40PNGnuevos+2referencias exactas. Ver docs/PUENTE-BOLD-20261108.md.
+Sin aprobación productiva. Galerías anteriores intactas. FocusStudio/Preview69/C2/C5/
+36funciones conservados. SinAPK/Actions/main/deps/permisos. Autorización69consumida.
+Pendiente selección y validación física; liberar sólo reserva propia.
+
 ## Continuidad vigente — Puente, acabados en laboratorio
 
 El propietario eligió explorar Puente:8paletas/5tipografías/3densidades/3superficies.

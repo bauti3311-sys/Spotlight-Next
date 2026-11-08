@@ -1,0 +1,160 @@
+{
+  "items": [
+    {
+      "id": "X01",
+      "group": "look",
+      "name": "Terminal ácido",
+      "note": "Negro y lima · monoespaciada · compacto · esquinas rectas. Máxima identidad técnica y densidad; la letra mono recorta títulos antes.",
+      "tokens": {
+        "padding_dp": 8,
+        "row_dp": 48,
+        "query_dp": 56,
+        "gap_dp": 12,
+        "radius_dp": 0,
+        "opacity_percent": 100,
+        "type_scale": "0.94"
+      }
+    },
+    {
+      "id": "X02",
+      "group": "look",
+      "name": "Papel editorial",
+      "note": "Crema y rojo óxido · serif grande · relleno generoso. Lectura cálida y pausada; deja menos contenido visible.",
+      "tokens": {
+        "padding_dp": 28,
+        "row_dp": 72,
+        "query_dp": 88,
+        "gap_dp": 32,
+        "radius_dp": 2,
+        "opacity_percent": 100,
+        "type_scale": "1.22"
+      }
+    },
+    {
+      "id": "X03",
+      "group": "look",
+      "name": "Cobalto eléctrico",
+      "note": "Azul saturado y amarillo · Inter · selección sólida. Muy reconocible; el campo de color puede cansar en uso prolongado.",
+      "tokens": {
+        "padding_dp": 20,
+        "row_dp": 62,
+        "query_dp": 78,
+        "gap_dp": 24,
+        "radius_dp": 8,
+        "opacity_percent": 100,
+        "type_scale": "1.12"
+      }
+    },
+    {
+      "id": "X04",
+      "group": "look",
+      "name": "Chicle",
+      "note": "Rosa y ciruela · Geist grande · radios amplios. Más táctil y expresivo; se aleja del carácter sobrio de escritorio.",
+      "tokens": {
+        "padding_dp": 24,
+        "row_dp": 68,
+        "query_dp": 84,
+        "gap_dp": 24,
+        "radius_dp": 30,
+        "opacity_percent": 100,
+        "type_scale": "1.18"
+      }
+    },
+    {
+      "id": "X05",
+      "group": "look",
+      "name": "Señal naranja",
+      "note": "Naranja intenso y negro · Inter · relleno ajustado. Energía y jerarquía frontal; es el acabado más invasivo.",
+      "tokens": {
+        "padding_dp": 12,
+        "row_dp": 52,
+        "query_dp": 68,
+        "gap_dp": 14,
+        "radius_dp": 0,
+        "opacity_percent": 100,
+        "type_scale": "1.08"
+      }
+    },
+    {
+      "id": "X06",
+      "group": "look",
+      "name": "Hielo translúcido",
+      "note": "Cian pálido · sistema · 76 % de opacidad. Ligero y abierto; el texto detrás compite con la lectura.",
+      "tokens": {
+        "padding_dp": 16,
+        "row_dp": 56,
+        "query_dp": 70,
+        "gap_dp": 22,
+        "radius_dp": 24,
+        "opacity_percent": 76,
+        "type_scale": "1.0"
+      }
+    },
+    {
+      "id": "X07",
+      "group": "look",
+      "name": "Berenjena teatral",
+      "note": "Violeta profundo y dorado · serif · espacio amplio. Carácter editorial nocturno; menor densidad y algo de transparencia.",
+      "tokens": {
+        "padding_dp": 22,
+        "row_dp": 66,
+        "query_dp": 82,
+        "gap_dp": 26,
+        "radius_dp": 20,
+        "opacity_percent": 94,
+        "type_scale": "1.18"
+      }
+    },
+    {
+      "id": "X08",
+      "group": "look",
+      "name": "Blanco brutal",
+      "note": "Blanco y negro · Geist grande · contornos rectos. Jerarquía gráfica y selección fuerte; máxima luminosidad.",
+      "tokens": {
+        "padding_dp": 10,
+        "row_dp": 60,
+        "query_dp": 80,
+        "gap_dp": 12,
+        "radius_dp": 0,
+        "opacity_percent": 100,
+        "type_scale": "1.25"
+      }
+    },
+    {
+      "id": "O01",
+      "group": "opacity",
+      "name": "Opacidad 100 %",
+      "note": "Misma variante Hielo, mismo fondo con texto y misma geometría. Sólo cambia la opacidad a 100 %. A menor opacidad, más interferencia del fondo.",
+      "tokens": {
+        "opacity_percent": 100
+      }
+    },
+    {
+      "id": "O02",
+      "group": "opacity",
+      "name": "Opacidad 90 %",
+      "note": "Misma variante Hielo, mismo fondo con texto y misma geometría. Sólo cambia la opacidad a 90 %. A menor opacidad, más interferencia del fondo.",
+      "tokens": {
+        "opacity_percent": 90
+      }
+    },
+    {
+      "id": "O03",
+      "group": "opacity",
+      "name": "Opacidad 76 %",
+      "note": "Misma variante Hielo, mismo fondo con texto y misma geometría. Sólo cambia la opacidad a 76 %. A menor opacidad, más interferencia del fondo.",
+      "tokens": {
+        "opacity_percent": 76
+      }
+    },
+    {
+      "id": "O04",
+      "group": "opacity",
+      "name": "Opacidad 60 %",
+      "note": "Misma variante Hielo, mismo fondo con texto y misma geometría. Sólo cambia la opacidad a 60 %. A menor opacidad, más interferencia del fondo.",
+      "tokens": {
+        "opacity_percent": 60
+      }
+    }
+  ]
+}
