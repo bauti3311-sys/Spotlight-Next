@@ -1,0 +1,17 @@
+{
+  "base": "dd5e595a58593dd0226ed2ac5edf9d14914fd252",
+  "productive_delta": [],
+  "apk_or_actions": "none",
+  "screenshots": 348,
+  "styles": 13,
+  "new_styles": 12,
+  "functions": 36,
+  "full_generation_checks": {
+    "tests": 7,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "structural_rerender": "only05,07,10 across six profiles; all correct",
+  "proposal_status": "not approved; test-only; no integration or data effects"
+}

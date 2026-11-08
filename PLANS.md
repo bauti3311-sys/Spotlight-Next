@@ -1,3 +1,14 @@
+## Continuidad vigente — catálogo de elección, sólo propuestas
+
+El propietario pide variedad real y elegir antes de implementar. Catálogo de12
+estéticas nuevas+referencia y36 opciones funcionales,348capturas Compose de
+laboratorio; no APK ni cambios productivos. Ver docs/CHOICE-CATALOGUE-20261108.md.
+Sólo bancos app/src/test, fixtures y evidencia. Ninguna dirección ni función
+adoptada. Esperar elección por códigos E/F; no ejecutar capacidades sensibles.
+Preview69 ENTREGADA: sourcecbc956a/workflowdd5e595/run42443490420 attempt1SUCCESS;
+autorización CONSUMIDA. Conservar fuenteaislada69,68/main/Studio/ranking/C5/140ms.
+No nuevas entregas/Actions/instalaciones ni dependencias. Liberar sólo reserva propia.
+
 ## Continuidad vigente — Preview69 C2 aislada preparada, NO autorizada
 
 Fuente69 cbc956ab56756d9ebdf7de05300fb0b5f5b14a19, base exacta fuente68c51677b.
