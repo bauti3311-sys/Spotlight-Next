@@ -141,7 +141,7 @@ class MainActivity : ComponentActivity() {
                     "shizuku"->{settingsGroup="Permisos y accesos";showShizukuAccess=true}
                 }
             }
-            SpotlightTheme(config.theme, config) {
+            SettingsTheme(config) {
                 val colors = MaterialTheme.colorScheme
                 Surface(Modifier.fillMaxSize(), color = androidx.compose.ui.graphics.Color.Transparent) {
                     Column(
@@ -151,7 +151,7 @@ class MainActivity : ComponentActivity() {
                             .padding(horizontal = 12.dp, vertical = if(androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp>=760)32.dp else 12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Column(Modifier.widthIn(max = 960.dp).fillMaxSize().glassSurface(config.copy(opacity=GlassTokens.settingsOpacity(config)))) {
+                        Column(Modifier.fillMaxSize().glassSurface(config.copy(opacity=GlassTokens.settingsOpacity(config)))) {
                             SettingsLayout(settingsGroup,{settingsGroup=it},Modifier.weight(1f),onInvoke={
                                 if(overlayGranted)startActivity(Intent(this@MainActivity,InvokeActivity::class.java))
                                 else startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,Uri.parse("package:$packageName")))
@@ -204,6 +204,17 @@ class MainActivity : ComponentActivity() {
                                 }
                                 if(transferMessage.isNotBlank())Text(transferMessage)
                                 importPreview?.let{raw->run{Text("Revisar importación");Text(importSummary);Row{Button(onClick={scope.launch{runCatching{app.preferences.importPortable(raw)}.onSuccess{transferMessage="Configuración importada. Revisá las apps disponibles en este dispositivo.";importPreview=null}.onFailure{transferMessage=it.message.orEmpty()}}}){Text("Confirmar importación")};TextButton(onClick={importPreview=null}){Text("Cancelar")}}}}
+                            }
+                            Section("Acerca de Spotlight") {
+                            val installedVersion=remember { runCatching { packageManager.getPackageInfo(packageName,0).versionName }.getOrNull().orEmpty() }
+                            Text(
+                                "Spotlight Next $installedVersion",
+                                fontSize = 12.sp,
+                                color = colors.onSurfaceVariant,
+                            )
+                            TextButton(onClick={runCatching{startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://icons8.com/icons/ios")))}}) {
+                                Text("Iconos iOS de la interfaz · Icons8",fontSize=12.sp)
+                            }
                             }
                             Section("General · inicio") {
                                 Toggle("Mostrar sugerencias",config.suggestions){update(config.copy(suggestions=it))}
@@ -589,16 +600,7 @@ class MainActivity : ComponentActivity() {
                             }
                             }
                             }
-                            Spacer(Modifier.height(16.dp))
-                            val installedVersion=remember { runCatching { packageManager.getPackageInfo(packageName,0).versionName }.getOrNull().orEmpty() }
-                            Text(
-                                "Spotlight Next $installedVersion",
-                                fontSize = 12.sp,
-                                color = colors.onSurfaceVariant,
-                            )
-                            TextButton(onClick={runCatching{startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://icons8.com/icons/ios")))}}) {
-                                Text("Iconos iOS de la interfaz · Icons8",fontSize=12.sp)
-                            }
+
                         }
                     }
                 }

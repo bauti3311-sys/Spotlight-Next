@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.WindowSizePolicyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-09T14:02:55" hostname="375f5b578860" time="3.34">
+  <properties/>
+  <testcase name="persistenceAndPortableBackupsPreserveNewChoiceAndOldData" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="3.245"/>
+  <testcase name="legacyWidthsRemainExactUntilUserChangesSlider" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.027"/>
+  <testcase name="scaleSurvivesImeAndRespectsBothOrientations" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.022"/>
+  <testcase name="oldBackupDoesNotInventNewWidthChoice" classname="dev.bautista.spotlight.data.WindowSizePolicyTest" time="0.044"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

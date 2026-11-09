@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.first
 import org.junit.*
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows
 import org.robolectric.annotation.*
 
 @RunWith(RobolectricTestRunner::class)
@@ -35,7 +36,7 @@ class SettingsWorkspaceTest {
   ready()
   val app=ui.activity.application as SpotlightApp
   runBlocking{val current=app.preferences.config.first();app.preferences.updateAppearance(current.copy(theme="dark",preset="raycast"))}
-  ui.onNodeWithText("Apariencia").performClick()
+  ui.onNodeWithTag("settings-area:Apariencia").performScrollTo().performClick()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
   ui.onNodeWithText("Ancho horizontal").assertDoesNotExist()
   capture("tablet-appearance")
@@ -55,12 +56,12 @@ class SettingsWorkspaceTest {
   ui.onNodeWithText("Resultados de ajustes").assertDoesNotExist()
  }
  @Test fun appearanceCategorySurvivesActivityRecreation(){
-  ready();ui.onNodeWithText("Apariencia").performClick()
+  ready();ui.onNodeWithTag("settings-area:Apariencia").performScrollTo().performClick()
   ui.activityRule.scenario.recreate();ready()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
  }
  @Test fun newIntentTargetsExistingSettingsActivity(){
-  ready();ui.onNodeWithText("Apariencia").performClick()
+  ready();ui.onNodeWithTag("settings-area:Apariencia").performScrollTo().performClick()
   val activity=ui.activity
   val original=activity.intent
   try {
@@ -75,17 +76,51 @@ class SettingsWorkspaceTest {
  @Test fun darkCapabilitiesReflectUnavailablePermissions(){
   ready();val app=ui.activity.application as SpotlightApp
   runBlocking{val current=app.preferences.config.first();app.preferences.updateAppearance(current.copy(theme="dark",preset="glass"))}
-  ui.onNodeWithText("Integraciones").performClick()
+  ui.onNodeWithTag("settings-area:Integraciones").performClick()
   ui.onNodeWithText("Integraciones · capacidades disponibles").performScrollTo().assertIsDisplayed()
   ui.waitUntil(15000){ui.onAllNodesWithText("Buscar contactos").fetchSemanticsNodes().isNotEmpty()}
   ui.onNodeWithText("Buscar contactos").assertExists()
   capture("tablet-obsidian-capabilities")
  }
  @Test @Config(qualifiers="w360dp-h800dp") fun phoneCanChooseAreaAndScrollAllControls(){
-  ready();ui.onNodeWithText("Cambiar").performClick();ui.onNodeWithText("Apariencia").performClick()
+  ready();ui.onNodeWithTag("settings-area:Apariencia").performScrollTo().performClick()
   ui.onAllNodesWithTag("window-width-slider").assertCountEquals(1)
-  ui.onNodeWithText("macOS Light").assertIsDisplayed()
+  ui.onNodeWithText("Claro").performScrollTo().assertIsDisplayed()
   ui.onNodeWithText("Restablecer apariencia").performScrollTo().assertIsDisplayed()
   capture("phone-appearance")
  }
+ @Test fun puenteDoesNotOfferAnOpacitySliderThatCannotAffectItsSurface(){
+  ready();val app=ui.activity.application as SpotlightApp
+  val before=runBlocking{app.preferences.config.first()}
+  runBlocking{app.preferences.updateAppearance(before.copy(focusInterface=true,opacity=.77f))}
+  ui.onNodeWithTag("settings-area:Apariencia").performClick()
+  ui.onNodeWithTag("appearance-advanced").performScrollTo().performClick()
+  ui.onNodeWithTag("surface-opacity-slider").assertDoesNotExist()
+  ui.onNodeWithTag("action-opacity-slider").assertExists()
+  val after=runBlocking{app.preferences.config.first()}
+  Assert.assertEquals(.77f,after.opacity);Assert.assertEquals(before.pins,after.pins);Assert.assertEquals(before.trees,after.trees);Assert.assertEquals(before.aliases,after.aliases)
+ }
+ @Test @Config(qualifiers="w330dp-h800dp") fun phoneSectionsReturnWithEscapeWithoutChangingPreferences(){
+  ready();val app=ui.activity.application as SpotlightApp;val before=runBlocking{app.preferences.config.first()}
+  ui.onNodeWithTag("settings-area:Apariencia").performScrollTo().performClick()
+  ui.onNodeWithTag("window-width-slider").assertExists()
+  ui.onNodeWithTag("settings-search").performKeyInput{pressKey(Key.Escape)}
+  ui.onNodeWithTag("settings-overview").assertExists()
+  Assert.assertEquals(before,runBlocking{app.preferences.config.first()})
+  Assert.assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
+ }
+
+ @Test @Config(qualifiers="w330dp-h800dp") fun phoneIntentLeavesOverviewAndOverviewSurvivesRecreation(){
+  ready();ui.onNodeWithTag("settings-overview").assertExists()
+  val activity=ui.activity;val original=activity.intent
+  try {
+   ui.runOnIdle{activity.onNewIntent(android.content.Intent(activity,MainActivity::class.java).putExtra("group","Apariencia"))}
+   ui.onNodeWithTag("window-width-slider").assertExists()
+   ui.onNodeWithTag("settings-search").performKeyInput{pressKey(Key.Escape)}
+   ui.onNodeWithTag("settings-overview").assertExists()
+  }finally{ui.runOnIdle{activity.intent=original}}
+  ui.activityRule.scenario.recreate();ready()
+  ui.onNodeWithTag("settings-overview").assertExists()
+ }
+
 }

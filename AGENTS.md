@@ -1,3 +1,20 @@
+## Continuidad vigente — ancho reparado y Ajustes renovados (09/11/2026)
+
+El propietario autorizó reparar el ancho y rediseñar Ajustes; reemplaza la decisión
+estética anterior de cuerpo A sólo para Ajustes. Puente y sus motores se conservan.
+Checkpoint de ancho: 90285c35871450fe3c5061c7f9fadd3d81c66820. Tres fallos reproducidos:
+windowScale no refrescaba WindowManager, Puente limitaba a560dp aun en manual y el
+slider de teléfono siempre resolvía380dp. Solución con reglas heredadas preservadas.
+Ajustes nativos con paleta Puente, secciones en teléfono, lateral en tablet y búsqueda;
+ancho primero, detalles desplegables, proveedores/legados en Avanzado. Sin borrar
+preferencias ni controles de privacidad; opacidad inefectiva de Puente oculta.
+40 casos JVM/Robolectric en API33/35 y lint sin errores; ver informe/evidencia en
+ docs/SETTINGS-REFRESH-20261109.md. API28 no disponible; física OneUI/Gboard pendiente.
+Fuentes68/69/70, main, firma, paquete, versiones, C2/C5 e integraciones intactos.
+Sin APK/Actions/instalaciones; autorización70 consumida. Próxima entrega requiere
+permiso nuevo y aislamiento desde70 para excluir C5 del PR. PR21 sigue borrador.
+Liberar sólo reserva propia mediante notas atómicas. No reabrir funciones pausadas.
+
 ## Continuidad vigente — catálogo funcional interactivo, sólo elección
 
 Propietario pidió «ahora hace lo mismo pero en cuanto a funciones».36opciones F01–F36

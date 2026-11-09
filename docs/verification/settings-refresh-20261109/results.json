@@ -1,0 +1,223 @@
+{
+  "baseline": "42ac439936dd7e47ac906af3719eb273eef6b20f",
+  "scope": "Compose/Robolectric JVM; not hardware",
+  "tests": [
+    {
+      "class": "dev.bautista.spotlight.data.WindowSizePolicyTest",
+      "xml": "second-checks/xml/TEST-dev.bautista.spotlight.data.WindowSizePolicyTest.xml",
+      "tests": 4,
+      "failures": 0,
+      "cases": [
+        "persistenceAndPortableBackupsPreserveNewChoiceAndOldData",
+        "legacyWidthsRemainExactUntilUserChangesSlider",
+        "scaleSurvivesImeAndRespectsBothOrientations",
+        "oldBackupDoesNotInventNewWidthChoice"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+      "xml": "second-checks/xml/TEST-dev.bautista.spotlight.overlay.OverlayImeHeightTest.xml",
+      "tests": 4,
+      "failures": 0,
+      "cases": [
+        "hiddenEventDiscardsStaleImeAmountAndReopenUsesFullHeight",
+        "tabletPortraitRetainsKeyboardOnRefresh",
+        "geometryRefreshRetainsKeyboardUntilInsetsReportItHidden",
+        "tabletLandscapeRetainsKeyboardOnRefresh"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.OverlayWidthSettingsTest",
+      "xml": "second-checks/xml/TEST-dev.bautista.spotlight.ui.OverlayWidthSettingsTest.xml",
+      "tests": 7,
+      "failures": 0,
+      "cases": [
+        "appearanceHasOneWidthControlAndNoTechnicalOverrides",
+        "phoneExposesOneAccessibleCompactToWideSlider",
+        "appearanceUpdatesImmediatelyAndUndoPreservesLegacyGeometry",
+        "resettingPositionMustNotEraseHorizontalWidth",
+        "landscapeControlRemainsReachableWithoutTechnicalText",
+        "openingSettingsDoesNotMigrateLegacyGeometryArbitrarily",
+        "newWidthChoicePreservesPositionSavedDataAndLegacyValues"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.PuenteFrameTest",
+      "xml": "first-checks/xml/TEST-dev.bautista.spotlight.ui.PuenteFrameTest.xml",
+      "tests": 3,
+      "failures": 0,
+      "cases": [
+        "detachedPanesKeepMinimumWidthsAtTheSplitThreshold",
+        "compactEnlargedContextScrollsToAnExplicitActionWithoutExecutingOnScroll",
+        "shortDestinationWrapsContentAndRetainsAdjustableDivider"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.WidthResponseTest",
+      "xml": "first-checks/xml/TEST-dev.bautista.spotlight.ui.WidthResponseTest.xml",
+      "tests": 2,
+      "failures": 0,
+      "cases": [
+        "explicitWidthChangesVisiblePuenteFinder",
+        "phoneWidthSliderHasAnEffectiveRange"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsReviewCaptureTest",
+      "xml": "second-checks/xml/TEST-dev.bautista.spotlight.ui.SettingsReviewCaptureTest.xml",
+      "tests": 5,
+      "failures": 0,
+      "cases": [
+        "homeIsCompactAndDoesNotRequestPermissions",
+        "phoneHomeAndLightThemeRemainUsable",
+        "shortcutsNavigateWithoutChangingPreferences",
+        "functionCenterShowsRealUnconfiguredStatesAndCanReturn",
+        "guideRequiresSelectionAndExplicitActionForEachPermission"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsRefreshTest",
+      "xml": "after/xml/TEST-dev.bautista.spotlight.ui.SettingsRefreshTest.xml",
+      "tests": 5,
+      "failures": 0,
+      "cases": [
+        "tabletLightCapture",
+        "phoneCapture",
+        "enlargedPhoneCapture",
+        "tabletDarkCapture",
+        "changedWidthReachesTheAlreadyOpenAndroidWindow"
+      ]
+    },
+    {
+      "class": "dev.bautista.spotlight.ui.SettingsWorkspaceTest",
+      "xml": "navigation-final/xml/TEST-dev.bautista.spotlight.ui.SettingsWorkspaceTest.xml",
+      "tests": 10,
+      "failures": 0,
+      "cases": [
+        "puenteDoesNotOfferAnOpacitySliderThatCannotAffectItsSurface",
+        "newIntentTargetsExistingSettingsActivity",
+        "appearanceCategorySurvivesActivityRecreation",
+        "appearanceHasOneWidthAndResetRequiresConfirmation",
+        "phoneIntentLeavesOverviewAndOverviewSurvivesRecreation",
+        "globalSearchFindsGeminiAndReturnsToCategory",
+        "phoneSectionsReturnWithEscapeWithoutChangingPreferences",
+        "tabletHasSevenAreasAndIndependentDetailsPane",
+        "phoneCanChooseAreaAndScrollAllControls",
+        "darkCapabilitiesReflectUnavailablePermissions"
+      ]
+    }
+  ],
+  "unique_passed_cases": 40,
+  "lint": {
+    "Error": 0,
+    "Warning": 23,
+    "Information": 1
+  },
+  "missing_runtime": "API28 not cached; no successful download, no API28 coverage claimed",
+  "runtimes_used": [
+    33,
+    35
+  ],
+  "product_files_changed": [
+    "app/src/main/java/dev/bautista/spotlight/MainActivity.kt",
+    "app/src/main/java/dev/bautista/spotlight/data/WindowSizePolicy.kt",
+    "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassAppearance.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/PuenteFrame.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SettingsHome.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SettingsNavigation.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/WindowSizeSettings.kt"
+  ],
+  "protected_paths_unchanged": [
+    ".github",
+    "scripts",
+    "gradle",
+    "app/build.gradle.kts",
+    "release.properties",
+    "app/src/main/AndroidManifest.xml",
+    "signing",
+    "docs/verification/function-lab-20261109",
+    "docs/verification/choice-catalogue-20261108"
+  ],
+  "preserved_remote_refs": {
+    "refs/heads/main": "47259ce2d7259f0ddfa5d85b7c73f07983d8cd6d",
+    "refs/heads/feat/preview68-visual-isolated-20261107": "c51677b79446ce1dc8213553891d45897b14d726",
+    "refs/heads/feat/preview69-c2-isolated-20261108": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19",
+    "refs/heads/feat/preview70-puente-isolated-20261109": "143104ce8d83f6ad6b5b4acd80897db579816fcd"
+  },
+  "apk_actions_installation": false,
+  "images": [
+    {
+      "path": "before/phone-dark-200-appearance.png",
+      "sha256": "bf49f6f699ff4b4b56ada096a67bdea0910c95fe4a34c23a4959bc7d7ec973a1"
+    },
+    {
+      "path": "before/phone-light-appearance.png",
+      "sha256": "973097265e51e15b38ed6c3aca8b04f3b6d6d3d5b8aa77f62c3ccbe685db1650"
+    },
+    {
+      "path": "before/phone-light-home.png",
+      "sha256": "c067bcd416b99f8ae56dbaf060048184b6269d96968e303b71ec6c7a5cb6cd78"
+    },
+    {
+      "path": "before/tablet-dark-appearance.png",
+      "sha256": "8d10334e2bd153cc91998911d6dbcc4748e1538ff518e9c3235404bbf6a37548"
+    },
+    {
+      "path": "before/tablet-dark-home.png",
+      "sha256": "45610d900f27075e4b22b4071b80e380535c52ac359fb8c7f9acbc27ee70542a"
+    },
+    {
+      "path": "before/tablet-light-appearance.png",
+      "sha256": "05a3fd6e1d70c05037c4338e1e62972780a1590eb4cb05e9bc7f7ab42d1a02b1"
+    },
+    {
+      "path": "before/tablet-light-home.png",
+      "sha256": "887853c3f671915b233587967b92511dade610aa4066ef420a02a2bbf97de136"
+    },
+    {
+      "path": "before/width-narrow.png",
+      "sha256": "2d2de8760f312ad5d4c4012d055a70cd3514c66c13b455eb1c3bafc388a8736b"
+    },
+    {
+      "path": "before/width-wide.png",
+      "sha256": "c6d8c335b4c15f950b25e631908cb51ae6c6b72ec428ba04fb17a5457271c2ee"
+    },
+    {
+      "path": "after/phone-dark-200-appearance.png",
+      "sha256": "e5ea7d6470e22fc023eb8541a5dad51802adfcb7aa148d69832f70b3f351663c"
+    },
+    {
+      "path": "after/phone-light-appearance.png",
+      "sha256": "2cc64f53cc248bc9f38e75c5c3240ac62f49e1dac3c77e5a87e0e0abe6b3e06c"
+    },
+    {
+      "path": "after/phone-light-home.png",
+      "sha256": "5cb66cde10864e5a5305fd0d920fee37a3bf1ceeb03ff499bba4b091057526d9"
+    },
+    {
+      "path": "after/tablet-dark-appearance.png",
+      "sha256": "9943307c79cd8f6cf3492c01c37b29df0eb77d56b6a9eae24043d197d6a34153"
+    },
+    {
+      "path": "after/tablet-dark-home.png",
+      "sha256": "6db52ad5e4cfdc24f55c09b114e073089fabfcf5ae416cefc5d7a9d2a96503ce"
+    },
+    {
+      "path": "after/tablet-light-appearance.png",
+      "sha256": "8c195dfb50d0b8035b772bf7f50926664ba83921bb8a6c0e4d4ee415fa802ca9"
+    },
+    {
+      "path": "after/tablet-light-home.png",
+      "sha256": "c1defaa6733363978b67cdad11cf6a40a069e0d015bc48c629b67b1bdb1c8055"
+    },
+    {
+      "path": "after/width-narrow.png",
+      "sha256": "c336eee8a6734a64275c4d4f67e4430948bb9abf56880e1e17c157249b7c6b75"
+    },
+    {
+      "path": "after/width-wide.png",
+      "sha256": "60fe01ade762e978f38efe7499abb45e12a12930b79bfd22615388cb3f959c0b"
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+Picked up JAVA_TOOL_OPTIONS:  -Drobolectric.enabledSdks=33,35
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+C5 lint-only guard: no APK, signing, installation or device task in graph
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+> Task :app:compileDebugUnitTestKotlin
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/ActionCatalogTest.kt:29:25 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/ActionCatalogTest.kt:121:17 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/AndroidCapabilityTest.kt:26:70 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/AppCapabilitiesTest.kt:20:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/C2WebSearchCapabilityTest.kt:21:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/DocumentShareContractTest.kt:34:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/IntegrationRegistryTest.kt:30:17 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/NativeLaunchSessionTest.kt:37:39 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/NativeLaunchSessionTest.kt:116:17 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/NativeLaunchSessionTest.kt:117:17 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/NotificationContentTest.kt:17:60 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/control/ReplyConfirmationTest.kt:21:21 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:51:56 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:64:54 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:82:54 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:112:28 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/overlay/OverlayViewportTest.kt:150:60 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/AliasTemplateRankingTest.kt:31:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/AliasTemplateRankingTest.kt:32:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:27:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:28:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:29:22 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:30:19 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2ContextSearchTest.kt:113:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2FileContextTest.kt:42:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt:31:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt:31:48 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt:145:50 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt:145:103 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt:146:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt:146:45 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/CompactProductionTest.kt:31:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/CompactProductionTest.kt:32:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/HomeSuggestionsTest.kt:21:54 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/HybridSearchTest.kt:30:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/HybridSearchTest.kt:31:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/Next091ProductivityTest.kt:33:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/SmartSearchAcceptanceTest.kt:25:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/SmartSearchAcceptanceTest.kt:27:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/UnifiedRootRegressionTest.kt:29:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/UnifiedRootRegressionTest.kt:30:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/search/UniversalIntelligenceArchitectureTest.kt:199:54 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/sharing/FileSharePreparationTest.kt:48:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/ActionHubVisualTest.kt:32:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/AdaptiveInspectorFlowTest.kt:51:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/AdaptiveResultsGeometryTest.kt:35:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C1SceneContractTest.kt:37:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt:46:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt:47:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2FileShareFlowTest.kt:51:16 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2PublicSearchFlowTest.kt:38:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2PublicSearchFlowTest.kt:39:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2SharedMessageFlowTest.kt:41:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/C2SharedMessageFlowTest.kt:42:21 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/ChoiceCatalogueGalleryTest.kt:87:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/ChoiceCatalogueGalleryTest.kt:87:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/ChoiceCatalogueGalleryTest.kt:90:7 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FloatingSearchFlowTest.kt:45:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusBIntegrationTest.kt:45:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusBIntegrationTest.kt:45:42 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusBIntegrationTest.kt:46:51 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusCapabilityPresentationTest.kt:35:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusCapabilityPresentationTest.kt:46:53 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:45:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:45:42 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:46:51 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusContentSceneTest.kt:46:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusDirectionsGalleryTest.kt:69:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusDirectionsGalleryTest.kt:69:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusDirectionsGalleryTest.kt:72:7 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:56:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:56:42 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:57:61 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusProductFinishTest.kt:54:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusProductFinishTest.kt:54:47 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusProductFinishTest.kt:65:61 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:51:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:51:41 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:54:7 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:173:40 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusSearchReviewTest.kt:181:40 'fun removeResolveInfosForIntent(p0: Intent!, p1: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/GeminiHomeCaptureTest.kt:38:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/HybridIntelligenceTest.kt:158:85 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/InspectorResourceRecoveryTest.kt:160:11 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/LiquidVivaldiSceneTest.kt:41:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/MasterC1TouchFlowTest.kt:32:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/MasterC1TouchFlowTest.kt:35:40 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/MediaInspectorFlowTest.kt:40:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/MinimalistSearchFlowTest.kt:36:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/NativeCommandFlowTest.kt:81:76 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/NativeLaunchFlowTest.kt:44:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/NativeLaunchFlowTest.kt:51:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/NativePaletteFlowTest.kt:38:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/Next091VisualTest.kt:50:256 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/Next091VisualTest.kt:65:21 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/NotificationCardLayoutTest.kt:47:15 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/OverlayDesignReviewTest.kt:38:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/OverlayGeometryCaptureTest.kt:51:55 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/OverlayHeightRecoverySceneTest.kt:48:52 'constructor(p0: Rect, p1: WindowInsets): WindowMetrics' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/OverlayHeightRecoverySceneTest.kt:63:16 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/PremiumReviewSceneTest.kt:45:12 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/Preview66CriticalLayoutTest.kt:40:15 'constructor(p0: String!, p1: String!, p2: Int, p3: String!, p4: Int, p5: Int, p6: Int, p7: Notification!, p8: UserHandle!, p9: Long): StatusBarNotification' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/PuenteNativeIntegrationTest.kt:49:40 'fun addResolveInfoForIntent(p0: Intent!, p1: (MutableList<ResolveInfo!>..List<ResolveInfo!>?)): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/PuenteNativeIntegrationTest.kt:50:54 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/PuenteNativeIntegrationTest.kt:83:56 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'java.io.File?'.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/RaycastCompositionCaptureTest.kt:57:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/RaycastWindowCompositionTest.kt:38:46 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/SpotlightPanelLayoutTest.kt:48:18 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/SpotlightPanelLayoutTest.kt:106:38 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/StructuralVivaldiSceneTest.kt:47:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/TabletPhysicalRegressionTest.kt:42:16 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/ToolTaskRecoveryTest.kt:137:11 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:153:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:154:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/UniversalProductionFlowTest.kt:155:62 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/VisualFidelityTest.kt:43:50 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/VisualFirstGalleryTest.kt:68:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/VisualFirstGalleryTest.kt:68:44 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/VisualFirstGalleryTest.kt:69:71 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateDebugUnitTestConfig UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS:  -Drobolectric.enabledSdks=33,35
+
+OpenGLRenderer W 11-09 14:07:52  2735  2767 Trying to start new animators on 0x7f63dffdb760 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testDebugUnitTest
+
+SettingsWorkspaceTest > phoneSectionsReturnWithEscapeWithoutChangingPreferences FAILED
+    java.lang.AssertionError at SettingsWorkspaceTest.kt:108
+
+SettingsWorkspaceTest > tabletHasSevenAreasAndIndependentDetailsPane FAILED
+    java.lang.IllegalStateException at SettingsWorkspaceTest.kt:27
+    java.lang.IllegalStateException at InlineClassHelper.kt:26
+
+OpenGLRenderer W 11-09 14:07:54  2735  2767 Trying to start new animators on 0x7f63de739b50 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS:  -Drobolectric.enabledSdks=33,35
+
+OpenGLRenderer W 11-09 14:08:00  2799  2827 Trying to start new animators on 0x7fd426fadc40 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-09 14:08:01  2799  2827 Trying to start new animators on 0x7fd426c19fb0 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testDebugUnitTest
+
+14 tests completed, 2 failed
+
+> Task :app:testDebugUnitTest FAILED
+> Task :app:finalizeTestRoborazziDebug SKIPPED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///workspace/Spotlight-Next/app/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 1m 10s
+28 actionable tasks: 2 executed, 26 up-to-date
