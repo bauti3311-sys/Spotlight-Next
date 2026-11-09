@@ -1,0 +1,13 @@
+Cierre 2026-11-09 — ancho y Ajustes
+Propietario autorizó reparar ancho y renovar Ajustes. Checkpoints publicados:
+90285c35871450fe3c5061c7f9fadd3d81c66820 ancho,
+867a3f5132004110a8c3ea39c03bba1430b12f2e Ajustes/evidencia. PR21 OPEN/DRAFT.
+Tres fallos previos reproducidos: windowScale no actualizaWM, máximoPuente560,
+slider teléfono siempre380. Corregidos con datos/herencia preservados.
+Ajustes nativos Puente, seccionesphone/lateraltablet, detalles y técnicos ordenados.
+40 casos únicos correctos/API33–35; lint0E/23W/1I.18PNG Compose, galeríaoffline/PDF.
+API28 sin runtime; OneUI/Gboard físico pendiente. Fuente/modelo/C5 y búsquedas
+intactos, ninguna función nueva. Main/fuentes68/69/70/firma/paquete/versiones sin
+cambios. No APK/Actions/instalaciones/deps/permisos.70consumida. Futura entrega
+requiere autorización nueva y aislamiento desde70. Ver docs/SETTINGS-REFRESH-20261109.md.
+Liberación atómica únicamente de reserva propia; no tocar reservas ajenas.
