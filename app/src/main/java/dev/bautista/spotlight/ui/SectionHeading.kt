@@ -35,6 +35,6 @@ fun sectionIcon(name: String): ImageVector = when(name) {
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
     Row(Modifier.fillMaxWidth().padding(start=GlassTokens.rowHorizontalPadding(appearance),end=8.dp,top=((if(first)4f else 10f)*d).dp,bottom=(4f*d).dp),verticalAlignment=Alignment.CenterVertically) {
-        Text(name,fontSize=GlassTokens.scaledSp(11.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance,minSp=12f),letterSpacing=0.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(name,fontSize=GlassTokens.scaledSp(11.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance,minSp=12f),letterSpacing=if(LocalPuenteUi.current).5.sp else 0.sp,fontWeight=if(LocalPuenteUi.current)androidx.compose.ui.text.font.FontWeight.Medium else null,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

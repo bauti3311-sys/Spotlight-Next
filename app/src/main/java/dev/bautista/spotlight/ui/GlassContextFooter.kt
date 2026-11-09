@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.*
 @Composable internal fun GlassKeycap(key:String) {
  val colors=MaterialTheme.colorScheme
  val appearance=LocalAppearance.current
- val keyMaterial=if(LocalPremiumReview.current || LocalFocusUi.current)Modifier else Modifier.background(colors.onSurface.copy(alpha=.065f),RoundedCornerShape(5.dp))
+ val keyMaterial=if((LocalPremiumReview.current || LocalFocusUi.current) && !LocalPuenteUi.current)Modifier else Modifier.background(colors.onSurface.copy(alpha=.065f),RoundedCornerShape(5.dp))
   .border(1.dp,colors.onSurface.copy(alpha=.09f),RoundedCornerShape(5.dp))
  Text(key,keyMaterial.padding(horizontal=6.dp,vertical=3.dp),
-  fontSize=GlassTokens.scaledSp(10.sp,appearance),lineHeight=GlassTokens.scaledSp(13.sp,appearance,minSp=11f),color=colors.onSurfaceVariant,maxLines=1)
+  fontSize=GlassTokens.scaledSp(10.sp,appearance),lineHeight=GlassTokens.scaledSp(13.sp,appearance,minSp=11f),color=colors.onSurfaceVariant,maxLines=1,fontFamily=if(LocalPuenteUi.current)androidx.compose.ui.text.font.FontFamily.Monospace else null)
 }
 
 /** A single command dock; every label retains its existing executor and 48dp target. */

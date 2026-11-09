@@ -97,6 +97,7 @@ fun ResultRow(
     val dark=colors.surface.luminance()<.5f
     val premium=LocalPremiumReview.current
     val focusUi=LocalFocusUi.current
+    val selectionAccent=if(LocalPuenteUi.current)rememberCommandAccent(result) ?: colors.primary else colors.primary
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
@@ -105,8 +106,9 @@ fun ResultRow(
             .background(fill)
             .background(Brush.horizontalGradient(if(premium)listOf(
                 colors.primary.copy(alpha=(if(dark).19f else .11f)*amount),
-                colors.onSurface.copy(alpha=(if(dark).065f else .025f)*amount)) else if(focusUi)listOf(colors.primary.copy(alpha=.08f*amount),colors.onSurface.copy(alpha=.03f*amount)) else GlassTokens.selectedColors(dark,amount)))
-            .drawWithContent {drawContent();if(focusUi && amount>0f)drawLine(colors.primary.copy(alpha=.7f*amount),Offset(1.5.dp.toPx(),size.height/2-10.dp.toPx()),Offset(1.5.dp.toPx(),size.height/2+10.dp.toPx()),3.dp.toPx(),StrokeCap.Round)}
+                colors.onSurface.copy(alpha=(if(dark).065f else .025f)*amount)) else if(LocalPuenteUi.current)listOf(selectionAccent.copy(alpha=.14f*amount),selectionAccent.copy(alpha=.07f*amount)) else if(focusUi)listOf(colors.primary.copy(alpha=.08f*amount),colors.onSurface.copy(alpha=.03f*amount)) else GlassTokens.selectedColors(dark,amount)))
+            .then(if(LocalPuenteUi.current)Modifier.border(.75.dp,selectionAccent.copy(alpha=.30f*amount),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
+            .drawWithContent {drawContent();if(focusUi && amount>0f)drawLine(selectionAccent.copy(alpha=.7f*amount),Offset(1.5.dp.toPx(),size.height/2-10.dp.toPx()),Offset(1.5.dp.toPx(),size.height/2+10.dp.toPx()),3.dp.toPx(),StrokeCap.Round)}
             .then(if(focused)Modifier.border(GlassTokens.resultFocusStroke,GlassTokens.resultFocusColor(dark),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down

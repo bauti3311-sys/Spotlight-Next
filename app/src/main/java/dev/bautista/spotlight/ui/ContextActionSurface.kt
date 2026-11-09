@@ -56,12 +56,12 @@ internal val LocalActionBackNavigation=staticCompositionLocalOf<ActionBackNaviga
             host.body={
                 val maxHeight=with(LocalDensity.current){host.maximumHeight.toDp()}
                 val dark=MaterialTheme.colorScheme.surface.luminance()<.5f
-                CompositionLocalProvider(LocalActionBackNavigation provides navigation) {
+                CompositionLocalProvider(LocalActionBackNavigation provides navigation,LocalPuenteUi provides studio) {
                     Box(Modifier.heightIn(max=maxHeight).padding(8.dp)) {
                         Surface(Modifier.fillMaxWidth().heightIn(max=(maxHeight-16.dp).coerceAtLeast(0.dp))
                             .shadow(20.dp,RoundedCornerShape(16.dp),clip=false).testTag("action-surface"),
                             shape=RoundedCornerShape(16.dp),
-                            color=GlassTokens.actionColor(LocalAppearance.current,dark),
+                            color=if(studio)MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha=GlassTokens.actionOpacity(LocalAppearance.current)) else GlassTokens.actionColor(LocalAppearance.current,dark),
                             border=BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface.copy(alpha=.17f))) {currentContent()}
                     }
                 }

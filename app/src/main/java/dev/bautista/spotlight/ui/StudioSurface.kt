@@ -13,7 +13,13 @@ import androidx.compose.ui.unit.dp
 /** Focus finish only. Decide from the allocated width, never physical screen size.
  * Narrow/enlarged-text layouts retain their original content budget and hit targets. */
 @Composable internal fun StudioSurface(kind:String,modifier:Modifier=Modifier,content:@Composable ()->Unit) {
- if(!LocalFocusUi.current || LocalPuenteUi.current){Box(modifier){content()};return}
+ if(LocalPuenteUi.current) {
+  val colors=MaterialTheme.colorScheme
+  Box(modifier.then(if(kind=="search")Modifier.background(colors.surfaceContainerLow)
+   .border(.75.dp,colors.outlineVariant.copy(alpha=.65f),RoundedCornerShape(12.dp)) else Modifier)) {content()}
+  return
+ }
+ if(!LocalFocusUi.current){Box(modifier){content()};return}
  BoxWithConstraints(modifier) {
   val scale=(LocalDensity.current.fontScale*GlassTokens.textScale(LocalAppearance.current)).coerceAtLeast(1f)
   val room=maxWidth>= (if(kind=="search")360.dp else 420.dp)*scale

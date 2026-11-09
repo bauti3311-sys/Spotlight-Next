@@ -111,8 +111,8 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 }
             }
         }) {
-        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(10.dp))
-            .border(1.dp,GlassTokens.inputOutline(),RoundedCornerShape(10.dp))
+        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).background(if(LocalPuenteUi.current)colors.surfaceContainerLow else colors.onSurface.copy(alpha=.035f),RoundedCornerShape(10.dp))
+            .border(1.dp,if(LocalPuenteUi.current)colors.outlineVariant else GlassTokens.inputOutline(),RoundedCornerShape(10.dp))
             .border(GlassTokens.focusStroke,if(filterFocused)focusRing else Color.Transparent,RoundedCornerShape(10.dp)),verticalAlignment=Alignment.CenterVertically) {
             if(path.isNotEmpty())IconButton(onClick={back()},modifier=Modifier.size(48.dp)) {
                 IosCommandIcon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
@@ -140,7 +140,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=(6f*d).dp),color=colors.onSurface.copy(alpha=.08f))
                     Text(group.label,Modifier.padding(start=(10f*d).dp,top=(4f*d).dp,bottom=(4f*d).dp).semantics { heading() },
-                        fontSize=GlassTokens.scaledSp(12.sp,appearance,minSp=11f),lineHeight=GlassTokens.scaledSp(16.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=0.sp)
+                        fontSize=GlassTokens.scaledSp(12.sp,appearance,minSp=11f),lineHeight=GlassTokens.scaledSp(16.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=if(LocalPuenteUi.current).6.sp else 0.sp,fontWeight=if(LocalPuenteUi.current)FontWeight.SemiBold else null)
                     previous=group
                 }
                 val active=action.identity==currentId
@@ -148,7 +148,7 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 val bring=remember(action.identity) { BringIntoViewRequester() }
                 LaunchedEffect(active,filterFocused){if(active && !filterFocused)bring.bringIntoView()}
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
-                    .background(if(active)colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(10.dp))
+                    .background(if(active)if(LocalPuenteUi.current)colors.surfaceContainerHigh else colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(10.dp))
                     .border(GlassTokens.focusStroke,if(rowFocused)focusRing else Color.Transparent,RoundedCornerShape(10.dp))
                     .focusRequester(requests.getValue(action.identity)).onFocusChanged{rowFocused=it.isFocused;if(it.isFocused){selectedId=action.identity;filterFocused=false}}.focusable()
                     .semantics(mergeDescendants=true) { role=Role.Button;selected=active;stateDescription=action.state.label

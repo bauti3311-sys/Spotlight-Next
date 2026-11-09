@@ -137,7 +137,7 @@ object SettingsGroups {
    }
    val category:@Composable (String,Boolean)->Unit={group,tile->
     Surface(onClick={navigate(group)},modifier=Modifier.fillMaxWidth().testTag("settings-area:$group").semantics{this.selected=selected==group;role=Role.Tab},
-     shape=RoundedCornerShape(12.dp),color=if(!tile && selected==group)colors.primary.copy(alpha=.12f) else if(tile)colors.surfaceContainerLow else Color.Transparent) {
+     shape=RoundedCornerShape(12.dp),color=if(!tile && selected==group)colors.primary.copy(alpha=.15f) else if(tile)colors.surfaceContainerLow else Color.Transparent) {
      Row(Modifier.heightIn(min=if(tile)76.dp else 50.dp).padding(horizontal=14.dp,vertical=12.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
       IosCommandIcon(SettingsGroups.icon(group),null,Modifier.size(21.dp),tint=if(selected==group)colors.primary else colors.onSurfaceVariant)
       Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {

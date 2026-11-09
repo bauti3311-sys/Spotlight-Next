@@ -23,20 +23,17 @@ internal val LocalPuenteUi=staticCompositionLocalOf{false}
  if(!config.focusInterface){content();return}
  val base=MaterialTheme.colorScheme
  val dark=base.surface.luminance()<.5f
- val ice=if(dark)base.copy(surface=Color(0xFF182B37),surfaceContainerLow=Color(0xFF152632),surfaceContainerHigh=Color(0xFF203744),
-  onSurface=Color(0xFFE4F3F7),onSurfaceVariant=Color(0xFFB0C7D1),outlineVariant=Color(0xFF476674))
- else base.copy(surface=Color(0xFFF5FCFE),surfaceContainerLow=Color(0xFFEDF7F9),surfaceContainerHigh=Color(0xFFE6F3F6),
-  onSurface=Color(0xFF203C4A),onSurfaceVariant=Color(0xFF526E7B),outlineVariant=Color(0xFFBBCFD6))
- val palette=if(config.accent=="blue")PremiumMaterial.accent(ice,if(dark)Color(0xFF8CDAEA)else Color(0xFF17758C)) else ice
+ val material=PuenteMaterial.palette(base,dark)
+ val palette=if(config.accent=="blue")PremiumMaterial.accent(material,if(dark)Color(0xFF8CB5FF)else Color(0xFF285EA8)) else material
  MaterialTheme(colorScheme=palette,content=content)
 }
 
 @Composable private fun PuenteSurface(modifier:Modifier=Modifier,content:@Composable ColumnScope.()->Unit) {
  val colors=MaterialTheme.colorScheme
- val shape=RoundedCornerShape(18.dp)
+ val shape=RoundedCornerShape(16.dp)
  Column(modifier.shadow(10.dp,shape,clip=false).clip(shape)
   .background(colors.surface.copy(alpha=.98f))
-  .border(.75.dp,colors.outlineVariant.copy(alpha=.65f),shape),content=content)
+  .border(.75.dp,colors.outlineVariant.copy(alpha=.80f),shape),content=content)
 }
 
 /** No imposed content height: each surface wraps up to the supplied viewport budget.

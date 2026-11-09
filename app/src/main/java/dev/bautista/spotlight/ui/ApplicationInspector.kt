@@ -57,7 +57,10 @@ import kotlinx.coroutines.withContext
         } }
     }
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
-        if(LocalFocusUi.current)Row(Modifier.fillMaxWidth().padding(vertical=8.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+        if(LocalFocusUi.current)Row(Modifier.fillMaxWidth().then(if(LocalPuenteUi.current)Modifier
+            .background(colors.primary.copy(alpha=.08f),RoundedCornerShape(12.dp))
+            .border(.75.dp,colors.primary.copy(alpha=.20f),RoundedCornerShape(12.dp))
+            .padding(horizontal=12.dp,vertical=12.dp) else Modifier.padding(vertical=8.dp)),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
             ResultIcon(item,Modifier.size(40.dp))
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
                 Text(item.title,Modifier.testTag("inspector-title").semantics{heading()},style=MaterialTheme.typography.titleLarge,maxLines=2,overflow=TextOverflow.Ellipsis)
