@@ -1,0 +1,28 @@
+// Read-only AGP variant inspection. No assemble, signing task, key read or dispatch.
+allprojects { project ->
+ project.pluginManager.withPlugin('com.android.application') {
+  def components=project.extensions.getByName('androidComponents')
+  components.onVariants(components.selector().withBuildType('raycastPreview')) { variant ->
+   project.tasks.register('inspectPreview70Identity') {
+    doLast {
+     def type=project.android.buildTypes.getByName('raycastPreview')
+     def outputs=variant.outputs.collect { [code:it.versionCode.get(),name:it.versionName.get()] }
+     assert variant.applicationId.get()=='dev.bautista.spotlight.next.raycastpreview'
+     assert !outputs.isEmpty() && outputs.every { it.code==70 && it.name=='2.0.1-raycast-preview-native57-v70' }
+     assert !type.debuggable && type.minifyEnabled && type.shrinkResources
+     assert type.ndk.abiFilters==(['arm64-v8a'] as Set)
+     println 'PREVIEW70_IDENTITY='+groovy.json.JsonOutput.toJson([package:variant.applicationId.get(),outputs:outputs,
+       debuggable:type.debuggable,minified:type.minifyEnabled,shrinkResources:type.shrinkResources,
+       abi:type.ndk.abiFilters,minSdk:project.android.defaultConfig.minSdkVersion.apiLevel,
+       targetSdk:project.android.defaultConfig.targetSdkVersion.apiLevel,
+       signing:'unchanged source configuration; expected certificate from manifest; no key or APK signature verified in preparation'])
+    }
+   }
+  }
+ }
+}
+
+gradle.taskGraph.whenReady { graph ->
+ assert graph.allTasks.every { it.path == ':app:inspectPreview70Identity' }
+ println 'PREVIEW70_CONFIGURATION_ONLY_NO_APK=true'
+}

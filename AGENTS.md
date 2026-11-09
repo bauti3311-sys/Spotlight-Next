@@ -1,3 +1,16 @@
+## Continuidad vigente — entrega Preview70 Puente autorizada
+
+El propietario pidió «dale manda el apk» tras elegir Puente. Preparar y ejecutar
+UNA entrega native-delivery de70, con aislamiento desde69; no pedir de nuevo
+permiso para esa acción. Fuente143104ce8d83f6ad6b5b4acd80897db579816fcd,
+rama feat/preview70-puente-isolated-20261109. WorkflowSHA=commit de este manifiesto;
+publicar/verificar par antes de ejecutar. Ver docs/NATIVE70-DELIVERY-20261109.md.
+Nueve rutas permitidas, C5 fuera, seisUI idénticas0b1441e.5tests aislados+20offline
+verdes; reutilizar20UI/lintPR. Cerrar reserva de preparación y adquirir NUEVA
+para el dispatch. US$0/stop_on_limit, guardas/firmador885838aa intactos. Un intento,
+sin rerun/fallback/buildalternativo, main/69/versionesprevias conservados. No instalar.
+Este permiso70 no habilita otra entrega ni nuevas funciones. Liberar sóloreserva propia.
+
 ## Continuidad vigente — Puente ligero H02 integrado en Compose
 
 El propietario eligió H02 web y autorizó integración. Código `0b1441e85cc736026f5bee81e1c23eef869e70c1`.

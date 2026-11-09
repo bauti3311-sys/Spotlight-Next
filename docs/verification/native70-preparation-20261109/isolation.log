@@ -1,0 +1,19 @@
+{
+  "source": "143104ce8d83f6ad6b5b4acd80897db579816fcd",
+  "base": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19",
+  "native_implementation": "0b1441e85cc736026f5bee81e1c23eef869e70c1",
+  "allowed_paths": [
+    "app/build.gradle.kts",
+    "app/src/main/java/dev/bautista/spotlight/ui/ApplicationInspector.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/ContextSplitPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassContextFooter.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/PuenteFrame.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/PuenteFrameTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/PuenteNativeIntegrationTest.kt"
+  ],
+  "C5_absent": true,
+  "fileindex_blob_unchanged": true,
+  "preserved": "all other tracked paths identical to Preview69, including permissions/signing/package/dependencies/preferences/ranking/actions/140ms"
+}
