@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 13649134467,
+      "node_id": "MDg6QXJ0aWZhY3QxMzY0OTEzNDQ2Nw==",
+      "name": "Spotlight-Next-Preview-42560494613",
+      "size_in_bytes": 126915435,
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/artifacts/13649134467",
+      "archive_download_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/artifacts/13649134467/zip",
+      "expired": false,
+      "digest": "sha256:cd117c109f18d4e7bf0de4250e6e1aae1d88344a53362b48125edf07b316daef",
+      "created_at": "2026-11-09T04:21:40Z",
+      "updated_at": "2026-11-09T04:21:40Z",
+      "expires_at": "2026-11-12T04:21:38Z",
+      "workflow_run": {
+        "id": 42560494613,
+        "repository_id": 1414613765,
+        "head_repository_id": 1414613765,
+        "head_branch": "feat/preview57-native-return-20261103",
+        "head_sha": "824f3417951c20a0757a46ee27afe8eb7373b719"
+      }
+    },
+    {
+      "id": 13649079493,
+      "node_id": "MDg6QXJ0aWZhY3QxMzY0OTA3OTQ5Mw==",
+      "name": "delivery-unsigned-42560494613",
+      "size_in_bytes": 126896846,
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/artifacts/13649079493",
+      "archive_download_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/artifacts/13649079493/zip",
+      "expired": false,
+      "digest": "sha256:d0817764886c3938d4a242bf16a16403aa93efe5e9f0897194fae8cfb7ef6c7a",
+      "created_at": "2026-11-09T04:21:01Z",
+      "updated_at": "2026-11-09T04:21:01Z",
+      "expires_at": "2026-11-10T04:21:00Z",
+      "workflow_run": {
+        "id": 42560494613,
+        "repository_id": 1414613765,
+        "head_repository_id": 1414613765,
+        "head_branch": "feat/preview57-native-return-20261103",
+        "head_sha": "824f3417951c20a0757a46ee27afe8eb7373b719"
+      }
+    }
+  ]
+}

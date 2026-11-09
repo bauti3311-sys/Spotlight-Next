@@ -1,3 +1,22 @@
+# Preview70 Puente ligero — entregada y verificada
+
+Único intento [42560494613](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42560494613), attempt1SUCCESS;3jobs obligatorios correctos.
+
+Fuente143104ce8d83f6ad6b5b4acd80897db579816fcd; workflow824f3417951c20a0757a46ee27afe8eb7373b719. [APK+ZIP y comprobantes en GitHub](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42560494613/artifacts/13649134467).
+
+APK firmado70, versionName2.0.1-raycast-preview-native57-v70, paquetePreview histórico, ARM64/noDebuggable/R8/shrink/min26/target35. Verificación independiente local: un firmante/v2/certificado885838aa igual69, zipalign/ELF16KiB, payloadunsigned/procedencia, hashesCI y ZIPigualgitarchive byte por byte. SourceZIP contiene Puente idéntico0b1441e y excluye C5.
+
+- APK SHA256:`fbd84c7b560cf3bcc2552aeade153ba8777585d5e6f2b8bb9d83a36e9febbfad`
+- ZIP SHA256:`5f4f920116b30ee7253c2463eeec9b3443f1af1b01d3baa85f5ef5bb853ac53e`
+
+La descargaCLI falló403 en redirecciónAzure; el conectorGitHub recuperó el mismo artefacto. Se comprobó su digest del ZIP de transporte contra laAPI de GitHub antes de extraer. No hubo nueva ejecución, fallback de build ni compilación independiente. Firma e identidad sí se comprobaron localmente.
+
+Tests/lint se distinguen de CI:5casos en fuente aislada y20offline; se reutilizan20UI/lint0E del códigoidéntico0b1441e. CI ejecutó ensambladoR8 y verificadores, no otra suite ni lint. Actualización70>69 estáticamente compatible; instalación, conservación física, Gboard/IME/rotación y rendimiento pendientes. No se instaló nada ni se promueve a estable.
+
+Autorización70 CONSUMIDA. No otrointento/rerun/fallback. Reserva propia se cierra con notas atómicas; main, fuentes68/69, C5/experimentos y PR21borrador preservados. Evidencia pública de entrega en verification/native70-delivery-20261109; claves/credenciales nunca archivadas.
+
+## Preparación histórica del intento
+
 # Preview70 Puente ligero — preparación y único intento autorizado
 
 Autorización vigente del propietario en esta sesión: «dale manda el apk», tras elegir e integrar H02 Puente ligero. Se autoriza la entrega solicitada con su numeración siguiente y una sola ejecución nativa; no se reutiliza la autorización69. Se fija el par antes del despacho y se mantiene el protocolo/firmador/guardas existentes, sin pedir de nuevo permiso para la acción ya solicitada.

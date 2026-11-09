@@ -1,3 +1,14 @@
+## Continuidad vigente — Preview70 Puente entregada
+
+Único native-delivery run42560494613 attempt1SUCCESS. Fuente143104c aislada69,
+workflow824f341. APK70 yZIP exacto verificados independientemente: paquetePreview,
+ARM64/noDebuggable/R8, un firmante/v2/885838aa igual69, hashes/zipalign/ELF16KiB,
+ZIPigualgitarchive ypayloadsigned/unsigned. DescargaCLI403 resuelta por conector
+GitHub; digest de transporte verificado. Ver docs/NATIVE70-DELIVERY-20261109.md.
+Autorización70 CONSUMIDA; no rerun/fallback/otraentrega sin nueva decisión.
+No instalar/desinstalar, main/69/C5 íntegros, PR21borrador. Física pendiente;
+no declarar C2/C5/VisualFirst terminados. Liberar sólo reserva propia con notas.
+
 ## Continuidad vigente — entrega Preview70 Puente autorizada
 
 El propietario pidió «dale manda el apk» tras elegir Puente. Preparar y ejecutar

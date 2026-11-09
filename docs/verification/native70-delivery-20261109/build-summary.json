@@ -1,0 +1,31 @@
+{
+  "run_id": 42560494613,
+  "run_attempt": 1,
+  "mandatory_jobs": [
+    {
+      "id": 128975627271,
+      "name": "delivery-preflight",
+      "conclusion": "success",
+      "started_at": "2026-11-09T04:12:23Z",
+      "completed_at": "2026-11-09T04:12:36Z"
+    },
+    {
+      "id": 128975704776,
+      "name": "delivery-unsigned",
+      "conclusion": "success",
+      "started_at": "2026-11-09T04:12:38Z",
+      "completed_at": "2026-11-09T04:21:05Z"
+    },
+    {
+      "id": 128978197637,
+      "name": "delivery-sign",
+      "conclusion": "success",
+      "started_at": "2026-11-09T04:21:07Z",
+      "completed_at": "2026-11-09T04:21:42Z"
+    }
+  ],
+  "R8_task_observed": true,
+  "gradle_build": "success",
+  "tests": "5 isolated cases; reused20 exact-UI cases",
+  "lint": "reused source0b1441e lintDebug0E/23W/1I; no new CI lint task"
+}
