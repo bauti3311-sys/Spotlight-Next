@@ -1,3 +1,14 @@
+## Continuidad vigente — catálogo funcional interactivo, sólo elección
+
+Propietario pidió «ahora hace lo mismo pero en cuanto a funciones».36opciones F01–F36
+conservadas;11demos locales editables y25recorridos Android ficticios. Galeríaoffline,
+19PNG Chromium yPDF11p; ver docs/FUNCTION-LAB-20261109.md.211comprobaciones web,
+sin Android/Compose/efectos externos. RecomendadasF08/F12/F34/F33 másF01/F02/F07/F36.
+Ninguna nueva función adoptada/implementada. Esperar elección antes de desarrollar;
+selección no autoriza envíos ni otras capacidades sensibles. Puente/Preview70/C2/C5,
+catálogo anterior, main/versiones/firmas intactos. SinAPK/Actions/permisos/deps.
+C3/C4 pausados, C5físico bloqueado. Liberar sólo reserva propia con notas atómicas.
+
 ## Continuidad vigente — Preview70 Puente entregada
 
 Único native-delivery run42560494613 attempt1SUCCESS. Fuente143104c aislada69,

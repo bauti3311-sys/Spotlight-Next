@@ -1,0 +1,1065 @@
+{
+  "scope": "Chromium web laboratorio, no Android ni Compose",
+  "loading": "Playwright set_content del HTML exacto; no se probó navegación file://",
+  "checks": [
+    {
+      "name": "36 IDs originales, mismo título y grupo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "36 tarjetas visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F01 recorrido inicial sin error",
+      "passed": true,
+      "detail": "1.070"
+    },
+    {
+      "name": "F01 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F01 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F02 recorrido inicial sin error",
+      "passed": true,
+      "detail": "2.500 m"
+    },
+    {
+      "name": "F02 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F02 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F03 recorrido inicial sin error",
+      "passed": true,
+      "detail": "29/11/2026"
+    },
+    {
+      "name": "F03 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F03 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F04 recorrido inicial sin error",
+      "passed": true,
+      "detail": "15 de nov de 2026, 18:00"
+    },
+    {
+      "name": "F04 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F04 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F05 recorrido inicial sin error",
+      "passed": true,
+      "detail": "6.600 por persona"
+    },
+    {
+      "name": "F05 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F05 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F06 recorrido inicial sin error",
+      "passed": true,
+      "detail": "100.000 ARS"
+    },
+    {
+      "name": "F06 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F06 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F07 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Hola equipo\nreunión mañana"
+    },
+    {
+      "name": "F07 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F07 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F08 recorrido inicial sin error",
+      "passed": true,
+      "detail": "− Entrega el lunes\n+ Entrega el martes\n  Presupuesto: 900"
+    },
+    {
+      "name": "F08 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F08 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F09 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Hola Luz, nos vemos el 18/11."
+    },
+    {
+      "name": "F09 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F09 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F10 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Revisar presupuesto el jueves\nReferencia: Proyecto Aurora · archivo ficticio"
+    },
+    {
+      "name": "F10 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F10 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F10 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F10 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F11 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Presupuesto Aurora · fixture\nRetención de ejemplo: 15 min"
+    },
+    {
+      "name": "F11 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F11 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F11 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F11 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F12 recorrido inicial sin error",
+      "passed": true,
+      "detail": "https://ejemplo.test/informe?id=42#resumen"
+    },
+    {
+      "name": "F12 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F12 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F13 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Consulta: presupuesto\nCarpeta: Documentos / Aurora\nUn archivo de ejemplo · sin acceso real"
+    },
+    {
+      "name": "F13 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F13 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F13 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F13 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F14 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Plan Aurora.txt\n«La entrega el martes requiere revisión.»\nFuente: fixture-txt-aurora · página: no aplicable\nNo hubo extracción PDF ni evaluación semántica."
+    },
+    {
+      "name": "F14 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F14 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F14 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F14 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F15 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Guía Aurora.pdf\nRetomar página 12 · sólo referencia de ejemplo"
+    },
+    {
+      "name": "F15 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F15 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F15 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F15 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F16 recorrido inicial sin error",
+      "passed": true,
+      "detail": "OCR no ejecutado\nTexto fixture: Total 30?0\nHay un carácter incierto: requiere revisión"
+    },
+    {
+      "name": "F16 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F16 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F16 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F16 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F17 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Plan Aurora.txt\n«La entrega el martes requiere revisión.»\nFuente: fixture-txt-aurora · página: no aplicable\nNo hubo extracción PDF ni evaluación semántica."
+    },
+    {
+      "name": "F17 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F17 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F17 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F17 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F18 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Contenido fixture duplicado en dos TXT\nSHA-256 real del texto ficticio:\naffcaffccbf3489a982dc6ca16336c07a2e95d260d84685f2f6b2cc7df044c0e\n0 archivos del dispositivo leídos"
+    },
+    {
+      "name": "F18 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F18 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F18 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F18 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F19 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Día solicitado: Hoy\n09:00 Revisión Aurora · fixture\n14:00 Planificación · fixture"
+    },
+    {
+      "name": "F19 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F19 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F19 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F19 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F20 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Borrador: Revisión Aurora\n2026-11-18 10:00\nGuardar depende del calendario y del usuario"
+    },
+    {
+      "name": "F20 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F20 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F20 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F20 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F21 recorrido inicial sin error",
+      "passed": true,
+      "detail": "09:00–09:45"
+    },
+    {
+      "name": "F21 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F21 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Alex · +54 9 11 5555-0101\nRevisar antes de cualquier acción"
+    },
+    {
+      "name": "F22 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F23 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Luz Benítez\n+54 9 11 5555-0103\nACTION_DIAL: revisar en el marcador"
+    },
+    {
+      "name": "F23 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F23 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F23 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F23 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F24 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Para: luz@example.test\nAsunto: Revisión Aurora\nTe comparto el borrador para revisar.\nSólo borrador; sin envío"
+    },
+    {
+      "name": "F24 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F24 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F24 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F24 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F25 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Mapas de ejemplo\nAbrir: disponible sólo en fixture\nBuscar: requiere resolver entrada pública al ejecutar"
+    },
+    {
+      "name": "F25 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F25 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F25 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F25 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F26 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Consulta: cafeterías\nAplicación receptora: Mapas de ejemplo\nSitio web: maps.example.test\nSin fallback automático"
+    },
+    {
+      "name": "F26 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F26 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F26 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F26 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F27 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Contenido: Informe Aurora.txt · fixture\nDestino: Compartir con…\nSólo solicitud a hoja de compartir; entrega sin verificar"
+    },
+    {
+      "name": "F27 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F27 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F27 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F27 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F28 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Luz · Revisión Aurora mañana\nNotificación actual FICTICIA"
+    },
+    {
+      "name": "F28 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F28 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F28 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F28 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F29 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Notificación fixture: Luz · Aurora · fixture\nRespuesta a revisar: Recibido, lo reviso.\nNo hay RemoteInput real en este navegador"
+    },
+    {
+      "name": "F29 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F29 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F29 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F29 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F30 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Sesión fixture: Reproductor de prueba\nPausa anunciada · salto NO disponible\nNo se observó ningún reproductor real"
+    },
+    {
+      "name": "F30 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F30 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F30 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F30 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F31 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Favorito: Conversión · km a m\nParámetros se revisan en cada uso"
+    },
+    {
+      "name": "F31 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F31 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F31 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F31 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F32 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Alias: mapa\nParámetro: cafeterías\nDestino: Mapas de ejemplo\nRevisión previa, sin ejecutar scripts"
+    },
+    {
+      "name": "F32 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F32 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F32 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F32 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F33 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Proyecto: Aurora\nConsulta guardable: presupuesto\nPermiso de carpeta debe revalidarse"
+    },
+    {
+      "name": "F33 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F33 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F33 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F33 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F34 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Proyecto Aurora\nNotas de reunión.txt\nCarpeta Aurora\nApp de calendario\nEnlace del proyecto\nElegir un recurso; no abrir todos"
+    },
+    {
+      "name": "F34 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F34 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F34 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F34 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F35 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Temporizador: 15 min\nEtiqueta: Descanso\nReloj compatible debe aceptar y mostrar el estado"
+    },
+    {
+      "name": "F35 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F35 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F35 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F35 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F36 recorrido inicial sin error",
+      "passed": true,
+      "detail": "Área: Documentos\nArchivos desactivados · fixture\nModelo no instalado · fixture\nPrivado activo · fixture\nNo cambia permisos ni preferencias reales"
+    },
+    {
+      "name": "F36 evidencia y base visibles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F36 doble activación: sólo una simulada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F36 cancelar limpia resultado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F36 Escape limpia y cierra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "aritmética editable real",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "código no evaluado",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "división por cero rechazada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unidades incompatibles rechazadas",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "fecha inexistente rechazada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "fecha bisiesta real",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "horario real destino",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "propina y reparto",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "reparto redondeo sin perder centavos",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "tasa manual honesta",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "limpieza de espacios real",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "diff detecta cambio",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "plantilla no interpreta HTML",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "limpieza conserva parámetro funcional y fragmento",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "rechazo de protocolo ejecutable",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "hueco calculado sobre agenda identificada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "homónimos no elegidos automáticamente",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F13 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F13 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F14 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F14 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F15 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F15 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F17 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F17 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F27 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F27 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F28 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F28 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F29 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F29 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F30 revocación fixture limpia y bloquea",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F30 nueva consulta no restaura fuente revocada",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "cambiar destino invalida revisión y solicitud",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "8 recomendaciones sin C3/C4/C5",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "buscador filtra",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "selección en memoria",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "orden de prioridades",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "exportación real sin autorización implícita",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "vaciar selección",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "catálogo sin desborde 390px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F08 teléfono sin desborde",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F12 teléfono sin desborde",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F22 teléfono sin desborde",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "F34 teléfono sin desborde",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "ventana compacta 330px sin desborde",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "texto ampliado laboratorio sin desborde horizontal",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "ningún error JavaScript",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "ninguna solicitud de red",
+      "passed": true,
+      "detail": "[]"
+    }
+  ],
+  "passed": 211,
+  "total": 211,
+  "network_requests": [],
+  "javascript_errors": []
+}

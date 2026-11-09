@@ -1,0 +1,13 @@
+{
+  "baseline": "dccc9c5fc34a58432e7101b4934a3b15add2ad11",
+  "production_or_previous_catalogue_diff": [],
+  "remote_preserved_refs": {
+    "refs/heads/main": "47259ce2d7259f0ddfa5d85b7c73f07983d8cd6d",
+    "refs/heads/feat/preview68-visual-isolated-20261107": "c51677b79446ce1dc8213553891d45897b14d726",
+    "refs/heads/feat/preview69-c2-isolated-20261108": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19",
+    "refs/heads/feat/preview70-puente-isolated-20261109": "143104ce8d83f6ad6b5b4acd80897db579816fcd"
+  },
+  "apk_or_actions_executed": false,
+  "c5_code_changed": false,
+  "scope": "documentation and offline web laboratory only"
+}
