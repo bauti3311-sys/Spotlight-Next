@@ -13,9 +13,9 @@ import org.robolectric.annotation.Config
 @Config(sdk=[33],application=Application::class)
 class ReplyConfirmationTest {
     private val context get() = RuntimeEnvironment.getApplication()
-    private fun put(title: String = "Juan", conversation: String = "juan", requestCode: Int = 1): ReplyTarget {
+    private fun put(title: String = "Juan", conversation: String = "juan", requestCode: Int = 1, inputKey: String = "body"): ReplyTarget {
         val pi = PendingIntent.getBroadcast(context, requestCode, Intent("reply.fixture.$requestCode"), PendingIntent.FLAG_MUTABLE)
-        val action = Notification.Action.Builder(null, "Responder", pi).addRemoteInput(RemoteInput.Builder("body").build()).build()
+        val action = Notification.Action.Builder(null, "Responder", pi).addRemoteInput(RemoteInput.Builder(inputKey).build()).build()
         val n = Notification.Builder(context, "test").setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title).setContentText("Fixture").setShortcutId(conversation).addAction(action).build()
         Replies.put(StatusBarNotification("com.whatsapp", "com.whatsapp", 1, null, 1000, 0, 0, n, android.os.Process.myUserHandle(), 1700000000000))
@@ -62,4 +62,19 @@ class ReplyConfirmationTest {
         assertEquals("Ya salgo para allá", compose.text)
         assertEquals(reviewed.key, compose.replyKey)
     }
+    @Test fun samePendingIntentWithChangedReplyFieldRequiresNewReview() {
+        val reviewed=put()
+        put(inputKey="other-body")
+        assertThrows(IllegalStateException::class.java) { Replies.send(context, reviewed.key, "Texto aprobado", reviewed) }
+        assertEquals(1, Replies.targets.value.size)
+    }
+
+    @Test fun cancelledPendingIntentConsumesTheTargetWithoutRetry() {
+        val reviewed=put()
+        reviewed.action!!.actionIntent.cancel()
+        assertThrows(IllegalStateException::class.java) { Replies.send(context, reviewed.key, "Texto aprobado", reviewed) }
+        assertTrue(Replies.targets.value.isEmpty())
+        assertThrows(IllegalStateException::class.java) { Replies.send(context, reviewed.key, "Texto aprobado", reviewed) }
+    }
+
 }

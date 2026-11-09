@@ -1,0 +1,43 @@
+{
+  "repository": "bauti3311-sys/Spotlight-Next",
+  "pullRequest": 20,
+  "commit": "00fec133c6de9f286aab02239928ef309ec63cb0",
+  "adaptation": "Native Kotlin/Compose by explicit owner decision 2026-11-03; no bridge implementation or web UI imported",
+  "files": [
+    {
+      "path": ".agents/skills/spotlight-api-contracts/SKILL.md",
+      "sourceBlob": "8d36a4ede7186acebfb1ee3b2afd7e210aff7c3a",
+      "sourceSha256": "79aac8b3e1c787a013d06ee846ff3cbf89294405e8bd3be45a84d7515fde6e96"
+    },
+    {
+      "path": ".agents/skills/spotlight-api-contracts/references/bridge-contract.json",
+      "sourceBlob": "f6b84e474053c01fa3564f3ec0dddb81a7676a9a",
+      "sourceSha256": "b312a54b3d430c78cf712b4f6156bbb25afeb9453d1d156d267f2fe0fcbf23e6"
+    },
+    {
+      "path": ".agents/skills/spotlight-api-contracts/references/test-matrix.md",
+      "sourceBlob": "717f9858b210ee2c422210f4d8daa7fb3520f7ef",
+      "sourceSha256": "5665ee7025e67218268b1e735702b5f73c68e5344f0eb73e5548290f09406525"
+    },
+    {
+      "path": ".agents/skills/spotlight-openui-forms/SKILL.md",
+      "sourceBlob": "dd05f97afb768592ed75c3e846f0379f41a54c4d",
+      "sourceSha256": "2c39d01aebaf459a14d8dac43ebf9a287e4ba8f0211672fd2984bf0c1eb3a44b"
+    },
+    {
+      "path": ".agents/skills/spotlight-openui-forms/references/safe-components.md",
+      "sourceBlob": "105445de8c0a61339c100c38a0f366d53809c5b3",
+      "sourceSha256": "9834367e7ca67b2e3d210f2344359aaa930caa94c0894fdc74f39aa214b329bb"
+    },
+    {
+      "path": ".agents/skills/spotlight-ragflow-documents/SKILL.md",
+      "sourceBlob": "2772e87d797dd304436cd729c1c31f7d718fc264",
+      "sourceSha256": "f00c6c81ac4819dccd6d1c8aa0a1d96d21f7e387419e18afc3648602c93611d0"
+    },
+    {
+      "path": ".agents/skills/spotlight-ragflow-documents/references/provider-contract.md",
+      "sourceBlob": "a0069e8677cb024aad08b575a46e86ae7078bd71",
+      "sourceSha256": "6b4911cac47fb71751803dcba61e92979354c3c55f9d359ce0cf1887b6ca2b67"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.OverlayWindowMotionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-06T04:14:47" hostname="52363180d3ce" time="2.555">
+  <properties/>
+  <testcase name="openingRemainsVisibleAndAcceptsInputBeforeAnimationFinishes" classname="dev.bautista.spotlight.overlay.OverlayWindowMotionTest" time="2.413"/>
+  <testcase name="reducedMotionIsImmediatelyVisibleAndClosesWithoutAnAnimationCallback" classname="dev.bautista.spotlight.overlay.OverlayWindowMotionTest" time="0.073"/>
+  <testcase name="actualCloseDurationIs100msAndKeepsTheHostLayout" classname="dev.bautista.spotlight.overlay.OverlayWindowMotionTest" time="0.069"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

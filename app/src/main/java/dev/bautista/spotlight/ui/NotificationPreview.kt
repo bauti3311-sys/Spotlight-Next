@@ -29,6 +29,7 @@ import java.util.Date
         }}
     }
 }
+@OptIn(ExperimentalLayoutApi::class)
 @Composable fun NotificationPreview(key:String,onAction:(Action)->Unit,onCopy:(String)->Unit,onClose:()->Unit){
     val entries by Replies.targets.collectAsState();val target=entries.firstOrNull{it.key==key}
     var error by remember(key){mutableStateOf("")};val context=LocalContext.current
@@ -36,8 +37,8 @@ import java.util.Date
         if(target==null){Text("La notificación ya no está disponible");TextButton(onClick=onClose){Text("Volver")}}
         else{
             ReceivedMessages(target)
-            Row{Button(enabled=target.action!=null,onClick={onAction(Action.ComposeMessage(if(target.packageName=="com.whatsapp.w4b")"whatsapp_business" else "whatsapp",target.title,replyKey=key))}){Text("Responder")};TextButton(enabled=target.open!=null,onClick={runCatching{target.open?.send(context,0,null)}.onSuccess{onClose()}.onFailure{error="La acción para abrir la conversación venció."}}){Text("Abrir")}}
-            Row{TextButton(enabled=target.messages.isNotEmpty(),onClick={onCopy(target.visibleText)}){Text("Copiar mensaje")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Resumí estos mensajes de WhatsApp en español:\n"+target.visibleText,true,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Resumir con IA")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Redactá una respuesta breve y natural en español para estos mensajes de WhatsApp:\n"+target.visibleText,true,messageTarget=target.title,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Sugerir respuesta con IA")};TextButton(onClick=onClose){Text("Volver")}}
+            FlowRow(verticalArrangement=Arrangement.spacedBy(4.dp)){Button(enabled=target.action!=null,onClick={onAction(Action.ComposeMessage(if(target.packageName=="com.whatsapp.w4b")"whatsapp_business" else "whatsapp",target.title,replyKey=key))}){Text("Responder")};TextButton(enabled=target.open!=null,onClick={runCatching{target.open?.send(context,0,null)}.onSuccess{onClose()}.onFailure{error="La acción para abrir la conversación venció."}}){Text("Abrir")}}
+            FlowRow(verticalArrangement=Arrangement.spacedBy(4.dp)){TextButton(enabled=target.messages.isNotEmpty(),onClick={onCopy(target.visibleText)}){Text("Copiar mensaje")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Resumí estos mensajes de WhatsApp en español:\n"+target.visibleText,true,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Resumir con IA")};TextButton(enabled=target.messages.isNotEmpty(),onClick={onAction(AiRequestPolicy.prepare(Action.Ask("Redactá una respuesta breve y natural en español para estos mensajes de WhatsApp:\n"+target.visibleText,true,messageTarget=target.title,origin=AiInputOrigin.PRIVATE_CONTEXT)))}){Text("Sugerir respuesta con IA")};TextButton(onClick=onClose){Text("Volver")}}
             if(target.action==null)Text("WhatsApp no publicó una acción de respuesta directa.",style=MaterialTheme.typography.bodySmall)
             if(error.isNotBlank())Text(error,color=MaterialTheme.colorScheme.error)
         }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.sharing.SharedInputActivityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-04T13:05:33" hostname="c880c3bda6d8" time="3.003">
+  <properties/>
+  <testcase name="multipleFilesUseExistingExtractionAndDeduplicateBeforeReading" classname="dev.bautista.spotlight.sharing.SharedInputActivityTest" time="2.867"/>
+  <testcase name="invalidIncomingUriPreservesExistingContextAndDoesNotLaunch" classname="dev.bautista.spotlight.sharing.SharedInputActivityTest" time="0.096"/>
+  <testcase name="clipTextCreatesExplicitLocalContextAndOnlyRequestsTheSpotlightEntry" classname="dev.bautista.spotlight.sharing.SharedInputActivityTest" time="0.04"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

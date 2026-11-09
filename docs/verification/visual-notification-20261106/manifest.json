@@ -1,0 +1,33 @@
+{
+  "base": "73af4d61d27fabf875c90cbd75cf195ab45352b3",
+  "pairs": [
+    {
+      "name": "dark-1000dp-text100.png",
+      "before_sha256": "c60da1f93179674d5832889bc093021564960c9418ce17713ab62e6eea841728",
+      "after_sha256": "c60da1f93179674d5832889bc093021564960c9418ce17713ab62e6eea841728"
+    },
+    {
+      "name": "dark-330dp-text200.png",
+      "before_sha256": "2871ae1b9ce14ce82ec2501fa445aae1b8309411712b5b77267b2ae8f96fa1af",
+      "after_sha256": "80f81f6e8bb601dffcae13eeabf6eab66cf578e1d425650bcde5704bed73c942"
+    },
+    {
+      "name": "light-330dp-text200.png",
+      "before_sha256": "d6fa3215bdb0998ff11c704d57ff8d99768e107ad411724241dc8b61c59d9803",
+      "after_sha256": "c01ae5a8a2d10333b433c4c0527050d2e86abef4941358160b18a77e9732304d"
+    },
+    {
+      "name": "light-390dp-text100.png",
+      "before_sha256": "0531f8d5dc831cffc6b80281d802fd1865405898c8f989cf341e8b036b0ec01d",
+      "after_sha256": "f63799e414fec0346091ad7f39681109e2fc038f7389803418364ca669ae35b2"
+    }
+  ],
+  "source_sha256": "c4743bd5e958c831237bcee9fda486f6f19da5ef0ca66d3f86c960aed3b2f51c",
+  "platform": "Compose / Robolectric API33 native graphics / density1",
+  "fixtures": "Synthetic notification, local callback collectors; no PendingIntent.send, AI request, clipboard write or external effect executed",
+  "limits": [
+    "Not a physical screenshot",
+    "No APK, Actions, new functionality or performance measurement"
+  ],
+  "directed_cases_passed": 18
+}

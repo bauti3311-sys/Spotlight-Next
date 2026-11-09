@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SettingsReviewCaptureTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-09T14:03:13" hostname="375f5b578860" time="5.882">
+  <properties/>
+  <testcase name="homeIsCompactAndDoesNotRequestPermissions" classname="dev.bautista.spotlight.ui.SettingsReviewCaptureTest" time="4.767"/>
+  <testcase name="phoneHomeAndLightThemeRemainUsable" classname="dev.bautista.spotlight.ui.SettingsReviewCaptureTest" time="0.349"/>
+  <testcase name="shortcutsNavigateWithoutChangingPreferences" classname="dev.bautista.spotlight.ui.SettingsReviewCaptureTest" time="0.178"/>
+  <testcase name="functionCenterShowsRealUnconfiguredStatesAndCanReturn" classname="dev.bautista.spotlight.ui.SettingsReviewCaptureTest" time="0.36"/>
+  <testcase name="guideRequiresSelectionAndExplicitActionForEachPermission" classname="dev.bautista.spotlight.ui.SettingsReviewCaptureTest" time="0.227"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,12 @@
+# From PR worktree, Python offline guard tests (fixtures, no dispatch):
+python3 docs/verification/native69-preparation-20261108/verify_isolation.py
+python3 -m unittest discover -s scripts -p test_preview_delivery.py -v
+
+# Java17 / Android SDK configured. Only configuration of isolated source:
+bash /workspace/Spotlight-Next-preview69/gradlew -p /workspace/Spotlight-Next-preview69 :app:inspectPreview69Identity -I /workspace/Spotlight-Next/docs/verification/native69-preparation-20261108/inspect-identity.init.gradle --offline --no-daemon --max-workers=1 --console=plain
+
+# From isolated source69 worktree, only two JVM test classes; no APK graph permitted:
+bash gradlew :app:testDebugUnitTest --tests '*C2RelevanceCorpusTest' --tests '*C2AppOpenJourneyTest' -I /workspace/Spotlight-Next/scripts/directed-tests.init.gradle -I /workspace/Spotlight-Next/docs/verification/c2-app-open-20261107/no-apk.init.gradle -PspotlightDirectedClasses=dev.bautista.spotlight.search.C2RelevanceCorpusTest,dev.bautista.spotlight.ui.C2AppOpenJourneyTest -Pkotlin.compiler.execution.strategy=in-process --offline --no-daemon --max-workers=1 --console=plain
+
+# Signing/install/assemble/connected tasks were rejected by the graph guard.
+# No model or document downloads. C5 absent; no physical Android execution.

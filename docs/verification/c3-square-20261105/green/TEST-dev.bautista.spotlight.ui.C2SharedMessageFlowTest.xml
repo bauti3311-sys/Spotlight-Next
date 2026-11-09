@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-06T02:49:01" hostname="52363180d3ce" time="6.522">
+  <properties/>
+  <testcase name="escapeFromPreparedShareReturnsQueryAndFocusWithoutRequest" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="4.553"/>
+  <testcase name="revokedShareAtConfirmationDoesNotOpenAnAlternative" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.46"/>
+  <testcase name="captureGmailCapability" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.252"/>
+  <testcase name="gmailInspectorCannotUseADifferentDefaultMailClient" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.081"/>
+  <testcase name="captureDark" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.101"/>
+  <testcase name="captureLight" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.081"/>
+  <testcase name="unavailableGmailShareIsDisabledWithReason" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.072"/>
+  <testcase name="restoringSharedDraftDoesNotRestoreItsConfirmation" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.135"/>
+  <testcase name="newContextDoesNotReplaceAnEditedDraftOrAuthorizeIt" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.112"/>
+  <testcase name="sharedQueryReviewScrollAndConfirmationRequestExactAppOnce" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.46"/>
+  <testcase name="contextRequiresSelectionReviewAndConfirmationToRequestSelectedApp" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.098"/>
+  <testcase name="contextLimitIsVisibleAndNoDocumentIsRead" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="0.117"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

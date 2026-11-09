@@ -1,0 +1,13 @@
+{
+  "base_sha": "b744ecf609d6ad14f7bc3bd76421cf44c37f567a",
+  "decision": "NO_GO",
+  "new_tests_compilations_signatures_apks_installs_instrumentation_actions": 0,
+  "new_c5_metrics": null,
+  "protected_sources_and_prior_evidence_unchanged": true,
+  "sha256": {
+    "adb-devices.txt": "36f15c2fe32964a6fbe902e914a47739d4e6304b0d3e812bf08096ff0419b7ae",
+    "environment-decision.json": "552f20cb69ec1edec0e7f3aca490d1a0e7b423dfac45c5c2016ed2f77aa425bc",
+    "README.md": "ff6a4bef4ceb8a68e4f921d5a7e91d4292749c7b63e84d5980ca51956e6e1269",
+    "avd-list.txt": "3d2a618357408835fb369d8f920f989880154b4802717a82fb67e48ffc8647dd"
+  }
+}

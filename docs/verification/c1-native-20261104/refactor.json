@@ -1,0 +1,42 @@
+{
+  "suites": [
+    {
+      "name": "dev.bautista.spotlight.ui.C1SceneContractTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.NativeLaunchFlowTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.FloatingSearchFlowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "identicalCaptureBytes": {
+    "tablet-dark-inspector.png": true,
+    "tablet-light-inspector.png": true,
+    "tablet-dark-home.png": true,
+    "phone-light-inspector.png": true,
+    "phone-light-ime-budget.png": true,
+    "phone-dark-inspector.png": true
+  },
+  "productionChanges": "presentation extraction only",
+  "captureSynchronization": "Phone light repeated alone after waiting for asynchronous package version, before any visual change; all six now byte-identical. Original mismatch is preserved in structural commit."
+}

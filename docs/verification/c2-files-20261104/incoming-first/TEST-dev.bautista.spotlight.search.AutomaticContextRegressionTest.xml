@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.AutomaticContextRegressionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-04T20:26:05" hostname="c880c3bda6d8" time="2.507">
+  <properties/>
+  <testcase name="automaticCaptureDoesNotReplaceExplicitContext" classname="dev.bautista.spotlight.search.AutomaticContextRegressionTest" time="2.402"/>
+  <testcase name="repeatedCapturePreservesIdentityAndExpiry" classname="dev.bautista.spotlight.search.AutomaticContextRegressionTest" time="0.067"/>
+  <testcase name="dismissalIsRespectedUntilClipboardActuallyChanges" classname="dev.bautista.spotlight.search.AutomaticContextRegressionTest" time="0.038"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

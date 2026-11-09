@@ -1,0 +1,74 @@
+{
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.oneReviewCannotLaunchTwiceBeforeRecomposition": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.editedBodyInvalidatesEvenAPreviouslyCapturedConfirmCallback": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.editingAndLeavingTheReviewNeverRequestsAnIntent": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.whatsappReviewShowsTheExactInternationalNumberBeforePreparingIt": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.restoredDraftRequiresAnotherReviewAndNeverRestoresApproval": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.cancelledPendingIntentConsumesTheTargetWithoutRetry": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.replySeparatorsKeepTheRecipientAndDraftUnchanged": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.reviewedTargetDispatchesOnceAndCannotBeRepeated": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.missingTargetAndDisconnectedListenerNeverDispatch": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.samePendingIntentWithChangedReplyFieldRequiresNewReview": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.control.ReplyConfirmationTest.changedConversationOrRecipientRequiresAnotherHumanReview": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.NotificationCardLayoutTest.tabletDarkStandard": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.NotificationCardLayoutTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.NotificationCardLayoutTest.phoneLightStandard": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.NotificationCardLayoutTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.NotificationCardLayoutTest.compactDarkText200": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.NotificationCardLayoutTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.NotificationCardLayoutTest.compactLightText200": {
+    "xml": "docs/verification/visual-notification-20261106/green/TEST-dev.bautista.spotlight.ui.NotificationCardLayoutTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.NotificationCardLayoutTest.wrappedActionsKeepTabShiftTabAndEnterOrder": {
+    "xml": "docs/verification/visual-notification-20261106/keyboard/TEST-dev.bautista.spotlight.ui.NotificationCardLayoutTest.xml",
+    "passed": true
+  }
+}

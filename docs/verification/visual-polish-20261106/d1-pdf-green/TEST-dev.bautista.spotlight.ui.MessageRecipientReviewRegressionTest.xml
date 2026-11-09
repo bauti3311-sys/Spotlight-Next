@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-06T04:09:15" hostname="52363180d3ce" time="4.874">
+  <properties/>
+  <testcase name="oneReviewCannotLaunchTwiceBeforeRecomposition" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="3.932"/>
+  <testcase name="editedBodyInvalidatesEvenAPreviouslyCapturedConfirmCallback" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.187"/>
+  <testcase name="editingAndLeavingTheReviewNeverRequestsAnIntent" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.185"/>
+  <testcase name="selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.27"/>
+  <testcase name="whatsappReviewShowsTheExactInternationalNumberBeforePreparingIt" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.128"/>
+  <testcase name="restoredDraftRequiresAnotherReviewAndNeverRestoresApproval" classname="dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest" time="0.172"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

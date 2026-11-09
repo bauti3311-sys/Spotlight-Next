@@ -1,0 +1,36 @@
+{
+  "scope": "JVM fixtures only; no real Android dispatch, account, private files or volume changes",
+  "before": {
+    "tests": 3,
+    "failures": 2
+  },
+  "after": [
+    {
+      "class": "dev.bautista.spotlight.ai.ToolSequenceExecutionTest",
+      "tests": 6,
+      "failures": 0,
+      "xml": "after/xml/TEST-dev.bautista.spotlight.ai.ToolSequenceExecutionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ai.PlanExecutionTest",
+      "tests": 7,
+      "failures": 0,
+      "xml": "after/xml/TEST-dev.bautista.spotlight.ai.PlanExecutionTest.xml"
+    },
+    {
+      "class": "dev.bautista.spotlight.ai.C6PendingGateTest",
+      "tests": 3,
+      "failures": 0,
+      "xml": "after/xml/TEST-dev.bautista.spotlight.ai.C6PendingGateTest.xml"
+    }
+  ],
+  "unique_passed_cases": 16,
+  "lint": {
+    "Error": 0,
+    "Warning": 23,
+    "Information": 1
+  },
+  "in_preview71": false,
+  "c6_complete": false,
+  "no_new_apk_actions": true
+}

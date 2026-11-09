@@ -86,6 +86,8 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
     val commandAccent=rememberCommandAccent(contextResult)
+    val focusRing=GlassTokens.focusRing()
+    StudioSurface("actions",Modifier.fillMaxWidth()) {
     Column(Modifier.fillMaxWidth().heightIn(max=GlassTokens.actionPanelMaxHeight).padding((12f*d).dp).testTag("context-action-panel")
         .onPreviewKeyEvent { e ->
             if(e.type!=KeyEventType.KeyDown)false
@@ -109,13 +111,16 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 }
             }
         }) {
-        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(10.dp)).border(1.dp,colors.onSurface.copy(alpha=.12f),RoundedCornerShape(10.dp)),verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().heightIn(min=48.dp).background(if(LocalPuenteUi.current)colors.surfaceContainerLow else colors.onSurface.copy(alpha=.035f),RoundedCornerShape(10.dp))
+            .border(1.dp,if(LocalPuenteUi.current)colors.outlineVariant else GlassTokens.inputOutline(),RoundedCornerShape(10.dp))
+            .border(GlassTokens.focusStroke,if(filterFocused)focusRing else Color.Transparent,RoundedCornerShape(10.dp)),verticalAlignment=Alignment.CenterVertically) {
             if(path.isNotEmpty())IconButton(onClick={back()},modifier=Modifier.size(48.dp)) {
                 IosCommandIcon(CommandIcons.Reply,"Volver al menú anterior",Modifier.size(17.dp))
             } else IosCommandIcon(CommandIcons.Search,null,Modifier.padding(start=(8f*d).dp,end=(10f*d).dp).size(17.dp),tint=colors.onSurfaceVariant)
             BasicTextField(filter,{filter=it.take(120)},singleLine=true,
                 textStyle=TextStyle(fontFamily=Inter,fontSize=GlassTokens.scaledSp(13.sp,appearance),color=colors.onSurface),
-                modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}.testTag("action-filter"),
+                modifier=Modifier.weight(1f).heightIn(min=48.dp).focusRequester(filterFocus).onFocusChanged{filterFocused=it.isFocused}
+                    .semantics { contentDescription=contextResult?.let{"Buscar acciones de ${it.title}"} ?: "Buscar acciones" }.testTag("action-filter"),
                 decorationBox={field->Box(Modifier.fillMaxWidth(),contentAlignment=Alignment.CenterStart) {
                     if(filter.isBlank())Text(contextResult?.let{"Buscar acciones de ${it.title}…"} ?: "Buscar acciones…",fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
                     field()
@@ -134,16 +139,18 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                 } else action.group
                 if(group!=previous && filter.isBlank()) {
                     if(previous!=null)HorizontalDivider(Modifier.padding(vertical=(6f*d).dp),color=colors.onSurface.copy(alpha=.08f))
-                    Text(group.label.uppercase(java.util.Locale.ROOT),Modifier.padding(start=(10f*d).dp,top=(4f*d).dp,bottom=(4f*d).dp),
-                        fontSize=GlassTokens.scaledSp(10.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=0.sp)
+                    Text(group.label,Modifier.padding(start=(10f*d).dp,top=(4f*d).dp,bottom=(4f*d).dp).semantics { heading() },
+                        fontSize=GlassTokens.scaledSp(12.sp,appearance,minSp=11f),lineHeight=GlassTokens.scaledSp(16.sp,appearance),color=colors.onSurfaceVariant,letterSpacing=if(LocalPuenteUi.current).6.sp else 0.sp,fontWeight=if(LocalPuenteUi.current)FontWeight.SemiBold else null)
                     previous=group
                 }
                 val active=action.identity==currentId
+                var rowFocused by remember(action.identity) { mutableStateOf(false) }
                 val bring=remember(action.identity) { BringIntoViewRequester() }
                 LaunchedEffect(active,filterFocused){if(active && !filterFocused)bring.bringIntoView()}
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp)
-                    .background(if(active)colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(10.dp))
-                    .focusRequester(requests.getValue(action.identity)).onFocusChanged{if(it.isFocused){selectedId=action.identity;filterFocused=false}}.focusable()
+                    .background(if(active)if(LocalPuenteUi.current)colors.surfaceContainerHigh else colors.onSurface.copy(alpha=.09f) else Color.Transparent,RoundedCornerShape(10.dp))
+                    .border(GlassTokens.focusStroke,if(rowFocused)focusRing else Color.Transparent,RoundedCornerShape(10.dp))
+                    .focusRequester(requests.getValue(action.identity)).onFocusChanged{rowFocused=it.isFocused;if(it.isFocused){selectedId=action.identity;filterFocused=false}}.focusable()
                     .semantics(mergeDescendants=true) { role=Role.Button;selected=active;stateDescription=action.state.label
                         if(!action.state.executable)disabled()
                         onClick(action.title){activate(action);action.state.executable} }
@@ -153,18 +160,18 @@ private data class ActionMenuFrame(val id:String,val filter:String,val selectedI
                     IosCommandIcon(if(i==0 && path.isEmpty() && action==all.firstOrNull())CommandIcons.Arrow else action.icon,
                         null,Modifier.size(20.dp),tint=if(action.group==ContextActionGroup.Management)colors.error else if(i==0 && path.isEmpty())commandAccent ?: colors.onSurfaceVariant else colors.onSurfaceVariant)
                     Column(Modifier.weight(1f)) {
-                        Text(action.title,fontSize=GlassTokens.scaledSp(13.sp,appearance),fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium,
-                            maxLines=1,overflow=TextOverflow.Ellipsis)
+                        Text(action.title,fontSize=GlassTokens.scaledSp(13.sp,appearance),lineHeight=GlassTokens.scaledSp(20.sp,appearance),fontWeight=if(active)FontWeight.SemiBold else FontWeight.Medium)
                         val detail=if(action.state!=ContextActionState.Available)action.state.label else action.description.takeIf{it.isNotBlank() && it!=action.group.label && it!="Principal"}.orEmpty()
-                        if(detail.isNotBlank() && (appearance.preset=="glass" || action.state!=ContextActionState.Available))Text(detail,fontSize=GlassTokens.scaledSp(11.sp,appearance),lineHeight=GlassTokens.scaledSp(14.sp,appearance),color=colors.onSurfaceVariant,maxLines=1,overflow=TextOverflow.Ellipsis)
+                        if(detail.isNotBlank() && (appearance.preset=="glass" || action.state!=ContextActionState.Available))Text(detail,fontSize=GlassTokens.scaledSp(11.sp,appearance),lineHeight=GlassTokens.scaledSp(16.sp,appearance),color=colors.onSurfaceVariant)
                     }
                     val key=action.shortcut.ifBlank { if(action==all.firstOrNull())"Enter" else "" }
                     if(action.children.isNotEmpty())IosCommandIcon(CommandIcons.Chevron,null,Modifier.size(16.dp),tint=colors.onSurfaceVariant)
                     else if(key.isNotEmpty())GlassKeycap(key)
                 }
             }
-            if(visible.isEmpty())Text("No hay acciones con ese nombre.",Modifier.padding((10f*d).dp),fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant)
+            if(visible.isEmpty())Text("No se encontraron acciones. Probá otro término.",Modifier.padding((10f*d).dp).semantics { liveRegion=LiveRegionMode.Polite },fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant)
         }
 
     }
+}
 }

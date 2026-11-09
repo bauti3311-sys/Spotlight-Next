@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.C2WebSearchCapabilityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-04T14:29:44" hostname="c880c3bda6d8" time="2.095">
+  <properties/>
+  <testcase name="webSearchOnlyAppPublishesOneExactPreparation" classname="dev.bautista.spotlight.control.C2WebSearchCapabilityTest" time="2.027"/>
+  <testcase name="revokedWebSearchCannotBePrepared" classname="dev.bautista.spotlight.control.C2WebSearchCapabilityTest" time="0.04"/>
+  <testcase name="publicSearchWinsWithoutDuplicateCapability" classname="dev.bautista.spotlight.control.C2WebSearchCapabilityTest" time="0.028"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

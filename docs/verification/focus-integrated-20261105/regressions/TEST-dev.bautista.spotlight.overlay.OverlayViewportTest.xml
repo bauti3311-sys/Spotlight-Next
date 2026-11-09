@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.OverlayViewportTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-05T13:11:36" hostname="3c087af7cb52" time="11.584">
+  <properties/>
+  <testcase name="visibleImeCanUseFullDisplayFrameWhenBothInsetAmountsAreMissing" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="6.495"/>
+  <testcase name="legacyVisibleFrameDoesNotSubtractKeyboardTwice" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="3.462"/>
+  <testcase name="closedImeMustNotTreatWrapContentWindowAsKeyboard" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.148"/>
+  <testcase name="resizedLegacyOverlayStillDetectsKeyboardWhenLocalInsetIsZero" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.167"/>
+  <testcase name="modernMetricsSupplyKeyboardEvenWhenOverlayLocalInsetIsZero" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.808"/>
+  <testcase name="lowPositionMovesAboveKeyboardInsteadOfInventingAvailableSpace" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.183"/>
+  <testcase name="usableFrameExcludesBarsAndCutoutInBothOrientations" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.126"/>
+  <testcase name="keyboardCannotChooseHorizontalWidthOnPortraitTablet" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.109"/>
+  <testcase name="actualImeInsetWinsOverSmallContentFrameAndRecoversAcrossOrientation" classname="dev.bautista.spotlight.overlay.OverlayViewportTest" time="0.085"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

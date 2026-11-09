@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ResultRowGeometryRegressionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-08T00:55:25" hostname="ab6df79ca904" time="3.925">
+  <properties/>
+  <testcase name="selectionKeepsRowAndUsefulTextGeometryStable" classname="dev.bautista.spotlight.ui.ResultRowGeometryRegressionTest" time="3.925"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

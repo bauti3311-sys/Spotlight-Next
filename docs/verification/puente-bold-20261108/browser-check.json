@@ -1,0 +1,20 @@
+{
+  "counts": {
+    "look": 8,
+    "opacity": 4
+  },
+  "decoded_images": 42,
+  "comparison": true,
+  "unsupported_scene_disabled": true,
+  "reference_zoom": true,
+  "export": {
+    "kind": "lab-complete-look-plus-separate-opacity-preference",
+    "chosen": {
+      "look": "X05",
+      "opacity": "O01"
+    }
+  },
+  "width390_no_overflow": true,
+  "js_errors": [],
+  "loading": "set_content of exact self-contained HTML; file navigation not tested"
+}

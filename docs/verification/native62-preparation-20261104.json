@@ -1,0 +1,24 @@
+{
+  "functional_base": "76a1c185b644c67a61cd9defd909c9075632e856",
+  "source_sha": "135a9af74be08fc4368c8b9fc803d12fdcd273d3",
+  "appSourcesPreserved": true,
+  "sourceDeltaPaths": [
+    "app/build.gradle.kts",
+    "docs/NATIVE62-PREPARATION-20261104.md"
+  ],
+  "versionCode": 62,
+  "previousVersionCode": 61,
+  "package": "dev.bautista.spotlight.next.raycastpreview",
+  "certificate_sha256": "885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba",
+  "baseline61IdentityEvidenceReused": true,
+  "deliveryContractTests": 17,
+  "historicalSigningTests": 21,
+  "actionlint": "1.7.12 passed",
+  "budgetUsageRead": "403: owner zero-spend confirmation remains reference",
+  "budgetConfigurationChanged": false,
+  "sourceAlreadyAttempted": false,
+  "actionsDispatched": 0,
+  "apkBuilt": false,
+  "signed": false,
+  "physicalUpdateVerified": false
+}

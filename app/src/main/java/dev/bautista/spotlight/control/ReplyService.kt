@@ -67,13 +67,16 @@ object Replies {
         val target=targets.value.firstOrNull{it.key==key} ?: error("La notificación ya no está disponible")
         if(expected!=null)check(target.key==expected.key && target.packageName==expected.packageName &&
             target.title==expected.title && target.conversationId==expected.conversationId && target.group==expected.group &&
-            target.action?.actionIntent==expected.action?.actionIntent){"La conversación o su acción cambió. Revisá y confirmá nuevamente."}
+            target.action?.actionIntent==expected.action?.actionIntent &&
+            target.action?.remoteInputs?.map{it.resultKey to it.allowFreeFormInput}==
+                expected.action?.remoteInputs?.map{it.resultKey to it.allowFreeFormInput}){"La conversación o su acción cambió. Revisá y confirmá nuevamente."}
         val action=target.action ?: error("Esta notificación no admite respuesta directa")
         val inputs=action.remoteInputs?.filter{it.allowFreeFormInput}?.toTypedArray()?.takeIf{it.isNotEmpty()} ?: error("No admite respuesta")
         val values=Bundle();inputs.forEach{values.putCharSequence(it.resultKey,text.take(8000))}
         val fill=Intent();RemoteInput.addResultsToIntent(inputs,fill,values)
-        try{action.actionIntent.send(context,0,fill)}catch(e:PendingIntent.CanceledException){remove(key);error("La acción de respuesta venció. Abrí WhatsApp para continuar.")}
+        // Consume this notification locally before the external effect. An uncertain failure never restores approval.
         remove(key)
+        try{action.actionIntent.send(context,0,fill)}catch(e:PendingIntent.CanceledException){error("La acción de respuesta venció. Abrí WhatsApp para continuar.")}
     }
 }
 class ReplyService:NotificationListenerService() {

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.ReplyConfirmationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-06T02:48:59" hostname="52363180d3ce" time="1.784">
+  <properties/>
+  <testcase name="cancelledPendingIntentConsumesTheTargetWithoutRetry" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="1.572"/>
+  <testcase name="replySeparatorsKeepTheRecipientAndDraftUnchanged" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.028"/>
+  <testcase name="reviewedTargetDispatchesOnceAndCannotBeRepeated" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.026"/>
+  <testcase name="missingTargetAndDisconnectedListenerNeverDispatch" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.034"/>
+  <testcase name="samePendingIntentWithChangedReplyFieldRequiresNewReview" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.016"/>
+  <testcase name="naturalReplyQueryExtractsDraftAndMatchesCompatibleRemoteInputTarget" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.083"/>
+  <testcase name="changedConversationOrRecipientRequiresAnotherHumanReview" classname="dev.bautista.spotlight.control.ReplyConfirmationTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Intent = Intent { act=reply.fixture.1 clip={text/vnd.android.intent hasLabel(27) {I:(has extras)}} }; Matching wrappers: []
+]]></system-err>
+</testsuite>

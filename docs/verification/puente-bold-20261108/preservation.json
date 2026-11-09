@@ -1,0 +1,24 @@
+{
+  "base": "705ff256aa73ee30f0a5f21cd8e5db4425ab41f2",
+  "protected_paths": [
+    "docs/verification/puente-finishes-20261108",
+    "app/src/test/java/dev/bautista/spotlight/ui/PuenteFinishesGalleryTest.kt",
+    "app/src/main",
+    "app/build.gradle.kts",
+    ".github",
+    "scripts",
+    "release.properties",
+    "docs/verification/choice-catalogue-20261108",
+    "docs/verification/creative-directions-20261108",
+    "docs/verification/mesa-explorations-20261108",
+    "app/src/test/java/dev/bautista/spotlight/ui/MesaExplorationsGalleryTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/CreativeDirectionsGalleryTest.kt"
+  ],
+  "changed_protected_paths": [],
+  "references_exact": true,
+  "remote_refs": {
+    "main": "47259ce2d7259f0ddfa5d85b7c73f07983d8cd6d",
+    "feat/preview68-visual-isolated-20261107": "c51677b79446ce1dc8213553891d45897b14d726",
+    "feat/preview69-c2-isolated-20261108": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19"
+  }
+}

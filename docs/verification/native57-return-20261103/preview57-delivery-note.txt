@@ -1,0 +1,9 @@
+Preview57 ready for direct delivery from source 4fc33f2c918d3fe53a8bad7ac6571f2757630066.
+67 unique directed Kotlin/JVM/Robolectric tests passed in cohorts:32 tests in5 unchanged classes retained from31a25c7,35 tests in4 affected classes passed at4fc33f2. Original production and unit-test compiler failures and8 initial test failures preserved in evidence. No tests disabled.
+One assembleRaycastPreview -Pspotlight.preview.optimize=false succeeded6m13s; lintVital passed. No Actions or new Release. Experimental no R8/resource shrinking, non-debuggable.
+APK version57 dev.bautista.spotlight.next.raycastpreview ARM64, historical certificate885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba, zipalign16KiB/ELF16KiB verified. Source ZIP same exact source, CRC/private-path/key/token scan passed.
+APK SHA256 f2db660fb9b769d8c8f6e30d4e61c349d3ab87d94deaf0f8691dafff95690899
+Source ZIP SHA256 768375a855dbc4ea990c8143470958f5e6130e95ed6b06e70dc6045533fae231
+Evidence ZIP SHA256 b62927304c6ed3a03430c6598d46d7631898e8c37fa348862fbb489040a7ff05
+All three downloaded to Work; byte hashes matched. No physical install/OneUI/Spotify/account validation claimed.
+One-time owner-authorized administrative recovery of5277fd79 documented in source docs/verification/preview57-admin-recovery.json. New Work owner only releases own lease with these notes atomically. Existing signer and caches retained; no main or force push.

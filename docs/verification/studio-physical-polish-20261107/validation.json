@@ -1,0 +1,33 @@
+{
+  "base": "9d652771f75be1f0fc9f1d87fa7681f386e5c05c",
+  "source": "2731897c80b2d87440a58d9f9b6d08ef1710723e",
+  "final_distinct_tests": {
+    "tests": 19,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "changed_source_paths": [
+    "app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt",
+    "app/src/test/java/dev/bautista/spotlight/overlay/StudioPopupBudgetTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/StudioPhysicalPolishTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/StudioPolishContractTest.kt"
+  ],
+  "c5_and_all_other_productive_paths_unchanged": true,
+  "apk_files_under_app_build": 0,
+  "github_actions_requested": 0,
+  "physical_execution": false,
+  "global_lint": {
+    "errors": 1,
+    "warnings": 26,
+    "information": 1,
+    "error_path": "app/src/androidTest/java/dev/bautista/spotlight/c5/C5FocusHostDeviceTest.kt:65",
+    "error_preexists_identically": true
+  },
+  "final_main_lint_analysis_task": "completed successfully; global lint retains the C5 test error"
+}

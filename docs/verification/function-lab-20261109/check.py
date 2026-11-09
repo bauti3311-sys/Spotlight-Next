@@ -1,0 +1,101 @@
+"""Tests only the offline catalogue, never Android or production capabilities."""
+from pathlib import Path
+import json,hashlib
+from playwright.sync_api import sync_playwright
+O=Path(__file__).resolve().parent
+R=O.parents[2]
+D=json.loads((O/'funciones.json').read_text())
+checks=[]
+def check(name,ok,detail=''):
+ checks.append(dict(name=name,passed=bool(ok),detail=detail))
+ if not ok: raise AssertionError(name+' '+str(detail))
+with sync_playwright() as p:
+ browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+ page=browser.new_page(viewport={'width':1440,'height':1100},device_scale_factor=1)
+ errors=[];requests=[]
+ page.on('pageerror',lambda e: errors.append(str(e)))
+ page.route('**/*',lambda route:(requests.append(route.request.url),route.abort()))
+ # set_content loads the exact self-contained artifact. file:// navigation not claimed.
+ page.set_content((O/'Elegir-funciones.html').read_text(),wait_until='load')
+ page.evaluate('document.fonts.ready')
+ check('36 IDs originales, mismo título y grupo',[(x['id'],x['title'],x['group']) for x in D['functions']]==[(x['id'],x['title'],x['group']) for x in json.loads((R/'docs/verification/choice-catalogue-20261108/catalogo.json').read_text())['functions']])
+ check('36 tarjetas visibles',page.locator('[data-card]').count()==36)
+ for x in D['functions']:
+  page.evaluate('(id)=>openDemo(id)',x['id'])
+  if x['id']=='F22':page.locator('#person').select_option('1')
+  page.locator('#run').click()
+  check(x['id']+' recorrido inicial sin error',not page.locator('#result').evaluate('(e)=>e.classList.contains("error")'),page.locator('#result').inner_text())
+  check(x['id']+' evidencia y base visibles',page.locator('.facts .fact').count()==3 and page.locator('.evidence').count()==1)
+  if x['kind']=='fixture':
+   page.evaluate('document.querySelector("#simulate").click();document.querySelector("#simulate").click()')
+   check(x['id']+' doble activación: sólo una simulada',page.evaluate('requestCount')==1 and '0 acciones Android' in page.locator('#flow-status').inner_text())
+   page.locator('#cancel-flow').click()
+   check(x['id']+' cancelar limpia resultado',page.locator('#result').inner_text()=='' and page.evaluate('requestCount')==0)
+  page.keyboard.press('Escape')
+  check(x['id']+' Escape limpia y cierra',not page.locator('#detail').is_visible() and page.locator('#detail-body').inner_text()=='')
+ def run(id,vals):
+  page.evaluate('(id)=>openDemo(id)',id)
+  for i,v in enumerate(vals):page.locator('[data-input="'+str(i)+'"]').fill(v)
+  page.locator('#run').click()
+  return page.locator('#result').inner_text()
+ check('aritmética editable real',run('F01',['(1250 + 890) / 2'])=='1.070');page.keyboard.press('Escape')
+ check('código no evaluado','admite números' in run('F01',['alert(1)']));page.keyboard.press('Escape')
+ check('división por cero rechazada','cero' in run('F01',['1/0']));page.keyboard.press('Escape')
+ check('unidades incompatibles rechazadas','compatibles' in run('F02',['2','km','kg']));page.keyboard.press('Escape')
+ check('fecha inexistente rechazada','no válida' in run('F03',['2026-02-30','1']));page.keyboard.press('Escape')
+ check('fecha bisiesta real',run('F03',['2028-02-28','1'])=='29/2/2028');page.keyboard.press('Escape')
+ check('horario real destino', '18:00' in run('F04',['2026-11-15','14:00','Europe/Madrid']));page.keyboard.press('Escape')
+ check('propina y reparto',run('F05',['18000','10','3'])=='6.600 por persona');page.keyboard.press('Escape')
+ check('reparto redondeo sin perder centavos','agrega(n) 0,01' in (run('F05',['10','0','3'])+page.locator('#result-detail').inner_text()));page.keyboard.press('Escape')
+ check('tasa manual honesta','100.000 ARS'==run('F06',['100','1000']) and 'MANUAL' in page.locator('#result-detail').inner_text());page.keyboard.press('Escape')
+ check('limpieza de espacios real',run('F07',['  Hola   equipo  \n reunión  mañana  '])=='Hola equipo\nreunión mañana');page.keyboard.press('Escape')
+ check('diff detecta cambio','− lunes' in run('F08',['lunes\nfijo','martes\nfijo']) and '+ martes' in page.locator('#result').inner_text());page.keyboard.press('Escape')
+ check('plantilla no interpreta HTML',run('F09',['Hola {nombre}','<img src=x>','18/11'])=='Hola <img src=x>' and page.locator('#result img').count()==0);page.keyboard.press('Escape')
+ check('limpieza conserva parámetro funcional y fragmento',run('F12',['https://ejemplo.test/informe?id=42&utm_source=x#resumen'])=='https://ejemplo.test/informe?id=42#resumen');page.keyboard.press('Escape')
+ check('rechazo de protocolo ejecutable','http' in run('F12',['javascript:alert(1)']));page.keyboard.press('Escape')
+ check('hueco calculado sobre agenda identificada',run('F21',['09:00-17:00','45'])=='09:00–09:45' and 'FICTICIA' in page.locator('#result-detail').inner_text());page.keyboard.press('Escape')
+ check('homónimos no elegidos automáticamente','Elegí' in run('F22',['Alex Rivera']));page.keyboard.press('Escape')
+ for id in ['F13','F14','F15','F17','F22','F27','F28','F29','F30']:
+  page.evaluate('(id)=>openDemo(id)',id)
+  if id=='F22':page.locator('#person').select_option('1')
+  page.locator('#run').click();page.locator('#revoke').click()
+  check(id+' revocación fixture limpia y bloquea',page.locator('#result').inner_text()=='' and page.locator('#run').is_disabled())
+  # Changing input cannot restore the invalidated source through a new calculation.
+  page.locator('[data-input="0"]').fill('otra consulta');page.locator('#run').click()
+  check(id+' nueva consulta no restaura fuente revocada','no disponible' in page.locator('#result').inner_text())
+  page.keyboard.press('Escape')
+ page.evaluate('openDemo("F26")');page.locator('#run').click();page.locator('#simulate').click();page.locator('[data-input="1"]').fill('Otra app')
+ check('cambiar destino invalida revisión y solicitud',page.locator('#result').inner_text()=='' and page.evaluate('requestCount')==0 and page.locator('#simulate').count()==0);page.keyboard.press('Escape')
+ page.locator('#recommended').click();check('8 recomendaciones sin C3/C4/C5',page.locator('[data-card]').count()==8 and all(x not in page.locator('#cards').inner_text() for x in ['F17','F29','F30']))
+ page.locator('#show-all').click();page.locator('#search').fill('enlaces');check('buscador filtra',page.locator('[data-card="F12"]').count()==1);page.locator('#search').fill('')
+ page.evaluate('togglePick("F12");togglePick("F08")');check('selección en memoria',page.evaluate('picks')==['F12','F08'])
+ page.locator('[data-up="F08"]').click();check('orden de prioridades',page.evaluate('picks')==['F08','F12'])
+ with page.expect_download() as d:page.locator('#export').click()
+ export=json.loads(Path(d.value.path()).read_text());check('exportación real sin autorización implícita',not export['implementation_authorized'] and [x['id'] for x in export['selected']]==['F08','F12'])
+ page.locator('#clear').click();check('vaciar selección',page.evaluate('picks')==[])
+ originals=O/'originales';originals.mkdir(exist_ok=True)
+ page.evaluate('window.scrollTo(0,0)');page.screenshot(path=str(originals/'01-catalogo-tablet.png'))
+ captures=['F01','F08','F12','F17','F21','F22','F25','F26','F30','F34','F35','F36']
+ for n,id in enumerate(captures):
+  page.evaluate('(id)=>openDemo(id)',id)
+  if id=='F22':page.locator('#person').select_option('1')
+  page.locator('#run').click()
+  if id=='F25':page.locator('#simulate').click()
+  page.screenshot(path=str(originals/(id+'-tablet.png')))
+  page.keyboard.press('Escape')
+ page.locator('#theme').click();page.evaluate('openDemo("F34")');page.locator('#run').click();page.screenshot(path=str(originals/'F34-tablet-oscuro.png'));page.keyboard.press('Escape');page.locator('#theme').click()
+ page.set_viewport_size({'width':390,'height':844});page.evaluate('window.scrollTo(0,0)');page.screenshot(path=str(originals/'01-catalogo-telefono.png'))
+ check('catálogo sin desborde 390px',page.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+ for id in ['F08','F12','F22','F34']:
+  page.evaluate('(id)=>openDemo(id)',id)
+  if id=='F22':page.locator('#person').select_option('1')
+  page.locator('#run').click();page.screenshot(path=str(originals/(id+'-telefono.png')))
+  check(id+' teléfono sin desborde',page.evaluate('document.querySelector("#detail").scrollWidth<=document.querySelector("#detail").clientWidth'))
+  page.keyboard.press('Escape')
+ page.set_viewport_size({'width':330,'height':800});page.evaluate('openDemo("F26")');page.locator('#run').click()
+ check('ventana compacta 330px sin desborde',page.evaluate('document.querySelector("#detail").scrollWidth<=document.querySelector("#detail").clientWidth'))
+ page.add_style_tag(content='body{font-size:200%}');check('texto ampliado laboratorio sin desborde horizontal',page.evaluate('document.querySelector("#detail").scrollWidth<=document.querySelector("#detail").clientWidth'))
+ check('ningún error JavaScript',not errors,str(errors));check('ninguna solicitud de red',not requests,str(requests))
+ browser.close()
+(O/'checks.json').write_text(json.dumps({'scope':'Chromium web laboratorio, no Android ni Compose','loading':'Playwright set_content del HTML exacto; no se probó navegación file://','checks':checks,'passed':sum(x['passed'] for x in checks),'total':len(checks),'network_requests':requests,'javascript_errors':errors},ensure_ascii=False,indent=2)+'\n')
+print(str(len(checks))+' comprobaciones web correctas; capturas originales guardadas.')

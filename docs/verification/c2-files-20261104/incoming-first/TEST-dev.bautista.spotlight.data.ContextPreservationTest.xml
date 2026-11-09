@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.data.ContextPreservationTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-04T20:25:58" hostname="c880c3bda6d8" time="2.492">
+  <properties/>
+  <testcase name="selectingAnotherContextReleasesSupersededTemporaryImportButKeepsPinnedSource" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="2.167"/>
+  <testcase name="failedRemovalKeepsActiveAndOwnedFileWithoutDeletingData" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.038"/>
+  <testcase name="fullContextStorageRefusesToEvictExistingPins" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.047"/>
+  <testcase name="removalNeverDeletesAFileOutsideManagedContextImports" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.029"/>
+  <testcase name="repinningOneOfThirtyExistingContextsPreservesCapacityAndUnknownMetadata" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.053"/>
+  <testcase name="failedPinWriteKeepsActiveUnpinnedAndExistingStorageIntact" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.024"/>
+  <testcase name="pinBeforeStartPreservesOldContextsConversationsAndUnknownFields" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.029"/>
+  <testcase name="removeBeforeStartDeletesOnlyChosenContextAndKeepsConversation" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.058"/>
+  <testcase name="delayedLoadCannotPinPrivateContextThatReplacedTheOriginalSelection" classname="dev.bautista.spotlight.data.ContextPreservationTest" time="0.045"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

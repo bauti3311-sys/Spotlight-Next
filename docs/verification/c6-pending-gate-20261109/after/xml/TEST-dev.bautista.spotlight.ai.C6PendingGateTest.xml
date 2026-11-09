@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ai.C6PendingGateTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-09T14:48:30" hostname="375f5b578860" time="0.05">
+  <properties/>
+  <testcase name="dispatchAcceptedIsNotAnObservedExternalEffect" classname="dev.bautista.spotlight.ai.C6PendingGateTest" time="0.048"/>
+  <testcase name="verifiedLocalChangesMayContinue" classname="dev.bautista.spotlight.ai.C6PendingGateTest" time="0.0"/>
+  <testcase name="preparedOrRequestedResultBlocksLaterEffects" classname="dev.bautista.spotlight.ai.C6PendingGateTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

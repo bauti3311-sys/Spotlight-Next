@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SpotlightBarTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-05T01:00:47" hostname="d6fbf1b305fb" time="14.582">
+  <properties/>
+  <testcase name="optionsRespectKeyboardBudgetAndReportVisibility" classname="dev.bautista.spotlight.ui.SpotlightBarTest" time="14.582"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

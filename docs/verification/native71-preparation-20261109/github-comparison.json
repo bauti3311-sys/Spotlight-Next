@@ -1,0 +1,20 @@
+{
+  "status": "ahead",
+  "base": "143104ce8d83f6ad6b5b4acd80897db579816fcd",
+  "files": [
+    "app/build.gradle.kts",
+    "app/src/main/java/dev/bautista/spotlight/MainActivity.kt",
+    "app/src/main/java/dev/bautista/spotlight/data/WindowSizePolicy.kt",
+    "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassAppearance.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/PuenteFrame.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SettingsHome.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SettingsNavigation.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/WindowSizeSettings.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/SettingsRefreshTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/SettingsReviewCaptureTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/SettingsWorkspaceTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/WidthResponseTest.kt"
+  ],
+  "source": "b8f8e268dd59e6410ec57a102a0e35231db01b18"
+}

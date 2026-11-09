@@ -24,7 +24,8 @@ class InspectorAccentTest {
         assertEquals(Color(0xFF65D993), InspectorAccent.brand("com.spotify.music"))
         assertEquals(Color(0xFFF2958B), InspectorAccent.brand("com.google.android.gm"))
         assertNull(InspectorAccent.brand("com.fake.spotify"))
-        assertNull(InspectorAccent.brand("com.whatsapp.w4b"))
+        assertEquals(InspectorAccent.brand("com.whatsapp"),InspectorAccent.brand("com.whatsapp.w4b"))
+        assertNull(InspectorAccent.brand("com.fake.whatsapp.business"))
         val result = app("com.example.reader", "Spotify")
         assertEquals("com.example.reader", InspectorAccent.destination(result, null, null, null, false))
         assertNull(InspectorAccent.brand(InspectorAccent.destination(result, null, null, null, false)))
@@ -33,6 +34,7 @@ class InspectorAccentTest {
     @Test fun formDestinationWinsAndUnrelatedTasksNeverInheritSelectedApplication() {
         val selected = app("com.spotify.music")
         assertEquals("com.whatsapp", InspectorAccent.destination(selected, Action.ComposeMessage("whatsapp"), null, null, true))
+        assertEquals("com.whatsapp.w4b", InspectorAccent.destination(selected, Action.ComposeMessage("whatsapp_business"), null, null, true))
         assertEquals("com.android.chrome", InspectorAccent.destination(selected, null,
             Action.ComposeSearch("web", "com.android.chrome"), null, true))
         assertNull(InspectorAccent.destination(selected, null, null, null, true))

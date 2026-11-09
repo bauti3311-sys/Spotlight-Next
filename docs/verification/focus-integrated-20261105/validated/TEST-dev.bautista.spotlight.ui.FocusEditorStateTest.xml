@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.FocusEditorStateTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-05T15:31:14" hostname="3c087af7cb52" time="2.959">
+  <properties/>
+  <testcase name="publicAndroidSearchIsNotPresentedAsAnInternalWebResult" classname="dev.bautista.spotlight.ui.FocusEditorStateTest" time="2.959"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.CompactResultsTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-11-04T19:27:02" hostname="c880c3bda6d8" time="2.868">
+  <properties/>
+  <testcase name="explicitUrlProviderAndFolderRequestsAreNotTreatedAsGenericFallbacks" classname="dev.bautista.spotlight.search.CompactResultsTest" time="2.301"/>
+  <testcase name="adaptiveSearchIncludesEveryEligibleMatchWithoutAddingNoise" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.061"/>
+  <testcase name="queryShowsSixAndExpansionRetainsEveryDistinctAction" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.09"/>
+  <testcase name="explicitDictionaryAndTextCommandsRemainAvailableInitially" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.057"/>
+  <testcase name="exactApplicationNeverAutocompletesIntoLongerSibling" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.048"/>
+  <testcase name="recognizedBrightnessMusicAndQuestionActionsStayEligible" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.034"/>
+  <testcase name="navigationKeepsExistingOrderWhenLateProvidersArrive" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.024"/>
+  <testcase name="duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.058"/>
+  <testcase name="exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.027"/>
+  <testcase name="explicitAiNotificationsAndAndroidCommandsSurviveDifferentLabels" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.06"/>
+  <testcase name="whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.023"/>
+  <testcase name="contentAndSemanticDocumentHitsDoNotRequireTitleOverlap" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.029"/>
+  <testcase name="explicitAppAndContactScopesUseTheirParsedSearchTerms" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.055"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

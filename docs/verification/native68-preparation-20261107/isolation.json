@@ -1,0 +1,31 @@
+{
+  "preview67": "6918204238706d3c9bac826196ad3f1f272a51e7",
+  "pr_base": "214e00ac95e517717cc98dc05379bc5e4aa27773",
+  "source_sha": "c51677b79446ce1dc8213553891d45897b14d726",
+  "source_branch": "feat/preview68-visual-isolated-20261107",
+  "source_parent_visual_backport": "57b01ddac58b4f1dbe9bf24e91ea0dea5b9c36bb",
+  "approved_visual_origin": "2731897c80b2d87440a58d9f9b6d08ef1710723e",
+  "source_delta_paths": [
+    "app/build.gradle.kts",
+    "app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt",
+    "app/src/test/java/dev/bautista/spotlight/overlay/StudioPopupBudgetTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/StudioPhysicalPolishTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/StudioPolishContractTest.kt"
+  ],
+  "six_productive_visual_files_byte_identical_to_pr": true,
+  "file_index_blob_67": "c9b4188abd231dbfa5210a33a2cb1111fc2fd983",
+  "file_index_blob_68": "c9b4188abd231dbfa5210a33a2cb1111fc2fd983",
+  "citation_classes_and_c5_tests_absent_from_source_branch": true,
+  "pr_c5_sources_unmodified": true,
+  "legacy_functional_route_found": {
+    "entry": "MainActivity.kt:359 app.index.clear()",
+    "changed_function": "FileIndex.clear emits revision after deletion",
+    "observer": "SpotlightPanel.kt:256 collects revision; search/suggestions LaunchedEffect at :730 depends on indexRevision"
+  },
+  "isolation": "release branch from exact Preview67; no C5 revert in PR; publish source and workflow refs atomically"
+}

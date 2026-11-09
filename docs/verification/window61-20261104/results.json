@@ -1,0 +1,71 @@
+{
+  "base": "65a95723fbf5a9f5ee5bd06cf4ba4c6b1b1c76e8",
+  "suites": [
+    {
+      "name": "dev.bautista.spotlight.ui.ResultTouchScrollTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.overlay.OverlayStartupTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.ui.OverlayHeightRecoverySceneTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.overlay.OverlayImeHeightTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "dev.bautista.spotlight.overlay.OverlayViewportTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "captures": {
+    "long-probe/tablet-dark-long-ime-probe.png": "dc8ecbb21855b6867d9f6df568cc136210f45693c5ff43c9af1e26d5d590e1b6",
+    "before/tablet-light-closed.png": "b6ff11eb8b931d7290452b7f68437daa4c6b651f4130227a7703d88383ae3827",
+    "before/tablet-dark-closed.png": "8b5806e7003066a16636fbbc867d54f06a3e227c3c9538aa359fddc7ec48aac6",
+    "after/tablet-light-closed.png": "e27df90d353b9a74e8f3d6368e508b96b1242b8c4c54e4ca9e2fdd2d667944c6",
+    "after/tablet-dark-long-restored.png": "11f89dc34780e8e288e74e0ab7f611d4697b4253f8ca0891e1166c5b6f957957",
+    "after/tablet-light-ime.png": "239df233eb741e825d18fdf3a35ee37ef9322121146b6cb82e09b404c1c9387d",
+    "after/tablet-dark-closed.png": "9c14a4e40febdb9fd7f6e499372905a3205d4433de9065bfaf07f09d6a96e6b7",
+    "after/tablet-light-restored.png": "c7ff0c2e9c0c4652a5ef8c8d74c5d566cde51b7eefaa5a24194188a570e052d1",
+    "after/tablet-dark-restored.png": "d41053bb698974668081872e54ab20891ca3d82fc5fcd10790055ca4eef7c3c0",
+    "after/tablet-dark-ime.png": "eaeb61088db8cfe63be2bf4f28b123b7bf9fc644c0354855044986d205421f65",
+    "after/tablet-dark-long-ime.png": "ebc1682a1fcb3000d9aa9f5a834f3b7cdd5bc7329dea4a9bb42d0628a567158d"
+  },
+  "physicalValidation": false,
+  "apkBuilt": false,
+  "actionsDispatched": 0,
+  "additionalDirectedCases": [
+    {
+      "name": "longContentKeepsLastResultAndInspectorMetadataReachable",
+      "xml": "after/TEST-long-content.xml",
+      "passed": true
+    }
+  ],
+  "uniquePassingCases": 39
+}

@@ -1,0 +1,31 @@
+{
+  "base": "71500e399a2cf56c5a557c8ba73b223c4e895375",
+  "directed_tests": {
+    "tests": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "productive_changed_paths": [
+    "app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/Models.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt"
+  ],
+  "all_other_main_files_byte_identical": true,
+  "ui_and_2to1_titles_unchanged": true,
+  "actions_executors_native_launch_session_unchanged": true,
+  "C5_sources_and_instrumentation_unchanged": true,
+  "CompactResults_unchanged": true,
+  "preview68_source_branch": "c51677b79446ce1dc8213553891d45897b14d726",
+  "apk_generated": false,
+  "actions_requested": 0,
+  "device_tests": false,
+  "real_model_or_network_queries": false,
+  "file_contact_ranking_samples": "synthetic authorized rows, not a new SAF/OCR physical validation",
+  "performance": "existing algorithm/provider/cache structure retained; shared precompiled spacing regex; no device latency or RAM claim",
+  "lint": {
+    "Warning": 26,
+    "Information": 1
+  }
+}

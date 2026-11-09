@@ -1,0 +1,13 @@
+{
+  "styles": 13,
+  "new_styles": 12,
+  "functions": 36,
+  "screenshots": 348,
+  "comparison_modal": true,
+  "selection_and_filters": true,
+  "selection_json_export": true,
+  "offline_images": true,
+  "compact_200_fallback_honest": true,
+  "phone_no_horizontal_overflow": true,
+  "js_errors": []
+}

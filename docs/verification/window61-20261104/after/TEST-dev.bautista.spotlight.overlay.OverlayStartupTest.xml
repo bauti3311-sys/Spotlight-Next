@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.OverlayStartupTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-04T12:36:25" hostname="c880c3bda6d8" time="7.078">
+  <properties/>
+  <testcase name="transientFocusLossDoesNotStopOverlayService[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="1.832"/>
+  <testcase name="transientFocusLossDoesNotStopOverlayService" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="3.988"/>
+  <testcase name="outsideTouchStillStopsOverlayService[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.06"/>
+  <testcase name="outsideTouchStillStopsOverlayService" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.047"/>
+  <testcase name="windowRootAndComposeChildHaveServiceOwners[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.031"/>
+  <testcase name="windowRootAndComposeChildHaveServiceOwners" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.049"/>
+  <testcase name="composeCanAttachToAnActualOverlayWindow[28]" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.61"/>
+  <testcase name="composeCanAttachToAnActualOverlayWindow" classname="dev.bautista.spotlight.overlay.OverlayStartupTest" time="0.46"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

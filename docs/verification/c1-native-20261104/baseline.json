@@ -1,0 +1,21 @@
+{
+  "source": "faf84f02c1dad23673d46d06e089432242fd2a92",
+  "renderer": "Robolectric API33 NATIVE production Compose with synthetic PackageManager fixtures",
+  "physical": false,
+  "counts": {
+    "tests": 6,
+    "failures": 0
+  },
+  "heightsDp": {
+    "tabletInline": 48,
+    "phoneStacked": 60
+  },
+  "captures": {
+    "tablet-dark-inspector.png": "eb373b6f3827ef04fa8aa91422de5fa951e5f906794f103e84d5e03d3c798020",
+    "tablet-light-inspector.png": "c63e10aca5ebc80efe4151cf0a72e5f070ffd58b4ae93a92440223f8eae3b09e",
+    "tablet-dark-home.png": "e88eba4845b00593bd36e66c61b9f411fb18ee5317969d1b09139bc5f18d3cf2",
+    "phone-light-inspector.png": "ace3235349b7ea7be8581bc8433eb06679534652dd772dc9494fc22e6941b9a5",
+    "phone-light-ime-budget.png": "b28126b96f67b92ca6cf3677ec5a136a51bd121bd426139669ebfda5231cbc74",
+    "phone-dark-inspector.png": "246a8cda57d4bd7590e97f6864576eff04afcabc872acb1fd47b00dc4d372120"
+  }
+}

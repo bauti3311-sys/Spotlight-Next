@@ -1,0 +1,33 @@
+{
+  "base_sha": "b744ecf609d6ad14f7bc3bd76421cf44c37f567a",
+  "decision": "NO_GO_NO_VERIFIED_SAFE_ANDROID_TARGET",
+  "adb_connected_devices": [],
+  "personal_device_users_and_packages_audited": false,
+  "absence_of_personal_spotlight_in_other_profiles_proven": false,
+  "host_arch": "x86_64",
+  "kvm_present": false,
+  "emulator_binary_present": false,
+  "system_images_present": false,
+  "avd_list_has_entries": false,
+  "sdk_license_file_present": true,
+  "local_historical_key_file_present": false,
+  "local_signing_credentials_present": false,
+  "ci_signing_secrets_accessed": false,
+  "new_debug_test_pair_available": false,
+  "current_build_apks": [],
+  "old_download_artifact_names": [
+    "Spotlight-Next-Preview64-808bda2.apk",
+    "Spotlight-Next-Preview65-ffc74d2.apk"
+  ],
+  "old_artifact_contents_or_signatures_retested": false,
+  "onnx_cached_android_jni_abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86",
+    "x86_64"
+  ],
+  "native_runtime_compatibility_on_new_emulator_proven": false,
+  "compiled_or_signed_or_installed_or_run_instrumentation": false,
+  "new_actions_or_downloads_or_licenses_accepted": false,
+  "observed_at_utc": "2026-11-07T18:33:52.061766+00:00"
+}

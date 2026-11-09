@@ -120,6 +120,17 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         return bounds().also { availableHeightDp = it.heightDp }
     }
 
+    internal fun updateWindowInsets(insets: WindowInsetsCompat) {
+        lastSystemBottomInset = insets.getInsetsIgnoringVisibility(
+            WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()).bottom
+        // Visibility is part of the event: hidden IME geometry must not retain
+        // the previous keyboard height during focus/Settings transitions.
+        lastBottomInset = maxOf(lastSystemBottomInset,
+            if (insets.isVisible(WindowInsetsCompat.Type.ime()))
+                insets.getInsets(WindowInsetsCompat.Type.ime()).bottom else 0)
+        refreshWindowGeometry()
+    }
+
     private val clipboard by lazy { getSystemService(ClipboardManager::class.java) }
     private val clipListener = ClipboardManager.OnPrimaryClipChangedListener { captureClipboard() }
 
@@ -206,7 +217,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     }
                     if(next.privateMode){recoverySuppressed=true;if(!old.privateMode)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(null)}}}
                     if(view==null && !closing)show()
-                    else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
+                    else if(old.width!=next.width || old.windowScale!=next.windowScale || old.adaptive!=next.adaptive || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
                         refreshWindowGeometry()
                     }
                 }
@@ -273,12 +284,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
         focusSeen = false
         val host = createHost(panel)
         ViewCompat.setOnApplyWindowInsetsListener(host) { _, insets ->
-            lastSystemBottomInset = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()).bottom
-            lastBottomInset = maxOf(
-                insets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
-                insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom,
-            )
-            refreshWindowGeometry()
+            updateWindowInsets(insets)
             insets
         }
         try {
@@ -362,7 +368,10 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     }
                     if (gained) {
                         focusSeen = true
-                        panel.post { captureClipboard() }
+                        panel.post {
+                            if (composition === panel) view?.let { ViewCompat.requestApplyInsets(it) }
+                            captureClipboard()
+                        }
                     }
                     // IME, selection toolbars and child windows can take focus.
                     // Outside touch and explicit dismiss remain the close signals.

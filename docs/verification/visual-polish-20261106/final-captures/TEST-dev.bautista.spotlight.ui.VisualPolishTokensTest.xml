@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.VisualPolishTokensTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-06T04:28:57" hostname="52363180d3ce" time="3.231">
+  <properties/>
+  <testcase name="darkFieldsKeepBoundsFocusSelectionAndRoles" classname="dev.bautista.spotlight.ui.VisualPolishTokensTest" time="3.044"/>
+  <testcase name="legacyOptOutRestoresTheOriginalShapeDefaultsEvenInsideFocus" classname="dev.bautista.spotlight.ui.VisualPolishTokensTest" time="0.071"/>
+  <testcase name="lightFieldsKeepBoundsFocusSelectionAndRoles" classname="dev.bautista.spotlight.ui.VisualPolishTokensTest" time="0.116"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

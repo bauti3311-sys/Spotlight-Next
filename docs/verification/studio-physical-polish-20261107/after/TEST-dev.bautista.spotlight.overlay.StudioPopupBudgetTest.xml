@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-07T20:25:50" hostname="ab6df79ca904" time="3.256">
+  <properties/>
+  <testcase name="legacyKeepsItsOriginalHeightAndOutset" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="3.117"/>
+  <testcase name="focusMarginsAndRotationImeUpdatesStayInsideTheFrame" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="0.045"/>
+  <testcase name="focusRightEdgeStaysAttachedToItsParent" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="0.058"/>
+  <testcase name="focusHeightTracksTheCompactParentInsteadOfTheFullScreen" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

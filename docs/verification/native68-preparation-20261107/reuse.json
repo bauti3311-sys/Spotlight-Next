@@ -1,0 +1,28 @@
+{
+  "visual_cases": 19,
+  "visual_cases_rerun": 0,
+  "evidence_manifest_sha256": "19efa429db770e59a9e44f97bfa030d02f3e905824a78d29b17cb0c0d0fa3e6f",
+  "six_ui_files_identical": [
+    "app/src/main/java/dev/bautista/spotlight/overlay/ActionPopupHost.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/ContextActionSurface.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusSearchTask.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotifyIntegration.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/StudioSurface.kt"
+  ],
+  "test_classes_identical": true,
+  "global_lint_reference": "214e00ac95e517717cc98dc05379bc5e4aa27773",
+  "global_lint_errors": 0,
+  "global_lint_warnings": 26,
+  "global_lint_info": 1,
+  "global_lint_rerun": false,
+  "limits": "lint was run on PR HEAD, not on this isolated source; Preview67 unchanged nonvisual sources reuse prior validated baseline",
+  "all_six_visual_and_regression_test_classes_byte_identical": {
+    "StudioPhysicalPolishTest": true,
+    "StudioPopupBudgetTest": true,
+    "StudioPolishContractTest": true,
+    "StudioActionKeyboardTest": true,
+    "ActionPopupHostTest": true,
+    "SpotifyFilterGeometryTest": true
+  }
+}

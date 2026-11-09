@@ -1,0 +1,27 @@
+[
+  {
+    "source": "/workspace/shared/downloads/spotlight-hielo-web/H02-puente.html",
+    "copy": "H02-puente.html",
+    "sha256": "753ff84c57115bafd8fd3aaf1e33a754766922c34124c45bea131cb5a88011b6"
+  },
+  {
+    "source": "/workspace/shared/downloads/spotlight-hielo-web/originales/tablet-H02-light-seleccion.png",
+    "copy": "tablet-H02-light-seleccion.png",
+    "sha256": "ad3b9c80a058264370c1195947a7f87bf3b482693099b1d74349336a5daf4f35"
+  },
+  {
+    "source": "/workspace/shared/downloads/spotlight-hielo-web/originales/tablet-H02-dark-seleccion.png",
+    "copy": "tablet-H02-dark-seleccion.png",
+    "sha256": "b4fbfcfbeecd329333d7ee05c712c1c4f16ca6b22030d6e364c3855aec70ec28"
+  },
+  {
+    "source": "/workspace/shared/downloads/spotlight-hielo-web/originales/phone-H02-light-seleccion.png",
+    "copy": "phone-H02-light-seleccion.png",
+    "sha256": "4feb988e7a7b3d95ed405c400e8a90ecdaed8bbec282d3e6cdaaca722e61d1a3"
+  },
+  {
+    "source": "/workspace/shared/downloads/spotlight-hielo-web/originales/phone-H02-dark-seleccion.png",
+    "copy": "phone-H02-dark-seleccion.png",
+    "sha256": "a5c26ef3474098f5c652c4d3da5abbb01b855ea2f749de2c6d7a3049d3be2374"
+  }
+]

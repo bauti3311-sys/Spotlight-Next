@@ -1,0 +1,265 @@
+{
+  "units": "dp; window excludes 12dp outer padding on each side; menu header intentionally blank because spotlight-bar includes its menu",
+  "profiles": {
+    "tablet-light": [
+      {
+        "mode": "legacy",
+        "scene": "home",
+        "windowHeightDp": "168.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "legacy",
+        "scene": "inspector",
+        "windowHeightDp": "483.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "inspector",
+        "windowHeightDp": "426.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "home",
+        "windowHeightDp": "176.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-context",
+        "windowHeightDp": "160.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "vivaldi-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "ime-budget",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "330.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "menu",
+        "windowHeightDp": "369.0",
+        "headerHeightDp": "",
+        "viewportDp": "700.0"
+      }
+    ],
+    "phone-light": [
+      {
+        "mode": "legacy",
+        "scene": "home",
+        "windowHeightDp": "180.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "legacy",
+        "scene": "inspector",
+        "windowHeightDp": "548.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "inspector",
+        "windowHeightDp": "426.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "home",
+        "windowHeightDp": "188.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-context",
+        "windowHeightDp": "160.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "vivaldi-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "ime-budget",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "330.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "menu",
+        "windowHeightDp": "369.0",
+        "headerHeightDp": "",
+        "viewportDp": "700.0"
+      }
+    ],
+    "tablet-dark": [
+      {
+        "mode": "legacy",
+        "scene": "home",
+        "windowHeightDp": "168.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "legacy",
+        "scene": "inspector",
+        "windowHeightDp": "483.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "inspector",
+        "windowHeightDp": "426.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "home",
+        "windowHeightDp": "176.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-context",
+        "windowHeightDp": "160.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "vivaldi-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "ime-budget",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "330.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "menu",
+        "windowHeightDp": "369.0",
+        "headerHeightDp": "",
+        "viewportDp": "700.0"
+      }
+    ],
+    "phone-dark": [
+      {
+        "mode": "legacy",
+        "scene": "home",
+        "windowHeightDp": "180.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "legacy",
+        "scene": "inspector",
+        "windowHeightDp": "548.0",
+        "headerHeightDp": "56.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "inspector",
+        "windowHeightDp": "426.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "home",
+        "windowHeightDp": "188.0",
+        "headerHeightDp": "64.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-context",
+        "windowHeightDp": "160.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "spotify-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "vivaldi-review",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "700.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "ime-budget",
+        "windowHeightDp": "178.0",
+        "headerHeightDp": "76.0",
+        "viewportDp": "330.0"
+      },
+      {
+        "mode": "focus",
+        "scene": "menu",
+        "windowHeightDp": "369.0",
+        "headerHeightDp": "",
+        "viewportDp": "700.0"
+      }
+    ]
+  }
+}

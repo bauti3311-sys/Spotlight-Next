@@ -15,6 +15,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.FontWeight
@@ -86,19 +88,28 @@ fun ResultRow(
     val motion=animations && LocalMotion.current
     val interaction=remember{MutableInteractionSource()}
     val hovered by interaction.collectIsHoveredAsState()
+    val focused by interaction.collectIsFocusedAsState()
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
     val pad=GlassTokens.rowVerticalPadding(appearance,inline)
     val hPad=GlassTokens.rowHorizontalPadding(appearance)
     val amount by animateFloatAsState(if(selected)1f else 0f,tween(if(motion)GlassTokens.selectionDuration(appearance) else 0),label="result-selection")
     val dark=colors.surface.luminance()<.5f
+    val premium=LocalPremiumReview.current
+    val focusUi=LocalFocusUi.current
+    val selectionAccent=if(LocalPuenteUi.current)rememberCommandAccent(result) ?: colors.primary else colors.primary
     val ink by animateColorAsState(colors.onSurface,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-ink")
     val fill by animateColorAsState(if(hovered)GlassTokens.hover() else Color.Transparent,tween(if(motion)GlassTokens.selectionDuration(LocalAppearance.current) else 0),label="result-fill")
     Row(
         Modifier.fillMaxWidth().testTag("result:${result.id}").heightIn(min=if(inline)GlassTokens.resultRowHeight(appearance) else (60f*d).coerceAtLeast(48f).dp).semantics { this.selected=selected; customActions=listOf(CustomAccessibilityAction("Operaciones del resultado"){onInteraction();onDetails();true}) }
             .clip(RoundedCornerShape(GlassTokens.rowRadius))
             .background(fill)
-            .background(colors.onSurface.copy(alpha=.09f*amount))
+            .background(Brush.horizontalGradient(if(premium)listOf(
+                colors.primary.copy(alpha=(if(dark).19f else .11f)*amount),
+                colors.onSurface.copy(alpha=(if(dark).065f else .025f)*amount)) else if(LocalPuenteUi.current)listOf(selectionAccent.copy(alpha=.14f*amount),selectionAccent.copy(alpha=.07f*amount)) else if(focusUi)listOf(colors.primary.copy(alpha=.08f*amount),colors.onSurface.copy(alpha=.03f*amount)) else GlassTokens.selectedColors(dark,amount)))
+            .then(if(LocalPuenteUi.current)Modifier.border(.75.dp,selectionAccent.copy(alpha=.30f*amount),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
+            .drawWithContent {drawContent();if(focusUi && amount>0f)drawLine(selectionAccent.copy(alpha=.7f*amount),Offset(1.5.dp.toPx(),size.height/2-10.dp.toPx()),Offset(1.5.dp.toPx(),size.height/2+10.dp.toPx()),3.dp.toPx(),StrokeCap.Round)}
+            .then(if(focused)Modifier.border(GlassTokens.resultFocusStroke,GlassTokens.resultFocusColor(dark),RoundedCornerShape(GlassTokens.rowRadius)) else Modifier)
 
             // Let Compose arbitrate taps versus list dragging. Selecting on pointer-down
             // opens automatic Quick Look before LazyColumn can claim the scroll gesture.
@@ -113,12 +124,12 @@ fun ResultRow(
             ResultIcon(result,Modifier.size(if(result.icon!=null)GlassTokens.appIconSize(appearance) else GlassTokens.glyphSize(appearance)),colors.onSurfaceVariant)
         }
         Spacer(Modifier.width((10f*d).dp))
-        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(if(focusUi)3.dp else 2.dp)) {
           Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((10f*d).dp)) {
             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
-                modifier=Modifier.weight(1f,fill=false),
-                fontSize=GlassTokens.scaledSp(GlassTokens.rowText(appearance),appearance),
-                letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+                modifier=Modifier.weight(if(focusUi && inline)2f else 1f,fill=false),
+                fontSize=GlassTokens.scaledSp(if(focusUi)15.sp else GlassTokens.rowText(appearance),appearance),
+                lineHeight=GlassTokens.scaledSp(if(focusUi)21.sp else 18.sp,appearance),letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
                 Modifier.weight(1f),color=colors.onSurfaceVariant,fontSize=GlassTokens.scaledSp(GlassTokens.secondaryText,appearance),
                 maxLines=1,overflow=TextOverflow.Ellipsis)
@@ -129,14 +140,14 @@ fun ResultRow(
         }
         if(inline && !playing)Text(metadata,
             Modifier.padding(start=(10f*d).dp).widthIn(max=104.dp),color=colors.onSurfaceVariant,
-            fontSize=GlassTokens.scaledSp(GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
+            fontSize=GlassTokens.scaledSp(if(focusUi)12.sp else GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
         if(playing)Text("En reproducción",Modifier.padding(start=(10f*d).dp).widthIn(max=124.dp),color=colors.onSurfaceVariant,
-            fontSize=GlassTokens.scaledSp(GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
+            fontSize=GlassTokens.scaledSp(if(focusUi)12.sp else GlassTokens.metadataText,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
         if (favorite)IosCommandIcon(CommandIcons.Star,"Favorita",Modifier.padding(horizontal=6.dp).size(14.dp),tint=colors.primary)
         if(!inline) Box(Modifier.size(GlassTokens.hit),contentAlignment=Alignment.Center) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides (if(inline)0.dp else GlassTokens.hit)) {
         if(selected || hovered) IconButton(onClick = {onInteraction();onDetails()}, modifier = Modifier.size(if(inline)32.dp else GlassTokens.hit)) {
-            Icon(
+            IosCommandIcon(
                 CommandIcons.Chevron,
                 "Operaciones del resultado",
                 Modifier.size(18.dp),

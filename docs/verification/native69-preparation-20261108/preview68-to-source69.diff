@@ -1,0 +1,522 @@
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+index 5270cef..e4d9f1b 100644
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -45,7 +45,7 @@ android {
+    proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    ndk { abiFilters += "arm64-v8a" } // Personal preview targets Galaxy Tab A9+ and Moto G86.
+    applicationIdSuffix = ".raycastpreview"
+-   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview-native57-v68" else "-raycast-preview-native57-v68-experimental"
++   versionNameSuffix = if (optimizeRaycastPreview) "-raycast-preview-native57-v69" else "-raycast-preview-native57-v69-experimental"
+    // Never substitute a generated debug certificate for the historical Preview identity.
+    // CI/tests can configure the project without a key; that case yields unsigned output.
+    signingConfig = if (hasPrivateSigning) signingConfigs.getByName("projectPrivate") else null
+@@ -88,7 +88,7 @@ android {
+ androidComponents {
+  onVariants(selector().withBuildType("raycastPreview")) { variant ->
+   // Native57 validation; avoid experimental58/59 numbering. Only this Preview changes.
+-  variant.outputs.forEach { output -> output.versionCode.set(68) }
++  variant.outputs.forEach { output -> output.versionCode.set(69) }
+  }
+  onVariants(selector().withBuildType("review")) { variant ->
+   variant.outputs.forEach { output -> output.versionCode.set(releaseIdentity.getProperty("version.code").toInt() + 1) }
+diff --git a/app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt b/app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt
+index 3026a75..25f5967 100644
+--- a/app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt
++++ b/app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt
+@@ -168,7 +168,7 @@ object HomeSuggestions {
+                 appScore,
+             )
+         }
+-            .sortedWith(compareByDescending<ScoredCandidate> { it.contextualScore }.thenBy { normalize(it.result.title) })
++            .sortedWith(compareByDescending<ScoredCandidate> { it.contextualScore }.thenBy { normalize(it.result.title) }.thenBy { it.result.id })
+             .take(MAX_SUGGESTED_APPS)
+ 
+         candidates += scoredApps
+diff --git a/app/src/main/java/dev/bautista/spotlight/search/Models.kt b/app/src/main/java/dev/bautista/spotlight/search/Models.kt
+index 31a6079..cab1be3 100644
+--- a/app/src/main/java/dev/bautista/spotlight/search/Models.kt
++++ b/app/src/main/java/dev/bautista/spotlight/search/Models.kt
+@@ -65,9 +65,13 @@ fun normalize(s: String): String =
+         )
+         .replace(Regex("\\p{M}"), "")
+ 
++private val wordSpacing = Regex("\\s+")
++/** Lexical comparison only: never rewrites query payloads, aliases or execution arguments. */
++internal fun normalizedWords(s:String):String=normalize(s).trim().replace(wordSpacing," ")
++
+ fun relevance(query: String, title: String): Int {
+-    val q = normalize(query.trim())
+-    val t = normalize(title)
++    val q = normalizedWords(query)
++    val t = normalizedWords(title)
+     if (q.isEmpty()) return 10
+     if (q == t) return 1000
+     if (t.startsWith(q)) return 800
+diff --git a/app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt b/app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt
+index eb0def0..f583795 100644
+--- a/app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt
++++ b/app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt
+@@ -11,9 +11,10 @@ object ResultRanker {
+         val usage=runCatching{JSONObject(c.usageData)}.getOrDefault(JSONObject())
+         val priorities=runCatching{JSONObject(c.sourcePriority)}.getOrDefault(JSONObject())
+         val now=System.currentTimeMillis()
++        val normalizedQuery=normalizedWords(query)
+         return ordered(items.map {item->
+             val lexical=if(item.category in setOf("Aplicaciones","Contactos","Notas"))relevance(query,item.title)/3 else 0
+-            val exact=if(query.isNotBlank() && normalize(query.trim())==normalize(item.title))2400 else 0
++            val exact=if(normalizedQuery.isNotEmpty() && normalizedQuery==normalizedWords(item.title))2400 else 0
+             val entry=if(c.learning && !c.privateMode)usage.optJSONObject(item.id) else null
+             val count=entry?.optInt("count",0) ?: 0
+             val lastTime=entry?.optLong("time",0L) ?: 0L
+@@ -30,15 +31,15 @@ object ResultRanker {
+             compareByDescending<Result>{it.matchClass}
+                 .thenByDescending{if(it.matchClass==6 && it.category=="Aplicaciones")1 else 0}
+                 .thenByDescending{it.score}
+-                .thenBy{normalize(it.title)}
++                .thenBy{normalizedWords(it.title)}
+                 .thenBy{it.id}
+         ).distinctBy{it.id}
+ 
+     // A personal bonus can order peers, never outrank a better lexical class.
+     fun matchClass(query:String,item:Result):Int {
+-        val q=normalize(query.trim()).split(Regex("\\s+")).filter{it.isNotBlank()}.joinToString(" ")
++        val q=normalizedWords(query)
+         if(q.isEmpty())return 0
+-        val t=normalize(item.title.trim()).split(Regex("\\s+")).joinToString(" ")
++        val t=normalizedWords(item.title)
+         val installed=item.category=="Aplicaciones"
+         val command=item.category in setOf("Comandos","Acciones") && item.action !is Action.Ask &&
+             item.action !is Action.Access && item.action !is Action.RestoreQuery &&
+diff --git a/app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt b/app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt
+index 878c0ce..3aac87d 100644
+--- a/app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt
++++ b/app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt
+@@ -53,7 +53,8 @@ class SearchEngine(
+     private suspend fun expandAliases(input:String,aliases:Set<String>):String {
+         if(aliases.none{normalize(it.substringBefore('|'))==normalize(input.trim().substringBefore(' '))})return input
+         // A user alias can never hide an installed application with that exact name.
+-        if(appList().any{normalize(it.label)==normalize(input.trim())})return input
++        val literalName=normalizedWords(input)
++        if(appList().any{normalizedWords(it.label)==literalName})return input
+         return dev.bautista.spotlight.personal.PersonalCommands.expand(input,aliases)
+     }
+     fun invalidateApps() {
+@@ -109,7 +110,7 @@ class SearchEngine(
+ 
+     fun search(input:String,c:Config,scope:SearchScope?=null,selectedFiles:List<Result>?=null):Flow<List<Result>> = channelFlow {
+         // Resolve once at the production boundary. This is local and side-effect free.
+-        val literalApp=scope==null && input.isNotBlank() && appList().any{normalize(it.label.trim())==normalize(input.trim())}
++        val literalApp=scope==null && input.isNotBlank() && normalizedWords(input).let{name->appList().any{normalizedWords(it.label)==name}}
+         val store=(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts
+         if(!literalApp && scope==null && normalize(input.trim()) in setOf("compartir archivos seleccionados","compartir seleccion","compartir este archivo")) {
+             val files=selectedFiles ?: store?.sharedFiles?.items.orEmpty()
+@@ -414,7 +415,8 @@ class SearchEngine(
+                 )
+         }
+         launch(Dispatchers.IO) {
+-            appList().firstOrNull { normalize(it.label)==normalize(query) }?.let {
++            val literalName=normalizedWords(query)
++            appList().firstOrNull { normalizedWords(it.label)==literalName }?.let {
+                 publish("app-actions", integrations.menu(it.label,it.intent,it.intent.component?.packageName))
+             }
+             publish(
+@@ -441,7 +443,7 @@ class SearchEngine(
+                                 score +
+                                     (if (a.id in c.favorites) 120 else 0) +
+                                     (20 - c.recent.indexOf(a.id)).coerceAtMost(20).let {
+-                                        if (a.id in c.recent) it else 0
++                                        if (c.learning && !c.privateMode && a.id in c.recent) it else 0
+                                     },
+                                 Action.Launch(a.intent),
+                                 runCatching { context.packageManager.getActivityIcon(a.intent) }
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt b/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt
+index 1322cd3..a236e77 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt
+@@ -1529,6 +1529,7 @@ fun SpotlightPanel(
+                                 if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
+                                     }
+                                 }
++                                if(LocalFocusUi.current)NativeLaunchRequestStatus(launchSession.requestedDestination)
+                                 ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
+                                     observed?.playing==true,emptyList(),onOpen={execute(application)},
+                                     onFavorite={toggleFavorite(application)},
+diff --git a/app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt b/app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt
+index 466fbe3..401b7e4 100644
+--- a/app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt
++++ b/app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt
+@@ -125,7 +125,7 @@ fun ResultRow(
+         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(if(focusUi)3.dp else 2.dp)) {
+           Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy((10f*d).dp)) {
+             Text(result.title,color=ink,fontWeight=if(selected)FontWeight.SemiBold else FontWeight.Medium,
+-                modifier=Modifier.weight(1f,fill=false),
++                modifier=Modifier.weight(if(focusUi && inline)2f else 1f,fill=false),
+                 fontSize=GlassTokens.scaledSp(if(focusUi)15.sp else GlassTokens.rowText(appearance),appearance),
+                 lineHeight=GlassTokens.scaledSp(if(focusUi)21.sp else 18.sp,appearance),letterSpacing=0.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+             if(inline && !PreviewPresentation.isApplication(result) && result.subtitle.isNotBlank())Text(result.subtitle,
+diff --git a/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt b/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt
+new file mode 100644
+index 0000000..25d03e2
+--- /dev/null
++++ b/app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt
+@@ -0,0 +1,151 @@
++package dev.bautista.spotlight.search
++
++import android.Manifest
++import android.content.*
++import android.content.pm.*
++import dev.bautista.spotlight.SpotlightApp
++import dev.bautista.spotlight.control.CommandCenter
++import dev.bautista.spotlight.data.Config as AppConfig
++import kotlinx.coroutines.flow.toList
++import kotlinx.coroutines.runBlocking
++import org.json.JSONObject
++import org.junit.*
++import org.junit.Assert.*
++import org.junit.runner.RunWith
++import org.robolectric.*
++import org.robolectric.annotation.Config
++
++/** Reproducible local fixtures; no private accounts, external execution, models or network. */
++@RunWith(RobolectricTestRunner::class)
++@Config(sdk=[33],application=SpotlightApp::class)
++class C2RelevanceCorpusTest {
++ private val app get()=RuntimeEnvironment.getApplication() as SpotlightApp
++ private val c=AppConfig(files=false,contacts=false,clipboard=false,learning=false)
++ private val launcher get()=Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
++ private fun install(pkg:String,label:String):ResolveInfo {
++  val a=ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel=label;enabled=true}
++  val activity=ActivityInfo().apply{packageName=pkg;name="Main";nonLocalizedLabel=label;applicationInfo=a;enabled=true;exported=true}
++  val info=ResolveInfo().apply{activityInfo=activity}
++  val pm=Shadows.shadowOf(app.packageManager)
++  pm.installPackage(PackageInfo().apply{packageName=pkg;applicationInfo=a;activities=arrayOf(activity)})
++  pm.addResolveInfoForIntent(launcher,info);pm.addResolveInfoForIntent(launcher.setPackage(pkg),info)
++  app.search.invalidateApps();return info
++ }
++ private fun frames(q:String,config:AppConfig=c)=runBlocking{app.search.search(q,config).toList()}
++ private fun initial(q:String,config:AppConfig=c):List<Result> {
++  val all=frames(q,config).last();val visible=CompactResults.select(q,all,config).initial
++  println("CORPUS query=[$q] all=${all.map{it.id+":"+it.title}} initial=${visible.map{it.id+":"+it.title}}")
++  return visible
++ }
++ private fun application(id:String,title:String,score:Int=1000)=Result(id,title,"","Aplicaciones",score,Action.Launch(Intent(Intent.ACTION_MAIN).setComponent(ComponentName(id,"Main"))))
++ @Test fun exactApplicationsAndPrefixesLeadEveryProviderSnapshot() {
++  install("fixture.webos","webOS Dev Manager");install("com.spotify.music","Spotify");install("com.whatsapp","WhatsApp");install("fixture.wifi","Wi-Fi")
++  for((q,pkg) in listOf("webOS Dev Manager" to "fixture.webos","Spotify" to "com.spotify.music","spot" to "com.spotify.music")) {
++   val config=c.copy(learning=true,favorites=setOf("com.whatsapp/Main","fixture.wifi/Main"),usageData=JSONObject().put("com.whatsapp/Main",JSONObject().put("count",999999).put("time",System.currentTimeMillis())).toString())
++   val snapshots=frames(q,config);assertTrue(snapshots.isNotEmpty())
++   snapshots.forEach{rows->assertEquals(q,pkg,((CompactResults.select(q,rows,config).initial.first().action as Action.Launch).intent.component?.packageName))}
++   initial(q,config)
++  }
++ }
++ @Test fun internalWhitespaceCannotLetAnAliasHideTheExactInstalledApp() {
++  install("fixture.webos","webOS Dev Manager");install("com.spotify.music","Spotify")
++  val config=c.copy(aliases=setOf("webos|Spotify"))
++  for(q in listOf("webOS Dev Manager","  WEBOS   DEV\tMANAGER  ")) {
++   val first=initial(q,config).first();assertTrue("Exact app must survive alias: $q / ${first.id}",first.action is Action.Launch)
++   assertEquals(q,"fixture.webos",(first.action as Action.Launch).intent.component?.packageName)
++  }
++ }
++ @Test fun normalizedEquivalentNamesHaveStableScoresAndOrder() {
++  val a=application("fixture.a","Café Manager");val b=application("fixture.b","Cafe   Manager")
++  val cases=listOf("café manager","CAFE MANAGER"," cafe   manager ","café\tmanager").map{q->q to ResultRanker.rank(q,listOf(b,a),c)}
++  cases.forEach{(q,ranked)->println("NORMALIZED [$q] ${ranked.map{it.id+":"+it.score}}")}
++  for((q,ranked) in cases) {
++   assertEquals(listOf(a.id,b.id),ranked.map{it.id});assertEquals(ranked[0].score,ranked[1].score)
++  }
++ }
++ @Test fun explicitMusicIsPreservedAndBareQueenDoesNotInventMusicIntent() {
++  install("com.spotify.music","Spotify")
++  assertTrue(initial("queen").none{it.action is Action.ComposeSearch || it.category=="Aplicaciones"})
++  val musical=initial("música de Queen");assertTrue(musical.any{(it.action as? Action.ComposeSearch)?.query?.equals("queen",ignoreCase=true)==true})
++  install("fixture.queen","Queen")
++  assertEquals("fixture.queen",(initial("queen").first().action as Action.Launch).intent.component?.packageName)
++  assertTrue(initial("música de Queen").first().action is Action.ComposeSearch)
++ }
++ @Test fun relevantFilesAndContactsBeatUnrelatedAppsAndGenericWebWithoutExecution() {
++  val doc=Result("fixture.doc","Queen historia.pdf","Coincidencia local autorizada","Archivos",700,Action.Launch(Intent("fixture:document")),mime="application/pdf")
++  val contact=Result("fixture.contact","Queen Pérez","Contacto autorizado","Contactos",650,Action.ComposeMessage("sms","+15550000000"))
++  val unrelated=application("fixture.unrelated","WhatsApp",9000)
++  val web=Result("web","Buscar Queen en la web","Acción exploratoria","Web",9999,Action.Launch(Intent("fixture:web")))
++  val ranked=ResultRanker.rank("queen",listOf(web,unrelated,contact,doc),c);val view=CompactResults.select("queen",ranked,c)
++  assertEquals(listOf(contact.id,doc.id),view.initial.map{it.id});assertTrue(view.all.any{it.id==web.id})
++  assertEquals(contact.action,view.initial.single{it.id==contact.id}.action)
++  println("LOCAL CONTENT initial=${view.initial.map{it.id}} expanded=${view.all.map{it.id}}")
++ }
++ @Test fun personalizationOrdersPeersButCannotDisplaceExactOrPrefixMatches() {
++  val exact=application("fixture.exact","Spotify");val prefix=application("fixture.prefix","Spotify Studio");val partial=application("fixture.partial","Mi Spotify",9000)
++  val usage=JSONObject().put(partial.id,JSONObject().put("count",999999).put("time",System.currentTimeMillis()+60000)).toString()
++  val config=c.copy(learning=true,favorites=setOf(partial.id),usageData=usage,sourcePriority="{\"Aplicaciones\":150}")
++  assertEquals(listOf(exact.id,prefix.id,partial.id),ResultRanker.rank("spotify",listOf(partial,prefix,exact),config).map{it.id})
++  val peers=listOf(application("fixture.a","Spotify Alpha"),application("fixture.b","Spotify Beta"))
++  assertEquals("fixture.b",ResultRanker.rank("spot",peers,c.copy(favorites=setOf("fixture.b"))).first().id)
++  val learned=c.copy(learning=true,usageData=JSONObject().put("fixture.b",JSONObject().put("count",999999).put("time",System.currentTimeMillis()+60000)).toString())
++  assertEquals("fixture.b",ResultRanker.rank("spot",peers,learned).first().id)
++  assertEquals(ResultRanker.rank("spot",peers,c).map{it.id},ResultRanker.rank("spot",peers,learned.copy(privateMode=true)).map{it.id})
++ }
++ @Test fun disabledLearningAndPrivateModeIgnoreLearnedRecencyButKeepExplicitFavorites() {
++  install("fixture.player.a","Player Alpha");install("fixture.player.b","Player Beta")
++  val learned=c.copy(learning=true,recent=listOf("fixture.player.b/Main"))
++  assertEquals("Player Beta",initial("playe",learned).first().title)
++  assertEquals("Player Alpha",initial("playe",learned.copy(learning=false)).first().title)
++  assertEquals("Player Alpha",initial("playe",learned.copy(privateMode=true)).first().title)
++  assertEquals("Player Beta",initial("playe",learned.copy(privateMode=true,favorites=setOf("fixture.player.b/Main"))).first().title)
++ }
++ @Test fun aliasesAndExplicitDeviceContentAndCalculatorQueriesKeepTheirContracts() {
++  install("com.spotify.music","Spotify");assertEquals("Spotify",initial("mus",c.copy(aliases=setOf("mus|Spotify"))).first().title)
++  assertTrue(initial("volumen 40%").any{it.action is Action.Device && (it.action as Action.Device).command=="volume:40"})
++  assertEquals(Action.Copy("4"),initial("2+2").first().action)
++  val files=initial("pdf anatomía");assertTrue(files.none{it.category=="Aplicaciones"});assertTrue(files.any{it.action is Action.Access})
++ }
++ @Test fun deniedProvidersNeverSupplyPrivateContentAndDisabledModulesStayExcluded() {
++  install("fixture.juan","Juan App");Shadows.shadowOf(app).denyPermissions(Manifest.permission.READ_CONTACTS)
++  val rows=frames("Juan",c.copy(contacts=true)).last();assertTrue(rows.none{it.category=="Contactos" && it.action !is Action.Access});assertTrue(rows.none{it.category=="Archivos" && it.action is Action.Launch})
++  val denied=initial("/contacts Juan",c.copy(contacts=true));assertTrue(denied.all{it.action is Action.Access})
++  dev.bautista.spotlight.extensions.ExtensionStore.setEnabled(app,"apps",false)
++  assertTrue(frames("Juan",c).last().none{it.category=="Aplicaciones"})
++ }
++ @Test fun selectionIdentityAndExpansionSurviveLateResultsWithoutReinterpretingActions() {
++  val old=(1..8).map{application("fixture.$it","Spotify $it")};val selected=old[4]
++  val late=application("fixture.exact","Spotify");val merged=StableResults.merge(old,listOf(late)+old.reversed(),true)
++  val view=CompactResults.select("spot",merged,c,preserveOrder=true)
++  assertEquals(old.map{it.id}+late.id,view.all.map{it.id});assertEquals(selected.id,view.initial[4].id)
++  assertEquals(selected.action,view.initial[4].action);assertTrue(view.visible(false,old[7].id).any{it.id==old[7].id})
++  assertEquals(9,view.visible(true).size);assertEquals("spotify",CommandCenter.complete("spot",listOf(late)))
++  assertTrue(StableResults.merge(old,listOf(late)+old.filterNot{it.id==selected.id},true).none{it.id==selected.id})
++ }
++ @Test fun longLabelsAccentsAndEveryWordAreRequiredForAppRelevance() {
++  install("fixture.long","Café Clínica — Gestor de documentos profesionales y referencias locales")
++  assertEquals("fixture.long",(initial("cafe clinica gestor").first().action as Action.Launch).intent.component?.packageName)
++  assertEquals(0,relevance("web dev","WhatsApp"));assertEquals(0,relevance("web dev","Web navegador"))
++ }
++ @Test fun emptyHomeHasNoAlphabeticalFillerAndRespectsPrivacyAndLimits() {
++  install("fixture.alpha","Alpha");install("fixture.beta","Beta")
++  assertTrue(initial("").isEmpty())
++  val favorites=c.copy(favorites=setOf("fixture.alpha/Main","fixture.beta/Main"));val rows=initial("",favorites)
++  assertTrue(rows.size<=3);assertEquals(1,rows.count{it.action is Action.Launch})
++  val rich=HomeSuggestions.results(app,favorites.copy(learning=true,clipboard=true,actionRecent=listOf("volumen 40%")),false,true)
++  assertEquals(3,rich.size);assertEquals(1,rich.count{it.action is Action.Launch})
++  val stale=AppConfig(files=false,contacts=false,clipboard=false,usageData="{\"fixture.alpha/Main\":{\"count\":50,\"time\":1}}")
++  assertTrue(HomeSuggestions.results(app,stale,false,false,30L*86400000).none{it.action is Action.Launch})
++  assertTrue(HomeSuggestions.results(app,stale.copy(privateMode=true),false,true).isEmpty())
++ }
++ @Test fun homonymousFavoriteHomeAppsDoNotDependOnPackageManagerEnumerationOrder() {
++  val z=install("fixture.z","Duplicada");val a=install("fixture.a","Duplicada")
++  val config=c.copy(favorites=setOf("fixture.z/Main","fixture.a/Main"))
++  val first=HomeSuggestions.results(app,config,false,false).map{it.id}
++  val pm=Shadows.shadowOf(app.packageManager);pm.removeResolveInfosForIntent(launcher,"fixture.z");pm.removeResolveInfosForIntent(launcher,"fixture.a")
++  pm.addResolveInfoForIntent(launcher,a);pm.addResolveInfoForIntent(launcher,z)
++  val reversed=HomeSuggestions.results(app,config,false,false).map{it.id}
++  println("HOME enumeration before=$first reversed=$reversed")
++  assertEquals(listOf("suggest:app:fixture.a"),first);assertEquals(first,reversed)
++ }
++}
+diff --git a/app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt b/app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt
+new file mode 100644
+index 0000000..034c9f1
+--- /dev/null
++++ b/app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt
+@@ -0,0 +1,123 @@
++package dev.bautista.spotlight.ui
++
++import android.content.*
++import android.content.pm.*
++import androidx.activity.ComponentActivity
++import androidx.compose.foundation.layout.*
++import androidx.compose.runtime.CompositionLocalProvider
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.input.key.Key
++import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.test.*
++import androidx.compose.ui.test.junit4.createAndroidComposeRule
++import androidx.compose.ui.unit.dp
++import androidx.lifecycle.Lifecycle
++import dev.bautista.spotlight.SpotlightApp
++import dev.bautista.spotlight.control.AppCapabilities
++import dev.bautista.spotlight.control.IntegrationRegistry
++import dev.bautista.spotlight.data.Config as AppConfig
++import org.junit.*
++import org.junit.Assert.*
++import org.junit.runner.RunWith
++import org.robolectric.*
++import org.robolectric.annotation.Config
++import org.robolectric.annotation.GraphicsMode
++
++/** Real Focus/search/inspector/footer/executor, synthetic Android app; no external effect verified. */
++@RunWith(RobolectricTestRunner::class)
++@Config(sdk=[33],qualifiers="w1000dp-h1000dp-mdpi",application=SpotlightApp::class)
++@GraphicsMode(GraphicsMode.Mode.NATIVE)
++@OptIn(ExperimentalTestApi::class)
++class C2AppOpenJourneyTest {
++ @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
++ private val app get()=ui.activity.application as SpotlightApp
++ private val pkg="fixture.atlas.reader"
++ private val id="$pkg/Main"
++ private val calls=mutableListOf<Intent>()
++ private var attempts=0
++ private var closed=0
++ private var failure:Exception?=null
++ private fun install(permission:String?=null,exported:Boolean=true) {
++  val a=ApplicationInfo().apply{packageName=pkg;nonLocalizedLabel="Atlas Reader";enabled=true}
++  val activity=ActivityInfo().apply{packageName=pkg;name="Main";applicationInfo=a;nonLocalizedLabel="Atlas Reader";this.exported=exported;this.permission=permission;enabled=true}
++  val pm=Shadows.shadowOf(app.packageManager)
++  pm.installPackage(PackageInfo().apply{packageName=pkg;applicationInfo=a;activities=arrayOf(activity)})
++  val info=ResolveInfo().apply{activityInfo=activity}
++  pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),info)
++  pm.addResolveInfoForIntent(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setPackage(pkg),info)
++  app.search.invalidateApps()
++ }
++ private fun show(pin:Boolean=false) {
++  install()
++  val wrapper=object:ContextWrapper(ui.activity) {
++   override fun startActivity(intent:Intent) {
++    attempts++;failure?.let{throw it};calls+=Intent(intent)
++    // This deliberately records a request, never an external app's completion.
++   }
++  }
++  ui.setContent{CompositionLocalProvider(LocalContext provides wrapper){Box(Modifier.width(900.dp)){
++   SpotlightPanel(app,AppConfig(focusInterface=true,theme="dark",files=false,contacts=false,online=false,learning=false,suggestions=false,animations=false),{closed++},"Atlas Reader",680f)
++  }}}
++  ui.waitUntil(15000){ui.onAllNodesWithTag("result:$id").fetchSemanticsNodes().isNotEmpty()}
++  ui.onNodeWithTag("result:$id").performClick()
++  ui.onNodeWithTag("inspector-title").assertTextEquals("Atlas Reader")
++  assertEquals(0,attempts)
++  if(pin)ui.onNodeWithTag("inspector-pin").performClick()
++ }
++ private fun editor()=ui.onNode(hasSetTextAction() and hasAnyAncestor(hasTestTag("spotlight-bar")))
++ private fun open()=ui.onNode(hasText("Abrir aplicación") and hasClickAction())
++ private fun coherent() {
++  editor().assertTextEquals("Atlas Reader")
++  ui.onNodeWithTag("result:$id").assertIsSelected()
++  ui.onNodeWithTag("inspector-title").assertTextEquals("Atlas Reader")
++ }
++ @Test fun availableLauncherRequestedFromInspectorContextPublishesHonestReceipt() {
++  show(pin=true)
++  val probe=Intent(Intent.ACTION_MAIN).setComponent(ComponentName(pkg,"Main"))
++  assertNull(IntegrationRegistry(ui.activity).launchAccess(probe).problem)
++  assertTrue("No invented public search/share capability",AppCapabilities(ui.activity).available(pkg).isEmpty())
++  open().performClick()
++  assertEquals(1,attempts);assertEquals(ComponentName(pkg,"Main"),calls.single().component)
++  coherent();assertEquals(0,closed)
++  ui.onNodeWithTag("native-launch-request").assertIsDisplayed().assertTextEquals("Solicitud enviada a Android · Atlas Reader · $pkg\nResultado externo sin comprobar.")
++ }
++ @Test fun rapidTouchAndEnterShareOneRequestFence() {
++  show(pin=true);open().performClick();open().performClick()
++  assertEquals(1,attempts);assertEquals(1,calls.size)
++  ui.onNodeWithTag("native-launch-review").assertExists()
++  ui.onNodeWithText("Volver sin abrir").performKeyInput{pressKey(Key.Enter)}
++  ui.onNodeWithTag("native-launch-review").assertDoesNotExist()
++  coherent();assertEquals(1,attempts)
++ }
++ @Test fun removedPackageCannotDispatchAndCancelRestoresSearchAndInspector() {
++  show();Shadows.shadowOf(app.packageManager).removePackage(pkg)
++  open().performClick()
++  assertEquals(0,attempts);assertTrue(calls.isEmpty())
++  ui.onNodeWithText("El destino ya no está disponible. Revisá la app elegida o sus ajustes.").assertExists()
++  ui.onNodeWithTag("confirm-native-alternative").assertDoesNotExist()
++  ui.onNodeWithText("Volver sin abrir").performKeyInput{pressKey(Key.Escape)}
++  coherent();assertEquals(0,closed)
++ }
++ @Test fun permissionRaceReportsFailureWithoutFallbackRetryOrPrivateDetails() {
++  show();failure=SecurityException("fixture-secret-path")
++  open().performClick();assertEquals(1,attempts);assertTrue(calls.isEmpty())
++  ui.onNodeWithText("Android no permite abrir este destino. Revisá sus permisos y volvé a seleccionarlo.").assertExists()
++  ui.onNodeWithText("fixture-secret-path",substring=true).assertDoesNotExist()
++  ui.onNodeWithTag("confirm-native-alternative").assertDoesNotExist()
++  ui.onNodeWithTag("native-launch-request").assertDoesNotExist()
++  ui.onNodeWithText("Volver sin abrir").performClick();coherent();assertEquals(1,attempts)
++ }
++ @Test fun escapeBeforeRequestAndExplicitEnterDoNotLoseQueryOrSelection() {
++  show();editor().performKeyInput{pressKey(Key.Escape)}
++  assertEquals(0,attempts);editor().assertTextEquals("Atlas Reader")
++  ui.onNodeWithTag("result:$id").performClick()
++  editor().performKeyInput{pressKey(Key.Enter)}
++  assertEquals(1,attempts);assertEquals(pkg,calls.single().component?.packageName);assertEquals(1,closed)
++ }
++ @Test fun stopAndResumeKeepSearchSelectionInspectorWithoutReplayingRequest() {
++  show(pin=true);open().performClick();assertEquals(1,attempts)
++  ui.activityRule.scenario.moveToState(Lifecycle.State.CREATED)
++  ui.activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
++  ui.waitForIdle();coherent();assertEquals(1,attempts);assertEquals(0,closed)
++ }
++}
+diff --git a/app/src/test/java/dev/bautista/spotlight/ui/FocusTitlePriorityTest.kt b/app/src/test/java/dev/bautista/spotlight/ui/FocusTitlePriorityTest.kt
+new file mode 100644
+index 0000000..b3db574
+--- /dev/null
++++ b/app/src/test/java/dev/bautista/spotlight/ui/FocusTitlePriorityTest.kt
+@@ -0,0 +1,73 @@
++package dev.bautista.spotlight.ui
++
++import androidx.activity.ComponentActivity
++import androidx.compose.foundation.layout.*
++import androidx.compose.material3.Surface
++import androidx.compose.runtime.*
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.platform.LocalDensity
++import androidx.compose.ui.platform.testTag
++import androidx.compose.ui.semantics.SemanticsActions
++import androidx.compose.ui.test.*
++import androidx.compose.ui.test.junit4.createAndroidComposeRule
++import androidx.compose.ui.text.TextLayoutResult
++import androidx.compose.ui.unit.*
++import com.github.takahirom.roborazzi.*
++import dev.bautista.spotlight.data.Config as AppConfig
++import dev.bautista.spotlight.search.*
++import java.io.File
++import org.junit.*
++import org.junit.Assert.*
++import org.junit.runner.RunWith
++import org.robolectric.RobolectricTestRunner
++import org.robolectric.annotation.Config
++import org.robolectric.annotation.GraphicsMode
++
++@RunWith(RobolectricTestRunner::class)
++@Config(sdk=[33],qualifiers="w1000dp-h900dp-mdpi")
++@GraphicsMode(GraphicsMode.Mode.NATIVE)
++@OptIn(ExperimentalRoborazziApi::class)
++class FocusTitlePriorityTest {
++ @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
++ private val item=Result("title-fixture","Leer mensajes de WhatsApp","Notificaciones actuales autorizadas","Sugerencias",0,Action.Copy("fixture"))
++ private var width by mutableStateOf(470)
++ private var scale by mutableStateOf(1f)
++ private var theme by mutableStateOf("dark")
++ private var focus by mutableStateOf(true)
++ private var selected by mutableStateOf(true)
++ private fun show()=ui.setContent {CompositionLocalProvider(LocalDensity provides Density(1f,scale)){
++  SpotlightTheme(theme,AppConfig(focusInterface=focus,focusTypeface="geist",animations=false)) {
++   Surface(Modifier.width(width.dp).testTag("scene")) {
++    ResultRow(item,selected,false,{},{},{},animations=false)
++   }
++  }
++ }}
++ private fun layout():TextLayoutResult {
++  val values=mutableListOf<TextLayoutResult>()
++  ui.onNodeWithText(item.title,useUnmergedTree=true).performSemanticsAction(SemanticsActions.GetTextLayoutResult){it(values)}
++  return values.single()
++ }
++ @Test fun constrainedInspectorListKeepsUsefulTitleComplete() {
++  show()
++  assertFalse("470dp list has room for the title if secondary text yields",layout().isLineEllipsized(0))
++  val before=ui.onNodeWithTag("result:${item.id}").getUnclippedBoundsInRoot()
++  ui.runOnIdle{selected=false}
++  assertEquals(before,ui.onNodeWithTag("result:${item.id}").getUnclippedBoundsInRoot())
++ }
++ @Test fun equivalentRowsPreserveBoundsAndFullAccessibleTextAcrossProfiles() {
++  show();val metrics=StringBuilder()
++  for(w in listOf(470,780,328))for(t in listOf("dark","light"))for(f in listOf(true,false)) {
++   ui.runOnIdle{width=w;theme=t;scale=if(w==328)2f else 1f;focus=f;selected=true};ui.waitForIdle()
++   val title=ui.onNodeWithText(item.title,useUnmergedTree=true).assertIsDisplayed()
++   ui.onNodeWithText(item.subtitle,useUnmergedTree=true).assertIsDisplayed()
++   ui.onNodeWithText("Sugerencias",useUnmergedTree=true).assertIsDisplayed()
++   val row=ui.onNodeWithTag("result:${item.id}").getUnclippedBoundsInRoot()
++   assertEquals(w.toFloat(),row.width.value,.01f);assertTrue(row.height>=48.dp)
++   val bounds=title.getUnclippedBoundsInRoot();assertTrue(bounds.left>=row.left && bounds.right<=row.right)
++   val name="$w-$t-${if(w==328)200 else 100}-${if(f)"focus" else "legacy"}"
++   metrics.appendLine("$name title-width=${layout().size.width} ellipsis=${layout().isLineEllipsized(0)} row=$row")
++   ui.onNodeWithTag("scene").captureRoboImage("build/focus-title-priority/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
++  }
++  File("build/focus-title-priority/metrics.txt").writeText(metrics.toString())
++ }
++}

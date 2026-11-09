@@ -1,0 +1,16 @@
+{
+  "source": "https://repo.maven.apache.org/maven2/org/robolectric/android-all-instrumented/8.0.0_r4-robolectric-r1-i7/",
+  "runtimeOnly": true,
+  "files": {
+    "android-all-instrumented-8.0.0_r4-robolectric-r1-i7.jar": {
+      "bytes": 94512384,
+      "sha512": "c55e2053f3ae35d617ce02b0ecd311c1f72fcd671eaff873fb203e106b2dc444b870677b71be546a062045fc0a473926bb1668bd43f9051176826aab3f732aab",
+      "sha256": "712196356bf61fbcb186f41135c33e6d3416be31543d7be120a33bc898cc1208"
+    },
+    "android-all-instrumented-8.0.0_r4-robolectric-r1-i7.pom": {
+      "bytes": 1403,
+      "sha512": "2fa6981bde8bb64a7b280e8efa2ef59ff0f4fab3c670593a3b508e29ad55ef0c46b136aa19d2f5f75e76edf2726e8befe2871d075fc3210cbd1cfc6e2804f094",
+      "sha256": "6139c477f2f702b0b8135f7b191ec9525cf06110a2fd04ad702e6952e1c5f58c"
+    }
+  }
+}

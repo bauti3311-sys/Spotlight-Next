@@ -1,0 +1,21 @@
+{
+  "parent": "f952cd4a10d98558b4ef69852e6a9e5031ac80d8",
+  "files": [
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/IntegrationRegistry.kt",
+      "sha256": "db61de949b1ad67c7fa579ac35bb40620087fa957cb4abb961ed6413dde1c036"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/control/NativeLaunchSession.kt",
+      "sha256": "5add1727067ccdeacd6b01f475ce451d28359dbab01073e8ad51e1fbe6a6444c"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+      "sha256": "5de655617d0a96a10a8d7c3d4447818700463062b8f8477374ee3217aaeb14cf"
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/NativeLaunchReview.kt",
+      "sha256": "1fe8edf505a2ff04c5c4e1ccc6d463971492159eee59524b9133b6a77d648267"
+    }
+  ]
+}

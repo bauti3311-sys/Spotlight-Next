@@ -25,13 +25,25 @@ internal data class OverlayViewport(
         fun read(wm: WindowManager, resources: Resources, legacySystemBottom: Int, host: View? = null, bottomInset: Int = 0): OverlayViewport {
             if (Build.VERSION.SDK_INT >= 30) {
                 runCatching {
-                    val screen = fromWindowMetrics(wm.currentWindowMetrics, resources.displayMetrics.density)
+                    val metrics = wm.currentWindowMetrics
+                    val screen = fromWindowMetrics(metrics, resources.displayMetrics.density)
                     val frame = Rect()
                     host?.getWindowVisibleDisplayFrame(frame)
-                    if (frame.width() > 0 && frame.height() > 0) {
-                        screen.copy(width = minOf(screen.width, frame.width()),
-                            frameOcclusion = maxOf(screen.frameOcclusion,
-                                (screen.height - frame.height()).coerceAtLeast(0)))
+                    val imeVisible = metrics.windowInsets.isVisible(WindowInsets.Type.ime()) ||
+                        host?.rootWindowInsets?.isVisible(WindowInsets.Type.ime()) == true
+                    // A WRAP_CONTENT overlay (or the Settings window underneath it)
+                    // can report a small visible frame with no IME. Its measured
+                    // content is not the display's keyboard occlusion. Only use
+                    // a full-width fitted frame as a missing-inset fallback when
+                    // Android also reports the keyboard visible. Prefer actual
+                    // IME insets whenever either source supplies them.
+                    val safe = metrics.windowInsets.getInsetsIgnoringVisibility(
+                        WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
+                    if (imeVisible && screen.frameOcclusion == 0 && bottomInset <= screen.excludedBottom &&
+                        frame.width() >= screen.width && frame.height() > 0 &&
+                        frame.top <= metrics.bounds.top + safe.top &&
+                        frame.left <= metrics.bounds.left + safe.left) {
+                        screen.copy(frameOcclusion = (screen.height - frame.height()).coerceAtLeast(0))
                     } else screen
                 }.getOrNull()?.let { return it }
             }
@@ -41,7 +53,8 @@ internal data class OverlayViewport(
             runCatching { wm.defaultDisplay.getMetrics(dm) }
             val frame = Rect()
             host?.getWindowVisibleDisplayFrame(frame)
-            if (frame.width() > 0 && frame.height() > 0) {
+            // A narrow content/window frame is not evidence of a legacy IME either.
+            if (frame.width() >= dm.widthPixels && frame.height() > 0) {
                 val real = DisplayMetrics().apply { setTo(dm) }
                 @Suppress("DEPRECATION")
                 runCatching { wm.defaultDisplay.getRealMetrics(real) }
@@ -70,8 +83,9 @@ internal data class OverlayViewport(
                 (bounds.width() - safe.left - safe.right).coerceAtLeast(1),
                 (bounds.height() - safe.top - safe.bottom).coerceAtLeast(1),
                 density, safe.bottom, bounds.width() > bounds.height(),
-                (metrics.windowInsets.getInsets(WindowInsets.Type.ime()).bottom - safe.bottom)
-                    .coerceAtLeast(0)
+                if (metrics.windowInsets.isVisible(WindowInsets.Type.ime()))
+                    (metrics.windowInsets.getInsets(WindowInsets.Type.ime()).bottom - safe.bottom)
+                        .coerceAtLeast(0) else 0
             )
         }
     }

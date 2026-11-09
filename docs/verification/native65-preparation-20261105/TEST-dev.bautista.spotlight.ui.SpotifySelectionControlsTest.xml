@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SpotifySelectionControlsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:21:38" hostname="52363180d3ce" time="4.133">
+  <properties/>
+  <testcase name="busyRequestDisablesRouteChangesConfirmationAndObservation" classname="dev.bautista.spotlight.ui.SpotifySelectionControlsTest" time="3.87"/>
+  <testcase name="lightRouteSelectionNeverPlaysAndConfirmationAndObservationAreSeparate" classname="dev.bautista.spotlight.ui.SpotifySelectionControlsTest" time="0.136"/>
+  <testcase name="darkEnlargedTextKeepsBothRoutesAndActionsReachableAt330dp" classname="dev.bautista.spotlight.ui.SpotifySelectionControlsTest" time="0.127"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.PuenteFrameTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T23:08:52" hostname="a720fb5903ca" time="3.237">
+  <properties/>
+  <testcase name="detachedPanesKeepMinimumWidthsAtTheSplitThreshold" classname="dev.bautista.spotlight.ui.PuenteFrameTest" time="2.883"/>
+  <testcase name="compactEnlargedContextScrollsToAnExplicitActionWithoutExecutingOnScroll" classname="dev.bautista.spotlight.ui.PuenteFrameTest" time="0.266"/>
+  <testcase name="shortDestinationWrapsContentAndRetainsAdjustableDivider" classname="dev.bautista.spotlight.ui.PuenteFrameTest" time="0.088"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

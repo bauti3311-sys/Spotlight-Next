@@ -1,0 +1,15 @@
+{
+  "baseline": "8f234e2498c207a43c492fbca5de2507e268bf88",
+  "only_product_delta": [
+    "app/src/main/java/dev/bautista/spotlight/ai/PlanExecution.kt"
+  ],
+  "new_dependencies_permissions_versions": false,
+  "new_Actions_or_APK": false,
+  "protected_refs": {
+    "refs/heads/main": "47259ce2d7259f0ddfa5d85b7c73f07983d8cd6d",
+    "refs/heads/feat/preview70-puente-isolated-20261109": "143104ce8d83f6ad6b5b4acd80897db579816fcd",
+    "refs/heads/feat/preview71-settings-isolated-20261109": "b8f8e268dd59e6410ec57a102a0e35231db01b18"
+  },
+  "c6_complete": false,
+  "all_23_complete": false
+}

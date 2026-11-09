@@ -1,5 +1,44 @@
 # Spotlight Next — hoja de ruta maestra y continuidad autónoma
 
+## 2026-11-04 — continuación C2 autorizada, cuatro avances publicados
+
+La nueva autorización permite avanzar C2 sin esperar la tablet. Producción567cc84:
+6d872d7 búsqueda pública WEB_SEARCH;8645d4c consultas explícitas por app;
+c071455 compartir texto/enlaces, destino Gmail, footer y retorno de foco;
+567cc84 recibo Android sin afirmar efecto externo.112 casos distintos de última
+evidencia correcta en rondas dirigidas, Lint0E/26W/1Info. Capturas Compose claras/
+oscuras y comparativas desde fuente anterior con fixture idéntico; sin OneUI físico.
+[Informe y próximos pasos](C2-CONTINUATION-20261104.md). Preview62 sigue intacta (fuente135a9af), física
+ventana/Gboard/scroll/inspector/footer pendiente. Sin APK/Actions/main/C3–C9,
+permisos/dependencias/servicios nuevos ni cambios de firma/facturación. C2 no cerrado;
+continuar matriz pública y contexto/URI autorizados, manteniendo criterio físico abierto.
+
+
+## 2026-11-04 — implementación C1 nativa, aceptación física pendiente
+
+Dirección Refinado + Adaptive autorizada. Refactor 9bdd9d9, base visual 03761d6 y
+ajustes de inspectores separados. 78 casos nativos distintos en rondas dirigidas,
+última evidencia correcta; Lint 0 errores / 16 advertencias / 1 información.
+[Capturas reales antes/después y límites](verification/c1-native-20261104/README.md).
+Barra/lista compactas, hasta 3 sugerencias, acento contenido y footer ligero;
+acciones secundarias en contexto reversible. Sin motores nuevos, C2–C9, APK,
+Actions, firma, dependencias o cambios de main/PRs anteriores. C0 físico sigue
+pendiente. Próxima acción: revisión del C1 nativo y validación física autorizada,
+no comenzar otro checkpoint automáticamente.
+
+
+## Dirección vigente 2026-11-03 — Preview57 nativa
+
+La [decisión del propietario](NATIVE-PREVIEW57-DIRECTION-20261103.md) establece
+base exacta4fc33f2, sin continuar Nuxt/WebView/Preview58/59/PR20. Rama separada
+feat/preview57-native-return-20261103. Primer entregable: [auditoría funcional y
+prioridades](AUDITORIA-NATIVA-PREVIEW57-20261103.md), sin modificación productiva.
+Próximos bloques recomendados: PR19 selectivo; contrato nativo de lanzamiento y
+resultado; corrección dirigida de fallos reproducidos; luego formularios Compose
+y citas locales. RAGFlow remoto sólo si es necesario y expresamente autorizado.
+Esto reemplaza prioridades/bases históricas incompatibles que se conservan abajo.
+No avanzar checkpoint integral ni repetir builds/Actions por esta auditoría.
+
 ## Prioridad vigente: transformación aprobada14/10/2026
 La especificación nueva sustituye controles técnicos de ancho y accesos snippets/rutinas/modos, conservando datos. Rama feat/premium-product-checkpoint desde Android58ac0a2 verificado. Correcciones críticas26095b3 publicadas; prototipo22e0921 recuperable, cierre integral/CI/entrega pendiente. Primero cerrar barra/resultados/inspector, apariencia simple y APK compatible29+ZIP exacto con capturas nativas; luego revisión física del usuario. No iniciar IA/integraciones extensas antes de ese checkpoint/revisión. F1.3 frío sigue incidencia conocida: solo hipótesis nueva dirigida; no bloquear producto. Resultado definitivo y próxima acción en notas/PR; checkpoint integral e38 se conserva.
 

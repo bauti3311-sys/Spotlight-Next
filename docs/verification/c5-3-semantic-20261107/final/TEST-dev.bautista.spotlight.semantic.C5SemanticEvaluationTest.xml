@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.semantic.C5SemanticEvaluationTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-07T14:50:54" hostname="ab6df79ca904" time="3.371">
+  <properties/>
+  <testcase name="actualLexicalCorpusAndCitationBaselineWithUnavailableSemanticModel" classname="dev.bautista.spotlight.semantic.C5SemanticEvaluationTest" time="3.176"/>
+  <testcase name="readinessDoesNotDownloadAndRejectsIncompleteAssets" classname="dev.bautista.spotlight.semantic.C5SemanticEvaluationTest" time="0.026"/>
+  <testcase name="semanticPreferenceWithoutModelDoesNotChangeCitationLifetime" classname="dev.bautista.spotlight.semantic.C5SemanticEvaluationTest" time="0.093"/>
+  <testcase name="explicitPreparationWithoutModelAndResourceDeferralKeepLexicalIndex" classname="dev.bautista.spotlight.semantic.C5SemanticEvaluationTest" time="0.076"/>
+  <system-out><![CDATA[C5_3 lexical tp=7 fp=0 fn=5; semantic NOT EVALUATED (no model), no inference or downloads
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

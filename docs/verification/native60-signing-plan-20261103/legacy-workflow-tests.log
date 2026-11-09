@@ -1,0 +1,11 @@
+test_all_embedded_shell_steps_have_valid_bash_syntax (test_gate_workflow.GateWorkflowTest.test_all_embedded_shell_steps_have_valid_bash_syntax) ... ok
+test_directed_gate_and_preview_allow_only_authorized_branches_and_verify_preview55_identity (test_gate_workflow.GateWorkflowTest.test_directed_gate_and_preview_allow_only_authorized_branches_and_verify_preview55_identity) ... ok
+test_exact_source_and_safe_checkout (test_gate_workflow.GateWorkflowTest.test_exact_source_and_safe_checkout) ... ok
+test_logs_xml_and_failures_are_preserved (test_gate_workflow.GateWorkflowTest.test_logs_xml_and_failures_are_preserved) ... ok
+test_manual_only_default_gate_and_separate_preview (test_gate_workflow.GateWorkflowTest.test_manual_only_default_gate_and_separate_preview) ... ok
+test_one_bounded_job_without_signing_apk_or_instrumentation (test_gate_workflow.GateWorkflowTest.test_one_bounded_job_without_signing_apk_or_instrumentation) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.056s
+
+OK

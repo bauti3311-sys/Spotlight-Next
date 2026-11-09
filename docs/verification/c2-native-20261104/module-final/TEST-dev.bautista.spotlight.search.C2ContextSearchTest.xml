@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.C2ContextSearchTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-04T13:24:30" hostname="c880c3bda6d8" time="3.162">
+  <properties/>
+  <testcase name="homonymousPackagesRequireSelectionAndExactQueryStaysApplicationFirst" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="2.821"/>
+  <testcase name="absentSearchDoesNotInventContextualCapability" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.075"/>
+  <testcase name="appAndTermsPrepareTheExistingPublicSearchWithoutLaunching" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.071"/>
+  <testcase name="exactInstalledApplicationWinsSameNamedHighScoreAction" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.064"/>
+  <testcase name="longestApplicationNameWinsAndAccentsInTermsArePreserved" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.065"/>
+  <testcase name="disabledModulesCannotBeBypassedByContextualRoute" classname="dev.bautista.spotlight.search.C2ContextSearchTest" time="0.063"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

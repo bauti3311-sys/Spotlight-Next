@@ -1,0 +1,30 @@
+{
+  "base": "fe1637309d2a89aa2c67b526b17679d7099eae1f",
+  "code_delta": "one ResultRow title weight line; Focus inline2:1, other paths1:1",
+  "legacy_png_byte_identical": [
+    "780-light-100-legacy.png",
+    "328-dark-200-legacy.png",
+    "328-light-200-legacy.png",
+    "470-light-100-legacy.png",
+    "780-dark-100-legacy.png",
+    "470-dark-100-legacy.png"
+  ],
+  "directed_test_cases": 5,
+  "directed_failures": 0,
+  "physical_feedback": "dark landscape tablet screenshots show improved opacity, last ActionPanel action reachable, inspector Info/Favorites reachable with keyboard, public Queen review legible",
+  "not_proven_by_screenshots": [
+    "no accidental execution during scroll",
+    "keyboard brand and full key contracts",
+    "light theme",
+    "200 percent font on device",
+    "phone and rotation",
+    "Focus reversibility on device",
+    "Spotify playback"
+  ],
+  "manual_screenshot_requests_paused_by_owner": true,
+  "lint": {
+    "Warning": 26,
+    "Information": 1
+  },
+  "apk_generated": false
+}

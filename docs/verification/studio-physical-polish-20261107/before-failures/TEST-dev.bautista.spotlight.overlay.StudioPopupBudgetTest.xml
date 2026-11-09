@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" tests="4" skipped="0" failures="3" errors="0" timestamp="2026-11-07T20:22:13" hostname="ab6df79ca904" time="2.601">
+  <properties/>
+  <testcase name="legacyKeepsItsOriginalHeightAndOutset" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="2.395"/>
+  <testcase name="focusMarginsAndRotationImeUpdatesStayInsideTheFrame" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="0.048">
+    <failure message="java.lang.AssertionError: No edge/IME collision: Rect(640, 120 - 1000, 696) / Rect(8, 32 - 992, 688)" type="java.lang.AssertionError">java.lang.AssertionError: No edge/IME collision: Rect(640, 120 - 1000, 696) / Rect(8, 32 - 992, 688)
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.focusMarginsAndRotationImeUpdatesStayInsideTheFrame$lambda$5(StudioPopupBudgetTest.kt:41)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.checkHost(StudioPopupBudgetTest.kt:25)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.checkHost$default(StudioPopupBudgetTest.kt:18)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.focusMarginsAndRotationImeUpdatesStayInsideTheFrame(StudioPopupBudgetTest.kt:34)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+	Suppressed: org.robolectric.android.internal.AndroidTestEnvironment$UnExecutedRunnablesException: Main looper has queued unexecuted runnables. This might be the cause of the test failure. You might need a shadowOf(Looper.getMainLooper()).idle() call.
+</failure>
+  </testcase>
+  <testcase name="focusRightEdgeStaysAttachedToItsParent" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="0.076">
+    <failure message="java.lang.AssertionError: Menu must stay within parent's right edge" type="java.lang.AssertionError">java.lang.AssertionError: Menu must stay within parent's right edge
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.focusRightEdgeStaysAttachedToItsParent$lambda$3(StudioPopupBudgetTest.kt:32)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.checkHost(StudioPopupBudgetTest.kt:25)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.checkHost$default(StudioPopupBudgetTest.kt:18)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.focusRightEdgeStaysAttachedToItsParent(StudioPopupBudgetTest.kt:30)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+	Suppressed: org.robolectric.android.internal.AndroidTestEnvironment$UnExecutedRunnablesException: Main looper has queued unexecuted runnables. This might be the cause of the test failure. You might need a shadowOf(Looper.getMainLooper()).idle() call.
+</failure>
+  </testcase>
+  <testcase name="focusHeightTracksTheCompactParentInsteadOfTheFullScreen" classname="dev.bautista.spotlight.overlay.StudioPopupBudgetTest" time="0.08">
+    <failure message="java.lang.AssertionError: Compact parent should not produce a 576px menu" type="java.lang.AssertionError">java.lang.AssertionError: Compact parent should not produce a 576px menu
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.focusHeightTracksTheCompactParentInsteadOfTheFullScreen$lambda$2(StudioPopupBudgetTest.kt:28)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.checkHost(StudioPopupBudgetTest.kt:25)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.checkHost$default(StudioPopupBudgetTest.kt:18)
+	at dev.bautista.spotlight.overlay.StudioPopupBudgetTest.focusHeightTracksTheCompactParentInsteadOfTheFullScreen(StudioPopupBudgetTest.kt:27)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+	Suppressed: org.robolectric.android.internal.AndroidTestEnvironment$UnExecutedRunnablesException: Main looper has queued unexecuted runnables. This might be the cause of the test failure. You might need a shadowOf(Looper.getMainLooper()).idle() call.
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

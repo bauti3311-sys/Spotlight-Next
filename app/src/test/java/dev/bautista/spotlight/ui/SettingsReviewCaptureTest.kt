@@ -20,10 +20,10 @@ import org.robolectric.annotation.*
 @OptIn(ExperimentalRoborazziApi::class)
 class SettingsReviewCaptureTest {
  @get:Rule val ui=createAndroidComposeRule<MainActivity>()
- private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()};ui.onNodeWithText("Configuración guiada").performClick();ui.onNodeWithTag("settings-home").assertExists()}
+ private fun ready(){ui.waitUntil(15000){ui.onAllNodesWithTag("settings-search").fetchSemanticsNodes().isNotEmpty()};if(ui.onAllNodesWithTag("settings-overview").fetchSemanticsNodes().isNotEmpty())ui.onNodeWithTag("settings-area:General").performScrollTo().performClick();ui.onNodeWithTag("settings-home").assertExists()}
  private fun capture(name:String){ui.waitForIdle();ui.onRoot().captureRoboImage("build/review-settings/$name.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))}
  @Test fun homeIsCompactAndDoesNotRequestPermissions(){
-  ready();ui.onNodeWithText("Configuración a tu medida").assertIsDisplayed()
+  ready();ui.onNodeWithText("Tu buscador").assertIsDisplayed()
   ui.onNodeWithText("Diagnóstico de Spotlight").assertDoesNotExist()
   ui.onNodeWithText("Avanzado").assertExists()
   assertNull(Shadows.shadowOf(ui.activity).nextStartedActivity)
@@ -56,7 +56,7 @@ class SettingsReviewCaptureTest {
  }
  @Test fun shortcutsNavigateWithoutChangingPreferences(){
   ready();val app=ui.activity.application as SpotlightApp;val before=runBlocking{app.preferences.config.first()}
-  ui.onNodeWithText("Conectar Gemini").performClick();ui.onNodeWithText("Modelo").assertExists()
+  ui.onNodeWithTag("settings-area:Inteligencia artificial").performScrollTo().performClick();ui.onNodeWithText("Modelo").assertExists()
   assertEquals(before,runBlocking{app.preferences.config.first()})
  }
  @Test @Config(qualifiers="w360dp-h800dp") fun phoneHomeAndLightThemeRemainUsable(){

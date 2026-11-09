@@ -1,0 +1,17 @@
+{
+  "revision": "003bc04f134716b5c75613961fa05ad9f4d7023a",
+  "files": {
+    "app/src/main/res/font/geist_regular.ttf": {
+      "bytes": 126048,
+      "sha256": "85a1c6b18a6b0a06dfe9fd4f6d6a5d4979f74ec861eaef4bc7868b5492b8a117"
+    },
+    "app/src/main/res/font/geist_semibold.ttf": {
+      "bytes": 127872,
+      "sha256": "b9f52322d6d20a7ff1e7fe1310ff12ec851aebb83d24f8b4f1d4149298f489b2"
+    },
+    "licenses/Geist-OFL.txt": {
+      "bytes": 4384,
+      "sha256": "021caa749f89fecd7c2e40a50499de29e84d2bc19251659b47d499c2fbfffc17"
+    }
+  }
+}

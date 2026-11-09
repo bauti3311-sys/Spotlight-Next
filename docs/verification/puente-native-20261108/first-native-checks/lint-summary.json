@@ -1,0 +1,11 @@
+{
+  "counts": {
+    "Warning": 23,
+    "Information": 1
+  },
+  "errors": 0,
+  "scope": ":app:lintDebug including AndroidTest/UnitTest",
+  "runs_completed": 1,
+  "baseline_added": false,
+  "suppression_added": false
+}

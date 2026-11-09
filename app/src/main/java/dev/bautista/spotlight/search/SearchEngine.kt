@@ -53,17 +53,77 @@ class SearchEngine(
     private suspend fun expandAliases(input:String,aliases:Set<String>):String {
         if(aliases.none{normalize(it.substringBefore('|'))==normalize(input.trim().substringBefore(' '))})return input
         // A user alias can never hide an installed application with that exact name.
-        if(appList().any{normalize(it.label)==normalize(input.trim())})return input
+        val literalName=normalizedWords(input)
+        if(appList().any{normalizedWords(it.label)==literalName})return input
         return dev.bautista.spotlight.personal.PersonalCommands.expand(input,aliases)
     }
     fun invalidateApps() {
         apps = null
     }
 
-    fun search(input:String,c:Config,scope:SearchScope?=null):Flow<List<Result>> = channelFlow {
+    /** Explicit app + terms and local search phrasing; never inferred private data. */
+    private suspend fun contextualAppSearch(input:String):List<Result> {
+        if(!dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"apps"))return emptyList()
+        val raw=input.trim()
+        val installed=appList()
+        if(installed.any{normalize(it.label.trim())==normalize(raw)})return emptyList()
+        val share=Regex("^compartir(?: (?:texto|enlace|contenido))? en (.+)$",RegexOption.IGNORE_CASE).matchEntire(raw)
+        if(share!=null) {
+            val chosen=installed.filter{normalize(it.label.trim())==normalize(share.groupValues[1].trim())}.singleOrNull() ?: return emptyList()
+            val capability=AppCapabilities(context).available(chosen.intent.component!!.packageName)
+                .singleOrNull{it.id=="share-text"} ?: return emptyList()
+            return listOf(Result("context:app-share:${chosen.id}","Compartir en ${chosen.label}",
+                "Preparar texto o enlace · revisar antes de abrir la app","Acciones",2200,capability.action))
+                .filter{dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it)}
+        }
+        val prefix=Regex("^(?:buscar|busca|buscá)\\s+en\\s+",RegexOption.IGNORE_CASE)
+        val verb=Regex("^(?:buscar|busca|buscá)\\s+",RegexOption.IGNORE_CASE)
+        val candidates=installed.mapNotNull { app ->
+            currentCoroutineContext().ensureActive()
+            val name=app.label.trim().split(Regex("\\s+"))
+            val leadingText=prefix.replaceFirst(raw,"")
+            val leadingWords=Regex("\\S+").findAll(leadingText).toList()
+            val direct=if(leadingWords.size>name.size && leadingWords.take(name.size).map{normalize(it.value.trimEnd(':'))}==name.map(::normalize))
+                leadingText.substring(leadingWords[name.lastIndex].range.last+1).trim().removePrefix(":").trim() else null
+            val trailingText=verb.replaceFirst(raw,"")
+            val trailingWords=Regex("\\S+").findAll(trailingText).toList()
+            val separator=trailingWords.size-name.size-1
+            val trailing=if(verb.containsMatchIn(raw) && separator>0 && normalize(trailingWords[separator].value)=="en" &&
+                trailingWords.takeLast(name.size).map{normalize(it.value)}==name.map(::normalize))
+                trailingText.substring(0,trailingWords[separator].range.first).trim() else null
+            val term=(direct ?: trailing)?.trim()?.takeIf{it.isNotBlank()} ?: return@mapNotNull null
+            Triple(app,name.size,term.take(4000))
+        }
+        val longest=candidates.maxOfOrNull{it.second} ?: return emptyList()
+        // Homonymous packages/profiles require explicit app selection in the inspector.
+        val chosen=candidates.filter{it.second==longest}.singleOrNull() ?: return emptyList()
+        val app=chosen.first
+        val capability=AppCapabilities(context).available(app.intent.component!!.packageName)
+            .singleOrNull{it.id=="search"} ?: return emptyList()
+        val draft=capability.action as? Action.ComposeSearch ?: return emptyList()
+        // Documented named integrations already have their own root-query provider.
+        if(draft.topic !in setOf("app","app-web-search"))return emptyList()
+        return listOf(Result("context:app-search:${app.id}","Buscar en ${app.label}",
+            "Revisar consulta: ${chosen.third}","Acciones",2200,draft.copy(query=chosen.third),icon=null))
+            .filter{dev.bautista.spotlight.extensions.ExtensionStore.allowed(context,it)}
+    }
+
+    fun search(input:String,c:Config,scope:SearchScope?=null,selectedFiles:List<Result>?=null):Flow<List<Result>> = channelFlow {
         // Resolve once at the production boundary. This is local and side-effect free.
-        val resolution=if(scope==null && input.isNotBlank())UniversalIntentEngine.resolve(input,c) else null
-        val interpretation=QueryInterpreter.interpret(input,scope)
+        val literalApp=scope==null && input.isNotBlank() && normalizedWords(input).let{name->appList().any{normalizedWords(it.label)==name}}
+        val store=(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts
+        if(!literalApp && scope==null && normalize(input.trim()) in setOf("compartir archivos seleccionados","compartir seleccion","compartir este archivo")) {
+            val files=selectedFiles ?: store?.sharedFiles?.items.orEmpty()
+            val selectionId=dev.bautista.spotlight.sharing.FileShareContract.selectionId(files)
+            val allowed=c.files && dev.bautista.spotlight.extensions.ExtensionStore.enabled(context,"files") &&
+                files.isNotEmpty() && files.all{item->(item.action as? Action.Launch)?.intent?.data?.let{dev.bautista.spotlight.sharing.FileShareContract.canRead(context,it)}==true}
+            send(listOf(if(allowed)Result("context:share-files:$selectionId","Revisar archivos seleccionados",
+                "${files.size} archivos · revisar permisos y confirmar","Acciones",2200,Action.SystemPanel("file-share-selection",selectionId))
+                else Result("files:selection-unavailable","Elegir archivos con Android","La selección está vacía o su permiso venció; no se abrió ningún destino.","Archivos",2200,Action.SystemPanel("context"))))
+            return@channelFlow
+        }
+        val resolution=if(!literalApp && scope==null && input.isNotBlank())UniversalIntentEngine.resolve(input,c) else null
+        val interpretation=if(literalApp)QueryInterpretation(input,input,QueryIntent.SEARCH) else QueryInterpreter.interpret(input,scope)
         if(resolution!=null) {
             val spec=resolution.presentation
             when(resolution.primaryIntent) {
@@ -113,8 +173,9 @@ class SearchEngine(
         val natural=if(root && input.isNotBlank())RootActions.results(context,input,c) else emptyList()
         val registered=if(root && input.length>=3)dev.bautista.spotlight.extensions.ExtensionRegistry.searchCommands(context,canonical,c) else emptyList()
         val saved=if(root && input.isNotBlank())(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.results(input).orEmpty() else emptyList()
-        searchSources(query,c,effectiveScope).collect { rows ->
-            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved,c)) else StableResults.unique(ResultRanker.rank(query,rows,c))
+        val contextual=if(effectiveScope==null && input.isNotBlank())contextualAppSearch(input) else emptyList()
+        searchSources(query,c,effectiveScope,selectedFiles.orEmpty()).collect { rows ->
+            val all=if(root && input.isNotBlank())StableResults.unique(ResultRanker.rank(query,natural+rows.map{item->when(val action=item.action){is Action.SystemPanel->if(action.page=="interpret" || action.page=="sports-native" && action.packageName.isBlank())item.copy(action=action.copy(packageName=input)) else item;is Action.ComposeMessage->if(action.channel.startsWith("whatsapp") && context.packageManager.getLaunchIntentForPackage(if(action.channel=="whatsapp_business")"com.whatsapp.w4b" else "com.whatsapp")==null)item.copy(title="WhatsApp no está instalado",subtitle="Revisar integración · no se cambia el canal automáticamente",action=Action.SystemPanel("extensions")) else item;else->item}}+registered+saved+contextual,c)) else StableResults.unique(ResultRanker.rank(query,rows,c))
             // Only advertise device controls backed by a currently available local route.
             // The executor still rechecks permission, configuration and target at execution.
             send(all.filter { item ->
@@ -129,7 +190,10 @@ class SearchEngine(
         }
     }.flowOn(Dispatchers.Default)
 
-    private fun searchSources(input: String, c: Config, scope:SearchScope?=null): Flow<List<Result>> = channelFlow {
+    private fun sharedFileResults(input:String,selection:List<Result>)=(context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.sharedFileResults(input,selection).orEmpty()
+    private fun hasSharedFiles(selection:List<Result>)=selection.isNotEmpty() || (context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.contexts?.sharedFiles?.items?.isNotEmpty()==true
+
+    private fun searchSources(input: String, c: Config, scope:SearchScope?=null,selectedFiles:List<Result> = emptyList()): Flow<List<Result>> = channelFlow {
         val query=ActionCatalog.canonical(expandAliases(input,c.aliases))
         if(scope==null && query.isBlank()) {
             if(!c.suggestions){send(emptyList());return@channelFlow}
@@ -150,14 +214,14 @@ class SearchEngine(
             return@channelFlow
         }
         if(scope?.section == "results") {
-            search(input,c).collect { send(it.filter { item -> scope.topic=="Todo" || ResultSections.category(item) == scope.topic }) };return@channelFlow
+            search(input,c,selectedFiles=selectedFiles).collect { send(it.filter { item -> scope.topic=="Todo" || ResultSections.category(item) == scope.topic }) };return@channelFlow
         }
         if(scope!=null && scope.section in setOf("files","files-mode") && query.isNotBlank()) {
-            if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())) {
+            if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports() || hasSharedFiles(selectedFiles))) {
                 index.ensure(c)
                 val fileQuery=if(scope.section=="files")ActionCatalog.fileQuery(scope,query) else query
                 val topic=if(scope.section=="files")scope.topic else ""
-                val lexical=index.search(fileQuery,c,topic)
+                val lexical=StableResults.unique(index.search(fileQuery,c,topic)+sharedFileResults(fileQuery,selectedFiles))
                 send(lexical)
                 val semantic=index.semanticSearch(fileQuery,c,topic)
                 if(semantic.isNotEmpty())send(StableResults.unique(lexical+semantic))
@@ -171,9 +235,9 @@ class SearchEngine(
                 "ai"->if(query.isBlank())emptyList() else listOf(Result("ai:mode",UniversalIntentEngine.primaryAiTitle(c),query.take(120),"IA",2400,AiRequestPolicy.question(query.removePrefix("ia "))))
                 "clipboard"->local.clips.value.filter{normalize(it).contains(normalize(query))}.mapIndexed{i,text->Result(LocalStore.clipId(text),text.take(100),if(text in local.clipFavorites.value)"Favorito temporal · copiar" else "Copiar texto capturado","Portapapeles",if(text in local.clipFavorites.value)1400-i else 1000-i,Action.Copy(text),preview=text)}
                 "topic"->integrations.menu(scope.topic,ActionCatalog.packages[scope.topic]?.let{context.packageManager.getLaunchIntentForPackage(it)},ActionCatalog.packages[scope.topic])
-                "files-mode"->if(query.isBlank())ActionCatalog.fileMenu(scope) else if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())){index.ensure(c);index.search(query,c)}else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento","Archivos",2000,Action.Access("files")))
+                "files-mode"->if(query.isBlank())ActionCatalog.fileMenu(scope) else if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports() || hasSharedFiles(selectedFiles))){index.ensure(c);StableResults.unique(index.search(query,c)+sharedFileResults(query,selectedFiles))}else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento","Archivos",2000,Action.Access("files")))
                 "files-menu"->ActionCatalog.fileMenu(scope)
-                "files"->if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports())){index.ensure(c);index.search(ActionCatalog.fileQuery(scope,query),c,scope.topic)} else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento en Opciones","Archivos",2000,Action.Access("files")))
+                "files"->if(c.files && (index.broadAllowed() || c.trees.isNotEmpty() || index.hasImports() || hasSharedFiles(selectedFiles))){index.ensure(c);StableResults.unique(index.search(ActionCatalog.fileQuery(scope,query),c,scope.topic)+sharedFileResults(ActionCatalog.fileQuery(scope,query),selectedFiles))} else listOf(Result("files:access","Activar búsqueda de archivos","Requiere acceso al almacenamiento en Opciones","Archivos",2000,Action.Access("files")))
                 "contacts"->if(c.contacts && ContextCompat.checkSelfPermission(context,Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED){if(query.isBlank())listOf(Result("contacts:help","Escribí un nombre","Elegí entre contactos coincidentes","Contactos",2000,Action.RestoreQuery("/contacts ")))else contacts(query)}else listOf(Result("contacts:access","Permitir buscar contactos","Permiso opcional de Android","Contactos",2000,Action.Access("contacts",input)))
                 "calendar"->Agenda.search(context,query,scope.kind)
                 "replies"->if(!Replies.connected.value)listOf(Result("reply:access","Permitir leer notificaciones","Acceso especial de Android · opcional","Acciones",2000,Action.Access("notifications")))else Replies.results(query,ActionCatalog.packages[scope.topic] ?: "com.whatsapp")
@@ -351,7 +415,8 @@ class SearchEngine(
                 )
         }
         launch(Dispatchers.IO) {
-            appList().firstOrNull { normalize(it.label)==normalize(query) }?.let {
+            val literalName=normalizedWords(query)
+            appList().firstOrNull { normalizedWords(it.label)==literalName }?.let {
                 publish("app-actions", integrations.menu(it.label,it.intent,it.intent.component?.packageName))
             }
             publish(
@@ -378,7 +443,7 @@ class SearchEngine(
                                 score +
                                     (if (a.id in c.favorites) 120 else 0) +
                                     (20 - c.recent.indexOf(a.id)).coerceAtMost(20).let {
-                                        if (a.id in c.recent) it else 0
+                                        if (c.learning && !c.privateMode && a.id in c.recent) it else 0
                                     },
                                 Action.Launch(a.intent),
                                 runCatching { context.packageManager.getActivityIcon(a.intent) }
@@ -394,7 +459,7 @@ class SearchEngine(
             launch(Dispatchers.IO) {
                 try {
                     index.ensure(c)
-                    val lexical=index.search(query,c)
+                    val lexical=StableResults.unique(index.search(query,c)+sharedFileResults(query,selectedFiles))
                     publish("files",lexical)
                     val semantic=index.semanticSearch(query,c)
                     if(semantic.isNotEmpty())publish("files",StableResults.unique(lexical+semantic))

@@ -1,0 +1,49 @@
+{
+  "scope": "11 distinct directed JVM cases, not a full suite or physical validation",
+  "cases": {
+    "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+      "seconds": 4.3
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.reviewedTargetDispatchesOnceAndCannotBeRepeated": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+      "seconds": 1.634
+    },
+    "dev.bautista.spotlight.control.ReplyConfirmationTest.changedConversationOrRecipientRequiresAnotherHumanReview": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.control.ReplyConfirmationTest.xml",
+      "seconds": 0.028
+    },
+    "dev.bautista.spotlight.ui.C2SharedMessageFlowTest.restoringSharedDraftDoesNotRestoreItsConfirmation": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.C2SharedMessageFlowTest.xml",
+      "seconds": 3.999
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedPhoneDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 4.526
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedPhoneLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.301
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedTabletDark": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.276
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.pairedTabletLight": {
+      "evidence": "validated/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.291
+    },
+    "dev.bautista.spotlight.ui.FocusEditorStateTest.configuredAccentIsContrastAdjustedAcrossAllFocusMaterials": {
+      "evidence": "validated-actions/TEST-dev.bautista.spotlight.ui.FocusEditorStateTest.xml",
+      "seconds": 1.592
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.actualActionPanelLight": {
+      "evidence": "validated-actions/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 4.308
+    },
+    "dev.bautista.spotlight.ui.FocusConsolidationReviewTest.actualActionPanelDark": {
+      "evidence": "validated-actions/TEST-dev.bautista.spotlight.ui.FocusConsolidationReviewTest.xml",
+      "seconds": 0.145
+    }
+  }
+}

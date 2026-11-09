@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:13:29" hostname="52363180d3ce" time="0.084">
+  <properties/>
+  <testcase name="clientIdChangeClosesPreviousSessionBeforeOpeningNewOne" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.066"/>
+  <testcase name="authorizationDoesNotPlayAndSelectedPlayDoesNotShowAuthorization" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.004"/>
+  <testcase name="failedPlaybackIsNotRetriedOrFollowedByARecoveryCommand" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.002"/>
+  <testcase name="unsupportedOnDemandPlaybackDoesNotSendPlay" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.001"/>
+  <testcase name="selectedPlayWithOwnerScopeRetainsSessionForObservationUntilDisconnect" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.002"/>
+  <testcase name="cancellingOwnerScopeClosesRetainedSessionWithoutLeaking" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.003"/>
+  <testcase name="idleTimeoutClosesRetainedSessionDeterministicallyWithoutLeaking" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.001"/>
+  <testcase name="cancellationDuringConnectionNeverSendsPlaybackAndClosesIfConnectedLate" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.004"/>
+  <testcase name="playbackObservationDistinguishesConfirmedPausedUnknownContextAndDifferentTrack" classname="dev.bautista.spotlight.integrations.spotify.SpotifyLocalPlayerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

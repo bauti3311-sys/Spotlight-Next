@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "a622df75208e40826955e51cc84c65d7754f9f53",
+  "files": [
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/ActionPanelView.kt",
+      "sha256": "83b71afddb00402fd494ab9fc3427c7cb70d1ef310e431fdd2a79c97cef0c4a1",
+      "identicalToPr19": true
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/GlassTokens.kt",
+      "sha256": "91833014d2581894f4f84076a1936d00b4ecb41478b0bf1f4ef11e080e1d471d",
+      "identicalToPr19": true
+    },
+    {
+      "path": "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt",
+      "sha256": "2dc712864f7e4d3e310155df231a3fd139634052c1145f645c3a522eb83c3506",
+      "identicalToPr19": true
+    }
+  ],
+  "wholeCommitsCherryPicked": false,
+  "executionCodeChanged": false,
+  "newDependencies": false
+}

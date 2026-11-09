@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.CompactResultsTest" tests="14" skipped="0" failures="1" errors="0" timestamp="2026-11-04T20:35:21" hostname="c880c3bda6d8" time="2.896">
+  <properties/>
+  <testcase name="explicitUrlProviderAndFolderRequestsAreNotTreatedAsGenericFallbacks" classname="dev.bautista.spotlight.search.CompactResultsTest" time="2.316"/>
+  <testcase name="adaptiveSearchIncludesEveryEligibleMatchWithoutAddingNoise" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.064"/>
+  <testcase name="explicitFileSelectionActionRemainsVisibleAndNeverOutranksAnExactApp" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.079">
+    <failure message="org.junit.ComparisonFailure: expected:&lt;[exact]&gt; but was:&lt;[context:share-files:fixture]&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: expected:&lt;[exact]&gt; but was:&lt;[context:share-files:fixture]&gt;
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at dev.bautista.spotlight.search.CompactResultsTest.explicitFileSelectionActionRemainsVisibleAndNeverOutranksAnExactApp(CompactResultsTest.kt:120)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:502)
+	at org.robolectric.internal.SandboxTestRunner$2.lambda$evaluate$2(SandboxTestRunner.java:285)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:104)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+</failure>
+  </testcase>
+  <testcase name="queryShowsSixAndExpansionRetainsEveryDistinctAction" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.065"/>
+  <testcase name="explicitDictionaryAndTextCommandsRemainAvailableInitially" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.059"/>
+  <testcase name="exactApplicationNeverAutocompletesIntoLongerSibling" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.025"/>
+  <testcase name="recognizedBrightnessMusicAndQuestionActionsStayEligible" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.037"/>
+  <testcase name="navigationKeepsExistingOrderWhenLateProvidersArrive" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.059"/>
+  <testcase name="duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.033"/>
+  <testcase name="exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.046"/>
+  <testcase name="explicitAiNotificationsAndAndroidCommandsSurviveDifferentLabels" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.024"/>
+  <testcase name="whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.02"/>
+  <testcase name="contentAndSemanticDocumentHitsDoNotRequireTitleOverlap" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.019"/>
+  <testcase name="explicitAppAndContactScopesUseTheirParsedSearchTerms" classname="dev.bautista.spotlight.search.CompactResultsTest" time="0.048"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

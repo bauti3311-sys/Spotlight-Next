@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.ActionPanelCraftTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-03T02:15:12" hostname="d72f3c82698f" time="13.752">
+  <properties/>
+  <testcase name="largeTextKeepsCompleteActionAndDescription" classname="dev.bautista.spotlight.ui.ActionPanelCraftTest" time="12.054"/>
+  <testcase name="rtlLargeTextKeepsCompleteActionAndKeyboardExecution" classname="dev.bautista.spotlight.ui.ActionPanelCraftTest" time="0.394"/>
+  <testcase name="lightFilterHasStableNameRecoveryAndKeyboardFocus" classname="dev.bautista.spotlight.ui.ActionPanelCraftTest" time="0.651"/>
+  <testcase name="contextualFilterKeepsAccessibleNameWhileEditing" classname="dev.bautista.spotlight.ui.ActionPanelCraftTest" time="0.311"/>
+  <testcase name="darkFilterHasStableNameRecoveryAndKeyboardFocus" classname="dev.bautista.spotlight.ui.ActionPanelCraftTest" time="0.341"/>
+  <system-out><![CDATA[Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+Roborazzi Warning:
+You have specified 'Record' without the necessary plugin configuration like roborazzi.test.record=true or ./gradlew recordRoborazziDebug.
+This may complicate your screenshot testing process because the behavior is not changeable. And it doesn't allow Roborazzi plugin to generate test report.
+Please ensure proper setup in gradle.properties or via Gradle tasks for optimal functionality.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

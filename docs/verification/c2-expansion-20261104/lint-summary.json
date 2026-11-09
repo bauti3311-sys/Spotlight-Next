@@ -1,0 +1,20 @@
+{
+  "errors": 0,
+  "warnings": 26,
+  "information": 1,
+  "ids": {
+    "ScopedStorage": 1,
+    "DiscouragedPrivateApi": 1,
+    "ExifInterface": 1,
+    "RedundantLabel": 1,
+    "GradleDependency": 10,
+    "ModifierParameter": 1,
+    "ChromeOsAbiSupport": 2,
+    "TrustAllX509TrustManager": 3,
+    "DataExtractionRules": 1,
+    "AutoboxingStateCreation": 1,
+    "UnusedResources": 2,
+    "ViewConstructor": 2,
+    "ClickableViewAccessibility": 1
+  }
+}

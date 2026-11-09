@@ -1,0 +1,34 @@
+{
+  "base_sha": "677d9d848351581a602843c1e38859757efa1b62",
+  "approved_variants": "B inspector and contextual review; integration authorized by owner",
+  "product_scope": [
+    "ApplicationInspector admin disclosure in Focus only",
+    "AppCapabilityActions live prepared search promotion and deduplication",
+    "FocusSearchTaskBody receiver label from actual prepared Intent + website separately",
+    "SpotlightPanel UI-only restored selection guard and existing capability revalidation in ActionPanel"
+  ],
+  "protected_boundaries_byte_identical": [
+    "app/src/main/java/dev/bautista/spotlight/search",
+    "app/src/main/java/dev/bautista/spotlight/control/NativeLaunchSession.kt",
+    "app/src/main/java/dev/bautista/spotlight/overlay",
+    "app/src/main/java/dev/bautista/spotlight/ui/CommandForms.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/MessageRecipientReviewRegressionTest.kt",
+    "app/src/main/java/dev/bautista/spotlight/data/Preferences.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusDesign.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassContextFooter.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/ActionPanelView.kt",
+    "app/build.gradle.kts",
+    "release.properties",
+    ".github/workflows",
+    "scripts/preview_delivery.json",
+    "docs/SPOTLIGHT-NEXT-PLAN-MAESTRO-20261103.md"
+  ],
+  "focus_default_enabled": false,
+  "new_apk_actions_or_physical_validation": false,
+  "capture_scope": "Robolectric API33 NATIVE, paired330dp window budget,360/960dp widths,dark/light,fontScale1; extra phone cases fontScale2",
+  "paired_capture_sources": "8 fresh pairs before677d9d8 and after;1 full phone-light fixture paired with archived source-equivalent E1-E5 original",
+  "physical_one_ui_gboard_talkback_spotify_message_file_effects": "pending",
+  "verification": "15 distinct latest-green directed JVM cases; lint0E26W1Info",
+  "integrated_source_sha": "8f6a5b470310b59c4f5950870ce81327a546e947"
+}

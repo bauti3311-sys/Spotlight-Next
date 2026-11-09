@@ -1,0 +1,185 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreviewUnitTest UP-TO-DATE
+> Task :app:mergeRaycastPreviewShaders UP-TO-DATE
+> Task :app:compileRaycastPreviewShaders NO-SOURCE
+> Task :app:generateRaycastPreviewAssets UP-TO-DATE
+> Task :app:mergeRaycastPreviewAssets UP-TO-DATE
+> Task :app:packageRaycastPreviewUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestConfig UP-TO-DATE
+> Task :app:compileRaycastPreviewKotlin
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:bundleRaycastPreviewClassesToRuntimeJar
+> Task :app:processRaycastPreviewJavaRes UP-TO-DATE
+> Task :app:bundleRaycastPreviewClassesToCompileJar
+
+> Task :app:compileRaycastPreviewUnitTestKotlin
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:56:6 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:56:42 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+w: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusIntegratedSceneTest.kt:57:61 'fun addResolveInfoForIntent(p0: Intent!, p1: ResolveInfo!): Unit' is deprecated. Deprecated in Java.
+
+> Task :app:compileRaycastPreviewUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processRaycastPreviewUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+FocusContentSceneTest > phoneLight FAILED
+    androidx.compose.ui.test.ComposeTimeoutException at FocusContentSceneTest.kt:96
+
+OpenGLRenderer W 11-05 15:28:13  9446  9474 Trying to start new animators on 0x7f9e1b8047d0 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testRaycastPreviewUnitTest
+
+FocusContentSceneTest > phoneDark FAILED
+    androidx.compose.ui.test.ComposeTimeoutException at FocusContentSceneTest.kt:96
+
+OpenGLRenderer W 11-05 15:28:30  9446  9474 Trying to start new animators on 0x7f9e19bdbc00 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+OpenGLRenderer W 11-05 15:28:44  9571  9599 Trying to start new animators on 0x7f033bd06a30 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:45  9571  9599 Trying to start new animators on 0x7f033bd06a30 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:45  9571  9599 Trying to start new animators on 0x7f033bd06a30 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testRaycastPreviewUnitTest
+
+FocusIntegratedSceneTest > phoneLight FAILED
+    java.lang.AssertionError at FocusIntegratedSceneTest.kt:144
+
+OpenGLRenderer W 11-05 15:28:47  9571  9599 Trying to start new animators on 0x7f033bcf7800 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:47  9571  9599 Trying to start new animators on 0x7f033bcf7800 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:47  9571  9599 Trying to start new animators on 0x7f033bcf7800 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:48  9571  9599 Trying to start new animators on 0x7f03279d55d0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:48  9571  9599 Trying to start new animators on 0x7f03279d55d0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:48  9571  9599 Trying to start new animators on 0x7f03279d55d0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:49  9571  9599 Trying to start new animators on 0x7f033b79b3c0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:49  9571  9599 Trying to start new animators on 0x7f033b79b3c0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:28:49  9571  9599 Trying to start new animators on 0x7f033b79b3c0 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testRaycastPreviewUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+
+OpenGLRenderer W 11-05 15:29:00  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:00  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:00  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:01  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:01  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:01  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:01  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:02  9638  9666 Trying to start new animators on 0x7f35fadf8820 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:02  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:03  9638  9666 Trying to start new animators on 0x7f35e4316620 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e4316620 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e430fe50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fad0a410 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e4316620 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e430fe50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fad0a410 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e4316620 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e430fe50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fad0a410 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e4316620 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e430fe50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fad0a410 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35fb279a10 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e430fe50 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e438f8a0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:04  9638  9666 Trying to start new animators on 0x7f35e4316620 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:05  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:05  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:05  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:05  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:05  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:05  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:06  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:06  9638  9666 Trying to start new animators on 0x7f35fad63030 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:06  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fbbb7580 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fbbb7580 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fb501980 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35faa3b2e0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fbbb7580 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fb501980 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35faa3b2e0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fbbb7580 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35fb501980 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:07  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35faa3b2e0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35fbbb7580 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35fb501980 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35faa3b2e0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35fa023dd0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35fb501980 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35e42a2db0 (UnprojectedRipple) without an animation handle!
+OpenGLRenderer W 11-05 15:29:08  9638  9666 Trying to start new animators on 0x7f35fbbb7580 (UnprojectedRipple) without an animation handle!
+
+> Task :app:testRaycastPreviewUnitTest
+
+19 tests completed, 3 failed
+
+> Task :app:testRaycastPreviewUnitTest FAILED
+> Task :app:finalizeTestRoborazziRaycastPreview SKIPPED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testRaycastPreviewUnitTest'.
+> There were failing tests. See the report at: file:///workspace/Spotlight-Next/app/build/reports/tests/testRaycastPreviewUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 2m 19s
+29 actionable tasks: 5 executed, 24 up-to-date

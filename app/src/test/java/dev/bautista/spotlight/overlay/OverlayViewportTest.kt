@@ -54,10 +54,11 @@ class OverlayViewportTest {
     }
 
     @Test @Config(application = Application::class)
-    fun modernVisibleFrameCoversMissingGlobalAndLocalImeInsets() {
+    fun visibleImeCanUseFullDisplayFrameWhenBothInsetAmountsAreMissing() {
         val context = ApplicationProvider.getApplicationContext<Application>()
         val insets = WindowInsets.Builder().setInsetsIgnoringVisibility(
-            WindowInsets.Type.systemBars(), Insets.of(0, 24, 0, 48)).build()
+            WindowInsets.Type.systemBars(), Insets.of(0, 24, 0, 48))
+            .setVisible(WindowInsets.Type.ime(), true).build()
         val actual = context.getSystemService(WindowManager::class.java)
         val wm = object : WindowManager by actual {
             override fun getCurrentWindowMetrics() = WindowMetrics(Rect(0, 0, 1280, 800), insets)
@@ -68,6 +69,60 @@ class OverlayViewportTest {
         val screen = OverlayViewport.read(wm, context.resources, 48, host, 0)
         assertEquals(728, screen.height)
         assertEquals(252, screen.keyboardOcclusion(0))
+    }
+
+    @Test @Config(application = Application::class)
+    fun closedImeMustNotTreatWrapContentWindowAsKeyboard() {
+        val context = ApplicationProvider.getApplicationContext<Application>()
+        val insets = WindowInsets.Builder().setInsetsIgnoringVisibility(
+            WindowInsets.Type.systemBars(), Insets.of(0, 24, 0, 48))
+            .setVisible(WindowInsets.Type.ime(), false).build()
+        val actual = context.getSystemService(WindowManager::class.java)
+        val wm = object : WindowManager by actual {
+            override fun getCurrentWindowMetrics() = WindowMetrics(Rect(0, 0, 1280, 800), insets)
+        }
+        var visibleFrame = Rect(240, 160, 1040, 400)
+        val host = object : View(context) {
+            override fun getWindowVisibleDisplayFrame(outRect: Rect) { outRect.set(visibleFrame) }
+        }
+        val expected = OverlayViewport.read(wm, context.resources, 48)
+        // Opening over Settings, content shrink, reopen and rotation refresh must
+        // never feed the WRAP_CONTENT content height back as a keyboard budget.
+        for (frame in listOf(Rect(240,160,1040,400), Rect(240,160,1040,300), Rect(0,24,1280,500))) {
+            visibleFrame = frame
+            val screen = OverlayViewport.read(wm, context.resources, 48, host, 0)
+            assertEquals("Closed IME was inferred from $frame", 0, screen.keyboardOcclusion(0))
+            assertEquals(expected.width, screen.width)
+            assertEquals(expected.height, screen.height)
+        }
+    }
+
+    @Test @Config(application = Application::class)
+    fun actualImeInsetWinsOverSmallContentFrameAndRecoversAcrossOrientation() {
+        val context = ApplicationProvider.getApplicationContext<Application>()
+        val actual = context.getSystemService(WindowManager::class.java)
+        for ((width,height) in listOf(1280 to 800,800 to 1280)) {
+            var keyboard = false
+            val wm = object : WindowManager by actual {
+                override fun getCurrentWindowMetrics(): WindowMetrics {
+                    val insets = WindowInsets.Builder().setInsetsIgnoringVisibility(
+                        WindowInsets.Type.systemBars(), Insets.of(0,24,0,48))
+                        .setInsets(WindowInsets.Type.ime(), Insets.of(0,0,0,if(keyboard)300 else 0))
+                        .setVisible(WindowInsets.Type.ime(),keyboard).build()
+                    return WindowMetrics(Rect(0,0,width,height),insets)
+                }
+            }
+            val host = object : View(context) {
+                override fun getWindowVisibleDisplayFrame(outRect:Rect){outRect.set(100,160,width-100,400)}
+            }
+            for (open in listOf(false,true,false,true,false)) {
+                keyboard=open
+                val viewport=OverlayViewport.read(wm,context.resources,48,host,0)
+                assertEquals(if(open)252 else 0,viewport.keyboardOcclusion(0))
+                assertEquals(width,viewport.width)
+                assertEquals(width>height,viewport.landscape)
+            }
+        }
     }
 
     @Test fun keyboardCannotChooseHorizontalWidthOnPortraitTablet() {

@@ -1,0 +1,130 @@
+{
+  "phone-dark": [
+    {
+      "mode": "preview63",
+      "footprintWidthDp": "360.0",
+      "footprintHeightDp": "572.0",
+      "canvasAreaDp2": "252000",
+      "footprintAreaDp2": "205920.0",
+      "surfaceWidthDp": "328.0",
+      "surfaceHeightDp": "548.0",
+      "bodyAreaDp2": "144320.0"
+    },
+    {
+      "mode": "A",
+      "footprintWidthDp": "360.0",
+      "footprintHeightDp": "406.0",
+      "canvasAreaDp2": "252000",
+      "footprintAreaDp2": "146160.0",
+      "surfaceWidthDp": "328.0",
+      "surfaceHeightDp": "382.0",
+      "bodyAreaDp2": "88560.0"
+    },
+    {
+      "mode": "B",
+      "footprintWidthDp": "360.0",
+      "footprintHeightDp": "316.0",
+      "canvasAreaDp2": "252000",
+      "footprintAreaDp2": "113760.0",
+      "surfaceWidthDp": "328.0",
+      "surfaceHeightDp": "292.0",
+      "bodyAreaDp2": "59040.0"
+    }
+  ],
+  "phone-light": [
+    {
+      "mode": "preview63",
+      "footprintWidthDp": "360.0",
+      "footprintHeightDp": "572.0",
+      "canvasAreaDp2": "252000",
+      "footprintAreaDp2": "205920.0",
+      "surfaceWidthDp": "328.0",
+      "surfaceHeightDp": "548.0",
+      "bodyAreaDp2": "144320.0"
+    },
+    {
+      "mode": "A",
+      "footprintWidthDp": "360.0",
+      "footprintHeightDp": "406.0",
+      "canvasAreaDp2": "252000",
+      "footprintAreaDp2": "146160.0",
+      "surfaceWidthDp": "328.0",
+      "surfaceHeightDp": "382.0",
+      "bodyAreaDp2": "88560.0"
+    },
+    {
+      "mode": "B",
+      "footprintWidthDp": "360.0",
+      "footprintHeightDp": "316.0",
+      "canvasAreaDp2": "252000",
+      "footprintAreaDp2": "113760.0",
+      "surfaceWidthDp": "328.0",
+      "surfaceHeightDp": "292.0",
+      "bodyAreaDp2": "59040.0"
+    }
+  ],
+  "tablet-dark": [
+    {
+      "mode": "preview63",
+      "footprintWidthDp": "960.0",
+      "footprintHeightDp": "523.0",
+      "canvasAreaDp2": "672000",
+      "footprintAreaDp2": "502080.0",
+      "surfaceWidthDp": "928.0",
+      "surfaceHeightDp": "499.0",
+      "bodyAreaDp2": "362848.0"
+    },
+    {
+      "mode": "A",
+      "footprintWidthDp": "960.0",
+      "footprintHeightDp": "366.0",
+      "canvasAreaDp2": "672000",
+      "footprintAreaDp2": "351360.0",
+      "surfaceWidthDp": "928.0",
+      "surfaceHeightDp": "342.0",
+      "bodyAreaDp2": "213440.0"
+    },
+    {
+      "mode": "B",
+      "footprintWidthDp": "960.0",
+      "footprintHeightDp": "316.0",
+      "canvasAreaDp2": "672000",
+      "footprintAreaDp2": "303360.0",
+      "surfaceWidthDp": "928.0",
+      "surfaceHeightDp": "292.0",
+      "bodyAreaDp2": "167040.0"
+    }
+  ],
+  "tablet-light": [
+    {
+      "mode": "preview63",
+      "footprintWidthDp": "960.0",
+      "footprintHeightDp": "523.0",
+      "canvasAreaDp2": "672000",
+      "footprintAreaDp2": "502080.0",
+      "surfaceWidthDp": "928.0",
+      "surfaceHeightDp": "499.0",
+      "bodyAreaDp2": "362848.0"
+    },
+    {
+      "mode": "A",
+      "footprintWidthDp": "960.0",
+      "footprintHeightDp": "366.0",
+      "canvasAreaDp2": "672000",
+      "footprintAreaDp2": "351360.0",
+      "surfaceWidthDp": "928.0",
+      "surfaceHeightDp": "342.0",
+      "bodyAreaDp2": "213440.0"
+    },
+    {
+      "mode": "B",
+      "footprintWidthDp": "960.0",
+      "footprintHeightDp": "316.0",
+      "canvasAreaDp2": "672000",
+      "footprintAreaDp2": "303360.0",
+      "surfaceWidthDp": "928.0",
+      "surfaceHeightDp": "292.0",
+      "bodyAreaDp2": "167040.0"
+    }
+  ]
+}

@@ -50,7 +50,8 @@ object ActionCatalog {
         fun setting(label:String,value:String){out+=row("$topic:$value",label,"Panel de Android",Action.Launch(Intent(value)))}
         when(topic) {
             "whatsapp","whatsapp_business","telegram","gmail" -> {
-                if(topic=="telegram")out+=row("telegram:compose","Compartir mensaje","Elegir contacto dentro de Telegram",Action.ComposeMessage("telegram"))
+                if(topic=="gmail")out+=row("gmail:compose","Redactar correo","Elegir destinatario y confirmar en Gmail",Action.ComposeMessage("share:com.google.android.gm","Gmail"))
+                else if(topic=="telegram")out+=row("telegram:compose","Compartir mensaje","Elegir contacto dentro de Telegram",Action.ComposeMessage("telegram"))
                 else out+=row("$topic:compose","Enviar mensaje","Elegir contacto y escribir aquí",Action.ComposeMessage(if(topic=="gmail")"email" else topic))
                 if(topic in setOf("whatsapp","whatsapp_business"))out+=row("wa:reply","Responder mensajes recibidos","Notificaciones con respuesta directa",Action.Navigate(SearchScope(topic,"replies")))
             }
@@ -94,10 +95,10 @@ object ActionCatalog {
     fun searchAction(topic:String,packageName:String,query:String):Action? {
         val q=query.trim();if(q.isBlank())return null
         val url=when(topic){"youtube"->"https://www.youtube.com/results?search_query=";"spotify"->"https://open.spotify.com/search/";"mapas"->"https://www.google.com/maps/search/?api=1&query=";"sofascore"->"https://www.google.com/search?q=";else->"https://www.google.com/search?q="}
-        val term=when(topic){"sofascore"->"site:sofascore.com $q resultado";"google","chrome","vivaldi","youtube","spotify","mapas","app"->q;else->"$topic $q"}
+        val term=when(topic){"sofascore"->"site:sofascore.com $q resultado";"google","chrome","vivaldi","youtube","spotify","mapas","app","app-web-search"->q;else->"$topic $q"}
         val web=Intent(Intent.ACTION_VIEW,Uri.parse(url+Uri.encode(term)))
         val pkg=packageName.ifBlank {packages[topic].orEmpty()}
         return if(topic=="google" || pkg.isBlank())Action.Launch(web)
-        else Action.InApp(if(topic in setOf("youtube","spotify","mapas","chrome","vivaldi"))Intent(web).setPackage(pkg) else Intent(Intent.ACTION_SEARCH).setPackage(pkg).putExtra(android.app.SearchManager.QUERY,q),web)
+        else Action.InApp(if(topic in setOf("youtube","spotify","mapas","chrome","vivaldi"))Intent(web).setPackage(pkg) else Intent(if(topic=="app-web-search")Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(pkg).putExtra(android.app.SearchManager.QUERY,q),web)
     }
 }

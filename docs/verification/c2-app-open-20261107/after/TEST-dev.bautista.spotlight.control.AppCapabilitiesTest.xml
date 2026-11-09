@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.AppCapabilitiesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-08T02:42:05" hostname="ab6df79ca904" time="1.606">
+  <properties/>
+  <testcase name="revokedCapabilityIsRecheckedBeforeOpeningItsForm" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="1.565"/>
+  <testcase name="genericSearchIsOnlyExposedByItsPublicHandler" classname="dev.bautista.spotlight.control.AppCapabilitiesTest" time="0.041"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,18 @@
+{
+  "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt": "edd121a027afbf3a72d57336425dd4a22a521f2045f7e334d85ef8d7953882ef",
+  "app/src/main/java/dev/bautista/spotlight/ui/ContextSplitPanel.kt": "2ac6d5c4020c70a7aac4a05f47690c1a3a75ce3e15779a4131f11c779412e835",
+  "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt": "52bc0a0e0a31f56e6f947f803cf117da80f1e860813ebd3de08fdbb02da4c40d",
+  "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt": "612474991dc7b4469603af25d4471861a248e4cdd72b076a0ee4fee0b3666c2f",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt": "0f55536a408e00d8d64f83e8f918314156af925ad3e579fb523dda459ad302ee",
+  "app/src/main/java/dev/bautista/spotlight/ai/PlanExecution.kt": "f23741bbcaf1487b31a723619177bd5b8d2071a31ee687f935b1a0ca827f7827",
+  "app/build.gradle.kts": "938a2131c9d30a68e307dd817b578b13ef25a9f3468253a8686865ca1b9a8844",
+  "app/src/main/AndroidManifest.xml": "c3fa40dffc4d65a8f4f54237971b72e63b5327274971f5e5f1f3fab2c7a9406d",
+  "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt": "2d326dd1e23ac287f5fa15bd193165223b809ccfb8f7ecf8952d2fbd352e3bf9",
+  "app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt": "9a78b4e1f9bbfb73d6d1bed2e3574f7c6f9d72fb2f66f75d0e4c572f684a1e87",
+  "app/src/main/java/dev/bautista/spotlight/index/DocumentCitationState.kt": "584d98187d3e19a16aa8d588cefb6dec1acfe9a5ea59cdf3d28303445118cbc4",
+  "app/src/main/java/dev/bautista/spotlight/search/CompactResults.kt": "12860d1c9ec45f4fa4f7740b029355057d601113146c0d932da9a6bdab64a432",
+  "app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt": "bbc81a8926048be1289da18d23a17af56e8a2d11475cae5ff2b25f848c2849bc",
+  "app/src/main/java/dev/bautista/spotlight/control/AppCapabilities.kt": "8dcab04be6d193c597e6c7a52e994995c333012f7ba92e606c0e90e236d833fd",
+  "app/src/main/java/dev/bautista/spotlight/control/IntegrationRegistry.kt": "f4b46733078d74338acc549f0a3211697e90a45ff79675f1e9e223c2c4afd2f8",
+  "app/src/main/java/dev/bautista/spotlight/control/NativeLaunchSession.kt": "bac47c7b7a79ab18d0a047496eba0ac7f43293e481ad295b56ebdedb6e70ab70"
+}

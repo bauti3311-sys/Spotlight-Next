@@ -1,0 +1,7 @@
+{
+  "cards": 72,
+  "filter": "passed",
+  "zoom": "passed",
+  "external_page_requests": 0,
+  "load_method": "set_content: local file navigation blocked by managed browser policy"
+}

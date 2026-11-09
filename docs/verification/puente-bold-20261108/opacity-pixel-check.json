@@ -1,0 +1,10 @@
+{
+  "tablet": {
+    "distinct_pngs": 4,
+    "opaque_vs_60_percent_pixel_difference": true
+  },
+  "phone": {
+    "distinct_pngs": 4,
+    "opaque_vs_60_percent_pixel_difference": true
+  }
+}

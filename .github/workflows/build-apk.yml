@@ -1,5 +1,7 @@
 name: Spotlight Android gate or Preview (manual)
 
+run-name: ${{ inputs.mode == 'native-delivery' && format('native-delivery {0}', inputs.source_sha) || github.workflow }}
+
 # Manual only. Select feat/raycast-sidebar-permissions-20261020 in the Actions UI.
 # This file also exists on main, so GitHub can show its Run workflow button.
 on:
@@ -8,7 +10,7 @@ on:
       mode:
         description: 'directed-tests: compile + directed unit tests, no APK. preview: existing delivery flow.'
         type: choice
-        options: [directed-tests, preview]
+        options: [directed-tests, preview, native60-once, native-delivery]
         default: directed-tests
         required: true
       source_sha:
@@ -16,6 +18,28 @@ on:
         type: string
         default: '085142ea35bd7d19085d45118ee1776b1c80d721'
         required: true
+
+      workflow_sha:
+        description: 'Native60 only: exact reviewed workflow commit (40 lowercase hex).'
+        type: string
+        required: false
+      reservation_owner:
+        description: 'Native60 only: current operator-owned autonomy reservation.'
+        type: string
+        required: false
+      reservation_lease_sha:
+        description: 'Native60 only: exact live reservation lease SHA.'
+        type: string
+        required: false
+      confirm_native60:
+        description: 'Native60 only: AUTHORIZE_NATIVE60_ONCE after explicit owner approval.'
+        type: string
+        required: false
+
+      confirm_preview:
+        description: 'AUTHORIZE_PREVIEW_<versionCode>_ONCE for the reviewed release manifest.'
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -328,6 +352,358 @@ jobs:
         with:
           name: Spotlight-Next-Raycast-Preview-${{ github.run_number }}
           path: delivery/
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+
+  # Reserved design: explicit owner authorization is still required before dispatch.
+  # No automatic trigger. App source stays e9647c1; tooling comes from the reviewed workflow SHA.
+  native60-preflight:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.actor == 'bauti3311-sys' && github.triggering_actor == 'bauti3311-sys' && github.ref == 'refs/heads/feat/preview57-native-return-20261103' && inputs.mode == 'native60-once'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+      REVIEWED_WORKFLOW_SHA: ${{ inputs.workflow_sha }}
+      RESERVATION_OWNER: ${{ inputs.reservation_owner }}
+      RESERVATION_LEASE_SHA: ${{ inputs.reservation_lease_sha }}
+      NATIVE60_CONFIRMATION: ${{ inputs.confirm_native60 }}
+    steps:
+      - name: Checkout only reviewed automation tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+      - name: Guard owner, exact revisions, live reservation and one attempt
+        run: python3 tooling/scripts/native60_policy.py
+      - name: Set up Java 17
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Check historical signing input in an isolated job, without building
+        shell: bash
+        env:
+          RAYCAST_PREVIEW_KEYSTORE_BASE64: ${{ secrets.RAYCAST_PREVIEW_KEYSTORE_BASE64 }}
+          RAYCAST_PREVIEW_STORE_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_STORE_PASSWORD }}
+          RAYCAST_PREVIEW_KEY_ALIAS: ${{ secrets.RAYCAST_PREVIEW_KEY_ALIAS }}
+          RAYCAST_PREVIEW_KEY_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_KEY_PASSWORD }}
+        run: bash tooling/scripts/native60_sign.sh preflight
+      - name: Ensure temporary private inputs are gone
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if find "$RUNNER_TEMP" -maxdepth 1 -type d -name 'native60-signing.*' -print -quit | grep -q .; then
+            find "$RUNNER_TEMP" -maxdepth 1 -type d -name 'native60-signing.*' -exec rm -rf -- {} +
+            echo '::error::Unexpected signing residue removed; stop this attempt.'
+            exit 1
+          fi
+
+  native60-unsigned:
+    needs: native60-preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+      REVIEWED_WORKFLOW_SHA: ${{ inputs.workflow_sha }}
+      RESERVATION_OWNER: ${{ inputs.reservation_owner }}
+      RESERVATION_LEASE_SHA: ${{ inputs.reservation_lease_sha }}
+      NATIVE60_CONFIRMATION: ${{ inputs.confirm_native60 }}
+    steps:
+      - name: Checkout only reviewed automation tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+      - name: Guard owner, exact revisions, live reservation and one attempt
+        run: python3 tooling/scripts/native60_policy.py
+      - name: Checkout exactly the approved app source, without signing files
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: e9647c1329b93820383e3c8b4ec56dbceb3ce5f1
+          path: source
+          persist-credentials: false
+      - name: Set up Java 17
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare only Android verification/build tools
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: 'platforms;android-35 build-tools;35.0.0'
+      - name: Read existing dependency caches without writing them
+        uses: gradle/actions/setup-gradle@48b5f213c81028ace310571dc5ec0fbbca0b2947 # v4
+        with:
+          cache-read-only: true
+      - name: One optimized unsigned Preview build, no secret restoration or retry
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'e9647c1329b93820383e3c8b4ec56dbceb3ce5f1'
+          test ! -e signing/credentials.properties
+          test ! -e signing/spotlight-debug.keystore
+          bash gradlew :app:assembleRaycastPreview --no-daemon --max-workers=1 --console=plain --stacktrace             -Dorg.gradle.jvmargs="-Xmx3072m -XX:+UseSerialGC -Dfile.encoding=UTF-8"             -Pkotlin.compiler.execution.strategy=in-process
+      - name: Verify unsigned identity, content and exact source archive
+        shell: bash
+        run: python3 tooling/scripts/native60_bundle.py source "$RUNNER_TEMP/native60-unsigned" "$ANDROID_HOME/build-tools/35.0.0"
+      - name: Transfer only the unsigned candidate/source/provenance within this run
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native60-unsigned-${{ github.run_id }}
+          path: ${{ runner.temp }}/native60-unsigned/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+  native60-sign:
+    needs: native60-unsigned
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+      REVIEWED_WORKFLOW_SHA: ${{ inputs.workflow_sha }}
+      RESERVATION_OWNER: ${{ inputs.reservation_owner }}
+      RESERVATION_LEASE_SHA: ${{ inputs.reservation_lease_sha }}
+      NATIVE60_CONFIRMATION: ${{ inputs.confirm_native60 }}
+    steps:
+      - name: Checkout only reviewed automation tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+      - name: Guard owner, exact revisions, live reservation and one attempt
+        run: python3 tooling/scripts/native60_policy.py
+      - name: Set up Java 17
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare only Android verification/build tools
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: 'platforms;android-35 build-tools;35.0.0'
+      - name: Download only this run's verified candidate; never checkout or execute app source
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: native60-unsigned-${{ github.run_id }}
+          path: ${{ runner.temp }}/native60-input
+      - name: Sign with historical Preview identity and verify final APK/source
+        shell: bash
+        env:
+          RAYCAST_PREVIEW_KEYSTORE_BASE64: ${{ secrets.RAYCAST_PREVIEW_KEYSTORE_BASE64 }}
+          RAYCAST_PREVIEW_STORE_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_STORE_PASSWORD }}
+          RAYCAST_PREVIEW_KEY_ALIAS: ${{ secrets.RAYCAST_PREVIEW_KEY_ALIAS }}
+          RAYCAST_PREVIEW_KEY_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_KEY_PASSWORD }}
+          NATIVE60_INPUT_DIR: ${{ runner.temp }}/native60-input
+          NATIVE60_OUTPUT_DIR: ${{ runner.temp }}/native60-delivery
+        run: bash tooling/scripts/native60_sign.sh sign
+      - name: Clean any temporary private residue
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find "$RUNNER_TEMP" -maxdepth 1 -type d -name 'native60-signing.*' -exec rm -rf -- {} +
+      - name: Upload only verified APK, matching source and public evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Spotlight-Next-Native57-Validation60-${{ github.run_id }}
+          path: ${{ runner.temp }}/native60-delivery/
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+
+  delivery-preflight:
+    if: github.repository == 'bauti3311-sys/Spotlight-Next' && github.actor == 'bauti3311-sys' && github.triggering_actor == 'bauti3311-sys' && github.ref == 'refs/heads/feat/preview57-native-return-20261103' && inputs.mode == 'native-delivery'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+      REVIEWED_WORKFLOW_SHA: ${{ inputs.workflow_sha }}
+      RESERVATION_OWNER: ${{ inputs.reservation_owner }}
+      RESERVATION_LEASE_SHA: ${{ inputs.reservation_lease_sha }}
+      PREVIEW_CONFIRMATION: ${{ inputs.confirm_preview }}
+    steps:
+      - name: Checkout only reviewed automation tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+      - name: Guard owner, exact revisions, live reservation and one attempt
+        run: python3 tooling/scripts/preview_delivery_policy.py
+      - name: Set up Java 17
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Check historical signing input in an isolated job, without building
+        shell: bash
+        env:
+          RAYCAST_PREVIEW_KEYSTORE_BASE64: ${{ secrets.RAYCAST_PREVIEW_KEYSTORE_BASE64 }}
+          RAYCAST_PREVIEW_STORE_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_STORE_PASSWORD }}
+          RAYCAST_PREVIEW_KEY_ALIAS: ${{ secrets.RAYCAST_PREVIEW_KEY_ALIAS }}
+          RAYCAST_PREVIEW_KEY_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_KEY_PASSWORD }}
+        run: bash tooling/scripts/preview_delivery_sign.sh preflight
+      - name: Ensure temporary private inputs are gone
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if find "$RUNNER_TEMP" -maxdepth 1 -type d -name 'preview-delivery-signing.*' -print -quit | grep -q .; then
+            find "$RUNNER_TEMP" -maxdepth 1 -type d -name 'preview-delivery-signing.*' -exec rm -rf -- {} +
+            echo '::error::Unexpected signing residue removed; stop this attempt.'
+            exit 1
+          fi
+
+  delivery-unsigned:
+    needs: delivery-preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+      REVIEWED_WORKFLOW_SHA: ${{ inputs.workflow_sha }}
+      RESERVATION_OWNER: ${{ inputs.reservation_owner }}
+      RESERVATION_LEASE_SHA: ${{ inputs.reservation_lease_sha }}
+      PREVIEW_CONFIRMATION: ${{ inputs.confirm_preview }}
+    steps:
+      - name: Checkout only reviewed automation tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+      - name: Guard owner, exact revisions, live reservation and one attempt
+        run: python3 tooling/scripts/preview_delivery_policy.py
+      - name: Checkout exactly the approved app source, without signing files
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.source_sha }}
+          path: source
+          persist-credentials: false
+      - name: Set up Java 17
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare only Android verification/build tools
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: 'platforms;android-35 build-tools;35.0.0'
+      - name: Read existing dependency caches without writing them
+        uses: gradle/actions/setup-gradle@48b5f213c81028ace310571dc5ec0fbbca0b2947 # v4
+        with:
+          cache-read-only: true
+      - name: One optimized unsigned Preview build, no secret restoration or retry
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$REQUESTED_SOURCE_SHA"
+          test ! -e signing/credentials.properties
+          test ! -e signing/spotlight-debug.keystore
+          bash gradlew :app:assembleRaycastPreview --no-daemon --max-workers=1 --console=plain --stacktrace             -Dorg.gradle.jvmargs="-Xmx3072m -XX:+UseSerialGC -Dfile.encoding=UTF-8"             -Pkotlin.compiler.execution.strategy=in-process
+      - name: Verify unsigned identity, content and exact source archive
+        shell: bash
+        run: python3 tooling/scripts/preview_delivery_bundle.py source "$RUNNER_TEMP/delivery-unsigned" "$ANDROID_HOME/build-tools/35.0.0"
+      - name: Transfer only the unsigned candidate/source/provenance within this run
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: delivery-unsigned-${{ github.run_id }}
+          path: ${{ runner.temp }}/delivery-unsigned/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+  delivery-sign:
+    needs: delivery-unsigned
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+      REVIEWED_WORKFLOW_SHA: ${{ inputs.workflow_sha }}
+      RESERVATION_OWNER: ${{ inputs.reservation_owner }}
+      RESERVATION_LEASE_SHA: ${{ inputs.reservation_lease_sha }}
+      PREVIEW_CONFIRMATION: ${{ inputs.confirm_preview }}
+    steps:
+      - name: Checkout only reviewed automation tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+      - name: Guard owner, exact revisions, live reservation and one attempt
+        run: python3 tooling/scripts/preview_delivery_policy.py
+      - name: Set up Java 17
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare only Android verification/build tools
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: 'platforms;android-35 build-tools;35.0.0'
+      - name: Download only this run's verified candidate; never checkout or execute app source
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: delivery-unsigned-${{ github.run_id }}
+          path: ${{ runner.temp }}/delivery-input
+      - name: Sign with historical Preview identity and verify final APK/source
+        shell: bash
+        env:
+          RAYCAST_PREVIEW_KEYSTORE_BASE64: ${{ secrets.RAYCAST_PREVIEW_KEYSTORE_BASE64 }}
+          RAYCAST_PREVIEW_STORE_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_STORE_PASSWORD }}
+          RAYCAST_PREVIEW_KEY_ALIAS: ${{ secrets.RAYCAST_PREVIEW_KEY_ALIAS }}
+          RAYCAST_PREVIEW_KEY_PASSWORD: ${{ secrets.RAYCAST_PREVIEW_KEY_PASSWORD }}
+          PREVIEW_INPUT_DIR: ${{ runner.temp }}/delivery-input
+          PREVIEW_OUTPUT_DIR: ${{ runner.temp }}/preview-delivery-output
+        run: bash tooling/scripts/preview_delivery_sign.sh sign
+      - name: Clean any temporary private residue
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find "$RUNNER_TEMP" -maxdepth 1 -type d -name 'preview-delivery-signing.*' -exec rm -rf -- {} +
+      - name: Upload only verified APK, matching source and public evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Spotlight-Next-Preview-${{ github.run_id }}
+          path: ${{ runner.temp }}/preview-delivery-output/
           if-no-files-found: error
           retention-days: 3
           compression-level: 0

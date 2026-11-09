@@ -1,0 +1,312 @@
+package dev.bautista.spotlight.ui
+
+import android.content.Intent
+import android.content.ComponentName
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.*
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import com.github.takahirom.roborazzi.*
+import dev.bautista.spotlight.SpotlightApp
+import dev.bautista.spotlight.search.Action
+import dev.bautista.spotlight.search.Result
+import dev.bautista.spotlight.data.Config as AppConfig
+import org.junit.*
+import org.junit.Assert.*
+import org.junit.runner.RunWith
+import org.robolectric.*
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import java.io.File
+
+/** Six independent lab compositions, not skins of SpotlightPanel. No production registration/executor. */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk=[33],qualifiers="w1280dp-h1000dp-mdpi",application=SpotlightApp::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@OptIn(ExperimentalRoborazziApi::class,ExperimentalTestApi::class)
+class SixConceptsGalleryTest {
+ @get:Rule val ui=createAndroidComposeRule<ComponentActivity>()
+ private data class Profile(val id:String,val w:Int,val h:Int)
+ private val tablet=Profile("tablet",1200,800)
+ private val phone=Profile("phone",412,860)
+ private var design by mutableIntStateOf(1)
+ private var stage by mutableStateOf("inicio")
+ private var query by mutableStateOf("")
+ private var selected by mutableIntStateOf(0)
+ private var receipt by mutableStateOf("")
+ // Fixed ordered fixtures, not a second ranker. Same IDs/actions/order in every concept.
+ private val results=listOf(
+  Result("fixture.project/Main","Proyecto","Aplicación de demostración","Aplicaciones",4000,Action.Launch(Intent(Intent.ACTION_MAIN).setComponent(ComponentName("fixture.project","Main")))),
+  Result("fixture:atlas","Proyecto Atlas.pdf","PDF local · fixture","Archivos",3000,Action.Copy("documento ficticio")),
+  Result("fixture:note","Notas del proyecto","Nota local · fixture","Notas",2000,Action.Copy("nota ficticia")),
+  Result("fixture:web","Buscar proyecto en la web","Revisar destino antes de abrir","Comandos",1000,Action.ComposeSearch("google","","proyecto"))
+ )
+ private val names=listOf("macOS Spotlight","Raycast","Alfred","Command Bar","Workspace","Android Floating Sheet")
+ private val ink=Color(0xFFF3F5F8);private val muted=Color(0xFFAEB6C3);private val accent=Color(0xFF83B5FF)
+ private val surface=Color(0xFF252930);private val line=Color(0xFF414750)
+ private fun choose(label:String){receipt="Prototipo: $label elegida. Sin ejecución externa."}
+ private fun context(){selected=1;stage="contexto";receipt=""}
+ @Composable private fun Copy(text:String,size:Int=14,strong:Boolean=false,color:Color=ink,modifier:Modifier=Modifier,max:Int=2) {
+  Text(text,modifier,fontSize=size.sp,lineHeight=(size+5).sp,fontWeight=if(strong)FontWeight.SemiBold else FontWeight.Normal,color=color,maxLines=max,overflow=TextOverflow.Ellipsis)
+ }
+ @Composable private fun Glyph(index:Int,size:Int=32) {
+  val icon=when(index){0->CommandIcons.Apps;1->CommandIcons.Folder;2->CommandIcons.Snippet;else->CommandIcons.Search}
+  Box(Modifier.size(size.dp).background(if(index==0)accent.copy(alpha=.18f)else Color.White.copy(alpha=.06f),RoundedCornerShape((size/4).dp)),contentAlignment=Alignment.Center){Icon(icon,null,Modifier.size((size*.60f).dp),tint=if(index==0)accent else muted)}
+ }
+ @Composable private fun Panel(modifier:Modifier=Modifier,radius:Int=16,content:@Composable ColumnScope.()->Unit) {
+  Column(modifier.shadow(16.dp,RoundedCornerShape(radius.dp)).clip(RoundedCornerShape(radius.dp)).background(surface).border(1.dp,line,RoundedCornerShape(radius.dp)),content=content)
+ }
+ @Composable private fun Query(p:Profile,large:Boolean=false,pill:Boolean=false,prefix:String="") {
+  Row(Modifier.fillMaxWidth().height(if(large)84.dp else 64.dp).then(if(pill)Modifier.background(Color(0xFF303640),RoundedCornerShape(40.dp))else Modifier).padding(horizontal=if(large)24.dp else 18.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
+   if(prefix.isNotBlank())Copy(prefix,12,color=accent) else Icon(CommandIcons.Search,null,Modifier.size(if(large)28.dp else 22.dp),tint=muted)
+   BasicTextField(query,{query=it;stage=if(it.isBlank())"inicio" else "resultados";selected=0;receipt=""},Modifier.weight(1f).testTag("lab-query").onPreviewKeyEvent {
+    if(it.type!=KeyEventType.KeyDown)false else when(it.key){
+     Key.Tab->{stage="acciones";true}
+     Key.Escape->{stage="resultados";receipt="";true}
+     Key.Enter->{choose("Abrir aplicación");true}
+     Key.DirectionDown->{selected=(selected+1).coerceAtMost(3);true}
+     Key.DirectionUp->{selected=(selected-1).coerceAtLeast(0);true}
+     else->false
+    }
+   },textStyle=TextStyle(fontFamily=Geist,fontSize=(if(large)30 else 19).sp,color=ink),singleLine=true,
+    keyboardOptions=KeyboardOptions(imeAction=ImeAction.Search),keyboardActions=KeyboardActions(onSearch={choose("Abrir aplicación")} ),
+    decorationBox={inner->Box{if(query.isEmpty())Copy(if(design==3)"Escribí para buscar…" else "Buscar…",if(large)30 else 19,color=muted);inner()}})
+   if(query.isNotEmpty())IconButton(onClick={query="";stage="inicio"}){Icon(CommandIcons.Close,"Limpiar consulta",Modifier.size(18.dp),tint=muted)}
+   if(p.w>600 && design in listOf(2,4))Copy("Esc",11,color=muted)
+  }
+ }
+ @Composable private fun LabRows(p:Profile,compact:Boolean=false,numbered:Boolean=false,titlesOnly:Boolean=false,modifier:Modifier=Modifier) {
+  Column(modifier.fillMaxWidth().testTag("lab-results")) {
+   for((i,r) in results.withIndex()) {
+    Row(Modifier.fillMaxWidth().height(if(compact && p.w>600)48.dp else if(numbered)62.dp else 64.dp)
+     .background(if(selected==i)accent.copy(alpha=.20f) else Color.Transparent)
+     .clickable{selected=i;receipt=""}.testTag("lab-result:$i").padding(horizontal=if(numbered)20.dp else 14.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(if(numbered)16.dp else 12.dp)) {
+     Glyph(i,if(numbered)40 else if(compact)25 else 32)
+     Column(Modifier.weight(1f)){Copy(r.title,if(numbered)19 else 15,selected==i,max=1);if(!titlesOnly && !compact)Copy(r.subtitle,12,color=muted,max=1)}
+     if(numbered)Copy(if(p.w>600)"⌘${i+1}" else "${i+1}",12,color=muted)
+     else if(p.w>600)Copy(if(i==0)"Aplicación" else if(i==1)"PDF" else if(i==2)"Nota" else "Comando",11,color=muted,max=1)
+    }
+   }
+  }
+ }
+ @Composable private fun ActionButton(label:String,primary:Boolean=false,wide:Boolean=true) {
+  Row((if(wide)Modifier.fillMaxWidth()else Modifier).heightIn(min=48.dp).background(if(primary)accent.copy(alpha=.16f)else Color.Transparent,RoundedCornerShape(8.dp)).clickable{choose(label)}.testTag("lab-action:$label").padding(horizontal=14.dp,vertical=10.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+   Icon(if(primary)CommandIcons.Arrow else if(label.contains("favorito"))CommandIcons.Pin else CommandIcons.Info,null,Modifier.size(19.dp),tint=if(primary)accent else muted)
+   Copy(label,14,primary,color=if(primary)accent else ink,modifier=Modifier.weight(1f))
+  }
+ }
+ @Composable private fun ActionList(p:Profile,heading:Boolean=true) {
+  Column(Modifier.fillMaxWidth().padding(10.dp).testTag("lab-actions")) {
+   if(heading)Copy("Acciones de Proyecto",12,color=muted,modifier=Modifier.padding(8.dp))
+   ActionButton("Abrir aplicación",true);ActionButton("Fijar favorito");ActionButton("Información de la app")
+   if(receipt.isNotEmpty())Copy(receipt,11,color=accent,modifier=Modifier.padding(8.dp),max=3)
+  }
+ }
+ @Composable private fun Document(p:Profile,large:Boolean=false) {
+  Column(Modifier.fillMaxWidth().testTag("lab-context")) {
+   Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+    Glyph(1,if(large)42 else 30);Column(Modifier.weight(1f)){Copy("Proyecto Atlas.pdf",if(large)22 else 17,true);Copy("Documento ficticio · vista contextual",11,color=muted)}
+   }
+   Spacer(Modifier.height(12.dp))
+   Column(Modifier.fillMaxWidth().background(Color(0xFFF3F1EB),RoundedCornerShape(4.dp)).padding(if(large)24.dp else 16.dp)) {
+    Copy("PROYECTO ATLAS",if(large)22 else 16,true,Color(0xFF29333D))
+    Copy("Plan de trabajo",if(large)16 else 13,color=Color(0xFF52616F),modifier=Modifier.padding(top=8.dp))
+    HorizontalDivider(Modifier.padding(vertical=12.dp),color=Color(0xFFCED2D3))
+    Copy("Objetivo",13,true,Color(0xFF29333D))
+    Copy("Organizar una exposición con material de demostración. Revisar la propuesta antes de compartirla.",if(large)14 else 12,color=Color(0xFF465360),max=4)
+    if(large){Spacer(Modifier.height(16.dp));Copy("Próximos pasos",13,true,Color(0xFF29333D));Copy("Reunir referencias · ordenar materiales · preparar presentación",13,color=Color(0xFF465360),max=3)}
+   }
+   Copy("Texto fijo de laboratorio. Sin extracción PDF, permisos SAF ni citas C5.",10,color=muted,modifier=Modifier.padding(top=10.dp),max=2)
+  }
+ }
+ @Composable private fun Footer(p:Profile,label:String="Abrir aplicación") {
+  HorizontalDivider(color=line)
+  Row(Modifier.fillMaxWidth().height(42.dp).padding(horizontal=14.dp),verticalAlignment=Alignment.CenterVertically) {
+   Copy("Spotlight",11,color=muted,modifier=Modifier.weight(1f))
+   TextButton(onClick={choose(label)}){Copy(label,12,true)}
+   if(p.w>600)Copy("↵",11,color=muted,modifier=Modifier.padding(end=12.dp))
+   TextButton(onClick={stage="acciones"}){Copy("Acciones",12,true)}
+  }
+ }
+ @Composable private fun InitialRows(p:Profile) {
+  Column(Modifier.padding(16.dp)){Copy("Para empezar",12,color=muted);Spacer(Modifier.height(10.dp));for(i in 0..2)Row(Modifier.fillMaxWidth().height(44.dp).clickable{query="proyecto";stage="resultados"},verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)){Glyph(i,24);Copy(results[i].title,14)}}
+ }
+ @Composable private fun Spotlight(p:Profile) {
+  Panel(Modifier.fillMaxWidth(),24) {
+   Query(p,large=true)
+   if(stage!="inicio") {
+    HorizontalDivider(color=line)
+    if(stage=="contexto")Column(Modifier.padding(20.dp)){TextButton(onClick={stage="resultados"}){Copy("← Resultados",12,color=muted)};Document(p);ActionButton("Abrir archivo explícitamente",true)}
+    else {LabRows(p,titlesOnly=true);if(stage=="acciones")ActionList(p,false)}
+    Copy(if(stage=="acciones")"Esc para volver · no se ejecuta nada al seleccionar" else "Seleccionar para revisar · Enter para la acción principal",10,color=muted,modifier=Modifier.padding(16.dp))
+   }
+  }
+ }
+ @Composable private fun Raycast(p:Profile) {
+  Panel(Modifier.fillMaxWidth(),12) {
+   Query(p)
+   HorizontalDivider(color=line)
+   Box(Modifier.fillMaxWidth()) {
+    Column {
+     if(stage=="inicio")InitialRows(p)
+     else if(stage=="contexto")Column(Modifier.padding(18.dp)){TextButton(onClick={stage="resultados"}){Copy("← Volver a resultados",12,color=muted)};Document(p,p.w>600);ActionButton("Abrir archivo explícitamente",true)}
+     else {Copy("Mejores resultados",11,color=muted,modifier=Modifier.padding(14.dp));LabRows(p,compact=true);Spacer(Modifier.height(if(p.w>600)90.dp else 55.dp))}
+    }
+    if(stage=="acciones")Panel(Modifier.align(Alignment.TopEnd).padding(top=38.dp,end=10.dp).width(if(p.w>600)288.dp else (p.w-56).dp),10){
+     Row(Modifier.fillMaxWidth().height(46.dp).padding(14.dp),verticalAlignment=Alignment.CenterVertically){Icon(CommandIcons.Search,null,Modifier.size(16.dp),tint=muted);Copy("Buscar acciones…",12,color=muted,modifier=Modifier.padding(start=8.dp))}
+     HorizontalDivider(color=line);ActionList(p,false)
+    }
+   }
+   Footer(p)
+  }
+ }
+ @Composable private fun Alfred(p:Profile) {
+  Panel(Modifier.fillMaxWidth(),8) {
+   Row(Modifier.fillMaxWidth().padding(start=18.dp),verticalAlignment=Alignment.CenterVertically){Glyph(if(stage=="contexto")1 else 0,42);Box(Modifier.weight(1f)){Query(p,large=true)}}
+   if(stage!="inicio") {
+    HorizontalDivider(color=line)
+    LabRows(p,numbered=true)
+    if(stage=="acciones") {HorizontalDivider(color=line);Copy("Acciones del resultado seleccionado",11,color=muted,modifier=Modifier.padding(14.dp));ActionList(p,false)}
+    if(stage=="contexto")Column(Modifier.padding(18.dp)){Document(p);ActionButton("Abrir archivo explícitamente",true)}
+    if(stage=="resultados")Copy("Proyecto · Aplicación de demostración",11,color=muted,modifier=Modifier.padding(horizontal=20.dp,vertical=10.dp))
+   }
+  }
+ }
+ @Composable private fun CommandBar(p:Profile) {
+  Column(Modifier.fillMaxWidth(),horizontalAlignment=Alignment.CenterHorizontally) {
+   Panel(Modifier.width(if(p.w>600)400.dp else (p.w-40).dp),40){Query(p,pill=true)}
+   if(stage!="inicio") {
+    Spacer(Modifier.height(14.dp))
+    if(stage=="contexto")Panel(Modifier.fillMaxWidth(),18){Column(Modifier.padding(18.dp)){Copy("← proyecto",12,color=muted);Spacer(Modifier.height(12.dp));Document(p);ActionButton("Abrir archivo explícitamente",true)}}
+    else {
+     val chunks=if(p.w>600)results.indices.toList().chunked(2) else results.indices.map{listOf(it)}
+     Column(verticalArrangement=Arrangement.spacedBy(10.dp)) {
+      for(chunk in chunks)Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(10.dp)) {
+       for(i in chunk)Panel(Modifier.weight(1f).clickable{selected=i},16){
+        Row(Modifier.fillMaxWidth().padding(16.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)){
+         Glyph(i,if(p.w>600)40 else 30);Column(Modifier.weight(1f)){Copy(results[i].title,15,selected==i,max=1);Copy(if(i==0)"Abrir aplicación" else results[i].subtitle,11,color=muted,max=1)}
+         if(selected==i)Box(Modifier.size(6.dp).background(accent,RoundedCornerShape(6.dp)))
+        }
+       }
+      }
+     }
+     if(stage=="acciones"){Spacer(Modifier.height(10.dp));Panel(Modifier.fillMaxWidth(),14){ActionList(p,false)}}
+     else Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.End){TextButton(onClick={stage="acciones"}){Copy("Acciones del seleccionado  ⌄",12,color=muted)}}
+    }
+   }
+  }
+ }
+ @Composable private fun Workspace(p:Profile) {
+  Panel(Modifier.fillMaxWidth().height(if(p.w>600)650.dp else 700.dp),12) {
+   Row(Modifier.fillMaxWidth().height(40.dp).background(Color(0xFF1C2026)).padding(horizontal=16.dp),verticalAlignment=Alignment.CenterVertically){Copy("SPOTLIGHT / ESPACIO DE TRABAJO",10,true,color=muted,modifier=Modifier.weight(1f));Icon(CommandIcons.Close,null,Modifier.size(16.dp),tint=muted)}
+   Query(p)
+   HorizontalDivider(color=line)
+   if(p.w>600)Row(Modifier.weight(1f)) {
+    Column(Modifier.width(350.dp).fillMaxHeight().background(Color(0xFF20242A))) {
+     if(stage=="inicio")InitialRows(p)else{Copy("RESULTADOS · 4",10,true,color=muted,modifier=Modifier.padding(16.dp));LabRows(p,compact=true)}
+     Spacer(Modifier.weight(1f));Copy("Elegí un resultado para revisarlo",10,color=muted,modifier=Modifier.padding(16.dp))
+    }
+    VerticalDivider(color=line)
+    Column(Modifier.weight(1f).fillMaxHeight().padding(24.dp).verticalScroll(rememberScrollState())) {
+     if(stage=="contexto"){Document(p,true);ActionButton("Abrir archivo explícitamente",true)}
+     else if(stage=="inicio"){Copy("Encontrá. Revisá. Actuá.",30,true);Spacer(Modifier.height(18.dp));Copy("Una vista de trabajo para documentos y acciones.\nLa búsqueda conserva el centro de la experiencia.",17,color=muted,max=4)}
+     else {Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(18.dp)){Glyph(0,64);Column{Copy("Proyecto",28,true);Copy("Aplicación · datos de demostración",13,color=muted)}};Spacer(Modifier.height(24.dp));Copy("ACCIONES DISPONIBLES",10,true,color=muted);ActionList(p,false);Spacer(Modifier.height(20.dp));Copy("Selección retenida",12,true);Copy("La lista permanece disponible mientras revisás el destino. Sin ejecutar ni cambiar de aplicación.",13,color=muted,max=3)}
+    }
+   }else Column(Modifier.weight(1f).fillMaxWidth().padding(10.dp).verticalScroll(rememberScrollState())) {
+    if(stage in listOf("contexto","acciones")){TextButton(onClick={stage="resultados"}){Copy("← Volver a los resultados",13,color=accent)};if(stage=="contexto")Document(p,true)else{Copy("Proyecto",25,true);ActionList(p)}}
+    else if(stage=="inicio"){Copy("Encontrá. Revisá. Actuá.",25,true,modifier=Modifier.padding(10.dp));InitialRows(p)}else{LabRows(p);TextButton(onClick={context()}){Copy("Revisar documento →",13,color=accent)}}
+   }
+   Footer(p,if(stage=="contexto")"Abrir archivo" else "Abrir aplicación")
+  }
+ }
+ @Composable private fun FloatingSheet(p:Profile) {
+  Panel(Modifier.fillMaxWidth(),28) {
+   Box(Modifier.fillMaxWidth().height(22.dp),contentAlignment=Alignment.Center){Box(Modifier.size(34.dp,4.dp).background(muted.copy(alpha=.6f),RoundedCornerShape(4.dp)))}
+   Row(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=5.dp),verticalAlignment=Alignment.CenterVertically){Copy(if(stage=="contexto")"Vista previa" else if(stage=="acciones")"Acciones de Proyecto" else "Spotlight",18,true,modifier=Modifier.weight(1f));TextButton(onClick={stage="resultados"}){Copy(if(stage in listOf("contexto","acciones"))"Volver" else "Cerrar",12,color=muted)}}
+   if(stage=="inicio")Copy("Buscá aplicaciones, archivos o acciones",13,color=muted,modifier=Modifier.padding(horizontal=20.dp,vertical=16.dp))
+   else if(stage=="contexto")Column(Modifier.fillMaxWidth().padding(18.dp)){Document(p,true);ActionButton("Abrir archivo explícitamente",true)}
+   else if(stage=="acciones")ActionList(p,false)
+   else {LabRows(p);Row(Modifier.fillMaxWidth().padding(horizontal=16.dp),horizontalArrangement=Arrangement.End){TextButton(onClick={stage="acciones"}){Copy("Acciones del seleccionado",13,color=accent)}}}
+   HorizontalDivider(color=line)
+   Box(Modifier.padding(horizontal=12.dp,vertical=10.dp)){Query(p,pill=true)}
+   Copy("Superficie flotante · margen para gestos",10,color=muted,modifier=Modifier.padding(start=22.dp,bottom=14.dp))
+  }
+ }
+ @Composable private fun Backdrop(p:Profile) {
+  Column(Modifier.fillMaxSize().background(Color(0xFF111820)).padding(if(p.w>600)36.dp else 20.dp)) {
+   Copy("FONDO COMÚN DE LABORATORIO",10,true,color=Color(0xFF64717E));Spacer(Modifier.height(22.dp))
+   Copy("Un día de trabajo",if(p.w>600)32 else 25,true,color=Color(0xFF53616F))
+   for(i in 0..5)Row(Modifier.fillMaxWidth().padding(top=28.dp),horizontalArrangement=Arrangement.spacedBy(20.dp)){
+    Box(Modifier.width(if(p.w>600)100.dp else 50.dp).height(5.dp).background(Color(0xFF26323E)))
+    Column(Modifier.weight(1f)){Box(Modifier.fillMaxWidth(if(i%2==0).68f else .92f).height(6.dp).background(Color(0xFF293541)));Spacer(Modifier.height(13.dp));Box(Modifier.fillMaxWidth(.80f).height(5.dp).background(Color(0xFF202C37)))}
+   }
+  }
+ }
+ @Composable private fun Canvas(p:Profile) {
+  SpotlightTheme("dark",AppConfig(focusInterface=true,theme="dark",animations=false)) {
+   Box(Modifier.size(p.w.dp,p.h.dp).testTag("lab-canvas")) {
+    Backdrop(p)
+    val width=if(p.w<600)p.w-24 else when(design){1->640;2->760;3->600;4->720;5->1120;else->470}
+    val y=if(p.w<600)when(design){1->if(stage=="inicio")190 else 130;2->110;3->if(stage=="inicio")250 else 180;4->76;5->50;else->0}else when(design){1->if(stage=="inicio")230 else 165;2->120;3->if(stage=="inicio")280 else 205;4->150;5->70;else->0}
+    val frame=if(design==6)Modifier.align(if(p.w>600)Alignment.BottomEnd else Alignment.BottomCenter).padding(end=if(p.w>600)28.dp else 0.dp,bottom=22.dp)
+     else Modifier.align(Alignment.TopCenter).padding(top=y.dp)
+    Box(frame.width(width.dp).testTag("lab-envelope")) {
+     when(design){1->Spotlight(p);2->Raycast(p);3->Alfred(p);4->CommandBar(p);5->Workspace(p);else->FloatingSheet(p)}
+    }
+    Copy("COMPOSE · D0$design · ${names[design-1]} · fixture",9,color=Color(0xFF8895A3),modifier=Modifier.align(Alignment.TopEnd).padding(8.dp))
+   }
+  }
+ }
+ private fun show(p:Profile){ui.setContent{Canvas(p)};ui.waitForIdle()}
+ private fun render(p:Profile) {
+  show(p)
+  for(d in 1..6)for(s in listOf("inicio","resultados","acciones","contexto")) {
+   ui.runOnIdle{design=d;stage=s;query=if(s=="inicio")"" else "proyecto";selected=if(s=="contexto")1 else 0;receipt=""};ui.waitForIdle()
+   val b=ui.onNodeWithTag("lab-envelope").getUnclippedBoundsInRoot()
+   assertTrue("D$d $s fits ${p.id}: $b",b.left>=0.dp && b.top>=0.dp && b.right<=p.w.dp && b.bottom<=p.h.dp)
+   ui.onNodeWithTag("lab-query").assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText,AnnotatedString(query)))
+   if(s=="contexto")ui.onNodeWithTag("lab-context").assertExists()
+   ui.onNodeWithTag("lab-canvas").captureRoboImage("build/six-concepts/${p.id}-D0$d-$s.png",roborazziOptions=RoborazziOptions(taskType=RoborazziTaskType.Record))
+   File("build/six-concepts/geometry.tsv").apply{parentFile!!.mkdirs();appendText("${p.id}\tD0$d\t$s\t${b.left.value}\t${b.top.value}\t${b.width.value}\t${b.height.value}\n")}
+  }
+  assertEquals("",receipt);assertNull(Shadows.shadowOf(ui.activity.application as SpotlightApp).nextStartedActivity)
+ }
+ @Test fun tablet48StateMatrixPart()=render(tablet)
+ @Test fun phone48StateMatrixPart()=render(phone)
+ @Test fun labSelectionEscapeAndExplicitActionNeverDispatchExternally() {
+  show(phone)
+  for(d in 1..6) {
+   ui.runOnIdle{design=d;stage="resultados";query="proyecto";selected=0;receipt=""}
+   ui.onNodeWithTag("lab-query").performClick()
+   ui.onNodeWithTag("lab-query").performKeyInput{pressKey(Key.DirectionDown)}
+   ui.runOnIdle{assertEquals(1,selected)}
+   ui.onNodeWithTag("lab-query").performKeyInput{pressKey(Key.Tab)}
+   ui.runOnIdle{assertEquals("acciones",stage)}
+   ui.onNodeWithTag("lab-query").performKeyInput{pressKey(Key.Escape)}
+   ui.runOnIdle{assertEquals("resultados",stage);assertEquals("proyecto",query);assertEquals(1,selected);stage="acciones";selected=0}
+   ui.onNodeWithTag("lab-action:Abrir aplicación").performClick()
+   ui.runOnIdle{assertEquals("Prototipo: Abrir aplicación elegida. Sin ejecución externa.",receipt);assertEquals("proyecto",query)}
+   assertNull(Shadows.shadowOf(ui.activity.application as SpotlightApp).nextStartedActivity)
+  }
+ }
+}

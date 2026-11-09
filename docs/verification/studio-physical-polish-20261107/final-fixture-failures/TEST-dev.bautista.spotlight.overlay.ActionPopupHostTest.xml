@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.overlay.ActionPopupHostTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-07T20:30:57" hostname="ab6df79ca904" time="2.786">
+  <properties/>
+  <testcase name="tabletMenuCanExceedCompactParentWithoutMovingIt" classname="dev.bautista.spotlight.overlay.ActionPopupHostTest" time="2.06"/>
+  <testcase name="phoneImeAndRotationStayInsideUsableBounds" classname="dev.bautista.spotlight.overlay.ActionPopupHostTest" time="0.03"/>
+  <testcase name="childTokenAndTouchRegionRemainBoundedAndOutsideIsNotModal" classname="dev.bautista.spotlight.overlay.ActionPopupHostTest" time="0.675"/>
+  <testcase name="tabletOutsetOverlapsResultsAndClampsAtDisplayEdge" classname="dev.bautista.spotlight.overlay.ActionPopupHostTest" time="0.02"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

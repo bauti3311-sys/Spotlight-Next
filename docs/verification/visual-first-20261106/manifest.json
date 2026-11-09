@@ -1,0 +1,2410 @@
+{
+  "base_sha": "f27c8673ab8aaa557adf4da20b7a28283c449e78",
+  "api": 33,
+  "physical_device": false,
+  "screen_profiles": 8,
+  "scenes": 9,
+  "scene_pairs": 72,
+  "scene_images": 120,
+  "motion_frames": 12,
+  "icon_images": 4,
+  "total_images": 136,
+  "tests_passed": 12,
+  "production_changes": false,
+  "ime_is_simulated": true,
+  "fixture_data": true,
+  "cases": [
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.compactImeLight",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.phoneLight",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.tabletDark",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.phoneDark",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.compactImeDark",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.enlargedLight",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.tabletLight",
+    "dev.bautista.spotlight.ui.VisualFirstGalleryTest.enlargedDark",
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDarkText200",
+    "dev.bautista.spotlight.ui.VisualFirstMotionTest.compareEntryFramesAndReducedMotion",
+    "dev.bautista.spotlight.ui.VisualFirstIconReviewTest.dark",
+    "dev.bautista.spotlight.ui.VisualFirstIconReviewTest.light"
+  ],
+  "renders": [
+    {
+      "profile": "phone-dark",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "light",
+      "file": "phone-light-compact-ime-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 390,
+      "height_dp": 760,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "tablet-dark-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 1.3,
+      "ime_reserved_dp": 300,
+      "theme": "dark",
+      "file": "phone-dark-compact-ime-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "phone-light-text200-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 1000,
+      "height_dp": 720,
+      "font_scale": 1.0,
+      "ime_reserved_dp": 0,
+      "theme": "light",
+      "file": "tablet-light-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "inicio",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-inicio-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "resultados",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-resultados-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "inspector",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-inspector-A.png",
+      "preserved": true,
+      "render_kind": "production SpotlightPanel"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "acciones",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-acciones-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "acciones",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-acciones-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "ajustes",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-ajustes-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "ajustes",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-ajustes-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "formulario",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-formulario-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "formulario",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-formulario-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "documento",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-documento-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "documento",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-documento-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "multimedia",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-multimedia-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "multimedia",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-multimedia-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "estado-error",
+      "variant": "A",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-estado-error-A.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "estado-error",
+      "variant": "B",
+      "width_dp": 330,
+      "height_dp": 760,
+      "font_scale": 2.0,
+      "ime_reserved_dp": 0,
+      "theme": "dark",
+      "file": "phone-dark-text200-estado-error-B.png",
+      "preserved": false,
+      "render_kind": "production components in isolated fixture"
+    }
+  ],
+  "images": [
+    {
+      "file": "icons-dark-A.png",
+      "sha256": "31db35fee79faf98a2c76821cc985c939be20f5c8ace1f3e6b98037d61722152",
+      "width_px": 360,
+      "height_px": 300
+    },
+    {
+      "file": "icons-dark-B.png",
+      "sha256": "c710914e8e0abeb393d7cc20fc56f1bf4579807aa6bc8cc4927e4f0787f2392b",
+      "width_px": 360,
+      "height_px": 300
+    },
+    {
+      "file": "icons-light-A.png",
+      "sha256": "f5fb88162d4670ca87755e25a4ae75abe69512b222dd7ea8599b39941327411c",
+      "width_px": 360,
+      "height_px": 300
+    },
+    {
+      "file": "icons-light-B.png",
+      "sha256": "8201503c8deabf33cb45604b68ea10503a3c8766747a9bba5e74f5444fa3c77f",
+      "width_px": 360,
+      "height_px": 300
+    },
+    {
+      "file": "motion-A-0.png",
+      "sha256": "edf1987c0eb11fa8db4732016070a2d854079846b811f3dbb4a0278b753105bb",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-A-160.png",
+      "sha256": "ee0cc73cf3abbf17b699e7cfd5e0c83d20400403b68f304087d872b6187a6b60",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-A-208.png",
+      "sha256": "feba04e82e45f40853ad20c172dd114efeed7c3bad6f118a969fbbb5d8962182",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-A-48.png",
+      "sha256": "ba2f62d0277d3b29413f2168e512928668d329751bb0a6a8d3340c889982a5d3",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-A-96.png",
+      "sha256": "81c6549ae4fafccb8c96be91fcffa8ab20c3f6537f9050647403b3e1a5df0389",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-A-reduced.png",
+      "sha256": "feba04e82e45f40853ad20c172dd114efeed7c3bad6f118a969fbbb5d8962182",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-B-0.png",
+      "sha256": "edf1987c0eb11fa8db4732016070a2d854079846b811f3dbb4a0278b753105bb",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-B-160.png",
+      "sha256": "feba04e82e45f40853ad20c172dd114efeed7c3bad6f118a969fbbb5d8962182",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-B-208.png",
+      "sha256": "feba04e82e45f40853ad20c172dd114efeed7c3bad6f118a969fbbb5d8962182",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-B-48.png",
+      "sha256": "a0963754c7e2f9247818a911245650202480b7a1368acf0c3e07a00137dea2c9",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-B-96.png",
+      "sha256": "274290d81d5489703ef3b37dcc8ec4692a7297e6a52753142cd974fb4e679e5c",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "motion-B-reduced.png",
+      "sha256": "feba04e82e45f40853ad20c172dd114efeed7c3bad6f118a969fbbb5d8962182",
+      "width_px": 360,
+      "height_px": 220
+    },
+    {
+      "file": "phone-dark-acciones-A.png",
+      "sha256": "4c9362a650c5cda55f25891d02f17e3acf6ce39ba26e3efbd2348372c7e0ced9",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-acciones-B.png",
+      "sha256": "4c9362a650c5cda55f25891d02f17e3acf6ce39ba26e3efbd2348372c7e0ced9",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-ajustes-A.png",
+      "sha256": "b77cace52be6c71424f54e5250814667f8720de7e1400dd813e84f214c9da5fc",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-ajustes-B.png",
+      "sha256": "2e9030318830bb8e949d1da89a297ed0c3b2ad9fceeccef6c42a0440a508fd8c",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-acciones-A.png",
+      "sha256": "c6ee72021fd408ed068352500ddc43c22670a0d748c3dd11843cbeb6d013b11d",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-acciones-B.png",
+      "sha256": "c6ee72021fd408ed068352500ddc43c22670a0d748c3dd11843cbeb6d013b11d",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-ajustes-A.png",
+      "sha256": "0d7feeb6465d4a1432e1cbb189c4fcaae4158373f1bc5182588e597d8703e1dc",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-ajustes-B.png",
+      "sha256": "0d7feeb6465d4a1432e1cbb189c4fcaae4158373f1bc5182588e597d8703e1dc",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-documento-A.png",
+      "sha256": "73a3633675a5b01dd7fe962ac883f51a38f169d28590a99c5306a43ce45cde6d",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-documento-B.png",
+      "sha256": "8ee3e33fa8e0999501a21cedb698c00b8e29c46a0f30384ec01b07015465f5ed",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-estado-error-A.png",
+      "sha256": "eb676ac238e74e5093f931e77a2675ee0a0fc20a07200fe8d896c83186176186",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-estado-error-B.png",
+      "sha256": "eb676ac238e74e5093f931e77a2675ee0a0fc20a07200fe8d896c83186176186",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-formulario-A.png",
+      "sha256": "523623f7da98cbbcfc7d3e38098655aee1a07ea6614d3e599dc928621f7587ca",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-formulario-B.png",
+      "sha256": "d62793e11ecbf14df825f25542f74039b3ab01eb3e9247c5fa4984b53d04a642",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-inicio-A.png",
+      "sha256": "ea9ce95bfe0e2206f112016646076a1d09e4cce4f5915b72bcb90ce84f308ba7",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-inspector-A.png",
+      "sha256": "8d0518239f7a506f80331f50f5fc2a457972408235f6f95f3fd17981a5eeac91",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-multimedia-A.png",
+      "sha256": "742d6c15e663d82860e613566642a96e7e87bcd9679e48113d8efa676612a59f",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-multimedia-B.png",
+      "sha256": "3e01f797aa59a38b5baf638b52af6ff73847bd863853c1f1dd28d7f4750ccc9b",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-compact-ime-resultados-A.png",
+      "sha256": "1d4ce7fb3073d4c72bbd71bcd87829c2dbe15e01cdc3a9559ea8bc65f8044b3a",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-documento-A.png",
+      "sha256": "ee299abbefda17b62db728e96ed4e6bcc25e62f7d1dd02d5dfdce9685be818d9",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-documento-B.png",
+      "sha256": "1b2c767e4f0bacdabe71918f02c94b98b2150ff4d70961156ad25ef0d79db1d3",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-estado-error-A.png",
+      "sha256": "d9ea1bfbe2adbd30b26afdfad88ee712694b835da5a372a04b596357835b645f",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-estado-error-B.png",
+      "sha256": "d9ea1bfbe2adbd30b26afdfad88ee712694b835da5a372a04b596357835b645f",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-formulario-A.png",
+      "sha256": "d577c0813724f92767f32a11d422761e544b84e688753dcb161746928168c640",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-formulario-B.png",
+      "sha256": "7539e2b7dbedb67c2d5792d00d73121546cca5a2b5d925a91bd919b4e8a6c5fc",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-inicio-A.png",
+      "sha256": "a645843e19c96f7ccebf562e86a9ba686d8ecc073f96ba8a50cc52d8f72fe065",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-inspector-A.png",
+      "sha256": "5029743dcf8ec6a6de0e911d5721512555aceaa4456dbd55ec60b4eb83146e5c",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-multimedia-A.png",
+      "sha256": "16883ad5cc39aa76a25d89a5b85d97157b4f5cc2d9d389f22b64691b8f10293c",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-multimedia-B.png",
+      "sha256": "96bc995c6c4d64514b2dd151b7cdd5e480d5dea9264b006a76751a74268f6a89",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-resultados-A.png",
+      "sha256": "331106ffcf0bf306b8f2cb93d95c5f7bdc617a7a69b4623d7b1c0e390ed4dacc",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-acciones-A.png",
+      "sha256": "7546f466cd16657d4b77adb2ed5b1cc13a49d2637b22ca91e6364f2140c4d128",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-acciones-B.png",
+      "sha256": "7546f466cd16657d4b77adb2ed5b1cc13a49d2637b22ca91e6364f2140c4d128",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-ajustes-A.png",
+      "sha256": "c070e4278fcc4c9f7470102fe8bf85a84858c446112effa7e24f3e0d1e7aaf80",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-ajustes-B.png",
+      "sha256": "c070e4278fcc4c9f7470102fe8bf85a84858c446112effa7e24f3e0d1e7aaf80",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-documento-A.png",
+      "sha256": "da785244de8c8bb2f9eed625665f8e48c309a931b736b4dd98eeca907dc915eb",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-documento-B.png",
+      "sha256": "2430430142d7b70b424e01a7261dbe25d7f6effd97bb179f77222076fcd4bcb3",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-estado-error-A.png",
+      "sha256": "4242a7152d2b606286ebea7bc17d30c960d6d5fe52c3b597a48edf069ba2b612",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-estado-error-B.png",
+      "sha256": "4242a7152d2b606286ebea7bc17d30c960d6d5fe52c3b597a48edf069ba2b612",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-formulario-A.png",
+      "sha256": "7b6bc0a1d556a91553b89b815454cb0ba891e9b1dee5ee946569ec10113cff1f",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-formulario-B.png",
+      "sha256": "436ba6d008628121cb87fda59687dbafc23d652f0caa0ca0246ea319d88597c8",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-inicio-A.png",
+      "sha256": "2748866a2696bc90eb9678e94b2d2535e5e99dbe1d697775582012d0aceecce4",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-inspector-A.png",
+      "sha256": "93e27a75b6b0781c00709252760d97817a4f632beb2cb3fc76c9c3b13e1765e0",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-multimedia-A.png",
+      "sha256": "8575e60b6080f937f3df18df9d0e0ce548ab06e8b4cb5fe8c3436009acc6cc85",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-multimedia-B.png",
+      "sha256": "e9c9e17b7100627ac058fa46194707e58cbf16041151a3de4a9f0c90b708d749",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-dark-text200-resultados-A.png",
+      "sha256": "ecd65679efdb55e0677393e3f9ce2d458c34cd107ece9e55e4c37c1f14d0812d",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-acciones-A.png",
+      "sha256": "dbf38a1f6a6ce99ef82c009906c8678cf83f6ad4220a465ad4d5cf4feef5342b",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-acciones-B.png",
+      "sha256": "dbf38a1f6a6ce99ef82c009906c8678cf83f6ad4220a465ad4d5cf4feef5342b",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-ajustes-A.png",
+      "sha256": "2e7ba226c5b9484186b52ef3536a761b5419ce11a2c433cd4f9823f6e1a0f055",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-ajustes-B.png",
+      "sha256": "8069fb7135e57feb11f3158cce468042a1212ab793b8a303d3f4d3fd810b9ff8",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-acciones-A.png",
+      "sha256": "766eb5d5a4a10d6870d203d28f5221e2925e4830a0733b2030c56846daad5192",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-acciones-B.png",
+      "sha256": "766eb5d5a4a10d6870d203d28f5221e2925e4830a0733b2030c56846daad5192",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-ajustes-A.png",
+      "sha256": "a39cacf82ec42ae77fe30b57a6c8689e156afe2beee707dcfade868645efd34d",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-ajustes-B.png",
+      "sha256": "a39cacf82ec42ae77fe30b57a6c8689e156afe2beee707dcfade868645efd34d",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-documento-A.png",
+      "sha256": "82295972ef5980a11809a91f7b14ad07da4a7c94cd6ff45b6ffd880ac4cc5131",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-documento-B.png",
+      "sha256": "44ab55c70198406c1278698a37b24ba91e112165e218ec1132db94f14808a6c1",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-estado-error-A.png",
+      "sha256": "bdb965f4bf4b9d210f23a9ddad519273936534549da2967b5a8a0006a1f3f977",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-estado-error-B.png",
+      "sha256": "bdb965f4bf4b9d210f23a9ddad519273936534549da2967b5a8a0006a1f3f977",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-formulario-A.png",
+      "sha256": "2c02198e7a07a2d2b784cba93fb379cd91652580e136948412f96e82a98a0151",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-formulario-B.png",
+      "sha256": "370fb1413a80bcf042c5a3765e07840778258cdddb2fb7cd1f661f0337d2dfa7",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-inicio-A.png",
+      "sha256": "9e41f7a3b7057123a00e6fb6b6f678b43f137360898c859277ce9a40119d1f39",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-inspector-A.png",
+      "sha256": "ca1c3b54ab775188f48dac50ea9e8b93be48249f2274045cea5894e3dca181fe",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-multimedia-A.png",
+      "sha256": "20e709ce5fdb33acf2badc2e1c489258bc0ecccc68203804bd37b7094cad3648",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-multimedia-B.png",
+      "sha256": "561823c5f0ae9425ce0584dd01bebd67c164a36569c5955d870512f8125bac45",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-compact-ime-resultados-A.png",
+      "sha256": "2b9fba6e6699fde86f7750f8094fb07e43a9715195b4374cc0549b073426cb3c",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-documento-A.png",
+      "sha256": "fbe888237727d50ebfcce0bbe794a9564519f56cc6c2c769ab73925d492918c7",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-documento-B.png",
+      "sha256": "25c38dec40f0fc301b9f48a8531cc5c403efdb067b914899ae58779d54c7730e",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-estado-error-A.png",
+      "sha256": "405df55dc56486b9616cfacf70e4dda99473de09546dd7537962ba55b027cfb1",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-estado-error-B.png",
+      "sha256": "405df55dc56486b9616cfacf70e4dda99473de09546dd7537962ba55b027cfb1",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-formulario-A.png",
+      "sha256": "baeeba8c076e54d2ecc316cc670b0eba32082709172d7ea454c636a9b3305d81",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-formulario-B.png",
+      "sha256": "5d59768571770ddde9ca588909b299442dc3cd5ff34488fec482d652f1d6bde4",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-inicio-A.png",
+      "sha256": "c1a598faa986393575c88109a0127042471149042a0b5bf872049e6b6af0ab62",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-inspector-A.png",
+      "sha256": "9a381696bd4125d327efd5b2c61cbd4c2837152ae7184202fed13c198e258c22",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-multimedia-A.png",
+      "sha256": "09ea8b8627cefc04cbec48937d57616a8ef62e64317e279bd00a0b71682e3f20",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-multimedia-B.png",
+      "sha256": "6a48558eda32f542f7ce381eb152417f0db21e388ac2a2847071e3ec21d83581",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-resultados-A.png",
+      "sha256": "f532561bfb0bedf9130dc829149dda4760bc0f65b0dc7722d7dbb00dc88fe423",
+      "width_px": 390,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-acciones-A.png",
+      "sha256": "716fcfbdbdabf0f5b8517ebf97319d16a491512784d592c0de18751e6ebe74dc",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-acciones-B.png",
+      "sha256": "716fcfbdbdabf0f5b8517ebf97319d16a491512784d592c0de18751e6ebe74dc",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-ajustes-A.png",
+      "sha256": "092be88c6a0bd4b2022d410ca23b62c05d1f6d7287271e7605ee870bc37c76d9",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-ajustes-B.png",
+      "sha256": "092be88c6a0bd4b2022d410ca23b62c05d1f6d7287271e7605ee870bc37c76d9",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-documento-A.png",
+      "sha256": "07cc27cc6769556aab27fb698f8801338e994a6fa76818e6369aaf7f3c0a6bfe",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-documento-B.png",
+      "sha256": "bc45ce03ecf1ad2b469d2c1b08b0ee94495d835c181dc3aee07818654970f026",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-estado-error-A.png",
+      "sha256": "3228eb9374591db78beaf8b6cb786ccb38bf927fcb6f492e83af3e539ba070e6",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-estado-error-B.png",
+      "sha256": "3228eb9374591db78beaf8b6cb786ccb38bf927fcb6f492e83af3e539ba070e6",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-formulario-A.png",
+      "sha256": "6ae233ecdca29356875099dc4cfe00bc88b3c0fccfe9e5466a6a67465cdfbda5",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-formulario-B.png",
+      "sha256": "1351e4f54376c979eca891f7764d3927e57d40e53323fdb1bd003e347bdc02b1",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-inicio-A.png",
+      "sha256": "ffe67fb07321aa58b7869947954b565fc480e447eff6829910f3df965fb66bb4",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-inspector-A.png",
+      "sha256": "9ced79d285a96498e5c4e6d6d82a3cc5313a13d54ecc837200bc3516d4184b11",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-multimedia-A.png",
+      "sha256": "f4a323d92a6b4bd701afc8e5657d902280ce4173fe63f9f2b25fd267f76e4c27",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-multimedia-B.png",
+      "sha256": "6b45cb9a804df0e76d5e19edcd67d6d0080b7357b211bcc6216333054d737924",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "phone-light-text200-resultados-A.png",
+      "sha256": "a5cde9f54d36e42301ab294205b043cd6d79b236c8781ecb27a1c94d528f64dc",
+      "width_px": 330,
+      "height_px": 760
+    },
+    {
+      "file": "tablet-dark-acciones-A.png",
+      "sha256": "7058e4de2552270175251f265b524873efcc56bed1e4baaa3b6878fd9b51f0bd",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-acciones-B.png",
+      "sha256": "15ffd5098f781018efcb8f764cfac518dfeea575a6bf303e018bfdb3ec8e1e13",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-ajustes-A.png",
+      "sha256": "21e8d40e25ec6777f69747afc57fd4f7107f00d4209b848ea0f373ba3a960650",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-ajustes-B.png",
+      "sha256": "b5a7ad4c5c8aa15d412a032a03a5f90d97b3b649b5e14b880aca92721fcb28c1",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-documento-A.png",
+      "sha256": "a0e62877f37d9b49d0cc8e6a3ce66dbeaf3c4b52b97cced128db50c268d5f704",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-documento-B.png",
+      "sha256": "a1633581821e66475feb5cc4ebb12c05da204ac4c4eb59d7cc84d8affaa520a1",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-estado-error-A.png",
+      "sha256": "548d6a859428f149bc103bffa44f6700bc0fb9f3b60e612fd63882530f3a6698",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-estado-error-B.png",
+      "sha256": "7b49c598eeeead1321f8336788e1ba10c0ddb23ab58f91fd09a3c52121003667",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-formulario-A.png",
+      "sha256": "ab12261336c3114b1ed895ccdcc72726bd9898a93cf99a7644de9d012d4b0b02",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-formulario-B.png",
+      "sha256": "4c0a09e5b35b1f2bc7e55c49c9422b00116b3a9773953fa055f5a1768bbd57d3",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-inicio-A.png",
+      "sha256": "ef5ddbd2298150704ec9b7cda20afb2615117aeffb38fa005b535015155720b1",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-inspector-A.png",
+      "sha256": "c3a2c770b5fd1c65c46331600a54a1d5f15090df2da75e72d3f628646ef560bd",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-multimedia-A.png",
+      "sha256": "668e48379d44dd5d4717da8186215de1227ed8d4b45d85ebd968fb6a5afc0a1a",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-multimedia-B.png",
+      "sha256": "a666052565c09aab7f938f89d21261c392285e206860d5d79a4b3696529993c4",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-dark-resultados-A.png",
+      "sha256": "67a145973aaf1beee5ccacf4ee60575c86463455675840ed5f555b879686f571",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-acciones-A.png",
+      "sha256": "e83efb693fa94a466b27483826b2d561afe8dd07070c4a08855391a7e10ecbde",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-acciones-B.png",
+      "sha256": "87918e1318e7b2175837cf6019f9498e14e5288f86ff6675d03869c7aab6ad1e",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-ajustes-A.png",
+      "sha256": "9b4af475e46550a6117c17ea408cba00f5282352a9e6fc2e6536a56299369fe3",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-ajustes-B.png",
+      "sha256": "cd99e90eb19ca9839c0318978fb7cd387c543d7a8fc7f074a912ade7cc66f62f",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-documento-A.png",
+      "sha256": "148de02cb50ddf8b3c72fcf72ec4faa270c03b11903ae4d19f60f87845192840",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-documento-B.png",
+      "sha256": "64200e159f71d7d38ec2d12b8a8f094aad76c3d6880c363acf4709f913c01036",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-estado-error-A.png",
+      "sha256": "c38efe42eb38b32568459ba87c0b50f90f7fe52bc753467591ed8f98b4bdbe1f",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-estado-error-B.png",
+      "sha256": "d783b168b58ddd86053f2cd443c201a6fba7cf5601e6dd399bea348bd8977796",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-formulario-A.png",
+      "sha256": "63cee5ade0b9137feeb1400e6f158064685db94547bf8bed4244f137d5b90159",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-formulario-B.png",
+      "sha256": "4de1d42f5912dd6ca7550a0b4f7a61e277cb0efea12a38abdcc60cb6c780482f",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-inicio-A.png",
+      "sha256": "9bfe841fb957856d0025d3cd1a298af25f2d269ce430c2a03e192354d5935660",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-inspector-A.png",
+      "sha256": "c443f64883936b3ee4109caab9ef5a9dbb3b84bccfbcf9eff3f8bb90ed061bf5",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-multimedia-A.png",
+      "sha256": "a38ad68b2c6cc2798a64401f6508e28b974e92897ff04d80c20671e0ca7944be",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-multimedia-B.png",
+      "sha256": "17a7b8477c76fa43b15bf6153d6d4c15e35e45ec9448580c211c795bd39968f4",
+      "width_px": 1000,
+      "height_px": 720
+    },
+    {
+      "file": "tablet-light-resultados-A.png",
+      "sha256": "4126b47968620a43bec59d99680cdba847df7b047dcddab6a3ec457aa7a7f863",
+      "width_px": 1000,
+      "height_px": 720
+    }
+  ]
+}

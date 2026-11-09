@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.AtomicFile
 import dev.bautista.spotlight.search.*
+import dev.bautista.spotlight.sharing.FileShareContract
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
@@ -34,6 +35,8 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     private var lastAutomaticFingerprint:String?=null
     private var automaticId:String?=null
     private fun scheduleExpiry(){expiryJob?.cancel();val item=mutableActive.value ?: return;if(!item.pinned)expiryJob=scope.launch{delay((item.created+600000L-System.currentTimeMillis()).coerceAtLeast(1));expire()}}
+    /** Explicit URI selection only; metadata, never a copy or an authorization token. */
+    val sharedFiles=FileBuffer()
     private val mutableActive=MutableStateFlow<SharedContext?>(null)
     val active=mutableActive.asStateFlow()
     private val mutablePinned=MutableStateFlow<List<SharedContext>>(emptyList())
@@ -83,17 +86,50 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
     }
     fun expire(now:Long=System.currentTimeMillis()){mutableActive.value?.let{if(!it.pinned && now-it.created>=10*60000L)clearActive()}}
     private fun release(item:SharedContext){if(item.ownedFile.isBlank() || item.ownedFile==pinningFile || mutablePinned.value.any{it.ownedFile==item.ownedFile})return;val f=File(item.ownedFile);if(f.parentFile?.canonicalFile==File(context.noBackupFilesDir,"context-imports").canonicalFile)scope.launch{withContext(Dispatchers.IO){f.delete()}}}
-    fun clearActive(){expiryJob?.cancel();val item=mutableActive.value;mutableActive.value=null;if(item!=null)release(item)}
+    fun clearActive(){expiryJob?.cancel();val item=mutableActive.value;sharedFiles.clear();mutableActive.value=null;if(item!=null)release(item)}
     fun select(id:String){
         val previous=mutableActive.value
         val next=mutablePinned.value.firstOrNull{it.id==id}
+        sharedFiles.clear()
+        next?.takeIf{it.uri.startsWith("content://")}?.let{sharedFiles.add(documentResult(it))}
         mutableActive.value=next
         if(previous!=null && previous.id!=next?.id)release(previous)
         scheduleExpiry()
     }
+    private fun documentResult(item:SharedContext)=Result("file:${item.uri}",item.title,"${item.mime} · contexto seleccionado","Archivos",400,
+        Action.Launch(android.content.Intent(android.content.Intent.ACTION_VIEW).setDataAndType(Uri.parse(item.uri),item.mime)
+            .addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)),mime=item.mime)
+    private fun activate(item:SharedContext,documents:List<Result> = emptyList()):SharedContext {
+        val previous=mutableActive.value
+        sharedFiles.clear();documents.forEach{sharedFiles.add(it)}
+        mutableActive.value=item;automaticId=null;scheduleExpiry()
+        if(previous!=null && previous.id!=item.id && previous.ownedFile!=item.ownedFile)release(previous)
+        return item
+    }
     fun setText(text:String,title:String="Texto seleccionado"):SharedContext {
         require(text.isNotBlank() && text.length<=16000)
-        return SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
+        return activate(SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(text.startsWith("https://"))"link" else "text",text=text))
+    }
+    suspend fun setDocuments(uris:List<Uri>,caption:String=""):SharedContext=withContext(Dispatchers.IO) {
+        val unique=uris.distinct();require(unique.size in 1..12)
+        val documents=unique.map{uri->
+            currentCoroutineContext().ensureActive()
+            val placeholder=Result("file:$uri","Nombre no disponible","","Archivos",400,Action.Launch(android.content.Intent(android.content.Intent.ACTION_VIEW,uri)))
+            FileShareContract.describe(context,placeholder,uri,false)
+        }
+        currentCoroutineContext().ensureActive()
+        val item=if(documents.size==1)documents.single().let{SharedContext(java.util.UUID.randomUUID().toString(),it.name.take(100),if(it.mime.startsWith("image/"))"image" else "document",caption.take(16000),it.uri.toString(),it.mime)}
+            else SharedContext(java.util.UUID.randomUUID().toString(),"${documents.size} archivos compartidos","files",text=caption.take(16000))
+        activate(item,documents.map(FileShareContract::result))
+    }
+    /** Metadata-only projection of explicit context into the existing file search. */
+    fun sharedFileResults(input:String,selection:List<Result> = emptyList()):List<Result> {
+        val query=SearchQuery.parse(SearchQuery.natural(input))
+        return (selection+sharedFiles.items).distinctBy{(it.action as? Action.Launch)?.intent?.data}.filter { row ->
+            val uri=(row.action as? Action.Launch)?.intent?.data ?: return@filter false
+            val kind=when{row.mime?.startsWith("image/")==true->"image";row.mime?.startsWith("video/")==true->"video";row.mime?.startsWith("audio/")==true->"audio";else->"document"}
+            FileShareContract.canRead(context,uri) && query.matches(SearchQuery.Document(row.title,kind,row.mime.orEmpty(),modified=row.modifiedAt ?: 0L))
+        }.map{it.copy(score=maxOf(400,relevance(query.plain,it.title)))}
     }
     fun offerAutomatic(text:String) {
         if(!preferences.ready || preferences.isPrivate || text.isBlank() || text.length>8000) return
@@ -111,10 +147,14 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         val title=runCatching{context.contentResolver.query(uri,arrayOf(OpenableColumns.DISPLAY_NAME),null,null,null)?.use{if(it.moveToFirst())it.getString(0) else null}}.getOrNull() ?: "Documento autorizado"
         val mime=dev.bautista.spotlight.index.OfficeText.mime(title,suppliedMime).orEmpty()
         currentCoroutineContext().ensureActive()
-        SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile).also{mutableActive.value?.let{old->if(old.id!=it.id)release(old)};mutableActive.value=it;automaticId=null;scheduleExpiry()}
+        val item=SharedContext(java.util.UUID.randomUUID().toString(),title.take(100),if(mime.startsWith("image/"))"image" else "document",uri=uri.toString(),mime=mime,ownedFile=ownedFile)
+        activate(item,listOf(documentResult(item)))
     }
     suspend fun text(item:SharedContext):String=withContext(Dispatchers.IO) {
-        if(item.text.isNotBlank())item.text else {
+        if(item.kind=="files") {
+            require(mutableActive.value?.id==item.id && sharedFiles.items.isNotEmpty()){"La selección cambió. Volvé a elegir los archivos."}
+            sharedFiles.text(context)
+        } else if(item.text.isNotBlank())item.text else {
             require(item.uri.startsWith("content://")){"Elegí nuevamente el documento."}
             dev.bautista.spotlight.index.DocumentText.extract(context,Uri.parse(item.uri),dev.bautista.spotlight.index.OfficeText.mime(item.title,item.mime)).take(24000).ifBlank{error("No se pudo obtener texto compatible de este archivo.")}
         }
@@ -124,6 +164,8 @@ class ContextStore(private val context:Context,private val scope:CoroutineScope,
         start();loadJob?.join()
         lock.withLock {
             val item=mutableActive.value?.takeIf{it.id==requestedId} ?: return@withLock
+            check(item.kind!="files"){"La selección múltiple es temporal. Elegí cada documento con Android para fijarlo."}
+            if(item.uri.isNotBlank())check(FileShareContract.canKeep(context,Uri.parse(item.uri))){"Este permiso es temporal. Elegí el archivo con Android antes de fijarlo."}
             val previous=mutablePinned.value
             check(previous.any{it.id==item.id} || previous.size<30){"Ya hay 30 contextos fijados. Eliminá uno antes de fijar otro."}
             val pinnedItem=item.copy(pinned=true)

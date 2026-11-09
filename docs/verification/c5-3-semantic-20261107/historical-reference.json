@@ -1,0 +1,8 @@
+{
+  "path": "docs/verification/semantic-evaluation-20261017/host-evaluation.json",
+  "sha256": "650d2fc01976627dfec84e1a33a7cae00d5c546ee4b13ef4bc1f95f5f40e94ae",
+  "evaluation_date": "2026-10-17",
+  "historical_only": true,
+  "not_rerun": true,
+  "not_current_c5_3_metrics": true
+}

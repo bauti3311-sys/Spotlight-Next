@@ -1,0 +1,65 @@
+[
+  {
+    "name": "phone-dark-inspector",
+    "before": "before/phone-dark-inspector.png",
+    "after": "after/phone-dark-inspector.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "phone-dark-review",
+    "before": "before/phone-dark-review.png",
+    "after": "after/phone-dark-review.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "phone-light-inspector",
+    "before": "before/phone-light-inspector.png",
+    "after": "after/phone-light-inspector.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "phone-light-review",
+    "before": "before/phone-light-review.png",
+    "after": "after/phone-light-review.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "tablet-dark-inspector",
+    "before": "before/tablet-dark-inspector.png",
+    "after": "after/tablet-dark-inspector.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "tablet-dark-review",
+    "before": "before/tablet-dark-review.png",
+    "after": "after/tablet-dark-review.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "tablet-light-inspector",
+    "before": "before/tablet-light-inspector.png",
+    "after": "after/tablet-light-inspector.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "tablet-light-review",
+    "before": "before/tablet-light-review.png",
+    "after": "after/tablet-light-review.png",
+    "crop": 354,
+    "note": "Presupuesto de ventana330dp. API33 Compose; no Gboard real."
+  },
+  {
+    "name": "full-phone-light",
+    "before": "full-fixture/before.png",
+    "after": "full-fixture/after.png",
+    "crop": 470,
+    "note": "Mismo fixture integrado,360dp/claro/fontScale1/budget700:426\u2192407dp de superficie."
+  }
+]

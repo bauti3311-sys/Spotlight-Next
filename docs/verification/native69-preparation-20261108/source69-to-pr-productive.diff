@@ -1,0 +1,253 @@
+diff --git a/app/src/main/java/dev/bautista/spotlight/index/DocumentCitationState.kt b/app/src/main/java/dev/bautista/spotlight/index/DocumentCitationState.kt
+new file mode 100644
+index 0000000..deab339
+--- /dev/null
++++ b/app/src/main/java/dev/bautista/spotlight/index/DocumentCitationState.kt
+@@ -0,0 +1,98 @@
++package dev.bautista.spotlight.index
++
++import dev.bautista.spotlight.data.Config
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.*
++import java.util.concurrent.atomic.AtomicBoolean
++
++/** Ephemeral owner, deliberately not wired to the bar and never saved/restored.
++ * The host must call invalidate() synchronously on access/provider/lifecycle events,
++ * including returning from Android permission settings. SAF has no universal revocation callback.
++ * Index revision/config are additional invalidation signals, not proof of current permission.
++ */
++class DocumentCitationState(
++    private val index:FileIndex,
++    private val config:StateFlow<Config>,
++    parent:CoroutineScope,
++):AutoCloseable {
++    private val guard=Any()
++    private val scope=CoroutineScope(parent.coroutineContext+SupervisorJob(parent.coroutineContext[Job]))
++    private val content=MutableStateFlow<List<DocumentCitation>>(emptyList())
++    val visible:StateFlow<List<DocumentCitation>> = content.asStateFlow()
++    private var generation=0L
++    private var closed=false
++    private var session:DocumentCitationSession?=null
++    private var pending:Job?=null
++
++    init {
++        scope.launch(start=CoroutineStart.UNDISPATCHED){config.drop(1).collect{invalidate()}}
++        scope.launch(start=CoroutineStart.UNDISPATCHED){index.revision.drop(1).collect{invalidate()}}
++        scope.launch(start=CoroutineStart.UNDISPATCHED){try{awaitCancellation()}finally{invalidate()}}
++    }
++
++    /** Clears plaintext before cancellation/IO. Also used by explicit cancel and host backgrounding. */
++    fun invalidate()=synchronized(guard){reset()}
++    private fun reset() {
++        generation++
++        content.value=emptyList()
++        val old=pending;pending=null
++        val previous=session;session=null
++        previous?.close();old?.cancel()
++    }
++    override fun close() {
++        synchronized(guard){if(closed)return;closed=true;reset()}
++        scope.cancel()
++    }
++
++    /** Starts a new lifetime using the existing retrieval engine; no text is carried to the next query. */
++    fun query(text:String):Job {
++        val job=synchronized(guard) {
++            check(!closed && scope.isActive){"La sesión de citas está cerrada"}
++            reset()
++            val epoch=generation;val preferences=config.value;val revision=index.revision.value
++            val current=DocumentCitationSession(index){config.value};session=current
++            scope.launch(start=CoroutineStart.LAZY) {
++                try {
++                    val citations=current.retrieve(text).mapNotNull{current.resolve(it)}
++                    synchronized(guard) {
++                        if(valid(epoch,preferences,revision))content.value=citations
++                    }
++                } catch(e:CancellationException){invalidateIfCurrent(epoch);throw e}
++                  catch(_:Exception){invalidateIfCurrent(epoch)}
++            }.also { task ->
++                pending=task
++                task.invokeOnCompletion{cause->if(cause!=null)invalidateIfCurrent(epoch)}
++            }
++        }
++        job.start();return job
++    }
++
++    /** Explicit display/copy/open gate. Callback must be synchronous, short and must not cache text.
++     * No Quick Look, clipboard or Intent is invoked by this owner itself. */
++    suspend fun withValidated(ref:CitationRef,action:(DocumentCitation)->Unit):Boolean=coroutineScope {
++        data class Snapshot(val epoch:Long,val preferences:Config,val revision:Long,val current:DocumentCitationSession)
++        val snapshot=synchronized(guard) {
++            if(closed || content.value.none{it.sourceId==ref.sourceId})return@coroutineScope false
++            Snapshot(generation,config.value,index.revision.value,session ?: return@coroutineScope false)
++        }
++        // This sibling can clear state on caller cancellation even while resolve is stuck in native IO.
++        val finished=AtomicBoolean(false)
++        val cancellation=launch(start=CoroutineStart.UNDISPATCHED) {
++            try{awaitCancellation()}finally{if(!finished.get())invalidateIfCurrent(snapshot.epoch)}
++        }
++        try {
++            val citation=try{snapshot.current.resolve(ref)}
++                catch(e:CancellationException){invalidateIfCurrent(snapshot.epoch);throw e}
++                catch(_:Exception){null}
++            synchronized(guard) {
++                if(!valid(snapshot.epoch,snapshot.preferences,snapshot.revision)) {
++                    invalidateIfCurrent(snapshot.epoch);false
++                } else if(citation==null){reset();false}
++                else {action(citation);true}
++            }
++        } finally {finished.set(true);cancellation.cancel()}
++    }
++    private fun valid(epoch:Long,preferences:Config,revision:Long)=
++        !closed && scope.isActive && generation==epoch && config.value==preferences && index.revision.value==revision
++    private fun invalidateIfCurrent(epoch:Long)=synchronized(guard){if(generation==epoch)reset()}
++}
+diff --git a/app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt b/app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt
+new file mode 100644
+index 0000000..c40ca4c
+--- /dev/null
++++ b/app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt
+@@ -0,0 +1,98 @@
++package dev.bautista.spotlight.index
++
++import dev.bautista.spotlight.data.Config
++import dev.bautista.spotlight.search.Action
++import dev.bautista.spotlight.search.SearchQuery
++import dev.bautista.spotlight.search.normalize
++import kotlinx.coroutines.*
++import kotlinx.coroutines.sync.Mutex
++import kotlinx.coroutines.sync.withLock
++import org.json.JSONObject
++import java.util.UUID
++import java.util.concurrent.ConcurrentHashMap
++
++internal data class CitationDocument(val uri:String,val title:String,val mime:String,val body:String,val metadata:String,val sha256:String,val fingerprint:String)
++data class CitationRef internal constructor(val sourceId:String)
++/** Literal snapshot, not an answer or enduring permission. Resolve again before displaying/copying/opening. */
++data class DocumentCitation(val sourceId:String,val documentUri:String,val documentTitle:String,val quote:String,
++ val start:Int,val end:Int,val sourceSha256:String,val page:Int?,val method:String,val uncertain:Boolean)
++
++/** Explicit-query, bounded local retrieval. Not registered with the universal bar or any remote model.
++ * Holds at most eight citations; no second index, embedding model, service or extraction cache. */
++class DocumentCitationSession(private val index:FileIndex,private val config:()->Config):AutoCloseable {
++ private val lifetime=Job()
++ private val mutex=Mutex()
++ private val hits=ConcurrentHashMap<String,Pair<DocumentCitation,String>>()
++ override fun close(){lifetime.cancel();hits.clear()}
++ private suspend fun <T> checked(block:suspend ()->T):T=coroutineScope {
++  lifetime.ensureActive()
++  val caller=currentCoroutineContext().job
++  val hook=lifetime.invokeOnCompletion{caller.cancel()}
++  try{withTimeout(10000){block().also{currentCoroutineContext().ensureActive();lifetime.ensureActive()}}}
++  catch(e:CancellationException){close();throw e}
++  finally{hook.dispose()}
++ }
++ suspend fun retrieve(query:String):List<CitationRef> =checked { mutex.withLock {
++  hits.clear()
++  require(query.length<=4000)
++  val c=config();if(!c.files || !c.contentIndex || c.privateMode || query.isBlank())return@withLock emptyList()
++  val plain=SearchQuery.parse(SearchQuery.natural(query)).plain
++  val terms=normalize(plain).split(Regex("[^\\p{L}\\p{N}]+")).filter{it.length>=3 && it !in setOf("que","como","cual","donde","para","los","las","del","una")}
++  if(terms.isEmpty())return@withLock emptyList()
++  // Existing natural-query/lexical index order is authoritative. No model/network per keystroke.
++  val candidates=index.search(query,c).take(8)
++  val refs=mutableListOf<CitationRef>()
++  for(result in candidates) {
++   currentCoroutineContext().ensureActive();lifetime.ensureActive()
++   val uri=(result.action as? Action.Launch)?.intent?.data?.toString() ?: continue
++   val document=index.citationDocument(uri,config()) ?: continue
++   val citation=literal(document,plain,terms) ?: continue
++   val id=UUID.randomUUID().toString();val named=citation.copy(sourceId=id)
++   hits[id]=named to document.fingerprint;refs+=CitationRef(id)
++  }
++  // Do not publish a batch that was revoked/deleted while other candidates were read.
++  refs.filter{ref->
++   val saved=hits[ref.sourceId] ?: return@filter false
++   val fresh=index.citationDocument(saved.first.documentUri,config())
++   (fresh?.fingerprint==saved.second).also{if(!it)hits.remove(ref.sourceId)}
++  }
++ }}
++ suspend fun resolve(ref:CitationRef):DocumentCitation? {
++  if(!lifetime.isActive)return null
++  return checked { mutex.withLock {
++   val saved=hits[ref.sourceId] ?: return@withLock null
++   val current=index.citationDocument(saved.first.documentUri,config())
++   if(current?.fingerprint!=saved.second){hits.remove(ref.sourceId);return@withLock null}
++   saved.first
++  }}
++ }
++ private fun literal(doc:CitationDocument,query:String,terms:List<String>):DocumentCitation? {
++  if(doc.body.length>100000 || doc.metadata.length>30000)return null
++  return runCatching {
++   val root=JSONObject(doc.metadata);require(root.getInt("version")==1)
++   val pages=root.getInt("pages")
++   data class Part(val start:Int,val end:Int,val page:Int?,val method:String)
++   val parts=if(pages>0) {
++    require(doc.mime=="application/pdf")
++    val fragments=root.getJSONArray("fragments");require(fragments.length() in 1..40)
++    var previous=0
++    (0 until fragments.length()).map { i ->
++     val f=fragments.getJSONObject(i);val a=f.getInt("start");val b=f.getInt("end");val page=f.getInt("page");val method=f.getString("method")
++     require(a>=previous && b>a && b<=doc.body.length && page in 1..pages && method in setOf("pdf_text","ocr_local"));previous=b
++     Part(a,b,page,method)
++    }
++   } else {require(pages==0);listOf(Part(0,doc.body.length,null,"local_text"))}
++   for(part in parts) {
++    val text=doc.body.substring(part.start,part.end)
++    if(terms.none{normalize(text).contains(it)})continue
++    val around=DocumentExcerpt.around(text,query,600)
++    val quote=if(text.length>600)around.removePrefix("…").removeSuffix("…") else around
++    val local=text.indexOf(quote)
++    if(quote.isBlank() || local<0 || text.indexOf(quote,local+1)>=0 || terms.none{normalize(quote).contains(it)})continue
++    val start=part.start+local
++    return DocumentCitation("",doc.uri,doc.title,quote,start,start+quote.length,doc.sha256,part.page,part.method,part.method=="ocr_local")
++   }
++   null
++  }.getOrNull()
++ }
++}
+diff --git a/app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt b/app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt
+index c9b4188..86cadb0 100644
+--- a/app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt
++++ b/app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt
+@@ -176,6 +176,7 @@ class FileIndex(
+                 lastTrees = emptySet()
+                 refreshed = 0L
+                 state.value = Status(message = "Índice borrado")
++                changes.update{it+1} // Invalidate ephemeral document evidence immediately after deletion.
+             }
+         }
+ 
+@@ -621,6 +622,32 @@ class FileIndex(
+         fun n(k:String)=row.getLong(row.getColumnIndexOrThrow(k))
+         SemanticFile(s("uri"),s("tree"),s("name"),OfficeText.mime(s("name"),s("mime")) ?: "application/octet-stream",s("body"),s("extraction"),s("parent"),n("modified"),n("created"),s("author"),n("size"))
+     }
++    /** C5 read seam: reuse this index and its live SAF authority; never extract or open Quick Look. */
++    internal suspend fun citationDocument(uri:String,c:Config):CitationDocument?=withContext(Dispatchers.IO) {
++        fun allowed(info:SemanticFile):Boolean {
++            val current=semanticConfig(c) ?: return false
++            return current.files && current.contentIndex && !current.privateMode &&
++                (info.tree=="__imports__" || sourceAllowed(info.tree,current))
++        }
++        val info=semanticFile(uri) ?: return@withContext null
++        if(!allowed(info))return@withContext null
++        val metadata=runCatching{org.json.JSONObject(info.extraction)}.getOrNull() ?: return@withContext null
++        val sha=metadata.optString("sha256")
++        if(metadata.optBoolean("stale") || !sha.matches(Regex("[0-9a-f]{64}")))return@withContext null
++        try {
++            val digest=java.security.MessageDigest.getInstance("SHA-256");var bytes=0
++            context.contentResolver.openInputStream(Uri.parse(uri))?.use { input ->
++                val buffer=ByteArray(8192)
++                while(true){currentCoroutineContext().ensureActive();val n=input.read(buffer);if(n<0)break
++                    bytes+=n;if(bytes>8_000_000)return@withContext null;digest.update(buffer,0,n)}
++            } ?: return@withContext null
++            if(digest.digest().joinToString(""){"%02x".format(it)}!=sha)return@withContext null
++            val fresh=semanticFile(uri) ?: return@withContext null
++            if(!allowed(fresh) || fresh.fingerprint!=info.fingerprint)return@withContext null
++            CitationDocument(uri,info.name,info.mime,info.body,info.extraction,sha,info.fingerprint)
++        } catch(e:CancellationException){throw e} catch(e:Exception){null}
++    }
++
+     private fun semanticCached(info:SemanticFile,part:dev.bautista.spotlight.semantic.WordPiece.Fragment)=helper.readableDatabase.rawQuery("SELECT start,end,excerpt,vector FROM semantic_vectors WHERE uri=? AND model=? AND fingerprint=? AND part=?",arrayOf(info.uri,dev.bautista.spotlight.semantic.SemanticPolicy.MODEL,info.fingerprint,part.index.toString())).use{r->r.moveToFirst() && r.getInt(0)==part.start && r.getInt(1)==part.end && r.getString(2)==part.text && dev.bautista.spotlight.semantic.SemanticPolicy.vector(r.getBlob(3))!=null}
+ 
+     /** Explicit bounded preparation; never called by typing. Completed fragments survive cancellation. */

@@ -1,0 +1,725 @@
+{
+  "base": "7332b2effc717ba8a5c59b9ed9a9158848500351",
+  "baseline_production_tree": "c3179e5c6dc4f66165ed20c8a3e81f972a031119",
+  "original_capture_production_tree": "c3179e5c6dc4f66165ed20c8a3e81f972a031119",
+  "pairs": [
+    {
+      "profile": "pdf-330",
+      "scene": "dark-text200",
+      "before": "docs/verification/visual-polish-20261106/pdf-before/pdf-nav-dark-text200.png",
+      "after": "docs/verification/visual-polish-20261106/after/pdf-nav-dark-text200.png",
+      "before_sha256": "1d195605e3461deafe1fa385c96e56b582c18cbf2d35e7343417eed4be33f997",
+      "after_sha256": "e7e418931e7cbcaa41d42136cea71f4d74c1a13b65ca206dc23036da88617352"
+    },
+    {
+      "profile": "pdf-330",
+      "scene": "light-text100",
+      "before": "docs/verification/visual-polish-20261106/pdf-before/pdf-nav-light-text100.png",
+      "after": "docs/verification/visual-polish-20261106/after/pdf-nav-light-text100.png",
+      "before_sha256": "5a8547bb36769b4b9d03e4b77cffa7022381aab2e7feaa042f270e6dd27b0bae",
+      "after_sha256": "3ebd7edba83ad454620505b55870eaf36c02fd3a2b3b1c189b9f68abb4f5e91d"
+    },
+    {
+      "profile": "pdf-330",
+      "scene": "light-text200",
+      "before": "docs/verification/visual-polish-20261106/pdf-before/pdf-nav-light-text200.png",
+      "after": "docs/verification/visual-polish-20261106/after/pdf-nav-light-text200.png",
+      "before_sha256": "5e9cbf54b3e06a4c824a52bd597e6e6da9251cf938501bcee5608ba1683a707b",
+      "after_sha256": "9f0f56b2d1bb826955ac21919d84a7720f1927353ff8c6c6531d8f29b615010f"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-acciones-A.png",
+      "before_sha256": "4c9362a650c5cda55f25891d02f17e3acf6ce39ba26e3efbd2348372c7e0ced9",
+      "after_sha256": "4c9362a650c5cda55f25891d02f17e3acf6ce39ba26e3efbd2348372c7e0ced9"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-ajustes-A.png",
+      "before_sha256": "b77cace52be6c71424f54e5250814667f8720de7e1400dd813e84f214c9da5fc",
+      "after_sha256": "a6f6c766f258c050cc166021c6194346d458c96968f6d30cb260928006fdbaad"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-acciones-A.png",
+      "before_sha256": "c6ee72021fd408ed068352500ddc43c22670a0d748c3dd11843cbeb6d013b11d",
+      "after_sha256": "c6ee72021fd408ed068352500ddc43c22670a0d748c3dd11843cbeb6d013b11d"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-ajustes-A.png",
+      "before_sha256": "0d7feeb6465d4a1432e1cbb189c4fcaae4158373f1bc5182588e597d8703e1dc",
+      "after_sha256": "6c5cd59a81c698644c20b81fa86b499b1942c959990d8cfa4462449834332127"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-documento-A.png",
+      "before_sha256": "73a3633675a5b01dd7fe962ac883f51a38f169d28590a99c5306a43ce45cde6d",
+      "after_sha256": "73a3633675a5b01dd7fe962ac883f51a38f169d28590a99c5306a43ce45cde6d"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-estado-error-A.png",
+      "before_sha256": "eb676ac238e74e5093f931e77a2675ee0a0fc20a07200fe8d896c83186176186",
+      "after_sha256": "eb676ac238e74e5093f931e77a2675ee0a0fc20a07200fe8d896c83186176186"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-formulario-A.png",
+      "before_sha256": "523623f7da98cbbcfc7d3e38098655aee1a07ea6614d3e599dc928621f7587ca",
+      "after_sha256": "98909c2fb7b0fbeb846d2a0ba7b68594f29c770d0d4ccde5849bdb7e7e355be9"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-inicio-A.png",
+      "before_sha256": "ea9ce95bfe0e2206f112016646076a1d09e4cce4f5915b72bcb90ce84f308ba7",
+      "after_sha256": "ea9ce95bfe0e2206f112016646076a1d09e4cce4f5915b72bcb90ce84f308ba7"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-inspector-A.png",
+      "before_sha256": "8d0518239f7a506f80331f50f5fc2a457972408235f6f95f3fd17981a5eeac91",
+      "after_sha256": "8d0518239f7a506f80331f50f5fc2a457972408235f6f95f3fd17981a5eeac91"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-multimedia-A.png",
+      "before_sha256": "742d6c15e663d82860e613566642a96e7e87bcd9679e48113d8efa676612a59f",
+      "after_sha256": "742d6c15e663d82860e613566642a96e7e87bcd9679e48113d8efa676612a59f"
+    },
+    {
+      "profile": "phone-dark-compact-ime",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-compact-ime-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-compact-ime-resultados-A.png",
+      "before_sha256": "1d4ce7fb3073d4c72bbd71bcd87829c2dbe15e01cdc3a9559ea8bc65f8044b3a",
+      "after_sha256": "1d4ce7fb3073d4c72bbd71bcd87829c2dbe15e01cdc3a9559ea8bc65f8044b3a"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-documento-A.png",
+      "before_sha256": "ee299abbefda17b62db728e96ed4e6bcc25e62f7d1dd02d5dfdce9685be818d9",
+      "after_sha256": "ee299abbefda17b62db728e96ed4e6bcc25e62f7d1dd02d5dfdce9685be818d9"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-estado-error-A.png",
+      "before_sha256": "d9ea1bfbe2adbd30b26afdfad88ee712694b835da5a372a04b596357835b645f",
+      "after_sha256": "d9ea1bfbe2adbd30b26afdfad88ee712694b835da5a372a04b596357835b645f"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-formulario-A.png",
+      "before_sha256": "d577c0813724f92767f32a11d422761e544b84e688753dcb161746928168c640",
+      "after_sha256": "6e6c065fb8199f8c6a4fd21cb0d7ca0cb3bb6771c39fe5256945f7e1bc360493"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-inicio-A.png",
+      "before_sha256": "a645843e19c96f7ccebf562e86a9ba686d8ecc073f96ba8a50cc52d8f72fe065",
+      "after_sha256": "a645843e19c96f7ccebf562e86a9ba686d8ecc073f96ba8a50cc52d8f72fe065"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-inspector-A.png",
+      "before_sha256": "5029743dcf8ec6a6de0e911d5721512555aceaa4456dbd55ec60b4eb83146e5c",
+      "after_sha256": "5029743dcf8ec6a6de0e911d5721512555aceaa4456dbd55ec60b4eb83146e5c"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-multimedia-A.png",
+      "before_sha256": "16883ad5cc39aa76a25d89a5b85d97157b4f5cc2d9d389f22b64691b8f10293c",
+      "after_sha256": "16883ad5cc39aa76a25d89a5b85d97157b4f5cc2d9d389f22b64691b8f10293c"
+    },
+    {
+      "profile": "phone-dark",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-resultados-A.png",
+      "before_sha256": "331106ffcf0bf306b8f2cb93d95c5f7bdc617a7a69b4623d7b1c0e390ed4dacc",
+      "after_sha256": "331106ffcf0bf306b8f2cb93d95c5f7bdc617a7a69b4623d7b1c0e390ed4dacc"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-acciones-A.png",
+      "before_sha256": "7546f466cd16657d4b77adb2ed5b1cc13a49d2637b22ca91e6364f2140c4d128",
+      "after_sha256": "7546f466cd16657d4b77adb2ed5b1cc13a49d2637b22ca91e6364f2140c4d128"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-ajustes-A.png",
+      "before_sha256": "c070e4278fcc4c9f7470102fe8bf85a84858c446112effa7e24f3e0d1e7aaf80",
+      "after_sha256": "6981e10449e76e30a23d0691745a92abe1490dbfbf73f0938baace458a768357"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-documento-A.png",
+      "before_sha256": "da785244de8c8bb2f9eed625665f8e48c309a931b736b4dd98eeca907dc915eb",
+      "after_sha256": "da785244de8c8bb2f9eed625665f8e48c309a931b736b4dd98eeca907dc915eb"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-estado-error-A.png",
+      "before_sha256": "4242a7152d2b606286ebea7bc17d30c960d6d5fe52c3b597a48edf069ba2b612",
+      "after_sha256": "4242a7152d2b606286ebea7bc17d30c960d6d5fe52c3b597a48edf069ba2b612"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-formulario-A.png",
+      "before_sha256": "7b6bc0a1d556a91553b89b815454cb0ba891e9b1dee5ee946569ec10113cff1f",
+      "after_sha256": "aba675e4dca79fb8bfbbed881e02ae4f4504884f7e90755aa7ae4a0127b0d58c"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-inicio-A.png",
+      "before_sha256": "2748866a2696bc90eb9678e94b2d2535e5e99dbe1d697775582012d0aceecce4",
+      "after_sha256": "2748866a2696bc90eb9678e94b2d2535e5e99dbe1d697775582012d0aceecce4"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-inspector-A.png",
+      "before_sha256": "93e27a75b6b0781c00709252760d97817a4f632beb2cb3fc76c9c3b13e1765e0",
+      "after_sha256": "93e27a75b6b0781c00709252760d97817a4f632beb2cb3fc76c9c3b13e1765e0"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-multimedia-A.png",
+      "before_sha256": "8575e60b6080f937f3df18df9d0e0ce548ab06e8b4cb5fe8c3436009acc6cc85",
+      "after_sha256": "8575e60b6080f937f3df18df9d0e0ce548ab06e8b4cb5fe8c3436009acc6cc85"
+    },
+    {
+      "profile": "phone-dark-text200",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/phone-dark-text200-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-dark-text200-resultados-A.png",
+      "before_sha256": "ecd65679efdb55e0677393e3f9ce2d458c34cd107ece9e55e4c37c1f14d0812d",
+      "after_sha256": "ecd65679efdb55e0677393e3f9ce2d458c34cd107ece9e55e4c37c1f14d0812d"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-acciones-A.png",
+      "before_sha256": "dbf38a1f6a6ce99ef82c009906c8678cf83f6ad4220a465ad4d5cf4feef5342b",
+      "after_sha256": "dbf38a1f6a6ce99ef82c009906c8678cf83f6ad4220a465ad4d5cf4feef5342b"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-ajustes-A.png",
+      "before_sha256": "2e7ba226c5b9484186b52ef3536a761b5419ce11a2c433cd4f9823f6e1a0f055",
+      "after_sha256": "02b4ab5253cf515b38bb278dac2721b2dbd9a1adb7d37d3c686c45b4a7f19f9d"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-acciones-A.png",
+      "before_sha256": "766eb5d5a4a10d6870d203d28f5221e2925e4830a0733b2030c56846daad5192",
+      "after_sha256": "766eb5d5a4a10d6870d203d28f5221e2925e4830a0733b2030c56846daad5192"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-ajustes-A.png",
+      "before_sha256": "a39cacf82ec42ae77fe30b57a6c8689e156afe2beee707dcfade868645efd34d",
+      "after_sha256": "8b3474cfc3e42f26ab9b99d207681744291dda213ca2a79a347140ec7c0e67c6"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-documento-A.png",
+      "before_sha256": "82295972ef5980a11809a91f7b14ad07da4a7c94cd6ff45b6ffd880ac4cc5131",
+      "after_sha256": "82295972ef5980a11809a91f7b14ad07da4a7c94cd6ff45b6ffd880ac4cc5131"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-estado-error-A.png",
+      "before_sha256": "bdb965f4bf4b9d210f23a9ddad519273936534549da2967b5a8a0006a1f3f977",
+      "after_sha256": "bdb965f4bf4b9d210f23a9ddad519273936534549da2967b5a8a0006a1f3f977"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-formulario-A.png",
+      "before_sha256": "2c02198e7a07a2d2b784cba93fb379cd91652580e136948412f96e82a98a0151",
+      "after_sha256": "5ec0933ecc3dfee4d4911317ea911f8f34dad496dcc953f33f60675c90e05502"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-inicio-A.png",
+      "before_sha256": "9e41f7a3b7057123a00e6fb6b6f678b43f137360898c859277ce9a40119d1f39",
+      "after_sha256": "9e41f7a3b7057123a00e6fb6b6f678b43f137360898c859277ce9a40119d1f39"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-inspector-A.png",
+      "before_sha256": "ca1c3b54ab775188f48dac50ea9e8b93be48249f2274045cea5894e3dca181fe",
+      "after_sha256": "ca1c3b54ab775188f48dac50ea9e8b93be48249f2274045cea5894e3dca181fe"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-multimedia-A.png",
+      "before_sha256": "20e709ce5fdb33acf2badc2e1c489258bc0ecccc68203804bd37b7094cad3648",
+      "after_sha256": "20e709ce5fdb33acf2badc2e1c489258bc0ecccc68203804bd37b7094cad3648"
+    },
+    {
+      "profile": "phone-light-compact-ime",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-compact-ime-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-compact-ime-resultados-A.png",
+      "before_sha256": "2b9fba6e6699fde86f7750f8094fb07e43a9715195b4374cc0549b073426cb3c",
+      "after_sha256": "2b9fba6e6699fde86f7750f8094fb07e43a9715195b4374cc0549b073426cb3c"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-documento-A.png",
+      "before_sha256": "fbe888237727d50ebfcce0bbe794a9564519f56cc6c2c769ab73925d492918c7",
+      "after_sha256": "fbe888237727d50ebfcce0bbe794a9564519f56cc6c2c769ab73925d492918c7"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-estado-error-A.png",
+      "before_sha256": "405df55dc56486b9616cfacf70e4dda99473de09546dd7537962ba55b027cfb1",
+      "after_sha256": "405df55dc56486b9616cfacf70e4dda99473de09546dd7537962ba55b027cfb1"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-formulario-A.png",
+      "before_sha256": "baeeba8c076e54d2ecc316cc670b0eba32082709172d7ea454c636a9b3305d81",
+      "after_sha256": "6d43663f76a5c96914da89316f61b0f3e0cc59d4dc10a45f3e9ab53cd11b83e7"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-inicio-A.png",
+      "before_sha256": "c1a598faa986393575c88109a0127042471149042a0b5bf872049e6b6af0ab62",
+      "after_sha256": "c1a598faa986393575c88109a0127042471149042a0b5bf872049e6b6af0ab62"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-inspector-A.png",
+      "before_sha256": "9a381696bd4125d327efd5b2c61cbd4c2837152ae7184202fed13c198e258c22",
+      "after_sha256": "9a381696bd4125d327efd5b2c61cbd4c2837152ae7184202fed13c198e258c22"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-multimedia-A.png",
+      "before_sha256": "09ea8b8627cefc04cbec48937d57616a8ef62e64317e279bd00a0b71682e3f20",
+      "after_sha256": "09ea8b8627cefc04cbec48937d57616a8ef62e64317e279bd00a0b71682e3f20"
+    },
+    {
+      "profile": "phone-light",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-resultados-A.png",
+      "before_sha256": "f532561bfb0bedf9130dc829149dda4760bc0f65b0dc7722d7dbb00dc88fe423",
+      "after_sha256": "f532561bfb0bedf9130dc829149dda4760bc0f65b0dc7722d7dbb00dc88fe423"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-acciones-A.png",
+      "before_sha256": "716fcfbdbdabf0f5b8517ebf97319d16a491512784d592c0de18751e6ebe74dc",
+      "after_sha256": "716fcfbdbdabf0f5b8517ebf97319d16a491512784d592c0de18751e6ebe74dc"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-ajustes-A.png",
+      "before_sha256": "092be88c6a0bd4b2022d410ca23b62c05d1f6d7287271e7605ee870bc37c76d9",
+      "after_sha256": "7b56f464426ba037fcfd4c4764252f35b7d13ae1e641543de8bcfea1a84dc725"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-documento-A.png",
+      "before_sha256": "07cc27cc6769556aab27fb698f8801338e994a6fa76818e6369aaf7f3c0a6bfe",
+      "after_sha256": "07cc27cc6769556aab27fb698f8801338e994a6fa76818e6369aaf7f3c0a6bfe"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-estado-error-A.png",
+      "before_sha256": "3228eb9374591db78beaf8b6cb786ccb38bf927fcb6f492e83af3e539ba070e6",
+      "after_sha256": "3228eb9374591db78beaf8b6cb786ccb38bf927fcb6f492e83af3e539ba070e6"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-formulario-A.png",
+      "before_sha256": "6ae233ecdca29356875099dc4cfe00bc88b3c0fccfe9e5466a6a67465cdfbda5",
+      "after_sha256": "b78bfb6e2cac0a24e4e10886ae21b5c7c621d3927a00dc25d6778382d33c5853"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-inicio-A.png",
+      "before_sha256": "ffe67fb07321aa58b7869947954b565fc480e447eff6829910f3df965fb66bb4",
+      "after_sha256": "ffe67fb07321aa58b7869947954b565fc480e447eff6829910f3df965fb66bb4"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-inspector-A.png",
+      "before_sha256": "9ced79d285a96498e5c4e6d6d82a3cc5313a13d54ecc837200bc3516d4184b11",
+      "after_sha256": "9ced79d285a96498e5c4e6d6d82a3cc5313a13d54ecc837200bc3516d4184b11"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-multimedia-A.png",
+      "before_sha256": "f4a323d92a6b4bd701afc8e5657d902280ce4173fe63f9f2b25fd267f76e4c27",
+      "after_sha256": "f4a323d92a6b4bd701afc8e5657d902280ce4173fe63f9f2b25fd267f76e4c27"
+    },
+    {
+      "profile": "phone-light-text200",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/phone-light-text200-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/phone-light-text200-resultados-A.png",
+      "before_sha256": "a5cde9f54d36e42301ab294205b043cd6d79b236c8781ecb27a1c94d528f64dc",
+      "after_sha256": "a5cde9f54d36e42301ab294205b043cd6d79b236c8781ecb27a1c94d528f64dc"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-acciones-A.png",
+      "before_sha256": "7058e4de2552270175251f265b524873efcc56bed1e4baaa3b6878fd9b51f0bd",
+      "after_sha256": "7058e4de2552270175251f265b524873efcc56bed1e4baaa3b6878fd9b51f0bd"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-ajustes-A.png",
+      "before_sha256": "21e8d40e25ec6777f69747afc57fd4f7107f00d4209b848ea0f373ba3a960650",
+      "after_sha256": "5fc2a97aae67a1153988469255892c144e6e487aa9e8f3d6011e83807e2231fd"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-documento-A.png",
+      "before_sha256": "a0e62877f37d9b49d0cc8e6a3ce66dbeaf3c4b52b97cced128db50c268d5f704",
+      "after_sha256": "a0e62877f37d9b49d0cc8e6a3ce66dbeaf3c4b52b97cced128db50c268d5f704"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-estado-error-A.png",
+      "before_sha256": "548d6a859428f149bc103bffa44f6700bc0fb9f3b60e612fd63882530f3a6698",
+      "after_sha256": "548d6a859428f149bc103bffa44f6700bc0fb9f3b60e612fd63882530f3a6698"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-formulario-A.png",
+      "before_sha256": "ab12261336c3114b1ed895ccdcc72726bd9898a93cf99a7644de9d012d4b0b02",
+      "after_sha256": "dfa4da31b477e7aa365d5c4b3c642791c3b382bf4aa46a69d628f65aafba6dac"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-inicio-A.png",
+      "before_sha256": "ef5ddbd2298150704ec9b7cda20afb2615117aeffb38fa005b535015155720b1",
+      "after_sha256": "ef5ddbd2298150704ec9b7cda20afb2615117aeffb38fa005b535015155720b1"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-inspector-A.png",
+      "before_sha256": "c3a2c770b5fd1c65c46331600a54a1d5f15090df2da75e72d3f628646ef560bd",
+      "after_sha256": "c3a2c770b5fd1c65c46331600a54a1d5f15090df2da75e72d3f628646ef560bd"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-multimedia-A.png",
+      "before_sha256": "668e48379d44dd5d4717da8186215de1227ed8d4b45d85ebd968fb6a5afc0a1a",
+      "after_sha256": "668e48379d44dd5d4717da8186215de1227ed8d4b45d85ebd968fb6a5afc0a1a"
+    },
+    {
+      "profile": "tablet-dark",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/tablet-dark-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-dark-resultados-A.png",
+      "before_sha256": "67a145973aaf1beee5ccacf4ee60575c86463455675840ed5f555b879686f571",
+      "after_sha256": "67a145973aaf1beee5ccacf4ee60575c86463455675840ed5f555b879686f571"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "acciones",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-acciones-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-acciones-A.png",
+      "before_sha256": "e83efb693fa94a466b27483826b2d561afe8dd07070c4a08855391a7e10ecbde",
+      "after_sha256": "e83efb693fa94a466b27483826b2d561afe8dd07070c4a08855391a7e10ecbde"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "ajustes",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-ajustes-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-ajustes-A.png",
+      "before_sha256": "9b4af475e46550a6117c17ea408cba00f5282352a9e6fc2e6536a56299369fe3",
+      "after_sha256": "8f1cee5e8e87b2873e821ddf280aa322d89984eb9004ad44461d2f4c4d92cd2f"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "documento",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-documento-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-documento-A.png",
+      "before_sha256": "148de02cb50ddf8b3c72fcf72ec4faa270c03b11903ae4d19f60f87845192840",
+      "after_sha256": "148de02cb50ddf8b3c72fcf72ec4faa270c03b11903ae4d19f60f87845192840"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "estado-error",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-estado-error-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-estado-error-A.png",
+      "before_sha256": "c38efe42eb38b32568459ba87c0b50f90f7fe52bc753467591ed8f98b4bdbe1f",
+      "after_sha256": "c38efe42eb38b32568459ba87c0b50f90f7fe52bc753467591ed8f98b4bdbe1f"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "formulario",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-formulario-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-formulario-A.png",
+      "before_sha256": "63cee5ade0b9137feeb1400e6f158064685db94547bf8bed4244f137d5b90159",
+      "after_sha256": "2426e966cdc6f4bac92528e70ec162c67189afb4bbe23411f717d982b32066d1"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inicio",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-inicio-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-inicio-A.png",
+      "before_sha256": "9bfe841fb957856d0025d3cd1a298af25f2d269ce430c2a03e192354d5935660",
+      "after_sha256": "9bfe841fb957856d0025d3cd1a298af25f2d269ce430c2a03e192354d5935660"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "inspector",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-inspector-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-inspector-A.png",
+      "before_sha256": "c443f64883936b3ee4109caab9ef5a9dbb3b84bccfbcf9eff3f8bb90ed061bf5",
+      "after_sha256": "c443f64883936b3ee4109caab9ef5a9dbb3b84bccfbcf9eff3f8bb90ed061bf5"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "multimedia",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-multimedia-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-multimedia-A.png",
+      "before_sha256": "a38ad68b2c6cc2798a64401f6508e28b974e92897ff04d80c20671e0ca7944be",
+      "after_sha256": "a38ad68b2c6cc2798a64401f6508e28b974e92897ff04d80c20671e0ca7944be"
+    },
+    {
+      "profile": "tablet-light",
+      "scene": "resultados",
+      "before": "docs/verification/visual-first-20261106/images/tablet-light-resultados-A.png",
+      "after": "docs/verification/visual-polish-20261106/after/tablet-light-resultados-A.png",
+      "before_sha256": "4126b47968620a43bec59d99680cdba847df7b047dcddab6a3ec457aa7a7f863",
+      "after_sha256": "4126b47968620a43bec59d99680cdba847df7b047dcddab6a3ec457aa7a7f863"
+    }
+  ],
+  "motion": [
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-A-0.png",
+      "sha256": "fa8669e89f8fdd56bf5e236c358c3e033bda30a9f37e4ca6505d055b1d315019"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-A-120.png",
+      "sha256": "9d67a3d39a77472f9179e6cd6794b814aa01913013dc4a84cc94c493f0a3d30d"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-A-160.png",
+      "sha256": "d287d3f878b7260c535369b1abe2529234dafe2c4b52e6d1936e5da3c9bf5096"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-A-208.png",
+      "sha256": "d287d3f878b7260c535369b1abe2529234dafe2c4b52e6d1936e5da3c9bf5096"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-A-48.png",
+      "sha256": "f2638959dc8b0bdf48b8dd6e3de2468acb8aba628f19e93e580c0aa7e310b709"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-A-96.png",
+      "sha256": "eda350da103a935519118acb3be0816ca85616147c85c9e5c9a7e97e122aab64"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-B-0.png",
+      "sha256": "d287d3f878b7260c535369b1abe2529234dafe2c4b52e6d1936e5da3c9bf5096"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-B-120.png",
+      "sha256": "27269afcf09d0df3c1cbcee0dd2c82c1e16485b68946407ebafcfee5ffd4c99f"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-B-160.png",
+      "sha256": "d287d3f878b7260c535369b1abe2529234dafe2c4b52e6d1936e5da3c9bf5096"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-B-208.png",
+      "sha256": "d287d3f878b7260c535369b1abe2529234dafe2c4b52e6d1936e5da3c9bf5096"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-B-48.png",
+      "sha256": "ed5f55b1510fdecf38fcaaccd55cd54aa5b396b029823ee2feb7791bfeed5e46"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/dark-B-96.png",
+      "sha256": "c3c48a2341ab71a92a287575de5915423e219341ca0bda068b297d491ee88470"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-A-0.png",
+      "sha256": "364fac395dc1a7ad72a1542bf5712b769e37fd3d1eca8d79e604a746d9876909"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-A-120.png",
+      "sha256": "9b03a4ba4e43b8f2e8a96d353be919defc36fff33c10c8d165daef68420d01ac"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-A-160.png",
+      "sha256": "34b8d6f701a610ce74e7b5cee31fc34043fbf8d2d4531211f50ef958ce4f8990"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-A-208.png",
+      "sha256": "34b8d6f701a610ce74e7b5cee31fc34043fbf8d2d4531211f50ef958ce4f8990"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-A-48.png",
+      "sha256": "5f8455221d28fa87438fb9739a02125ac103d658236c68a2f8fba038d7981f00"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-A-96.png",
+      "sha256": "8efaef4d729a7ec26248d5eed3956867c26aca69a8ab7c6389f6b8404561e2f0"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-B-0.png",
+      "sha256": "34b8d6f701a610ce74e7b5cee31fc34043fbf8d2d4531211f50ef958ce4f8990"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-B-120.png",
+      "sha256": "5cec4368e4e8bc1a0539b1e18a80882751887d072069e7671ea38eb47e01edfd"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-B-160.png",
+      "sha256": "34b8d6f701a610ce74e7b5cee31fc34043fbf8d2d4531211f50ef958ce4f8990"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-B-208.png",
+      "sha256": "34b8d6f701a610ce74e7b5cee31fc34043fbf8d2d4531211f50ef958ce4f8990"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-B-48.png",
+      "sha256": "517ab66bfdddc6f14cd94d00a4fe9523397d7281bb9144c458ef3a4d8d9443dc"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/light-B-96.png",
+      "sha256": "5ad1c36a646e71905c6246a78930a5938ae7b2750c2199e25563c6c5d959a1cb"
+    },
+    {
+      "file": "docs/verification/visual-polish-20261106/motion/reduced-during-entry.png",
+      "sha256": "d287d3f878b7260c535369b1abe2529234dafe2c4b52e6d1936e5da3c9bf5096"
+    }
+  ],
+  "candidate_files": {
+    "app/src/main/java/dev/bautista/spotlight/ui/Theme.kt": "baa9d47de9e1e89ef36d9042f11036d7c7fd7ecad966e3c9e6bf1e7e41b9ea5b",
+    "app/src/main/java/dev/bautista/spotlight/ui/PdfQuickLook.kt": "900bba71dfbfd42e0b9e457263724e0aa97a15aadc0d410b0a433abf358ec86c",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassAppearance.kt": "bd6b5cc0d71b60c59d5267736242c134a350e35cf4be88669ecf42272fa61585",
+    "app/src/main/java/dev/bautista/spotlight/ui/SettingsNavigation.kt": "e9c8a24e7b01e925941ad3155674079404e346f184becae4c871942c2c42265c",
+    "app/src/main/java/dev/bautista/spotlight/ui/FocusDesign.kt": "f1fa746673df96ce290b8dc746fab30ff4138876de6bfba6cea6c0fe896c83ac"
+  },
+  "limitations": [
+    "API33 Robolectric native graphics; no physical device",
+    "IME reserved viewport, not Gboard",
+    "PDF navigation fixture, not PdfRenderer validation",
+    "D5 A unused160ms helper; actual window140ms/100ms remains unchanged",
+    "Media fixture paused; no real audio"
+  ],
+  "production_checkpoint": "8736b14b077f50dc753a0b549e81982639e3fbe5",
+  "test_checkpoint": "460e15d7d1d76bf3802ae02a8ef7698f05354091"
+}

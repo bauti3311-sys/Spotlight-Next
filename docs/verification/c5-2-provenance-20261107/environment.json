@@ -1,0 +1,10 @@
+{
+  "android_sdk": "35",
+  "robolectric_api": 33,
+  "adb_connected_devices": [],
+  "emulator_installed": false,
+  "system_images_installed": false,
+  "kvm_available": false,
+  "instrumentation_executed": false,
+  "test_or_app_apk_generated": false
+}

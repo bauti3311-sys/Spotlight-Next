@@ -1,0 +1,44 @@
+{
+  "renderer": "Robolectric API33 NATIVE, production SpotlightPanel; synthetic installed packages/icons, no accounts",
+  "physical": false,
+  "actualIme": false,
+  "viewportBudgetSimulated": true,
+  "sourceBefore": "faf84f02c1dad23673d46d06e089432242fd2a92",
+  "refactor": "9bdd9d9657df9eb319ffc087d6408cbee70b4850",
+  "baseVisual": "03761d6ae06d32e2f79905c9e064bb285212aa2e",
+  "widthsDp": [
+    360,
+    960
+  ],
+  "fontScale": 1,
+  "rowHeightsUnchangedDp": {
+    "phoneStacked": 60,
+    "tabletInline": 48
+  },
+  "captures": {
+    "before/tablet-dark-inspector.png": "eb373b6f3827ef04fa8aa91422de5fa951e5f906794f103e84d5e03d3c798020",
+    "before/tablet-light-inspector.png": "c63e10aca5ebc80efe4151cf0a72e5f070ffd58b4ae93a92440223f8eae3b09e",
+    "before/tablet-dark-home.png": "e88eba4845b00593bd36e66c61b9f411fb18ee5317969d1b09139bc5f18d3cf2",
+    "before/phone-light-inspector.png": "ace3235349b7ea7be8581bc8433eb06679534652dd772dc9494fc22e6941b9a5",
+    "before/phone-light-ime-budget.png": "b28126b96f67b92ca6cf3677ec5a136a51bd121bd426139669ebfda5231cbc74",
+    "before/phone-dark-inspector.png": "246a8cda57d4bd7590e97f6864576eff04afcabc872acb1fd47b00dc4d372120",
+    "refactor/tablet-dark-inspector.png": "eb373b6f3827ef04fa8aa91422de5fa951e5f906794f103e84d5e03d3c798020",
+    "refactor/tablet-light-inspector.png": "c63e10aca5ebc80efe4151cf0a72e5f070ffd58b4ae93a92440223f8eae3b09e",
+    "refactor/tablet-dark-home.png": "e88eba4845b00593bd36e66c61b9f411fb18ee5317969d1b09139bc5f18d3cf2",
+    "refactor/phone-light-inspector.png": "ace3235349b7ea7be8581bc8433eb06679534652dd772dc9494fc22e6941b9a5",
+    "refactor/phone-light-ime-budget.png": "b28126b96f67b92ca6cf3677ec5a136a51bd121bd426139669ebfda5231cbc74",
+    "refactor/phone-dark-inspector.png": "246a8cda57d4bd7590e97f6864576eff04afcabc872acb1fd47b00dc4d372120",
+    "base-visual/tablet-dark-inspector.png": "ec071e5320ae7276c65d9e70a1c0f1dc2d517dd83f98b59393527971d80a4bf5",
+    "base-visual/tablet-light-inspector.png": "6d5215c4df20825106c18f1ce2231eba8bea790e198711723b31682858f0ad7b",
+    "base-visual/tablet-dark-home.png": "1d8d76213418eee9b922acfc1e1c7bf22e29c3cb305eaab0da23c0e1a361e697",
+    "base-visual/phone-light-inspector.png": "c8ebc77fe6d0737eeda540120caab97acab51378bc8228aa753b68979406309f",
+    "base-visual/phone-light-ime-budget.png": "81bdcaa9611613670c4adf833c7c153e85b8f823ebe4be851a106f09bdb56eb4",
+    "base-visual/phone-dark-inspector.png": "a13551320268615fe882355538afed011a2190face773cf7daa91cde0c1070d7",
+    "inspectors/tablet-dark-inspector.png": "1f56802762387e6643277b791edc7c243c63cc3e60263bf5a1355003d9d5f0f2",
+    "inspectors/tablet-light-inspector.png": "1e08c184016dee03b66fa251fb361e18691a6dce248347e34fae58c75659c619",
+    "inspectors/tablet-dark-home.png": "1d8d76213418eee9b922acfc1e1c7bf22e29c3cb305eaab0da23c0e1a361e697",
+    "inspectors/phone-light-inspector.png": "09b82b18522fe283cb7eeaff477d7f4be3e4c57903920e0d5f43d7712ebc3a10",
+    "inspectors/phone-light-ime-budget.png": "81bdcaa9611613670c4adf833c7c153e85b8f823ebe4be851a106f09bdb56eb4",
+    "inspectors/phone-dark-inspector.png": "3058d01626168946f02992c081a585cc29dd2a256563e4ecc786fe2a56d6440a"
+  }
+}

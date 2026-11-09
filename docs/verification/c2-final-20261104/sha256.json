@@ -1,0 +1,13 @@
+{
+  "README.md": "cdd19018816a62275a7a35f233abde2296dbba1283987dd28492ec94e7acc873",
+  "lint-results-raycastPreview.txt": "6f7ef5c14b3c1f4791a642c4524863987457f50e0735e3dd2de9dc50370eb9b6",
+  "lint-results-raycastPreview.xml": "936085e808175caed7d3fabd0d74e98101063582b7d71ad22615833892824423",
+  "regression-green/TEST-dev.bautista.spotlight.search.C2FileContextTest.xml": "d42951e9daa69cf2e33f4a6cab993466582959beea87ab04bd2a09f4e915e4a7",
+  "regression-green/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml": "eb339a7cd68272da470e93ea68009ba72e9a987f074428553a659435145e7ee0",
+  "regression-green/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml": "af41ed17046e6b4c18ed464ee59dadd3d41aea9e652553c05d7257dce9b865b4",
+  "regression-lint.log": "801b72fa10dca6256d0e046722ad260523ca402fdab886b0e58bcb78a2bb54d3",
+  "restoration-green/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml": "e91f123959e6807498d1072c171796beb3d8fd0992e40ac79ea38876ef6cad06",
+  "restoration-jdk17.log": "113cde603d6445c4449c7e4127c71869c45468659ea9ce9552d7c95695f4a156",
+  "restoration.log": "7640f9f7ee7763f4196b5f27b6dbb5020e60d8aca1d0ec4ca7920802fbfd9f21",
+  "summary.json": "e2df8682238248703df3599c3ac10dc14c0dc6364dbb1f5539af50f1d3df1bc6"
+}

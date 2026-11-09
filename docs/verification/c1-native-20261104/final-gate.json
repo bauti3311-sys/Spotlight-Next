@@ -1,0 +1,12 @@
+{
+  "testsFinalFocused": 12,
+  "testFailures": 0,
+  "lint": {
+    "Warning": 16,
+    "Information": 1
+  },
+  "gradle": "BUILD SUCCESSFUL in 5m29s",
+  "apkBuilt": false,
+  "actionsDispatched": 0,
+  "physicalValidation": false
+}

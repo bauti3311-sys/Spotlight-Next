@@ -65,9 +65,13 @@ fun normalize(s: String): String =
         )
         .replace(Regex("\\p{M}"), "")
 
+private val wordSpacing = Regex("\\s+")
+/** Lexical comparison only: never rewrites query payloads, aliases or execution arguments. */
+internal fun normalizedWords(s:String):String=normalize(s).trim().replace(wordSpacing," ")
+
 fun relevance(query: String, title: String): Int {
-    val q = normalize(query.trim())
-    val t = normalize(title)
+    val q = normalizedWords(query)
+    val t = normalizedWords(title)
     if (q.isEmpty()) return 10
     if (q == t) return 1000
     if (t.startsWith(q)) return 800

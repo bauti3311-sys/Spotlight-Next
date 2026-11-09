@@ -20,12 +20,20 @@ class FileBuffer(private val extract:suspend (Context,Uri,String?,PdfTextLimits)
     }
     fun remove(id:String){selected.removeAll{it.id==id}}
     fun clear(){selected.clear()}
-    fun share(context:Context?=null):Intent {
+    fun share(context:Context?=null,packageName:String?=null):Intent {
         check(selected.isNotEmpty())
-        val uris=ArrayList(selected.map{val original=(it.action as Action.Launch).intent.data!!;if(original.scheme=="file"){require(context!=null);androidx.core.content.FileProvider.getUriForFile(context,context.packageName+".files",java.io.File(original.path!!))} else original})
-        val mime=selected.mapNotNull{it.mime}.distinct().singleOrNull() ?: "*/*"
-        val clip=ClipData.newRawUri("Selección de Spotlight",uris.first()).apply{uris.drop(1).forEach{addItem(ClipData.Item(it))}}
-        return Intent(Intent.ACTION_SEND_MULTIPLE).setType(mime).putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION).also{it.clipData=clip}
+        require(packageName==null || packageName.matches(Regex("[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)+")))
+        val uris=ArrayList(selected.map{val original=(it.action as Action.Launch).intent.data!!;if(original.scheme=="file"){
+            require(context!=null);androidx.core.content.FileProvider.getUriForFile(context,context.packageName+".files",java.io.File(original.path!!))
+        } else original})
+        val types=selected.map{dev.bautista.spotlight.sharing.FileShareContract.mime(it.title,it.mime)}.distinct()
+        val families=types.map{it.substringBefore('/')}.distinct()
+        val mime=types.singleOrNull() ?: families.singleOrNull()?.let{"$it/*"} ?: "*/*"
+        return Intent(if(uris.size==1)Intent.ACTION_SEND else Intent.ACTION_SEND_MULTIPLE).setType(mime).setPackage(packageName)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION).also{intent->
+                if(uris.size==1)intent.putExtra(Intent.EXTRA_STREAM,uris.single()) else intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris)
+                intent.clipData=dev.bautista.spotlight.sharing.FileShareContract.canonicalClip(uris,types)
+            }
     }
     suspend fun text(context:Context):String {
         val snapshot=items;check(snapshot.isNotEmpty())

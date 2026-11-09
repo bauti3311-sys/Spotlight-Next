@@ -1,0 +1,113 @@
+{
+  "baselineCommit": "1d582940bad2767b710d1e10e9ef93f78e8fb092",
+  "reviewedPr19Commit": "a622df75208e40826955e51cc84c65d7754f9f53",
+  "renderer": "Robolectric API33 NATIVE, Compose component, not device",
+  "matchedFixtures": [
+    "phone-large-text",
+    "phone-compact",
+    "tablet-compact"
+  ],
+  "compact": {
+    "fontScale": 1.0,
+    "textScale": 1.15,
+    "densityScale": 0.85,
+    "shortRowDpBeforeAndAfter": 48,
+    "widthsDp": [
+      320,
+      720
+    ],
+    "menuIntrinsicHeightPixelsBefore": 420,
+    "menuIntrinsicHeightPixelsAfter": 424
+  },
+  "largeText": {
+    "fontScale": 2.0,
+    "widthDp": 320,
+    "craftTextScale": 1.0,
+    "stressTextScale": 1.15,
+    "stressDensityScale": 0.85,
+    "stressHeightLimitDp": 420,
+    "stressActions": 12,
+    "lastActionFocusedFullyVisible": true,
+    "dragAndNavigationExecuteNothing": true,
+    "enterExecutesLastExactlyOnce": true
+  },
+  "images": [
+    {
+      "phase": "before",
+      "file": "before/phone-compact.png",
+      "width": 320,
+      "height": 420,
+      "sha256": "31c2db3e7e5d8c4f89efa03c3306deba343332cae1f7be557ca6ee4e8beb86a5"
+    },
+    {
+      "phase": "before",
+      "file": "before/phone-large-text.png",
+      "width": 296,
+      "height": 271,
+      "sha256": "5bcba9c71d1012a7083521bfcb4835defe8255b7929597638d8290018cb07058"
+    },
+    {
+      "phase": "before",
+      "file": "before/tablet-compact.png",
+      "width": 720,
+      "height": 420,
+      "sha256": "764ee3ec5644487309a961e2a3633d7fe2769012cb072661fe0556b3f363a56d"
+    },
+    {
+      "phase": "after",
+      "file": "after/dark-filter-focus.png",
+      "width": 296,
+      "height": 233,
+      "sha256": "01e57536eb3d22cc78622800ce5f00575b99ad92caec9e504448ef3c3fc89ac0"
+    },
+    {
+      "phase": "after",
+      "file": "after/dark-row-focus.png",
+      "width": 296,
+      "height": 233,
+      "sha256": "8e8d00bdbee75b79b6691144dbea351b42ad614891faadb15696ffb2cf8242b1"
+    },
+    {
+      "phase": "after",
+      "file": "after/light-filter-focus.png",
+      "width": 296,
+      "height": 233,
+      "sha256": "532cea8a02220df45dae03efa7edccc8000db923665edfa264e0f6841a81ea8a"
+    },
+    {
+      "phase": "after",
+      "file": "after/light-row-focus.png",
+      "width": 296,
+      "height": 233,
+      "sha256": "59cc600c2f1a546c8e3c37fbcfc5beba69abd2384ec5a5d90546424aa4a2e8cd"
+    },
+    {
+      "phase": "after",
+      "file": "after/phone-compact.png",
+      "width": 320,
+      "height": 424,
+      "sha256": "b3a724509760874657c47f7ea968afad79490bf48c5755195db1e6324ad41e79"
+    },
+    {
+      "phase": "after",
+      "file": "after/phone-large-text-last-action.png",
+      "width": 320,
+      "height": 420,
+      "sha256": "1d27352feb177753ba50efc627c1e9838b8bbe9375cd65032ca77ae5dcb6e285"
+    },
+    {
+      "phase": "after",
+      "file": "after/phone-large-text.png",
+      "width": 296,
+      "height": 503,
+      "sha256": "935379dcdb00945b89f4cb20c280a10fa171bfd129d3011e85dfebc463fe6d42"
+    },
+    {
+      "phase": "after",
+      "file": "after/tablet-compact.png",
+      "width": 720,
+      "height": 424,
+      "sha256": "860ee3915df66c7418ba1d8355fd2c2a815d2fb8d95c585efe4c71517f719519"
+    }
+  ]
+}

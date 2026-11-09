@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -15,6 +17,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.bautista.spotlight.search.Result
@@ -36,10 +40,14 @@ import kotlinx.coroutines.withContext
     mediaContent: (@Composable () -> Unit)? = null,
     capabilitiesContent: (@Composable () -> Unit)? = null,
     embedded: Boolean = false,
+    primaryContent: (@Composable () -> Unit)? = null,
 ) {
     val colors=MaterialTheme.colorScheme
     val appearance=LocalAppearance.current
     val d=GlassTokens.densityScale(appearance)
+    val focusUi=LocalFocusUi.current
+    var administrationExpanded by rememberSaveable(packageName){mutableStateOf(false)}
+    val premium=LocalPremiumReview.current
     val context=LocalContext.current
     var version by remember(packageName) { mutableStateOf<String?>(null) }
     var spotifySearch by remember(packageName) { mutableStateOf(false) }
@@ -49,12 +57,27 @@ import kotlinx.coroutines.withContext
         } }
     }
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(GlassTokens.inspectorGap(appearance))) {
-        Row(Modifier.fillMaxWidth().heightIn(min=(46f*d).coerceAtLeast(40f).dp),verticalAlignment=Alignment.CenterVertically,
+        if(LocalFocusUi.current)Row(Modifier.fillMaxWidth().then(if(LocalPuenteUi.current)Modifier
+            .background(colors.primary.copy(alpha=.08f),RoundedCornerShape(12.dp))
+            .border(.75.dp,colors.primary.copy(alpha=.20f),RoundedCornerShape(12.dp))
+            .padding(horizontal=12.dp,vertical=12.dp) else Modifier.padding(vertical=8.dp)),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+            ResultIcon(item,Modifier.size(40.dp))
+            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) {
+                Text(item.title,Modifier.testTag("inspector-title").semantics{heading()},style=MaterialTheme.typography.titleLarge,maxLines=2,overflow=TextOverflow.Ellipsis)
+                Text(if(playing)"En reproducción" else "Aplicación instalada",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
+            }
+        }
+        else if(LocalLiquidScene.current!=null && packageName=="com.vivaldi.browser")LiquidApplicationIdentity(item)
+        else if(premium)PremiumInspectorHeader(item,
+            when(packageName){"com.spotify.music"->"Música";"com.whatsapp","com.whatsapp.w4b"->"Mensajería";"com.vivaldi.browser","com.android.chrome"->"Navegador";else->"Aplicación"},
+            if(playing)"En reproducción" else "Aplicación instalada",compact=LocalInspectorReviewBudget.current<420f || packageName=="com.spotify.music" && mediaContent!=null,
+            onSearch=if(packageName=="com.spotify.music")({spotifySearch=!spotifySearch}) else null)
+        else Row(Modifier.fillMaxWidth().heightIn(min=(46f*d).coerceAtLeast(40f).dp),verticalAlignment=Alignment.CenterVertically,
             horizontalArrangement=Arrangement.spacedBy((12f*d).dp)) {
             ResultIcon(item,Modifier.size((42f*d).coerceIn(36f,48f).dp))
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(2.dp)) {
-                Text(item.title,Modifier.testTag("inspector-title"),fontSize=GlassTokens.scaledSp(16.sp,appearance),
-                    fontWeight=FontWeight.SemiBold,maxLines=1,overflow=TextOverflow.Ellipsis)
+                Text(item.title,Modifier.testTag("inspector-title").semantics{heading()},fontSize=GlassTokens.scaledSp(17.sp,appearance),
+                    lineHeight=GlassTokens.scaledSp(21.sp,appearance),fontWeight=FontWeight.SemiBold,maxLines=2,overflow=TextOverflow.Ellipsis)
                 Text(if(playing)"En reproducción" else "Aplicación instalada",fontSize=GlassTokens.scaledSp(12.sp,appearance),
                     color=colors.onSurfaceVariant)
             }
@@ -62,7 +85,10 @@ import kotlinx.coroutines.withContext
                 IosCommandIcon(CommandIcons.Search,"Buscar dentro de Spotify",Modifier.size(20.dp))
             }
         }
+        primaryContent?.invoke()
         mediaContent?.invoke()
+        if(premium && packageName in setOf("com.whatsapp","com.whatsapp.w4b"))
+            Text("La conversación y el envío se confirman en WhatsApp.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
         if(packageName=="com.spotify.music" && spotifySearch) {
             (context.applicationContext as? dev.bautista.spotlight.SpotlightApp)?.let { SpotifySearchPanel(it) }
             TextButton(onClick={spotifySearch=false}) { Text("Cerrar búsqueda de Spotify") }
@@ -76,13 +102,20 @@ import kotlinx.coroutines.withContext
             Text("Abrir aplicación",Modifier.weight(1f),fontSize=GlassTokens.scaledSp(14.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis)
             InspectorKeyHint("Enter")
         }
-        if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy((8f*d).dp)) {
+        if(!focusUi) {
+        if(premium && embedded && LocalLiquidScene.current==null)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),verticalArrangement=Arrangement.spacedBy(2.dp)) {
+            PremiumSectionLabel("Accesos")
+            InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
+            InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",R.drawable.inspector_ios_star,onClick=onFavorite)
+        }
+        else if(embedded)Row(Modifier.fillMaxWidth().testTag("inspector-utility-actions"),horizontalArrangement=Arrangement.spacedBy((8f*d).dp)) {
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo,modifier=Modifier.weight(1f))
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite,modifier=Modifier.weight(1f))
         }
+        }
         Column(Modifier.fillMaxWidth()) {
-            if(!embedded) {
+            if(!embedded && !focusUi) {
             InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
             InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",
                 R.drawable.inspector_ios_star,onClick=onFavorite)
@@ -95,7 +128,20 @@ import kotlinx.coroutines.withContext
             if(!embedded)InspectorActionRow("Ver acciones contextuales",R.drawable.inspector_ios_actions,"Ctrl+K",onActions)
         }
         capabilitiesContent?.invoke()
-        if(packageName!=null) {
+        if(focusUi) {
+            TextButton(onClick={administrationExpanded=!administrationExpanded},
+                modifier=Modifier.heightIn(min=48.dp).testTag("inspector-administration-toggle")
+                    .semantics{stateDescription=if(administrationExpanded)"Expandido" else "Contraído"},
+                contentPadding=PaddingValues(horizontal=2.dp),
+                colors=ButtonDefaults.textButtonColors(contentColor=colors.onSurfaceVariant)) {
+                Text(if(administrationExpanded)"Ocultar información y favoritos" else "Información y favoritos",style=MaterialTheme.typography.labelMedium)
+            }
+            if(administrationExpanded)Column(Modifier.fillMaxWidth().testTag("inspector-utility-actions")) {
+                InspectorActionRow("Ver información de la app",R.drawable.inspector_ios_info,onClick=onInfo)
+                InspectorActionRow(if(favorite)"Quitar favorita" else "Añadir favorita",R.drawable.inspector_ios_star,onClick=onFavorite)
+            }
+        }
+        if(packageName!=null && (!focusUi || administrationExpanded)) {
             HorizontalDivider(color=colors.onSurface.copy(alpha=.10f))
             Column(Modifier.fillMaxWidth().testTag("inspector-metadata"),verticalArrangement=Arrangement.spacedBy((6f*d).dp)) {
                 version?.let { InspectorProperty("Versión",it) }
@@ -128,10 +174,10 @@ import kotlinx.coroutines.withContext
 @Composable private fun InspectorProperty(label:String,value:String) {
     val appearance=LocalAppearance.current
     Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.Top,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
-        Text(label,fontSize=GlassTokens.scaledSp(11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(label,fontSize=GlassTokens.scaledSp(if(LocalFocusUi.current)12.sp else 11.sp,appearance),color=MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.weight(1f))
         SelectionContainer(Modifier.weight(2f)) {
-            Text(value,Modifier.fillMaxWidth(),fontSize=GlassTokens.scaledSp(11.sp,appearance),maxLines=2,overflow=TextOverflow.Ellipsis,
+            Text(value,Modifier.fillMaxWidth(),fontSize=GlassTokens.scaledSp(if(LocalFocusUi.current)12.sp else 11.sp,appearance),maxLines=2,overflow=TextOverflow.Ellipsis,
                 textAlign=androidx.compose.ui.text.style.TextAlign.End,color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }

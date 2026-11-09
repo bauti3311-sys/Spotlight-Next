@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-05T21:41:21" hostname="52363180d3ce" time="3.999">
+  <properties/>
+  <testcase name="restoringSharedDraftDoesNotRestoreItsConfirmation" classname="dev.bautista.spotlight.ui.C2SharedMessageFlowTest" time="3.999"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

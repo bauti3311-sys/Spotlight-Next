@@ -1,0 +1,12 @@
+{
+  "app/src/main/java/dev/bautista/spotlight/overlay/OverlayViewport.kt": "4c34e40aa54d2aa13119a1d1f4939f13248f68d952552fe93f8f2d4a5c59ea49",
+  "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt": "e168450e6ccd01b6332069bd33dc8e2a75ac13e82a8057ed31c16dc811f6c8e3",
+  "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt": "1ca7d6f23467b6716525a953eefbd618a14a52cf0c5d42e3d6ce8b58f9c34462",
+  "app/src/main/java/dev/bautista/spotlight/search/CompactResults.kt": "e9e195e5c4feea2d145334f927f3a9fc6025c963dc994434a00adf0b6e92b894",
+  "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt": "20b22473b2701109926fcfd1b5e9163127f2905b8dbc971077ddeaa2ef37a1be",
+  "app/src/main/java/dev/bautista/spotlight/control/AppCapabilities.kt": "57c116e498f4e6ea95a1058728881e5ac707a2812d4fc5afb0760b52d3b933fd",
+  "app/src/main/java/dev/bautista/spotlight/ui/AppCapabilityActions.kt": "7651cd185bd5e33d0f08e5882166a598794208206acb9242fbc96c3f1f8339ed",
+  "app/src/main/java/dev/bautista/spotlight/ui/CommandForms.kt": "68fcbdc19a67f9515d580215f1c33a0d048c1c5e417dc206a2ea058a47e86008",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt": "e5099adf60e848827223dc82022d9a112048f713c87982d90472e7636e5ee926",
+  "app/src/main/java/dev/bautista/spotlight/ui/SpotlightResults.kt": "d747ad4fd67ec1465fb3c0403688337d0d9f09931f4f04e5d9da49fd999fed64"
+}

@@ -77,66 +77,101 @@ import kotlinx.coroutines.launch
 
 /** Explicit remote queries only; selecting a result never starts playback. */
 @OptIn(ExperimentalLayoutApi::class)
-@Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "") {
+@Composable internal fun SpotifySearchPanel(app: SpotlightApp, initialQuery: String = "", externalQuery:String?=null, searchTrigger:Int=0) {
     val connection = app.spotify
     val state by connection.state.collectAsState()
     val scope = rememberCoroutineScope()
+    val requestGate = remember { SpotifyRequestGate() }
     val context = LocalContext.current
     var query by rememberSaveable(initialQuery) { mutableStateOf(initialQuery.take(240)) }
     var typeKey by rememberSpotifyFilterType()
     val type = SpotifyItemType.entries.firstOrNull { it.api == typeKey } ?: SpotifyItemType.TRACK
     var results by remember { mutableStateOf<List<SpotifySearchItem>>(emptyList()) }
     var selected by remember { mutableStateOf<SpotifySearchItem?>(null) }
+    var webPlayback by rememberSaveable { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
     var job by remember { mutableStateOf<Job?>(null) }
     var busy by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { connection.inspect() }
     LaunchedEffect(state) { if (state != SpotifyConnectionState.AUTHORIZED) { job?.cancel(); results = emptyList(); selected = null } }
     fun action(block: suspend () -> Unit) {
-        if (busy) return
+        if (!requestGate.enter()) return
         message = ""; busy = true
-        job = scope.launch {
-            try { block() } catch (e: CancellationException) { throw e }
+        job = scope.launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            try { block() } catch (e: CancellationException) { message = "Solicitud cancelada. Si ya confirmaste reproducción, comprobá el estado: cancelar no revierte un cambio recibido por Spotify."; throw e }
             catch (e: Exception) { message = e.message ?: "Spotify no pudo completar la operación." }
-            finally { busy = false }
+            finally { busy = false; requestGate.leave() }
         }
     }
-    Column(Modifier.fillMaxWidth().testTag("spotify-search-panel"), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    fun searchNow() {
+                val approvedQuery = query; val approvedType = type
+                action {
+                    val page = connection.search(approvedQuery, setOf(approvedType))
+                    if (query == approvedQuery && type == approvedType) { results = page.items; selected = null; if (results.isEmpty()) message = "Sin coincidencias." }
+                }
+    }
+    LaunchedEffect(externalQuery){if(externalQuery!=null && externalQuery!=query){query=externalQuery.take(240);results=emptyList();selected=null;job?.cancel()}}
+    LaunchedEffect(searchTrigger){if(searchTrigger>0 && state==SpotifyConnectionState.AUTHORIZED)searchNow()}
+    val compactTools=LocalFocusUi.current && externalQuery!=null
+    Column(Modifier.fillMaxWidth().testTag("spotify-search-panel")
+        .padding(horizontal=if(compactTools)12.dp else 0.dp,vertical=if(compactTools)8.dp else 0.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Buscar en Spotify", style = MaterialTheme.typography.titleSmall)
         if (state != SpotifyConnectionState.AUTHORIZED) {
             Text("Conectá Spotify para buscar dentro de Spotlight. Los controles de sesión Android siguen disponibles cuando están autorizados.", style = MaterialTheme.typography.bodySmall)
             TextButton(onClick = { context.startActivity(Intent(context, MainActivity::class.java).putExtra("group", "Integraciones").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }) { Text("Configurar Spotify") }
         } else {
-            OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
+            if(externalQuery==null)OutlinedTextField(query, { query = it.take(240); selected = null; results = emptyList() }, singleLine = true,
                 enabled = !busy, label = { Text("Canción, artista, álbum o playlist") }, modifier = Modifier.fillMaxWidth().testTag("spotify-search-query"))
-            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
+            val tools:@Composable ()->Unit = {
+            FlowRow(if(compactTools)Modifier else Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 SpotifyItemType.entries.forEach { option ->
                     FilterChip(enabled = !busy, selected = option == type, onClick = { job?.cancel(); typeKey = option.api; selected = null; results = emptyList() },
                         label = { Text(when(option) { SpotifyItemType.TRACK -> "Tema"; SpotifyItemType.ARTIST -> "Artista"; SpotifyItemType.ALBUM -> "Álbum"; else -> "Lista" }, style = MaterialTheme.typography.labelSmall) })
                 }
             }
-            Button(enabled = query.isNotBlank() && !busy, onClick = {
-                val approvedQuery = query; val approvedType = type
-                action {
-                    val page = connection.search(approvedQuery, setOf(approvedType))
-                    if (query == approvedQuery && type == approvedType) { results = page.items; selected = null; if (results.isEmpty()) message = "Sin coincidencias." }
-                }
-            }) { Text("Buscar en Spotify") }
+            Button(enabled = query.isNotBlank() && !busy, onClick = { searchNow() }) { Text("Buscar en Spotify") }
+            }
+            if(compactTools)FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalArrangement=Arrangement.spacedBy(4.dp)){tools()}
+            else tools()
             if (busy) TextButton(onClick = { job?.cancel() }) { Text("Cancelar solicitud") }
             results.forEach { item ->
                 SpotifyResultRow(item,selected?.uri==item.uri,!busy,onSelect={if(!busy)selected=item})
             }
             selected?.let { item ->
-                Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)
-                Text("Se solicitará la reproducción al cliente Spotify de este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
-                Button(enabled = !busy, onClick = { action { message = connection.playback("play", item) } }) { Text("Confirmar reproducción") }
-                TextButton(enabled = !busy, onClick = { action {
-                    val observed = connection.observe()
-                    message = observed?.diagnose(item) ?: "Spotify no informó un dispositivo activo."
-                } }) { Text("Comprobar reproducción") }
+                SpotifySelectionControls(item, webPlayback, busy,
+                    onRoute = { webPlayback = it; message = "" },
+                    onConfirm = { action { message = if (webPlayback) connection.playOnActiveDevice(item) else connection.playback("play", item) } },
+                    onObserve = { action {
+                        val observed = if (webPlayback) connection.observeActiveDevice() else connection.observe()
+                        message = observed?.diagnose(item, if (webPlayback) "Web API" else "el cliente local") ?: "Spotify no informó un dispositivo activo."
+                    } })
             }
         }
         if (message.isNotBlank()) Text(message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("spotify-result-status"))
     }
+}
+
+/** Same production controls, isolated for input/availability regression tests. No playback on selection. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable internal fun SpotifySelectionControls(
+    item: SpotifySearchItem,
+    webPlayback: Boolean,
+    busy: Boolean,
+    onRoute: (Boolean) -> Unit,
+    onConfirm: () -> Unit,
+    onObserve: () -> Unit,
+) {
+    Text("Seleccionado: ${item.name} · ${item.subtitle}", style = MaterialTheme.typography.bodySmall)
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        FilterChip(selected = webPlayback, enabled = !busy, onClick = { onRoute(true) },
+            label = { Text("Reproducir en dispositivo activo") })
+        FilterChip(selected = !webPlayback, enabled = !busy, onClick = { onRoute(false) },
+            label = { Text("Reproducción local (App Remote)") })
+    }
+    Text(if (webPlayback) "Web API: requiere Premium y un dispositivo activo y controlable. No cambia de dispositivo ni reintenta."
+        else "Usa Spotify en este dispositivo. Requiere autorización local inicial.", style = MaterialTheme.typography.bodySmall)
+    Button(enabled = !busy, onClick = onConfirm) { Text("Confirmar reproducción") }
+    TextButton(enabled = !busy, onClick = onObserve) { Text("Comprobar reproducción") }
 }

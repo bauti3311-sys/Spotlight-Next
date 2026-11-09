@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.NativeLaunchSessionTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-11-03T03:03:43" hostname="d72f3c82698f" time="6.932">
+  <properties/>
+  <testcase name="activityNotFoundAfterValidationOnlyOffersAlternative" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="5.487"/>
+  <testcase name="boundedIntentRejectsOversizedPayloadWithoutDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.201"/>
+  <testcase name="changedDefaultHandlerRequiresFreshReview" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.123"/>
+  <testcase name="fallbackRequiresCurrentProposalAndDispatchesOnce" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.095"/>
+  <testcase name="unknownOutcomeOffersNoAutomaticOrManualFallback" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.084"/>
+  <testcase name="revokedWriteGrantBlocksDispatchBeforeEffect" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.094"/>
+  <testcase name="removedPackageIsRevalidatedBeforeDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.085"/>
+  <testcase name="modifiedProposalCannotExecuteDifferentPayload" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.098"/>
+  <testcase name="changedContextMakesOldApprovalStale" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.052"/>
+  <testcase name="cancelledAndDisposedProposalsNeverDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.079"/>
+  <testcase name="securityExceptionIsSanitizedAndNeverRetried" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.095"/>
+  <testcase name="revokedReadGrantBlocksDocumentLaunch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.078"/>
+  <testcase name="revokedAlternativePermissionBlocksConfirmation" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.051"/>
+  <testcase name="reviewedPayloadIsAnIndependentSnapshot" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.092"/>
+  <testcase name="exactInstalledActivityIsPinnedAndRequestedOnce" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.081"/>
+  <testcase name="disabledPrivateMissingAndRestrictedActivitiesNeverDispatch" classname="dev.bautista.spotlight.control.NativeLaunchSessionTest" time="0.121"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

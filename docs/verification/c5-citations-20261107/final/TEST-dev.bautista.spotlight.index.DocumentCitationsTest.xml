@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.index.DocumentCitationsTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-07T14:08:38" hostname="ab6df79ca904" time="3.289">
+  <properties/>
+  <testcase name="revokedSafGrantInvalidatesAnAlreadyReturnedHandle" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="2.723"/>
+  <testcase name="invalidPageProvenanceIsNeverFabricated" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.054"/>
+  <testcase name="privacyChangeAndIndexDeletionInvalidateReferences" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.042"/>
+  <testcase name="threeOfflineNaturalQueriesReturnLiteralAttributableSources" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.118"/>
+  <testcase name="deletingSourceInvalidatesHandleDespiteCachedIndexText" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.069"/>
+  <testcase name="legacyRowsWithoutByteFingerprintCannotProduceCitations" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.04"/>
+  <testcase name="nonPdfCannotAdvertisePagesAndForeignSessionCannotResolveHandle" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.08"/>
+  <testcase name="cancellationInvalidatesOldHandlesAndPublishesNothing" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.071"/>
+  <testcase name="closingSessionAndNewQueriesInvalidateOldReferences" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.034"/>
+  <testcase name="sameLengthSourceReplacementCannotReuseCachedQuote" classname="dev.bautista.spotlight.index.DocumentCitationsTest" time="0.057"/>
+  <system-out><![CDATA[CORPUS query=buscar archivos de presupuesto aprobado source=plan.txt page=null method=local_text uncertain=false quote=El presupuesto aprobado del proyecto es de 2400 pesos.
+CORPUS query=buscar archivos de reunión martes source=agenda.txt page=null method=local_text uncertain=false quote=La reunión será el martes a las 15 horas.
+CORPUS query=buscar archivos de dosis aparente source=escaneo.pdf page=2 method=ocr_local uncertain=true quote=La dosis aparente es 1O mg; revisar la imagen original.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

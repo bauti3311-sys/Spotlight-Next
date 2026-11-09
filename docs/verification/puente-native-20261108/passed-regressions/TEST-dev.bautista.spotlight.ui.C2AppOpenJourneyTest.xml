@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-08T22:46:02" hostname="a720fb5903ca" time="6.479">
+  <properties/>
+  <testcase name="removedPackageCannotDispatchAndCancelRestoresSearchAndInspector" classname="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" time="4.868"/>
+  <testcase name="rapidTouchAndEnterShareOneRequestFence" classname="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" time="0.504"/>
+  <testcase name="escapeBeforeRequestAndExplicitEnterDoNotLoseQueryOrSelection" classname="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" time="0.265"/>
+  <testcase name="availableLauncherRequestedFromInspectorContextPublishesHonestReceipt" classname="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" time="0.237"/>
+  <testcase name="stopAndResumeKeepSearchSelectionInspectorWithoutReplayingRequest" classname="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" time="0.328"/>
+  <testcase name="permissionRaceReportsFailureWithoutFallbackRetryOrPrivateDetails" classname="dev.bautista.spotlight.ui.C2AppOpenJourneyTest" time="0.277"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

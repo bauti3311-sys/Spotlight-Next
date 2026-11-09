@@ -1,0 +1,36 @@
+# Preview60 nativa — entrega verificada
+
+Preview57 nativa perfeccionada, Kotlin/Jetpack Compose, Obsidian Glass. Checkpoints de accesibilidad y contratos Android; sin Nuxt/WebView ni capacidades OpenUI/RAGFlow nuevas.
+
+Fuente exacta APK y ZIP: e9647c1329b93820383e3c8b4ec56dbceb3ce5f1.
+Workflow revisado: c6d481c1ad3f8b6765c5e412d718f703d5c9acc5.
+[Única ejecución autorizada, correcta](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/41581584988), run_attempt=1, mode=native60-once. Preflight, compilación unsigned sin secretos y firma aislada correctos. Perfil optimizado con R8; sin reintentos ni fallback experimental.
+
+Paquete: dev.bautista.spotlight.next.raycastpreview
+versionCode: 60
+versionName: 2.0.1-raycast-preview-native57-v60
+Certificado SHA256: 885838aa970e0d4ba168a2b5f3e8f1a6e7334263c34c9cbc888f5c70381a52ba
+Firma v2 válida, un firmante, no debuggable, ARM64, minSdk26/target35, zipalign y ELF16KiB correctos. Contenido firmado idéntico al unsigned, sin claves ni credenciales. ZIP fuente comparado byte a byte con git archive local del SHA exacto. Verificación independiente de los archivos descargados completada.
+
+SHA256 APK: fd65c6149bf0ec03225367db4f2dec1329f7dcab233089f099ea079b2a4ce3f8
+SHA256 ZIP: e3b4a91af15856b3de7f53473c2fe03e818621c0e94413accc9c3bd7ef7796ca
+
+Instalación exclusivamente manual y opcional. Actualiza Raycast Preview si la identidad instalada coincide; no desinstalar ni borrar datos. Si Android informa conflicto de firma/paquete, cancelar. No se instaló nada en la tablet. La validación física One UI sigue pendiente.
+
+Protocolo breve: buscar app/archivo/contacto autorizado; recorrer resultados con flechas y Enter; comprobar Tab/ShiftTab/Escape; abrir menú con texto largo y fuente ampliada y alcanzar la última acción mediante scroll; lanzar la app elegida una sola vez; provocar un destino ausente y comprobar error recuperable, sin alternativa automática; cancelar y cambiar consulta para invalidar una confirmación anterior; comprobar scroll/tap/PDF y rotación con teclado táctil y físico.
+
+[Protocolo detallado](https://github.com/bauti3311-sys/Spotlight-Next/blob/c6d481c1ad3f8b6765c5e412d718f703d5c9acc5/docs/NATIVE57-PHYSICAL-VALIDATION-20261103.md).
+
+Repositorio privado; sin merge ni modificación de main o PRs anteriores. Presupuesto y cuota confirmados por el propietario; no se alteraron presupuesto, pagos o secretos. Uso facturable posterior no accesible a esta integración (403); no se afirma una auditoría contable independiente.
+
+## Entrega y evidencia
+
+[Artefacto privado conjunto APK + ZIP + SHA256SUMS + procedencia + informe de firma](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/41581584988/artifacts/13206563526), retención configurada de 3 días, hasta aproximadamente 2026-11-06T05:15Z. Descargar antes de caducar. Copias individuales verificadas entregadas en la conversación desde `shared/downloads/spotlight-native60/`.
+
+APK: 73414053 bytes. ZIP fuente: 10284454 bytes. ZIP de artefacto: 83780110 bytes, SHA256 `738a2d889f6473a8a1ecd6057f2d9bde62131c99767098a981f9ee3c7fc82124`, cotejado contra el digest de GitHub. Se verificó CRC, firma y certificado con apksigner35, badging con aapt35, zipalign-P16 y todos los ELF ARM64. `native60_verify.py signed` pasó con SHA/run explícitos; el mapa de entradas coincide con el unsigned registrado. `cmp` contra git archive local confirmó fuente idéntica byte a byte. No se repitieron tests nativos/Lint ya verificados; no hay prueba física nueva.
+
+Ejecución 05:02:59–05:15:30 UTC, run_attempt1, actor y triggering_actor bauti3311-sys. Preflight11s, unsigned11m47s, firma26s. Gradle `BUILD SUCCESSFUL in 11m 19s`; `minifyRaycastPreviewWithR8` y `shrinkRaycastPreviewRes` ejecutados. Timing API: `run_duration_ms=751000`, UBUNTU `total_ms=0` en el campo billable; esto no sustituye el estado contable Usage de la cuenta. Cuota/presupuesto0/stop-on-limit y secretos confirmados expresamente por el propietario antes del dispatch; sin alterar configuración ni revelar valores.
+
+La descarga directa de blobs con gh recibió403; el conector oficial GitHub recuperó el artefacto y se verificó el digest antes de extraerlo. Intento de crear una nueva Release privada borrador: subida de assets recibió401; el borrador propio quedó vacío y se eliminó, sin tocar Releases anteriores. No se eludió autenticación ni se amplió acceso. El artefacto privado de Actions sigue siendo la copia remota disponible; no hay Release permanente publicada.
+
+Reserva propia: `codex-31a46cd1-2a25-4a52-b395-d8328f1b05f8`, lease inicial `069f8fe2fe5e586bbae3782916f9ebdccaa48402`, checkpoint c6d481c durante todo el run. Cierre con notas y liberación atómica sólo de esta reserva. Este documento se publica después del run; el código APK/ZIP sigue siendo e9647c1 y el workflow ejecutado c6d481c. No se promueve el checkpoint integral.

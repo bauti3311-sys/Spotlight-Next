@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Test APK only. Does not request MANAGE_DOCUMENTS for Spotlight. -->
+        <provider android:name="dev.bautista.spotlight.c5.C5FixtureProvider"
+            android:authorities="dev.bautista.spotlight.c5.physicalfixtures"
+            android:exported="true" android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter><action android:name="android.content.action.DOCUMENTS_PROVIDER" /></intent-filter>
+        </provider>
+    </application>
+</manifest>

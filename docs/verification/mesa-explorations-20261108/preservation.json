@@ -1,0 +1,21 @@
+{
+  "base": "25051d29d6927bfed90d3a105510a3d3339084ce",
+  "protected": [
+    "app/src/main",
+    "app/build.gradle.kts",
+    "scripts",
+    ".github",
+    "release.properties",
+    "app/src/test/resources/choice-catalogue",
+    "docs/verification/choice-catalogue-20261108",
+    "docs/verification/creative-directions-20261108",
+    "app/src/test/java/dev/bautista/spotlight/ui/CreativeDirectionsGalleryTest.kt"
+  ],
+  "productive_delta": [],
+  "new_concepts": 5,
+  "new_captures": 50,
+  "reused_captures": 10,
+  "reused_reference": "P05 Mesa as M00, byte-identical",
+  "production_approval": false,
+  "APK_Actions_installation": false
+}

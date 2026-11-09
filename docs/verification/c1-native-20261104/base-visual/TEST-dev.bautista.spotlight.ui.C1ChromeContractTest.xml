@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C1ChromeContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-04T03:16:24" hostname="55ca3aa1e7c4" time="4.729">
+  <properties/>
+  <testcase name="openActionMenuCannotExecuteTheStalePrimaryFromDock" classname="dev.bautista.spotlight.ui.C1ChromeContractTest" time="4.455"/>
+  <testcase name="quietTouchDockKeepsTargetsHeightAndIndependentActions" classname="dev.bautista.spotlight.ui.C1ChromeContractTest" time="0.182"/>
+  <testcase name="restrainedResultFocusStillContrastsInBothThemes" classname="dev.bautista.spotlight.ui.C1ChromeContractTest" time="0.092"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

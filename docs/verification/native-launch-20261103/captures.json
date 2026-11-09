@@ -1,0 +1,34 @@
+{
+  "renderer": "Robolectric API33 NATIVE; no physical device",
+  "matched": "failed-selected: same query/720dp/default approved light theme before-after; old onClose fixture records but keeps content mounted",
+  "phone": "320dp, Obsidian Glass dark, after only",
+  "images": [
+    {
+      "phase": "red",
+      "path": "red/failed-selected.png",
+      "size": [
+        720,
+        213
+      ],
+      "sha256": "a9ecdfba4b771b90a79aee78601cd3d637e8db136ce0c7cee28476ec0ab379ea"
+    },
+    {
+      "phase": "green",
+      "path": "green/failed-selected.png",
+      "size": [
+        720,
+        468
+      ],
+      "sha256": "b1b19aa4d9914fbb25ffd8389b274185c73261b0b811f8c63bb4f7b519e6b84d"
+    },
+    {
+      "phase": "green",
+      "path": "green/phone-review.png",
+      "size": [
+        320,
+        502
+      ],
+      "sha256": "36d03ac69be7c43701b7a309838b8bb74fe45a3523a0e1c498a35875de539571"
+    }
+  ]
+}

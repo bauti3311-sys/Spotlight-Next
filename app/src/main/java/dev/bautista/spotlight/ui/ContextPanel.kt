@@ -15,7 +15,7 @@ import dev.bautista.spotlight.search.*
 import kotlinx.coroutines.*
 
 @Composable fun ContextChip(app:SpotlightApp,item:SharedContext,onAction:(Action)->Unit) {
-    Row(Modifier.fillMaxWidth().padding(horizontal=18.dp),verticalAlignment=Alignment.CenterVertically){Icon(CommandIcons.Description,null,Modifier.size(16.dp));TextButton(onClick={onAction(Action.SystemPanel("context"))},modifier=Modifier.weight(1f)){Text("Contexto: ${item.title}",maxLines=1)};IconButton(onClick={app.contexts.clearActive()}){Icon(CommandIcons.Close,"Quitar contexto",Modifier.size(18.dp))}}
+    Row(Modifier.fillMaxWidth().padding(horizontal=18.dp),verticalAlignment=Alignment.CenterVertically){IosCommandIcon(CommandIcons.Description,null,Modifier.size(16.dp));TextButton(onClick={onAction(Action.SystemPanel("context"))},modifier=Modifier.weight(1f)){Text("Contexto: ${item.title}",maxLines=1)};IconButton(onClick={app.contexts.clearActive()}){IosCommandIcon(CommandIcons.Close,"Quitar contexto",Modifier.size(18.dp))}}
 }
 /** Persistent data remains untouched when loading fails; retry is an explicit local action. */
 @Composable internal fun ContextStorageStatus(store:ContextStore,onRecovered:()->Unit={}) {
@@ -68,6 +68,10 @@ import kotlinx.coroutines.*
                 },failure={error=it.message ?: "No se pudo leer el contenido. Elegí nuevamente el archivo o pegá el texto."})
             }
             Text(item.title,style=MaterialTheme.typography.titleSmall)
+            if(item.uri.isNotBlank() || item.kind=="files") {
+                TextButton(enabled=!busy,onClick={onAction(Action.SystemPanel("file-share-context",item.id))}){Text("Revisar archivos para compartir")}
+                Text("Los archivos originales se revisan sin extraer su texto. El permiso temporal puede vencer al cerrar Spotlight.",style=MaterialTheme.typography.bodySmall)
+            }
             if(item.text.isNotBlank())SelectionContainer{Text(item.text.take(2000))}
             Row{TextButton(onClick={scope.launch{try{app.contexts.pinActive();error=""}catch(e:CancellationException){throw e}catch(e:Exception){error=e.message ?: "No se pudo fijar el contexto."}}}){Text(if(item.pinned)"Contexto fijado" else "Fijar")};TextButton(onClick={app.contexts.clearActive()}){Text("Quitar")}}
             Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {

@@ -22,10 +22,11 @@ internal class SpotifySession(
     suspend fun authorized() = mutex.withLock { store.read() != null }
     suspend fun install(tokens: SpotifyTokens) = mutex.withLock { store.save(tokens) }
     suspend fun disconnect() = mutex.withLock { store.clear() }
-    suspend fun token(clientId: String): String = mutex.withLock {
+    suspend fun token(clientId: String, requiredScopes: Set<String> = emptySet()): String = mutex.withLock {
         require(clientId.matches(Regex("[A-Za-z0-9]{32}")))
         val saved = try { store.read() } catch (_: Exception) { error("No se pudo leer la autorización protegida. Volvé a conectar Spotify.") }
             ?: error("Conectá tu cuenta de Spotify en Ajustes.")
+        check(saved.scopes.containsAll(requiredScopes)) { "Faltan permisos Web API. Volvé a conectar Spotify en Ajustes." }
         if (saved.expiresAt - clock() > 60000) return@withLock saved.accessToken
         val request = Request.Builder().url(tokenUrl).post(FormBody.Builder()
             .add("grant_type", "refresh_token").add("client_id", clientId)
@@ -34,6 +35,7 @@ internal class SpotifySession(
             catch (e: SpotifyApiException) { if (e.status in setOf(400, 401)) store.clear(); throw e }
             catch (e: kotlinx.coroutines.CancellationException) { throw e }
             catch (_: Exception) { error("Spotify devolvió una autorización inválida; no se reemplazó la sesión guardada.") }
+        check(renewed.scopes.containsAll(requiredScopes)) { "Faltan permisos Web API. Volvé a conectar Spotify en Ajustes." }
         store.save(renewed)
         renewed.accessToken
     }

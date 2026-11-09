@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.control.DocumentShareContractTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-04T19:53:02" hostname="c880c3bda6d8" time="4.348">
+  <properties/>
+  <testcase name="anotherAppCannotImpersonateTheAndroidSharesheet[26]" classname="dev.bautista.spotlight.control.DocumentShareContractTest" time="1.628"/>
+  <testcase name="anotherAppCannotImpersonateTheAndroidSharesheet" classname="dev.bautista.spotlight.control.DocumentShareContractTest" time="2.719"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

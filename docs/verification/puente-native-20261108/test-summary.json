@@ -1,0 +1,29 @@
+{
+  "source_sha": "0b1441e85cc736026f5bee81e1c23eef869e70c1",
+  "unique_cases": 20,
+  "final_round_cases": 20,
+  "cases": {
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneLight": "final-checks/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.tabletDark": "final-checks/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDark": "final-checks/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneLightText200": "final-checks/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDarkText200": "final-checks/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.FocusBIntegrationTest.tabletLight": "final-checks/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.ContextSplitHeightTest.shortInspectorDoesNotReserveUnusedHeight": "final-checks/TEST-dev.bautista.spotlight.ui.ContextSplitHeightTest.xml",
+    "dev.bautista.spotlight.ui.ContextSplitHeightTest.longInspectorUsesAvailableHeightAndOnlyScrollsWhenNecessary": "final-checks/TEST-dev.bautista.spotlight.ui.ContextSplitHeightTest.xml",
+    "dev.bautista.spotlight.ui.PuenteNativeIntegrationTest.captureScenes": "final-checks/TEST-dev.bautista.spotlight.ui.PuenteNativeIntegrationTest.xml",
+    "dev.bautista.spotlight.ui.StudioActionKeyboardTest.ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction": "final-checks/TEST-dev.bautista.spotlight.ui.StudioActionKeyboardTest.xml",
+    "dev.bautista.spotlight.ui.StudioActionKeyboardTest.tabCyclesAndEnterRunsOnlyFocusedContextAction": "final-checks/TEST-dev.bautista.spotlight.ui.StudioActionKeyboardTest.xml",
+    "dev.bautista.spotlight.ui.PuenteFrameTest.detachedPanesKeepMinimumWidthsAtTheSplitThreshold": "final-checks/TEST-dev.bautista.spotlight.ui.PuenteFrameTest.xml",
+    "dev.bautista.spotlight.ui.PuenteFrameTest.compactEnlargedContextScrollsToAnExplicitActionWithoutExecutingOnScroll": "final-checks/TEST-dev.bautista.spotlight.ui.PuenteFrameTest.xml",
+    "dev.bautista.spotlight.ui.PuenteFrameTest.shortDestinationWrapsContentAndRetainsAdjustableDivider": "final-checks/TEST-dev.bautista.spotlight.ui.PuenteFrameTest.xml",
+    "dev.bautista.spotlight.ui.C2AppOpenJourneyTest.removedPackageCannotDispatchAndCancelRestoresSearchAndInspector": "final-checks/TEST-dev.bautista.spotlight.ui.C2AppOpenJourneyTest.xml",
+    "dev.bautista.spotlight.ui.C2AppOpenJourneyTest.rapidTouchAndEnterShareOneRequestFence": "final-checks/TEST-dev.bautista.spotlight.ui.C2AppOpenJourneyTest.xml",
+    "dev.bautista.spotlight.ui.C2AppOpenJourneyTest.escapeBeforeRequestAndExplicitEnterDoNotLoseQueryOrSelection": "final-checks/TEST-dev.bautista.spotlight.ui.C2AppOpenJourneyTest.xml",
+    "dev.bautista.spotlight.ui.C2AppOpenJourneyTest.availableLauncherRequestedFromInspectorContextPublishesHonestReceipt": "final-checks/TEST-dev.bautista.spotlight.ui.C2AppOpenJourneyTest.xml",
+    "dev.bautista.spotlight.ui.C2AppOpenJourneyTest.stopAndResumeKeepSearchSelectionInspectorWithoutReplayingRequest": "final-checks/TEST-dev.bautista.spotlight.ui.C2AppOpenJourneyTest.xml",
+    "dev.bautista.spotlight.ui.C2AppOpenJourneyTest.permissionRaceReportsFailureWithoutFallbackRetryOrPrivateDetails": "final-checks/TEST-dev.bautista.spotlight.ui.C2AppOpenJourneyTest.xml"
+  },
+  "historical_test_sources_changed": false,
+  "all_20_on_final_source": true
+}

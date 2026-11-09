@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "color": 8,
+    "type": 5,
+    "space": 3,
+    "material": 3
+  },
+  "decoded_images": 88,
+  "same_axis_comparison": true,
+  "unsupported_controls_disabled": true,
+  "reference_zoom": true,
+  "export": {
+    "kind": "lab-preferences-not-rendered-combination",
+    "chosen": {
+      "color": "C05",
+      "type": "T01",
+      "space": "E02",
+      "material": "A02"
+    }
+  },
+  "width390_no_overflow": true,
+  "js_errors": [],
+  "loading": "set_content of exact self-contained HTML; file navigation not tested"
+}

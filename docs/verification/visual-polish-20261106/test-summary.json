@@ -1,0 +1,147 @@
+{
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.compactImeLight": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.phoneLight": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.phoneDark": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.tabletLight": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.enlargedDark": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.oneReviewCannotLaunchTwiceBeforeRecomposition": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.editedBodyInvalidatesEvenAPreviouslyCapturedConfirmCallback": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.editingAndLeavingTheReviewNeverRequestsAnIntent": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.selectingAnotherHomonymInvalidatesTheOpenReviewBeforeAnyRequest": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.whatsappReviewShowsTheExactInternationalNumberBeforePreparingIt": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.restoredDraftRequiresAnotherReviewAndNeverRestoresApproval": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.MessageRecipientReviewRegressionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.SpotifySelectionControlsTest.busyRequestDisablesRouteChangesConfirmationAndObservation": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.SpotifySelectionControlsTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.SpotifySelectionControlsTest.lightRouteSelectionNeverPlaysAndConfirmationAndObservationAreSeparate": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.SpotifySelectionControlsTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.SpotifySelectionControlsTest.darkEnlargedTextKeepsBothRoutesAndActionsReachableAt330dp": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.SpotifySelectionControlsTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.FocusBIntegrationTest.phoneDarkText200": {
+    "xml": "docs/verification/visual-polish-20261106/d1-pdf-green/TEST-dev.bautista.spotlight.ui.FocusBIntegrationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishTokensTest.darkFieldsKeepBoundsFocusSelectionAndRoles": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishTokensTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishTokensTest.legacyOptOutRestoresTheOriginalShapeDefaultsEvenInsideFocus": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishTokensTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishTokensTest.lightFieldsKeepBoundsFocusSelectionAndRoles": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishTokensTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.normalText": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.lightText200": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.darkText200": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.overlay.OverlayWindowMotionTest.openingRemainsVisibleAndAcceptsInputBeforeAnimationFinishes": {
+    "xml": "docs/verification/visual-polish-20261106/motion-initial/TEST-dev.bautista.spotlight.overlay.OverlayWindowMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.overlay.OverlayWindowMotionTest.reducedMotionIsImmediatelyVisibleAndClosesWithoutAnAnimationCallback": {
+    "xml": "docs/verification/visual-polish-20261106/motion-initial/TEST-dev.bautista.spotlight.overlay.OverlayWindowMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.overlay.OverlayWindowMotionTest.actualCloseDurationIs100msAndKeepsTheHostLayout": {
+    "xml": "docs/verification/visual-polish-20261106/motion-initial/TEST-dev.bautista.spotlight.overlay.OverlayWindowMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishMotionTest.interruptedEntryCancelsTheOldCoroutineAndOnlyCompletesTheNewOne": {
+    "xml": "docs/verification/visual-polish-20261106/final/TEST-dev.bautista.spotlight.ui.VisualPolishMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishMotionTest.lightReference160AndExperimental120Frames": {
+    "xml": "docs/verification/visual-polish-20261106/final/TEST-dev.bautista.spotlight.ui.VisualPolishMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishMotionTest.systemReducedMotionStopsImmediatelyAndReenablingDoesNotReplayEntry": {
+    "xml": "docs/verification/visual-polish-20261106/final/TEST-dev.bautista.spotlight.ui.VisualPolishMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishMotionTest.hidingAndReopeningNeverLeavesAnAnimationRunning": {
+    "xml": "docs/verification/visual-polish-20261106/motion-initial/TEST-dev.bautista.spotlight.ui.VisualPolishMotionTest.xml",
+    "passed": false,
+    "status": "historical fixture superseded by new-entry identity case; not a current green test"
+  },
+  "dev.bautista.spotlight.ui.VisualPolishMotionTest.darkReference160AndExperimental120Frames": {
+    "xml": "docs/verification/visual-polish-20261106/final/TEST-dev.bautista.spotlight.ui.VisualPolishMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstIconReviewTest.dark": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstIconReviewTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstIconReviewTest.light": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstIconReviewTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.tabletDark": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.compactImeDark": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualFirstGalleryTest.enlargedLight": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualFirstGalleryTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishMotionTest.aNewEntryAfterHidingNeverLeavesTheOldAnimationRunning": {
+    "xml": "docs/verification/visual-polish-20261106/final/TEST-dev.bautista.spotlight.ui.VisualPolishMotionTest.xml",
+    "passed": true
+  },
+  "dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.wrappedNavigationKeepsTabShiftTabAndEnterOrder": {
+    "xml": "docs/verification/visual-polish-20261106/final-captures/TEST-dev.bautista.spotlight.ui.VisualPolishPdfNavigationTest.xml",
+    "passed": true
+  }
+}

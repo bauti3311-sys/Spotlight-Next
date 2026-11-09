@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.C2FileShareFlowTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-05T00:15:32" hostname="d6fbf1b305fb" time="17.091">
+  <properties/>
+  <testcase name="clearingTheSourceRemovesAnUntouchedIncomingSelection" classname="dev.bautista.spotlight.ui.C2FileShareFlowTest" time="16.786"/>
+  <testcase name="restoringAnEditedIncomingSelectionDoesNotReplaceItWithTheOriginalContext" classname="dev.bautista.spotlight.ui.C2FileShareFlowTest" time="0.305"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

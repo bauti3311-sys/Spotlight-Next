@@ -1,0 +1,268 @@
+{
+  "cases": {
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#sharePreparationKeepsTheSelectedAppAndDoesNotSend": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#anotherPackageCannotSupplyTheSelectedAppsShareCapability": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#revokedCapabilityIsRecheckedBeforeOpeningItsForm": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#documentedSearchRequiresExportedResolvableExactPackage": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#mapsSearchIsDocumentedButSofascoreHomepageDoesNotProveSearch": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#browserSearchRetainsChromeOrVivaldiInsteadOfUsingDefaultBrowser": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#disabledOrSuspendedAppsDoNotPublishShareActions": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#genericSearchIsOnlyExposedByItsPublicHandler": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.control.AppCapabilitiesTest#absentCapabilitiesDoNotProduceActionButtons": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.AppCapabilitiesTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest#unavailableCatalogSearchIsDisabledInsteadOfAdvertisedAsExecutable": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest#lightSharedSearchFormUsesExistingComposition": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest#contextualQueryOpensReviewAndRequestsTheExactPublicActivityOnce": {
+      "passed": true,
+      "xml": "request-round/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest#darkSharedSearchFormUsesExistingComposition": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#completionRequiresAnUnambiguousLiveCandidate": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#configurationWarningsNeverOutrankALiveApplicationPrefix": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#selectedOrderSurvivesAsyncPeersButRemovedResultsDisappear": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#exactCommandsBeatApplicationPrefixesEvenWithExtremeHistory": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#volumePrefixesDoNotDisplaceAnInstalledApplicationPrefix": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#absentAppsAndEmptyQueriesDoNotInventExecutions": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#deniedContactsNeverBecomeAuthorizedResults": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#partialInstalledAppsAreFirstWithoutRemoteAi": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#typoStillOffersTheMatchingInstalledApplication": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#explicitOpenSpotifyResolvesLocallyAndNeverAsAnAiProposal": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#aliasesKeepTheTargetApplicationEligibleAndAccentsAreNormalized": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#relevantPartialApplicationBeatsGenericContextActionsInCompactView": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.SmartSearchAcceptanceTest#blankHomeDoesNotInventApplicationsOrWhatsAppContent": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.SmartSearchAcceptanceTest.xml"
+    },
+    "dev.bautista.spotlight.search.C2ContextSearchTest#homonymousPackagesRequireSelectionAndExactQueryStaysApplicationFirst": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    "dev.bautista.spotlight.search.C2ContextSearchTest#absentSearchDoesNotInventContextualCapability": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    "dev.bautista.spotlight.search.C2ContextSearchTest#appAndTermsPrepareTheExistingPublicSearchWithoutLaunching": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    "dev.bautista.spotlight.search.C2ContextSearchTest#exactInstalledApplicationWinsSameNamedHighScoreAction": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    "dev.bautista.spotlight.search.C2ContextSearchTest#longestApplicationNameWinsAndAccentsInTermsArePreserved": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.C2ContextSearchTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#activityNotFoundAfterValidationOnlyOffersAlternative": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#boundedIntentRejectsOversizedPayloadWithoutDispatch": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#changedDefaultHandlerRequiresFreshReview": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#fallbackRequiresCurrentProposalAndDispatchesOnce": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#unknownOutcomeOffersNoAutomaticOrManualFallback": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#revokedWriteGrantBlocksDispatchBeforeEffect": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#removedPackageIsRevalidatedBeforeDispatch": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#modifiedProposalCannotExecuteDifferentPayload": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#changedContextMakesOldApprovalStale": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#cancelledAndDisposedProposalsNeverDispatch": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#securityExceptionIsSanitizedAndNeverRetried": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#revokedReadGrantBlocksDocumentLaunch": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#revokedAlternativePermissionBlocksConfirmation": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#reviewedPayloadIsAnIndependentSnapshot": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#exactInstalledActivityIsPinnedAndRequestedOnce": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.control.NativeLaunchSessionTest#disabledPrivateMissingAndRestrictedActivitiesNeverDispatch": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.control.NativeLaunchSessionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AppActionsSectionTest#businessCompositionPreservesDestinationAndIncludesReplies": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.ui.AppActionsSectionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AppActionsSectionTest#whatsappReplyNavigationIsNotFilteredOutByActionType": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.ui.AppActionsSectionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AppActionsSectionTest#unsupportedAppHasAnHonestSectionWithoutImaginaryActions": {
+      "passed": true,
+      "xml": "first-round/TEST-dev.bautista.spotlight.ui.AppActionsSectionTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#explicitUrlProviderAndFolderRequestsAreNotTreatedAsGenericFallbacks": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#adaptiveSearchIncludesEveryEligibleMatchWithoutAddingNoise": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#queryShowsSixAndExpansionRetainsEveryDistinctAction": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#explicitDictionaryAndTextCommandsRemainAvailableInitially": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#exactApplicationNeverAutocompletesIntoLongerSibling": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#recognizedBrightnessMusicAndQuestionActionsStayEligible": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#navigationKeepsExistingOrderWhenLateProvidersArrive": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#duplicateActionsAndNoiseOnlyQueriesDoNotFillThreeSlots": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#exactAppBeatsHugeSecondaryScoresAndNoFillerIsAdded": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#explicitAiNotificationsAndAndroidCommandsSurviveDifferentLabels": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#whatsappKeepsUsefulComposeButNotCacheDictionaryOrGenericWeb": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#contentAndSemanticDocumentHitsDoNotRequireTitleOverlap": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.search.CompactResultsTest#explicitAppAndContactScopesUseTheirParsedSearchTerms": {
+      "passed": true,
+      "xml": "visible-round/TEST-dev.bautista.spotlight.search.CompactResultsTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest#removedAppCannotOpenTheStalePreparedSearchForm": {
+      "passed": true,
+      "xml": "request-round/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest#exactAppInspectorPreparesLiveSearchAndEscapeReturnsToItsQuery": {
+      "passed": true,
+      "xml": "request-round/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    }
+  },
+  "uniquePassingCases": 65,
+  "physicalValidation": false,
+  "apkBuilt": false,
+  "actionsDispatched": 0
+}

@@ -49,6 +49,12 @@ object GlassTokens {
     val darkSecondary=Color(0xFFBEC3D2);val lightSecondary=Color(0xFF52525B)
     @Composable fun selection()=MaterialTheme.colorScheme.onSurface.copy(alpha=.08f)
     @Composable fun hover()=MaterialTheme.colorScheme.onSurface.copy(alpha=.04f)
+    val focusStroke=2.dp
+    // Result focus is quieter than the independent ActionPanel, including in light mode.
+    val resultFocusStroke=1.dp
+    fun resultFocusColor(dark:Boolean)=if(dark)Color(0xFF969AAB) else Color(0xFF747783)
+    @Composable fun focusRing()=MaterialTheme.colorScheme.onSurface
+    @Composable fun inputOutline()=MaterialTheme.colorScheme.onSurface.copy(alpha=.50f)
     const val glyphStroke=1.5f
     const val selectionMs=90
     fun rowHeight(c:Config):Dp {
@@ -74,22 +80,25 @@ object GlassTokens {
     fun actionOpacity(c:Config)=c.actionOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: 1f
     fun settingsOpacity(c:Config)=c.settingsOpacity.takeIf{it.isFinite()}?.coerceIn(minimumOpacity,1f) ?: .99f
     fun actionColor(c:Config,dark:Boolean)=
-        (if(dark && c.preset=="glass")Color(0xFF20212B) else if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
+        (if(c.focusInterface){if(dark)Color(0xFF26282C) else Color(0xFFFAF8F3)} else if(dark && c.preset=="glass")Color(0xFF20212B) else if(dark)actionSurface else paper).copy(alpha=actionOpacity(c))
     fun selectedColors(dark:Boolean,amount:Float=1f)=if(dark)
         listOf(Color(0xFFC7CBD4).copy(alpha=.17f*amount),Color(0xFFBFC3CC).copy(alpha=.11f*amount))
         else listOf(.09f,.05f).map{Color.Black.copy(alpha=it*amount)}
     fun selectionDuration(c:Config)=when(c.movement){"precise"->55;"liquid_immersive"->125;else->90}
 }
+private fun opacityForFocus(c:Config,legible:Boolean)=if(legible)maxOf(.90f,GlassTokens.opacity(c)) else GlassTokens.opacity(c)
 @Composable fun Modifier.glassSurface(c:Config, legibleBackdrop:Boolean=false):Modifier {
     val colors=MaterialTheme.colorScheme
-    val shape=RoundedCornerShape(GlassTokens.windowRadius)
+    val premium=LocalPremiumReview.current
+    val shape=RoundedCornerShape(if(premium)26.dp else GlassTokens.windowRadius)
     val dark=colors.surface.luminance()<.5f
-    val material=GlassTokens.windowColors(c,dark,legibleBackdrop)
-    return shadow(24.dp,shape,clip=false,
-            ambientColor=Color.Black.copy(alpha=.24f),spotColor=Color.Black.copy(alpha=.40f))
+    val material=if(c.focusInterface)listOf(colors.surface.copy(alpha=opacityForFocus(c,legibleBackdrop)),colors.surfaceContainerLow.copy(alpha=opacityForFocus(c,legibleBackdrop))) else if(premium)listOf(colors.surface.copy(alpha=1f),colors.surfaceContainerLow.copy(alpha=1f))
+        else GlassTokens.windowColors(c,dark,legibleBackdrop)
+    return shadow(if(c.focusInterface)c.shadowSize.dp else 18.dp,shape,clip=false,
+            ambientColor=Color.Black.copy(alpha=.18f),spotColor=Color.Black.copy(alpha=.30f))
         .clip(shape)
         .background(Brush.verticalGradient(material))
-        .border(1.dp,(if(dark)Color.White else Color.Black).copy(alpha=if(dark).16f else .12f),shape)
+        .border(if(premium).75.dp else 1.dp,(if(premium)colors.outline else if(dark)Color.White else Color.Black).copy(alpha=if(premium).48f else if(dark).14f else .10f),shape)
         .drawWithContent {
             drawContent()
             drawLine(Color.White.copy(alpha=if(dark).12f else .60f),

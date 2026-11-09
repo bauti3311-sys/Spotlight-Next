@@ -1,0 +1,129 @@
+{
+  "before_source": "a82af60a8e212364a8f40ed3a9af49323bfa7983",
+  "distinct_latest_passed": 28,
+  "latest_failures": 0,
+  "lint": {
+    "Warning": 27,
+    "Information": 1
+  },
+  "suites_not_global": true,
+  "cases": {
+    "dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.lightInspectorUsesActualChromeAndRestoresAfterKeyboard": {
+      "passed": true,
+      "evidence": "green-first/TEST-dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.androidBackClosesMenuBeforeInspectorOrOverlay": {
+      "passed": true,
+      "evidence": "green-first/TEST-dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.visibleMenuReturnPreservesQueryAndInspector": {
+      "passed": true,
+      "evidence": "retry-fixtures/TEST-dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.darkInspectorUsesActualChromeAndRestoresAfterKeyboard": {
+      "passed": true,
+      "evidence": "green-first/TEST-dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.escapeClosesMenuBeforeInspectorOrOverlay": {
+      "passed": true,
+      "evidence": "green-first/TEST-dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.xml"
+    },
+    "dev.bautista.spotlight.overlay.KeyboardPositionTest.tabletPositionUsesTheUnoccludedAreaAndRestoresWithoutEditingPreferences": {
+      "passed": true,
+      "evidence": "green-first/TEST-dev.bautista.spotlight.overlay.KeyboardPositionTest.xml"
+    },
+    "dev.bautista.spotlight.overlay.KeyboardPositionTest.noKeyboardAndHardwareKeyboardKeepSavedPlacementAcrossDensities": {
+      "passed": true,
+      "evidence": "green-first/TEST-dev.bautista.spotlight.overlay.KeyboardPositionTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.keyboardBudgetShrinksAndRestoresWithoutLosingMatches": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.tabletShowsTwelveMatchesWithoutManualExpansionOrScroll": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.compactPreferenceKeepsSixAndManualExpansion": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.AdaptiveResultsGeometryTest.xml"
+    },
+    "dev.bautista.spotlight.ui.SpotlightBarTest.optionsRespectKeyboardBudgetAndReportVisibility": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.SpotlightBarTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.queryReviewsOriginalFileAndRequestsOnlyOneSystemChooser": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.reviewedFilesRemainScrollableAcrossWideAndCompactLayouts": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.lostReadAccessAtConfirmationNeverRequestsAnAlternative": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.changedMetadataRequiresAnotherReviewInsteadOfOpeningAndroid": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.clearingTheSourceRemovesAnUntouchedIncomingSelection": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.escapeCancelsWithoutLosingSelectionOrSending": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.changedLiveSelectionInvalidatesThePreparedProposal": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.restoringMetadataDoesNotRestoreConfirmationOrAuthorization": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.multipleLongNamesScrollInShortViewportAndCancelRestoresQueryFocus": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.restoringAnEditedIncomingSelectionDoesNotReplaceItWithTheOriginalContext": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2FileShareFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.phoneLight": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.homeRemainsCompactWithAtMostThreeSuggestions": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.phoneDark": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C1SceneContractTest.reducedViewportPreservesSearchAndFooter": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C1SceneContractTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest.compactAppInspectorScrollKeepsFooterInsideShortViewport": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.C2PublicSearchFlowTest.androidSharedTextReviewKeepsFooterAndActionsReachableWithImeBudget": {
+      "passed": true,
+      "evidence": "regression/TEST-dev.bautista.spotlight.ui.C2PublicSearchFlowTest.xml"
+    },
+    "dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.apkFileInspectorKeepsOriginalSelectionAndFooterAcrossKeyboardBudgets": {
+      "passed": true,
+      "evidence": "file-final/TEST-dev.bautista.spotlight.ui.TabletPhysicalRegressionTest.xml"
+    }
+  },
+  "physical_validation_of_fix": false,
+  "original_photo_sha256": {
+    "1000071027.jpg": "5f7956db128d834f8dfb5e78c5ba620acb9cad804cb2b578fc204ca78d99217a",
+    "1000071029.jpg": "f14be2ccf997098e80c5d05567cd23d84a436f523e690b93afdf6c7695e144df"
+  }
+}

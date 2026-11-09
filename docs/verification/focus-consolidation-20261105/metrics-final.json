@@ -1,0 +1,74 @@
+{
+  "phone-dark-inspector-A": {
+    "width_dp": 360.0,
+    "height_dp": 382.0
+  },
+  "phone-dark-inspector-B": {
+    "width_dp": 360.0,
+    "height_dp": 360.0
+  },
+  "phone-dark-context-A": {
+    "width_dp": 360.0,
+    "height_dp": 176.0
+  },
+  "phone-dark-context-B": {
+    "width_dp": 360.0,
+    "height_dp": 176.0
+  },
+  "actual-action-panel-light": {
+    "width_dp": 344.0,
+    "height_dp": 237.0
+  },
+  "phone-light-inspector-A": {
+    "width_dp": 360.0,
+    "height_dp": 382.0
+  },
+  "phone-light-inspector-B": {
+    "width_dp": 360.0,
+    "height_dp": 360.0
+  },
+  "phone-light-context-A": {
+    "width_dp": 360.0,
+    "height_dp": 176.0
+  },
+  "phone-light-context-B": {
+    "width_dp": 360.0,
+    "height_dp": 176.0
+  },
+  "tablet-inspector-dark-inspector-A": {
+    "width_dp": 470.0,
+    "height_dp": 382.0
+  },
+  "tablet-inspector-dark-inspector-B": {
+    "width_dp": 470.0,
+    "height_dp": 360.0
+  },
+  "tablet-inspector-dark-context-A": {
+    "width_dp": 470.0,
+    "height_dp": 176.0
+  },
+  "tablet-inspector-dark-context-B": {
+    "width_dp": 470.0,
+    "height_dp": 176.0
+  },
+  "tablet-inspector-light-inspector-A": {
+    "width_dp": 470.0,
+    "height_dp": 382.0
+  },
+  "tablet-inspector-light-inspector-B": {
+    "width_dp": 470.0,
+    "height_dp": 360.0
+  },
+  "tablet-inspector-light-context-A": {
+    "width_dp": 470.0,
+    "height_dp": 176.0
+  },
+  "tablet-inspector-light-context-B": {
+    "width_dp": 470.0,
+    "height_dp": 176.0
+  },
+  "actual-action-panel-dark": {
+    "width_dp": 344.0,
+    "height_dp": 237.0
+  }
+}

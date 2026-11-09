@@ -1,0 +1,16 @@
+tablet-dark-100 menu=Rect(550, 120 - 910, 440) cap=320 parent=Rect(90, 64 - 910, 340)
+tablet-dark-100 form-height=91.0
+tablet-dark-200 menu=Rect(550, 120 - 910, 440) cap=320 parent=Rect(90, 64 - 910, 364)
+tablet-dark-200 form-height=112.0
+tablet-light-100 menu=Rect(550, 120 - 910, 440) cap=320 parent=Rect(90, 64 - 910, 340)
+tablet-light-100 form-height=91.0
+tablet-light-200 menu=Rect(550, 120 - 910, 440) cap=320 parent=Rect(90, 64 - 910, 364)
+tablet-light-200 form-height=112.0
+phone-dark-100 menu=Rect(24, 120 - 344, 440) cap=320 parent=Rect(16, 64 - 344, 308)
+phone-dark-100 form-height=143.0
+phone-dark-200 menu=Rect(24, 120 - 344, 440) cap=320 parent=Rect(16, 64 - 344, 332)
+phone-dark-200 form-height=216.0
+phone-light-100 menu=Rect(24, 120 - 344, 440) cap=320 parent=Rect(16, 64 - 344, 308)
+phone-light-100 form-height=143.0
+phone-light-200 menu=Rect(24, 120 - 344, 440) cap=320 parent=Rect(16, 64 - 344, 332)
+phone-light-200 form-height=216.0

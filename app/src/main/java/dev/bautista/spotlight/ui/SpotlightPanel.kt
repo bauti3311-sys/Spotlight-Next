@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,6 +52,7 @@ fun SpotlightPanel(
     incomingQueryRevision:Int=0,
 ) =
     SpotlightTheme(config.theme, config) {
+        PuenteOverlayTheme(config) {
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
         val checkpointTask=LocalTaskCheckpoint.current
@@ -69,11 +71,42 @@ fun SpotlightPanel(
         }
         val focus = remember { FocusRequester() }
         val editorFocus = remember { FocusRequester() }
+        var returnFocusRevision by remember { mutableIntStateOf(0) }
+        LaunchedEffect(returnFocusRevision) {
+            if(returnFocusRevision>0) {
+                // Restore after removing the focused form, not before its disposal.
+                withFrameNanos{}
+                focus.requestFocus()
+            }
+        }
+        LaunchedEffect(config.focusInterface) {
+            // The preference reparents the editor; request its focus after placement.
+            withFrameNanos{}
+            runCatching{focus.requestFocus()}
+        }
+        val launchSession=remember(context){NativeLaunchSession(context)}
+        DisposableEffect(launchSession){onDispose{launchSession.dispose()}}
         var query by rememberSaveable { mutableStateOf(initialQuery) }
         var searchScope by rememberSaveable(stateSaver=SearchScopeSaver) { mutableStateOf<SearchScope?>(null) }
         var systemPage by rememberSaveable(stateSaver=SystemTaskSaver) {mutableStateOf<Action.SystemPanel?>(null)}
+        val fileShareDraft=rememberSaveable(saver=FileBufferSaver){dev.bautista.spotlight.data.FileBuffer()}
+        var fileShareRevision by remember{mutableIntStateOf(0)}
+        var fileShareSelectionOwner by rememberSaveable{mutableStateOf<String?>(null)}
+        var fileShareContextOwner by rememberSaveable{mutableStateOf<String?>(null)}
         var messageForm by rememberSaveable(stateSaver=MessageTaskSaver) { mutableStateOf<Action.ComposeMessage?>(null) }
         var searchForm by rememberSaveable(stateSaver=SearchTaskSaver) { mutableStateOf<Action.ComposeSearch?>(null) }
+        val focusEditors=rememberSaveable(config.privateMode,saver=FocusEditors.saver(config.privateMode)){FocusEditors(initialQuery)}
+        val focusSearchReview=remember(searchForm?.topic,searchForm?.packageName){FocusSearchReviewController()}
+        var spotifySearchTrigger by remember{mutableIntStateOf(0)}
+        val spotifyConnection by app.spotify.state.collectAsState()
+        val focusSearchActive=config.focusInterface && searchForm!=null
+        val authorizedSpotifySearch=focusSearchActive && searchForm?.topic=="spotify" && spotifyConnection==dev.bautista.spotlight.integrations.spotify.SpotifyConnectionState.AUTHORIZED
+        val focusIdentity=remember(searchForm?.topic,searchForm?.packageName) {
+            val task=searchForm
+            val label=task?.let{runCatching{context.packageManager.getApplicationLabel(context.packageManager.getApplicationInfo(it.packageName,0)).toString()}.getOrDefault(ActionCatalog.displayName(it.topic))}
+            label to task?.let{runCatching{context.packageManager.getApplicationIcon(it.packageName)}.getOrNull()}
+        }
+        LaunchedEffect(query){if(focusEditors.global.text!=query)focusEditors.global=androidx.compose.ui.text.input.TextFieldValue(query,androidx.compose.ui.text.TextRange(query.length))}
         var notificationKey by rememberSaveable {mutableStateOf<String?>(null)}
         var audioPanel by rememberSaveable { mutableStateOf(false) }
         var showAi by rememberSaveable { mutableStateOf(false) }
@@ -91,7 +124,7 @@ fun SpotlightPanel(
         var followUp by rememberSaveable{mutableStateOf("")}
         val replyTargets by Replies.targets.collectAsState()
         val replyConnected by Replies.connected.collectAsState()
-        fun clearForms(){systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
+        fun clearForms(){fileShareDraft.clear();fileShareSelectionOwner=null;fileShareContextOwner=null;systemPage=null;clipEditing=null;snippetTemplate=null;timerMinutes=null;deletingNote=null;notificationKey=null;messageForm=null;searchForm=null;audioPanel=false;pendingAsk=null;pendingWorkflow=null;snippetText=null}
         var category by rememberSaveable { mutableStateOf("Todo") }
         data class Location(val query: String, val category: String, val scope: SearchScope?, val selected: Int,
             val expanded: Boolean, val retainedId: String?)
@@ -120,6 +153,7 @@ fun SpotlightPanel(
         // Moving between the tablet column and phone sheet must retain edited form state.
         val contextDrafts=rememberSaveableStateHolder()
         val recentDrafts=rememberSaveable(saver=ContextDraftKeysSaver){mutableListOf<String>()}
+        val headerHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
         val inspectorHost = remember { movableContentOf<@Composable () -> Unit> { content -> content() } }
         var expandedPreview by rememberSaveable {mutableStateOf(false)}
         val previewPages=rememberSaveable(saver=PreviewPagesSaver){mutableStateMapOf<String,Int>()}
@@ -204,7 +238,25 @@ fun SpotlightPanel(
             if(preview==oldPreview){preview=nextPreview;if(oldPreview!=null && nextPreview==null)error="La nota ya no existe. Su vista recuperada se descartó."}
             if(pinnedPreview==oldPin){pinnedPreview=nextPin;if(oldPin!=null && nextPin==null)error="La nota ya no existe. Su vista recuperada se descartó."}
         }
+        var importedSelection by rememberSaveable{mutableStateOf<String?>(null)}
+        var importedContextId by rememberSaveable{mutableStateOf<String?>(null)}
         val activeContext by app.contexts.active.collectAsState()
+        LaunchedEffect(activeContext?.id) {
+            val sourceId=activeContext?.id
+            if(sourceId!=null && app.contexts.sharedFiles.items.isNotEmpty()) {
+                // Restore the user's edited selection; import only a genuinely new context.
+                if(importedContextId!=sourceId) {
+                    fileBuffer.clear();app.contexts.sharedFiles.items.forEach{fileBuffer.add(it)}
+                    importedSelection=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)
+                    importedContextId=sourceId
+                }
+            } else if(importedContextId!=null) {
+                // Clear an untouched incoming selection when its context is removed/expired;
+                // preserve a selection the user has deliberately changed in the tray.
+                if(importedSelection==dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items))fileBuffer.clear()
+                importedSelection=null;importedContextId=null
+            }
+        }
         val pinnedContexts by app.contexts.pinned.collectAsState()
         val savedChats by app.contexts.conversations.collectAsState()
         val indexStatus by app.index.status.collectAsState()
@@ -217,16 +269,20 @@ fun SpotlightPanel(
             if(listState.isScrollInProgress)touchedResultId=null
         }
         fun back() {
+            // History is intentionally not persisted. A restored Focus task still
+            // owns the saved global query, selection, scope and LazyListState.
+            val returningRestoredSearch=config.focusInterface && searchForm!=null && history.isEmpty()
+            if(launchSession.issue!=null){launchSession.cancel();focus.requestFocus();return}
             inspectorPinned=false;pinnedPreview=null;pinnedCard=null
             aiJob?.cancel()
             showAi=false
-            clearForms();preview=null;menu=false;noteEditor=false;selected=0;navigating=false;cardJob?.cancel();card=null
+            clearForms();preview=null;menu=false;noteEditor=false;if(!returningRestoredSearch)selected=0;navigating=false;cardJob?.cancel();card=null
             if(history.isNotEmpty()) {
                 val previous=history.removeAt(history.lastIndex)
                 restoringLocation=previous
                 query=previous.query;category=previous.category;searchScope=previous.scope;selected=previous.selected
-            } else {searchScope=null;category="Todo"}
-            runCatching{focus.requestFocus()}
+            } else if(!returningRestoredSearch){searchScope=null;category="Todo"}
+            if(config.focusInterface)returnFocusRevision++ else runCatching{focus.requestFocus()}
         }
         LaunchedEffect(incomingQueryRevision) {
             if(incomingQueryRevision>0){
@@ -269,11 +325,11 @@ fun SpotlightPanel(
                     )
                 }
         }
-        fun inspectorTaskActive() = showAi || pendingAsk!=null || pendingWorkflow!=null ||
+        fun inspectorTaskActive() = launchSession.issue!=null || showAi || pendingAsk!=null || pendingWorkflow!=null ||
             messageForm!=null || searchForm!=null || timerMinutes!=null || audioPanel ||
             notificationKey!=null || noteEditor || clipEditing!=null || snippetTemplate!=null ||
             snippetText!=null || deletingNote!=null || systemPage?.page in setOf(
-                "interpret", "agent", "weather-native", "sports-native", "calendar", "context-ai", "conversation")
+                "interpret", "agent", "weather-native", "sports-native", "calendar", "context-ai", "conversation", "file-share")
         fun keepSurface() = inspectorPinned || inspectorTaskActive() || PreviewPresentation.needsInspector(preview)
         fun present(items:List<Result>):List<Result> {
             val filtered=filterResults(items).filter(ProductVisibility::allowed)
@@ -333,24 +389,20 @@ fun SpotlightPanel(
                 .setPrimaryClip(ClipData.newPlainText("Spotlight", text))
             Toast.makeText(context, "Copiado", Toast.LENGTH_SHORT).show()
         }
-        fun launch(intent: Intent, close: Boolean = true) {
-            runCatching {
-                    val preferred = dev.bautista.spotlight.control.CommandCenter.preferred(intent)
-                    if (
-                        preferred == null ||
-                            runCatching {
-                                    context.startActivity(
-                                        preferred.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    )
-                                }
-                                .isFailure
-                    )
-                        context.startActivity(
-                            Intent(intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        )
-                    if (close && !keepSurface()) onClose()
+        fun launchOrigin():Any = listOf(query,category,searchScope,searchGeneration,selected,config.privateMode,config.files,config.contacts,config.trees,
+            present(resultsState.value).getOrNull(selected)?.let { item ->
+                item.id to when(val action=item.action) {
+                    is Action.Launch -> launchSession.signature(action.intent)
+                    is Action.InApp -> launchSession.signature(action.intent)+launchSession.signature(action.fallback)
+                    else -> action.toString()
                 }
-                .onFailure { error = "No hay una app disponible para esta acción." }
+            },preview?.id,pinnedPreview?.id,inspectorPinned,messageForm,searchForm,systemPage,if(systemPage?.page=="file-share")fileShareRevision else 0)
+        SideEffect { launchSession.synchronize(launchOrigin()) }
+        fun launch(intent: Intent, close: Boolean = true):Boolean {
+            val preferred=CommandCenter.preferred(intent)
+            val requested=launchSession.launch(preferred ?: intent,if(preferred!=null)intent else null,launchOrigin(),close)
+            if(requested){if(close && !keepSurface())onClose()}else menu=false
+            return requested
         }
         fun web() {
             if (query.isNotBlank())
@@ -381,19 +433,20 @@ fun SpotlightPanel(
                 )
             }
         }
+        fun prepareFiles(items:List<Result>,packageName:String?=null,selectionOwner:String?=null,contextOwner:String?=null) {
+            if(inspectorPinned){error="Desfijá el inspector para revisar la selección. La tarea actual se conserva.";return}
+            val snapshot=items.toList()
+            if(snapshot.isEmpty()){error="Seleccioná archivos antes de compartir.";return}
+            val checked=dev.bautista.spotlight.data.FileBuffer()
+            if(!snapshot.all{checked.add(it)}){error="La selección contiene un elemento no compatible.";return}
+            val canonical=try{dev.bautista.spotlight.sharing.FileShareContract.canonicalRows(context,checked.items)}catch(_:Exception){error="No se pudo autorizar la selección de archivos.";return}
+            push();clearForms();canonical.forEach{fileShareDraft.add(it)};fileShareRevision++
+            fileShareSelectionOwner=selectionOwner;fileShareContextOwner=contextOwner
+            systemPage=Action.SystemPanel("file-share",packageName.orEmpty());preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()
+        }
         fun share(item: Result) {
-            val uri =
-                if (item.category == "Archivos") (item.action as? Action.Launch)?.intent?.data
-                else null
-            val send = Intent(Intent.ACTION_SEND)
-            if (uri != null) {
-                send
-                    .setType(item.mime ?: "application/octet-stream")
-                    .putExtra(Intent.EXTRA_STREAM, uri)
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                send.clipData = ClipData.newRawUri("Archivo", uri)
-            } else
-                send.setType("text/plain").putExtra(Intent.EXTRA_TEXT, item.preview ?: item.title)
+            if(item.category=="Archivos"){prepareFiles(listOf(item));return}
+            val send=Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,item.preview ?: item.title)
             launch(Intent.createChooser(send, "Compartir"))
         }
         fun lookup(action: Action.Lookup) {
@@ -437,6 +490,17 @@ fun SpotlightPanel(
         }
         fun execute(item: Result) {
             error = ""
+            if(item.category=="Archivos" && item.action is Action.Launch && QueryInterpreter.interpret(query,searchScope).shareFiles) {
+                prepareFiles(listOf(item));return
+            }
+            if(item.action is Action.SystemPanel && item.action.page=="file-share-selection") {
+                if(dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)!=item.action.packageName){error="La selección cambió. Volvé a revisar los archivos actuales.";return}
+                prepareFiles(fileBuffer.items,selectionOwner=item.action.packageName);return
+            }
+            if(item.action is Action.SystemPanel && item.action.page=="file-share-context") {
+                if(app.contexts.active.value?.id!=item.action.packageName){error="La selección cambió. Volvé a revisar el contexto actual.";return}
+                prepareFiles(app.contexts.sharedFiles.items,contextOwner=item.action.packageName);return
+            }
             val replacesInspector = when(val action=item.action) {
                 is Action.Ask -> !action.continuation
                 is Action.ComposeSearch, is Action.ComposeMessage, is Action.SystemPanel,
@@ -459,7 +523,7 @@ fun SpotlightPanel(
             }
             val ask=(item.action as? Action.Ask)?.let(AiRequestPolicy::prepare)?.let{AiRequestPolicy.revalidateContinuation(it,aiContextDestination,aiDestination,conversation.toList())}
             if(ask!=null && (AiRequestPolicy.requiresReview(ask) || ask.origin==AiInputOrigin.USER_QUERY && !ai.configured(config))){clearForms();preview=null;menu=false;pendingAsk=ask;return}
-            if(query.isNotBlank() && (item.action is Action.Device || item.category=="Aplicaciones" && item.action is Action.Launch)) app.scope.launch { app.preferences.recordAction(query) }
+            if(query.isNotBlank() && item.action is Action.Device) app.scope.launch { app.preferences.recordAction(query) }
             if(item.action !is Action.Navigate && item.action !is Action.RestoreQuery && item.action !is Action.ReadNotification && (item.action as? Action.ComposeMessage)?.replyKey==null) app.scope.launch { app.preferences.recordSelection(item.id) }
             when (val action = item.action) {
                 is Action.SystemPanel -> {push();clearForms();systemPage=if(action.page=="agent" && action.packageName.isBlank())action.copy(packageName=query) else action;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
@@ -480,8 +544,23 @@ fun SpotlightPanel(
                 }
                 is Action.Shortcut -> runCatching { context.getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(action.packageName,action.id,null,null,android.os.Process.myUserHandle());if(!keepSurface())onClose() }.onFailure { error="El acceso directo ya no está disponible o Android no autoriza el lanzador." }
                 is Action.Navigate -> {push();clearForms();navigating=false;searchScope=action.scope;if(action.scope.section!="results")query="";category=when(action.scope.section){"files","files-menu","files-mode"->"Archivos";"commands","topic"->"Acciones";"apps"->"Apps";"ai"->"IA";"clipboard"->"Portapapeles";else->"Todo"};invalidateResults();preview=null;menu=false;selected=0;focus.requestFocus()}
-                is Action.ComposeMessage -> {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
-                is Action.ComposeSearch -> {push();clearForms();searchForm=action;preview=null;menu=false;card=null;noteEditor=false}
+                is Action.ComposeMessage -> {
+                    val unavailable=action.channel.startsWith("share:") && dev.bautista.spotlight.control.IntegrationRegistry(context)
+                        .launchAccess(Intent(Intent.ACTION_SEND).setType("text/plain").setPackage(action.channel.substringAfter(":"))).problem!=null
+                    if(unavailable)error="La acción de compartir ya no está disponible. Revisá la app y sus permisos."
+                    else {push();clearForms();messageForm=action;preview=null;menu=false;card=null;noteEditor=false}
+                }
+                is Action.ComposeSearch -> {
+                    val unavailable=action.topic in setOf("app","app-web-search") && dev.bautista.spotlight.control.IntegrationRegistry(context)
+                        .launchAccess(Intent(if(action.topic=="app-web-search")Intent.ACTION_WEB_SEARCH else Intent.ACTION_SEARCH).setPackage(action.packageName)).problem!=null
+                    if(unavailable)error="La búsqueda de esta app ya no está disponible. Revisá la instalación y sus permisos."
+                    else {
+                        val editor=if(config.focusInterface && action.query.isBlank())focusEditors.value(action) else androidx.compose.ui.text.input.TextFieldValue(action.query,androidx.compose.ui.text.TextRange(action.query.length))
+                        push();clearForms();searchForm=if(config.focusInterface)action.copy(query=editor.text) else action
+                        if(config.focusInterface)focusEditors.edit(searchForm!!,editor)
+                        preview=null;menu=false;card=null;noteEditor=false
+                    }
+                }
                 is Action.AudioPanel -> {push();clearForms();audioPanel=true;preview=null;menu=false;card=null;noteEditor=false;keyboard?.hide()}
                 is Action.Access -> when(action.access){
                     "contacts","calendar","base" -> launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access",action.access).putExtra("query",action.query))
@@ -489,13 +568,9 @@ fun SpotlightPanel(
                     else -> launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java))
                 }
                 is Action.InApp -> {
-                    runCatching {
-                            context.startActivity(
-                                Intent(action.intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            )
-                            if(!keepSurface())onClose()
-                        }
-                        .onFailure { launch(action.fallback) }
+                    if(launchSession.launch(action.intent,action.fallback,launchOrigin(),true)) {
+                        if(!keepSurface())onClose()
+                    }else menu=false
                 }
                 is Action.Device -> {
                     if(action.command.startsWith("volume:") || action.command !in setOf("volume_up","volume_down","mute","unmute")) {
@@ -535,8 +610,10 @@ fun SpotlightPanel(
                 }
                 is Action.Copy -> { copy(action.text); if(!keepSurface())onClose() }
                 is Action.Launch -> {
-                    launch(action.intent, close=item.category!="Archivos")
-                    app.scope.launch { app.preferences.record(action.intent.component?.let { "${it.packageName}/${it.className}" } ?: item.id) }
+                    if(launch(action.intent, close=item.category!="Archivos"))app.scope.launch {
+                        app.preferences.record(action.intent.component?.let { "${it.packageName}/${it.className}" } ?: item.id)
+                        if(query.isNotBlank() && item.category=="Aplicaciones")app.preferences.recordAction(query)
+                    }
                 }
                 is Action.RestoreQuery -> {
                     push();clearForms();searchScope=null;query=action.query;category="Todo";invalidateResults();selected=0;navigating=false;preview=null;menu=false
@@ -657,7 +734,7 @@ fun SpotlightPanel(
             observedAiQuery=query
         }
         DisposableEffect(Unit){onDispose{aiJob?.cancel()}}
-        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
+        LaunchedEffect(clips, clipFavorites, config.aliases, config.snippets, config.routines, notes, favorites, pinned, indexRevision, replyTargets, replyConnected,activeContext,pinnedContexts,savedChats,fileBuffer.items,config.privateMode,config.sourcePriority,config.suggestions,config.hiddenSuggestions,config.pinnedSuggestions,config.learning,config.recent,config.actionRecent) {
             snapshotFlow { Triple(query,searchScope,searchGeneration).also {
                 app.diagnostics.traceSearch("observed",it.second?.section,it.third)
             } }
@@ -694,7 +771,7 @@ fun SpotlightPanel(
                                         cardLoading = false
                                     }
                                 }
-                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope).collect {
+                            app.search.search(q, config.copy(favorites = favorites,pins=pinned),requestScope,selectedFiles=fileBuffer.items).collect {
                                 app.diagnostics.traceSearch(if(isCurrentRequest())"received" else "obsolete-rows",requestScope?.section,generation,it.size)
                                 if(!isCurrentRequest())return@collect
                                 val selectedId=present(results).getOrNull(selected)?.id
@@ -747,6 +824,8 @@ fun SpotlightPanel(
             // rather than capturing only the outer composition's computed list.
             val visibleResults=present(resultsState.value)
             val selectedResult=visibleResults.getOrNull(selected.coerceIn(0,(visibleResults.size-1).coerceAtLeast(0)))
+            val contextHints=if(selectedResult?.category=="Aplicaciones" && normalize(selectedResult.title)==normalize(query.trim()))emptyList() else interpretation.hints
+            val showFileTray=fileBuffer.items.isNotEmpty() && systemPage?.page!="file-share"
             LaunchedEffect(selectedResult?.id,navigating,menu) {
                 if(!menu && navigating) {
                     if(selectedResult?.category=="Archivos" &&
@@ -775,8 +854,11 @@ fun SpotlightPanel(
             // Compact Raycast inspector: only show it on wide overlays when a
             // real app is selected or when the user explicitly requests actions.
             // Never reserve an empty pane on narrow screens.
-            LaunchedEffect(selectedResult?.id,inspectorPinned) {
-                if(!inspectorPinned && !inspectorTaskActive() && applicationPreviewId!=null) {
+            LaunchedEffect(selectedResult?.id,inspectorPinned,loading,config.focusInterface) {
+                // Focus restores identity before asynchronous providers refill the rows.
+                // Empty/intermediate batches are not a user selection change.
+                if(!inspectorPinned && !inspectorTaskActive() && applicationPreviewId!=null &&
+                    (!config.focusInterface || !loading && selectedResult!=null)) {
                     preview=selectedResult?.takeIf{PreviewPresentation.isApplication(it)}
                     applicationPreviewId=preview?.id
                 }
@@ -791,6 +873,7 @@ fun SpotlightPanel(
             }
             val mediaSnapshot by mediaFlow.collectAsState(initial=null)
             val mediaInspector=inspectorPackage!=null && !mediaDismissed &&
+                (!config.focusInterface || !compact || applicationPreviewId==inspectorItem?.id || inspectorPinned) &&
                 (mediaSnapshot?.packageName==inspectorPackage || inspectorPinned)
             val inspectorCard=if(inspectorPinned)pinnedCard else activeCard
             val richPreview=PreviewPresentation.needsInspector(inspectorItem)
@@ -799,14 +882,21 @@ fun SpotlightPanel(
             val taskInspector=inspectorTaskActive()
             LaunchedEffect(inspectorPinned,pinnedPreview?.id,pinnedCard,taskInspector){if(inspectorPinned && pinnedPreview==null && pinnedCard==null && !taskInspector)inspectorPinned=false}
             val hasInspector=richPreview || applicationPreview || inspectorCard!=null || taskInspector || mediaInspector
-            val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector
+            val widePreview=config.adaptive && inspectorWidthAvailable && hasInspector && !focusSearchActive
+            val puente=config.focusInterface && !taskInspector && !showAi && !noteEditor &&
+                systemPage==null && messageForm==null && searchForm==null && !audioPanel &&
+                pendingAsk==null && pendingWorkflow==null && snippetText==null && clipEditing==null &&
+                snippetTemplate==null && timerMinutes==null && deletingNote==null && notificationKey==null &&
+                !(category=="IA" && query.isBlank()) && !expandedPreview
+
             fun dismissInspector() {
+                if(launchSession.issue!=null){launchSession.cancel();focus.requestFocus();return}
                 mediaDismissed=true
                 applicationPreviewId=null
                 inspectorPinned=false;pinnedPreview=null;pinnedCard=null
                 preview=null;card=null;expandedPreview=false;menu=false
                 clearForms();noteEditor=false;aiJob?.cancel();showAi=false
-                runCatching{focus.requestFocus()}
+                returnFocusRevision++
             }
             val inspectorToolbar:@Composable ()->Unit = {
                 Row(Modifier.fillMaxWidth().padding(start=16.dp,end=4.dp).testTag("inspector-toolbar"),verticalAlignment=Alignment.CenterVertically) {
@@ -835,25 +925,37 @@ fun SpotlightPanel(
                     }
                 }
             }
-            val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(fileBuffer.items.isNotEmpty())140 else 0)+(if(interpretation.hints.isNotEmpty())24 else 0)
-            val availableBody = (viewport - (if(compact && config.adaptive)168.dp else 112.dp) - extraHeaders.dp).coerceAtLeast(0.dp)
+            val extraHeaders=(if(config.privateMode)22 else 0)+(if(activeContext!=null)42 else 0)+(if(showFileTray)140 else 0)+(if(contextHints.isNotEmpty())24 else 0)
+            var headerPixels by remember { mutableStateOf<Int?>(null) }
+            var footerPixels by remember { mutableStateOf<Int?>(null) }
+            val density=LocalDensity.current
+            // The independent WM budget includes the root's 12dp top/bottom padding.
+            // Measure chrome instead of subtracting overlapping 112/168 + 48/90dp
+            // guesses, which left usable space empty above Gboard on the tablet.
+            val headerHeight=headerPixels?.let{with(density){it.toDp()}} ?: (56+extraHeaders).dp
+            val footerHeight=footerPixels?.let{with(density){it.toDp()}} ?: 48.dp
+            val availableBody = (viewport - 24.dp - headerHeight).coerceAtLeast(0.dp)
             // maxHeight is a results-list preference. A contextual inspector may
             // use the remaining viewport, shrinking naturally to its content.
             val adaptiveSearch = query.isNotBlank() && !config.compactSearchResults
-            val panelLimit = if(adaptiveSearch)(viewport - 84.dp - extraHeaders.dp).coerceAtLeast(0.dp)
-                else if(widePreview)availableBody else minOf(availableBody,config.maxHeight.dp)
+            val panelLimit = if(adaptiveSearch || hasInspector)availableBody
+                else minOf(availableBody,config.maxHeight.dp+footerHeight+3.dp)
             val homeLayout=query.isBlank() && searchScope==null && category=="Todo"
             val optionsInHeader=(homeLayout && visibleResults.isEmpty()) || systemPage!=null || messageForm!=null || searchForm!=null
-            val resultLimit = (panelLimit - if(adaptiveSearch)52.dp else if(homeLayout || widePreview)48.dp else 90.dp).coerceAtLeast(0.dp)
+            val bodyHeading=if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor))48.dp else 0.dp
+            val resultLimit = (panelLimit-footerHeight-3.dp-bodyHeading).coerceAtLeast(0.dp)
             val splitPanelHeight = resultLimit
-            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else .62f
+            val resultsFraction=if(richPreview && inspectorItem?.category=="Archivos").42f else if(LocalFocusUi.current).48f else if(LocalLiquidScene.current!=null).43f else if(LocalPremiumReview.current).54f else .62f
             val inlineResultRows=!compact && (!widePreview || maxWidth*resultsFraction>=384.dp)
             Box(
                 Modifier.fillMaxWidth()
-                    .glassSurface(config,legibleBackdrop=true)
+                    .then(if(puente)Modifier else Modifier.glassSurface(config,legibleBackdrop=true))
                     .onPreviewKeyEvent { event ->
                     if(event.type==KeyEventType.KeyDown){pointerSelecting=false;touchedResultId=null}
                     if (event.type != KeyEventType.KeyDown) false
+                    else if(launchSession.issue!=null && event.key in listOf(Key.Escape,Key.Back)) {
+                        launchSession.cancel();focus.requestFocus();true
+                    }
                     else if (
                         noteEditor &&
                             (event.isCtrlPressed || event.isMetaPressed) &&
@@ -914,6 +1016,7 @@ fun SpotlightPanel(
                                 if(searchOptions){searchOptions=false;focus.requestFocus()}
                                 else if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}
                                 else if(expandedPreview){expandedPreview=false;focus.requestFocus()}
+                                else if(focusSearchActive){if(focusSearchReview.prepared!=null)focusSearchReview.invalidate() else back()}
                                 else if (hasInspector) {dismissInspector()}
                                 else if(moreResults){toggleMoreResults()}
                                 else if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null || history.isNotEmpty())back()
@@ -923,7 +1026,7 @@ fun SpotlightPanel(
                             }
                             Key.Tab -> {
                                 val liveSelection=present(resultsState.value).getOrNull(selected)
-                                if (searchFocused && canAutocomplete && suggestion!=null && !event.isShiftPressed) {
+                                if (!focusSearchActive && searchFocused && canAutocomplete && suggestion!=null && !event.isShiftPressed) {
                                     acceptSuggestion()
                                 } else if (liveSelection != null) {
                                     // Hide while the query still owns its native input connection.
@@ -946,7 +1049,7 @@ fun SpotlightPanel(
                             Key.DirectionLeft,Key.DirectionRight -> false
                             Key.Enter,
                             Key.NumPadEnter -> {
-                                present(resultsState.value).getOrNull(selected)?.let { execute(it) }
+                                if(focusSearchActive){if(authorizedSpotifySearch)spotifySearchTrigger++ else if(focusSearchReview.prepared==null)focusSearchReview.prepare(searchForm!!) else focusSearchReview.take()?.let{execute(Result("form:search","Buscar","","Acciones",0,it))}} else present(resultsState.value).getOrNull(selected)?.let { execute(it) }
                                 true
                             }
                             else -> false
@@ -954,13 +1057,15 @@ fun SpotlightPanel(
                 }
             ) {
                 val header:@Composable ()->Unit = {
+                val renderedTask=searchForm
                 SpotlightBar(
-                    query,
+                    if(focusSearchActive)focusEditors.value(searchForm!!).text else query,
                     { next ->
                         // Selection/focus changes can report the same text. They must not
                         // clear results: snapshotFlow only searches when text actually changes.
-                        if(next!=query) {
+                        if(!focusSearchActive && next!=query) {
                             if(!inspectorPinned){showAi=false;clearForms()}
+                            if(config.focusInterface && !inspectorPinned)applicationPreviewId=null
                             query = next
                             selected=0
                             navigating = false
@@ -975,20 +1080,35 @@ fun SpotlightPanel(
                         selectMode(it)
                     },
                     {
+                        if(focusSearchActive){val task=searchForm!!;focusEditors.edit(task,androidx.compose.ui.text.input.TextFieldValue(""));searchForm=task.copy(query="");focusSearchReview.invalidate()} else {
                         history.clear();if(!inspectorPinned)clearForms();searchScope=null;query = ""
                         card = null
                         if(!inspectorPinned)aiText = ""
                         category = "Todo"
+                        }
                     },
-                    { present(resultsState.value).getOrNull(selected)?.let { execute(it) } },
+                    { if(focusSearchActive){if(authorizedSpotifySearch)spotifySearchTrigger++ else if(focusSearchReview.prepared==null)focusSearchReview.prepare(searchForm!!) else focusSearchReview.take()?.let{execute(Result("form:search","Buscar","","Acciones",0,it))}} else present(resultsState.value).getOrNull(selected)?.let { execute(it) } },
                     focus,
                     config.opacity,
                     compact,
-                    suggestion,
+                    if(focusSearchActive)null else suggestion,
                     { acceptSuggestion() },
                     motionEnabled,
                     autocompleteKeyLabel=KeyboardBindings.resolve(config,"complete")!!.label,
-                    contextAccent=rememberCommandAccent(selectedResult),
+                    contextAccent=if(focusSearchActive)remember(searchForm?.packageName,focusIdentity.second,colors){val raw=InspectorAccent.brand(searchForm?.packageName) ?: InspectorAccent.iconColor(focusIdentity.second) ?: colors.primary;PremiumMaterial.accent(colors,raw).primary} else null,
+                    controlledValue=if(config.focusInterface)if(focusSearchActive)focusEditors.value(searchForm!!) else if(focusEditors.global.text==query)focusEditors.global else androidx.compose.ui.text.input.TextFieldValue(query,androidx.compose.ui.text.TextRange(query.length)) else null,
+                    onEditorValueChange=if(config.focusInterface)({value->
+                        val task=searchForm
+                        if(focusSearchActive) {
+                            // Ignore a detached contextual editor after cancel/return or target change.
+                            if(task!=null && task.topic==renderedTask?.topic && task.packageName==renderedTask?.packageName) {
+                                focusEditors.edit(task,value);searchForm=task.copy(query=value.text);focusSearchReview.invalidate()
+                            }
+                        } else if(task==null)focusEditors.global=value
+                    }) else null,
+                    contextualLabel=if(focusSearchActive)focusIdentity.first else null,
+                    contextualIcon=if(focusSearchActive)focusIdentity.second else null,
+                    contextualPlaceholder=if(focusSearchActive)focusSearchPlaceholder(searchForm!!.topic) else null,
                     showOptionsButton=optionsInHeader,
                     onDismiss=onClose,
                     onOptionsChange={searchOptions=it},
@@ -1001,19 +1121,19 @@ fun SpotlightPanel(
                             {group->searchOptions=false;launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group",group))},
                             {mode->searchOptions=false;selectMode(mode)})
                     },
-                    optionsMaxHeight=minOf(320.dp,(viewport-61.dp).coerceAtLeast(0.dp)),
-                    onBack=if(searchScope!=null || history.isNotEmpty())({preview=null;menu=false;back()}) else null,
+                    optionsMaxHeight=minOf(320.dp,(viewport-24.dp-(if(LocalPremiumReview.current)64.dp else GlassTokens.searchHeight)).coerceAtLeast(0.dp)),
+                    onBack=if(focusSearchActive || searchScope!=null || history.isNotEmpty())({preview=null;menu=false;back()}) else null,
                     onSaved={execute(Result("bar:saved","Guardados","","Guardados",0,Action.SystemPanel("saved")))},
                     onSettings={launch(Intent(context,dev.bautista.spotlight.MainActivity::class.java).putExtra("group","General"))},
                     onDictate=if(dictationAvailable)({launch(Intent(context,dev.bautista.spotlight.VoiceActivity::class.java).putExtra("prefix",if(category=="IA")"ia " else "").putExtra("fallback",query))}) else null,
                 )
                 if(config.privateMode)Text("Modo privado · aprendizaje y captura suspendidos",Modifier.padding(horizontal=18.dp,vertical=4.dp),style=MaterialTheme.typography.labelSmall,color=colors.primary)
                 if(activeContext!=null && !searchOptions)ContextChip(app,activeContext!!){action->execute(Result("context:active","","","Contexto",0,action))}
-                if(fileBuffer.items.isNotEmpty())FileBufferTray(fileBuffer,bufferBusy,
-                    {launch(Intent.createChooser(fileBuffer.share(context),"Compartir selección"))},
+                if(showFileTray && !searchOptions)FileBufferTray(fileBuffer,bufferBusy,
+                    {prepareFiles(fileBuffer.items,selectionOwner=dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items))},
                     {prompt->execute(Result("buffer:ai","Trabajar con selección","","IA",0,Action.SystemPanel("selection-ai",prompt)))},
                     onCancel={bufferExtraction.cancel()})
-                if(interpretation.hints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){interpretation.hints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
+                if(contextHints.isNotEmpty())Row(Modifier.padding(horizontal=18.dp).horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){contextHints.forEach{hint->Text(hint,style=MaterialTheme.typography.labelSmall,color=colors.primary)}}
                 if(homeLayout && systemPage==null && history.isEmpty() && !hasInspector && !menu &&
                     !inspectorTaskActive() && !searchOptions && activeContext==null &&
                     fileBuffer.items.isEmpty() && visibleResults.isEmpty() && !loading) {
@@ -1033,55 +1153,24 @@ fun SpotlightPanel(
                     menu=false
                 }
                 val resultList:@Composable ()->Unit = {
-                            LazyColumn(
-                                state = listState,
-                                modifier =
-                                    Modifier.fillMaxWidth().onFocusChanged{resultsFocused=it.hasFocus}.focusGroup()
-                                        .heightIn(
-                                            max =
-                                                if ((richPreview || mediaInspector) && !widePreview) resultLimit * .35f
-                                                else resultLimit
-                                        )
-                                        .padding(horizontal = GlassTokens.listHorizontalInset(config), vertical = (3f*GlassTokens.densityScale(config)).dp),
-                            ) {
-                                if(query.isNotBlank() && visibleResults.isNotEmpty()) item("results-heading") {
-                                    Text(if(visibleResults.map{ResultSections.category(it)}.distinct().size==1)ResultSections.category(visibleResults.first()) else "Resultados",Modifier.padding(start=GlassTokens.rowHorizontalPadding(config),top=(6f*GlassTokens.densityScale(config)).dp,bottom=(4f*GlassTokens.densityScale(config)).dp),
-                                        fontSize=GlassTokens.scaledSp(11.sp,config),lineHeight=GlassTokens.scaledSp(14.sp,config,minSp=12f),fontWeight=FontWeight.Medium,color=colors.onSurfaceVariant)
-                                }
-                                itemsIndexed(visibleResults, key = { _, item -> item.id }) { i, item ->
-                                    val section=ResultSections.category(item)
-                                    if(query.isBlank() && visibleResults.map{ResultSections.category(it)}.distinct().size>1 && visibleResults.take(i).none{ResultSections.category(it)==section}) SectionHeading(if(searchScope==null && category=="Todo")ResultSections.homeHeading(item) else section,first=i==0 && homeLayout)
-                                    ResultRow(
-                                        item,
-                                        i == selected,
-                                        if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned,
-                                        {
-                                            val confirmed=touchedResultId==item.id && selected==i
-                                            selected = i
-                                            touchedResultId=item.id
-                                            if(confirmed){touchedResultId=null;execute(item)}
-                                            else if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
-                                            else if(PreviewPresentation.isApplication(item)) {
-                                                // Touch selects/inspects; Enter remains the primary action.
-                                                selectApplication(item,i)
-                                            }
-                                            else {navigating=true;pointerSelecting=true}
-                                        },
-                                        {
-                                            selected = i
-                                            preview = item
-                                            menu = true
-                                            navigating = true
-                                        },
-                                        { toggleFavorite(item) },
-                                        inline=inlineResultRows,
-                                        animations=motionEnabled,
-                                        onInteraction={pointerSelecting=true;navigating=true},
-                                        playing=(item.action as? Action.Launch)?.intent?.component?.packageName in playingPackages,
-                                    )
-                                    if(query.isBlank() && searchScope==null && category=="Todo")Spacer(Modifier.height(3.dp))
-                                }
-                            }
+                    SpotlightResultList(
+                        results=visibleResults,config=config,query=query,selectedIndex=selected,
+                        listState=listState,maxHeight=if(puente && hasInspector && !widePreview)minOf(resultLimit,viewport*.28f,(viewport-24.dp-headerHeight-footerHeight-12.dp-176.dp).coerceAtLeast(0.dp)) else if((richPreview || mediaInspector) && !widePreview)resultLimit*.35f else resultLimit,
+                        homeSections=searchScope==null && category=="Todo",homeLayout=homeLayout,
+                        inline=inlineResultRows,motionEnabled=motionEnabled,playingPackages=playingPackages,
+                        isFavorite={item->if(item.category=="Aplicaciones" || item.id.startsWith("suggest:app:") || item.id.startsWith("note:") || item.id.startsWith("snippet:") || item.id.startsWith("routine:"))favoriteId(item) in favorites else query.trim() in pinned},
+                        onFocusChanged={resultsFocused=it},
+                        onSelect={i,item->
+                            val confirmed=touchedResultId==item.id && selected==i
+                            selected=i;touchedResultId=item.id
+                            if(confirmed){touchedResultId=null;execute(item)}
+                            else if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR){preview=item;menu=false;navigating=true;pointerSelecting=true;keyboard?.hide()}
+                            else if(PreviewPresentation.isApplication(item))selectApplication(item,i)
+                            else{navigating=true;pointerSelecting=true}
+                        },
+                        onDetails={i,item->selected=i;preview=item;menu=true;navigating=true},
+                        onFavorite={toggleFavorite(it)},onInteraction={pointerSelecting=true;navigating=true},
+                    )
                 }
                 val details:@Composable (Boolean)->Unit = { actionsOnly ->
                         (if(actionsOnly)preview else inspectorItem)?.let { item ->
@@ -1105,7 +1194,9 @@ fun SpotlightPanel(
                                     }
                                 }
                                 if(!actionsOnly && (richPreview || PreviewPresentation.isApplication(item))) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                if(LocalPremiumReview.current && item.category=="Archivos")PremiumInspectorHeader(item,"Archivos",
+                                    if(item.mime=="application/pdf")"Documento PDF" else item.mime ?: "Archivo seleccionado",application=false,compact=LocalInspectorReviewBudget.current<420f)
+                                else Row(verticalAlignment = Alignment.CenterVertically) {
                                     ResultIcon(item,Modifier.size(if(PreviewPresentation.isApplication(item))40.dp else GlassTokens.glyph),colors.onSurfaceVariant)
                                     Spacer(Modifier.width(12.dp))
                                     Column(Modifier.weight(1f)) {
@@ -1140,6 +1231,7 @@ fun SpotlightPanel(
                                         previewPages.remove(item.id);previewPages[item.id]=page
                                         while(previewPages.size>8)previewPages.remove(previewPages.keys.first())
                                     })
+                                    InspectorSecondaryActions(compact,item.id,forceExpanded=documentExtraction.running) {
                                     Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
                                         TextButton(onClick={execute(item)}){Text("Abrir en otra app")}
                                         TextButton(onClick={
@@ -1163,6 +1255,7 @@ fun SpotlightPanel(
                                             TextButton(onClick={execute(Result("ai:quicklook:explain","Explicar","","IA",0,dev.bautista.spotlight.search.AiRequestPolicy.prepare(Action.Ask("Explicá este documento (${item.title}):\n"+item.preview,true,origin=dev.bautista.spotlight.search.AiInputOrigin.PRIVATE_CONTEXT))))}){Text("Explicar con IA")}
                                         }
                                     }
+                                    }
                                 }
                                 SelectionContainer {
                                     Text(
@@ -1183,7 +1276,7 @@ fun SpotlightPanel(
                                 if(actionsOnly) {
                                     val actions=mutableListOf<ContextAction>()
                                     fun add(id:String,group:ContextActionGroup,title:String,description:String,icon:androidx.compose.ui.graphics.vector.ImageVector=CommandIcons.Bolt,state:ContextActionState=ContextActionState.Available,risk:dev.bautista.spotlight.ai.ToolRisk=dev.bautista.spotlight.ai.ToolRisk.READ,perform:()->Unit){actions+=ContextAction(title,description,icon,{menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus();perform()},id=id,group=group,state=state,risk=risk)}
-                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->"Preparar mensaje";is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
+                                    add("primary",ContextActionGroup.Primary,when(item.action){is Action.Copy->"Copiar resultado";is Action.EditNote->"Editar nota";is Action.WorkflowRun->"Revisar rutina";is Action.ComposeMessage->primaryActionLabel(item,config,interpretation.shareFiles);is Action.ComposeSearch->"Buscar contenido";else->if(PreviewPresentation.isApplication(item) || item.category=="Archivos")"Abrir" else "Ejecutar acción"},item.subtitle,CommandIcons.Chevron){execute(item)}
                                     if(item.id.startsWith("suggest:")) {
                                         add("suggestion.pin",ContextActionGroup.Organize,if(item.id in config.pinnedSuggestions)"Desfijar sugerencia" else "Fijar sugerencia","Prioridad en el inicio",CommandIcons.Star){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(pinnedSuggestions=if(item.id in current.pinnedSuggestions)current.pinnedSuggestions-item.id else current.pinnedSuggestions+item.id))};preview=null;menu=false}
                                         add("suggestion.hide",ContextActionGroup.Organize,"Ocultar sugerencia","Restablecer desde General",CommandIcons.Close){scope.launch{val current=app.preferences.config.first();app.preferences.update(current.copy(hiddenSuggestions=current.hiddenSuggestions+item.id))};preview=null;menu=false}
@@ -1191,15 +1284,26 @@ fun SpotlightPanel(
                                     if(PreviewPresentation.isApplication(item)) {
                                         val catalogActions=ActionCatalog.applicationActions(appPackage.orEmpty())
                                             .filterNot { (it.action as? Action.Launch)?.intent?.action == android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS }
+                                            .distinctBy { appActionCapabilityId(it.action) ?: it.id }
+                                        val appCapabilities=appPackage?.let{dev.bautista.spotlight.control.AppCapabilities(context).available(it)}.orEmpty()
                                         catalogActions.forEach { target ->
                                             val group=if(target.action is Action.Navigate)ContextActionGroup.Open else ContextActionGroup.Communicate
                                             val icon=when(target.action){is Action.Navigate->CommandIcons.Folder;is Action.ComposeSearch->CommandIcons.Search;else->CommandIcons.ChatBubbleOutline}
-                                            add("app.intent:${target.id}",group,target.title,target.subtitle,icon,
-                                                risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){execute(target)}
+                                            val capabilityId=appActionCapabilityId(target.action)
+                                            val available=capabilityId==null || appCapabilities.any{it.id==capabilityId}
+                                            add("app.intent:${target.id}",group,target.title,
+                                                if(available)target.subtitle else "Revisá la aplicación y sus permisos.",icon,
+                                                state=if(available)ContextActionState.Available else ContextActionState.Unavailable,
+                                                risk=dev.bautista.spotlight.ai.ToolRisk.PREPARE){
+                                                if(capabilityId==null)execute(target) else scope.launch {
+                                                    try{val action=withContext(Dispatchers.IO){dev.bautista.spotlight.control.AppCapabilities(context).prepare(appPackage!!,capabilityId)};execute(target.copy(action=action))}
+                                                    catch(e:CancellationException){throw e}
+                                                    catch(_:Exception){error="La acción ya no está disponible. Revisá la app y sus permisos."}
+                                                }
+                                            }
                                         }
                                         if(appPackage!=null) {
-                                            dev.bautista.spotlight.control.AppCapabilities(context).available(appPackage)
-                                                .filterNot { cap ->
+                                            appCapabilities.filterNot { cap ->
                                                     cap.id=="search" && catalogActions.any{it.action is Action.ComposeSearch} ||
                                                         cap.id=="share-text" && catalogActions.any{it.action is Action.ComposeMessage}
                                                 }
@@ -1237,7 +1341,10 @@ fun SpotlightPanel(
                                             launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+targetPackage)))
                                         }
                                     }
-                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.selection",ContextActionGroup.Organize,if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else if(!fileBuffer.add(item))error="No se pudo añadir el archivo o la selección está completa.";menu=false}
+                                    if(item.category=="Archivos" && item.mime!=DocumentsContract.Document.MIME_TYPE_DIR)add("file.selection",ContextActionGroup.Organize,if(fileBuffer.items.any{it.id==item.id})"Quitar de selección" else "Añadir a selección","Bandeja temporal · máximo 12 archivos",CommandIcons.ListChecks){if(fileBuffer.items.any{it.id==item.id})fileBuffer.remove(item.id) else {
+                                        val canonical=runCatching{dev.bautista.spotlight.sharing.FileShareContract.canonicalRows(context,listOf(item)).single()}.getOrNull()
+                                        if(canonical==null || !fileBuffer.add(canonical))error="No se pudo añadir el archivo o la selección está completa."
+                                    };menu=false}
                                     if(item.category=="Archivos" && item.action is Action.Launch && item.action.intent.data!=null)add("file.extract",ContextActionGroup.Text,
                                         if(documentExtraction.running)"Cancelar extracción" else "Extraer texto",
                                         if(documentExtraction.running)"Procesamiento local en curso" else "PDF, Office, imagen o texto · procesamiento local",
@@ -1275,51 +1382,13 @@ fun SpotlightPanel(
                             }
                         }
                 }
-                Column(Modifier.fillMaxWidth()) {
-                header()
-                if (!searchOptions && expanded && panelLimit >= 100.dp) {
-                    Column(
-                        Modifier.fillMaxWidth()
-                            .testTag("spotlight-results")
-                            .heightIn(max = panelLimit)
-                            .then(if(widePreview && !expandedPreview)Modifier else Modifier.verticalScroll(rememberScrollState()))
-                    ) {
-                        Box(Modifier.fillMaxWidth().height(2.dp)) {
-                            if (loading || cardLoading || bufferBusy)
-                                LinearProgressIndicator(Modifier.fillMaxWidth())
-                        }
-                        HorizontalDivider(color=colors.outlineVariant)
-                        if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor)) Row(
-                            Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null) searchScope?.label?.uppercase() ?: systemPage?.let{if(it.page=="interpret")"INTERPRETACIÓN" else panelLabel(it.page)} ?: "ACCIONES" else ActionCatalog.topic(query)?.let{it.uppercase()+" · ACCIONES"} ?: if (category == "Todo" && query.isBlank()) "" else if (category == "Todo") ""
-                                else category.uppercase(),
-                                Modifier.weight(1f),
-                                fontSize = 10.sp,
-                                letterSpacing = 1.sp,
-                                color = colors.onSurfaceVariant,
-                            )
-                            if(systemPage!=null || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || history.isNotEmpty())TextButton(onClick={preview=null;menu=false;back()}){Text("Volver",fontSize=11.sp)}
-                            if (category != "Todo")
-                                TextButton(onClick = { selectMode("Todo") }) {
-                                    Text("Todo", fontSize = 11.sp)
-                                }
-                            IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
-                                Icon(CommandIcons.Close, "Cerrar Spotlight", Modifier.size(18.dp))
-                            }
-                        }
-                        if (error.isNotBlank())
-                            Text(
-                                error,
-                                Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
-                                color = colors.error,
-                                fontSize = 12.sp,
-                            )
-                        if(searchScope?.section=="files" && !loading && visibleResults.isEmpty())Text("No se encontraron archivos de este tipo. Probá otro filtro o actualizá el índice en Opciones.",Modifier.padding(horizontal=18.dp,vertical=12.dp),fontSize=13.sp,color=colors.onSurfaceVariant)
                         val contextBody:@Composable ()->Unit = {
-                        if(pendingAsk!=null)aiReview()
+                        val launchIssue=launchSession.issue
+                        if(launchIssue!=null)NativeLaunchReview(launchIssue,{id ->
+                            val close=launchSession.issue?.alternative?.close==true
+                            if(launchSession.confirm(id,launchOrigin()) && close && !keepSurface())onClose()
+                        },{launchSession.cancel();focus.requestFocus()})
+                        else if(pendingAsk!=null)aiReview()
                         else if(pendingWorkflow!=null)WorkflowRunner(pendingWorkflow!!,app.local,onAction={action->execute(Result("routine:prepared","","","Acciones",0,action))}){pendingWorkflow=null}
                         else if(clipEditing!=null)ClipboardEditor(clipEditing!!,{app.local.editClip(clipEditing!!,it);back()},{back()})
                         else if(snippetTemplate!=null)SnippetForm(snippetTemplate!!,{copy(it);back()},{back()})
@@ -1328,9 +1397,26 @@ fun SpotlightPanel(
                         else if(snippetText!=null)snippetEditor()
                         else if(category=="IA" && query.isBlank())Column(Modifier.fillMaxWidth().heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {Text("Preguntá o pegá un texto en la barra",style=MaterialTheme.typography.titleMedium);Text("Las consultas se envían al proveedor que elegiste. Los archivos y mensajes requieren revisión.");if(!ai.configured(config))AiSettings(config){next->app.scope.launch{runCatching{app.preferences.updateAi(config,next)}}} else Text("${config.aiProvider.replaceFirstChar{it.uppercase()}} · ${config.aiModel}",color=colors.primary)}
                         else if(notificationKey!=null)NotificationPreview(notificationKey!!,{action->execute(Result("message:context","","","Mensajes",0,action))},{copy(it)},{back()})
+                        else if(systemPage?.page=="file-share") {
+                            NativeLaunchRequestStatus(launchSession.requestedDestination)
+                            key(fileShareRevision) {
+                                FileShareEditor(fileShareDraft,systemPage!!.packageName.takeIf{it.isNotBlank()},
+                                    onRequest={launch(it,close=false)},onCancel={back();returnFocusRevision++},
+                                    isCurrent={
+                                        (fileShareSelectionOwner==null || fileShareSelectionOwner==dev.bautista.spotlight.sharing.FileShareContract.selectionId(fileBuffer.items)) &&
+                                            (fileShareContextOwner==null || fileShareContextOwner==app.contexts.active.value?.id)
+                                    })
+                            }
+                        }
                         else if(systemPage!=null) {if(systemPage!!.page=="calendar")CalendarPanel(app,systemPage!!.packageName){action->execute(Result("calendar:action","","","Agenda",0,action))} else if(systemPage!!.page=="saved-command")SavedCommandPanel(app,config,systemPage!!.packageName){action->execute(Result("command:action","","","Comandos",0,action))} else if(systemPage!!.page=="saved")SavedPanel(app,config){action->execute(Result("saved:action","","","Guardados",0,action))} else if(systemPage!!.page in setOf("context","context-ai","conversation","diagnostics"))ContextPanel(app,config,systemPage!!.page,systemPage!!.packageName){action->execute(Result("context:action","","","Contexto",0,action))} else if(systemPage!!.page=="interpret")InterpretationPanel(app,config,systemPage!!.packageName){action->execute(Result("plan:action","","","Comandos",0,action))} else if(systemPage!!.page in setOf("profiles","catalog","display-review","tasker","weather-native","sports-native"))NextPanel(app,systemPage!!.page,systemPage!!.packageName){action->execute(Result("next:action","","","Comandos",0,action))} else if(systemPage!!.page=="focus")ProductivityPanel{action->execute(Result("focus:action","","","Acciones",0,action))} else if(systemPage!!.page.startsWith("preferences:"))PreferencePanel(config,systemPage!!.page.substringAfter(':')){next->val page=systemPage!!.page;app.scope.launch{runCatching{when(page){"preferences:ai"->app.preferences.updateAi(config,next);"preferences:appearance"->app.preferences.updateAppearance(next);else->app.preferences.update(next)}}}} else if(systemPage!!.page=="agent")AiToolPanel(app,config,systemPage!!.packageName){action->execute(Result("ai:tool","","","IA",0,action))} else if(systemPage!!.page=="extensions")ExtensionPanel(app,config){action->execute(Result("extension:execute","","","Comandos",0,action))} else if(systemPage!!.page=="app")ApplicationInspector(app,systemPage!!.packageName){action->execute(Result("app:inspect:action","","","Acciones",0,action))} else AdvancedPanel(app,systemPage!!.page){back()}}
-                        else if(messageForm!=null)MessageEditor(messageForm!!,{launch(it)},{pending->launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access","contacts").putExtra("query",pending))},{back()})
-                        else if(searchForm!=null)SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
+                        else if(messageForm!=null) {
+                            NativeLaunchRequestStatus(launchSession.requestedDestination)
+                            MessageEditor(messageForm!!,{launch(it)},{pending->launch(Intent(context,dev.bautista.spotlight.PermissionActivity::class.java).putExtra("access","contacts").putExtra("query",pending))},{back()})
+                        }
+                        else if(searchForm!=null) {
+                            NativeLaunchRequestStatus(launchSession.requestedDestination)
+                            if(focusSearchActive)FocusSearchTaskBody(app,searchForm!!,focusSearchReview,authorizedSpotifySearch,spotifySearchTrigger) else SearchEditor(searchForm!!,{execute(Result("form:search","Buscar","","Acciones",0,it))},{back()})
+                        }
                         else if(audioPanel)AudioControl {back()}
                         else if (noteEditor)
                             Column(Modifier.heightIn(max=resultLimit).verticalScroll(rememberScrollState()).padding(18.dp)) {
@@ -1421,13 +1507,21 @@ fun SpotlightPanel(
                                 if(mediaStatus.isNotBlank())Text(mediaStatus,style=MaterialTheme.typography.labelSmall)
                                     }
                                 }
+                                if(LocalFocusUi.current)NativeLaunchRequestStatus(launchSession.requestedDestination)
                                 ApplicationInspector(application,inspectorPackage,favoriteId(application) in favorites,
                                     observed?.playing==true,emptyList(),onOpen={execute(application)},
                                     onFavorite={toggleFavorite(application)},
                                     onInfo={inspectorPackage?.let{pkg->launch(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:$pkg")))}},
                                     onActions={preview=application;menu=true;navigating=true},onMedia={},
                                     mediaContent=if(observed==null)null else player,embedded=true,
-                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
+                                    primaryContent=if(LocalPuenteUi.current)({
+                                        Button(onClick={execute(application)},
+                                            modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("command-primary"),
+                                            shape=androidx.compose.foundation.shape.RoundedCornerShape(10.dp)) {
+                                            Text("Abrir aplicación",style=MaterialTheme.typography.labelLarge)
+                                        }
+                                    })else null,
+                                    capabilitiesContent={inspectorPackage?.let{pkg->AppCapabilityActions(pkg,appInfoAlreadyVisible=true,compact=compact){action->execute(Result("capability:$pkg","","","Acciones",0,action))}}})
                                 if(observed==null && mediaInspector)Text("La sesión ya no está disponible.",style=MaterialTheme.typography.bodySmall)
                             } }
                         }
@@ -1440,24 +1534,129 @@ fun SpotlightPanel(
                                     PreviewPresentation.isApplication(it) &&
                                         (it.action as? Action.Launch)?.intent?.component?.packageName==accentPackage
                                 }?.icon
+                                CompositionLocalProvider(LocalInspectorReviewBudget provides viewport.value) {
                                 InspectorTheme(accentPackage,accentIcon) {
-                                Column(Modifier.fillMaxWidth().testTag("inspector-content")) {
-                                    if(!widePreview || expandedPreview)inspectorToolbar()
-                                    val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
+                                StudioSurface("inspector",Modifier.fillMaxWidth().liquidInspector().testTag("inspector-content")) {
+                                Column(Modifier.fillMaxWidth()) {
+                                    if(!LocalPuenteUi.current && (!widePreview || expandedPreview) && !focusSearchActive)inspectorToolbar()
+                                    if(LocalPremiumReview.current && taskInspector)Box(Modifier.padding(horizontal=18.dp,vertical=10.dp)) {
+                                        PremiumSectionLabel(when {
+                                            pendingAsk!=null || showAi->"Inteligencia artificial"
+                                            systemPage?.page=="file-share"->"Archivos"
+                                            searchForm!=null->"Búsqueda"
+                                            messageForm!=null->"Contenido"
+                                            else->"Acción preparada"
+                                        })
+                                    }
+                                    val taskKey=messageForm?.let{"message:$it"} ?: searchForm?.let{if(config.focusInterface)"search:${it.topic}|${it.packageName}" else "search:$it"}
                                         ?: systemPage?.let{"page:$it"} ?: pendingWorkflow?.let{"workflow:${it.id}"}
                                         ?: if(showAi)"conversation" else "preview:${inspectorItem?.id}"
-                                    ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                    if(LocalPremiumReview.current || LocalFocusUi.current)PremiumInspectorReveal(taskKey,LocalMotion.current) {
+                                        ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                    } else ContextualDraftHost(taskKey,contextDrafts,recentDrafts){contextBody()}
+                                }
+                                }
                                 }
                                 }
                             }
                         }
+                val footer:@Composable ()->Unit = {
+                        val expandable=if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
+                            val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
+                            full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
+                        } else false
+                        Box(Modifier.fillMaxWidth().onSizeChanged{footerPixels=it.height}) {
+                        if(focusSearchActive)FocusSearchTaskFooter(searchForm!!,focusSearchReview,authorizedSpotifySearch,{spotifySearchTrigger++}){execute(Result("form:search","Buscar","","Acciones",0,it))}
+                        else if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
+                            Text(if(systemPage?.page=="file-share")"Tab acciones   esc volver" else "Tab siguiente campo   esc volver",
+                                Modifier.testTag("context-footer").padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
+                        else GlassContextFooter(
+                            suggestion=suggestion!=null,enabled=selectedResult!=null,
+                            primaryLabel=primaryActionLabel(selectedResult,config,interpretation.shareFiles),
+                            onExecute={selectedResult?.let{execute(it)}},
+                            onActions={if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
+                            autocomplete=canAutocomplete && searchFocused && suggestion!=null,
+                            actionsOpen=menu,
+                            actionsKeyLabel=KeyboardBindings.resolve(config,"actions")!!.label,
+                            onOptions=if(optionsInHeader)null else ({searchOptions=!searchOptions}),
+                            scopeLabel=searchScope?.label ?: if(category=="Todo")"Spotlight" else category,
+                            showPrimaryAction=!(puente && applicationPreview && launchSession.issue==null),
+                            expandLabel=if(moreResults)"Ver menos resultados" else "Ver más resultados",
+                            onExpand=if(expandable && !(config.focusInterface && hasInspector && !widePreview && !inspectorPinned))({toggleMoreResults()}) else null)
+                        }
+                }
+                if(puente) {
+                    val showResults=!searchOptions && expanded && panelLimit>=100.dp
+                    PuenteFrame((viewport-24.dp).coerceAtLeast(0.dp),widePreview,inspectorItem?.id,
+                        header={Column(Modifier.fillMaxWidth().onSizeChanged{headerPixels=it.height}){headerHost{header()}}},
+                        results={if(showResults){
+                            if(loading || cardLoading || bufferBusy)LinearProgressIndicator(Modifier.fillMaxWidth())
+                            if(error.isNotBlank())Text(error,Modifier.padding(16.dp),color=colors.error)
+                            resultList()
+                            if(visibleResults.isEmpty() && !loading)Text("No hay resultados para esta consulta.",Modifier.padding(18.dp),color=colors.onSurfaceVariant)
+                        }},
+                        footer={if(showResults)footer()},
+                        inspector=if(showResults && hasInspector)pane else null,
+                        inspectorHeader=inspectorToolbar)
+                } else {
+                Column(Modifier.fillMaxWidth()) {
+                Column(Modifier.fillMaxWidth().onSizeChanged{headerPixels=it.height}){headerHost{header()}}
+                if (!searchOptions && expanded && panelLimit >= 100.dp) {
+                    Column(
+                        Modifier.fillMaxWidth()
+                            .testTag("spotlight-results")
+                            .studioContentBacking()
+                            .heightIn(max = panelLimit)
+                            .then(if(widePreview && !expandedPreview)Modifier else Modifier.verticalScroll(rememberScrollState()))
+                    ) {
+                        Box(Modifier.fillMaxWidth().height(2.dp)) {
+                            if (loading || cardLoading || bufferBusy)
+                                LinearProgressIndicator(Modifier.fillMaxWidth())
+                        }
+                        HorizontalDivider(color=colors.outlineVariant)
+                        if(!hasInspector && (systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || noteEditor)) Row(
+                            Modifier.fillMaxWidth().padding(start = 18.dp, end = 6.dp, top = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                if(systemPage!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || searchScope!=null) searchScope?.label?.uppercase() ?: systemPage?.let{if(it.page=="interpret")"INTERPRETACIÓN" else panelLabel(it.page)} ?: "ACCIONES" else ActionCatalog.topic(query)?.let{it.uppercase()+" · ACCIONES"} ?: if (category == "Todo" && query.isBlank()) "" else if (category == "Todo") ""
+                                else category.uppercase(),
+                                Modifier.weight(1f),
+                                fontSize = 10.sp,
+                                letterSpacing = 1.sp,
+                                color = colors.onSurfaceVariant,
+                            )
+                            if(systemPage!=null || searchScope!=null || messageForm!=null || searchForm!=null || audioPanel || pendingAsk!=null || pendingWorkflow!=null || snippetText!=null || clipEditing!=null || snippetTemplate!=null || timerMinutes!=null || deletingNote!=null || notificationKey!=null || history.isNotEmpty())TextButton(onClick={preview=null;menu=false;back()}){Text("Volver",fontSize=11.sp)}
+                            if (category != "Todo")
+                                TextButton(onClick = { selectMode("Todo") }) {
+                                    Text("Todo", fontSize = 11.sp)
+                                }
+                            IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
+                                IosCommandIcon(CommandIcons.Close, "Cerrar Spotlight", Modifier.size(18.dp))
+                            }
+                        }
+                        if (error.isNotBlank())
+                            Text(
+                                error,
+                                Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+                                color = colors.error,
+                                fontSize = 12.sp,
+                            )
+                        if(searchScope?.section=="files" && !loading && visibleResults.isEmpty())Text("No se encontraron archivos de este tipo. Probá otro filtro o actualizá el índice en Opciones.",Modifier.padding(horizontal=18.dp,vertical=12.dp),fontSize=13.sp,color=colors.onSurfaceVariant)
                         if(widePreview && !expandedPreview)ContextSplitPanel(splitPanelHeight,{resultList()},{pane()},scrollInspector=true,initialFraction=resultsFraction,
-                            inspectorKey=messageForm?.let{"message:$it"} ?: searchForm?.let{"search:$it"}
+                            inspectorKey=messageForm?.let{"message:$it"} ?: searchForm?.let{if(config.focusInterface)"search:${it.topic}|${it.packageName}" else "search:$it"}
                                 ?: systemPage?.let{"page:$it"} ?: inspectorItem?.id,
                             inspectorHeader=inspectorToolbar)
                         else if(hasInspector) {
-                            if(!taskInspector && inspectorCard==null && !expandedPreview)resultList()
-                            pane()
+                            // Both inline previews and forms share a bounded body;
+                            // their measured content must never push the footer out.
+                            key(inspectorItem?.id,if(config.focusInterface)searchForm?.let{it.topic+"|"+it.packageName} else searchForm,messageForm,systemPage) {
+                                Column(Modifier.fillMaxWidth().heightIn(max=resultLimit)
+                                    .testTag("compact-inspector-scroll").verticalScroll(rememberScrollState())) {
+                                    if((!config.focusInterface || inspectorPinned) && !taskInspector && inspectorCard==null && !expandedPreview)resultList()
+                                    pane()
+                                }
+                            }
                         }
                         else if(systemPage!=null || category=="IA" && query.isBlank())contextBody()
                         else resultList()
@@ -1485,38 +1684,13 @@ fun SpotlightPanel(
                                 fontSize = 10.sp,
                                 color = colors.onSurfaceVariant,
                             )
-                        val expandable=if(searchScope==null && category=="Todo" && !menu && !showAi && systemPage==null && messageForm==null && searchForm==null && !audioPanel && pendingAsk==null && pendingWorkflow==null) {
-                            val full=CompactResults.select(query,filterResults(results).filter(ProductVisibility::allowed),config)
-                            full.all.size>(if(query.isNotBlank() && !config.compactSearchResults)full.relevant.size else full.initial.size) || moreResults
-                        } else false
-                        if((systemPage!=null || messageForm!=null || searchForm!=null) && !searchFocused && !resultsFocused)
-                            Text("Tab siguiente campo   esc volver",
-                                Modifier.padding(horizontal=18.dp,vertical=10.dp),fontSize=11.sp,color=colors.onSurfaceVariant)
-                        else GlassContextFooter(
-                            suggestion=suggestion!=null,enabled=selectedResult!=null,
-                            primaryLabel=when {
-                                selectedResult?.action is Action.Copy->"Copiar"
-                                selectedResult?.action is Action.Ask->selectedResult.title.takeIf{it.startsWith("Responder") || it.startsWith("Preguntar") || it.startsWith("Consultar")} ?: UniversalIntentEngine.primaryAiTitle(config)
-                                selectedResult?.action is Action.SystemPanel && selectedResult.action.page=="interpret"->"Revisar plan"
-                                selectedResult?.category=="Archivos"->"Abrir documento"
-                                (selectedResult?.action as? Action.Launch)?.intent?.component!=null->"Abrir aplicación"
-                                selectedResult?.action is Action.Launch->"Abrir"
-                                else->"Ejecutar"
-                            },
-                            onExecute={selectedResult?.let{execute(it)}},
-                            onActions={if(menu){menu=false;if(!richPreview && !applicationPreview)preview=null;focus.requestFocus()}else{hideKeyboardForActions();preview=selectedResult;menu=true;navigating=true}},
-                            autocomplete=canAutocomplete && searchFocused && suggestion!=null,
-                            actionsOpen=menu,
-                            actionsKeyLabel=KeyboardBindings.resolve(config,"actions")!!.label,
-                            onOptions=if(optionsInHeader)null else ({searchOptions=!searchOptions}),
-                            scopeLabel=searchScope?.label ?: if(category=="Todo")"Spotlight" else category,
-                            expandLabel=if(moreResults)"Ver menos resultados" else "Ver más resultados",
-                            onExpand=if(expandable)({toggleMoreResults()}) else null)
+                        footer()
                     }
+                }
                 }
                 }
                 if(menu && preview!=null) ContextActionSurface(viewport,onDismiss={menu=false;if(!richPreview && !applicationPreview)preview=null;runCatching{focus.requestFocus()}}) { details(true) }
             }
         }
     }
-
+        }

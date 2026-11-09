@@ -1,0 +1,18 @@
+{
+  "new_directed_cases": 2,
+  "failures": 0,
+  "errors": 0,
+  "lint": {
+    "Warning": 26,
+    "Information": 1
+  },
+  "ui_source_unchanged_from": "7bc8a26a1a18d461099e2e0fb816afb8fa53465d",
+  "versioned_file": "app/build.gradle.kts",
+  "apk66_generated": false,
+  "actions_dispatched": false,
+  "source_sha": "66d4ea0b28192f84ba26b9a451a8299d90f84cfb",
+  "offline_delivery_identity_tests": 19,
+  "offline_failures": 0,
+  "manifest_functional_base": "66d4ea0b28192f84ba26b9a451a8299d90f84cfb",
+  "allowed_delta_paths": []
+}

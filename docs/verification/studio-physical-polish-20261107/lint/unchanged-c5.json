@@ -1,0 +1,9 @@
+{
+  "base": "9d652771f75be1f0fc9f1d87fa7681f386e5c05c",
+  "path": "app/src/androidTest/java/dev/bautista/spotlight/c5/C5FocusHostDeviceTest.kt",
+  "base_and_worktree_sha256": "0bf1a841dede178bfa18d7612afdbe223982e0ddebbc01ffb3d63131b1fab036",
+  "identical": true,
+  "line": 65,
+  "issue": "StateFlowValueCalledInComposition",
+  "suppressed": false
+}

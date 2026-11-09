@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.StudioActionKeyboardTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-08T22:46:19" hostname="a720fb5903ca" time="4.331">
+  <properties/>
+  <testcase name="ctrlFFiltersActionsAndCtrlKClosesWithoutExecutingAnotherAction" classname="dev.bautista.spotlight.ui.StudioActionKeyboardTest" time="4.219"/>
+  <testcase name="tabCyclesAndEnterRunsOnlyFocusedContextAction" classname="dev.bautista.spotlight.ui.StudioActionKeyboardTest" time="0.112"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackFailureTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-05T23:13:32" hostname="52363180d3ce" time="2.064">
+  <properties/>
+  <testcase name="explicitMissingDeviceReasonSurvivesWithoutPrivateResponseText" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackFailureTest" time="1.666"/>
+  <testcase name="authorizationStatusWinsOverAnUnrelatedPlayerReason" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackFailureTest" time="0.058"/>
+  <testcase name="rejectedTrackSendsOnePlayAndNoPauseOrAutomaticRecovery" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackFailureTest" time="0.265"/>
+  <testcase name="malformedAndOversizedFailureBodiesRemainBoundedAndPrivate" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackFailureTest" time="0.035"/>
+  <testcase name="unknownMissingResourceDoesNotInventAnInactiveDevice" classname="dev.bautista.spotlight.integrations.spotify.SpotifyPlaybackFailureTest" time="0.038"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -11,9 +11,10 @@ object ResultRanker {
         val usage=runCatching{JSONObject(c.usageData)}.getOrDefault(JSONObject())
         val priorities=runCatching{JSONObject(c.sourcePriority)}.getOrDefault(JSONObject())
         val now=System.currentTimeMillis()
+        val normalizedQuery=normalizedWords(query)
         return ordered(items.map {item->
             val lexical=if(item.category in setOf("Aplicaciones","Contactos","Notas"))relevance(query,item.title)/3 else 0
-            val exact=if(query.isNotBlank() && normalize(query.trim())==normalize(item.title))2400 else 0
+            val exact=if(normalizedQuery.isNotEmpty() && normalizedQuery==normalizedWords(item.title))2400 else 0
             val entry=if(c.learning && !c.privateMode)usage.optJSONObject(item.id) else null
             val count=entry?.optInt("count",0) ?: 0
             val lastTime=entry?.optLong("time",0L) ?: 0L
@@ -28,16 +29,17 @@ object ResultRanker {
     fun ordered(items:List<Result>):List<Result> =
         items.sortedWith(
             compareByDescending<Result>{it.matchClass}
+                .thenByDescending{if(it.matchClass==6 && it.category=="Aplicaciones")1 else 0}
                 .thenByDescending{it.score}
-                .thenBy{normalize(it.title)}
+                .thenBy{normalizedWords(it.title)}
                 .thenBy{it.id}
         ).distinctBy{it.id}
 
     // A personal bonus can order peers, never outrank a better lexical class.
     fun matchClass(query:String,item:Result):Int {
-        val q=normalize(query.trim()).split(Regex("\\s+")).filter{it.isNotBlank()}.joinToString(" ")
+        val q=normalizedWords(query)
         if(q.isEmpty())return 0
-        val t=normalize(item.title.trim()).split(Regex("\\s+")).joinToString(" ")
+        val t=normalizedWords(item.title)
         val installed=item.category=="Aplicaciones"
         val command=item.category in setOf("Comandos","Acciones") && item.action !is Action.Ask &&
             item.action !is Action.Access && item.action !is Action.RestoreQuery &&
@@ -50,7 +52,7 @@ object ResultRanker {
             item.category=="Archivos" && item.semanticMatch->3
             item.category=="Web"->0
             (item.category in setOf("Archivos","Contactos") || item.category=="Notas" && item.action !is Action.NewNote) && relevance(query,item.title)>=500->3
-            item.id.startsWith("root:") || item.id.startsWith("smart:") || item.id=="intent:local" || relevance(query,item.title)>=500->2
+            item.id.startsWith("root:") || item.id.startsWith("smart:") || (item.id.startsWith("context:app-search:") || item.id.startsWith("context:app-share:")) || item.id=="intent:local" || relevance(query,item.title)>=500->2
             else->0
         }
     }

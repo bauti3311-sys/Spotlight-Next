@@ -1,0 +1,137 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths
+> Task :app:generateRaycastPreviewResources
+> Task :app:mergeRaycastPreviewResources
+> Task :app:packageRaycastPreviewResources
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:processRaycastPreviewResources
+> Task :app:compileRaycastPreviewKotlin
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:generateRaycastPreviewLintReportModel
+> Task :app:bundleRaycastPreviewClassesToCompileJar
+> Task :app:generateRaycastPreviewUnitTestLintModel
+> Task :app:lintAnalyzeRaycastPreview
+> Task :app:lintAnalyzeRaycastPreviewUnitTest
+
+> Task :app:lintReportRaycastPreview
+Wrote HTML report to file:///workspace/Spotlight-Next/app/build/reports/lint-results-raycastPreview.html
+
+> Task :app:lintRaycastPreview FAILED
+Lint found 1 errors, 26 warnings. First failure:
+
+/workspace/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt:169: Error: Suspicious indentation: This is indented but is not nested under the previous expression (if (query.isEmpty())...) [SuspiciousIndentation]
+                            )
+                  ~~~~~~~~~~~
+    /workspace/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt:162: Previous statement here
+
+   Explanation for issues of type "SuspiciousIndentation":
+   This check looks for cases where the indentation suggests a grouping that
+   isn't actually there in the code. A common example of this would be
+   something like
+   if (column > width)
+       line++
+       column = 0
+   Here, the column = 0 line will be executed every single time, not just if
+   the condition is true.
+
+   Available options:
+
+   **always-run** (default is false):
+   Whether this check should be included while editing.
+
+   While you're editing, it's common to have a temporary situation where you have suspicious indentation scenarios -- e.g. you start typing an `if` statement on the line above something you want to make conditional, and you haven't indented it yet. It can be distracting and misleading to suddenly have both statements light up as errors. Therefore, lint will avoid including this check when running on the fly in the editor, unless it looks like the file has not been recently edited. With this option, you can turn it on in all cases.
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="SuspiciousIndentation">
+           <option name="always-run" value="false" />
+       </issue>
+   </lint>
+   ```
+
+
+The full lint text report is located at:
+  /workspace/Spotlight-Next/app/build/intermediates/lint_intermediate_text_report/raycastPreview/lintReportRaycastPreview/lint-results-raycastPreview.txt
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:lintRaycastPreview'.
+> Lint found errors in the project; aborting build.
+  
+  Fix the issues identified by lint, or create a baseline to see only new errors.
+  To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+  ```
+  android {
+      lint {
+          baseline = file("lint-baseline.xml")
+      }
+  }
+  ```
+  For more details, see https://developer.android.com/studio/write/lint#snapshot
+  
+  Lint found 1 errors, 26 warnings. First failure:
+  
+  /workspace/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt:169: Error: Suspicious indentation: This is indented but is not nested under the previous expression (if (query.isEmpty())...) [SuspiciousIndentation]
+                              )
+                    ~~~~~~~~~~~
+      /workspace/Spotlight-Next/app/src/main/java/dev/bautista/spotlight/ui/SpotlightBar.kt:162: Previous statement here
+  
+     Explanation for issues of type "SuspiciousIndentation":
+     This check looks for cases where the indentation suggests a grouping that
+     isn't actually there in the code. A common example of this would be
+     something like
+     if (column > width)
+         line++
+         column = 0
+     Here, the column = 0 line will be executed every single time, not just if
+     the condition is true.
+  
+     Available options:
+  
+     **always-run** (default is false):
+     Whether this check should be included while editing.
+  
+     While you're editing, it's common to have a temporary situation where you have suspicious indentation scenarios -- e.g. you start typing an `if` statement on the line above something you want to make conditional, and you haven't indented it yet. It can be distracting and misleading to suddenly have both statements light up as errors. Therefore, lint will avoid including this check when running on the fly in the editor, unless it looks like the file has not been recently edited. With this option, you can turn it on in all cases.
+  
+     To configure this option, use a `lint.xml` file with an <option> like this:
+  
+     ```xml
+     <lint>
+         <issue id="SuspiciousIndentation">
+             <option name="always-run" value="false" />
+         </issue>
+     </lint>
+     ```
+  
+  
+  The full lint text report is located at:
+    /workspace/Spotlight-Next/app/build/intermediates/lint_intermediate_text_report/raycastPreview/lintReportRaycastPreview/lint-results-raycastPreview.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 4m 52s
+26 actionable tasks: 14 executed, 12 up-to-date

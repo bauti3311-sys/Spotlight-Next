@@ -1,0 +1,10 @@
+mode,scene,windowHeightDp,headerHeightDp,viewportDp
+legacy,home,180.0,56.0,700.0
+legacy,inspector,548.0,56.0,700.0
+focus,inspector,407.0,64.0,700.0
+focus,home,188.0,64.0,700.0
+focus,spotify-context,160.0,76.0,700.0
+focus,spotify-review,178.0,76.0,700.0
+focus,vivaldi-review,178.0,76.0,700.0
+focus,ime-budget,178.0,76.0,330.0
+focus,menu,369.0,,700.0

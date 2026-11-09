@@ -1,0 +1,34 @@
+{
+  "base": "c51677b79446ce1dc8213553891d45897b14d726",
+  "source": "cbc956ab56756d9ebdf7de05300fb0b5f5b14a19",
+  "development_pr_head": "d11a91e1649eca7cedbdd3a756c5b53a7f46d5ec",
+  "exact_delta_paths": [
+    "app/build.gradle.kts",
+    "app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/Models.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt",
+    "app/src/test/java/dev/bautista/spotlight/search/C2RelevanceCorpusTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/C2AppOpenJourneyTest.kt",
+    "app/src/test/java/dev/bautista/spotlight/ui/FocusTitlePriorityTest.kt"
+  ],
+  "productive_paths": [
+    "app/src/main/java/dev/bautista/spotlight/search/HomeSuggestions.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/Models.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/ResultRanker.kt",
+    "app/src/main/java/dev/bautista/spotlight/search/SearchEngine.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightPanel.kt",
+    "app/src/main/java/dev/bautista/spotlight/ui/SpotlightWidgets.kt"
+  ],
+  "identical_other_tracked_files": 3512,
+  "pr_only_productive_delta": [
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentCitationState.kt",
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt",
+    "app/src/main/java/dev/bautista/spotlight/index/FileIndex.kt"
+  ],
+  "candidate_fileindex_blob": "c9b4188abd231dbfa5210a33a2cb1111fc2fd983",
+  "baseline_fileindex_blob": "c9b4188abd231dbfa5210a33a2cb1111fc2fd983",
+  "no_apk_signature_verified": "expected historic certificate from unchanged configuration only"
+}

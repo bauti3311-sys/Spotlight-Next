@@ -1,0 +1,23 @@
+{
+  "source": "84ab6d7aac3a27db30b718f2921dd49a4f3a1b82",
+  "distinct_passed": 8,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "lint": {
+    "errors": 0,
+    "warnings": 27,
+    "information": 1
+  },
+  "cases": [
+    "dev.bautista.spotlight.search.C2FileContextTest.exactApplicationNamedLikeAFileQueryStillWins",
+    "dev.bautista.spotlight.search.C2FileContextTest.shareFilePhraseSelectsLocalFilesInsteadOfLaunchingOrAskingAi",
+    "dev.bautista.spotlight.search.CompactResultsTest.explicitFileSelectionActionRemainsVisibleAndNeverOutranksAnExactApp",
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.queryReviewsOriginalFileAndRequestsOnlyOneSystemChooser",
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.changedLiveSelectionInvalidatesThePreparedProposal",
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.restoringMetadataDoesNotRestoreConfirmationOrAuthorization",
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.clearingTheSourceRemovesAnUntouchedIncomingSelection",
+    "dev.bautista.spotlight.ui.C2FileShareFlowTest.restoringAnEditedIncomingSelectionDoesNotReplaceItWithTheOriginalContext"
+  ],
+  "physical_validation": false
+}

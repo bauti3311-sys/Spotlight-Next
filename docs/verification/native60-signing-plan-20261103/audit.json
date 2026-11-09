@@ -1,0 +1,24 @@
+{
+  "status": "PREPARED_NOT_EXECUTED",
+  "appSourceSha": "e9647c1329b93820383e3c8b4ec56dbceb3ce5f1",
+  "preferredPath": "Termux private historical ZIP; device presence/decryption not yet checked",
+  "historicalDeviceArchive": "/storage/emulated/0/Download/Spotlight-AndroidStudio-0.9.1.zip",
+  "keystoreEntry": "SpotlightNext/signing/spotlight-debug.keystore",
+  "cloudArchiveFound": false,
+  "githubSecretMetadata": "HTTP403; presence/value not established",
+  "tests": {
+    "policy_artifact_isolation": 21,
+    "legacy_workflow": 6,
+    "actionlint": "1.7.7 checked download checksum; pass (no shellcheck installed)",
+    "shell": "bash -n all inline steps and both helper scripts passed",
+    "java": "javac17 passed; no real keystore test"
+  },
+  "approvedGitArchiveSha256": "e3b4a91af15856b3de7f53473c2fe03e818621c0e94413accc9c3bd7ef7796ca",
+  "actionsDispatched": 0,
+  "androidCompilations": 0,
+  "apkSigned": 0,
+  "newKeys": 0,
+  "secretsModified": 0,
+  "deviceAccess": false,
+  "appSourceUnchanged": true
+}

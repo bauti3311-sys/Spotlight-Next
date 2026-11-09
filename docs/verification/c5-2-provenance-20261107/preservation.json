@@ -1,0 +1,40 @@
+{
+  "base_sha": "b80d9762eefef2e06bff32a7b6d97f51c2d7f94c",
+  "files": {
+    "app/build.gradle.kts": {
+      "unchanged_from_base": true,
+      "sha256": "938a2131c9d30a68e307dd817b578b13ef25a9f3468253a8686865ca1b9a8844"
+    },
+    "app/src/main/AndroidManifest.xml": {
+      "unchanged_from_base": true,
+      "sha256": "c3fa40dffc4d65a8f4f54237971b72e63b5327274971f5e5f1f3fab2c7a9406d"
+    },
+    "scripts/preview_delivery.json": {
+      "unchanged_from_base": true,
+      "sha256": "1b1904752c529a0f72cf759c5bbba9e9abc1f5283254454e3d55b24c90c40ab7"
+    },
+    "release.properties": {
+      "unchanged_from_base": true,
+      "sha256": "27d97e5ae8b499c14271adac9a5f2e6e38bf86a2428a6e36385b5ae89d6f9419"
+    },
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentCitations.kt": {
+      "unchanged_from_base": true,
+      "sha256": "9a78b4e1f9bbfb73d6d1bed2e3574f7c6f9d72fb2f66f75d0e4c572f684a1e87"
+    },
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentText.kt": {
+      "unchanged_from_base": true,
+      "sha256": "f5576c5bf6e466882db819d426d90881405482d61c5cdc6642f4d6a5c57e7b61"
+    },
+    "app/src/main/java/dev/bautista/spotlight/index/DocumentExtraction.kt": {
+      "unchanged_from_base": true,
+      "sha256": "2f6eac0c5c165e1da425b3397f01f4fee9f1d9100023fc065e633ba08858fd9d"
+    },
+    "app/src/main/java/dev/bautista/spotlight/index/PdfTextSource.kt": {
+      "unchanged_from_base": true,
+      "sha256": "85172f2d54a3866d152d456e98098f78e0d69487f617475d39ffb75e6794e5b4"
+    }
+  },
+  "production_ui_changed": false,
+  "new_permissions_or_dependencies": false,
+  "new_apk_or_actions": false
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.CompactResultsTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-05T00:16:25" hostname="d6fbf1b305fb" time="2.98">
+  <properties/>
+  <testcase name="explicitFileSelectionActionRemainsVisibleAndNeverOutranksAnExactApp" classname="dev.bautista.spotlight.search.CompactResultsTest" time="2.98"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,4 +1,603 @@
+## Continuidad vigente — estética Stitch integrada, split Puente conservado (09/11/2026)
+
+El propietario aprobó aplicar las referencias Stitch conservando dos superficies
+separadas, divisor ajustable y adaptación compacta. Reemplaza sólo el acabado Hielo,
+no la composición Puente. Implementación b764afe7eef19adcea38e0926192f0fc1d821b38.
+Material carbón/claro, selección por acento real de app, identidad del inspector,
+campo/ActionPanel/footer/Ajustes coherentes. Geist/140ms/títulos2:1/ancho/acciones y
+reversibilidad intactos; no controles ficticios, dashboard ni funciones nuevas.
+20 casos dirigidos correctos; lint0E/23W/1I.26pares/52PNG reales Compose API33,
+galería offline/PDF; ver docs/STITCH-PUENTE-20261109.md. Fallo inicial de foco
+conservado; caso aislado en base/nuevo y ronda final6/6 correctos, sin suprimir tests.
+Física OneUI/Gboard/rotación/rendimiento pendiente. C2/C5/C6, main, fuentes68–71,
+firmas/paquete/versiones/manifiestos conservados. Sin APK/Actions/instalación/deps.
+PR21 borrador; liberar sólo reserva propia con notas atómicas. No declarar23cerradas.
+
+## Continuidad vigente — plan23 retomado; primer arreglo C6/S03 (09/11/2026)
+
+El propietario pide implementar por completo C/F/V/S del plan maestro23. Reemplaza
+la pausa general de investigación/desarrollo; no autoriza fingir validación física,
+privilegios, envíos ni otra APK. Ver docs/MASTER-COMPLETION-20261109.md:10F/9V/4S,
+C0–C9, no catálogo36. No rediseñar Puente ni reimplementar componentes terminados.
+Tras entregar71 con reserva separada, dos fallos reproducidos en PlanExecution:
+continuaba después de PREPARED/REQUESTED/Actiondespachado. Ahora bloquea pasos
+posteriores mientras falta verificación; conserva resultados locales y cancelación.
+16regresiones dirigidas correctas, lint0E/23W/1I. Ver docs/C6-PENDING-EFFECTS-20261109.md.
+NO es C6 completo y NO está enAPK71. C5 aún fuera de barra/71; corpus léxico7/12
+con5omisiones y semántica auténtica no evaluada; física SAF/OCR/lifecycle pendiente.
+ADB no tiene dispositivos. C4 sigue fallido según prueba propietaria; no reparar sin
+repro. C7sinSenderSDK; POMs oficiales23.0.0/22.3.1 arrastran MediaRouterbeta: revisar
+antes de adoptar. C8 AOSP16 EXECUTE_APP_FUNCTIONS internal|privileged: no control
+universal desdeAPKordinaria ni bypass. No se incorporaron dependencias/permisos.
+71entregada/consumida permanece congelada; main/fuentes/PR21borrador conservados.
+Continuar sólo trabajo independiente verificable; no afirmar23completas ni ejecución
+en segundo plano. Liberar sólo reserva propia con notas atómicas.
+
+## Continuidad vigente — Preview71 entregada (09/11/2026)
+
+Run42635574367 attempt1SUCCESS; sourceb8f8e268dd59e6410ec57a102a0e35231db01b18,
+workflow604544872a70a609e2307ce0c61af6edb99b2ccb. Ver docs/NATIVE71-DELIVERY-20261109.md.
+APK71/ZIP exacto/firma885838aa igual70/ARM64/noDebuggable/16KiB/procedencia verificados
+localmente. Ancho+Ajustes;13rutas desde70,C5fuera. Sininstalación,física pendiente.
+71CONSUMIDA: no rerun/fallback/otraentrega. Cerrar reserva de entrega con notas y
+adquirir otra para la nueva solicitud de completar el plan23 (F/V/S,C0–C9), sin
+mezclar futuros cambios con71 ni declarar completos bloqueos físicos/decuentas.
+Main/fuentes68–71/PR21borrador intactos; liberar sólo reserva propia.
+
+## Continuidad vigente — entrega Preview71 autorizada (09/11/2026)
+
+«Dale manda el apk» autoriza UNA entrega de ancho y Ajustes desde867a3f5. Fuente
+b8f8e268dd59e6410ec57a102a0e35231db01b18 aislada70; rama feat/preview71-settings-isolated-20261109.
+WorkflowSHA=commit de este manifiesto. Ver docs/NATIVE71-DELIVERY-20261109.md.
+Sólo13rutas:8productivas idénticasPR,4tests y numeración71. C5 fuera;40checks/lintPR
+reutilizados,4checksaislados y17offline correctos. IdentidadPreview885838aa conservada.
+Cerrar reserva preparación/adquirir NUEVA checkpointworkflow antes del dispatch.
+US$0/stop_on_limit; una ejecución native-delivery, sin retry/rerun/fallback/instalación.
+La decisión posterior de completar TODO el plan maestro23 (10F,9V,4S;C0–C9) autoriza
+retomar su auditoría/avance por etapas DESPUÉS de la APK congelada. No mezclar funciones
+nuevas con71 ni declarar validaciones físicas inexistentes; permisos sensibles,
+cuentas/modelos y disponibilidad real siguen como puertas. No son las36ideas del catálogo.
+Main,71/70/69/68, C5 delPR y PR21borrador se conservan. Liberar sólo reserva propia.
+
+## Continuidad vigente — ancho reparado y Ajustes renovados (09/11/2026)
+
+El propietario autorizó reparar el ancho y rediseñar Ajustes; reemplaza la decisión
+estética anterior de cuerpo A sólo para Ajustes. Puente y sus motores se conservan.
+Checkpoint de ancho: 90285c35871450fe3c5061c7f9fadd3d81c66820. Tres fallos reproducidos:
+windowScale no refrescaba WindowManager, Puente limitaba a560dp aun en manual y el
+slider de teléfono siempre resolvía380dp. Solución con reglas heredadas preservadas.
+Ajustes nativos con paleta Puente, secciones en teléfono, lateral en tablet y búsqueda;
+ancho primero, detalles desplegables, proveedores/legados en Avanzado. Sin borrar
+preferencias ni controles de privacidad; opacidad inefectiva de Puente oculta.
+40 casos JVM/Robolectric en API33/35 y lint sin errores; ver informe/evidencia en
+ docs/SETTINGS-REFRESH-20261109.md. API28 no disponible; física OneUI/Gboard pendiente.
+Fuentes68/69/70, main, firma, paquete, versiones, C2/C5 e integraciones intactos.
+Sin APK/Actions/instalaciones; autorización70 consumida. Próxima entrega requiere
+permiso nuevo y aislamiento desde70 para excluir C5 del PR. PR21 sigue borrador.
+Liberar sólo reserva propia mediante notas atómicas. No reabrir funciones pausadas.
+
+## Continuidad vigente — catálogo funcional interactivo, sólo elección
+
+Propietario pidió «ahora hace lo mismo pero en cuanto a funciones».36opciones F01–F36
+conservadas;11demos locales editables y25recorridos Android ficticios. Galeríaoffline,
+19PNG Chromium yPDF11p; ver docs/FUNCTION-LAB-20261109.md.211comprobaciones web,
+sin Android/Compose/efectos externos. RecomendadasF08/F12/F34/F33 másF01/F02/F07/F36.
+Ninguna nueva función adoptada/implementada. Esperar elección antes de desarrollar;
+selección no autoriza envíos ni otras capacidades sensibles. Puente/Preview70/C2/C5,
+catálogo anterior, main/versiones/firmas intactos. SinAPK/Actions/permisos/deps.
+C3/C4 pausados, C5físico bloqueado. Liberar sólo reserva propia con notas atómicas.
+
+## Continuidad vigente — Preview70 Puente entregada
+
+Único native-delivery run42560494613 attempt1SUCCESS. Fuente143104c aislada69,
+workflow824f341. APK70 yZIP exacto verificados independientemente: paquetePreview,
+ARM64/noDebuggable/R8, un firmante/v2/885838aa igual69, hashes/zipalign/ELF16KiB,
+ZIPigualgitarchive ypayloadsigned/unsigned. DescargaCLI403 resuelta por conector
+GitHub; digest de transporte verificado. Ver docs/NATIVE70-DELIVERY-20261109.md.
+Autorización70 CONSUMIDA; no rerun/fallback/otraentrega sin nueva decisión.
+No instalar/desinstalar, main/69/C5 íntegros, PR21borrador. Física pendiente;
+no declarar C2/C5/VisualFirst terminados. Liberar sólo reserva propia con notas.
+
+## Continuidad vigente — entrega Preview70 Puente autorizada
+
+El propietario pidió «dale manda el apk» tras elegir Puente. Preparar y ejecutar
+UNA entrega native-delivery de70, con aislamiento desde69; no pedir de nuevo
+permiso para esa acción. Fuente143104ce8d83f6ad6b5b4acd80897db579816fcd,
+rama feat/preview70-puente-isolated-20261109. WorkflowSHA=commit de este manifiesto;
+publicar/verificar par antes de ejecutar. Ver docs/NATIVE70-DELIVERY-20261109.md.
+Nueve rutas permitidas, C5 fuera, seisUI idénticas0b1441e.5tests aislados+20offline
+verdes; reutilizar20UI/lintPR. Cerrar reserva de preparación y adquirir NUEVA
+para el dispatch. US$0/stop_on_limit, guardas/firmador885838aa intactos. Un intento,
+sin rerun/fallback/buildalternativo, main/69/versionesprevias conservados. No instalar.
+Este permiso70 no habilita otra entrega ni nuevas funciones. Liberar sóloreserva propia.
+
+## Continuidad vigente — Puente ligero H02 integrado en Compose
+
+El propietario eligió H02 web y autorizó integración. Código `0b1441e85cc736026f5bee81e1c23eef869e70c1`.
+Barra/lista y destino separados, alto según contenido, Hielo claro/nocturno,
+resize accesible conservado; apilado compacto con búsqueda/footer visibles.
+Reutiliza motores/acciones; no renderizador nuevo/WebView. Abrir app en contexto,
+sin duplicado visual en footer. Corregidos scroll y retorno de foco con evidencia.
+20casos únicos; ronda final20 y lint0E/23W/1I. Ver
+ docs/PUENTE-NATIVE-20261108.md y comparativas Compose antes/después/H02web.
+Focusfalse sigue por defecto y reversible; AjustesA, versiones/firmas/paquetes,
+C2/C5 y fuentes68/69/main intactos. Sin APK/Actions/instalación. Autorización69
+consumida. No declarar aceptación física ni C5 completo; liberar sóloreserva propia.
+
+## Continuidad vigente — Puente, ocho acabados extremos de laboratorio
+
+El propietario pidió diferencias mayores: X01Terminal/X02Papel/X03Cobalto/X04Chicle/
+X05Señal/X06Hielo/X07Berenjena/X08Blanco. Combinaciones completas;4opacidades
+100/90/76/60% aisladas.40PNGnuevos+2referencias exactas. Ver docs/PUENTE-BOLD-20261108.md.
+Sin aprobación productiva. Galerías anteriores intactas. FocusStudio/Preview69/C2/C5/
+36funciones conservados. SinAPK/Actions/main/deps/permisos. Autorización69consumida.
+Pendiente selección y validación física; liberar sólo reserva propia.
+
+## Continuidad vigente — Puente, acabados en laboratorio
+
+El propietario eligió explorar Puente:8paletas/5tipografías/3densidades/3superficies.
+86capturas Compose nuevas+2referencias exactas; comparación cambia un solo eje.
+Ver docs/PUENTE-FINISHES-20261108.md. Elección combinada aún NO renderizada ni
+aprobada para producto. No integrar sin decisión. FocusStudio/Preview69/C2/C5,
+36funciones y evidencia previa intactos; sinAPK/Actions/deps/permisos/main.
+Autorización69consumida. Validación física pendiente; liberar sóloreserva propia.
+
+## Continuidad vigente — Mesa interesó; cinco alternativas nuevas, sólo laboratorio
+
+Propietario pidió más y señaló interés enMesa, sin aprobar integración. M00=P05
+Mesa exacta; M01Atril/M02Folio/M03Puente/M04Tablero/M05Nexo exploran composición.
+50capturas Compose nuevas+10referencias reutilizadas, tablet/teléfono/5estados.
+Ver docs/MESA-EXPLORATIONS-20261108.md. Galeríaoffline y originales publicados.
+FocusStudio/Preview69/C2/C5/36funciones y galería anterior intactos. Sinproducto,
+APK/Actions/instalación/deps/permisos/main. Autorización69consumida. Esperar
+selección antes de integrar; liberar sóloreserva propia. No declarar cierre físico.
+
+## Continuidad vigente — seis interfaces creativas, sólo laboratorio
+
+El propietario rechazó variaciones de temas y pidió modelos de interacción distintos.
+Propuestas P01Faro/P02Consola/P03Cinta/P04Órbita/P05Mesa/P06Pulso:60PNG reales
+Compose (6×2perfiles×5estados), paleta/fondo/consulta/datos comunes. Galeríaoffline
+primerojuntas, zoom/estados/comparación; descartes documentados por similitud.
+Ver docs/CREATIVE-DIRECTIONS-20261108.md. Ninguna adoptada ni integrada.
+Preview69/FocusStudio/C2/C5/36funciones intactos; autorización69consumida.
+Sólo banco app/src/test y docs/evidencia. Sin APK/Actions/main/permisos/deps/servicios.
+Recomendación de diseño MesaA9+/PulsoG86, no prueba física ni decisión propietaria.
+Esperar elección antes de implementar; liberar únicamente reserva propia.
+
+## Continuidad vigente — catálogo de elección, sólo propuestas
+
+El propietario pide variedad real y elegir antes de implementar. Catálogo de12
+estéticas nuevas+referencia y36 opciones funcionales,348capturas Compose de
+laboratorio; no APK ni cambios productivos. Ver docs/CHOICE-CATALOGUE-20261108.md.
+Sólo bancos app/src/test, fixtures y evidencia. Ninguna dirección ni función
+adoptada. Esperar elección por códigos E/F; no ejecutar capacidades sensibles.
+Preview69 ENTREGADA: sourcecbc956a/workflowdd5e595/run42443490420 attempt1SUCCESS;
+autorización CONSUMIDA. Conservar fuenteaislada69,68/main/Studio/ranking/C5/140ms.
+No nuevas entregas/Actions/instalaciones ni dependencias. Liberar sólo reserva propia.
+
+## Continuidad vigente — Preview69 C2 aislada preparada, NO autorizada
+
+Fuente69 cbc956ab56756d9ebdf7de05300fb0b5f5b14a19, base exacta fuente68c51677b.
+Rama feat/preview69-c2-isolated-20261108. Sólo título2:1 + cuatro arreglos de ranking
+C2 + recibo de apertura fijado + numeración69; seisproductivos/trespruebas/Gradle.
+C5 no se distribuye y se conserva íntegro enPR21; FileIndex igual68. Ver
+ docs/NATIVE69-PREPARATION-20261108.md y evidencia. No rediseño ni nueva funcionalidad.
+Main/Studio/AjustesA/140ms/preferencias/firma/paquete preservados. Autorización68
+CONSUMIDA; no habilita69. Futuro native-delivery desde ramaPR con par exacto y
+reserva NUEVA, sólo después de autorización. No APK/Actions/instalación ahora.
+C2/9V/C5 no completos; checklist físico posterior TabA9+/MotoG86. Liberar sóloreserva propia.
+
+## Continuidad vigente — C2/F01 recorrido de apertura local
+
+Desde bfa07e7, seis recorridos Compose nuevos +17 regresiones de ejecución.
+Único defecto productivo reproducido: inspector Focus fijado no mostraba recibo
+SOLICITADO. Una línea reutiliza NativeLaunchRequestStatus; no cambia ejecución,
+cierre ni acciones. Ver docs/C2-APP-OPEN-JOURNEY-20261107.md y evidencia.
+28 casos de ranking conservados sin repetir. Apertura externa/IME/rotación reales
+pendientes; no declarar C2 completo. Studio/2:1/140ms/Preview68 intactos.
+C5 bloqueado, otras integraciones pausadas. No APK/Actions/main/nuevaPreview.
+Autorización68 consumida; liberar sólo reserva propia con notas atómicas.
+
+## Continuidad vigente — C2 relevancia/estabilidad, Visual First estabilización
+
+Propietario autorizó sólo búsqueda universal, desde71500e3. Ver
+ docs/C2-RELEVANCE-STABILITY-20261107.md y evidencia c2-relevance-20261107.
+Cuatro fallos reproducidos: espacios+alias ocultan app exacta; puntajes/orden
+inconsistentes por espacios; recencia influye sin learning/en privado; homónimos
+favoritos en inicio dependen de PackageManager. Corrección mínima en ranker/core
+existentes, sin segundo sistema.28dirigidas correctas; no suitesUI repetidas.
+Conservar Studio/2:1/140ms/acciones/NativeLaunchSession y Preview68 instalada.
+C5 bloqueado y sin cambios; C3/C4/C6–C8 pausados. No APK/Actions/main/capturas.
+Autorización68 CONSUMIDA. Publicar checkpoints y liberar sólo reserva propia.
+
+## Continuidad vigente — feedback físico Preview68 y títulos de resultados
+
+Propietario pide avanzar y detener solicitudes de capturas. Cobertura física
+parcial de68 registrada en docs/FOCUS-TITLE-PRIORITY-20261107.md; no cerrar nueveV
+ni prometer prueba de Spotify/IME/restauración completa. Arreglo menor autorizado:
+prioridad del título de resultados Focus inline, sin rediseño ni callbacks nuevos.
+Fuente y entrega68 c51677b/fe16373/run42415046522 attempt1 SUCCESS conservadas;
+autorización68 CONSUMIDA, jamás rerun. No APK/Actions/main/funciones nuevas.
+C5 íntegro pero sin cambios; Preview68 aislada continúa separada del PR.
+No pedir más capturas por ahora; claro/200%/teléfono/rotación pendientes sin
+bloquear correcciones pequeñas. Publicar pruebas focalizadas y liberar sólo reserva propia.
+
+## 2026-11-07 — Preview 68 visual aislada preparada, sin autorización de entrega
+
+Prioridad vigente: preparar entrega visual desde la fuente67, no distribuir C5.
+Fuente candidata c51677b79446ce1dc8213553891d45897b14d726, rama
+feat/preview68-visual-isolated-20261107. PR21 conserva TODO C5 y corrección lint214e00a.
+FileIndex.clear de C5 sí afecta una ruta antigua observada por la barra; por eso
+fuente aislada basada en6918204 + pulido2731897 idéntico + dos líneas versión68.
+No revertir C5 en PR ni confundir HEAD workflow con fuente de APK68.
+Ver docs/NATIVE68-PREPARATION-20261107.md y scripts/preview_delivery.json.
+17 tests offline de entrega +3 de aislamiento;19 visuales y lint0E/26W/1Info
+reutilizados, sin repetir. Inspección AGP sólo configuración, sin app/testAPK.
+Próximo: esperar NUEVA autorización del par source/workflow para un native-delivery;
+reserva NUEVA y AUTHORIZE_PREVIEW_68_ONCE. No Actions/APK/firma/instalación ahora.
+Main/67/140ms/datos y C5.3-C5.4 preservados. No cerrar nueveV ni C5 por preparación.
+
+## 2026-11-07 — Focus Studio: correcciones por evidencia física de Preview 67
+
+Prioridad vigente del propietario: legibilidad interna, ActionPanel contenido y
+layout compacto del formulario Spotify; sólo presentación, sin reparar integración.
+Fuente2731897c80b2d87440a58d9f9b6d08ef1710723e publicada/PR21 borrador.
+19/19 dirigidas verdes; lint global bloqueado por StateFlow.value en C5AndroidTest
+preexistente e intacto (C5FocusHostDeviceTest:65). Análisis main final completado. Ver docs/STUDIO-PHYSICAL-POLISH-20261107.md y galería
+Compose antes/después. Conservar Studio/AjustesA/Geist/D1/140ms/acciones/ranking.
+C5 congelado e intacto: NO-GO físico C5.4 y resultados C5.3 siguen vigentes.
+No APK/Actions/nuevaPreview/main/permisos/paquete/firma/deps. No declarar validación
+One UI/Gboard, rendimiento físico ni nueve V completas por capturas JVM.
+Publicar checkpoints pequeños y liberar sólo reserva propia con notas atómicas.
+
+## 2026-11-07 — C5.4: ruta segura, NO-GO de instalación actual
+
+Desde b744ecf/PR21. ADB0, AVD0, sinemulador/imagen/KVM; parDebug/testAPK ausente
+y materialfirma local ausente. Perfiles/registroglobal Galaxy/Motorola DESCONOCIDOS:
+no aprobar instalación personal por suposición ni por elegir otro perfil.
+Ver docs/C5-4-SAFE-EXECUTION-DECISION-20261107.md y evidencia de entorno.
+Recomendación física: equipoARM64 de pruebas ya limpio/autorizado; alternativamente
+auditar si .next/.next.test están libres globalmente y sólo existe Preview67
+.raycastpreview. Coexistencia posible por IDs distintos, NO verificada todavía.
+AVD nuevo descartable en host apto sólo ensayo preliminar, no validación física.
+No aprovisionar/descargar/compilar/firmar/instalar ni adaptar native-delivery ahora.
+C5.3 7/12+5omisiones/0FP y bancoC5.4c2f94e8 intactos; no repetir pruebas.
+Sin cambiosproductivos/paquetes/firmas/main/Preview67/Actions. NoC5.5 ni C5completo.
+Publicar decisión y liberar sólo reserva propia con notas atómicas.
+
+## 2026-11-07 — C5.4: banco físico preparado, no ejecutado
+
+Desde d712a14/PR21. Cinco métodos AndroidTest preparados: PDF/citas/renderer,
+SAF DocumentsUI asistido+provider sólofixtures+pipebloqueante/cancel/revocar,
+OCRreal optativo, hostStudio aislado/scroll/copiaenmemoria/lifecycle y corpus
+semántico real condicionado por ready/preferencias/recursos. Sin mockdeembeddings.
+Compilación Kotlin+Java SINAPK correcta; controles estáticos/fixtures/grafo/APKs
+correctos. adb0dispositivos: CERO instrumentación/métricas físicas. C5.3 7/12,
+5omisiones/0FP inalterado; ninguna evaluación semántica nueva ni modelo descargado.
+Ver docs/C5-4-PHYSICAL-PROTOCOL-20261107.md, fichaaceptación y evidencia asociada.
+Target compilado DebugAndroidTest=.next/.next.test; Preview67 NO contieneC5.
+Ejecución futura requiere artefactos/target/firma compatibles y autorización
+separada. No instalar sobreapp personal, no asumir perfilAndroid protege código.
+Guardas pkg/cert/app+test/source declarado; source declarado NOprueba APK.
+BDprivada sin acceso amplio, provider sóloficticios; prefs/modelo no se escriben.
+App/src/main/Studio/QuickLook/140ms/67/identidad/main intactos. C3/C4/C6–C8 pausados.
+Sin APK/testAPK/Actions/permisos productivos/deps nuevas/merge/nuevaPreview.
+C5 NOcompleto; físico y unión productiva pendientes. Liberar sólo reserva propia.
+
+## 2026-11-07 — C5.3: evaluación léxica y límite de modelo ausente
+
+Desde16ef8bf/PR21, sóloC5.3. Cuatro casos nuevos correctos, corpus6docs/12consultas:
+7aciertos documento-consulta/5omisiones/0FP; recall7/12, MRR0.50 en10positivas.
+Modelo DistilUSE verificado NO disponible enentorno; calidad semántica actual NO
+evaluada, no cero ni vectores simulados. No descarga de modelos/dependencias.
+NOintegrar semántica a citas hasta demostrar mejora auténtica y coste/seguridad.
+Ver docs/C5-3-SEMANTIC-EVALUATION-20261107.md y evidencia asociada. Históricos8/8
+separados/no reejecutados. Offsets semánticos searchableText !=body de citas;
+semanticSearch no relee SHAarchivo; puente futuro debe revalidar C5.2 y procedencia.
+DocumentCitationSession/State/PDFextractor/barra/ranking/Studio/140ms intactos.
+C5 sigue abierto; sin UI productiva/síntesis/backend/RAGFlow. SAF/OCR/lifecycle
+físicos pendientes. C3/C4/C6–C8/Spotify/Square pausados; Preview67 preservada.
+Sólo tests/corpus/docs; reutilizar lintC5.2(0E26W1Info), no suites históricas,
+Actions/APK/main/merge/version/firma/paquete/prefs/deps/permisos. Próximo: evaluación
+con modelo local ya verificado disponible y el mismo corpus, antes de un puente.
+Publicar checkpoints y liberar sólo reserva propia con notas atómicas.
+
+## 2026-11-07 — C5.2: PDF auténtico y contrato reactivo aislado
+
+Prioridad expresa: sólo C5.2 desde b80d976/PR21, no reconstruir C5.1.
+DocumentText/PdfTextSource/PDFBox reales: PDF3páginas, Unicode, offsets y páginas
+comprobados; Poppler independiente coincide. PDF raster real sin capa textual,
+OCR explícitamente deshabilitado: no afirmar reconocimiento real. SAF probado con
+DocumentsProvider en Robolectric, NO instrumentación: adb sin dispositivos y sin
+emulador/KVM. DocumentCitationState efímero sin restauración/persistencia; invalida
+por configuración/revisión/eventos del host, revalida antes de mostrar/copiar/abrir.
+SAF no tiene aviso universal de revocación: conectar lifecycle/eventos al host antes
+integrar barra. Corrección mínima: clear() emite revisión tras borrar índice; rojo
+previo conservado. Ver docs/C5-2-PROVENANCE-STATE-20261107.md y evidencia asociada.
+14casos nuevos +1regresión correctos; lint0E26W1Info. Fuente84c0e1a.
+No UI productiva ni cambios a Studio/QuickLook/ranking/140ms/Preview67/identidad/
+prefs/manifiesto/deps/permisos; sin Actions/APK/main/merge. C3/C4/C6–C8 pausados.
+C5 NO completo. C5.3 semántica pendiente; primero validar SAF/OCR/host físico y
+medir I/O. Preservar11casosC5.1, repetir sólo regresión relacionada. Liberar sólo
+reserva propia con notas atómicas; no mover checkpoint integral.
+
+## 2026-11-07 — C5 reabierto: citas locales, primer checkpoint técnico
+
+Decisión posterior del propietario: avanzar únicamente C5 desde293290a/PR21.
+Preview67 ya entregada por único intento autorizado; no repetir entrega. Studio
+aprobado se conserva; validación física exhaustiva sigue pendiente. C3/C4/C6–C8
+siguen pausados. Este bloque prevalece sobre congelamientos históricos de C5.
+DocumentCitationSession reutiliza FileIndex/extracción/permisos; citas literales
+con SHA actual, offsets y página sólo respaldada por metadatos PDF válidos.
+Revocación/borrado/cancelación invalidan referencias; no es todavía un motor de
+respuestas ni integración productiva de UI. Recuperación léxica natural existente;
+semántica inventariada, pendiente. Propuesta Studio sólo test, apertura explícita.
+Ver docs/C5-CITATIONS-CHECKPOINT-20261107.md y evidencia asociada: 11 casos dirigidos
+correctos, lint0E26W1Info. Fixtures OCR/PDF, no prueba física ni OCR real. C5NOcerrado.
+Sin Actions/APK/main/merge/version/manifiesto/firma/paquete/prefs/deps/permisos.
+Próximo: páginas/fuentes reales, evaluación semántica y estado reactivo por revocación.
+Preservar checkpoints; publicar y liberar únicamente reserva propia con notas.
+
+## Preview67 — candidata congelada, pendiente de autorización de entrega
+
+Base26377fa/PR21 verificada. Fuente6918204238706d3c9bac826196ad3f1f272a51e7:
+code67/name2.0.1-raycast-preview-native57-v67; paquete/certificado histórico intactos.
+App/src/main idéntico aStudio3662cf7, conserva commits posteriores. Sólo dos líneas
+Gradle de numeración. AGPsinAPK correcto;19checks offline67 correctos. Reutilizar
+20casosStudio/lint0E26W1Info, sin suites/galerías históricas. Datos/preferencias/
+savers/migraciones sin delta; actualización física sobre66 aún pendiente.
+Ver docs/NATIVE67-PREPARATION-20261107.md y checklistA9+/G86. D5aislado140ms intacto;
+C3–C8/Spotify/Square/WhatsApp/docfunciones congelados. NoActions/firma/APK/main/merge.
+Manifest67 source=base/allowed_delta_paths=[]; workflowescommit posterior de entrega,
+par exacto ennotas de cierre. Detener tras publicar par y liberar sólo reserva propia.
+Nueva entrega requiereautorización explícita delpar67, reserva NUEVA y único intento
+native-delivery AUTHORIZE_PREVIEW_67_ONCE. No reusar autorización/reserva66 o actual.
+No cerrar nueveV sin evidencia física ni reabrir composición Studio aprobada.
+
+## 2026-11-07 — Studio aprobado e integrado, Ajustes A conservado
+
+El propietario aprueba BStudio con cuerpoA enAjustes. Fuente 3662cf79f0982dea08e48689f67ec7932f1ca4a9.
+Barraenmarcada/seleccióntinte+rail sinotrocontorno/inspectorcard/ActionPanel/footer
+integrados en producción. StudioSurface cede márgenes según ancho útil×texto,
+no tamaño físico. CuerpoAjustes/temas/Geist/D1/FocusB/acciones/ranking intactos.
+30pares reales antes/después,6perfiles/5escenas.20casos dirigidos correctos,
+lint0E26W1Info. Ver docs/STUDIO-INTEGRATION-20261107.md. No nueva validación
+OneUI/Gboard/WM/fluidez/RAM; requiere entrega futura autorizada, no incluidoenAPK66.
+Focus=false/reversible; D5aislado140ms intacto. C3–C8/Spotify/Square/WhatsApp/docs
+funcionales congelados. NoActions/APK/main/merge/firma/paquete/version/deps/permisos.
+Preservar checkpoints; liberar sólo reserva propia con notas. No repetir rediseño
+ni interpretar la integración como autorización para compilar otra Preview.
+
+## 2026-11-07 — Focus como base aprobada; direcciones A/B pendientes
+
+Propietario reporta prueba física66 satisfactoria y conservaFocus como base estética,
+NO cierre exhaustivo deOneUI/Gboard ni autorización de adoptarA/B. Basecfb8fa8/PR21.
+Propuestas sólo test: ARefinado/BStudio,78PNG/26comparativas,6casos nuevos correctos.
+Motores y componentes productivos enfixture; NO APK/SpotlightPanelcompleto. Ver
+ docs/FOCUS-DIRECTIONS-20261107.md y verification/focus-directions-20261106.
+RecomendaciónB con cuerpoA enAjustes (Bconsumeespaciovertical). Esperar elección;
+no otrorediseño, producción/Geist/D1/FocusB/ranking/140ms/identidad66 intactos.
+D5noaprobado; C3–C8/Spotify/Square/WhatsApp/documentos funcionalmente pausados.
+SinActions/APK/main/deps/permisos/firma. Liberar únicamente reserva propia con notas.
+
+## 2026-11-06 — Preview66 preparada, pendiente de autorización específica
+
+Base7bc8a26/PR21 verificada. Fuente 66d4ea0b28192f84ba26b9a451a8299d90f84cfb:
+code66/name2.0.1-raycast-preview-native57-v66; paqueteRaycastPreview/cert885838aa
+conservados. App/src/main idéntico a7bc8a26: FocusB/D1/footer/PDF/notificaciones
+íntegros; auditoría crítica sin otro defecto reproducible, sin rediseño ni C3–C8.
+2casos nuevos266dpinterior/330dp/texto200%claroscuro correctos, lint0E26W1Info;
+identidadAGPsinAPK correcta; firma/hashAPK65recomprobados;19guardasofflineverdes.
+No repetir35/13/18históricos; imágenes originales conservadas. Ver
+docs/NATIVE66-PREPARATION-20261106.md y verification/native66-preparation-20261106.
+Manifiesto66 congela source=base y allowed_delta_paths=[]; workflowescommit de
+manifiesto posterior, SHAexacto ennota de cierre. NoActions/APK/preflightreal/firma,
+main/merge/deps/permisos/servicios. D5sólotest; ventana140/100ms intacta.
+C3–C8/Spotify/Square/ranking/acciones/datos congelados. FísicaOneUI/Gboard/A9+/g86
+y nueveV aún pendientes. DETENERtraspublicarpar y liberarúnicamente reserva propia.
+Una futura entrega requiereautorización nueva delpar66 y reserva nueva; jamás
+reutilizar autorización65 ni estareserva. Únicaruta native-delivery, un intento
+con AUTHORIZE_PREVIEW_66_ONCE, guardas/aislamientofirma y verificaciónAPK+ZIP.
+
+## 2026-11-06 — Visual First: acciones de notificación legibles
+
+Continuación desde73af4d6/PR21. Defecto reproducido: fila fija ocultabaVolver
+(ancho0) en390dp/100% y Sugerirrespuesta en330dp/200%. Ajuste mínimo aFlowRow,
+4dp entre líneas; mismos botones, orden, capacidades y callbacks. Tablet1000/100
+idéntica byteabyte. Sólo presentación NotificationPreview, no funcionalidadC3.
+Ver docs/VISUAL-NOTIFICATION-CARD-20261106.md y verification/visual-notification-20261106.
+V06/V08 avanzan; D1/FocusB/D2–D4/Preview65 preservados, C3–C8 pausados. D5aislado,
+ventana140/100ms intacta. FísicaOneUI/Gboard/WhatsApp/RemoteInput/FPS/RAM pendientes.
+Fuente/pruebas/capturas d342c9ec2e4bf19f2f669a045a2df3184bde2fef.
+18casos dirigidos correctos, lint0E26W1Info;4pares originales, teclado en orden.
+SinActions/APK/main/merge/firma/paquete/deps/permisos ni funciones nuevas.
+
+## 2026-11-06 — Visual First: footer accesible con texto ampliado
+
+Continuación desde d570a86/PR21. Defecto reproducido: footer700dp/texto200% dejaba
+Acciones con ancho0 y crecía308dp. Corrección mínima del breakpoint de footer según
+escala Android×preferencia existente: reutiliza distribución compacta, altura52dp.
+Sin modificar ancho de Ajustes/overlay, tipografía, colores, iconos o atajos.
+V05/V06 avanzan; FocusB/D1/D2–D4 y Preview65 conservados, C3–C8 pausados. D5aislado,
+ventana140/100ms intacta. Física OneUI/Gboard/ventanas/FPS/RAM sigue pendiente.
+Ver docs/VISUAL-FOOTER-BUDGET-20261106.md y evidencia visual-footer-20261106.
+Fuente/pruebas/capturas publicadas d9bc0b53f25b3fb9c21a65cd90b22767dfaffe7d.
+13casos dirigidos correctos; lint0E26W1Info;5pares y2validaciones extra.
+SinActions/APK/main/merge/firma/paquete/deps/permisos ni funciones nuevas.
+
+
+## 2026-11-05 — ambasB integradas por aprobación expresa
+
+Continuidad desde677d9d8/PR21, reserva propia nueva codex-87df291d-22cb-40e5-a1eb-7f6e35955a6a.
+Fuente8f6a5b470310b59c4f5950870ce81327a546e947: búsquedaFocus promovida con disponibilidad
+y prepare reales, deduplicada deMásacciones/ActionPanel; administración plegable
+y recuperable; revisión identifica app receptora del Intent y sitio web sin variar
+ejecución. GuardUIcorrige pérdida de inspector al restaurar antes de completar lotes
+de resultados; motor/ranking/savers/NativeLaunchSession/WM intactos.
+
+15métodos dirigidos con última evidencia correcta, lint0E26W1Info(2m7s). Se preservan
+fallos y trazas; sin timeouts mayores ni aserciones reducidas.24PNG originales/9pares
+reales/PDF/HTML.330dp,360/960ancho,ambostemas; texto200%teléfono,scroll/48dp,CtrlK/Escape,
+restauración de borrador/cursor sin confirmar y Focus→anterior→Focus. Escena móvil
+comparable700dp:426→407dp de superficie, no medidaOneUI.
+
+Informe docs/FOCUS-B-INTEGRATION-20261105.md. Focus=false y homónimodf5bd77/prueba
+conservados. APK64 no contiene estos cambios. No Actions/APK/main/merge/firma/paquete/
+versión/permisos/dependencias ni capacidadesC3/C4 nuevas; plan23/checkpoints intactos.
+Siguiente:C3/C4funcionales conforme a contratos/aceptación física pendientes, sin
+rediseñar otra vez estas piezas. Publicar cierre y liberar sólo reserva propia con
+notas; no promover checkpoint integral e38eae8.
+
+
+## 2026-11-05 — revisión crítica Focus desde64 y contratosC3/C4
+
+Base remota0fa6781/fuente64=808bda2 verificada, PR21 borrador; reserva propia nueva
+codex-f1eae2fd-6eda-4cfa-ae7c-a7b404d4458b. Diagnóstico y matriz de23mejoras en
+docs/FOCUS-CONSOLIDATION-REVIEW-20261105.md. Dos propuestasB aisladas sólo test:
+acción de búsqueda visible/administración plegable e identificación app vsweb.
+18PNGCompose,8comparativas,HTMLautocontenido yPDFbreve. Fragmento382→360dp;
+revisión176→176dp, no medidas físicas deWM. Primera B438dp descartada y preservada.
+PopupActionPanel no estaba incluido en captura deventanabase; evidencia de su
+componente corregida, sin afirmar fallo de app por ese recorte.
+
+Defecto real reproducido: seleccionar otro contacto homónimo conservaba revisión.
+Fixlocalizado df5bd778019e1dc16a56c41ca8f8ad9ea4525652 invalida revisión/approvedReply
+y estadoanterior. Red/green preservados, sin envío real ni capacidadnueva. No está
+enAPK64.11casos JVM distintos verdes y lint0E/26W/1Info; no suite/APK/Actions.
+
+B noadoptadas: decisión visual pendiente y luego integraciónacotada opt-in con
+disponibilidad real,deduplicación,330dp,textoampliado,heading/roles,retorno/teclado.
+Focus=false permanece. C0/C1/C2 físicos pendientes; C3/C4 diseñados, noimplementados
+ni activados. docs/C3-C4-CONTRACT-DESIGN-20261105.md fija destinatario/canal/paquete/
+revisión efímera,mecanismos existentes y estadosSpotify autorización/solicitud/
+observación separados. No modificar planmaestrooriginal,main,checkpoints,firma,
+paquete,dependencias,permisos,motor,ranking,NativeLaunchSession oWM.
+Cerrar con notas y liberar sólo reserva propia; no promover e38eae8.
+
+
+## 2026-11-05 — Preview64 entregada, física pendiente
+
+Autorización expresa del par fuente808bda2/workflow5b346bc ejecutada una sola vez:
+run42082398659 attempt1 success. APK/ZIP descargados y verificados independientemente;
+code64, paquete Raycast, firma v2/cert885838aa histórico, R8/noDebuggable/ARM64/16KiB,
+payload unsigned conservado y ZIP fuente idéntico a git archive. Gradle7m21s correcto;
+lintDebug local nuevo0E/26W/1Info(3m45s);6tests dirigidos de preparación reutilizados,
+no ejecutados otra vez en Actions. No nuevos cambios productivos/estéticos/WebView,
+main/C3–C9 ni permisos/dependencias. Focus=false intacto.
+
+Informe docs/NATIVE64-DELIVERY-20261105.md; APK individual, ZIP y SHA256SUMS en
+shared/downloads/spotlight-preview64. Artefacto13442486203, caduca08/11/2026
+18:24:02UTC. APK SHA25640fde01a6a7ec7fa5a263278012aa372f36af0d31d5c0f64d0bdc20bd30540f3.
+Reserva propia codex-632cb1c8-d60b-4961-8a99-6c1250741c5a se cierra con notas
+atómicas al publicar; no promover checkpoint integral ni alterar reservas ajenas.
+Autorización consumida, sin retry/fallback. Siguiente: actualización física sobre
+Preview existente sin borrar datos; OneUI/Gboard/TabA9+/moto g86 pendientes.
+
+
+
+## 2026-11-05 — recuperación de Work y preparación Preview64
+
+Rama feat/preview57-native-return-20261103 / PR21; remoto inicial db79c84,
+fuente E1–E5 8d56082. Entorno recuperado running/connected, terminal funcional;
+SDK35 y JDK17 aislado preparados, sin credenciales de firma ni certificado nuevo.
+Reserva nueva propia codex-0b1fb8c6-943f-4948-ac52-719378f44cea, sin reserva ajena
+al adquirir. Main47259ce/checkpoints y experimentos existentes intactos.
+
+Propietario autorizó preparar64 manteniendo Focus=false: sólo dos líneas de
+versión Raycast y dos regresiones de test. app/src/main y presentación E1–E5
+idénticos. Se verificaron44 casos XML históricos y cinco hashes de evidencia;
+no se cuentan como ejecución nueva. 6 casos dirigidos JVM correctos (dos nuevos),17 checks de entrega y2 de identidad correctos..
+
+Fuente 808bda2c25887d14b42665dea4c254181d72b837; manifiesto posterior fija base=fuente, delta vacío,
+code64/nombre2.0.1-raycast-preview-native57-v64, paquete .raycastpreview y
+certificado885838aa. Procedimiento/guardas/workflow/US$0 intactos.
+No APK, firma, preflight real, Actions, main/merge ni C3–C9.
+Informe docs/NATIVE64-PREPARATION-20261105.md y evidencia asociada.
+Tras publicar, actualizar reserva y liberar sólo la propia con notas atómicas.
+Siguiente: autorización expresa del par exacto antes de un intento futuro;
+OneUI/Gboard/Tab A9+/moto g86 continúan pendientes.
+
 # Progreso autónomo de Spotlight Next
+
+## 2026-11-04 — continuación C2 autorizada, cuatro avances publicados
+
+La nueva autorización permite avanzar C2 sin esperar la tablet. Producción567cc84:
+6d872d7 búsqueda pública WEB_SEARCH;8645d4c consultas explícitas por app;
+c071455 compartir texto/enlaces, destino Gmail, footer y retorno de foco;
+567cc84 recibo Android sin afirmar efecto externo.112 casos distintos de última
+evidencia correcta en rondas dirigidas, Lint0E/26W/1Info. Capturas Compose claras/
+oscuras y comparativas desde fuente anterior con fixture idéntico; sin OneUI físico.
+[Informe y próximos pasos](C2-CONTINUATION-20261104.md). Preview62 sigue intacta (fuente135a9af), física
+ventana/Gboard/scroll/inspector/footer pendiente. Sin APK/Actions/main/C3–C9,
+permisos/dependencias/servicios nuevos ni cambios de firma/facturación. C2 no cerrado;
+continuar matriz pública y contexto/URI autorizados, manteniendo criterio físico abierto.
+
+
+## 2026-11-04 — Preview62 entregada, validación física de ventana prioritaria
+
+Fuente exacta135a9af, workflow388fe90, único run41843064054 correcto; optimizada
+R8, code62, paquete Raycast Preview y certificado885838aa. APK/ZIP descargados y
+verificados independientemente, fuente idéntica a git archive, permisos iguales
+a61 y compatibilidad estática de actualización62>61. [Entrega, hashes y respaldo](NATIVE62-DELIVERY-20261104.md).
+C1/arreglo/primer C2 preservados, sin funciones adicionales/main/C3–C9.119 pruebas
+reutilizadas; no repetidas. Próximo: propietario valida ventana/Gboard/scroll/
+inspector/footer en A9+ antes de ampliar C2. No declarar instalación física ni
+conservación de datos ya probadas. Reserva propia liberada con notas al cerrar.
+
+## 2026-11-04 — altura Preview61 corregida y primer recorrido C2 validado localmente
+
+Corrección independiente be14f7e: marco pequeño ya no se interpreta como IME;
+39 casos de ventana con evidencia roja/verde y capturas. C2 público5f385c2:
+consulta/app→inspector→revisión→solicitud Android exacta, capacidades vivas y
+prioridad exacta. Parte de contenido compartido/footer/scroll publicada con este
+registro; SHA de cierre en la nota de HEAD y PR21.119 casos distintos de última
+evidencia correcta en rondas dirigidas; Lint0errores/26advertencias/1información
+(10avisos adicionales de versiones de dependencias online, sin actualizarlas).
+
+[Informe y límites](C2-IMPLEMENTATION-20261104.md). C1 conservado, sin C3–C9,
+Actions, assemble/APK, firma, permisos/dependencias nuevos ni main/merge. Reserva
+propia cerrada mediante notas atómicas; comprobar remoto. No promover e38eae8.
+Próximo paso de aceptación: revisión de capturas y validación física A9+/moto g86
+cuando haya una entrega autorizada. La APK61 instalada sigue siendo11b647c y no
+contiene estos cambios. No repetir C1 ni dar C0/C2 físico por aprobado por JVM.
+
+## 2026-11-04 — Preview61 C1 entregada; físico pendiente
+
+Fuente11b647c, workflow8e2bbe9, único run41772255307 correcto. APK61 optimizada
+R8, firma histórica885838aa, paquete Raycast Preview; APK/ZIP descargados y
+verificados independientemente. [Entrega y hashes](NATIVE61-DELIVERY-20261104.md).
+C1 preservado; sin C2/main ni pruebas Android repetidas. Presupuesto0/bloqueo
+confirmados por propietario, sin pedir capturas recurrentes; Usage403 no invalida
+esa evidencia. Siguiente: validación física A/B Tab A9+/moto g86, no otro checkpoint.
+
+## 2026-11-04 — implementación C1 nativa, aceptación física pendiente
+
+Dirección Refinado + Adaptive autorizada. Refactor 9bdd9d9, base visual 03761d6 y
+ajustes de inspectores separados. 78 casos nativos distintos en rondas dirigidas,
+última evidencia correcta; Lint 0 errores / 16 advertencias / 1 información.
+[Capturas reales antes/después y límites](verification/c1-native-20261104/README.md).
+Barra/lista compactas, hasta 3 sugerencias, acento contenido y footer ligero;
+acciones secundarias en contexto reversible. Sin motores nuevos, C2–C9, APK,
+Actions, firma, dependencias o cambios de main/PRs anteriores. C0 físico sigue
+pendiente. Próxima acción: revisión del C1 nativo y validación física autorizada,
+no comenzar otro checkpoint automáticamente.
+
+
+## 2026-11-03 — APK60 nativa verificada
+
+Único intento autorizado de Actions 41581584988 correcto, perfil optimizado con R8. Fuente exacta e9647c1, workflow c6d481c, certificado Preview 885838aa, paquete raycastpreview / code60. [Entrega, hashes, verificación independiente y límites](NATIVE60-DELIVERY-20261103.md). Sin APK experimental, reruns, cambios productivos, main o PRs anteriores. Validación física pendiente.
+
+## 2026-11-03 — retorno oficial a Preview57, auditoría sin cambios de app
+
+Rama independiente feat/preview57-native-return-20261103 desde4fc33f2 exacto.
+[Decisión vigente](NATIVE-PREVIEW57-DIRECTION-20261103.md) y
+[auditoría/prioridades](AUDITORIA-NATIVA-PREVIEW57-20261103.md). PR19 revisado y
+sin incorporar aún; sólo se recuperan tres skills/referencias de PR20, adaptadas
+a Kotlin/Compose. No se importa implementación WebView ni su protocolo.
+Producción, tests, dependencias, permisos y workflows idénticos a la base.
+Verificación actual de procedencia/alcance; XML/capturas/notas históricos leídos,
+sin presentarlos como pruebas recién ejecutadas. Sin Gradle/APK/CI/proveedor ni
+prueba física. La matriz y puntero integral históricos no se promueven.
 
 ## 2026-10-13 — inicio manual F1.1
 

@@ -1,0 +1,90 @@
+[
+  {
+    "profile": "phone-dark",
+    "scene": "inspector",
+    "A": "phone-dark-inspector-A.png",
+    "B": "phone-dark-inspector-B.png",
+    "sheet": "phone-dark-inspector-AB.png",
+    "A_width": 360,
+    "B_width": 360,
+    "A_height": 382,
+    "B_height": 360
+  },
+  {
+    "profile": "phone-dark",
+    "scene": "context",
+    "A": "phone-dark-context-A.png",
+    "B": "phone-dark-context-B.png",
+    "sheet": "phone-dark-context-AB.png",
+    "A_width": 360,
+    "B_width": 360,
+    "A_height": 176,
+    "B_height": 176
+  },
+  {
+    "profile": "phone-light",
+    "scene": "inspector",
+    "A": "phone-light-inspector-A.png",
+    "B": "phone-light-inspector-B.png",
+    "sheet": "phone-light-inspector-AB.png",
+    "A_width": 360,
+    "B_width": 360,
+    "A_height": 382,
+    "B_height": 360
+  },
+  {
+    "profile": "phone-light",
+    "scene": "context",
+    "A": "phone-light-context-A.png",
+    "B": "phone-light-context-B.png",
+    "sheet": "phone-light-context-AB.png",
+    "A_width": 360,
+    "B_width": 360,
+    "A_height": 176,
+    "B_height": 176
+  },
+  {
+    "profile": "tablet-inspector-dark",
+    "scene": "inspector",
+    "A": "tablet-inspector-dark-inspector-A.png",
+    "B": "tablet-inspector-dark-inspector-B.png",
+    "sheet": "tablet-inspector-dark-inspector-AB.png",
+    "A_width": 470,
+    "B_width": 470,
+    "A_height": 382,
+    "B_height": 360
+  },
+  {
+    "profile": "tablet-inspector-dark",
+    "scene": "context",
+    "A": "tablet-inspector-dark-context-A.png",
+    "B": "tablet-inspector-dark-context-B.png",
+    "sheet": "tablet-inspector-dark-context-AB.png",
+    "A_width": 470,
+    "B_width": 470,
+    "A_height": 176,
+    "B_height": 176
+  },
+  {
+    "profile": "tablet-inspector-light",
+    "scene": "inspector",
+    "A": "tablet-inspector-light-inspector-A.png",
+    "B": "tablet-inspector-light-inspector-B.png",
+    "sheet": "tablet-inspector-light-inspector-AB.png",
+    "A_width": 470,
+    "B_width": 470,
+    "A_height": 382,
+    "B_height": 360
+  },
+  {
+    "profile": "tablet-inspector-light",
+    "scene": "context",
+    "A": "tablet-inspector-light-context-A.png",
+    "B": "tablet-inspector-light-context-B.png",
+    "sheet": "tablet-inspector-light-context-AB.png",
+    "A_width": 470,
+    "B_width": 470,
+    "A_height": 176,
+    "B_height": 176
+  }
+]

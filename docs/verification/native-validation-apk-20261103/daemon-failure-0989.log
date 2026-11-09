@@ -1,0 +1,92 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+WARNING: platform-tools package is not installed.
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRaycastPreviewBuild UP-TO-DATE
+> Task :app:compileRaycastPreviewAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkRaycastPreviewAarMetadata UP-TO-DATE
+> Task :app:generateRaycastPreviewResValues UP-TO-DATE
+> Task :app:mapRaycastPreviewSourceSetPaths UP-TO-DATE
+> Task :app:generateRaycastPreviewResources UP-TO-DATE
+> Task :app:mergeRaycastPreviewResources UP-TO-DATE
+> Task :app:packageRaycastPreviewResources UP-TO-DATE
+> Task :app:parseRaycastPreviewLocalResources UP-TO-DATE
+> Task :app:createRaycastPreviewCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRaycastPreview UP-TO-DATE
+> Task :app:processRaycastPreviewMainManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifest UP-TO-DATE
+> Task :app:processRaycastPreviewManifestForPackage UP-TO-DATE
+> Task :app:processRaycastPreviewResources UP-TO-DATE
+> Task :app:compileRaycastPreviewKotlin
+> Task :app:javaPreCompileRaycastPreview UP-TO-DATE
+> Task :app:compileRaycastPreviewJavaWithJavac UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:generateRaycastPreviewLintReportModel
+> Task :app:bundleRaycastPreviewClassesToCompileJar
+> Task :app:preRaycastPreviewUnitTestBuild UP-TO-DATE
+> Task :app:generateRaycastPreviewUnitTestLintModel
+> Task :app:lintAnalyzeRaycastPreview
+> Task :app:lintAnalyzeRaycastPreviewUnitTest
+
+> Task :app:lintReportRaycastPreview
+Wrote HTML report to file:///workspaces/Spotlight-Next/app/build/reports/lint-results-raycastPreview.html
+
+> Task :app:lintRaycastPreview
+> Task :app:generateRaycastPreviewLintVitalReportModel
+> Task :app:lintVitalAnalyzeRaycastPreview
+> Task :app:lintVitalReportRaycastPreview SKIPPED
+> Task :app:lintVitalRaycastPreview SKIPPED
+> Task :app:mergeRaycastPreviewJniLibFolders UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeLibs UP-TO-DATE
+> Task :app:stripRaycastPreviewDebugSymbols UP-TO-DATE
+> Task :app:extractRaycastPreviewNativeSymbolTables UP-TO-DATE
+> Task :app:mergeRaycastPreviewNativeDebugMetadata NO-SOURCE
+> Task :app:checkRaycastPreviewDuplicateClasses UP-TO-DATE
+> Task :app:mergeRaycastPreviewArtProfile UP-TO-DATE
+> Task :app:expandRaycastPreviewArtProfileWildcards
+> Task :app:mergeRaycastPreviewGeneratedProguardFiles UP-TO-DATE
+> Task :app:processRaycastPreviewJavaRes UP-TO-DATE
+> Task :app:mergeRaycastPreviewJavaResource UP-TO-DATE
+> Task :app:mergeRaycastPreviewStartupProfile UP-TO-DATE
+> Task :app:minifyRaycastPreviewWithR8
+
+The message received from the daemon indicates that the daemon has disappeared.
+Build request sent: Build{id=d7df0217-4757-454b-b469-8594f5d9831a, currentDir=/workspaces/Spotlight-Next}
+Attempting to read last messages from the daemon log...
+Daemon pid: 40863
+  log file: /workspaces/.spotlight-tools/gradle-home/daemon/8.10.2/daemon-40863.out.log
+----- Last 20 lines from daemon log file - daemon-40863.out.log -----
+2026-10-26T13:53:12.894+0000 [DEBUG] [org.gradle.launcher.daemon.registry.PersistentDaemonRegistry] Marking busy by address: [b3ce3838-4dd7-4a25-b581-de070bb5906f port:39033, addresses:[localhost/127.0.0.1]]
+2026-10-26T13:53:12.895+0000 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Waiting to acquire exclusive lock on daemon addresses registry.
+2026-10-26T13:53:12.896+0000 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Lock acquired on daemon addresses registry.
+2026-10-26T13:53:12.897+0000 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Releasing lock on daemon addresses registry.
+2026-10-26T13:53:12.899+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] resetting idle timer
+2026-10-26T13:53:12.901+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] daemon is running. Sleeping until state changes.
+2026-10-26T13:53:12.906+0000 [INFO] [org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy] Daemon is about to start building Build{id=d7df0217-4757-454b-b469-8594f5d9831a, currentDir=/workspaces/Spotlight-Next}. Dispatching build started information...
+2026-10-26T13:53:12.908+0000 [DEBUG] [org.gradle.launcher.daemon.server.SynchronizedDispatchConnection] thread 21: dispatching org.gradle.launcher.daemon.protocol.BuildStarted@1204921a
+2026-10-26T13:53:12.921+0000 [DEBUG] [org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment] Configuring env variables: [NVM_RC_VERSION, PATH, CODESPACES, CODESPACE_VSCODE_FOLDER, PROMPT_DIRTRIM, VSCODE_GIT_IPC_HANDLE, VSCODE_PYTHON_AUTOACTIVATE_GUARD, ANDROID_HOME, GITHUB_API_URL, COLORTERM, SDKMAN_DIR, VSCODE_GIT_ASKPASS_NODE, PWD, TERM_PROGRAM_VERSION, GIT_ASKPASS, SDKMAN_BROKER_API, NVM_CD_FLAGS, SHELL, SDKMAN_CANDIDATES_API, GITHUB_TOKEN, GITHUB_GRAPHQL_URL, OLDPWD, GITHUB_CODESPACE_TOKEN, ContainerVersion, GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN, NVM_SYMLINK_CURRENT, GITHUB_USER, LS_COLORS, SHLVL, BROWSER, GITHUB_SERVER_URL, CLOUDENV_ENVIRONMENT_ID, JAVA_HOME, GIT_EDITOR, RepositoryName, TERM, LANG, FEATURE_SPARK_POST_COMMIT_CREATE_ITERATION, VSCODE_GIT_ASKPASS_MAIN, INTERNAL_VSCS_TARGET_URL, GRADLE_USER_HOME, GITHUB_REPOSITORY, VSCODE_IPC_HOOK_CLI, VSCODE_GIT_ASKPASS_EXTRA_ARGS, SDKMAN_CANDIDATES_DIR, _, NVM_DIR, TERM_PROGRAM, VSCODE_JDWP_ADAPTER_ENDPOINTS, SHELL_LOGGED_IN, SDKMAN_PLATFORM, ANDROID_SDK_ROOT, USER, HOSTNAME, CODESPACE_NAME, SPOTLIGHT_GRADLE_BIN, HOME, VSCODE_JAVA_EXEC]
+2026-10-26T13:53:12.956+0000 [DEBUG] [org.gradle.launcher.daemon.server.exec.LogToClient] About to start relaying all logs to the client via the connection.
+2026-10-26T13:53:12.957+0000 [INFO] [org.gradle.launcher.daemon.server.exec.LogToClient] The client will now receive all logging from the daemon (pid: 40863). The daemon log file: /workspaces/.spotlight-tools/gradle-home/daemon/8.10.2/daemon-40863.out.log
+2026-10-26T13:53:12.961+0000 [DEBUG] [org.gradle.launcher.daemon.server.exec.RequestStopIfSingleUsedDaemon] Requesting daemon stop after processing Build{id=d7df0217-4757-454b-b469-8594f5d9831a, currentDir=/workspaces/Spotlight-Next}
+2026-10-26T13:53:12.962+0000 [LIFECYCLE] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] Daemon will be stopped at the end of the build 
+2026-10-26T13:53:12.962+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] Stop as soon as idle requested. The daemon is busy
+2026-10-26T13:53:12.965+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] daemon stop has been requested. Sleeping until state changes.
+2026-10-26T13:53:12.969+0000 [DEBUG] [org.gradle.launcher.daemon.server.exec.ExecuteBuild] The daemon has started executing the build.
+2026-10-26T13:53:12.970+0000 [DEBUG] [org.gradle.launcher.daemon.server.exec.ExecuteBuild] Executing build with daemon context: DefaultDaemonContext[uid=d0431f9d-080a-4c0b-8997-43953eac826d,javaHome=/usr/lib/jvm/msopenjdk-current,javaVersion=17,javaVendor=Microsoft,daemonRegistryDir=/workspaces/.spotlight-tools/gradle-home/daemon,pid=40863,idleTimeout=120000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=--add-opens=java.base/java.util=ALL-UNNAMED,--add-opens=java.base/java.lang=ALL-UNNAMED,--add-opens=java.base/java.lang.invoke=ALL-UNNAMED,--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED,--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED,--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED,--add-opens=java.base/java.nio.charset=ALL-UNNAMED,--add-opens=java.base/java.net=ALL-UNNAMED,--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED,-Xmx2048m,-Dfile.encoding=UTF-8,-Duser.country=US,-Duser.language=en,-Duser.variant]
+WARNING: platform-tools package is not installed.
+Wrote HTML report to file:///workspaces/Spotlight-Next/app/build/reports/lint-results-raycastPreview.html
+Daemon vm is shutting down... The daemon has exited normally or was terminated in response to a user interrupt.----- End of the daemon log -----
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.

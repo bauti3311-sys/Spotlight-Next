@@ -1,0 +1,54 @@
+{
+  "base": "7bc8a26a1a18d461099e2e0fb816afb8fa53465d",
+  "main_tree": "de2a41caef08cbd6ca7d4b69e1db367f2fb4936f",
+  "audit": [
+    {
+      "file": "docs/verification/native66-preparation-20261106/images/dark-initial.png",
+      "sha256": "cff01279152bc42b0d9bc0c28eb3cea5fba486444c1b64166f20d4364a98d435",
+      "caption": "dark-initial \u00b7 auditor\u00eda actual330dp/200%,interior266dp,fixtureComposeAPI33"
+    },
+    {
+      "file": "docs/verification/native66-preparation-20261106/images/dark-scrolled.png",
+      "sha256": "a229ac37412893198c6bdbf53694bedf10775afd7348e60c85c5183430d5af2d",
+      "caption": "dark-scrolled \u00b7 auditor\u00eda actual330dp/200%,interior266dp,fixtureComposeAPI33"
+    },
+    {
+      "file": "docs/verification/native66-preparation-20261106/images/light-initial.png",
+      "sha256": "4e017c71daae01fff1d059d5d1cc2a5d1caadbd6c666930d923b2f694854f8b1",
+      "caption": "light-initial \u00b7 auditor\u00eda actual330dp/200%,interior266dp,fixtureComposeAPI33"
+    },
+    {
+      "file": "docs/verification/native66-preparation-20261106/images/light-scrolled.png",
+      "sha256": "e05cea356d05df76bcfe2d19bcc6b05dd356ba8512a7a601bc937d0b685c7a32",
+      "caption": "light-scrolled \u00b7 auditor\u00eda actual330dp/200%,interior266dp,fixtureComposeAPI33"
+    }
+  ],
+  "historical_approved_pairs": [
+    {
+      "title": "Footer700dp/200%",
+      "before": "docs/verification/visual-footer-20261106/before/dark-700dp-text200.png",
+      "after": "docs/verification/visual-footer-20261106/after/dark-700dp-text200.png",
+      "before_sha256": "94bcf9cfc665d372f9d8dbbdf0002ad174bb70352a0eabb8d6c946940f0d285d",
+      "after_sha256": "72fc4c783c933a1eb2af92e65a65074b08b4f617a9cd41aca745caceb44b1ed2"
+    },
+    {
+      "title": "Paginaci\u00f3nPDF330dp/200%",
+      "before": "docs/verification/visual-polish-20261106/pdf-before/pdf-nav-light-text200.png",
+      "after": "docs/verification/visual-polish-20261106/after/pdf-nav-light-text200.png",
+      "before_sha256": "5e9cbf54b3e06a4c824a52bd597e6e6da9251cf938501bcee5608ba1683a707b",
+      "after_sha256": "9f0f56b2d1bb826955ac21919d84a7720f1927353ff8c6c6531d8f29b615010f"
+    },
+    {
+      "title": "Notificaci\u00f3n390dp/100%",
+      "before": "docs/verification/visual-notification-20261106/before/light-390dp-text100.png",
+      "after": "docs/verification/visual-notification-20261106/after/light-390dp-text100.png",
+      "before_sha256": "0531f8d5dc831cffc6b80281d802fd1865405898c8f989cf341e8b036b0ec01d",
+      "after_sha256": "f63799e414fec0346091ad7f39681109e2fc038f7389803418364ca669ae35b2"
+    }
+  ],
+  "limits": [
+    "No new visual production delta after7bc8a26",
+    "Historical before-after preserved; not recaptured as new66 APK",
+    "API33 Robolectric fixtures; no hardware or real external effects"
+  ]
+}

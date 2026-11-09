@@ -1,0 +1,7 @@
+gradle.taskGraph.whenReady { graph ->
+    def forbidden = graph.allTasks.findAll { task ->
+        task.name ==~ /(?i)(assemble.*|bundle.*Aar|packageDebug|packageDebugAndroidTest|packageRelease|packageReleaseAndroidTest|validateSigning.*|sign.*|install.*|uninstall.*|connected.*)/
+    }
+    if (!forbidden.empty) throw new GradleException('Forbidden APK/sign/install/device task: ' + forbidden*.path.join(', '))
+    println('C5 lint-only guard: no APK, signing, installation or device task in graph')
+}

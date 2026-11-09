@@ -1,0 +1,27 @@
+{
+  "base_sha": "d712a14cb8e924f958fdf2526b1defd7e925e61d",
+  "instrumentation_source_sha": "c2f94e8a5f63230c48470015b76ac9047071c29a",
+  "prepared_methods": 5,
+  "executed_instrumentation_methods": 0,
+  "physical_metrics": null,
+  "compile_kotlin_java": "SUCCESS",
+  "new_app_or_test_apks": 0,
+  "new_actions": 0,
+  "new_model_downloads": 0,
+  "production_changed": false,
+  "c53_results_unchanged": true,
+  "requires_future_authorized_matching_target_and_test_apks": true,
+  "sha256": {
+    "compile-final-guarded.log": "735b1a281f40977d0705b4e27a23edea34360a2e7944b841092f645de9d58a05",
+    "apks-before.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "adb-devices.txt": "36f15c2fe32964a6fbe902e914a47739d4e6304b0d3e812bf08096ff0419b7ae",
+    "compile-dry-run.log": "0b4aaf8e3fd6e9d966f5bfb0cf297a50ce2d7fdf0d2817d45f91f71e2aa7c77d",
+    "preparation-checks.json": "34c9e8446762c64642de204847d11334c8a1928b883e206e190b3ca785aaca1b",
+    "compile-sealed.log": "f414c3e27a50bae0ec004696e90d2846268ca980115362bfbd6f71ed444973c1",
+    "merged-test-manifest.xml": "68a56357d40c7dc69dc8f8fb94eab48ef13f79c38ffcd35ca98865e8b069dd24",
+    "compile-first-success.log": "08b2c133fa3e1b9e2520d5e8d4e9aa4770970d218d8a2e4ee538abb5bb3d737a",
+    "README.md": "a53112cc18e00fa292338146d14590390f6907512f74aa73a0d7f16c5a16cbb2",
+    "verify-preparation.py": "8cc23403c0f34b6c1bcb55023189109a851ee7c41b2833345d57ba8e4ef1ee0e",
+    "initial/compile.log": "d11f1fe0280b0a95113d0e06594ee1315f8c6ee51fd9a067a1120dbc3fe8258a"
+  }
+}

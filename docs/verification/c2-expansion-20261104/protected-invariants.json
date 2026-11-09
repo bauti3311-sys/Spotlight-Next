@@ -1,0 +1,15 @@
+{
+  "equalToBase": true,
+  "sha256": {
+    "app/build.gradle.kts": "470b95d0d82646b639541ccccd5e453837f64a00695df39b8b27619714f51c32",
+    "app/src/main/AndroidManifest.xml": "1c0895a3de3a43644bcf4bdd07df4df2df7a9b23ade47386ca135a27c2cbf7f5",
+    "release.properties": "27d97e5ae8b499c14271adac9a5f2e6e38bf86a2428a6e36385b5ae89d6f9419",
+    "gradle.properties": "fa078c27c9e4bde28a029d673875b028884505efa436b68cf60e1ac0be5b679b",
+    "app/src/main/java/dev/bautista/spotlight/overlay/OverlayService.kt": "e168450e6ccd01b6332069bd33dc8e2a75ac13e82a8057ed31c16dc811f6c8e3",
+    "app/src/main/java/dev/bautista/spotlight/overlay/OverlayViewport.kt": "4c34e40aa54d2aa13119a1d1f4939f13248f68d952552fe93f8f2d4a5c59ea49",
+    "app/src/main/java/dev/bautista/spotlight/ui/GlassTokens.kt": "8eb37af6fcdad2ab3be7540cf9e971376093678cd5655d99a960b16875a187c2"
+  },
+  "workflowsSigningScriptsGradleDataUnchanged": true,
+  "physicalWindowValidation": false,
+  "newApkOrActions": false
+}

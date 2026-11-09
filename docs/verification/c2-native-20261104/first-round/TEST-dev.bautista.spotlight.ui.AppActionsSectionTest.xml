@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.AppActionsSectionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-04T12:52:34" hostname="c880c3bda6d8" time="4.002">
+  <properties/>
+  <testcase name="businessCompositionPreservesDestinationAndIncludesReplies" classname="dev.bautista.spotlight.ui.AppActionsSectionTest" time="3.107"/>
+  <testcase name="whatsappReplyNavigationIsNotFilteredOutByActionType" classname="dev.bautista.spotlight.ui.AppActionsSectionTest" time="0.836"/>
+  <testcase name="unsupportedAppHasAnHonestSectionWithoutImaginaryActions" classname="dev.bautista.spotlight.ui.AppActionsSectionTest" time="0.058"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

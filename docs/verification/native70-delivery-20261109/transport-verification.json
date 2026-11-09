@@ -1,0 +1,7 @@
+{
+  "artifact_id": 13649134467,
+  "name": "Spotlight-Next-Preview-42560494613",
+  "archive_sha256": "cd117c109f18d4e7bf0de4250e6e1aae1d88344a53362b48125edf07b316daef",
+  "matches_github_artifact_digest": true,
+  "transport": "GitHub connector download; original gh CLI Azure redirect returned403; no workflow retry"
+}

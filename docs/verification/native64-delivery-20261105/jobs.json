@@ -1,0 +1,512 @@
+{
+  "total_count": 8,
+  "jobs": [
+    {
+      "id": 127438580009,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq-5pKQ",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438580009",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438580009",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-05T18:15:01Z",
+      "started_at": "2026-11-05T18:15:04Z",
+      "completed_at": "2026-11-05T18:15:17Z",
+      "name": "delivery-preflight",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T18:15:05Z",
+          "completed_at": "2026-11-05T18:15:06Z"
+        },
+        {
+          "name": "Checkout only reviewed automation tooling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T18:15:06Z",
+          "completed_at": "2026-11-05T18:15:08Z"
+        },
+        {
+          "name": "Guard owner, exact revisions, live reservation and one attempt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T18:15:08Z",
+          "completed_at": "2026-11-05T18:15:11Z"
+        },
+        {
+          "name": "Set up Java 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T18:15:11Z",
+          "completed_at": "2026-11-05T18:15:11Z"
+        },
+        {
+          "name": "Check historical signing input in an isolated job, without building",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-05T18:15:11Z",
+          "completed_at": "2026-11-05T18:15:13Z"
+        },
+        {
+          "name": "Ensure temporary private inputs are gone",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-05T18:15:13Z",
+          "completed_at": "2026-11-05T18:15:13Z"
+        },
+        {
+          "name": "Post Set up Java 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-05T18:15:13Z",
+          "completed_at": "2026-11-05T18:15:14Z"
+        },
+        {
+          "name": "Post Checkout only reviewed automation tooling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-05T18:15:14Z",
+          "completed_at": "2026-11-05T18:15:14Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-05T18:15:14Z",
+          "completed_at": "2026-11-05T18:15:14Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438580009",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000325,
+      "runner_name": "GitHub Actions 1000000325",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127438582033,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq-5xEQ",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438582033",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438582033",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-05T18:15:02Z",
+      "started_at": "2026-11-05T18:15:02Z",
+      "completed_at": "2026-11-05T18:15:01Z",
+      "name": "raycast-preview",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438582033",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 127438582092,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq-5xTA",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438582092",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438582092",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-05T18:15:02Z",
+      "started_at": "2026-11-05T18:15:02Z",
+      "completed_at": "2026-11-05T18:15:01Z",
+      "name": "native60-preflight",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438582092",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 127438582535,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq-5zBw",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438582535",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438582535",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-05T18:15:02Z",
+      "started_at": "2026-11-05T18:15:02Z",
+      "completed_at": "2026-11-05T18:15:01Z",
+      "name": "directed-gate",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438582535",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 127438584480,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq-56oA",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438584480",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438584480",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-05T18:15:02Z",
+      "started_at": "2026-11-05T18:15:02Z",
+      "completed_at": "2026-11-05T18:15:02Z",
+      "name": "native60-unsigned",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438584480",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 127438585388,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq-5-LA",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438585388",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438585388",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-05T18:15:02Z",
+      "started_at": "2026-11-05T18:15:02Z",
+      "completed_at": "2026-11-05T18:15:02Z",
+      "name": "native60-sign",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438585388",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 127438727320,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdq_ComA",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127438727320",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127438727320",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-05T18:15:17Z",
+      "started_at": "2026-11-05T18:15:20Z",
+      "completed_at": "2026-11-05T18:23:15Z",
+      "name": "delivery-unsigned",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T18:15:20Z",
+          "completed_at": "2026-11-05T18:15:25Z"
+        },
+        {
+          "name": "Checkout only reviewed automation tooling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T18:15:25Z",
+          "completed_at": "2026-11-05T18:15:26Z"
+        },
+        {
+          "name": "Guard owner, exact revisions, live reservation and one attempt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T18:15:26Z",
+          "completed_at": "2026-11-05T18:15:29Z"
+        },
+        {
+          "name": "Checkout exactly the approved app source, without signing files",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T18:15:29Z",
+          "completed_at": "2026-11-05T18:15:32Z"
+        },
+        {
+          "name": "Set up Java 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-05T18:15:32Z",
+          "completed_at": "2026-11-05T18:15:32Z"
+        },
+        {
+          "name": "Prepare only Android verification/build tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-05T18:15:32Z",
+          "completed_at": "2026-11-05T18:15:43Z"
+        },
+        {
+          "name": "Read existing dependency caches without writing them",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-05T18:15:43Z",
+          "completed_at": "2026-11-05T18:15:43Z"
+        },
+        {
+          "name": "One optimized unsigned Preview build, no secret restoration or retry",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T18:15:43Z",
+          "completed_at": "2026-11-05T18:23:05Z"
+        },
+        {
+          "name": "Verify unsigned identity, content and exact source archive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-05T18:23:05Z",
+          "completed_at": "2026-11-05T18:23:08Z"
+        },
+        {
+          "name": "Transfer only the unsigned candidate/source/provenance within this run",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-05T18:23:08Z",
+          "completed_at": "2026-11-05T18:23:11Z"
+        },
+        {
+          "name": "Post Read existing dependency caches without writing them",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-05T18:23:11Z",
+          "completed_at": "2026-11-05T18:23:11Z"
+        },
+        {
+          "name": "Post Set up Java 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-05T18:23:11Z",
+          "completed_at": "2026-11-05T18:23:11Z"
+        },
+        {
+          "name": "Post Checkout exactly the approved app source, without signing files",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-05T18:23:11Z",
+          "completed_at": "2026-11-05T18:23:11Z"
+        },
+        {
+          "name": "Post Checkout only reviewed automation tooling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-05T18:23:11Z",
+          "completed_at": "2026-11-05T18:23:12Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-05T18:23:12Z",
+          "completed_at": "2026-11-05T18:23:12Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127438727320",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000326,
+      "runner_name": "GitHub Actions 1000000326",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127443170869,
+      "run_id": 42082398659,
+      "workflow_name": "native-delivery 808bda2c25887d14b42665dea4c254181d72b837",
+      "head_branch": "feat/preview57-native-return-20261103",
+      "run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/runs/42082398659",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVFFLBc8AAAAdrDR2NQ",
+      "head_sha": "5b346bc34a59fa4f879532a5c485a3dcddc6b1da",
+      "url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/actions/jobs/127443170869",
+      "html_url": "https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42082398659/job/127443170869",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-05T18:23:16Z",
+      "started_at": "2026-11-05T18:23:18Z",
+      "completed_at": "2026-11-05T18:24:07Z",
+      "name": "delivery-sign",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T18:23:19Z",
+          "completed_at": "2026-11-05T18:23:22Z"
+        },
+        {
+          "name": "Checkout only reviewed automation tooling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T18:23:22Z",
+          "completed_at": "2026-11-05T18:23:23Z"
+        },
+        {
+          "name": "Guard owner, exact revisions, live reservation and one attempt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T18:23:23Z",
+          "completed_at": "2026-11-05T18:23:26Z"
+        },
+        {
+          "name": "Set up Java 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T18:23:26Z",
+          "completed_at": "2026-11-05T18:23:26Z"
+        },
+        {
+          "name": "Prepare only Android verification/build tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-05T18:23:26Z",
+          "completed_at": "2026-11-05T18:23:44Z"
+        },
+        {
+          "name": "Download only this run's verified candidate; never checkout or execute app source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-05T18:23:44Z",
+          "completed_at": "2026-11-05T18:23:54Z"
+        },
+        {
+          "name": "Sign with historical Preview identity and verify final APK/source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-05T18:23:54Z",
+          "completed_at": "2026-11-05T18:24:01Z"
+        },
+        {
+          "name": "Clean any temporary private residue",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T18:24:01Z",
+          "completed_at": "2026-11-05T18:24:01Z"
+        },
+        {
+          "name": "Upload only verified APK, matching source and public evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-05T18:24:01Z",
+          "completed_at": "2026-11-05T18:24:04Z"
+        },
+        {
+          "name": "Post Set up Java 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-05T18:24:04Z",
+          "completed_at": "2026-11-05T18:24:04Z"
+        },
+        {
+          "name": "Post Checkout only reviewed automation tooling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-05T18:24:04Z",
+          "completed_at": "2026-11-05T18:24:04Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-05T18:24:04Z",
+          "completed_at": "2026-11-05T18:24:04Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/bauti3311-sys/Spotlight-Next/check-runs/127443170869",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000327,
+      "runner_name": "GitHub Actions 1000000327",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

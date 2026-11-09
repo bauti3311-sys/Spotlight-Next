@@ -1,0 +1,69 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+
+> Task :app:compileDebugUnitTestKotlin
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:52:107 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+val GestureScope.width: Int
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:52:113 None of the following candidates is applicable:
+val ColorSchemeKeyTokens.value: Color
+val ShapeKeyTokens.value: Shape
+val TypographyKeyTokens.value: TextStyle
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:52:124 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+val GestureScope.height: Int
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:52:131 None of the following candidates is applicable:
+val ColorSchemeKeyTokens.value: Color
+val ShapeKeyTokens.value: Shape
+val TypographyKeyTokens.value: TextStyle
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:61:87 No value passed for parameter 'fallback'.
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:105:99 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+val GestureScope.height: Int
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:105:105 None of the following candidates is applicable:
+fun compareTo(other: Byte): Int
+fun compareTo(other: Double): Int
+fun compareTo(other: Float): Int
+fun compareTo(other: Int): Int
+fun compareTo(other: Long): Int
+fun compareTo(other: Short): Int
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:131:72 Unresolved reference 'Clipboard'.
+e: file:///workspace/Spotlight-Next/app/src/test/java/dev/bautista/spotlight/ui/FocusConsolidationReviewTest.kt:132:56 Unresolved reference 'Clipboard'.
+
+> Task :app:compileDebugUnitTestKotlin FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugUnitTestKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 11s
+20 actionable tasks: 1 executed, 19 up-to-date

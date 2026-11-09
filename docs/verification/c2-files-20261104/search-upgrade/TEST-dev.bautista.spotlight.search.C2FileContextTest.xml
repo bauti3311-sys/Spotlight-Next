@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.search.C2FileContextTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-04T19:30:51" hostname="c880c3bda6d8" time="2.219">
+  <properties/>
+  <testcase name="quotedAndScopedShareQueriesPreserveLiteralNamesAndOperation" classname="dev.bautista.spotlight.search.C2FileContextTest" time="2.219"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

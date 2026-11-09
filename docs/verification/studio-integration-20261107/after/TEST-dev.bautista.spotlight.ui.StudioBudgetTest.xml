@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.StudioBudgetTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-07T12:19:00" hostname="ab6df79ca904" time="2.81">
+  <properties/>
+  <testcase name="usefulWidthWinsOverDecorationAndLegacyHasNoInsets" classname="dev.bautista.spotlight.ui.StudioBudgetTest" time="2.81"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

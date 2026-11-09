@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.SettingsRefreshTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-09T14:28:34" hostname="375f5b578860" time="5.214">
+  <properties/>
+  <testcase name="changedWidthReachesTheAlreadyOpenAndroidWindow" classname="dev.bautista.spotlight.ui.SettingsRefreshTest" time="5.214"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
