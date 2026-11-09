@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.*
 
 @Composable fun GlassContextFooter(suggestion:Boolean,enabled:Boolean,primaryLabel:String,onExecute:()->Unit,onActions:()->Unit,
  autocomplete:Boolean=false,expandLabel:String="Ver más resultados",onExpand:(()->Unit)?=null,actionsOpen:Boolean=false,actionsKeyLabel:String="Ctrl+K",
- onOptions:(()->Unit)?,scopeLabel:String="Spotlight") {
+ onOptions:(()->Unit)?,scopeLabel:String="Spotlight",showPrimaryAction:Boolean=true) {
  val colors=MaterialTheme.colorScheme
  val appearance=LocalAppearance.current
  val d=GlassTokens.densityScale(appearance)
@@ -57,11 +57,11 @@ import androidx.compose.ui.unit.*
    val dock=if(wide && !premium)Modifier.background(colors.onSurface.copy(alpha=.035f),RoundedCornerShape(12.dp))
     .border(1.dp,colors.onSurface.copy(alpha=.08f),RoundedCornerShape(12.dp)) else Modifier
    if(enabled)Row(Modifier.then(if(wide)Modifier else Modifier.weight(1f)).testTag("command-dock-actions").then(dock),verticalAlignment=Alignment.CenterVertically) {
-    TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.then(if(wide)Modifier.widthIn(max=220.dp) else Modifier.weight(1f)).heightIn(min=48.dp).testTag("command-primary")) {
+    if(showPrimaryAction)TextButton(onClick=onExecute,enabled=!actionsOpen,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.then(if(wide)Modifier.widthIn(max=220.dp) else Modifier.weight(1f)).heightIn(min=48.dp).testTag("command-primary")) {
      Text(if(actionsOpen)"Ejecutar" else primaryLabel,fontSize=GlassTokens.scaledSp(12.sp,appearance),maxLines=1,overflow=TextOverflow.Ellipsis,color=colors.onSurface.copy(alpha=if(actionsOpen).38f else 1f))
      if(wide && LocalLiquidScene.current==null){Spacer(Modifier.width(6.dp));GlassKeycap("Enter")}
     }
-    if(wide)Box(Modifier.width(1.dp).height(18.dp).background(colors.onSurface.copy(alpha=.10f)))
+    if(wide && showPrimaryAction)Box(Modifier.width(1.dp).height(18.dp).background(colors.onSurface.copy(alpha=.10f)))
     TextButton(onClick=onActions,contentPadding=PaddingValues(horizontal=(11f*d).dp),modifier=Modifier.heightIn(min=48.dp).testTag("command-actions")) {
      Text(if(actionsOpen)"Volver" else "Acciones",fontSize=GlassTokens.scaledSp(12.sp,appearance),color=colors.onSurfaceVariant)
      if(wide && LocalLiquidScene.current==null){Spacer(Modifier.width(6.dp));GlassKeycap(if(actionsOpen)"Escape" else actionsKeyLabel)}
