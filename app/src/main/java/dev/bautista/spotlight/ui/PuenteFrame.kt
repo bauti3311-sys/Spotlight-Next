@@ -68,7 +68,7 @@ internal val LocalPuenteUi=staticCompositionLocalOf{false}
   if(split && inspector!=null)ContextSplitPanel(maxHeight,
    left={finder()},right={Box(Modifier.padding(top=20.dp)){destination()}},
    initialFraction=.44f,detached=true)
-  else Column(Modifier.widthIn(max=if(inspector==null)560.dp*scale else Dp.Infinity).fillMaxWidth().heightIn(max=maxHeight)
+  else Column(Modifier.widthIn(max=if(inspector==null && LocalAppearance.current.windowScale<0f)560.dp*scale else Dp.Infinity).fillMaxWidth().heightIn(max=maxHeight)
    .testTag("compact-inspector-scroll"),verticalArrangement=Arrangement.spacedBy(12.dp)) {
    finder()
    if(inspector!=null)Box(Modifier.weight(1f,fill=false)){destination()}

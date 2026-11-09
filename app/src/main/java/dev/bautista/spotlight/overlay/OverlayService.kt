@@ -217,7 +217,7 @@ class OverlayService : LifecycleService(), SavedStateRegistryOwner, ViewModelSto
                     }
                     if(next.privateMode){recoverySuppressed=true;if(!old.privateMode)app.scope.launch{runCatching{app.contexts.saveOverlaySnapshot(null)}}}
                     if(view==null && !closing)show()
-                    else if(old.width!=next.width || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
+                    else if(old.width!=next.width || old.windowScale!=next.windowScale || old.adaptive!=next.adaptive || old.position!=next.position || old.landscapeWidth!=next.landscapeWidth || old.landscapePosition!=next.landscapePosition) {
                         refreshWindowGeometry()
                     }
                 }

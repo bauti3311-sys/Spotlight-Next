@@ -93,17 +93,21 @@ internal suspend fun settingsFeatures(app:SpotlightApp,c:Config):List<SettingsFe
    FilledTonalButton(onClick={queue=selected;step=0},enabled=selected.isNotEmpty(),modifier=Modifier.fillMaxWidth().testTag("guided-setup-start")){Text("Configurar selección · ${selected.size}")}
   } else {
    SettingsGroupSurface {
-    Text("Configuración a tu medida",style=MaterialTheme.typography.titleSmall)
-    Text("Elegí funciones y revisá cada autorización por separado.",style=MaterialTheme.typography.bodySmall,color=colors.onSurfaceVariant)
-    Text(if(failed)"Estado no disponible" else if(features.isEmpty())"Comprobando configuración…" else "${features.count{it.ready}} accesos habilitados · IA bajo tu control",style=MaterialTheme.typography.labelSmall,color=colors.onSurfaceVariant)
-    TextButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){IosCommandIcon(CommandIcons.Shield,null,Modifier.size(17.dp));Spacer(Modifier.width(8.dp));Text("Elegir funciones")}
+    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
+     IosCommandIcon(CommandIcons.Display,null,Modifier.size(28.dp),tint=colors.primary)
+     Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+      Text("Tu buscador",style=MaterialTheme.typography.titleMedium)
+      Text(if(c.focusInterface)"Puente · ${if(c.theme=="auto")"tema de Android" else if(c.theme=="light")"tema claro" else "tema oscuro"}" else "Interfaz anterior · reversible",style=MaterialTheme.typography.bodyMedium,color=colors.onSurfaceVariant)
+     }
+    }
+    TextButton(onClick={onNavigate("Apariencia")}){Text("Ajustar tamaño y apariencia")}
    }
-   HomeDestination("Conectar Gemini","Tu clave, tus decisiones",CommandIcons.AutoAwesome){onNavigate("Inteligencia artificial")}
-   HomeDestination("Personalizar apariencia","Raycast Dark Glass y opacidad",CommandIcons.Display){onNavigate("Apariencia")}
-   HomeDestination("Búsqueda y documentos","Carpetas, texto, OCR y significado local",CommandIcons.Folder){onNavigate("Búsqueda y archivos")}
-   HomeDestination("Conectar tus apps","Mensajes, música y control del dispositivo",CommandIcons.Layers){onNavigate("Integraciones")}
-   HomeDestination("Permisos y accesos","Todos los accesos Android reunidos y bajo tu control",CommandIcons.Shield){onNavigate("Permisos y accesos")}
-   TextButton(onClick=onDetails){Text("Opciones de inicio y teclado")}
+   HomeDestination("Búsqueda y archivos","Elegí qué fuentes aparecen en tus resultados",CommandIcons.Search){onNavigate("Búsqueda y archivos")}
+   HomeDestination("Privacidad y permisos","Revisá accesos y datos locales",CommandIcons.Shield){onNavigate("Permisos y accesos")}
+   HomeDestination("Atajos y teclado","Elegí cómo abrir Spotlight",CommandIcons.Keyboard){onNavigate("Atajos")}
+   TextButton(onClick={center=true},modifier=Modifier.testTag("open-function-center")){Text("Configurar accesos opcionales")}
+   if(failed)Text("No se pudo comprobar el estado de los accesos.",style=MaterialTheme.typography.bodySmall,color=colors.error)
+
   }
  }
  val current=if(step>=0)queue.getOrNull(step) else pending
