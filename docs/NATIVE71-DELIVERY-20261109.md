@@ -1,3 +1,29 @@
+# Preview71 entregada y verificada
+
+Único run [42635574367](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42635574367),
+attempt1SUCCESS; tres jobs obligatorios correctos. [APK/ZIP y comprobantes en GitHub](https://github.com/bauti3311-sys/Spotlight-Next/actions/runs/42635574367/artifacts/13683597177).
+
+Fuente b8f8e268dd59e6410ec57a102a0e35231db01b18; workflow604544872a70a609e2307ce0c61af6edb99b2ccb.
+Preview71 · 2.0.1-raycast-preview-native57-v71 · paqueteRaycastPreview histórico.
+
+- APK SHA256 `335b65b36dd4fb34a6455d08c60ce34c28580c95bfd28754c84904418a177b77`
+- ZIP SHA256 `cdb0504b67484d23f28faa1ed291f3bd8271cb1171da839f900b5e5da7c29ec2`
+
+Verificación local independiente: certificado885838aa igualAPK70, un firmante/v2,
+ARM64/min26/target35/noDebuggable, zipalign/ELF16KiB, payload firmado igual unsigned,
+hashesCI y ZIPbyteidéntico a gitarchive local del SHA exacto. Ocho archivos de
+ancho/Ajustes iguales867a3f5 y FileIndexigual70, C5 ausente. Descarga por conector
+oficialGitHub; digest del ZIP de transporte coincide con la API antes de extraer.
+No rebuild independiente ni instalación; actualización71>70 estáticamente compatible,
+conservación física/Gboard/OneUI/rotación/rendimiento aún pendientes.
+
+Autorización71 CONSUMIDA. Sin retry/rerun/fallback/otraAPK. Main/fuentesprevias/PR21
+borrador conservados. Reserva de entrega se libera sólo por su dueño con notas.
+La solicitud posterior de completar el plan23 no cambia esta fuente congelada:
+checkpoint técnico posterior C6/S03 y matriz de pendientes se mantienen separados.
+
+## Preparación histórica del único intento
+
 # Preview71 — ancho y Ajustes, único intento autorizado
 
 El propietario pidió «dale manda el apk» después del checkpoint867a3f5. Autoriza

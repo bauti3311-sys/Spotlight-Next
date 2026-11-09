@@ -1,0 +1,12 @@
+{
+  "run_id": 42635574367,
+  "attempt": 1,
+  "conclusion": "success",
+  "required_jobs": [
+    "delivery-preflight",
+    "delivery-unsigned",
+    "delivery-sign"
+  ],
+  "tests": "4 source-isolated cases +17 policy offline;40 PR cases and lint reused for identical product files. CI did build/artifact verification, not another test or lint suite.",
+  "physical_update": false
+}

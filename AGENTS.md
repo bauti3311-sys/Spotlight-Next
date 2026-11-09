@@ -1,3 +1,14 @@
+## Continuidad vigente — Preview71 entregada (09/11/2026)
+
+Run42635574367 attempt1SUCCESS; sourceb8f8e268dd59e6410ec57a102a0e35231db01b18,
+workflow604544872a70a609e2307ce0c61af6edb99b2ccb. Ver docs/NATIVE71-DELIVERY-20261109.md.
+APK71/ZIP exacto/firma885838aa igual70/ARM64/noDebuggable/16KiB/procedencia verificados
+localmente. Ancho+Ajustes;13rutas desde70,C5fuera. Sininstalación,física pendiente.
+71CONSUMIDA: no rerun/fallback/otraentrega. Cerrar reserva de entrega con notas y
+adquirir otra para la nueva solicitud de completar el plan23 (F/V/S,C0–C9), sin
+mezclar futuros cambios con71 ni declarar completos bloqueos físicos/decuentas.
+Main/fuentes68–71/PR21borrador intactos; liberar sólo reserva propia.
+
 ## Continuidad vigente — entrega Preview71 autorizada (09/11/2026)
 
 «Dale manda el apk» autoriza UNA entrega de ancho y Ajustes desde867a3f5. Fuente
