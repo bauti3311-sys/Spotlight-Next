@@ -1,3 +1,18 @@
+## Continuidad vigente — entrega Preview71 autorizada (09/11/2026)
+
+«Dale manda el apk» autoriza UNA entrega de ancho y Ajustes desde867a3f5. Fuente
+b8f8e268dd59e6410ec57a102a0e35231db01b18 aislada70; rama feat/preview71-settings-isolated-20261109.
+WorkflowSHA=commit de este manifiesto. Ver docs/NATIVE71-DELIVERY-20261109.md.
+Sólo13rutas:8productivas idénticasPR,4tests y numeración71. C5 fuera;40checks/lintPR
+reutilizados,4checksaislados y17offline correctos. IdentidadPreview885838aa conservada.
+Cerrar reserva preparación/adquirir NUEVA checkpointworkflow antes del dispatch.
+US$0/stop_on_limit; una ejecución native-delivery, sin retry/rerun/fallback/instalación.
+La decisión posterior de completar TODO el plan maestro23 (10F,9V,4S;C0–C9) autoriza
+retomar su auditoría/avance por etapas DESPUÉS de la APK congelada. No mezclar funciones
+nuevas con71 ni declarar validaciones físicas inexistentes; permisos sensibles,
+cuentas/modelos y disponibilidad real siguen como puertas. No son las36ideas del catálogo.
+Main,71/70/69/68, C5 delPR y PR21borrador se conservan. Liberar sólo reserva propia.
+
 ## Continuidad vigente — ancho reparado y Ajustes renovados (09/11/2026)
 
 El propietario autorizó reparar el ancho y rediseñar Ajustes; reemplaza la decisión

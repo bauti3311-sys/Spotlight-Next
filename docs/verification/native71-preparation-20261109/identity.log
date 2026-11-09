@@ -1,0 +1,9 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+PREVIEW71_CONFIGURATION_ONLY_NO_APK=true
+
+> Task :app:inspectPreview71Identity
+PREVIEW71_IDENTITY={"package":"dev.bautista.spotlight.next.raycastpreview","outputs":[{"code":71,"name":"2.0.1-raycast-preview-native57-v71"}],"debuggable":false,"minified":true,"shrinkResources":true,"abi":["arm64-v8a"],"minSdk":26,"targetSdk":35,"signing":"unchanged source configuration; expected certificate from manifest; no key or APK signature verified in preparation"}
+
+BUILD SUCCESSFUL in 10s
+1 actionable task: 1 executed
