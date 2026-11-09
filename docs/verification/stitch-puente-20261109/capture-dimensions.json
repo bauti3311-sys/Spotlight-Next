@@ -1,0 +1,262 @@
+{
+  "ajustes-phone-dark-200-appearance.png": {
+    "before": [
+      330,
+      800
+    ],
+    "after": [
+      330,
+      800
+    ]
+  },
+  "ajustes-phone-light-appearance.png": {
+    "before": [
+      390,
+      844
+    ],
+    "after": [
+      390,
+      844
+    ]
+  },
+  "ajustes-phone-light-home.png": {
+    "before": [
+      390,
+      844
+    ],
+    "after": [
+      390,
+      844
+    ]
+  },
+  "ajustes-tablet-dark-appearance.png": {
+    "before": [
+      1280,
+      900
+    ],
+    "after": [
+      1280,
+      900
+    ]
+  },
+  "ajustes-tablet-dark-home.png": {
+    "before": [
+      1280,
+      900
+    ],
+    "after": [
+      1280,
+      900
+    ]
+  },
+  "ajustes-tablet-light-appearance.png": {
+    "before": [
+      1280,
+      900
+    ],
+    "after": [
+      1280,
+      900
+    ]
+  },
+  "ajustes-tablet-light-home.png": {
+    "before": [
+      1280,
+      900
+    ],
+    "after": [
+      1280,
+      900
+    ]
+  },
+  "compact200-dark-acciones.png": {
+    "before": [
+      290,
+      482
+    ],
+    "after": [
+      290,
+      482
+    ]
+  },
+  "compact200-dark-inspector.png": {
+    "before": [
+      330,
+      760
+    ],
+    "after": [
+      330,
+      760
+    ]
+  },
+  "compact200-dark-resultados.png": {
+    "before": [
+      330,
+      760
+    ],
+    "after": [
+      330,
+      760
+    ]
+  },
+  "compact200-light-acciones.png": {
+    "before": [
+      290,
+      482
+    ],
+    "after": [
+      290,
+      482
+    ]
+  },
+  "compact200-light-inspector.png": {
+    "before": [
+      330,
+      760
+    ],
+    "after": [
+      330,
+      760
+    ]
+  },
+  "compact200-light-resultados.png": {
+    "before": [
+      330,
+      760
+    ],
+    "after": [
+      330,
+      760
+    ]
+  },
+  "phone-dark-acciones.png": {
+    "before": [
+      360,
+      482
+    ],
+    "after": [
+      360,
+      482
+    ]
+  },
+  "phone-dark-inspector.png": {
+    "before": [
+      412,
+      860
+    ],
+    "after": [
+      412,
+      860
+    ]
+  },
+  "phone-dark-resultados.png": {
+    "before": [
+      412,
+      860
+    ],
+    "after": [
+      412,
+      860
+    ]
+  },
+  "phone-light-acciones.png": {
+    "before": [
+      360,
+      482
+    ],
+    "after": [
+      360,
+      482
+    ]
+  },
+  "phone-light-inspector.png": {
+    "before": [
+      412,
+      860
+    ],
+    "after": [
+      412,
+      860
+    ]
+  },
+  "phone-light-resultados.png": {
+    "before": [
+      412,
+      860
+    ],
+    "after": [
+      412,
+      860
+    ]
+  },
+  "tablet-dark-acciones.png": {
+    "before": [
+      360,
+      320
+    ],
+    "after": [
+      360,
+      324
+    ]
+  },
+  "tablet-dark-formulario.png": {
+    "before": [
+      960,
+      650
+    ],
+    "after": [
+      960,
+      650
+    ]
+  },
+  "tablet-dark-inspector.png": {
+    "before": [
+      1200,
+      800
+    ],
+    "after": [
+      1200,
+      800
+    ]
+  },
+  "tablet-dark-resultados.png": {
+    "before": [
+      1200,
+      800
+    ],
+    "after": [
+      1200,
+      800
+    ]
+  },
+  "tablet-light-acciones.png": {
+    "before": [
+      360,
+      320
+    ],
+    "after": [
+      360,
+      324
+    ]
+  },
+  "tablet-light-inspector.png": {
+    "before": [
+      1200,
+      800
+    ],
+    "after": [
+      1200,
+      800
+    ]
+  },
+  "tablet-light-resultados.png": {
+    "before": [
+      1200,
+      800
+    ],
+    "after": [
+      1200,
+      800
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "comparisons": 26,
+  "original_images_loaded": 52,
+  "filter": true,
+  "zoom_and_escape": true,
+  "phone_without_horizontal_overflow": true,
+  "page_errors": [],
+  "external_requests": [],
+  "transport": "temporary localhost; file:// blocked by managed browser policy"
+}

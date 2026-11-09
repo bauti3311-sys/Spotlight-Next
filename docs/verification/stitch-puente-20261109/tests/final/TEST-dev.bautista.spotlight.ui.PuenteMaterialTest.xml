@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.bautista.spotlight.ui.PuenteMaterialTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-09T16:22:55" hostname="375f5b578860" time="0.021">
+  <properties/>
+  <testcase name="materialsPreserveCustomAccentAndErrorMeaning" classname="dev.bautista.spotlight.ui.PuenteMaterialTest" time="0.015"/>
+  <testcase name="darkAndLightTextRemainReadableOnAllContentLayers" classname="dev.bautista.spotlight.ui.PuenteMaterialTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

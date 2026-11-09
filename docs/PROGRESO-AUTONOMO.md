@@ -1,3 +1,18 @@
+## Continuidad vigente — estética Stitch integrada, split Puente conservado (09/11/2026)
+
+El propietario aprobó aplicar las referencias Stitch conservando dos superficies
+separadas, divisor ajustable y adaptación compacta. Reemplaza sólo el acabado Hielo,
+no la composición Puente. Implementación b764afe7eef19adcea38e0926192f0fc1d821b38.
+Material carbón/claro, selección por acento real de app, identidad del inspector,
+campo/ActionPanel/footer/Ajustes coherentes. Geist/140ms/títulos2:1/ancho/acciones y
+reversibilidad intactos; no controles ficticios, dashboard ni funciones nuevas.
+20 casos dirigidos correctos; lint0E/23W/1I.26pares/52PNG reales Compose API33,
+galería offline/PDF; ver docs/STITCH-PUENTE-20261109.md. Fallo inicial de foco
+conservado; caso aislado en base/nuevo y ronda final6/6 correctos, sin suprimir tests.
+Física OneUI/Gboard/rotación/rendimiento pendiente. C2/C5/C6, main, fuentes68–71,
+firmas/paquete/versiones/manifiestos conservados. Sin APK/Actions/instalación/deps.
+PR21 borrador; liberar sólo reserva propia con notas atómicas. No declarar23cerradas.
+
 ## Continuidad vigente — plan23 retomado; primer arreglo C6/S03 (09/11/2026)
 
 El propietario pide implementar por completo C/F/V/S del plan maestro23. Reemplaza

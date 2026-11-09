@@ -8,6 +8,13 @@ La pausa general C3–C8 deja de ser prioridad vigente para investigación/desar
 no autoriza datos privados, envíos reales, instalación sobre apps personales ni
 permisos de sistema por defecto. No habilita un segundo intento71 ni otras APK.
 
+## Decisión visual posterior: Stitch sobre Puente
+
+El propietario aprobó aplicar las referencias nuevas manteniendo el split separado.
+Ver [implementación, comparativas reales y límites](STITCH-PUENTE-20261109.md).
+No incorpora funciones nuevas ni cambia el estado de aceptación de C0–C9/23mejoras.
+Preview71 y la corrección de seguridad C6 se conservan; ninguna entrega nueva autorizada.
+
 ## Separación de la entrega en curso
 
 La Preview71 autorizada sigue congelada exclusivamente en ancho y Ajustes:
@@ -66,7 +73,7 @@ No reiniciar C1/VisualFirst ni reparar repetidamente componentes ya aprobados.
 | F12 | Controles compatibles y observación parcial presentes | Matriz física de permisos/restricciones/dispositivos |
 | F14 | Share/ProcessText y formularios reales | Recorrido físico de URI/permisos/cancelación/retorno |
 | F15 | Sólo comprobador AppFunctions | Estudio/prueba real; puede cerrarse no viable conforme al plan |
-| V01 | Materiales nativos aprobados, ahora Puente/Hielo | Contraste y transparencia físicos; no rediseñar |
+| V01 | Materiales Stitch aprobados; composición Puente separada conservada | Contraste y transparencia físicos; no cerrar por JVM |
 | V02 | Inspector contextual implementado | Recorridos reales de cada integración |
 | V03 | Acentos por app conservados | Contraste con iconos/apps reales |
 | V04 | Jerarquía/título2:1/selección implementados | Legibilidad física y texto ampliado |
